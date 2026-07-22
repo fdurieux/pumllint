@@ -8,7 +8,7 @@ from typing import Iterable
 
 from ..model import Diagram, Severity, Violation
 from ..rules import discover
-from ..scoring import LEVEL_NAMES, MaturityResult
+from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
 from .base import Reporter, reporter
 
 
@@ -94,6 +94,11 @@ class TextReporter(Reporter):
                             f"{f.file_path}:{f.line}  {f.message}"
                         )
             blocks.append("\n".join(lines))
+        agg = aggregate_scores(results)
+        blocks.append(
+            f"Model set: Level {agg.level} ({agg.level_name}) — "
+            f"{agg.composite:.0f}/100 weighted across {agg.diagram_count} diagram(s)"
+        )
         return "\n\n".join(blocks)
 
 
@@ -105,16 +110,29 @@ class JsonReporter(Reporter):
         return json.dumps([_violation_to_dict(v) for v in violations], indent=2)
 
     def render_maturity(self, results: Iterable[tuple[Diagram, MaturityResult]]) -> str:
+        results = list(results)
+        agg = aggregate_scores(results)
         return json.dumps(
-            [
-                {
-                    "file": diagram.file_path,
-                    "name": diagram.name,
-                    "diagramType": diagram.diagram_type,
-                    "maturity": _maturity_to_dict(r),
-                }
-                for diagram, r in results
-            ],
+            {
+                "diagrams": [
+                    {
+                        "file": diagram.file_path,
+                        "name": diagram.name,
+                        "diagramType": diagram.diagram_type,
+                        "maturity": _maturity_to_dict(r),
+                    }
+                    for diagram, r in results
+                ],
+                "modelSet": None
+                if agg is None
+                else {
+                    "level": agg.level,
+                    "levelName": agg.level_name,
+                    "score": round(agg.composite, 2),
+                    "diagramCount": agg.diagram_count,
+                    "elementCount": agg.element_count,
+                },
+            },
             indent=2,
         )
 

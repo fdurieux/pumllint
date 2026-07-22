@@ -8,7 +8,9 @@ too.
 
 from pumllint.model import Diagram, Dimension, Message, Participant, Severity, Violation
 from pumllint.scoring import (
+    LEVEL_NAMES,
     ScoringConfig,
+    aggregate_scores,
     assign_level,
     compute_dimension_scores,
     composite_score,
@@ -386,3 +388,42 @@ def test_profile_binding_is_configurable():
     assert off.level == 5
     renamed = score([], diagram, config={"l5_requires_profile": "strict"}, active_profile="strict")
     assert renamed.level == 5
+
+
+# --- model-set aggregation (0.6.0) -----------------------------------------
+
+def test_aggregate_of_nothing_is_none():
+    assert aggregate_scores([]) is None
+
+
+def test_aggregate_takes_worst_level_and_element_weighted_composite():
+    clean_d = _seq_diagram(3, 3)
+    clean = score([], clean_d, active_profile="codegen")
+    dirty_d = _seq_diagram(1, 1)
+    dirty = score(
+        [_viol(Severity.BLOCKER, Dimension.SEMANTIC)], dirty_d, active_profile="codegen"
+    )
+    agg = aggregate_scores([(clean_d, clean), (dirty_d, dirty)])
+    assert agg.level == min(clean.level, dirty.level)
+    assert agg.level_name == LEVEL_NAMES[agg.level]
+    total = clean.element_count + dirty.element_count
+    expected = (
+        clean.composite * clean.element_count + dirty.composite * dirty.element_count
+    ) / total
+    assert _approx(agg.composite, expected)
+    assert agg.diagram_count == 2
+    assert agg.element_count == total
+
+
+def test_aggregate_weights_empty_diagrams_at_one_element():
+    empty_d = _seq_diagram(0, 0)
+    empty = score([], empty_d)  # C4 makes it Level 1; composite alone is clean
+    full_d = _seq_diagram(3, 3)
+    full = score([], full_d)
+    agg = aggregate_scores([(empty_d, empty), (full_d, full)])
+    assert agg.level == 1  # the worst diagram defines the set
+    expected = (empty.composite * 1 + full.composite * full.element_count) / (
+        1 + full.element_count
+    )
+    assert _approx(agg.composite, expected)
+    assert agg.element_count == full.element_count  # the empty one adds none

@@ -1,11 +1,19 @@
 """pumllint — semantic linter and maturity scorer for PlantUML diagrams.
 
 Public API: lint with :class:`Engine` over parsed diagrams, score with
-:func:`score_groups`, render with :func:`get_reporter`.
+:func:`score_groups` (aggregate with :func:`aggregate_scores`), render with
+:func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`.
 """
 
-__version__ = "0.5.0"
+__version__ = "0.6.0"
 
+from .baseline import (
+    BaselineEntry,
+    Regression,
+    find_regressions,
+    load_baseline,
+    write_baseline,
+)
 from .config import load_config
 from .engine import Engine, collect_files
 from .model import Diagram, Dimension, Severity, Violation
@@ -15,7 +23,9 @@ from .scoring import (
     DimensionScore,
     GapItem,
     MaturityResult,
+    ModelSetResult,
     ScoringConfig,
+    aggregate_scores,
     score,
     score_groups,
 )
@@ -37,8 +47,15 @@ __all__ = [
     "DimensionScore",
     "GapItem",
     "MaturityResult",
+    "ModelSetResult",
     "ScoringConfig",
+    "aggregate_scores",
     "score",
     "score_groups",
     "check_files",
+    "BaselineEntry",
+    "Regression",
+    "find_regressions",
+    "load_baseline",
+    "write_baseline",
 ]
