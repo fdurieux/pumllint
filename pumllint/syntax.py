@@ -8,6 +8,7 @@ installation the linter itself does not require.
 
 from __future__ import annotations
 
+import shlex
 import subprocess
 from pathlib import Path
 from typing import Callable, Iterable, Optional, Sequence
@@ -15,9 +16,16 @@ from typing import Callable, Iterable, Optional, Sequence
 
 def _default_runner(timeout: float) -> Callable[[list[str]], int]:
     def run(cmd: list[str]) -> int:
-        return subprocess.run(
-            cmd, capture_output=True, timeout=timeout, check=False
-        ).returncode
+        try:
+            return subprocess.run(
+                cmd, capture_output=True, timeout=timeout, check=False
+            ).returncode
+        except subprocess.TimeoutExpired:
+            # Surface as a config error (the CLI maps ValueError to exit 2)
+            # rather than a traceback.
+            raise ValueError(
+                f"syntax gate timed out after {timeout:g}s running: {' '.join(cmd)}"
+            ) from None
 
     return run
 
@@ -35,6 +43,8 @@ def check_files(
     code). A missing binary raises ``FileNotFoundError`` — the CLI surfaces it
     as a config error rather than silently skipping the gate the user asked for.
     """
-    cmd = [command] if isinstance(command, str) else list(command)
+    # A string command is shell-split so `syntax_command: java -jar plantuml.jar`
+    # works the way it reads; pass a list to control argv exactly.
+    cmd = shlex.split(command) if isinstance(command, str) else list(command)
     run = runner or _default_runner(timeout)
     return {str(f): run(cmd + ["-checkonly", str(f)]) == 0 for f in files}

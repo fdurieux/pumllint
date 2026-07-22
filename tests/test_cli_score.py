@@ -105,6 +105,37 @@ def test_syntax_gate_enabled_via_config_and_passing():
         assert "syntax gate" not in out.read_text(encoding="utf-8")
 
 
+def test_min_level_with_no_diagrams_exits_2():
+    # Regression: an empty (or mistyped-but-existing) directory must not
+    # silently pass the CI gate.
+    with tempfile.TemporaryDirectory() as tmp:
+        _, cfg = _fixture(tmp)
+        empty = Path(tmp) / "nodiagrams"
+        empty.mkdir()
+        out = Path(tmp) / "r.txt"
+        rc = main(["score", str(empty), "-c", str(cfg), "--min-level", "2", "-o", str(out)])
+        assert rc == 2
+
+
+def test_reporter_without_maturity_support_exits_2():
+    # Regression: NotImplementedError from render_maturity must map to a clean
+    # config error, not a traceback.
+    from pumllint.reporters import Reporter, reporter
+
+    @reporter
+    class _NoMaturity(Reporter):
+        format_name = "nomat-test"
+
+        def render(self, violations):
+            return ""
+
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        rc = main(["score", str(puml), "-c", str(cfg), "-f", "nomat-test", "-o", str(out)])
+        assert rc == 2
+
+
 def test_default_command_still_lints():
     with tempfile.TemporaryDirectory() as tmp:
         puml, cfg = _fixture(tmp)

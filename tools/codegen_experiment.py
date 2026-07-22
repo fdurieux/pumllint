@@ -27,12 +27,14 @@ Run:  python tools/codegen_experiment.py [--dry-run] [--runs N] [--per-level N]
 
 from __future__ import annotations
 
+import argparse
 import glob
 import json
 import os
 import re
 import statistics
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -175,18 +177,31 @@ def select_diagrams(per_level: int) -> list[dict]:
             selected.extend(bucket)
         else:  # evenly spaced across the composite range, deterministic
             idx = sorted({
-                round(i * (len(bucket) - 1) / (per_level - 1))
+                round(i * (len(bucket) - 1) / max(1, per_level - 1))
                 for i in range(per_level)
             })
             selected.extend(bucket[i] for i in idx)
+
+    # Labels are the sole downstream join key (aggregation, correlation,
+    # output filenames) — force uniqueness after stem-truncation.
+    seen: dict[str, int] = {}
+    for u in selected:
+        n = seen.get(u["label"], 0)
+        seen[u["label"]] = n + 1
+        if n:
+            u["label"] = f"{u['label']}~{n}"
     return selected
+
+
+_USAGE_LOCK = threading.Lock()  # usage is shared across the worker pool
 
 
 def _call(client, model: str, usage: dict, **kwargs):
     resp = client.messages.create(model=model, **kwargs)
-    u = usage.setdefault(model, {"in": 0, "out": 0})
-    u["in"] += resp.usage.input_tokens
-    u["out"] += resp.usage.output_tokens
+    with _USAGE_LOCK:  # += is a non-atomic read-modify-write across threads
+        u = usage.setdefault(model, {"in": 0, "out": 0})
+        u["in"] += resp.usage.input_tokens
+        u["out"] += resp.usage.output_tokens
     return resp
 
 
@@ -210,16 +225,16 @@ def _run_one(client, unit: dict, run_idx: int, usage: dict) -> dict:
 
     attempt = _generate(client, diagram_text, usage)
     out["compile_first_try"] = attempt["compiles"]
-    out["gen_stop_reason"] = attempt["stop_reason"]
     retried = False
     if not attempt["compiles"] or attempt["stop_reason"] == "max_tokens":
         retried = True
         second = _generate(client, diagram_text, usage)
-        if second["compiles"] and not attempt["compiles"]:
-            attempt = second
-        elif attempt["stop_reason"] == "max_tokens" and second["stop_reason"] != "max_tokens":
-            attempt = second
+        # Keep the better artifact: compiling beats non-compiling, then
+        # non-truncated beats truncated; ties keep the first attempt.
+        rank = lambda a: (a["compiles"], a["stop_reason"] != "max_tokens")  # noqa: E731
+        attempt = max((attempt, second), key=rank)
     out["retried"] = retried
+    out["gen_stop_reason"] = attempt["stop_reason"]  # describes the KEPT artifact
     out["compiles"] = attempt["compiles"]
     if attempt["syntax_error"]:
         out["syntax_error"] = attempt["syntax_error"]
@@ -304,11 +319,25 @@ def _aggregate(selected: list[dict], results: list[dict]) -> tuple[list[dict], l
     return per_diagram, per_level
 
 
-def main(argv: list[str]) -> int:
-    dry_run = "--dry-run" in argv
-    runs = int(argv[argv.index("--runs") + 1]) if "--runs" in argv else 3
-    per_level = int(argv[argv.index("--per-level") + 1]) if "--per-level" in argv else 8
+def _ensure_corpus() -> None:
+    corpus = REPO_ROOT / "corpus"
+    if not (corpus / "manifest.json").exists():
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gen_corpus
 
+        gen_corpus.generate(corpus)
+        print(f"(generated corpus at {corpus})")
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Maturity -> codegen-outcome experiment")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--runs", type=int, default=3)
+    ap.add_argument("--per-level", type=int, default=8)
+    args_ns = ap.parse_args(argv)
+    dry_run, runs, per_level = args_ns.dry_run, args_ns.runs, args_ns.per_level
+
+    _ensure_corpus()  # corpus/ is gitignored; a fresh clone must still work
     selected = select_diagrams(per_level)
     composites = {}
     for u in selected:
@@ -393,4 +422,4 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())

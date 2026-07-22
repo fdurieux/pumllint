@@ -1314,8 +1314,11 @@ XD rules build a participant symbol table across every sequence diagram in the
 lint batch: the same entity must keep one identity — one declaration kind, one
 stereotype, one spelling. They activate only when more than one diagram is
 linted (SCORING.md §6); single-diagram runs score DIM-CON from naming rules
-alone. Violations are attributed to the *later* conflicting declaration and
-reference the first site.
+alone. For XD001/XD002 the **majority declaration wins** (ties resolve to the
+first-seen form): violations are attributed to the *minority* sites and
+reference an authoritative majority site, so a single outlier never indicts
+the conforming rest. XD003 flags later case-variants of the first-seen
+spelling.
 
 ### XD001 — Conflicting participant kind
 **Severity:** major · **Status:** ✅ Implemented (v0.5.0)

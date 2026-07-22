@@ -240,26 +240,38 @@ def snapshot(corpus_dir: Path, scoring_cfg: dict | None = None) -> dict[str, dic
     return out
 
 
-def main(argv: list[str]) -> int:
-    if "--freeze" in argv:
-        dest = Path(argv[argv.index("--freeze") + 1])
-        corpus_dir = REPO_ROOT / "corpus"
-        if not (corpus_dir / "manifest.json").exists():
-            sys.path.insert(0, str(Path(__file__).resolve().parent))
-            import gen_corpus
+def _regenerate(corpus_dir: Path) -> None:
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import gen_corpus
 
-            gen_corpus.generate(corpus_dir)
+    gen_corpus.generate(corpus_dir)
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Maturity-scoring calibration harness")
+    ap.add_argument("corpus_dir", nargs="?", type=Path, default=REPO_ROOT / "corpus")
+    ap.add_argument(
+        "--freeze", metavar="DEST", type=Path,
+        help="regenerate the corpus, snapshot golden scores, and write them to DEST",
+    )
+    args = ap.parse_args(argv)
+    corpus_dir = args.corpus_dir
+
+    if args.freeze:
+        # Always regenerate before freezing: a stale on-disk corpus must never
+        # become the golden contract.
+        _regenerate(corpus_dir)
         snap = snapshot(corpus_dir)
-        dest.write_text(json.dumps(snap, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        print(f"Froze {len(snap)} golden scores to {dest}")
+        args.freeze.write_text(
+            json.dumps(snap, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print(f"Froze {len(snap)} golden scores to {args.freeze}")
         return 0
 
-    corpus_dir = Path(argv[1]) if len(argv) > 1 else REPO_ROOT / "corpus"
     if not (corpus_dir / "manifest.json").exists():
-        sys.path.insert(0, str(Path(__file__).resolve().parent))
-        import gen_corpus
-
-        gen_corpus.generate(corpus_dir)
+        _regenerate(corpus_dir)
         print(f"(generated corpus at {corpus_dir})")
     results = run_sweep(corpus_dir)
     print(render_report(results))
@@ -271,4 +283,4 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())

@@ -360,6 +360,26 @@ def test_rebalanced_dimension_weights_are_accepted():
     assert result.level == 5
 
 
+def test_score_groups_takes_profile_truth_from_the_engine():
+    # Regression (C7): when the engine is passed, its actual profile decides
+    # the Level-5 cap — a caller-asserted label cannot override it.
+    diagram = _seq_diagram(3, 3)
+
+    class _BaseEngine:
+        profile = None
+
+    class _CodegenEngine:
+        profile = "codegen"
+
+    from pumllint.scoring import score_groups
+
+    capped = score_groups([(diagram, [])], engine=_BaseEngine(), active_profile="codegen")
+    assert capped[0][1].level == 4  # engine truth wins over the label
+
+    certified = score_groups([(diagram, [])], engine=_CodegenEngine())
+    assert certified[0][1].level == 5
+
+
 def test_profile_binding_is_configurable():
     diagram = _seq_diagram(3, 3)
     off = score([], diagram, config={"l5_requires_profile": None})

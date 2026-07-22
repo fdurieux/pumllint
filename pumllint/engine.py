@@ -22,6 +22,7 @@ class Engine:
         # profile-gated rules by id/name) and escalations (severity overrides
         # for any rule, e.g. SEQ001: blocker).
         profile: str | None = self.config.get("profile")
+        self.profile = profile  # source of truth for scoring's C7 profile cap
         profiles_map: dict = self.config.get("profiles") or {}
         profile_cfg: dict = (profiles_map.get(profile) or {}) if profile else {}
         enable_keys = {str(k).lower() for k in (profile_cfg.get("enable") or [])}
@@ -71,12 +72,9 @@ class Engine:
         return sorted(violations, key=lambda v: (v.file_path, v.line, v.rule_id))
 
     def lint_diagrams(self, diagrams: Iterable[Diagram]) -> list[Violation]:
-        diagrams = list(diagrams)
-        violations: list[Violation] = []
-        for d in diagrams:
-            violations.extend(self.lint_diagram(d))
-        for extra in self._cross_violations(diagrams).values():
-            violations.extend(extra)
+        # Flatten the grouped result so flat and grouped output are identical
+        # by construction, not by parallel implementations.
+        violations = [v for _, vs in self.lint_diagrams_grouped(diagrams) for v in vs]
         return sorted(violations, key=_SORT_KEY)
 
     def lint_diagrams_grouped(
@@ -118,7 +116,13 @@ class Engine:
             for v in rule.check_all(applicable):
                 owner = _owning_diagram(v, applicable)
                 if owner is None:
-                    continue
+                    # Never drop a finding for want of an owner: fall back to
+                    # the first diagram in the same file, then the first
+                    # applicable diagram in the batch.
+                    owner = next(
+                        (d for d in applicable if d.file_path == v.file_path),
+                        applicable[0],
+                    )
                 if honor_suppressions and _is_suppressed(owner, rule, v):
                     continue
                 out.setdefault(id(owner), []).append(v)
@@ -154,12 +158,19 @@ def collect_files(paths: Iterable[str | Path], exts=(".puml", ".plantuml", ".ium
 
 
 def _owning_diagram(v: Violation, diagrams: list[Diagram]) -> Diagram | None:
-    """The diagram whose file and line span contain this violation."""
+    """The diagram whose file and line span contain this violation.
+
+    An unterminated diagram (``end_line is None``) spans to the start of the
+    next diagram in the file, so the *latest* matching start wins — otherwise
+    an unterminated first block would swallow every later block's findings.
+    """
+    owner: Diagram | None = None
     for d in diagrams:
         end = d.end_line if d.end_line is not None else float("inf")
         if d.file_path == v.file_path and d.start_line <= v.line <= end:
-            return d
-    return None
+            if owner is None or d.start_line > owner.start_line:
+                owner = d
+    return owner
 
 
 def _is_suppressed(diagram: Diagram, rule: Rule, v: Violation) -> bool:

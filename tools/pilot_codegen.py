@@ -173,10 +173,26 @@ def _run_one(client, label: str, path: str, run_idx: int) -> dict:
     return out
 
 
-def main(argv: list[str]) -> int:
-    dry_run = "--dry-run" in argv
-    runs = int(argv[argv.index("--runs") + 1]) if "--runs" in argv else 3
+def _ensure_corpus() -> None:
+    corpus = REPO_ROOT / "corpus"
+    if not (corpus / "manifest.json").exists():
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import gen_corpus
 
+        gen_corpus.generate(corpus)
+        print(f"(generated corpus at {corpus})")
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Phase 10e codegen pilot")
+    ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--runs", type=int, default=3)
+    ns = ap.parse_args(argv)
+    dry_run, runs = ns.dry_run, ns.runs
+
+    _ensure_corpus()  # corpus/ is gitignored; DIAGRAMS reference mutation files
     plan = []
     for label, path in DIAGRAMS:
         level, composite = _score_diagram(path)
@@ -271,4 +287,4 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())
