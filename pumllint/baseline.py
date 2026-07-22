@@ -37,6 +37,18 @@ class Regression:
     current_level: int
 
 
+@dataclass
+class Delta:
+    """Level movement of one diagram since the baseline was recorded."""
+
+    baseline_level: int
+    current_level: int
+
+    @property
+    def delta(self) -> int:
+        return self.current_level - self.baseline_level
+
+
 def diagram_keys(diagrams: Iterable[Diagram]) -> list[str]:
     """Stable identity per diagram: file path + name, ordinal when unnamed.
 
@@ -98,4 +110,21 @@ def find_regressions(
         entry = baseline.get(key)
         if entry is not None and r.level < entry.level:
             out.append(Regression(key, entry.level, r.level))
+    return out
+
+
+def compute_deltas(
+    baseline: dict[str, BaselineEntry],
+    results: list[tuple[Diagram, MaturityResult]],
+) -> dict[str, Delta]:
+    """Level movement per baselined diagram (trend reporting).
+
+    Diagrams absent from the baseline have no delta — they are new, which the
+    reporters call out separately.
+    """
+    out: dict[str, Delta] = {}
+    for key, (_, r) in zip(diagram_keys(d for d, _ in results), results):
+        entry = baseline.get(key)
+        if entry is not None:
+            out[key] = Delta(baseline_level=entry.level, current_level=r.level)
     return out

@@ -262,3 +262,74 @@ def test_baseline_and_min_level_gates_combine():
              "--min-level", str(level + 1), "-o", str(out)]
         )
         assert rc == 1
+
+
+# --- trend/delta + badge (0.7.0) --------------------------------------------
+
+def test_ratchet_compare_report_shows_delta():
+    with tempfile.TemporaryDirectory() as tmp:
+        rc, puml, cfg, out, base = _bootstrap_baseline(tmp)
+        _raise_baseline_levels(base)  # old baseline is one level higher
+        rc, _ = _main_quiet(
+            ["score", str(puml), "-c", str(cfg), "--baseline", str(base), "-o", str(out)]
+        )
+        assert rc == 1
+        level = _expected_level(puml)
+        txt = out.read_text(encoding="utf-8")
+        assert f"(Level {level + 1} → {level} since last baseline)" in txt
+
+
+def test_bootstrap_run_has_no_delta_annotations():
+    with tempfile.TemporaryDirectory() as tmp:
+        rc, _, _, out, _ = _bootstrap_baseline(tmp)
+        assert rc == 0
+        assert "baseline)" not in out.read_text(encoding="utf-8")
+
+
+def test_update_baseline_report_still_shows_delta_vs_old():
+    with tempfile.TemporaryDirectory() as tmp:
+        rc, puml, cfg, out, base = _bootstrap_baseline(tmp)
+        _raise_baseline_levels(base)
+        rc, _ = _main_quiet(
+            ["score", str(puml), "-c", str(cfg), "--baseline", str(base),
+             "--update-baseline", "-o", str(out)]
+        )
+        assert rc == 0  # accepting the status quo...
+        assert "since last baseline" in out.read_text(encoding="utf-8")  # ...but shown
+
+
+def test_json_report_carries_baseline_delta():
+    with tempfile.TemporaryDirectory() as tmp:
+        rc, puml, cfg, out, base = _bootstrap_baseline(tmp)
+        _raise_baseline_levels(base)
+        outj = Path(tmp) / "r.json"
+        rc, _ = _main_quiet(
+            ["score", str(puml), "-c", str(cfg), "--baseline", str(base),
+             "-f", "json", "-o", str(outj)]
+        )
+        assert rc == 1
+        level = _expected_level(puml)
+        data = json.loads(outj.read_text(encoding="utf-8"))
+        assert data["diagrams"][0]["baseline"] == {"level": level + 1, "delta": -1}
+        assert data["modelSet"]["baseline"] == {"level": level + 1, "delta": -1}
+
+
+def test_badge_format_writes_shields_endpoint_json():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "badge.json"
+        rc = main(["score", str(puml), "-c", str(cfg), "-f", "badge", "-o", str(out)])
+        assert rc == 0
+        payload = json.loads(out.read_text(encoding="utf-8"))
+        assert payload["schemaVersion"] == 1
+        assert payload["message"].startswith(f"Level {_expected_level(puml)} — ")
+        assert payload["color"]
+
+
+def test_badge_format_is_rejected_for_lint():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "badge.json"
+        rc, err = _main_quiet([str(puml), "-c", str(cfg), "-f", "badge", "-o", str(out)])
+        assert rc == 2
+        assert "score command" in err

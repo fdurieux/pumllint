@@ -103,3 +103,33 @@ def test_invalid_json_is_a_value_error():
             pass
         else:
             assert False, "expected ValueError for invalid JSON"
+
+
+# --- trend/delta (0.7.0) ----------------------------------------------------
+
+def test_compute_deltas_reports_movement_per_baselined_diagram():
+    from pumllint.baseline import compute_deltas
+
+    results = _score(_TWO_NAMED)
+    keys = diagram_keys(d for d, _ in results)
+    lvl0, lvl1 = results[0][1].level, results[1][1].level
+    baseline = {
+        keys[0]: BaselineEntry(level=lvl0 - 1, composite=0.0),  # improved
+        keys[1]: BaselineEntry(level=lvl1, composite=0.0),      # unchanged
+    }
+    deltas = compute_deltas(baseline, results)
+    assert set(deltas) == {keys[0], keys[1]}
+    assert deltas[keys[0]].delta == 1
+    assert deltas[keys[0]].baseline_level == lvl0 - 1
+    assert deltas[keys[1]].delta == 0
+
+
+def test_compute_deltas_skips_diagrams_new_since_baseline():
+    from pumllint.baseline import compute_deltas
+
+    results = _score(_TWO_NAMED)
+    keys = diagram_keys(d for d, _ in results)
+    baseline = {keys[0]: BaselineEntry(level=results[0][1].level + 1, composite=0.0)}
+    deltas = compute_deltas(baseline, results)
+    assert set(deltas) == {keys[0]}  # keys[1] is new -> no delta entry
+    assert deltas[keys[0]].delta == -1  # regression shows as negative
