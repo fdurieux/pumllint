@@ -330,7 +330,8 @@ the sensitivity harness `tools/calibrate.py`. Findings that fixed the numbers:
   `python tools/calibrate.py --freeze tests/golden_scores.json`.
 
 **Codegen-claim experiments (2026-07-22).** A 12-run pilot
-(`tools/pilot_codegen.py`, $0.94) validated the protocol, then the full
+($0.94; harness since retired in favor of the full tool — raw pilot data in
+`pilot_results/report.json`) validated the protocol, then the full
 experiment (`tools/codegen_experiment.py`: 25 diagrams spanning L1–L5 × 3
 generations on claude-opus-4-8, judged independently by claude-sonnet-5
 against a split invented-logic/embellishment rubric; 75/75 runs clean,

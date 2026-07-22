@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Iterable, Mapping, Optional
 
-from .model import Diagram, Dimension, Severity, Violation
+from .model import SEVERITY_ORDER, Diagram, Dimension, Severity, Violation
 
 # ---------------------------------------------------------------------------
 # Defaults (all overridable via the ``scoring:`` config key)
@@ -59,7 +59,8 @@ L4_GATED_DIMENSIONS = (Dimension.COMPLETENESS, Dimension.AMBIGUITY)
 
 # Severities that block Level 5 ("zero major" read as "no finding >= major", so
 # CRITICAL — e.g. an unterminated block — also blocks generation-ready).
-_MAJOR_OR_WORSE = (Severity.MAJOR, Severity.CRITICAL, Severity.BLOCKER)
+# Derived from the canonical ladder in model.py, never re-encoded.
+_MAJOR_OR_WORSE = SEVERITY_ORDER[SEVERITY_ORDER.index(Severity.MAJOR):]
 
 
 @dataclass
@@ -217,19 +218,17 @@ def assign_level(
     cmp_ok = all(scores.get(d, 100.0) >= cfg.l4_dim_min for d in L4_GATED_DIMENSIONS)
     all_dims_high = all(s >= cfg.l5_dim_min for s in scores.values())
 
+    # The zero-blocker requirement for L3+ is enforced once, by cap C1 below —
+    # the predicates deliberately don't re-encode it. Likewise L5's zero-major
+    # check subsumes blockers (BLOCKER is in _MAJOR_OR_WORSE).
     level = 1
     if composite >= cfg.l2_composite:
         level = 2
-    if composite >= cfg.l3_composite and not has_blocker:
+    if composite >= cfg.l3_composite:
         level = 3
-    if composite >= cfg.l4_composite and not has_blocker and cmp_ok:
+    if composite >= cfg.l4_composite and cmp_ok:
         level = 4
-    if (
-        composite >= cfg.l5_composite
-        and all_dims_high
-        and not has_blocker
-        and not has_major_or_worse
-    ):
+    if composite >= cfg.l5_composite and all_dims_high and not has_major_or_worse:
         level = 5
 
     if has_blocker:  # C1: any blocker caps at Level 2
@@ -305,14 +304,27 @@ def _composite_findings(
     floor: float,
     cfg: ScoringConfig,
 ) -> list[Violation]:
-    """Heaviest findings overall whose removal lifts composite to ``floor``."""
+    """Heaviest findings overall whose removal lifts composite to ``floor``.
+
+    Walks the weight-sorted findings once, updating per-dimension penalties
+    incrementally — O(n · dims) instead of re-simulating the full scorer per
+    candidate.
+    """
+    denom = max(1, element_count)
+    penalties = {d: ds.penalty for d, ds in dim_scores.items()}
+
+    def composite() -> float:
+        return sum(
+            weight * _clamp(100.0 - cfg.k * penalties[d] / denom, 0.0, 100.0)
+            for d, weight in cfg.dimension_weights.items()
+        )
+
     all_viols = [v for ds in dim_scores.values() for v in ds.violations]
     chosen: list[Violation] = []
     for v in _by_weight(all_viols, cfg):
-        chosen_ids = {id(c) for c in chosen}
-        remaining = [w for w in all_viols if id(w) not in chosen_ids]
-        if composite_score(compute_dimension_scores(remaining, element_count, cfg), cfg) >= floor:
+        if composite() >= floor:
             break
+        penalties[v.dimension] -= cfg.severity_weights.get(v.severity, 0.0)
         chosen.append(v)
     return chosen
 
