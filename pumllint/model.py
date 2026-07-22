@@ -22,6 +22,17 @@ class Severity(Enum):
     BLOCKER = "blocker"
 
 
+# The canonical mildest-to-severest ordering. Every consumer (CLI --fail-on,
+# scoring's >=major checks) derives from this tuple — do not re-encode it.
+SEVERITY_ORDER: tuple[Severity, ...] = (
+    Severity.INFO,
+    Severity.MINOR,
+    Severity.MAJOR,
+    Severity.CRITICAL,
+    Severity.BLOCKER,
+)
+
+
 class Dimension(Enum):
     """Maturity-scoring dimensions (see SCORING.md).
 

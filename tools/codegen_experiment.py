@@ -1,6 +1,8 @@
 """Phase 10e full experiment: does maturity level predict codegen outcome?
 
-Supersedes tools/pilot_codegen.py with the refinements the pilot identified:
+Definitive harness for the maturity->codegen experiments. Its 12-run pilot
+predecessor is retired (raw pilot data: pilot_results/report.json); this
+version carries the refinements the pilot identified:
 
 - **Independent judge**: generation on claude-opus-4-8, judging on
   claude-sonnet-5 (no same-model self-judging bias).
@@ -28,7 +30,6 @@ Run:  python tools/codegen_experiment.py [--dry-run] [--runs N] [--per-level N]
 from __future__ import annotations
 
 import argparse
-import glob
 import json
 import os
 import re
@@ -40,8 +41,9 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # sibling tool modules
 
-from pumllint import Engine, parse_file, score  # noqa: E402
+import _scorelib  # noqa: E402
 
 GEN_MODEL = "claude-opus-4-8"
 JUDGE_MODEL = "claude-sonnet-5"
@@ -142,22 +144,21 @@ def _compiles(code: str) -> tuple[bool, str | None]:
 
 
 def select_diagrams(per_level: int) -> list[dict]:
-    engine = Engine({"profile": "codegen"})
     pool: list[dict] = []
-    paths = (
-        sorted(glob.glob(str(REPO_ROOT / "examples/*.puml")))
-        + sorted(glob.glob(str(REPO_ROOT / "corpus/mutations/*.puml")))
-        + sorted(glob.glob(str(REPO_ROOT / "corpus/synthetic/*.puml")))
-        + sorted(glob.glob(str(REPO_ROOT / "corpus/wild/*.puml")))
+    paths = _scorelib.collect_puml(
+        REPO_ROOT / "examples",
+        REPO_ROOT / "corpus/mutations",
+        REPO_ROOT / "corpus/synthetic",
+        REPO_ROOT / "corpus/wild",
     )
     for p in paths:
-        diagrams = parse_file(p)
-        if not diagrams:
+        entry = _scorelib.lint_first_diagram(p, "codegen")
+        if entry is None:
             continue
-        d = diagrams[0]
+        d, _violations = entry
         if d.diagram_type != "sequence" or d.element_count < 3:
             continue
-        r = score(engine.lint_diagram(d), d, active_profile="codegen")
+        r = _scorelib.score_first_diagram(p, "codegen")
         rel = str(Path(p).relative_to(REPO_ROOT))
         pool.append({
             "path": rel,

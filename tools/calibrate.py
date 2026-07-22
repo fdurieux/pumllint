@@ -25,8 +25,10 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))  # make `pumllint` importable when run as a script
+sys.path.insert(0, str(Path(__file__).resolve().parent))  # sibling tool modules
 
-from pumllint import Engine, parse_file, score  # noqa: E402
+import _scorelib  # noqa: E402
+from pumllint import ScoringConfig  # noqa: E402
 
 EXAMPLES_DIR = REPO_ROOT / "examples"
 
@@ -53,7 +55,12 @@ PARAM_SETS: dict[str, dict] = {
     "critical6": {"severity_weights": {"critical": 6}},
 }
 
-_LEVEL_THRESHOLDS = (40.0, 60.0, 75.0, 90.0)
+# Level thresholds come from the product's own defaults — never re-encoded.
+_DEFAULTS = ScoringConfig()
+_LEVEL_THRESHOLDS = (
+    _DEFAULTS.l2_composite, _DEFAULTS.l3_composite,
+    _DEFAULTS.l4_composite, _DEFAULTS.l5_composite,
+)
 _BUCKETS = ((1, 4, "1-4"), (5, 9, "5-9"), (10, 19, "10-19"), (20, 10**9, "20+"))
 
 
@@ -65,28 +72,22 @@ def _bucket(element_count: int) -> str:
 
 
 class Scorer:
-    """Scores diagram files under a fixed scoring config, caching engines."""
+    """Scores diagram files under a fixed scoring config.
+
+    Parsing/linting is delegated to (and cached by) tools/_scorelib.py, which
+    the experiment harness shares; only the per-scoring-config results are
+    cached here.
+    """
 
     def __init__(self, scoring_cfg: dict):
         self.scoring_cfg = scoring_cfg
-        self._engines: dict[str | None, Engine] = {}
         self._cache: dict[tuple[str, str | None], tuple[int, float, int]] = {}
-
-    def _engine(self, profile: str | None) -> Engine:
-        if profile not in self._engines:
-            self._engines[profile] = Engine({"profile": profile} if profile else {})
-        return self._engines[profile]
 
     def score_file(self, path: Path, profile: str | None) -> tuple[int, float, int]:
         """(level, composite, element_count) for the first diagram in *path*."""
         key = (str(path), profile)
         if key not in self._cache:
-            diagram = parse_file(path)[0]
-            violations = self._engine(profile).lint_diagram(diagram)
-            result = score(
-                violations, diagram,
-                config=self.scoring_cfg, active_profile=profile,
-            )
+            result = _scorelib.score_first_diagram(path, profile, self.scoring_cfg)
             self._cache[key] = (result.level, result.composite, result.element_count)
         return self._cache[key]
 

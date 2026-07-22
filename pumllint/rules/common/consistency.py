@@ -20,31 +20,44 @@ def _majority(values: list[str]) -> str:
     return max(set(values), key=lambda v: (values.count(v), -values.index(v)))
 
 
+def _conflicts(diagrams, value_of):
+    """The shared symbol-table walk behind XD001/XD002.
+
+    Groups declared participants by name via ``value_of`` (returning None to
+    skip an occurrence), and for every name whose values disagree yields
+    ``(name, majority_value, (ref_diagram, ref_participant), minority_sites)``
+    — majority wins, ties resolve to the first-seen value, and the reference
+    site is the first majority occurrence.
+    """
+    occurrences: dict[str, list[tuple[Diagram, Participant]]] = {}
+    for d in diagrams:
+        for name, p in d.participants.items():
+            if value_of(p) is not None:
+                occurrences.setdefault(name, []).append((d, p))
+    for name, occs in occurrences.items():
+        values = [value_of(p) for _, p in occs]
+        if len(set(values)) < 2:
+            continue
+        majority = _majority(values)
+        ref = next((d, p) for d, p in occs if value_of(p) == majority)
+        minority = [(d, p) for d, p in occs if value_of(p) != majority]
+        yield name, majority, ref, minority
+
+
 @register
 class ConflictingParticipantKind(CrossDiagramRule):
     id = "XD001"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
-        occurrences: dict[str, list[tuple[Diagram, Participant]]] = {}
-        for d in diagrams:
-            for name, p in d.participants.items():
-                if p.declared:  # implicit lifelines have no authored kind
-                    occurrences.setdefault(name, []).append((d, p))
-        for name, occs in occurrences.items():
-            kinds = [p.kind for _, p in occs]
-            if len(set(kinds)) < 2:
-                continue
-            # Majority wins: flag the minority sites, cite an authoritative
-            # majority site — so one outlier never indicts the conforming rest.
-            majority = _majority(kinds)
-            ref_d, ref_p = next((d, p) for d, p in occs if p.kind == majority)
-            for d, p in occs:
-                if p.kind != majority:
-                    yield self.violation(
-                        d, p.line,
-                        f"Participant '{name}' is declared as '{p.kind}' here but as "
-                        f"'{majority}' at {ref_d.file_path}:{ref_p.line} — one entity, one kind",
-                    )
+        # implicit lifelines have no authored kind
+        value_of = lambda p: p.kind if p.declared else None  # noqa: E731
+        for name, majority, (ref_d, ref_p), minority in _conflicts(diagrams, value_of):
+            for d, p in minority:
+                yield self.violation(
+                    d, p.line,
+                    f"Participant '{name}' is declared as '{p.kind}' here but as "
+                    f"'{majority}' at {ref_d.file_path}:{ref_p.line} — one entity, one kind",
+                )
 
 
 @register
@@ -52,25 +65,15 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
     id = "XD002"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
-        occurrences: dict[str, list[tuple[Diagram, Participant]]] = {}
-        for d in diagrams:
-            for name, p in d.participants.items():
-                if p.declared and p.stereotype:
-                    # absent stereotypes are SEQ102's concern, not a conflict
-                    occurrences.setdefault(name, []).append((d, p))
-        for name, occs in occurrences.items():
-            stereotypes = [p.stereotype for _, p in occs]
-            if len(set(stereotypes)) < 2:
-                continue
-            majority = _majority(stereotypes)
-            ref_d, ref_p = next((d, p) for d, p in occs if p.stereotype == majority)
-            for d, p in occs:
-                if p.stereotype != majority:
-                    yield self.violation(
-                        d, p.line,
-                        f"Participant '{name}' is stereotyped <<{p.stereotype}>> here but "
-                        f"<<{majority}>> at {ref_d.file_path}:{ref_p.line}",
-                    )
+        # absent stereotypes are SEQ102's concern, not a conflict
+        value_of = lambda p: (p.stereotype or None) if p.declared else None  # noqa: E731
+        for name, majority, (ref_d, ref_p), minority in _conflicts(diagrams, value_of):
+            for d, p in minority:
+                yield self.violation(
+                    d, p.line,
+                    f"Participant '{name}' is stereotyped <<{p.stereotype}>> here but "
+                    f"<<{majority}>> at {ref_d.file_path}:{ref_p.line}",
+                )
 
 
 @register

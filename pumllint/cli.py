@@ -17,17 +17,16 @@ from pathlib import Path
 
 from .config import load_config
 from .engine import Engine, collect_files
+from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .reporters import get_reporter
 from .rules import discover
 from .scoring import score_groups
 from .syntax import check_files
 
-_SEV_ORDER = [Severity.INFO, Severity.MINOR, Severity.MAJOR, Severity.CRITICAL, Severity.BLOCKER]
 
-
-def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="pumllint", description="Semantic linter for PlantUML diagrams")
+def _add_common_arguments(p: argparse.ArgumentParser) -> None:
+    """Arguments shared by the lint and score commands."""
     p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
     p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
     p.add_argument(
@@ -36,6 +35,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     p.add_argument("-f", "--format", default="text", help="Output format: text | json | sonar")
     p.add_argument("-o", "--output", help="Write report to file instead of stdout")
+    p.add_argument(
+        "--no-suppressions",
+        action="store_true",
+        help="Ignore inline \"' pumllint: disable\" comments (check everything)",
+    )
+
+
+def build_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(prog="pumllint", description="Semantic linter for PlantUML diagrams")
+    _add_common_arguments(p)
     p.add_argument(
         "--fail-on",
         default="major",
@@ -43,11 +52,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="Minimum severity that causes exit code 1 (default: major)",
     )
     p.add_argument("--list-rules", action="store_true", help="List available rules and exit")
-    p.add_argument(
-        "--no-suppressions",
-        action="store_true",
-        help="Ignore inline \"' pumllint: disable\" comments (report everything)",
-    )
     return p
 
 
@@ -55,14 +59,7 @@ def build_score_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="pumllint score", description="Maturity scoring for PlantUML diagrams"
     )
-    p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
-    p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
-    p.add_argument(
-        "--profile",
-        help="Activate a rule profile (e.g. codegen); overrides `profile:` in the config",
-    )
-    p.add_argument("-f", "--format", default="text", help="Output format: text | json | sonar")
-    p.add_argument("-o", "--output", help="Write report to file instead of stdout")
+    _add_common_arguments(p)
     p.add_argument(
         "--min-level",
         type=int,
@@ -74,11 +71,6 @@ def build_score_parser() -> argparse.ArgumentParser:
         "--check-syntax",
         action="store_true",
         help="Run the DIM-SYN gate (plantuml -checkonly) per file; failures force Level 1",
-    )
-    p.add_argument(
-        "--no-suppressions",
-        action="store_true",
-        help="Ignore inline \"' pumllint: disable\" comments (score everything)",
     )
     return p
 
