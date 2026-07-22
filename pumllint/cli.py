@@ -150,16 +150,23 @@ def _run_score(argv: list[str]) -> int:
             groups,
             config=scoring_cfg,
             syntax_results=syntax_results,
-            active_profile=config.get("profile"),
+            engine=engine,
         )
         report = get_reporter(args.format).render_maturity(results)
-    except (FileNotFoundError, ValueError) as e:
+    except (FileNotFoundError, ValueError, NotImplementedError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
 
     _emit(report, args.output)
 
     if args.min_level is not None:
+        if not results:
+            print(
+                "error: --min-level given but no diagrams were scored "
+                "(no parseable @startuml blocks under the given paths)",
+                file=sys.stderr,
+            )
+            return 2
         below = [r for _, r in results if r.level < args.min_level]
         return 1 if below else 0
     return 0

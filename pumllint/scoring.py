@@ -480,13 +480,22 @@ def score_groups(
     syntax_ok: bool = True,
     syntax_results: Optional[Mapping[str, bool]] = None,
     active_profile: Optional[str] = None,
+    engine=None,
 ) -> list[tuple[Diagram, MaturityResult]]:
     """Score each ``(diagram, violations)`` group from the engine.
 
     ``syntax_results`` maps file paths to their ``plantuml -checkonly`` gate
     outcome (see :mod:`pumllint.syntax`); files absent from the map — or all
     files, when no map is given — fall back to the blanket ``syntax_ok``.
+
+    Pass the ``engine`` that produced the groups whenever you have it: its
+    active profile is then used for the C7 cap, so a diagram can only be
+    certified Level 5 when the profile's rules actually ran. A bare
+    ``active_profile`` string is trusted as-is — it must match the engine
+    configuration that produced ``groups``, or the certification lies.
     """
+    if engine is not None:
+        active_profile = getattr(engine, "profile", None)
     def _ok(d: Diagram) -> bool:
         if syntax_results is None:
             return syntax_ok

@@ -110,6 +110,61 @@ def test_grouped_attribution_and_flat_equivalence():
     assert [v for v in two_vs if v.rule_id == "XD001"]  # owned by the later diagram
 
 
+def test_unterminated_first_diagram_does_not_swallow_later_findings():
+    # Regression: an unterminated first block spans to the next block's start,
+    # not to infinity — the conflict inside 'two' must land in 'two''s group.
+    src = (
+        "@startuml one\nparticipant Client\nparticipant OrderSvc\n"
+        "Client -> OrderSvc : run()\n"          # no @enduml — unterminated
+        "@startuml two\nparticipant Client\ndatabase OrderSvc\n"
+        "Client -> OrderSvc : query()\n@enduml\n"
+    )
+    groups = Engine({}).lint_diagrams_grouped(parse_source(src, "t.puml"))
+    (one, one_vs), (two, two_vs) = groups
+    assert not [v for v in one_vs if v.rule_id == "XD001"]
+    assert [v for v in two_vs if v.rule_id == "XD001"]
+
+
+def test_majority_wins_when_first_declaration_is_the_outlier():
+    # Regression: one deviant declaration among many conforming ones must be
+    # the flagged site — not the conforming majority.
+    src = (
+        "@startuml a\ndatabase OrderSvc\nparticipant C\nC -> OrderSvc : x()\n@enduml\n"
+        "@startuml b\nparticipant OrderSvc\nparticipant C\nC -> OrderSvc : y()\n@enduml\n"
+        "@startuml c\nparticipant OrderSvc\nparticipant C\nC -> OrderSvc : z()\n@enduml\n"
+    )
+    hits = [v for v in _lint(src) if v.rule_id == "XD001"]
+    assert len(hits) == 1
+    assert hits[0].line == 2  # the deviant `database` declaration in diagram a
+    assert "'participant'" in hits[0].message  # cites the majority form
+
+
+def test_unattributable_cross_finding_is_not_dropped():
+    # A batch-level finding whose line falls outside every diagram span must
+    # still surface (attributed to a fallback diagram), never vanish.
+    from pumllint.model import Dimension, Severity, Violation
+
+    class StubBatchRule:
+        id = "XT999"
+        name = "stub-batch"
+        applies_to = ("sequence",)
+
+        def check_all(self, diagrams):
+            yield Violation(
+                rule_id="XT999", message="batch-level finding",
+                file_path="t.puml", line=0,  # outside every span
+                severity=Severity.MINOR, dimension=Dimension.CONSISTENCY,
+            )
+
+    engine = Engine({})
+    engine.cross_rules.append(StubBatchRule())
+    diagrams = parse_source(_KIND_CONFLICT, "t.puml")
+    flat = engine.lint_diagrams(diagrams)
+    assert [v for v in flat if v.rule_id == "XT999"]
+    groups = engine.lint_diagrams_grouped(diagrams)
+    assert [v for _, vs in groups for v in vs if v.rule_id == "XT999"]
+
+
 def test_cross_findings_dent_the_owning_diagrams_dim_con_score():
     engine = Engine({})
     groups = engine.lint_diagrams_grouped(parse_source(_KIND_CONFLICT, "t.puml"))

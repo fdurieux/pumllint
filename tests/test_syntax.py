@@ -38,6 +38,31 @@ def test_check_files_accepts_command_list():
     assert seen == [["java", "-jar", "plantuml.jar", "-checkonly", "d.puml"]]
 
 
+def test_string_command_is_shell_split():
+    # Regression: `syntax_command: "java -jar plantuml.jar"` must become three
+    # argv elements, not one executable named "java -jar plantuml.jar".
+    seen = []
+
+    def fake_runner(cmd):
+        seen.append(cmd)
+        return 0
+
+    check_files(["d.puml"], command="java -jar plantuml.jar", runner=fake_runner)
+    assert seen == [["java", "-jar", "plantuml.jar", "-checkonly", "d.puml"]]
+
+
+def test_timeout_surfaces_as_value_error():
+    # Regression: a hanging plantuml must produce a clean config error
+    # (the CLI maps ValueError to exit 2), not a TimeoutExpired traceback.
+    slow = [sys.executable, "-c", "import time; time.sleep(5)"]
+    try:
+        check_files(["x.puml"], command=slow, timeout=0.2)
+    except ValueError as e:
+        assert "timed out" in str(e)
+    else:
+        raise AssertionError("expected ValueError on syntax-gate timeout")
+
+
 def test_check_files_with_real_subprocess():
     ok = [sys.executable, "-c", "import sys; sys.exit(0)"]
     fail = [sys.executable, "-c", "import sys; sys.exit(3)"]

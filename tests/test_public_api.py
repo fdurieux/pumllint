@@ -18,9 +18,12 @@ def test_public_api_lints_and_scores_end_to_end():
     import pumllint
 
     diagrams = pumllint.parse_source(_SRC, "t.puml")
-    groups = pumllint.Engine({}).lint_diagrams_grouped(diagrams)
-    results = pumllint.score_groups(groups, active_profile="codegen")
+    engine = pumllint.Engine({})
+    groups = engine.lint_diagrams_grouped(diagrams)
+    # Passing the engine makes its profile the C7 source of truth: no codegen
+    # rules ran here, so Level 5 is honestly out of reach (cap at 4).
+    results = pumllint.score_groups(groups, engine=engine)
     _, maturity = results[0]
     assert isinstance(maturity, pumllint.MaturityResult)
-    assert maturity.level == 5  # clean diagram, profile active
-    assert "Level 5" in pumllint.get_reporter("text").render_maturity(results)
+    assert maturity.level == 4
+    assert "Level 4" in pumllint.get_reporter("text").render_maturity(results)

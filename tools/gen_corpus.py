@@ -250,6 +250,14 @@ def generate(dest: Path, examples_dir: Path = EXAMPLES_DIR) -> dict:
             "expected_level": expected, "profile": None,
         })
 
+    # Prune stale files from previous generator versions so the on-disk corpus
+    # always matches the manifest exactly.
+    valid = {u["file"] for u in units}
+    for sub in ("mutations", "synthetic"):
+        for stray in (dest / sub).glob("*.puml"):
+            if f"{sub}/{stray.name}" not in valid:
+                stray.unlink()
+
     manifest = {"version": 1, "units": units}
     (dest / "manifest.json").write_text(
         json.dumps(manifest, indent=2) + "\n", encoding="utf-8"

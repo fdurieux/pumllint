@@ -23,9 +23,14 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 
 def _gh(*args: str) -> str:
-    proc = subprocess.run(
-        ["gh", *args], capture_output=True, text=True, timeout=60, check=False
-    )
+    try:
+        proc = subprocess.run(
+            ["gh", *args], capture_output=True, text=True, timeout=60, check=False
+        )
+    except subprocess.TimeoutExpired:
+        # Normalize to the error type the harvest loop already skips on, so
+        # one slow download doesn't abort the whole run.
+        raise RuntimeError(f"gh {' '.join(args[:2])}... timed out") from None
     if proc.returncode != 0:
         raise RuntimeError(f"gh {' '.join(args[:2])}... failed: {proc.stderr.strip()}")
     return proc.stdout
@@ -83,13 +88,14 @@ def harvest(dest: Path, limit: int = 15) -> list[dict]:
     return sources
 
 
-def main(argv: list[str]) -> int:
-    args = [a for a in argv[1:] if not a.startswith("--")]
-    limit = 15
-    if "--limit" in argv:
-        limit = int(argv[argv.index("--limit") + 1])
-        args = [a for a in args if a != str(limit)]
-    dest = Path(args[0]) if args else REPO_ROOT / "corpus"
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Harvest public .puml files via gh code search")
+    ap.add_argument("dest", nargs="?", type=Path, default=REPO_ROOT / "corpus")
+    ap.add_argument("--limit", type=int, default=15)
+    args = ap.parse_args(argv)
+    dest, limit = args.dest, args.limit
 
     try:
         subprocess.run(["gh", "auth", "status"], capture_output=True, timeout=30, check=True)
@@ -108,4 +114,4 @@ def main(argv: list[str]) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main(sys.argv))
+    raise SystemExit(main())
