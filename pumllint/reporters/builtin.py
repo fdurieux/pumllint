@@ -16,6 +16,17 @@ def _diagram_label(d: Diagram) -> str:
     return f"{d.file_path} [{d.name}]" if d.name else d.file_path
 
 
+def _violation_to_dict(v: Violation) -> dict:
+    """The one JSON shape for a violation, shared by lint and maturity output."""
+    return {
+        "ruleId": v.rule_id,
+        "severity": v.severity.value,
+        "message": v.message,
+        "file": v.file_path,
+        "line": v.line,
+    }
+
+
 def _gap_to_dict(g) -> dict:
     return {
         "kind": g.kind,
@@ -23,16 +34,7 @@ def _gap_to_dict(g) -> dict:
         "dimension": g.dimension.value if g.dimension else None,
         "current": round(g.current, 2) if g.current is not None else None,
         "required": g.required,
-        "findings": [
-            {
-                "ruleId": f.rule_id,
-                "severity": f.severity.value,
-                "message": f.message,
-                "file": f.file_path,
-                "line": f.line,
-            }
-            for f in g.findings
-        ],
+        "findings": [_violation_to_dict(f) for f in g.findings],
     }
 
 
@@ -100,19 +102,7 @@ class JsonReporter(Reporter):
     format_name = "json"
 
     def render(self, violations: Iterable[Violation]) -> str:
-        return json.dumps(
-            [
-                {
-                    "ruleId": v.rule_id,
-                    "severity": v.severity.value,
-                    "message": v.message,
-                    "file": v.file_path,
-                    "line": v.line,
-                }
-                for v in violations
-            ],
-            indent=2,
-        )
+        return json.dumps([_violation_to_dict(v) for v in violations], indent=2)
 
     def render_maturity(self, results: Iterable[tuple[Diagram, MaturityResult]]) -> str:
         return json.dumps(
