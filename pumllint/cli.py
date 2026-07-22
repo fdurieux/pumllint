@@ -34,7 +34,10 @@ def _add_common_arguments(p: argparse.ArgumentParser) -> None:
         "--profile",
         help="Activate a rule profile (e.g. codegen); overrides `profile:` in the config",
     )
-    p.add_argument("-f", "--format", default="text", help="Output format: text | json | sonar")
+    p.add_argument(
+        "-f", "--format", default="text",
+        help="Output format: text | json | sonar | badge (badge: score only)",
+    )
     p.add_argument("-o", "--output", help="Write report to file instead of stdout")
     p.add_argument(
         "--no-suppressions",
@@ -142,6 +145,18 @@ def _run_score(argv: list[str]) -> int:
         print("error: --update-baseline requires --baseline FILE", file=sys.stderr)
         return 2
 
+    # The old baseline is loaded up front: the reporters annotate the report
+    # with trend/deltas against it, and the ratchet compares against it later.
+    baseline_data = None
+    if args.baseline and Path(args.baseline).exists():
+        try:
+            from .baseline import load_baseline
+
+            baseline_data = load_baseline(args.baseline)
+        except (OSError, ValueError) as e:
+            print(f"error: {e}", file=sys.stderr)
+            return 2
+
     try:
         config = _apply_cli_overrides(load_config(args.config), args)
         scoring_cfg = config.get("scoring") or {}
@@ -159,7 +174,7 @@ def _run_score(argv: list[str]) -> int:
             syntax_results=syntax_results,
             engine=engine,
         )
-        report = get_reporter(args.format).render_maturity(results)
+        report = get_reporter(args.format).render_maturity(results, baseline=baseline_data)
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
@@ -178,8 +193,8 @@ def _run_score(argv: list[str]) -> int:
     failed = False
     if args.baseline:
         try:
-            failed |= _apply_baseline(args, results)
-        except (OSError, ValueError) as e:
+            failed |= _apply_baseline(args, results, baseline_data)
+        except OSError as e:
             print(f"error: {e}", file=sys.stderr)
             return 2
     if args.min_level is not None:
@@ -187,12 +202,17 @@ def _run_score(argv: list[str]) -> int:
     return 1 if failed else 0
 
 
-def _apply_baseline(args: argparse.Namespace, results) -> bool:
-    """Record or ratchet against ``args.baseline``; True means regression."""
-    from .baseline import find_regressions, load_baseline, write_baseline
+def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:
+    """Record or ratchet against ``args.baseline``; True means regression.
+
+    ``baseline_data`` is the already-loaded old baseline (None when the file
+    did not exist) — with ``--update-baseline`` it fed the report's deltas
+    before being rewritten here.
+    """
+    from .baseline import find_regressions, write_baseline
 
     path = Path(args.baseline)
-    if args.update_baseline or not path.exists():
+    if args.update_baseline or baseline_data is None:
         write_baseline(path, results)
         verb = "updated" if args.update_baseline else "recorded"
         print(
@@ -200,7 +220,7 @@ def _apply_baseline(args: argparse.Namespace, results) -> bool:
             file=sys.stderr,
         )
         return False
-    regressions = find_regressions(load_baseline(path), results)
+    regressions = find_regressions(baseline_data, results)
     for reg in regressions:
         print(
             f"regression: {reg.key}: Level {reg.current_level} "

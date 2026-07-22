@@ -64,6 +64,37 @@ ratchet (combine with `--min-level` to hold new work to a floor); regressions
 are listed on stderr as `regression: <file>::<diagram>: Level 2 (baseline 3)`
 and exit 1.
 
+Ratchet-compare runs also annotate the report with **trends** — per diagram
+and for the model set:
+
+```text
+order.puml [Order]: Level 4 (Precise) — 82/100  (Level 3 → 4 since last baseline)
+checkout.puml: Level 3 (Disciplined) — 71/100  (new since baseline)
+```
+
+The json format carries the same machine-readably: each diagram (and
+`modelSet`) gains `"baseline": {"level": 3, "delta": 1}` (`null` when not
+ratcheting or new).
+
+### Maturity badge
+
+`-f badge` renders the model-set level as
+[shields.io endpoint JSON](https://shields.io/badges/endpoint-badge):
+
+```bash
+python -m pumllint score diagrams/ -f badge -o badge.json
+```
+
+Publish `badge.json` anywhere raw-fetchable (the repo itself, gh-pages, a CI
+artifact) and embed:
+
+```markdown
+![maturity](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<org>/<repo>/main/badge.json)
+```
+
+Colors follow the level: red (1) → orange (2) → yellow (3) → yellowgreen (4)
+→ brightgreen (5).
+
 Why gate on it: in a measured experiment (75 generation runs, independent
 LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with
 the fidelity of code generated from the diagrams (r ≈ 0.49), and diagrams

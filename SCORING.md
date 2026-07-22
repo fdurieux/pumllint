@@ -157,6 +157,17 @@ pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--upda
   recorded level). A missing FILE is recorded on the spot; diagrams new since
   the baseline pass. `--update-baseline` rewrites FILE with the current
   levels. Makes the gate adoptable on brownfield model sets.
+- Trend/delta (0.7.0): ratchet-compare runs annotate the text report per
+  diagram and for the model set — `(Level 3 → 4 since last baseline)`,
+  `(new since baseline)` — and the json format adds a machine-readable
+  `"baseline": {"level": N, "delta": ±d}` (or `null`) per diagram and on
+  `modelSet`. With `--update-baseline`, deltas are computed against the old
+  file before it is rewritten.
+- `-f badge` (0.7.0) — shields.io endpoint JSON stating the model-set level
+  (`{"schemaVersion": 1, "label": "pumllint maturity", "message":
+  "Level 3 — Disciplined", "color": "yellow"}`); level→color runs
+  red/orange/yellow/yellowgreen/brightgreen, `lightgrey` when nothing was
+  scored. Score-only: the lint command rejects it.
 - `--check-syntax` — run the DIM-SYN gate (`<command> -checkonly <file>` per
   file); failures force Level 1. Also enabled via config: `scoring:
   {syntax_gate: true, syntax_command: plantuml}` (`syntax_command` may be a
