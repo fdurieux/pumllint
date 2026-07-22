@@ -1,0 +1,81 @@
+# pumllint roadmap
+
+Status baseline: **v0.5.0** (2026-07-22) shipped the complete SCORING.md
+maturity model — scorer, gap reports, `score --min-level` CI gate, integrity
+caps C1–C7, XD cross-diagram pack — calibrated (SCORING.md §9), frozen behind
+golden tests, and empirically characterized (EVIDENCE.md: fidelity
+correlation r ≈ 0.49, sharp degradation below Level 2). This file tracks what
+remains, grouped into arcs. Keep it updated as items land.
+
+## Arc A — Integrity (one leftover)
+
+- [ ] **Model-set aggregate score** — SCORING.md §1 promises scores "per
+  diagram *(and per model set)*"; only per-diagram exists. Add a batch-level
+  summary (worst level + weighted composite across all scored diagrams) to
+  `score_groups` consumers and the reporters, and let `--min-level`
+  optionally gate on the aggregate. The last unfulfilled sentence of the
+  original spec.
+
+## Arc B — Trust & adoption (highest-value next arc)
+
+- [ ] **Baseline/ratchet mode** — `pumllint score --baseline maturity.json`:
+  record current per-diagram levels, then fail CI only on *regression*
+  against the baseline. This is what makes the gate adoptable on brownfield
+  model sets without a big-bang cleanup. Prime 0.6.0 candidate together with
+  the model-set score.
+- [ ] Trend/delta reporting — "Level 3 → 4 since last baseline" in the text
+  report; machine-readable delta in JSON.
+- [ ] Badge output (shields.io-style endpoint JSON or SVG) for READMEs.
+- [ ] Packaging: a GitHub Action and a pre-commit hook wrapping
+  `pumllint` / `pumllint score`.
+- [ ] HTML report (single self-contained file) for architect-facing reviews.
+
+## Arc C — Coverage growth
+
+- [ ] **CLS pack + class-diagram parser** — specs already written as skipped
+  features (CLS001–005 in RULES.md); class diagrams are where the codegen
+  story is strongest (types, multiplicities → DIM-CMP).
+- [ ] **STA pack + state-diagram parser** — STA001–003, same situation.
+- [ ] UC003 — needs include/extend parsing in the usecase parser.
+- [ ] **Thicken DIM-TRC** (deferred from calibration decision 10c): owner
+  tag, requirement/ADR-link rules in the GEN pack. Removes the 2-rule
+  thin-dimension caveat; revisit dimension weights (SCORING.md §9) after.
+- [ ] **Thicken DIM-RDB**: message-count, note-density, diagram-size rules.
+- [ ] Grow DIM-CON beyond the sequence-only XD pack into cross-*type* entity
+  identity (same entity in sequence vs class vs activity diagrams).
+
+## Arc D — Evidence engine (core done; optional deepening)
+
+EVIDENCE.md delivered the measured maturity→codegen relationship. Only if
+marketing claims need escalation:
+
+- [ ] Complexity-normalized fidelity (kills the synthetic-diagram confound
+  where trivial diagrams score near-perfect fidelity regardless of maturity).
+- [ ] More scenario families beyond order_payment/credit_intake; larger n
+  per diagram (current n=3 leaves ±8 noise on per-diagram means).
+- [ ] Multiple generator and judge models (current: Opus 4.8 gen, Sonnet 5
+  judge; remember the ~15-point self-judging bias — always judge
+  independently).
+
+## Arc E — Ecosystem (demand-driven; wait for pull)
+
+- [ ] `pumllint fix` — auto-remediation for mechanical findings (declare
+  implicit participants, add titles, name diagrams).
+- [ ] LSP server / IDE integration for inline findings.
+- [ ] JSON schema for the report formats (lint + maturity).
+- [ ] Real SonarQube plugin with measures (replacing the synthetic-issue
+  workaround in the sonar reporter).
+
+## Working agreements (read before picking anything up)
+
+- Scores are a public contract: any change that shifts corpus scores must be
+  deliberate — the golden test enforces it; re-freeze consciously with
+  `python tools/calibrate.py --freeze tests/golden_scores.json`.
+- Claim language is settled (SCORING.md §9): Level 5 is "method-convention
+  complete", never "guaranteed generation-ready"; the evidence-backed pitch
+  is the correlation and the below-Level-2 cliff.
+- The zero-dependency promise holds: product code and its tests must run
+  under `python tests/run_tests.py` with the stdlib only.
+- Recommended next release (0.6.0): Arc A's model-set score + Arc B's
+  baseline/ratchet — small, and together they convert the CI gate from
+  greenfield-only to adoptable-anywhere.
