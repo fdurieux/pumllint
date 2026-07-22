@@ -7,8 +7,9 @@ golden tests, and empirically characterized (EVIDENCE.md: fidelity
 correlation r ≈ 0.49, sharp degradation below Level 2). **v0.6.0**
 (2026-07-23) added Arc A's model-set aggregate score and Arc B's
 baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
-and the shields.io badge. This file tracks what remains, grouped into arcs.
-Keep it updated as items land.
+and the shields.io badge; **v0.8.0** (2026-07-23) added the composite GitHub
+Action and pre-commit hooks. This file tracks what remains, grouped into
+arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -30,8 +31,10 @@ Keep it updated as items land.
 - [x] Badge output *(0.7.0)* — `-f badge` emits shields.io endpoint JSON for
   the model-set level (SVG deemed unnecessary: shields renders styling from
   the endpoint; revisit only on demand).
-- [ ] Packaging: a GitHub Action and a pre-commit hook wrapping
-  `pumllint` / `pumllint score`.
+- [x] Packaging *(0.8.0)*: composite GitHub Action (`action.yml`, inputs
+  mirroring the CLI, installs from the pinned ref) and pre-commit hooks
+  (`.pre-commit-hooks.yaml`: `pumllint`, `pumllint-score`); both dogfooded
+  in tests.yml and drift-guarded by tests/test_packaging.py.
 - [ ] HTML report (single self-contained file) for architect-facing reviews.
 
 ## Arc C — Coverage growth
@@ -80,8 +83,7 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next release (0.8.0): Arc B's packaging — the GitHub Action
-  and pre-commit hook wrapping `pumllint` / `pumllint score`. With the
-  ratchet, deltas, and badge in place, packaging is what turns adoption from
-  "copy this CI snippet" into one line of config. The HTML report can ride
-  along or wait for pull.
+- Recommended next: Arc B is done except the HTML report (architect-facing;
+  wait for pull or pair it with a real need). The next substantial arc is
+  Arc C coverage growth — start with the CLS pack + class-diagram parser
+  (strongest codegen story), then STA, then UC003.

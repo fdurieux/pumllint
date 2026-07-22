@@ -37,3 +37,38 @@ jobs:
             || (echo "::error::tests/bdd/features is stale — run: python tools/extract_features.py"; exit 1)
       - name: Run full test suite
         run: python -m pytest
+
+  # Dogfood the composite action (action.yml) against the bundled examples.
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint a clean example via the action
+        uses: ./
+        with:
+          paths: examples/order_payment_codegen_good.puml
+      - name: Score gate via the action
+        uses: ./
+        with:
+          command: score
+          paths: examples
+          min-level: "2"
+
+  # Dogfood the pre-commit hooks (.pre-commit-hooks.yaml).
+  pre-commit-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run the lint hook against a clean example
+        run: >
+          pre-commit try-repo . pumllint
+          --files examples/order_payment_codegen_good.puml --verbose
+      - name: Run the score hook (report-only; args come from user config)
+        run: >
+          pre-commit try-repo . pumllint-score
+          --files examples/order_payment_codegen_good.puml --verbose

@@ -283,6 +283,30 @@ class NoSelfMessage(Rule):
 
 ## CI integration (GitHub Actions)
 
+The repo ships a composite action — it installs pumllint from the exact ref
+you pin and runs it:
+
+```yaml
+- uses: actions/checkout@v4
+- name: Lint PlantUML diagrams
+  uses: fdurieux/pumllint@v0.8.0
+  with:
+    paths: docs/diagrams
+- name: Maturity ratchet + floor
+  uses: fdurieux/pumllint@v0.8.0
+  with:
+    command: score
+    paths: docs/diagrams
+    baseline: maturity.json
+    min-level: "2"
+```
+
+Inputs mirror the CLI: `command` (`lint`|`score`), `paths`, `config`,
+`profile`, `format`, `output`, `fail-on` (lint), `min-level` / `baseline` /
+`update-baseline` (score), and `extra-args` for anything else.
+
+Or call the CLI directly — e.g. to feed SonarQube:
+
 ```yaml
 - name: Lint PlantUML diagrams
   run: |
@@ -304,6 +328,22 @@ gates and PR decoration with **no Java plugin to build or maintain**.
 
 Recommended companion step: run PlantUML's own `-checkonly` first for pure
 syntax, then `pumllint` for semantics.
+
+## Pre-commit hooks
+
+```yaml
+repos:
+  - repo: https://github.com/fdurieux/pumllint
+    rev: v0.8.0
+    hooks:
+      - id: pumllint                 # lint staged diagrams
+      - id: pumllint-score
+        args: [--min-level, "3"]     # maturity gate per commit
+```
+
+Both hooks receive the staged PlantUML files (`.puml`, `.plantuml`, `.iuml`,
+`.wsd`). `pumllint-score` only gates when given `--min-level N` and/or
+`--baseline FILE` via `args`; without them it just prints the report.
 
 ## Tests
 
