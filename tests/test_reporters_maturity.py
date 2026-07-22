@@ -71,7 +71,9 @@ def test_json_reporter_emits_model_set_summary():
     results = _results()
     payload = json.loads(get_reporter("json").render_maturity(results))
     ms = payload["modelSet"]
-    assert set(ms) == {"level", "levelName", "score", "diagramCount", "elementCount"}
+    assert set(ms) == {
+        "level", "levelName", "score", "diagramCount", "elementCount", "baseline"
+    }
     # one diagram: the set summary mirrors it
     _, r = results[0]
     assert ms["level"] == r.level
@@ -112,3 +114,82 @@ def test_empty_results_render_gracefully():
     payload = json.loads(get_reporter("json").render_maturity([]))
     assert payload == {"diagrams": [], "modelSet": None}
     assert json.loads(get_reporter("sonar").render_maturity([]))["issues"] == []
+
+
+# --- trend/delta annotations (0.7.0) ---------------------------------------
+
+def _baseline_for(results, offset: int = 0):
+    """A synthetic baseline recording each result's level shifted by offset."""
+    from pumllint.baseline import BaselineEntry, diagram_keys
+
+    keys = diagram_keys(d for d, _ in results)
+    return {
+        k: BaselineEntry(level=r.level + offset, composite=0.0)
+        for k, (_, r) in zip(keys, results)
+    }
+
+
+def test_text_reporter_shows_delta_against_baseline():
+    results = _results()
+    out = get_reporter("text").render_maturity(
+        results, baseline=_baseline_for(results, offset=-1)  # improved since
+    )
+    _, r = results[0]
+    assert f"(Level {r.level - 1} → {r.level} since last baseline)" in out
+
+
+def test_text_reporter_unchanged_level_prints_no_delta():
+    results = _results()
+    out = get_reporter("text").render_maturity(results, baseline=_baseline_for(results))
+    assert "since last baseline" not in out
+    assert "new since baseline" not in out
+
+
+def test_text_reporter_marks_diagrams_new_since_baseline():
+    out = get_reporter("text").render_maturity(_results(), baseline={})
+    assert "(new since baseline)" in out
+
+
+def test_json_reporter_emits_baseline_deltas():
+    results = _results()
+    payload = json.loads(
+        get_reporter("json").render_maturity(
+            results, baseline=_baseline_for(results, offset=-1)
+        )
+    )
+    _, r = results[0]
+    assert payload["diagrams"][0]["baseline"] == {"level": r.level - 1, "delta": 1}
+    assert payload["modelSet"]["baseline"] == {"level": r.level - 1, "delta": 1}
+
+
+def test_json_reporter_baseline_is_null_without_ratchet():
+    payload = json.loads(get_reporter("json").render_maturity(_results()))
+    assert payload["diagrams"][0]["baseline"] is None
+    assert payload["modelSet"]["baseline"] is None
+
+
+# --- badge (0.7.0) ----------------------------------------------------------
+
+def test_badge_reporter_emits_shields_endpoint_json():
+    results = _results()
+    payload = json.loads(get_reporter("badge").render_maturity(results))
+    _, r = results[0]
+    assert payload["schemaVersion"] == 1
+    assert payload["label"] == "pumllint maturity"
+    assert payload["message"] == f"Level {r.level} — {r.level_name}"
+    assert payload["color"] in {"red", "orange", "yellow", "yellowgreen", "brightgreen"}
+
+
+def test_badge_reporter_handles_an_empty_set():
+    payload = json.loads(get_reporter("badge").render_maturity([]))
+    assert payload["message"] == "no diagrams"
+    assert payload["color"] == "lightgrey"
+
+
+def test_badge_reporter_rejects_lint_output():
+    try:
+        get_reporter("badge").render([])
+    except ValueError as e:
+        assert "score" in str(e)
+    else:
+        assert False, "expected ValueError for badge lint rendering"

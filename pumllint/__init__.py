@@ -5,11 +5,13 @@ Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`.
 """
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 from .baseline import (
     BaselineEntry,
+    Delta,
     Regression,
+    compute_deltas,
     find_regressions,
     load_baseline,
     write_baseline,
@@ -54,7 +56,9 @@ __all__ = [
     "score_groups",
     "check_files",
     "BaselineEntry",
+    "Delta",
     "Regression",
+    "compute_deltas",
     "find_regressions",
     "load_baseline",
     "write_baseline",

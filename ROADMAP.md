@@ -6,7 +6,8 @@ caps C1–C7, XD cross-diagram pack — calibrated (SCORING.md §9), frozen behi
 golden tests, and empirically characterized (EVIDENCE.md: fidelity
 correlation r ≈ 0.49, sharp degradation below Level 2). **v0.6.0**
 (2026-07-23) added Arc A's model-set aggregate score and Arc B's
-baseline/ratchet mode. This file tracks what remains, grouped into arcs.
+baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
+and the shields.io badge. This file tracks what remains, grouped into arcs.
 Keep it updated as items land.
 
 ## Arc A — Integrity (done)
@@ -23,9 +24,12 @@ Keep it updated as items land.
   maturity.json` records per-diagram levels on first run, then fails CI only
   on *regression*; `--update-baseline` accepts the status quo
   (`pumllint/baseline.py`).
-- [ ] Trend/delta reporting — "Level 3 → 4 since last baseline" in the text
-  report; machine-readable delta in JSON.
-- [ ] Badge output (shields.io-style endpoint JSON or SVG) for READMEs.
+- [x] Trend/delta reporting *(0.7.0)* — ratchet-compare runs annotate the
+  text report ("Level 3 → 4 since last baseline", "new since baseline") per
+  diagram and for the model set; json adds `baseline: {level, delta}`.
+- [x] Badge output *(0.7.0)* — `-f badge` emits shields.io endpoint JSON for
+  the model-set level (SVG deemed unnecessary: shields renders styling from
+  the endpoint; revisit only on demand).
 - [ ] Packaging: a GitHub Action and a pre-commit hook wrapping
   `pumllint` / `pumllint score`.
 - [ ] HTML report (single self-contained file) for architect-facing reviews.
@@ -76,8 +80,8 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next release (0.7.0): Arc B's trend/delta reporting — the
-  baseline file (0.6.0) already stores the previous levels, so "Level 3 → 4
-  since last baseline" is mostly report plumbing; pair it with the badge
-  and/or the GitHub Action + pre-commit packaging to complete the adoption
-  story.
+- Recommended next release (0.8.0): Arc B's packaging — the GitHub Action
+  and pre-commit hook wrapping `pumllint` / `pumllint score`. With the
+  ratchet, deltas, and badge in place, packaging is what turns adoption from
+  "copy this CI snippet" into one line of config. The HTML report can ride
+  along or wait for pull.
