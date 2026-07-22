@@ -1,0 +1,386 @@
+{
+  "model": "claude-opus-4-8",
+  "runs_per_diagram": 3,
+  "summary": [
+    {
+      "label": "L5-pristine",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "runs_ok": 3,
+      "runs_failed": 0,
+      "compile_rate": 1.0,
+      "mean_fidelity": 90.7,
+      "mean_msg_coverage": 1.0,
+      "total_hallucinations": 7
+    },
+    {
+      "label": "L4-unbalanced",
+      "path": "corpus/mutations/order_payment_codegen_good__S-unbalance_activation.puml",
+      "level": 4,
+      "composite": 90.0,
+      "runs_ok": 3,
+      "runs_failed": 0,
+      "compile_rate": 0.67,
+      "mean_fidelity": 89.3,
+      "mean_msg_coverage": 1.0,
+      "total_hallucinations": 7
+    },
+    {
+      "label": "L2-ambiguous",
+      "path": "corpus/mutations/order_payment_codegen_good__L4.puml",
+      "level": 2,
+      "composite": 74.4,
+      "runs_ok": 3,
+      "runs_failed": 0,
+      "compile_rate": 1.0,
+      "mean_fidelity": 86.3,
+      "mean_msg_coverage": 1.0,
+      "total_hallucinations": 6
+    },
+    {
+      "label": "L1-degraded",
+      "path": "examples/order_payment_codegen_bad.puml",
+      "level": 1,
+      "composite": 25.0,
+      "runs_ok": 3,
+      "runs_failed": 0,
+      "compile_rate": 1.0,
+      "mean_fidelity": 74.0,
+      "mean_msg_coverage": 1.0,
+      "total_hallucinations": 16
+    }
+  ],
+  "runs": [
+    {
+      "label": "L5-pristine",
+      "run": 1,
+      "code_file": "L5-pristine_run1.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "PaymentGateway.charge adds an 'amount <= 0' validation that raises PaymentError \u2014 invented data validation not in the diagram (unreachable given the total>0 guard, but still coded)"
+        ],
+        "fidelity_score": 94,
+        "notes": "All 3 participants, all 7 messages, both alt guards, and both failure paths (notFoundError and paymentError with compensate self-message) are faithfully realized. The guard semantics (order found vs not found, total>0 vs charge error) are preserved. Only minor hallucination: an extra amount<=0 validation inside charge. The fail_ids/add_order helpers are test glue and not counted."
+      },
+      "usage": {
+        "in": 3107,
+        "out": 2242
+      }
+    },
+    {
+      "label": "L5-pristine",
+      "run": 2,
+      "code_file": "L5-pristine_run2.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 4,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "PaymentGateway.charge invents an amount<=0 validation that raises PaymentError",
+          "PaymentGateway uses an invented fail_order_ids simulation set",
+          "Receipt transaction_id generation invented",
+          "OrderService treats non-positive totals as a compensate/charge-error branch (not specified; diagram's else is 'charge error')"
+        ],
+        "fidelity_score": 90,
+        "notes": "All 3 participants and all 7 arrows are realized with correct directions, including the self-message compensate(orderId). Both alt blocks are faithfully mapped: order found/not found via find_order_by_id raising OrderNotFoundError, and order.total>0 vs charge error via try/except PaymentError. Failure paths (notFoundError, paymentError->compensate) are present. Minor deductions for invented validation (amount<=0), the fail-order simulation, transaction id generation, and overloading the total<=0 branch into the 'charge error' semantics, which slightly blurs the diagram's guard meaning but remains reasonable glue."
+      },
+      "usage": {
+        "in": 3494,
+        "out": 3221
+      }
+    },
+    {
+      "label": "L5-pristine",
+      "run": 3,
+      "code_file": "L5-pristine_run3.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "Zero-total handling: returns None when order.total <= 0 as a 'nothing to charge' branch \u2014 the diagram's else of 'order.total > 0' is labeled 'charge error', not a no-op zero path",
+          "PaymentGateway.charge synthesizes a transaction_id counter (minor, testing/simulation scaffolding)"
+        ],
+        "fidelity_score": 88,
+        "notes": "All 3 participants and all 7 arrows are realized: findOrderById, order return, notFoundError (raised), charge, receipt, paymentError (raised), and the compensate self-message. Both alt guards are present. The not-found and charge-error failure paths are both implemented, with compensate() called before re-raising on payment failure \u2014 faithful to the diagram. Minor semantic drift: the diagram frames the second alt's else purely as 'charge error', but the code splits it into (a) charge inside try/except (error path) and (b) an invented total<=0 no-charge branch returning None, which the diagram does not specify. Overall a close, code-ready realization."
+      },
+      "usage": {
+        "in": 3186,
+        "out": 2999
+      }
+    },
+    {
+      "label": "L4-unbalanced",
+      "run": 1,
+      "code_file": "L4-unbalanced_run1.py",
+      "compiles": false,
+      "syntax_error": "invalid syntax (L4-unbalanced_run1.py, line 1)",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "OrderDB seeded with sample orders (order-1, order-2)",
+          "PaymentGateway generates transaction_id / counter for receipts",
+          "total<=0 branch treated as 'nothing to charge' returning None, whereas diagram's else branch is 'charge error'"
+        ],
+        "fidelity_score": 90,
+        "notes": "All 3 participants and all 7 messages (findOrderById, order, notFoundError, charge, receipt, paymentError, compensate self-message) are realized. Both alt guards are preserved: order-found via try/except on OrderNotFoundError, and order.total>0 via explicit check. Both failure paths (not-found returns None, payment error triggers compensate) are implemented faithfully. Minor deviation: the second alt's else in the diagram is labeled 'charge error' but the code adds a separate total<=0 no-op path; the charge-error path itself is still faithfully handled. Hallucinations are limited to seed data and transaction-id generation, which are near-glue concretizations."
+      },
+      "usage": {
+        "in": 3134,
+        "out": 2468
+      }
+    },
+    {
+      "label": "L4-unbalanced",
+      "run": 2,
+      "code_file": "L4-unbalanced_run2.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "PaymentGateway generates sequential transaction_id (txn-NNNNNN) not specified in diagram",
+          "OrderService returns None for order.total <= 0 (diagram's second alt branch is 'charge error', not a zero-total no-op)"
+        ],
+        "fidelity_score": 90,
+        "notes": "All 3 participants, 7 arrows, both alt guards, and both failure paths (not-found, charge error with compensate self-message) are realized faithfully. findOrderById->order/notFoundError and charge->receipt/paymentError all map correctly, and compensate is invoked on payment failure. Minor deviations: the second alt's semantics ('order.total > 0' vs 'charge error') are slightly conflated \u2014 code treats zero total as a silent None return rather than modeling the else strictly as an error branch, and transaction_id generation is invented glue. These are small; overall a near-complete, faithful implementation."
+      },
+      "usage": {
+        "in": 2766,
+        "out": 2116
+      }
+    },
+    {
+      "label": "L4-unbalanced",
+      "run": 3,
+      "code_file": "L4-unbalanced_run3.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 4,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "PaymentGateway.charge rejects amount<=0 (invented validation not in diagram)",
+          "process_payment returns an 'invalid_total' error path for total<=0, an invented business rule; the diagram's else branch is 'charge error', not a zero-total handler"
+        ],
+        "fidelity_score": 88,
+        "notes": "All 3 participants, all 7 messages, and both failure paths (OrderNotFoundError and PaymentError->compensate) are realized. Both alt guards are preserved: order-found/not-found via try/except, total>0 via if, and charge-error via except PaymentError. The self-message compensate(orderId) is implemented. Minor deductions for hallucinated behavior: the gateway adds amount<=0 validation, and the else branch of the total-guard invents an 'invalid_total' result rather than reflecting the diagram's 'charge error' semantics (which is instead covered by the exception handler)."
+      },
+      "usage": {
+        "in": 2564,
+        "out": 2159
+      }
+    },
+    {
+      "label": "L2-ambiguous",
+      "run": 1,
+      "code_file": "L2-ambiguous_run1.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 4,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "Invented an extra 'total <= 0' branch returning {order, receipt: None}, which is not in the diagram (the diagram's second alt else-branch is 'charge error', not a zero-total case)",
+          "Fabricated receipt payload fields (status 'PAID', receiptId) beyond the diagram's generic 'receipt'",
+          "Added add_order/fail_charges test scaffolding data (minor)"
+        ],
+        "fidelity_score": 86,
+        "notes": "All 3 participants and all 7 messages are realized, including the OrderService->OrderService self-message compensate. Both failure paths (notFoundError, paymentError->compensate) are implemented. Guard semantics are largely preserved: first alt maps to order-found vs not-found, second alt to total>0 charge vs error/compensate. The vague 'sometimes' guard is reasonably rendered as lookup success. Minor deviation: the code splits the second alt into an extra total<=0 no-charge branch (returning receipt None) that the diagram does not specify, and enriches the receipt with invented fields. Overall a faithful realization with small invented business behavior."
+      },
+      "usage": {
+        "in": 2601,
+        "out": 2520
+      }
+    },
+    {
+      "label": "L2-ambiguous",
+      "run": 2,
+      "code_file": "L2-ambiguous_run2.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "Returns None for orders with total <= 0 (the diagram's second alt 'else' is a charge error branch, not a zero-total no-op)",
+          "Generates a synthetic transaction_id counter for receipts, which the diagram never specifies"
+        ],
+        "fidelity_score": 83,
+        "notes": "All 3 participants and all 7 arrows are realized: DB fetch, order return, notFoundError, charge, receipt, paymentError, and the self-message compensate. Both failure paths (OrderNotFoundError, PaymentError) are implemented with proper propagation. The 'order.total > 0' and 'charge error' guards are faithful. The first alt's vague 'sometimes' guard is reinterpreted as fetch-success vs not-found, which is a reasonable but imperfect mapping. Minor hallucinations: a zero-total no-op returning None and a synthetic transaction id, neither of which the diagram specifies."
+      },
+      "usage": {
+        "in": 2713,
+        "out": 2439
+      }
+    },
+    {
+      "label": "L2-ambiguous",
+      "run": 3,
+      "code_file": "L2-ambiguous_run3.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "Receipt transaction_id generation via internal counter (invented data not in diagram)"
+        ],
+        "fidelity_score": 90,
+        "notes": "All 3 participants and all 7 messages are realized: DB query, order/notFound returns, charge, receipt/paymentError returns, and the self-message compensate. Failure paths (OrderNotFoundError and PaymentError->compensate) are faithfully implemented. Guards for 'order.total > 0', 'charge error', and 'order not found' are preserved; the vague 'sometimes' guard is not modeled as an explicit condition (just a straight DB call), which is the main deduction. Only minor invented detail is the receipt transaction_id generation, otherwise glue code."
+      },
+      "usage": {
+        "in": 3081,
+        "out": 2488
+      }
+    },
+    {
+      "label": "L1-degraded",
+      "run": 1,
+      "code_file": "L1-degraded_run1.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 3,
+        "messages_implemented": 3,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "hallucinations": [
+          "Input validation rejecting non-positive amount (amount <= 0)",
+          "Arbitrary approval rule declining charges >= 10000",
+          "Gateway availability check raising PaymentError",
+          "Missing-key validation in store_result raising PersistenceError",
+          "Transaction ID generation scheme (txn-{customer}-{counter})"
+        ],
+        "fidelity_score": 74,
+        "notes": "All 3 participants (including implicitly-created OrderDB) and all 3 arrows are realized: charge, store_result, and the 'ok' reply (modeled as a return value). The single 'sometimes' alt guard is preserved as a persist flag \u2014 a reasonable concretization of a vague guard. The diagram specifies no failure paths, yet the code invents several business rules and validations (amount checks, approval threshold, availability checks, key validation, custom exceptions). These are hallucinated behaviors not specified by the diagram, driving the deduction. Structure is otherwise faithful."
+      },
+      "usage": {
+        "in": 2995,
+        "out": 2279
+      }
+    },
+    {
+      "label": "L1-degraded",
+      "run": 2,
+      "code_file": "L1-degraded_run2.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 3,
+        "messages_implemented": 3,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "hallucinations": [
+          "Amount validation raising PaymentError for amount <= 0",
+          "Gateway failure_rate/random decline logic and PaymentError exception",
+          "OrderDB null-result check raising PersistenceError",
+          "Invented ChargeResult data model (transaction_id, currency, approved fields)",
+          "Invented 'no-store' reply branch when should_store is False"
+        ],
+        "fidelity_score": 78,
+        "notes": "All three participants (including implicit OrderDB) and all three messages are realized. The vague 'sometimes' alt guard is faithfully modelled as the should_store flag, and the non-informative 'ok' reply is preserved. The diagram specifies no failure paths, yet the code invents several error conditions (amount validation, gateway decline via failure_rate, persistence null check) and a rich ChargeResult model \u2014 these are hallucinated business rules. The unclosed activation (SEQ108) is handled defensively. Deductions are for invented validation/failure behaviour not present in the diagram; core interaction fidelity is otherwise high."
+      },
+      "usage": {
+        "in": 3320,
+        "out": 2755
+      }
+    },
+    {
+      "label": "L1-degraded",
+      "run": 3,
+      "code_file": "L1-degraded_run3.py",
+      "compiles": true,
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 3,
+        "messages_implemented": 3,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 2,
+        "hallucinations": [
+          "PaymentError raised on gateway decline (no failure path in diagram)",
+          "Input validation: amount <= 0 rejected as invalid charge",
+          "StorageError raised when result is None",
+          "Invented ChargeResult fields (transaction_id, amount, reason) and transaction ID generation",
+          "always_succeed toggle inventing gateway success/failure business logic",
+          "_should_store interprets vague 'sometimes' guard as charge success"
+        ],
+        "fidelity_score": 70,
+        "notes": "All 3 arrows are realized: charge, store, and the 'ok' reply (as StoreResult). All 3 participants appear including the implicitly-created OrderDB. The single 'sometimes' alt guard is preserved as a boolean condition (interpreted as store-on-success), which is a reasonable meaning-preserving choice given the vague label. Main deductions come from hallucinated behavior the diagram never specifies: exception-based failure paths (PaymentError/StorageError), amount validation, and invented result data/transaction IDs. The diagram models no error/failure paths, so those raise-paths are inventions rather than faithful realizations."
+      },
+      "usage": {
+        "in": 3223,
+        "out": 2631
+      }
+    }
+  ],
+  "usage": {
+    "input_tokens": 36184,
+    "output_tokens": 30317,
+    "cost_usd": 0.94
+  }
+}
