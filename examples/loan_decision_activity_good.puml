@@ -1,0 +1,17 @@
+@startuml loan-decision-activity
+title Loan decision — activity flow
+
+start
+:Receive application;
+if (Complete dossier?) then (yes)
+  :Run credit scoring;
+  if (Score above threshold?) then (yes)
+    :Generate offer;
+  else (no)
+    :Send rejection letter;
+  endif
+else (no)
+  :Request missing documents;
+endif
+stop
+@enduml

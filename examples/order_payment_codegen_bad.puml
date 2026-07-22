@@ -1,0 +1,18 @@
+@startuml order-payment-codegen-bad
+title Order payment — not codegen-ready
+participant OrderService
+participant PaymentGateway <<external>>
+
+' SEQ102: OrderService untyped; SEQ103: prose label; SEQ104: no return
+' modelled; SEQ107: unguarded call to an <<external>> participant
+OrderService -> PaymentGateway : charge the customer somehow
+
+alt sometimes
+  ' SEQ101: OrderDB created implicitly; SEQ105: vague guard; SEQ106: elision marker
+  OrderService -> OrderDB : store the result ... etc
+end
+
+' SEQ108: activation never closed; SEQ109: non-informative reply
+activate OrderService
+OrderDB --> OrderService : ok
+@enduml

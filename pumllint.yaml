@@ -1,0 +1,57 @@
+# pumllint configuration — rules keyed by id or kebab-case name.
+# Value: false = off, true/absent = defaults, mapping = options + severity override.
+rules:
+  SEQ001:                       # undeclared-participant
+    severity: critical
+    only_if_any_declared: true
+  unused-participant: true
+  unbalanced-activation: true
+  unterminated-block: true
+  unlabelled-message:
+    allow_unlabelled_returns: true
+  missing-title:
+    severity: major
+  unnamed-diagram: true
+  inline-skinparam:
+    allowed: []                 # e.g. ["responseMessageBelowArrow"]
+  participant-naming:
+    pattern: "^[A-Z][A-Za-z0-9]*$"
+  max-participants:
+    max: 9
+  orphan-actor-or-usecase: true
+  no-self-message:
+    allowed: []                 # participants for which self-messages are OK
+  unlabelled-block-condition: true
+  missing-start: true
+  missing-stop: true
+  unlabelled-decision-branch:
+    require_else_label: true
+  unterminated-construct: true
+
+# Set to false to ignore inline "' pumllint: disable" comments
+# (same as the --no-suppressions CLI flag).
+suppressions: true
+
+# Profiles: uncomment `profile:` (or pass --profile codegen) to activate the
+# codegen-readiness pack (SEQ101-109). A profile may also enable extra gated
+# rules by id/name and escalate severities of existing rules.
+# profile: codegen
+profiles:
+  codegen:
+    enable:
+      - SEQ101      # codegen-implicit-participant   (blocker)
+      - SEQ102      # codegen-untyped-participant    (major)
+      - SEQ103      # codegen-prose-message          (blocker)
+      - SEQ104      # codegen-missing-return         (major)
+      - SEQ105      # codegen-vague-guard            (blocker)
+      - SEQ106      # codegen-elision-marker         (blocker)
+      - SEQ107      # codegen-missing-failure-path   (major)
+      - SEQ108      # codegen-activation-lifecycle   (major)
+      - SEQ109      # codegen-uninformative-reply    (minor)
+    escalate:
+      SEQ001: blocker   # undeclared participant becomes blocking for codegen
+# Lexicons are configurable per rule under `rules:`, e.g.
+#   SEQ105: { vague_terms: [otherwise, sometimes, if needed, maybe, as required] }
+#   SEQ106: { tokens: ["...", "…", TBD, TODO, etc, "???", and so on] }
+#   SEQ107: { failure_keywords: [error, failure, timeout, exception] }
+#   SEQ109: { non_informative: [ok, done, success, response, result] }
