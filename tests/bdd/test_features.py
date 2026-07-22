@@ -5,15 +5,22 @@ Gherkin is written against (see tools/extract_features.py). Adding a rule to the
 spec needs no new steps — only a scenario expressed in this vocabulary.
 """
 
+import re
 import tomllib
+from pathlib import Path
 
 from pytest_bdd import given, parsers, scenarios, then, when
 
 from pumllint.engine import Engine
 from pumllint.parser import parse_source
 
-# Bind all feature files in ./features to the steps below.
-scenarios("features")
+# Bind the per-rule feature files (<ID>.feature) to the steps below.
+# scoring.feature has its own vocabulary — see test_scoring_feature.py.
+_FEATURES = Path(__file__).parent / "features"
+scenarios(*sorted(
+    str(p) for p in _FEATURES.glob("*.feature")
+    if re.fullmatch(r"[A-Z]{2,3}\d{3}", p.stem)
+))
 
 
 # -- Given -------------------------------------------------------------------

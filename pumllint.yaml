@@ -32,6 +32,25 @@ rules:
 # (same as the --no-suppressions CLI flag).
 suppressions: true
 
+# Maturity scoring (pumllint score) — defaults shown, calibrated in SCORING.md §9.
+# Uncomment to override; dimension weights must sum to 1.0.
+# scoring:
+#   k: 50                          # density scaling constant
+#   severity_weights: { blocker: 10, critical: 8, major: 5, minor: 2, info: 0.5 }
+#   dimension_weights:
+#     DIM-SEM: 0.20
+#     DIM-CMP: 0.30
+#     DIM-CON: 0.15
+#     DIM-TRC: 0.05
+#     DIM-RDB: 0.05
+#     DIM-AMB: 0.25
+#   thresholds: { l2_composite: 40, l3_composite: 60, l4_composite: 75,
+#                 l4_dim_min: 70, l5_composite: 90, l5_dim_min: 80,
+#                 c3_dim_floor: 40, l4_min_elements: 3 }
+#   l5_requires_profile: codegen   # null disables the Level-5 profile binding (C7)
+#   syntax_gate: false             # true runs `plantuml -checkonly` per file (C2)
+#   syntax_command: plantuml
+
 # Profiles: uncomment `profile:` (or pass --profile codegen) to activate the
 # codegen-readiness pack (SEQ101-109). A profile may also enable extra gated
 # rules by id/name and escalate severities of existing rules.

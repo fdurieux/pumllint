@@ -1,14 +1,18 @@
 # Rule metadata catalog.
 #
 # Declarative half of every registered rule: name, description, severity, scope
-# (applies_to) and profile gating. The imperative half — the check() algorithm —
-# stays in Python. `@register` (see rules/__init__.py) stamps these fields onto
-# each rule class by matching its `id`; every registered rule MUST have an entry
-# here, and tests/test_catalog.py guards catalog<->registry parity.
+# (applies_to), maturity dimension and profile gating. The imperative half — the
+# check() algorithm — stays in Python. `@register` (see rules/__init__.py) stamps
+# these fields onto each rule class by matching its `id`; every registered rule
+# MUST have an entry here, and tests/test_catalog.py guards catalog<->registry
+# parity.
 #
 # `severity` values map 1:1 onto pumllint.model.Severity
-# (info | minor | major | critical | blocker). `profiles = []` means the base
-# catalog (always active); a non-empty list gates the rule behind a profile.
+# (info | minor | major | critical | blocker). `dimension` values map 1:1 onto
+# pumllint.model.Dimension (DIM-SEM | DIM-CMP | DIM-CON | DIM-TRC | DIM-RDB |
+# DIM-AMB; DIM-SYN is the external gate and is never carried by a rule) and feed
+# the maturity scorer (see SCORING.md). `profiles = []` means the base catalog
+# (always active); a non-empty list gates the rule behind a profile.
 
 # --- GEN: cross-cutting governance -----------------------------------------
 
@@ -16,6 +20,7 @@
 name = "missing-title"
 description = "Diagram has no title"
 severity = "minor"
+dimension = "DIM-TRC"
 applies_to = ["*"]
 profiles = []
 
@@ -23,6 +28,7 @@ profiles = []
 name = "unnamed-diagram"
 description = "@startuml has no diagram name"
 severity = "info"
+dimension = "DIM-TRC"
 applies_to = ["*"]
 profiles = []
 
@@ -30,6 +36,7 @@ profiles = []
 name = "inline-skinparam"
 description = "Inline skinparam found; prefer a central !include theme"
 severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["*"]
 profiles = []
 
@@ -37,6 +44,7 @@ profiles = []
 name = "participant-naming"
 description = "Participant name violates naming convention"
 severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
 
@@ -44,6 +52,33 @@ profiles = []
 name = "max-participants"
 description = "Diagram has more participants than the configured maximum"
 severity = "minor"
+dimension = "DIM-RDB"
+applies_to = ["sequence"]
+profiles = []
+
+# --- XD: cross-diagram consistency (CrossDiagramRule; active for >1 diagram) -
+
+[XD001]
+name = "conflicting-participant-kind"
+description = "Same participant declared with different kinds across diagrams"
+severity = "major"
+dimension = "DIM-CON"
+applies_to = ["sequence"]
+profiles = []
+
+[XD002]
+name = "conflicting-participant-stereotype"
+description = "Same participant carries different stereotypes across diagrams"
+severity = "minor"
+dimension = "DIM-CON"
+applies_to = ["sequence"]
+profiles = []
+
+[XD003]
+name = "participant-name-case-collision"
+description = "Participant names differing only by case across diagrams"
+severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
 
@@ -53,6 +88,7 @@ profiles = []
 name = "undeclared-participant"
 description = "Participant used in a message but not declared with participant/actor/…"
 severity = "critical"
+dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = []
 
@@ -60,6 +96,7 @@ profiles = []
 name = "unused-participant"
 description = "Declared participant never appears in a message"
 severity = "minor"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = []
 
@@ -67,6 +104,7 @@ profiles = []
 name = "unbalanced-activation"
 description = "activate/deactivate pairs do not balance for a lifeline"
 severity = "major"
+dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = []
 
@@ -74,6 +112,7 @@ profiles = []
 name = "unterminated-block"
 description = "Grouping block (alt/opt/loop/par/…/box) is never closed with 'end'"
 severity = "critical"
+dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = []
 
@@ -81,6 +120,7 @@ profiles = []
 name = "unlabelled-message"
 description = "Message has no label text after the colon"
 severity = "minor"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = []
 
@@ -88,6 +128,7 @@ profiles = []
 name = "no-self-message"
 description = "Self-message; internal logic belongs in a note or 'ref over'"
 severity = "minor"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = []
 
@@ -95,6 +136,7 @@ profiles = []
 name = "unlabelled-block-condition"
 description = "Grouping block has no condition/label text"
 severity = "minor"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = []
 
@@ -102,6 +144,7 @@ profiles = []
 name = "fragment-nesting-depth"
 description = "Combined fragments nested beyond the configured maximum depth"
 severity = "minor"
+dimension = "DIM-RDB"
 applies_to = ["sequence"]
 profiles = []
 
@@ -109,6 +152,7 @@ profiles = []
 name = "unpaired-return"
 description = "Dashed return message does not pair with a preceding call"
 severity = "minor"
+dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = []
 
@@ -116,6 +160,7 @@ profiles = []
 name = "explicit-participant-order"
 description = "Participant introduced by first use instead of an explicit declaration"
 severity = "info"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = []
 
@@ -125,6 +170,7 @@ profiles = []
 name = "codegen-implicit-participant"
 description = "Participants must be explicitly declared, not created on first use"
 severity = "blocker"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -132,6 +178,7 @@ profiles = ["codegen"]
 name = "codegen-untyped-participant"
 description = "Participant declarations must carry a role type or stereotype"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -139,6 +186,7 @@ profiles = ["codegen"]
 name = "codegen-prose-message"
 description = "Call messages must be operation signatures (name(args)), not prose"
 severity = "blocker"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -146,6 +194,7 @@ profiles = ["codegen"]
 name = "codegen-missing-return"
 description = "Synchronous calls must have an explicit return message"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -153,6 +202,7 @@ profiles = ["codegen"]
 name = "codegen-vague-guard"
 description = "alt/opt/loop guards must be present and machine-evaluable"
 severity = "blocker"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -160,6 +210,7 @@ profiles = ["codegen"]
 name = "codegen-elision-marker"
 description = "No placeholder/elision markers (…, TBD, etc.) in labels, guards or notes"
 severity = "blocker"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -167,6 +218,7 @@ profiles = ["codegen"]
 name = "codegen-missing-failure-path"
 description = "Calls to <<external>>/database/queue participants must model a failure path"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -174,6 +226,7 @@ profiles = ["codegen"]
 name = "codegen-activation-lifecycle"
 description = "activate/deactivate must pair as a well-formed stack per lifeline"
 severity = "major"
+dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -181,6 +234,7 @@ profiles = ["codegen"]
 name = "codegen-uninformative-reply"
 description = "Replies must use reply arrows (-->) and name the returned value"
 severity = "minor"
+dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
 
@@ -190,6 +244,7 @@ profiles = ["codegen"]
 name = "missing-start"
 description = "Activity diagram has actions but no 'start' node"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["activity"]
 profiles = []
 
@@ -197,6 +252,7 @@ profiles = []
 name = "missing-stop"
 description = "Activity diagram has no 'stop'/'end' terminal node"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["activity"]
 profiles = []
 
@@ -204,6 +260,7 @@ profiles = []
 name = "unlabelled-decision-branch"
 description = "Decision branch ('then'/'else') has no (label)"
 severity = "minor"
+dimension = "DIM-CMP"
 applies_to = ["activity"]
 profiles = []
 
@@ -211,6 +268,7 @@ profiles = []
 name = "unterminated-construct"
 description = "Activity construct (if/while/repeat/fork/switch/partition) is never closed"
 severity = "critical"
+dimension = "DIM-SEM"
 applies_to = ["activity"]
 profiles = []
 
@@ -218,6 +276,7 @@ profiles = []
 name = "swimlane-naming"
 description = "Swimlane name violates the naming convention"
 severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
 
@@ -225,6 +284,7 @@ profiles = []
 name = "verb-first-activity"
 description = "Activity name is not phrased verb-first"
 severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
 
@@ -234,6 +294,7 @@ profiles = []
 name = "orphan-actor-or-usecase"
 description = "Actor or use case has no relationships"
 severity = "major"
+dimension = "DIM-CMP"
 applies_to = ["usecase"]
 profiles = []
 
@@ -241,5 +302,6 @@ profiles = []
 name = "usecase-actor-naming"
 description = "Use case is not phrased as a verb–object phrase"
 severity = "minor"
+dimension = "DIM-CON"
 applies_to = ["usecase"]
 profiles = []
