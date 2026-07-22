@@ -64,11 +64,20 @@ jobs:
           python-version: "3.12"
       - name: Install pre-commit
         run: pip install pre-commit
-      - name: Run the lint hook against a clean example
-        run: >
-          pre-commit try-repo . pumllint
-          --files examples/order_payment_codegen_good.puml --verbose
-      - name: Run the score hook (report-only; args come from user config)
-        run: >
-          pre-commit try-repo . pumllint-score
-          --files examples/order_payment_codegen_good.puml --verbose
+      # Run from a scratch repo, like a real consumer: hook envs are isolated
+      # (no PyYAML), so running inside this repo would trip over the
+      # repo-local pumllint.yaml config.
+      - name: Run both hooks as a user repo would
+        run: |
+          set -euo pipefail
+          SRC="$GITHUB_WORKSPACE"
+          TMP="$(mktemp -d)"
+          cp "$SRC/examples/order_payment_codegen_good.puml" "$TMP/"
+          cd "$TMP"
+          git init -q
+          git add .
+          git -c user.email=ci@example.invalid -c user.name=ci commit -qm init
+          pre-commit try-repo "$SRC" pumllint \
+            --files order_payment_codegen_good.puml --verbose
+          pre-commit try-repo "$SRC" pumllint-score \
+            --files order_payment_codegen_good.puml --verbose

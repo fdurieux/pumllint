@@ -11,6 +11,10 @@
 # Both hooks receive the staged PlantUML files as arguments. `pumllint-score`
 # is a no-op gate without args — give it --min-level N and/or
 # --baseline FILE to make it fail commits.
+#
+# Hook environments are isolated: if your repo uses a pumllint.yaml config,
+# add `additional_dependencies: [PyYAML]` to the hook (toml/json configs
+# need nothing extra).
 - id: pumllint
   name: pumllint
   description: Semantic lint for PlantUML diagrams (fails on findings >= --fail-on, default major)

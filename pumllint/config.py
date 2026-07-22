@@ -21,8 +21,15 @@ def load_config(path: str | Path | None = None, cwd: str | Path = ".") -> dict:
     text = p.read_text(encoding="utf-8")
     suffix = p.suffix.lower()
     if suffix in (".yaml", ".yml"):
-        import yaml  # optional dependency; only needed for YAML configs
-
+        try:
+            import yaml  # optional dependency; only needed for YAML configs
+        except ImportError:
+            raise ValueError(
+                f"config file {p} is YAML but PyYAML is not installed — "
+                f"install with `pip install pumllint[yaml]`, or use a "
+                f".toml/.json config; in a pre-commit hook, add "
+                f"`additional_dependencies: [PyYAML]`"
+            ) from None
         return yaml.safe_load(text) or {}
     if suffix == ".toml":
         import tomllib
