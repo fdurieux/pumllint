@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Iterable, Type
 from ..model import Violation
 
 if TYPE_CHECKING:  # annotation-only imports; avoids a runtime reporters->scoring edge
+    from ..baseline import BaselineEntry
     from ..model import Diagram
     from ..scoring import MaturityResult
 
@@ -21,9 +22,18 @@ class Reporter(ABC):
     def render(self, violations: Iterable[Violation]) -> str:
         ...
 
-    def render_maturity(self, results: Iterable[tuple["Diagram", "MaturityResult"]]) -> str:
+    def render_maturity(
+        self,
+        results: Iterable[tuple["Diagram", "MaturityResult"]],
+        *,
+        baseline: "dict[str, BaselineEntry] | None" = None,
+    ) -> str:
         """Render maturity scores for the ``score`` command. Optional: reporters
-        that don't support it (default) raise a clear error."""
+        that don't support it (default) raise a clear error.
+
+        ``baseline`` is the loaded ratchet baseline (``--baseline`` compare
+        runs only); reporters that receive one add trend/delta annotations.
+        """
         raise NotImplementedError(
             f"Reporter '{self.format_name}' does not support maturity output"
         )
