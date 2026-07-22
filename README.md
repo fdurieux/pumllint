@@ -31,13 +31,38 @@ order.puml [Order]: Level 3 (Disciplined) — 68/100
   To reach Level 4 (Precise):
     • DIM-CMP is 61, needs >= 70 — fix:
         SEQ102 major  order.puml:18  participant declaration has no role type
+
+Model set: Level 3 (Disciplined) — 68/100 weighted across 1 diagram(s)
 ```
+
+Every report ends with a **model-set summary**: the worst per-diagram level
+(the set is only as trustworthy as its weakest diagram) plus an
+element-weighted composite across all scored diagrams. `--min-level` gates on
+exactly that model-set level — it fails as soon as any diagram is below N.
 
 ```bash
 python -m pumllint score diagrams/ --min-level 4     # CI gate: exit 1 below Level 4
 python -m pumllint score diagrams/ --profile codegen # Level 5 requires this profile
 python -m pumllint score diagrams/ --check-syntax    # also run plantuml -checkonly
 ```
+
+### Baseline / ratchet mode
+
+On a brownfield model set, a fixed `--min-level` gate would demand a big-bang
+cleanup. Ratchet instead: record today's per-diagram levels once, then fail CI
+only when a diagram drops **below its own baseline**.
+
+```bash
+python -m pumllint score diagrams/ --baseline maturity.json   # 1st run records,
+                                                              # later runs ratchet
+python -m pumllint score diagrams/ --baseline maturity.json --update-baseline
+                                                              # accept the status quo
+```
+
+Commit `maturity.json`. Diagrams new since the baseline always pass the
+ratchet (combine with `--min-level` to hold new work to a floor); regressions
+are listed on stderr as `regression: <file>::<diagram>: Level 2 (baseline 3)`
+and exit 1.
 
 Why gate on it: in a measured experiment (75 generation runs, independent
 LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with

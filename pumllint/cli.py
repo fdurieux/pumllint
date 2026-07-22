@@ -5,7 +5,8 @@ Two commands:
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
 
 Exit codes: 0 = clean / at-or-above gate, 1 = lint violations at/above
---fail-on (lint) or a diagram below --min-level (score), 2 = usage/config error.
+--fail-on (lint) or a diagram below --min-level or a --baseline regression
+(score), 2 = usage/config error.
 Designed to drop straight into a CI step.
 """
 
@@ -72,6 +73,17 @@ def build_score_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Run the DIM-SYN gate (plantuml -checkonly) per file; failures force Level 1",
     )
+    p.add_argument(
+        "--baseline",
+        metavar="FILE",
+        help="Ratchet mode: compare per-diagram levels against FILE and exit 1 "
+        "only on regression; records the baseline if FILE does not exist yet",
+    )
+    p.add_argument(
+        "--update-baseline",
+        action="store_true",
+        help="Rewrite --baseline FILE with the current levels (accept the status quo)",
+    )
     return p
 
 
@@ -126,6 +138,9 @@ def _run_score(argv: list[str]) -> int:
     if not args.paths:
         print("error: no paths given", file=sys.stderr)
         return 2
+    if args.update_baseline and not args.baseline:
+        print("error: --update-baseline requires --baseline FILE", file=sys.stderr)
+        return 2
 
     try:
         config = _apply_cli_overrides(load_config(args.config), args)
@@ -151,17 +166,48 @@ def _run_score(argv: list[str]) -> int:
 
     _emit(report, args.output)
 
-    if args.min_level is not None:
-        if not results:
-            print(
-                "error: --min-level given but no diagrams were scored "
-                "(no parseable @startuml blocks under the given paths)",
-                file=sys.stderr,
-            )
+    gated = args.min_level is not None or args.baseline
+    if gated and not results:
+        print(
+            "error: a gate was requested but no diagrams were scored "
+            "(no parseable @startuml blocks under the given paths)",
+            file=sys.stderr,
+        )
+        return 2
+
+    failed = False
+    if args.baseline:
+        try:
+            failed |= _apply_baseline(args, results)
+        except (OSError, ValueError) as e:
+            print(f"error: {e}", file=sys.stderr)
             return 2
-        below = [r for _, r in results if r.level < args.min_level]
-        return 1 if below else 0
-    return 0
+    if args.min_level is not None:
+        failed |= any(r.level < args.min_level for _, r in results)
+    return 1 if failed else 0
+
+
+def _apply_baseline(args: argparse.Namespace, results) -> bool:
+    """Record or ratchet against ``args.baseline``; True means regression."""
+    from .baseline import find_regressions, load_baseline, write_baseline
+
+    path = Path(args.baseline)
+    if args.update_baseline or not path.exists():
+        write_baseline(path, results)
+        verb = "updated" if args.update_baseline else "recorded"
+        print(
+            f"baseline: {verb} {len(results)} diagram level(s) in {path}",
+            file=sys.stderr,
+        )
+        return False
+    regressions = find_regressions(load_baseline(path), results)
+    for reg in regressions:
+        print(
+            f"regression: {reg.key}: Level {reg.current_level} "
+            f"(baseline {reg.baseline_level})",
+            file=sys.stderr,
+        )
+    return bool(regressions)
 
 
 def _emit(report: str, output: str | None) -> None:

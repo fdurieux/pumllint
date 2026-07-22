@@ -74,6 +74,19 @@ Composite:
 composite = Σ weight(d) × score(d)   for d in weighted dimensions (weights sum to 1.0)
 ```
 
+Model-set aggregate (the "per model set" answer, 0.6.0):
+
+```
+set_level     = min(level(u))  for each scored unit u          # worst diagram
+set_composite = Σ composite(u) × max(1, element_count(u)) / Σ max(1, element_count(u))
+```
+
+The set level is the *worst* per-diagram level — levels are claims, and a
+claim about a set can only be as strong as its weakest member (this also
+makes the `--min-level` gate and the set level agree by construction). The
+set composite is element-weighted so a large detailed diagram moves it more
+than a stub; empty diagrams weigh 1 so they still register.
+
 ## 4. Maturity levels
 
 | Level | Name             | Criteria                                                                  |
@@ -134,10 +147,16 @@ not measures, so the maturity object is written to the JSON report only; optiona
 ## 6. CLI
 
 ```
-pumllint score <paths> [--min-level N] [--check-syntax]
+pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--update-baseline]]
 ```
 
-- `--min-level N` — exit non-zero if any scored unit is below level N (CI gate).
+- `--min-level N` — exit non-zero if any scored unit is below level N
+  (equivalently: if the model-set level is below N). The CI gate.
+- `--baseline FILE` — ratchet mode (0.6.0): compare per-diagram levels
+  against FILE and exit non-zero only on *regression* (a diagram below its
+  recorded level). A missing FILE is recorded on the spot; diagrams new since
+  the baseline pass. `--update-baseline` rewrites FILE with the current
+  levels. Makes the gate adoptable on brownfield model sets.
 - `--check-syntax` — run the DIM-SYN gate (`<command> -checkonly <file>` per
   file); failures force Level 1. Also enabled via config: `scoring:
   {syntax_gate: true, syntax_command: plantuml}` (`syntax_command` may be a

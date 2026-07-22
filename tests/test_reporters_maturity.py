@@ -54,8 +54,9 @@ def test_text_reporter_clean_diagram_has_no_gap_section():
 def test_json_reporter_emits_maturity_object():
     results = _results()
     payload = json.loads(get_reporter("json").render_maturity(results))
-    assert isinstance(payload, list) and len(payload) == 1
-    entry = payload[0]
+    assert set(payload) == {"diagrams", "modelSet"}
+    assert len(payload["diagrams"]) == 1
+    entry = payload["diagrams"][0]
     assert entry["file"] == "order.puml"
     maturity = entry["maturity"]
     assert set(maturity) == {
@@ -66,13 +67,30 @@ def test_json_reporter_emits_maturity_object():
     assert isinstance(maturity["gapReport"], list)
 
 
+def test_json_reporter_emits_model_set_summary():
+    results = _results()
+    payload = json.loads(get_reporter("json").render_maturity(results))
+    ms = payload["modelSet"]
+    assert set(ms) == {"level", "levelName", "score", "diagramCount", "elementCount"}
+    # one diagram: the set summary mirrors it
+    _, r = results[0]
+    assert ms["level"] == r.level
+    assert ms["score"] == round(r.composite, 2)
+    assert ms["diagramCount"] == 1
+
+
+def test_text_reporter_shows_model_set_line():
+    out = get_reporter("text").render_maturity(_results())
+    assert "Model set: Level" in out
+
+
 def test_json_gap_findings_are_structured():
     results = _results()
     _, r = results[0]
     if not r.gap_report:
         return  # nothing to assert
     payload = json.loads(get_reporter("json").render_maturity(results))
-    gap = payload[0]["maturity"]["gapReport"][0]
+    gap = payload["diagrams"][0]["maturity"]["gapReport"][0]
     assert set(gap) >= {"kind", "message", "findings"}
     for f in gap["findings"]:
         assert set(f) == {"ruleId", "severity", "message", "file", "line"}
@@ -91,5 +109,6 @@ def test_sonar_reporter_emits_one_synthetic_issue_per_diagram():
 
 def test_empty_results_render_gracefully():
     assert get_reporter("text").render_maturity([]) == "No diagrams to score."
-    assert json.loads(get_reporter("json").render_maturity([])) == []
+    payload = json.loads(get_reporter("json").render_maturity([]))
+    assert payload == {"diagrams": [], "modelSet": None}
     assert json.loads(get_reporter("sonar").render_maturity([]))["issues"] == []
