@@ -4,25 +4,25 @@ Status baseline: **v0.5.0** (2026-07-22) shipped the complete SCORING.md
 maturity model — scorer, gap reports, `score --min-level` CI gate, integrity
 caps C1–C7, XD cross-diagram pack — calibrated (SCORING.md §9), frozen behind
 golden tests, and empirically characterized (EVIDENCE.md: fidelity
-correlation r ≈ 0.49, sharp degradation below Level 2). This file tracks what
-remains, grouped into arcs. Keep it updated as items land.
+correlation r ≈ 0.49, sharp degradation below Level 2). **v0.6.0**
+(2026-07-23) added Arc A's model-set aggregate score and Arc B's
+baseline/ratchet mode. This file tracks what remains, grouped into arcs.
+Keep it updated as items land.
 
-## Arc A — Integrity (one leftover)
+## Arc A — Integrity (done)
 
-- [ ] **Model-set aggregate score** — SCORING.md §1 promises scores "per
-  diagram *(and per model set)*"; only per-diagram exists. Add a batch-level
-  summary (worst level + weighted composite across all scored diagrams) to
-  `score_groups` consumers and the reporters, and let `--min-level`
-  optionally gate on the aggregate. The last unfulfilled sentence of the
-  original spec.
+- [x] **Model-set aggregate score** *(0.6.0)* — `aggregate_scores()` folds
+  per-diagram results into a `ModelSetResult` (worst level +
+  element-weighted composite, SCORING.md §3); text and json reporters emit
+  it. `--min-level` gates on the model-set level by construction (set level
+  = worst diagram level).
 
 ## Arc B — Trust & adoption (highest-value next arc)
 
-- [ ] **Baseline/ratchet mode** — `pumllint score --baseline maturity.json`:
-  record current per-diagram levels, then fail CI only on *regression*
-  against the baseline. This is what makes the gate adoptable on brownfield
-  model sets without a big-bang cleanup. Prime 0.6.0 candidate together with
-  the model-set score.
+- [x] **Baseline/ratchet mode** *(0.6.0)* — `pumllint score --baseline
+  maturity.json` records per-diagram levels on first run, then fails CI only
+  on *regression*; `--update-baseline` accepts the status quo
+  (`pumllint/baseline.py`).
 - [ ] Trend/delta reporting — "Level 3 → 4 since last baseline" in the text
   report; machine-readable delta in JSON.
 - [ ] Badge output (shields.io-style endpoint JSON or SVG) for READMEs.
@@ -76,6 +76,8 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next release (0.6.0): Arc A's model-set score + Arc B's
-  baseline/ratchet — small, and together they convert the CI gate from
-  greenfield-only to adoptable-anywhere.
+- Recommended next release (0.7.0): Arc B's trend/delta reporting — the
+  baseline file (0.6.0) already stores the previous levels, so "Level 3 → 4
+  since last baseline" is mostly report plumbing; pair it with the badge
+  and/or the GitHub Action + pre-commit packaging to complete the adoption
+  story.
