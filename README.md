@@ -343,7 +343,10 @@ repos:
 
 Both hooks receive the staged PlantUML files (`.puml`, `.plantuml`, `.iuml`,
 `.wsd`). `pumllint-score` only gates when given `--min-level N` and/or
-`--baseline FILE` via `args`; without them it just prints the report.
+`--baseline FILE` via `args`; without them it just prints the report. Hook
+environments are isolated — if your repo uses a `pumllint.yaml` config, add
+`additional_dependencies: [PyYAML]` to the hook (toml/json configs need
+nothing extra).
 
 ## Tests
 
