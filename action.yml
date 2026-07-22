@@ -1,0 +1,97 @@
+name: "pumllint"
+description: >-
+  Semantic linting and maturity scoring for PlantUML diagrams — lint findings,
+  a 1–5 maturity gate (--min-level), and baseline/ratchet CI adoption.
+author: "fdurieux"
+branding:
+  icon: "check-circle"
+  color: "purple"
+
+inputs:
+  command:
+    description: "'lint' or 'score'"
+    default: "lint"
+  paths:
+    description: ".puml files or directories to check (space-separated)"
+    default: "."
+  config:
+    description: "Config file (yaml/toml/json); auto-detected when empty"
+    default: ""
+  profile:
+    description: "Rule profile to activate (e.g. codegen)"
+    default: ""
+  format:
+    description: "Output format: text | json | sonar | badge (badge: score only)"
+    default: ""
+  output:
+    description: "Write the report to this file instead of stdout"
+    default: ""
+  fail-on:
+    description: "lint: minimum severity that fails the step (default major)"
+    default: ""
+  min-level:
+    description: "score: fail the step if any diagram is below level N (1-5)"
+    default: ""
+  baseline:
+    description: "score: ratchet against this baseline file (see README)"
+    default: ""
+  update-baseline:
+    description: "score: rewrite the baseline with current levels (true/false)"
+    default: "false"
+  extra-args:
+    description: "Extra CLI arguments appended verbatim (space-separated)"
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Install pumllint
+      shell: bash
+      run: python3 -m pip install --quiet "${GITHUB_ACTION_PATH}"
+
+    - name: Run pumllint
+      shell: bash
+      # Inputs go through env vars, not inline ${{ }} interpolation in the
+      # script body — that keeps arbitrary input values out of bash syntax.
+      env:
+        IN_COMMAND: ${{ inputs.command }}
+        IN_PATHS: ${{ inputs.paths }}
+        IN_CONFIG: ${{ inputs.config }}
+        IN_PROFILE: ${{ inputs.profile }}
+        IN_FORMAT: ${{ inputs.format }}
+        IN_OUTPUT: ${{ inputs.output }}
+        IN_FAIL_ON: ${{ inputs.fail-on }}
+        IN_MIN_LEVEL: ${{ inputs.min-level }}
+        IN_BASELINE: ${{ inputs.baseline }}
+        IN_UPDATE_BASELINE: ${{ inputs.update-baseline }}
+        IN_EXTRA_ARGS: ${{ inputs.extra-args }}
+      run: |
+        set -euo pipefail
+        cmd=(python3 -m pumllint)
+        if [ "${IN_COMMAND}" = "score" ]; then
+          cmd+=(score)
+        elif [ "${IN_COMMAND}" != "lint" ]; then
+          echo "::error::command must be 'lint' or 'score', got '${IN_COMMAND}'"
+          exit 2
+        fi
+        read -r -a path_args <<< "${IN_PATHS}"
+        cmd+=("${path_args[@]}")
+        if [ -n "${IN_CONFIG}" ]; then cmd+=(-c "${IN_CONFIG}"); fi
+        if [ -n "${IN_PROFILE}" ]; then cmd+=(--profile "${IN_PROFILE}"); fi
+        if [ -n "${IN_FORMAT}" ]; then cmd+=(-f "${IN_FORMAT}"); fi
+        if [ -n "${IN_OUTPUT}" ]; then cmd+=(-o "${IN_OUTPUT}"); fi
+        if [ "${IN_COMMAND}" = "score" ]; then
+          if [ -n "${IN_MIN_LEVEL}" ]; then cmd+=(--min-level "${IN_MIN_LEVEL}"); fi
+          if [ -n "${IN_BASELINE}" ]; then cmd+=(--baseline "${IN_BASELINE}"); fi
+          if [ "${IN_UPDATE_BASELINE}" = "true" ]; then cmd+=(--update-baseline); fi
+        else
+          if [ -n "${IN_FAIL_ON}" ]; then cmd+=(--fail-on "${IN_FAIL_ON}"); fi
+        fi
+        if [ -n "${IN_EXTRA_ARGS}" ]; then
+          read -r -a extra <<< "${IN_EXTRA_ARGS}"
+          cmd+=("${extra[@]}")
+        fi
+        echo "::group::pumllint"
+        echo "+ ${cmd[*]}"
+        "${cmd[@]}"
+        echo "::endgroup::"

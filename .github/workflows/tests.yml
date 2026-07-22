@@ -37,3 +37,47 @@ jobs:
             || (echo "::error::tests/bdd/features is stale — run: python tools/extract_features.py"; exit 1)
       - name: Run full test suite
         run: python -m pytest
+
+  # Dogfood the composite action (action.yml) against the bundled examples.
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint a clean example via the action
+        uses: ./
+        with:
+          paths: examples/order_payment_codegen_good.puml
+      - name: Score gate via the action
+        uses: ./
+        with:
+          command: score
+          paths: examples
+          min-level: "2"
+
+  # Dogfood the pre-commit hooks (.pre-commit-hooks.yaml).
+  pre-commit-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pre-commit
+        run: pip install pre-commit
+      # Run from a scratch repo, like a real consumer: hook envs are isolated
+      # (no PyYAML), so running inside this repo would trip over the
+      # repo-local pumllint.yaml config.
+      - name: Run both hooks as a user repo would
+        run: |
+          set -euo pipefail
+          SRC="$GITHUB_WORKSPACE"
+          TMP="$(mktemp -d)"
+          cp "$SRC/examples/order_payment_codegen_good.puml" "$TMP/"
+          cd "$TMP"
+          git init -q
+          git add .
+          git -c user.email=ci@example.invalid -c user.name=ci commit -qm init
+          pre-commit try-repo "$SRC" pumllint \
+            --files order_payment_codegen_good.puml --verbose
+          pre-commit try-repo "$SRC" pumllint-score \
+            --files order_payment_codegen_good.puml --verbose
