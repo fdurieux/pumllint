@@ -26,6 +26,7 @@ def _load_extractor():
 def test_committed_features_match_rules_md():
     extractor = _load_extractor()
     expected = extractor.extract((_ROOT / "RULES.md").read_text(encoding="utf-8"))
+    expected.update(extractor.extract_scoring((_ROOT / "SCORING.md").read_text(encoding="utf-8")))
 
     on_disk = {p.stem: p.read_text(encoding="utf-8") for p in _FEATURES_DIR.glob("*.feature")}
 

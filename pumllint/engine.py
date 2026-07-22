@@ -7,7 +7,9 @@ from typing import Iterable
 
 from .model import Diagram, Severity, Violation
 from .parser import parse_file
-from .rules import Rule, discover
+from .rules import CrossDiagramRule, Rule, discover
+
+_SORT_KEY = lambda v: (v.file_path, v.line, v.rule_id)  # noqa: E731
 
 
 class Engine:
@@ -20,6 +22,7 @@ class Engine:
         # profile-gated rules by id/name) and escalations (severity overrides
         # for any rule, e.g. SEQ001: blocker).
         profile: str | None = self.config.get("profile")
+        self.profile = profile  # source of truth for scoring's C7 profile cap
         profiles_map: dict = self.config.get("profiles") or {}
         profile_cfg: dict = (profiles_map.get(profile) or {}) if profile else {}
         enable_keys = {str(k).lower() for k in (profile_cfg.get("enable") or [])}
@@ -29,6 +32,7 @@ class Engine:
         }
 
         self.rules: list[Rule] = []
+        self.cross_rules: list[CrossDiagramRule] = []
         for rule_id, cls in sorted(discover().items()):
             if cls.profiles and not (
                 (profile is not None and profile in cls.profiles)
@@ -44,27 +48,100 @@ class Engine:
             esc = escalate.get(rule_id.lower()) or escalate.get(cls.name.lower())
             if esc:  # profile escalation wins over rule-level severity
                 rule.severity = Severity(esc)
-            self.rules.append(rule)
+            if isinstance(rule, CrossDiagramRule):
+                self.cross_rules.append(rule)
+            else:
+                self.rules.append(rule)
 
     # -- running ----------------------------------------------------------
-    def lint_diagrams(self, diagrams: Iterable[Diagram]) -> list[Violation]:
+    def lint_diagram(self, diagram: Diagram) -> list[Violation]:
+        """Violations for one diagram, sorted by (file, line, rule id).
+
+        The single-diagram unit the maturity scorer consumes; the flat and
+        grouped accessors below both build on it.
+        """
         honor_suppressions = self.config.get("suppressions", True) is not False
         violations: list[Violation] = []
-        for d in diagrams:
-            for rule in self.rules:
-                if "*" not in rule.applies_to and d.diagram_type not in rule.applies_to:
+        for rule in self.rules:
+            if "*" not in rule.applies_to and diagram.diagram_type not in rule.applies_to:
+                continue
+            for v in rule.check(diagram):
+                if honor_suppressions and _is_suppressed(diagram, rule, v):
                     continue
-                for v in rule.check(d):
-                    if honor_suppressions and _is_suppressed(d, rule, v):
-                        continue
-                    violations.append(v)
+                violations.append(v)
         return sorted(violations, key=lambda v: (v.file_path, v.line, v.rule_id))
 
+    def lint_diagrams(self, diagrams: Iterable[Diagram]) -> list[Violation]:
+        # Flatten the grouped result so flat and grouped output are identical
+        # by construction, not by parallel implementations.
+        violations = [v for _, vs in self.lint_diagrams_grouped(diagrams) for v in vs]
+        return sorted(violations, key=_SORT_KEY)
+
+    def lint_diagrams_grouped(
+        self, diagrams: Iterable[Diagram]
+    ) -> list[tuple[Diagram, list[Violation]]]:
+        """One (diagram, its-violations) pair per diagram — the per-unit input
+        for maturity scoring. Flattening this yields the same set as
+        :meth:`lint_diagrams`; cross-diagram findings land in the group of the
+        diagram that owns their file/line."""
+        diagrams = list(diagrams)
+        cross = self._cross_violations(diagrams)
+        groups: list[tuple[Diagram, list[Violation]]] = []
+        for d in diagrams:
+            vs = self.lint_diagram(d)
+            extra = cross.get(id(d))
+            if extra:
+                vs = sorted(vs + extra, key=_SORT_KEY)
+            groups.append((d, vs))
+        return groups
+
+    def _cross_violations(self, diagrams: list[Diagram]) -> dict[int, list[Violation]]:
+        """Cross-diagram findings keyed by ``id()`` of the owning diagram.
+
+        Active only for batches of more than one diagram (SCORING.md §6); each
+        rule sees only the diagrams matching its ``applies_to``, and needs at
+        least two of them to compare.
+        """
+        out: dict[int, list[Violation]] = {}
+        if len(diagrams) < 2 or not self.cross_rules:
+            return out
+        honor_suppressions = self.config.get("suppressions", True) is not False
+        for rule in self.cross_rules:
+            applicable = [
+                d for d in diagrams
+                if "*" in rule.applies_to or d.diagram_type in rule.applies_to
+            ]
+            if len(applicable) < 2:
+                continue
+            for v in rule.check_all(applicable):
+                owner = _owning_diagram(v, applicable)
+                if owner is None:
+                    # Never drop a finding for want of an owner: fall back to
+                    # the first diagram in the same file, then the first
+                    # applicable diagram in the batch.
+                    owner = next(
+                        (d for d in applicable if d.file_path == v.file_path),
+                        applicable[0],
+                    )
+                if honor_suppressions and _is_suppressed(owner, rule, v):
+                    continue
+                out.setdefault(id(owner), []).append(v)
+        return out
+
     def lint_paths(self, paths: Iterable[str | Path]) -> list[Violation]:
+        return self.lint_diagrams(self._parse_paths(paths))
+
+    def lint_paths_grouped(
+        self, paths: Iterable[str | Path]
+    ) -> list[tuple[Diagram, list[Violation]]]:
+        return self.lint_diagrams_grouped(self._parse_paths(paths))
+
+    @staticmethod
+    def _parse_paths(paths: Iterable[str | Path]) -> list[Diagram]:
         diagrams: list[Diagram] = []
         for f in collect_files(paths):
             diagrams.extend(parse_file(f))
-        return self.lint_diagrams(diagrams)
+        return diagrams
 
 
 def collect_files(paths: Iterable[str | Path], exts=(".puml", ".plantuml", ".iuml", ".wsd")) -> list[Path]:
@@ -78,6 +155,22 @@ def collect_files(paths: Iterable[str | Path], exts=(".puml", ".plantuml", ".ium
         else:
             raise FileNotFoundError(p)
     return files
+
+
+def _owning_diagram(v: Violation, diagrams: list[Diagram]) -> Diagram | None:
+    """The diagram whose file and line span contain this violation.
+
+    An unterminated diagram (``end_line is None``) spans to the start of the
+    next diagram in the file, so the *latest* matching start wins — otherwise
+    an unterminated first block would swallow every later block's findings.
+    """
+    owner: Diagram | None = None
+    for d in diagrams:
+        end = d.end_line if d.end_line is not None else float("inf")
+        if d.file_path == v.file_path and d.start_line <= v.line <= end:
+            if owner is None or d.start_line > owner.start_line:
+                owner = d
+    return owner
 
 
 def _is_suppressed(diagram: Diagram, rule: Rule, v: Violation) -> bool:

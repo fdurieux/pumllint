@@ -22,15 +22,37 @@ class Severity(Enum):
     BLOCKER = "blocker"
 
 
+class Dimension(Enum):
+    """Maturity-scoring dimensions (see SCORING.md).
+
+    Every rule is tagged with exactly one dimension; the scorer aggregates
+    violations per dimension. ``DIM-SYN`` is the external syntax gate and is not
+    carried by any rule — it exists here so the full vocabulary is one place.
+    """
+
+    SYNTAX = "DIM-SYN"  # gate: plantuml -checkonly (no rules carry this)
+    SEMANTIC = "DIM-SEM"  # semantic correctness; default bucket
+    COMPLETENESS = "DIM-CMP"  # typed params/returns, guards, error paths, orphans
+    CONSISTENCY = "DIM-CON"  # naming conventions; cross-diagram identity
+    TRACEABILITY = "DIM-TRC"  # title, id, ownership, requirement/ADR links
+    READABILITY = "DIM-RDB"  # participant count, nesting depth, size
+    AMBIGUITY = "DIM-AMB"  # vague verbs, unlabeled arrows, hidden structure
+
+
 @dataclass(frozen=True)
 class Violation:
-    """A single rule finding at a location in a source file."""
+    """A single rule finding at a location in a source file.
+
+    ``dimension`` is copied from the emitting rule (like ``severity``) so the
+    maturity scorer can bucket findings without consulting the rule registry.
+    """
 
     rule_id: str
     message: str
     file_path: str
     line: int
     severity: Severity
+    dimension: Dimension = Dimension.SEMANTIC
     column: Optional[int] = None
 
 
@@ -196,6 +218,33 @@ class Diagram:
     suppressions: list[Suppression] = field(default_factory=list)
 
     # -- convenience accessors -------------------------------------------
+    @property
+    def element_count(self) -> int:
+        """Count of semantic elements, used as the maturity-score denominator.
+
+        Density = penalty / element_count, so larger diagrams are not punished
+        for size alone (see SCORING.md §3). Per diagram type:
+        sequence = participants + messages; activity = nodes; usecase =
+        distinct actors/use-cases + relationships. ``unknown`` sums whatever the
+        parser populated. The scorer applies ``max(1, ...)`` so 0 is safe.
+        """
+        if self.diagram_type == "sequence":
+            return len(self.participants) + len(self.messages)
+        if self.diagram_type == "activity":
+            return len(self.activity_nodes)
+        if self.diagram_type == "usecase":
+            nodes = set(self.participants)
+            for src, dst, _line in self.usecase_links:
+                nodes.add(src)
+                nodes.add(dst)
+            return len(nodes) + len(self.usecase_links)
+        return (
+            len(self.participants)
+            + len(self.messages)
+            + len(self.activity_nodes)
+            + len(self.usecase_links)
+        )
+
     @property
     def title(self) -> Optional[Directive]:
         return next((d for d in self.directives if d.kind == "title"), None)

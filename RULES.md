@@ -1308,6 +1308,156 @@ Feature: UC003 include and extend direction
 
 ---
 
+## XD — Cross-diagram consistency rules (applies_to: sequence, cross-diagram)
+
+XD rules build a participant symbol table across every sequence diagram in the
+lint batch: the same entity must keep one identity — one declaration kind, one
+stereotype, one spelling. They activate only when more than one diagram is
+linted (SCORING.md §6); single-diagram runs score DIM-CON from naming rules
+alone. For XD001/XD002 the **majority declaration wins** (ties resolve to the
+first-seen form): violations are attributed to the *minority* sites and
+reference an authoritative majority site, so a single outlier never indicts
+the conforming rest. XD003 flags later case-variants of the first-seen
+spelling.
+
+### XD001 — Conflicting participant kind
+**Severity:** major · **Status:** ✅ Implemented (v0.5.0)
+
+**Rationale:** The same entity declared as `participant` in one diagram and
+`database` (or `actor`, `queue`, …) in another has no single identity; readers
+and code generators cannot tell which role is authoritative. Implicit
+lifelines are ignored — they have no authored kind to conflict.
+
+```gherkin
+Feature: XD001 conflicting participant kind
+
+  Scenario: same entity declared with different kinds across diagrams
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      database OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD001" issue with severity "major" is reported on line 8
+
+  Scenario: consistent kinds across diagrams pass
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD001" issue is reported
+```
+
+### XD002 — Conflicting participant stereotype
+**Severity:** minor · **Status:** ✅ Implemented (v0.5.0)
+
+**Rationale:** Stereotypes carry semantic weight (SEQ107 keys failure-path
+requirements off `<<external>>`); the same entity stereotyped `<<service>>`
+here and `<<external>>` there splits its identity. A missing stereotype is not
+a conflict — that is SEQ102's concern under the codegen profile.
+
+```gherkin
+Feature: XD002 conflicting participant stereotype
+
+  Scenario: same entity stereotyped differently across diagrams
+    Given the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD002" issue with severity "minor" is reported on line 7
+
+  Scenario: consistent stereotypes across diagrams pass
+    Given the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD002" issue is reported
+```
+
+### XD003 — Participant name case collision
+**Severity:** minor · **Status:** ✅ Implemented (v0.5.0)
+
+**Rationale:** `OrderSvc` in one diagram and `Ordersvc` in another are almost
+certainly the same entity spelled differently — PlantUML treats them as two
+lifelines, so the model silently forks the entity's identity. Implicit
+participants are included: spelling drift usually enters via arrows.
+
+```gherkin
+Feature: XD003 participant name case collision
+
+  Scenario: names differing only by case across diagrams
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      participant Ordersvc
+      Client -> Ordersvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD003" issue with severity "minor" is reported on line 8
+
+  Scenario: identical spelling across diagrams passes
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD003" issue is reported
+```
+
 ## Rule summary
 
 | ID | Severity | Scope | Summary | Status |
@@ -1344,10 +1494,14 @@ Feature: UC003 include and extend direction
 | UC001 | major | usecase | Use cases connected to actors | ✅ v0.1.0 |
 | UC002 | minor | usecase | Verb–object use cases, noun actors | ✅ v0.4.0 |
 | UC003 | minor | usecase | Include/extend direction | 🚫 (needs include/extend parsing) |
+| XD001 | major | sequence (cross) | Conflicting participant kind | ✅ v0.5.0 |
+| XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
+| XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
 
-**Totals:** 32 base-catalog rules — 23 implemented (SEQ008/009/010, ACT005/006 and
-UC002 shipped in v0.4.0), 9 blocked on new parsers (CLS×5, STA×3) or parser extensions
-(UC003). Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
+**Totals:** 35 base-catalog rules — 26 implemented (SEQ008/009/010, ACT005/006 and
+UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in v0.5.0), 9 blocked
+on new parsers (CLS×5, STA×3) or parser extensions (UC003). Separately:
+SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
 
 ## Implementation notes
 
