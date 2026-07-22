@@ -22,6 +22,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 RULES_MD = REPO_ROOT / "RULES.md"
+SCORING_MD = REPO_ROOT / "SCORING.md"
 FEATURES_DIR = REPO_ROOT / "tests" / "bdd" / "features"
 
 _SECTION_RE = re.compile(r"^### (?P<id>[A-Z]{2,3}\d{3}) ", re.MULTILINE)
@@ -55,9 +56,23 @@ def extract(text: str) -> dict[str, str]:
     return features
 
 
+def extract_scoring(text: str) -> dict[str, str]:
+    """Map ``scoring -> .feature`` content from SCORING.md's §7 Gherkin block.
+
+    SCORING.md is canonical for the maturity scorer the same way RULES.md is
+    for rules; its single fenced Gherkin block becomes ``scoring.feature``
+    (step vocabulary: tests/bdd/test_scoring_feature.py).
+    """
+    gherkin = _GHERKIN_RE.search(text)
+    if not gherkin:
+        return {}
+    return {"scoring": gherkin.group("body").rstrip() + "\n"}
+
+
 def main() -> int:
     text = RULES_MD.read_text(encoding="utf-8")
     features = extract(text)
+    features.update(extract_scoring(SCORING_MD.read_text(encoding="utf-8")))
     FEATURES_DIR.mkdir(parents=True, exist_ok=True)
     # Drop stale feature files for rules no longer migrated.
     for existing in FEATURES_DIR.glob("*.feature"):

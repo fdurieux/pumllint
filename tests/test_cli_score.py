@@ -1,0 +1,115 @@
+"""CLI tests for the `score` subcommand (Phase 6). Plain assert functions; all
+output is routed to a file with -o so nothing prints under the zero-dependency
+runner, and an explicit empty JSON config isolates tests from the repo's
+pumllint.yaml.
+"""
+
+import json
+import tempfile
+from pathlib import Path
+
+from pumllint.cli import main
+from pumllint.engine import Engine
+from pumllint.scoring import score_groups
+
+_SRC = "@startuml Order\nAlice -> Bob : hi\n@enduml\n"
+
+
+def _fixture(tmp: str):
+    puml = Path(tmp) / "d.puml"
+    puml.write_text(_SRC, encoding="utf-8")
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text("{}", encoding="utf-8")  # empty config -> scoring defaults
+    return puml, cfg
+
+
+def _expected_level(puml: Path) -> int:
+    groups = Engine({}).lint_paths_grouped([str(puml)])
+    return score_groups(groups)[0][1].level
+
+
+def test_score_command_writes_report():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        rc = main(["score", str(puml), "-c", str(cfg), "-o", str(out)])
+        assert rc == 0
+        assert "Level" in out.read_text(encoding="utf-8")
+
+
+def test_min_level_gate_passes_at_threshold():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        level = _expected_level(puml)
+        rc = main(["score", str(puml), "-c", str(cfg), "--min-level", str(level), "-o", str(out)])
+        assert rc == 0
+
+
+def test_min_level_gate_fails_below_threshold():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        level = _expected_level(puml)
+        if level >= 5:
+            return  # can't ask for a higher level
+        rc = main(["score", str(puml), "-c", str(cfg), "--min-level", str(level + 1), "-o", str(out)])
+        assert rc == 1
+
+
+def test_score_json_format():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.json"
+        rc = main(["score", str(puml), "-c", str(cfg), "-f", "json", "-o", str(out)])
+        assert rc == 0
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert isinstance(data, list) and data[0]["maturity"]["level"] == _expected_level(puml)
+
+
+def test_score_requires_paths():
+    assert main(["score"]) == 2
+
+
+def test_check_syntax_gate_forces_level_1_on_failure():
+    import sys
+
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, _ = _fixture(tmp)
+        cfg = Path(tmp) / "gate.json"
+        cfg.write_text(json.dumps({
+            "scoring": {"syntax_command": [sys.executable, "-c", "import sys; sys.exit(1)"]}
+        }), encoding="utf-8")
+        out = Path(tmp) / "r.txt"
+        rc = main(["score", str(puml), "-c", str(cfg), "--check-syntax",
+                   "--min-level", "2", "-o", str(out)])
+        assert rc == 1  # gate failure -> Level 1 -> below --min-level 2
+        assert "syntax gate" in out.read_text(encoding="utf-8")
+
+
+def test_syntax_gate_enabled_via_config_and_passing():
+    import sys
+
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, _ = _fixture(tmp)
+        cfg = Path(tmp) / "gate.json"
+        cfg.write_text(json.dumps({
+            "scoring": {
+                "syntax_gate": True,
+                "syntax_command": [sys.executable, "-c", "import sys; sys.exit(0)"],
+            }
+        }), encoding="utf-8")
+        out = Path(tmp) / "r.txt"
+        rc = main(["score", str(puml), "-c", str(cfg), "--min-level", "2", "-o", str(out)])
+        assert rc == 0
+        assert "syntax gate" not in out.read_text(encoding="utf-8")
+
+
+def test_default_command_still_lints():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "lint.txt"
+        rc = main([str(puml), "-c", str(cfg), "-o", str(out)])
+        txt = out.read_text(encoding="utf-8")
+        assert rc in (0, 1)  # lint exit code, not a score gate
+        assert "To reach Level" not in txt  # lint output, not maturity
