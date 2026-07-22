@@ -15,9 +15,41 @@ python -m pumllint examples/                 # lint a directory recursively
 python -m pumllint --list-rules              # what can it check?
 python -m pumllint diagrams/ -f sonar -o pumllint-sonar.json
 python -m pumllint --profile codegen diagrams/   # + codegen-readiness rules
+python -m pumllint score diagrams/ --min-level 3 # maturity gate (see below)
 ```
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
+
+## Maturity scoring
+
+`pumllint score` aggregates rule findings into a **360° maturity level** per
+diagram — from 1 (*Sketchy*) to 5 (*Generation-ready*) — plus a prescriptive
+gap report listing exactly which findings block the next level:
+
+```text
+order.puml [Order]: Level 3 (Disciplined) — 68/100
+  To reach Level 4 (Precise):
+    • DIM-CMP is 61, needs >= 70 — fix:
+        SEQ102 major  order.puml:18  participant declaration has no role type
+```
+
+```bash
+python -m pumllint score diagrams/ --min-level 4     # CI gate: exit 1 below Level 4
+python -m pumllint score diagrams/ --profile codegen # Level 5 requires this profile
+python -m pumllint score diagrams/ --check-syntax    # also run plantuml -checkonly
+```
+
+Why gate on it: in a measured experiment (75 generation runs, independent
+LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with
+the fidelity of code generated from the diagrams (r ≈ 0.49), and diagrams
+below Level 2 degraded generation sharply — fidelity dropped by roughly a
+third and invented business logic doubled. The gate keeps those diagrams out.
+Level 5 means *method-convention complete*: the diagram-side preconditions for
+faithful generation, bound to the `codegen` profile so it cannot be claimed
+without those rules running.
+
+Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
+All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 
 ## Rules
 
