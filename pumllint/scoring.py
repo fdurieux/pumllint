@@ -485,6 +485,49 @@ def score(
     )
 
 
+@dataclass
+class ModelSetResult:
+    """Batch-level summary of a scored model set (SCORING.md §1).
+
+    ``level`` is the worst per-diagram level — the set is only as trustworthy
+    as its weakest diagram, mirroring the ``--min-level`` gate. ``composite``
+    is the element-weighted mean of per-diagram composites, so a large
+    detailed diagram moves the set score more than a stub (each diagram
+    weighs at least 1 element so empty diagrams still register).
+    """
+
+    level: int
+    level_name: str
+    composite: float
+    diagram_count: int
+    element_count: int
+
+
+def aggregate_scores(
+    results: Iterable[tuple[Diagram, "MaturityResult"]],
+) -> Optional[ModelSetResult]:
+    """Fold per-diagram results into one :class:`ModelSetResult`.
+
+    Returns ``None`` for an empty result set — there is no meaningful
+    aggregate of nothing, and callers already special-case that.
+    """
+    results = list(results)
+    if not results:
+        return None
+    worst = min(r.level for _, r in results)
+    weights = [max(1, r.element_count) for _, r in results]
+    composite = sum(
+        r.composite * w for (_, r), w in zip(results, weights)
+    ) / sum(weights)
+    return ModelSetResult(
+        level=worst,
+        level_name=LEVEL_NAMES[worst],
+        composite=composite,
+        diagram_count=len(results),
+        element_count=sum(r.element_count for _, r in results),
+    )
+
+
 def score_groups(
     groups: Iterable[tuple[Diagram, list[Violation]]],
     *,
