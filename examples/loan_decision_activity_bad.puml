@@ -1,0 +1,12 @@
+@startuml
+' Deliberately messy activity diagram: no title, no start, unlabelled
+' branches, unclosed while, and the flow never reaches stop/end.
+:Receive application;
+if (Complete dossier?) then
+  :Run credit scoring;
+else
+  :Request missing documents;
+endif
+while (More collateral to value?)
+  :Value collateral item;
+@enduml

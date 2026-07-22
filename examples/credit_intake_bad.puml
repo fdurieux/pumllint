@@ -1,0 +1,22 @@
+@startuml
+' Deliberately messy: no name, no title, typo'd participant, unused actor,
+' unterminated alt, activation never closed, inline skinparam, empty label.
+skinparam backgroundColor #EEEBDC
+
+actor Customer
+participant FrontOffice
+participant CreditEngine
+participant Notary
+
+Customer -> FrontOffice : Submit credit application
+activate FrontOffice
+FrontOffice -> CreditEngine : Score applicant
+activate CreditEngine
+CreditEngine --> FrontOffice : Risk score
+deactivate CreditEngine
+
+alt score acceptable
+    FrontOffice -> Custmer : Offer proposal
+    FrontOffice -> CreditEngine :
+
+@enduml

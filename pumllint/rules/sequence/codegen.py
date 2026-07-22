@@ -1,0 +1,318 @@
+"""Codegen-readiness rules (SEQ101–SEQ109), active under the ``codegen`` profile.
+
+These rules validate whether a sequence diagram is precise and complete enough
+for an AI coding agent (or any downstream generator) to implement it without
+inventing missing details. They are disabled by default and activate with
+``profile: codegen`` (config) or ``--profile codegen`` (CLI).
+
+Rule ids SEQ100–SEQ199 are reserved for this range to avoid collision with the
+base catalog (SEQ001–SEQ099).
+"""
+
+from __future__ import annotations
+
+import re
+
+from ...model import (
+    Diagram,
+    pair_calls_and_replies,
+    walk_activation_stack,
+)
+from .. import Rule, register
+
+# Participant kinds that already convey an implementation mapping (SEQ102),
+# and kinds that denote persistence/messaging infrastructure (SEQ107).
+_TYPED_KINDS = ("actor", "boundary", "control", "entity", "database", "collections", "queue")
+_PERSISTENT_KINDS = ("database", "queue")
+
+_SIGNATURE = re.compile(r"[A-Za-z_][\w.]*\s*\(.*\)")
+
+
+class _CodegenRule(Rule):
+    """Shared plumbing for codegen rules.
+
+    Scope and profile gating (sequence-only, ``codegen`` profile) come from each
+    rule's ``catalog.toml`` entry, like every other rule.
+    """
+
+    def lexicon(self, key: str, defaults: tuple[str, ...]) -> tuple[str, ...]:
+        """A configurable lowercase word list, overridable per project."""
+        raw = self.options.get(key, defaults)
+        return tuple(str(t).lower() for t in raw)
+
+
+@register
+class ExplicitParticipants(_CodegenRule):
+    id = "SEQ101"
+
+    def check(self, diagram: Diagram):
+        for p in diagram.participants.values():
+            if not p.declared:
+                yield self.violation(
+                    diagram,
+                    p.line,
+                    f"Participant '{p.name}' is created implicitly on first use; "
+                    "declare it (participant/actor/database/...) so its identity is authoritative",
+                )
+
+
+@register
+class TypedParticipants(_CodegenRule):
+    id = "SEQ102"
+
+    def check(self, diagram: Diagram):
+        for p in diagram.participants.values():
+            if p.declared and p.kind == "participant" and not p.stereotype:
+                yield self.violation(
+                    diagram,
+                    p.line,
+                    f"Participant '{p.name}' has no role type; use a typed keyword "
+                    f"({', '.join(_TYPED_KINDS)}) or a <<stereotype>>",
+                )
+
+
+@register
+class SignatureMessages(_CodegenRule):
+    id = "SEQ103"
+
+    def check(self, diagram: Diagram):
+        pattern = re.compile(self.options.get("pattern", _SIGNATURE.pattern))
+        for m in diagram.messages:
+            if m.is_return_arrow:
+                continue  # replies are SEQ109's concern
+            label = m.label.strip()
+            if not pattern.fullmatch(label):
+                shown = label or "<unlabelled>"
+                yield self.violation(
+                    diagram,
+                    m.line,
+                    f"Message '{shown}' is not an operation signature; "
+                    "use name(params) so the operation is compilable",
+                )
+
+
+@register
+class SyncCallsReturn(_CodegenRule):
+    id = "SEQ104"
+
+    def check(self, diagram: Diagram):
+        for cr in pair_calls_and_replies(diagram):
+            if not cr.answered:
+                shown = cr.call.label.strip() or "<unlabelled>"
+                yield self.violation(
+                    diagram,
+                    cr.call.line,
+                    f"Synchronous call '{shown}' has no explicit return; "
+                    "add a reply arrow (-->) naming the returned value, or mark it async (->>)",
+                )
+
+
+@register
+class MachineEvaluableGuards(_CodegenRule):
+    id = "SEQ105"
+
+    DEFAULT_VAGUE = ("otherwise", "sometimes", "if needed", "maybe", "as required")
+    KINDS = ("alt", "opt", "loop")
+
+    def check(self, diagram: Diagram):
+        vague = self.lexicon("vague_terms", self.DEFAULT_VAGUE)
+        kinds = tuple(self.options.get("kinds", self.KINDS))
+        for b in diagram.blocks:
+            if b.kind not in kinds:
+                continue
+            guard = b.label.strip().strip("[]").strip()
+            if not guard:
+                yield self.violation(
+                    diagram, b.start_line, f"'{b.kind}' fragment has no guard condition"
+                )
+            elif guard.lower() in vague:
+                yield self.violation(
+                    diagram,
+                    b.start_line,
+                    f"Guard '{guard}' is not machine-evaluable; "
+                    "reference modelled values in a boolean expression",
+                )
+            for br in b.else_branches:
+                guard = br.label.strip().strip("[]").strip()
+                if not guard:
+                    yield self.violation(
+                        diagram, br.line, "'else' branch has no guard condition"
+                    )
+                elif guard.lower() == "else":
+                    if b.kind != "alt" or len(b.else_branches) != 1:
+                        yield self.violation(
+                            diagram,
+                            br.line,
+                            "literal [else] is only allowed as the complement "
+                            "of a two-branch alt",
+                        )
+                elif guard.lower() in vague:
+                    yield self.violation(
+                        diagram,
+                        br.line,
+                        f"Guard '{guard}' is not machine-evaluable; "
+                        "reference modelled values in a boolean expression",
+                    )
+
+
+@register
+class NoElisionMarkers(_CodegenRule):
+    id = "SEQ106"
+
+    DEFAULT_TOKENS = ("...", "…", "TBD", "TODO", "etc", "???", "and so on")
+
+    def check(self, diagram: Diagram):
+        tokens = self.lexicon("tokens", self.DEFAULT_TOKENS)
+        word_tokens = [t for t in tokens if re.fullmatch(r"[\w ]+", t)]
+        symbol_tokens = [t for t in tokens if t not in word_tokens]
+        word_re = (
+            re.compile(r"\b(?:" + "|".join(map(re.escape, word_tokens)) + r")\b", re.IGNORECASE)
+            if word_tokens
+            else None
+        )
+
+        def offending(text: str) -> str | None:
+            for t in symbol_tokens:
+                if t in text:
+                    return t
+            if word_re:
+                m = word_re.search(text)
+                if m:
+                    return m.group(0)
+            return None
+
+        sources = [(m.line, "message", m.label) for m in diagram.messages]
+        for b in diagram.blocks:
+            sources.append((b.start_line, "guard", b.label))
+            sources.extend((br.line, "guard", br.label) for br in b.else_branches)
+        sources.extend(
+            (d.line, "note", d.value) for d in diagram.directives if d.kind == "note"
+        )
+        for line, where, text in sorted(sources):
+            tok = offending(text)
+            if tok:
+                yield self.violation(
+                    diagram,
+                    line,
+                    f"Elision marker '{tok}' in {where} signals omitted behaviour; "
+                    "model it or the generator will invent it",
+                )
+
+
+@register
+class ExternalCallsFailurePath(_CodegenRule):
+    id = "SEQ107"
+
+    DEFAULT_FAILURE = ("error", "failure", "timeout", "exception")
+    _NEGATED = re.compile(r"(?:\bnot\b|!=|^\s*!)", re.IGNORECASE)
+
+    def check(self, diagram: Diagram):
+        failure_kw = self.lexicon("failure_keywords", self.DEFAULT_FAILURE)
+
+        def is_failure_label(label: str) -> bool:
+            low = label.lower()
+            return any(k in low for k in failure_kw) or bool(self._NEGATED.search(label))
+
+        def has_failure_branch(b) -> bool:
+            if is_failure_label(b.label):
+                return True
+            return any(is_failure_label(br.label) for br in b.else_branches)
+
+        fragile = {
+            p.name
+            for p in diagram.participants.values()
+            if p.kind in _PERSISTENT_KINDS
+            or (p.stereotype or "").lower() == "external"
+        }
+        error_groups = [
+            b for b in diagram.blocks if b.kind == "group" and is_failure_label(b.label)
+        ]
+        for m in diagram.messages:
+            if m.is_return_arrow or m.effective_target not in fragile:
+                continue
+            guarded = any(
+                b.kind == "alt" and b.contains_line(m.line) and has_failure_branch(b)
+                for b in diagram.blocks
+            )
+            guarded = guarded or any(
+                b.kind == "break" and b.contains_line(m.line) for b in diagram.blocks
+            )
+            guarded = guarded or any(g.start_line > m.line for g in error_groups)
+            if not guarded:
+                shown = m.label.strip() or "<unlabelled>"
+                yield self.violation(
+                    diagram,
+                    m.line,
+                    f"Call '{shown}' to '{m.effective_target}' has no modelled failure "
+                    "path; wrap it in an alt with an error branch, a break, or a group error fragment",
+                )
+
+
+@register
+class ActivationLifecycle(_CodegenRule):
+    id = "SEQ108"
+
+    def check(self, diagram: Diagram):
+        orphans, dangling = walk_activation_stack(diagram)
+        for a in orphans:
+            yield self.violation(
+                diagram,
+                a.line,
+                f"'deactivate {a.participant}' has no open activation to close",
+            )
+        for participant, line in dangling:
+            yield self.violation(
+                diagram,
+                line,
+                f"Activation of '{participant}' is never closed; "
+                "the call scope is ambiguous for a generator",
+            )
+
+
+@register
+class InformativeReplies(_CodegenRule):
+    id = "SEQ109"
+
+    DEFAULT_NON_INFORMATIVE = ("ok", "done", "success", "response", "result")
+
+    def check(self, diagram: Diagram):
+        noninf = self.lexicon("non_informative", self.DEFAULT_NON_INFORMATIVE)
+
+        # (b) reply arrows must name the returned value
+        for m in diagram.messages:
+            if not m.is_return_arrow:
+                continue
+            label = m.label.strip()
+            if not label or label.lower() in noninf:
+                shown = label or "<unlabelled>"
+                yield self.violation(
+                    diagram,
+                    m.line,
+                    f"Reply '{shown}' does not name the returned value; "
+                    "name it (e.g. 'order', 'receipt') so data dependencies can be inferred",
+                )
+
+        # (a) returns drawn with a solid arrow toward the caller of an open call
+        open_calls: list = []
+        for m in sorted(diagram.messages, key=lambda m: m.line):
+            src, dst = m.effective_source, m.effective_target
+            if m.is_return_arrow:
+                open_calls = [
+                    c for c in open_calls
+                    if not (c.effective_source == dst and c.effective_target == src)
+                ]
+                continue
+            if m.is_async or src is None or dst is None or src == dst:
+                continue
+            for c in reversed(open_calls):
+                if c.effective_source == dst and c.effective_target == src:
+                    open_calls.remove(c)
+                    yield self.violation(
+                        diagram,
+                        m.line,
+                        f"Return to '{dst}' is drawn with a solid arrow; "
+                        "use a reply arrow (-->) so call and return can be paired",
+                    )
+                    break
+            else:
+                open_calls.append(m)

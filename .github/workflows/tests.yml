@@ -1,0 +1,39 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # Proves the zero-dependency promise: the core suite runs with nothing but
+  # the standard library — no pip install at all.
+  zero-dep:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run zero-dependency test runner
+        run: python tests/run_tests.py
+
+  # Full suite: unit tests plus the executable RULES.md spec (pytest-bdd).
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install with test extra
+        run: pip install -e ".[test]"
+      - name: Verify features are in sync with RULES.md
+        run: |
+          python tools/extract_features.py
+          git diff --exit-code tests/bdd/features/ \
+            || (echo "::error::tests/bdd/features is stale — run: python tools/extract_features.py"; exit 1)
+      - name: Run full test suite
+        run: python -m pytest
