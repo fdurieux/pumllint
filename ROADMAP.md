@@ -8,7 +8,8 @@ correlation r ≈ 0.49, sharp degradation below Level 2). **v0.6.0**
 (2026-07-23) added Arc A's model-set aggregate score and Arc B's
 baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
 and the shields.io badge; **v0.8.0** (2026-07-23) added the composite GitHub
-Action and pre-commit hooks. This file tracks what remains, grouped into
+Action and pre-commit hooks; **v0.9.0** (2026-07-23) opened Arc C with the
+class-diagram parser and CLS pack. This file tracks what remains, grouped into
 arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
@@ -39,9 +40,12 @@ arcs. Keep it updated as items land.
 
 ## Arc C — Coverage growth
 
-- [ ] **CLS pack + class-diagram parser** — specs already written as skipped
-  features (CLS001–005 in RULES.md); class diagrams are where the codegen
-  story is strongest (types, multiplicities → DIM-CMP).
+- [x] **CLS pack + class-diagram parser** *(0.9.0)* — `parser/class_.py`
+  (classifiers, brace-body members, relations with multiplicities; typed by
+  classifier declarations and `<|` generalization arrows, never re-typing
+  other forms) + CLS001–005. Note: the corpus still has no class-diagram
+  fixtures, so the golden contract does not yet cover CLS scoring — extend
+  `tools/gen_corpus.py` and re-freeze deliberately when it should.
 - [ ] **STA pack + state-diagram parser** — STA001–003, same situation.
 - [ ] UC003 — needs include/extend parsing in the usecase parser.
 - [ ] **Thicken DIM-TRC** (deferred from calibration decision 10c): owner
@@ -84,6 +88,5 @@ marketing claims need escalation:
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
 - Recommended next: Arc B is done except the HTML report (architect-facing;
-  wait for pull or pair it with a real need). The next substantial arc is
-  Arc C coverage growth — start with the CLS pack + class-diagram parser
-  (strongest codegen story), then STA, then UC003.
+  wait for pull or pair it with a real need). Arc C is underway — CLS shipped
+  in 0.9.0; next is the STA pack + state-diagram parser, then UC003.

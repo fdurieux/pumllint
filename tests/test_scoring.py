@@ -196,6 +196,27 @@ def test_clean_diagram_scores_perfectly():
     assert result.level == 5
 
 
+def test_class_diagram_scores_through_the_normal_pipeline():
+    # A parsed class diagram is a recognized type: no C5 cap, and the density
+    # denominator is classifiers + relations (SCORING.md §3).
+    from pumllint.parser import parse_source
+
+    (diagram,) = parse_source(
+        "@startuml shop-model\ntitle Shop model\n"
+        "class Customer\nclass Order\nclass Item\nclass Invoice\n"
+        'Customer "1" -- "1..*" Order : places\n'
+        'Order "1" *-- "1..*" Item\n'
+        'Order "1" -- "1" Invoice : billed by\n'
+        "@enduml\n"
+    )
+    assert diagram.diagram_type == "class"
+    result = score([], diagram)
+    assert result.element_count == 7  # 4 classifiers + 3 relations
+    assert _approx(result.composite, 100.0)
+    assert result.level == 4  # C7: Level 5 additionally needs the codegen profile
+    assert not [g for g in result.gap_report if g.kind == "diagram-type"]
+
+
 def test_dim_syn_violations_are_not_scored():
     # a violation tagged DIM-SYN (the gate) is ignored by the weighted scorer.
     diagram = _seq_diagram(n_participants=3, n_messages=2)

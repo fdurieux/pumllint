@@ -1,0 +1,26 @@
+@startuml shop-classes
+title Web shop — domain model
+
+class Customer {
+  +name: String
+  +email: String
+  +placeOrder(cart: Cart): Order
+}
+class Order {
+  +id: UUID
+  +total(): Money
+}
+class OrderLine {
+  +quantity: int
+}
+class Product {
+  +sku: String
+  +price: Money
+}
+interface Payable <<service>>
+
+Customer "1" -- "0..*" Order : places
+Order "1" *-- "1..*" OrderLine
+OrderLine "0..*" -- "1" Product : references
+Order ..|> Payable
+@enduml

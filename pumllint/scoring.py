@@ -361,7 +361,7 @@ def build_gap_report(
         ]
     if diagram_type == "unknown" and target >= 3:  # C5 binds at Level 2
         items.append(
-            GapItem("diagram-type", "diagram type is not recognized — use a supported diagram form (sequence/activity/usecase)")
+            GapItem("diagram-type", "diagram type is not recognized — use a supported diagram form (sequence/activity/usecase/class)")
         )
     if target >= 4 and element_count < cfg.l4_min_elements:  # C6
         items.append(

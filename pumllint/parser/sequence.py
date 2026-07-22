@@ -17,6 +17,7 @@ from ..model import (
     ActivationEvent,
     Block,
     BlockBranch,
+    ClassEntity,
     Diagram,
     Directive,
     GROUP_KEYWORDS,
@@ -25,7 +26,7 @@ from ..model import (
     Participant,
     Suppression,
 )
-from . import activity
+from . import activity, class_
 
 # ---------------------------------------------------------------------------
 # Regexes
@@ -174,6 +175,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
     current: Optional[Diagram] = None
     block_stack: list[Block] = []
     act_stack: list[Block] = []
+    cls_stack: list[ClassEntity] = []
     in_note = False
     note_buf: list[str] = []
     note_start = 0
@@ -193,6 +195,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             diagrams.append(current)
             block_stack = []
             act_stack = []
+            cls_stack = []
             in_note = False
             in_action = False
             continue
@@ -234,7 +237,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             )
             continue
 
-        outcome = _parse_statement(current, block_stack, act_stack, lineno, line)
+        outcome = _parse_statement(current, block_stack, act_stack, cls_stack, lineno, line)
         if outcome == "action_open":
             in_action = True
 
@@ -242,12 +245,20 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
 
 
 def _parse_statement(
-    d: Diagram, block_stack: list[Block], act_stack: list[Block], lineno: int, line: str
+    d: Diagram,
+    block_stack: list[Block],
+    act_stack: list[Block],
+    cls_stack: list[ClassEntity],
+    lineno: int,
+    line: str,
 ):
     # --- activity diagrams --------------------------------------------------
     handled = activity.try_parse(d, act_stack, lineno, line)
     if handled:
         return handled if handled == "action_open" else None
+    # --- class diagrams -----------------------------------------------------
+    if class_.try_parse(d, cls_stack, lineno, line):
+        return None
     # --- declarations --------------------------------------------------
     m = RE_DECLARATION.match(line)
     if m:

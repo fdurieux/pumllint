@@ -1,12 +1,26 @@
-@skip
 Feature: CLS004 inheritance cycles
 
   Scenario: inheritance cycle is reported
-    Given a class diagram containing "A <|-- B", "B <|-- C", and "C <|-- A"
+    Given the diagram:
+      """
+      @startuml taxonomy
+      title Taxonomy
+      A <|-- B
+      B <|-- C
+      C <|-- A
+      @enduml
+      """
     When the linter runs
-    Then a "CLS004" issue with severity "major" is reported citing the cycle
+    Then a "CLS004" issue with severity "major" is reported on line 3
 
   Scenario: acyclic hierarchy passes
-    Given a class diagram containing "A <|-- B" and "A <|-- C"
+    Given the diagram:
+      """
+      @startuml taxonomy
+      title Taxonomy
+      A <|-- B
+      A <|-- C
+      @enduml
+      """
     When the linter runs
     Then no "CLS004" issue is reported

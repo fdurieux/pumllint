@@ -196,6 +196,65 @@ class ActivityNode:
     branch_label: Optional[str] = None
 
 
+@dataclass
+class ClassMember:
+    """An attribute or operation inside a class-diagram classifier.
+
+    ``name`` is the bare identifier (visibility prefix, ``{static}``-style
+    modifiers and type annotations stripped); ``raw`` keeps the member line as
+    written. ``is_method`` is True when the member has a parameter list.
+    """
+
+    name: str
+    raw: str
+    line: int
+    is_method: bool = False
+
+
+@dataclass
+class ClassEntity:
+    """A classifier in a class diagram: class / abstract / interface / enum."""
+
+    name: str  # canonical identifier used in relations
+    kind: str  # class | abstract | interface | enum | "implicit"
+    line: int  # line of declaration, or of first use if implicit
+    declared: bool
+    display_name: Optional[str] = None  # long name when `as` alias is used
+    stereotype: Optional[str] = None
+    members: list[ClassMember] = field(default_factory=list)
+
+
+@dataclass
+class ClassRelation:
+    """An edge between two classifiers in a class diagram.
+
+    ``kind``: extension | realization | association | aggregation |
+    composition | dependency. ``left``/``right`` are as written; for
+    extension/realization the ``child``/``parent`` properties normalize the
+    arrow direction (the ``<|`` head always points at the parent).
+    ``left_card``/``right_card`` are the quoted multiplicities, if any.
+    """
+
+    left: str
+    right: str
+    kind: str
+    arrow: str
+    line: int
+    left_card: Optional[str] = None
+    right_card: Optional[str] = None
+    label: str = ""
+
+    @property
+    def parent(self) -> str:
+        """Generalization target (only meaningful for extension/realization)."""
+        return self.left if "<|" in self.arrow else self.right
+
+    @property
+    def child(self) -> str:
+        """Generalization source (only meaningful for extension/realization)."""
+        return self.right if "<|" in self.arrow else self.left
+
+
 @dataclass(frozen=True)
 class Suppression:
     """Inline suppression parsed from a ``' pumllint: disable...`` comment.
@@ -218,7 +277,7 @@ class Diagram:
     name: Optional[str]  # name after @startuml, if any
     start_line: int
     end_line: Optional[int]
-    diagram_type: str = "unknown"  # sequence | usecase | activity | unknown
+    diagram_type: str = "unknown"  # sequence | usecase | activity | class | unknown
     participants: dict[str, Participant] = field(default_factory=dict)
     messages: list[Message] = field(default_factory=list)
     activations: list[ActivationEvent] = field(default_factory=list)
@@ -226,6 +285,8 @@ class Diagram:
     directives: list[Directive] = field(default_factory=list)
     usecase_links: list[tuple[str, str, int]] = field(default_factory=list)
     activity_nodes: list[ActivityNode] = field(default_factory=list)
+    classes: dict[str, ClassEntity] = field(default_factory=dict)
+    class_relations: list[ClassRelation] = field(default_factory=list)
     suppressions: list[Suppression] = field(default_factory=list)
 
     # -- convenience accessors -------------------------------------------
@@ -236,13 +297,16 @@ class Diagram:
         Density = penalty / element_count, so larger diagrams are not punished
         for size alone (see SCORING.md §3). Per diagram type:
         sequence = participants + messages; activity = nodes; usecase =
-        distinct actors/use-cases + relationships. ``unknown`` sums whatever the
-        parser populated. The scorer applies ``max(1, ...)`` so 0 is safe.
+        distinct actors/use-cases + relationships; class = classifiers +
+        relations. ``unknown`` sums whatever the parser populated. The scorer
+        applies ``max(1, ...)`` so 0 is safe.
         """
         if self.diagram_type == "sequence":
             return len(self.participants) + len(self.messages)
         if self.diagram_type == "activity":
             return len(self.activity_nodes)
+        if self.diagram_type == "class":
+            return len(self.classes) + len(self.class_relations)
         if self.diagram_type == "usecase":
             nodes = set(self.participants)
             for src, dst, _line in self.usecase_links:
@@ -254,6 +318,8 @@ class Diagram:
             + len(self.messages)
             + len(self.activity_nodes)
             + len(self.usecase_links)
+            + len(self.classes)
+            + len(self.class_relations)
         )
 
     @property

@@ -1018,108 +1018,220 @@ Feature: ACT006 verb-first activity names
 
 ## CLS — Class diagram rules (applies_to: class)
 
-**Pack status:** 🚫 Blocked — requires class diagram parsing, which is not yet
-implemented (`parser/class_.py` does not exist; listed under "ideas not yet done").
+**Pack status:** ✅ Implemented (v0.9.0) — `parser/class_.py` recognizes the
+governance-relevant subset: `class`/`abstract class`/`interface`/`enum`
+declarations (with alias and stereotype), brace bodies with members, the
+`X : member` shorthand, and relation arrows with multiplicities and labels.
 
 ### CLS001 — Naming conventions for classes and members
-**Severity:** minor · **Status:** 🚫 Blocked (no class parser)
+**Severity:** minor · **Status:** ✅ Implemented (v0.9.0)
 
 **Rationale:** Diagrams that disagree with the codebase's naming conventions create
 friction between model and implementation; conventions are configurable per project.
+Options: `class_pattern` (regex, default PascalCase) and `member_pattern` (regex,
+default lower-case/underscore start). Enum members are exempt (constant conventions
+vary too much to default).
 
 ```gherkin
 Feature: CLS001 naming conventions
 
   Scenario: non-PascalCase class name is reported
-    Given a configuration requiring PascalCase class names
-    And a class diagram declaring "class order_service"
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class order_service
+      @enduml
+      """
     When the linter runs
-    Then a "CLS001" issue with severity "minor" is reported on the declaration
+    Then a "CLS001" issue with severity "minor" is reported on line 3
+
+  Scenario: non-conforming member name is reported
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class OrderService {
+        +PlaceOrder()
+      }
+      @enduml
+      """
+    When the linter runs
+    Then a "CLS001" issue with severity "minor" is reported on line 4
 
   Scenario: conforming names pass
-    Given the same configuration
-    And a class diagram declaring "class OrderService" with member "placeOrder()"
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class OrderService {
+        +placeOrder()
+      }
+      @enduml
+      """
     When the linter runs
     Then no "CLS001" issue is reported
 ```
 
 ### CLS002 — Associations declare multiplicities
-**Severity:** major · **Status:** 🚫 Blocked (no class parser)
+**Severity:** major · **Status:** ✅ Implemented (v0.9.0)
 
 **Rationale:** An association without multiplicities omits the cardinality
 constraint — often the most important design decision the diagram exists to record.
+Applies to associations, aggregations and compositions; both ends must carry a
+quoted multiplicity. Generalization/realization/dependency edges are exempt.
 
 ```gherkin
 Feature: CLS002 association multiplicities
 
   Scenario: association without multiplicities is reported
-    Given a class diagram containing 'Order -- Customer'
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order
+      class Customer
+      Order -- Customer : places
+      @enduml
+      """
     When the linter runs
-    Then a "CLS002" issue with severity "major" is reported on that line
+    Then a "CLS002" issue with severity "major" is reported on line 5
 
   Scenario: association with multiplicities passes
-    Given a class diagram containing 'Order "1..*" -- "1" Customer'
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order
+      class Customer
+      Order "1..*" -- "1" Customer : places
+      @enduml
+      """
     When the linter runs
     Then no "CLS002" issue is reported
 ```
 
 ### CLS003 — Relationship labels on associations
-**Severity:** minor · **Status:** 🚫 Blocked (no class parser)
+**Severity:** minor · **Status:** ✅ Implemented (v0.9.0)
 
 **Rationale:** Unlabelled associations state that two classes relate without saying
-how; a role or verb label ("places", "owns") documents the intent.
+how; a role or verb label ("places", "owns") documents the intent. Plain
+(including directed) associations only — aggregation, composition and
+generalization already carry semantics in the arrow itself.
 
 ```gherkin
 Feature: CLS003 relationship labels
 
   Scenario: unlabelled plain association is reported
-    Given a class diagram containing 'Order "1..*" -- "1" Customer' with no label
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order
+      class Customer
+      Order "1..*" -- "1" Customer
+      @enduml
+      """
     When the linter runs
-    Then a "CLS003" issue with severity "minor" is reported on that line
+    Then a "CLS003" issue with severity "minor" is reported on line 5
 
   Scenario: labelled association passes
-    Given a class diagram containing 'Customer "1" -- "1..*" Order : places'
+    Given the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order
+      class Customer
+      Customer "1" -- "1..*" Order : places
+      @enduml
+      """
     When the linter runs
     Then no "CLS003" issue is reported
 ```
 
 ### CLS004 — No inheritance cycles
-**Severity:** major · **Status:** 🚫 Blocked (no class parser)
+**Severity:** major · **Status:** ✅ Implemented (v0.9.0)
 
 **Rationale:** A cyclic generalization hierarchy is semantically invalid UML and
 uncompilable in any target language, yet PlantUML renders it without complaint.
+Extension (`<|--`) and realization (`<|..`) edges both participate; the finding
+cites the full cycle path.
 
 ```gherkin
 Feature: CLS004 inheritance cycles
 
   Scenario: inheritance cycle is reported
-    Given a class diagram containing "A <|-- B", "B <|-- C", and "C <|-- A"
+    Given the diagram:
+      """
+      @startuml taxonomy
+      title Taxonomy
+      A <|-- B
+      B <|-- C
+      C <|-- A
+      @enduml
+      """
     When the linter runs
-    Then a "CLS004" issue with severity "major" is reported citing the cycle
+    Then a "CLS004" issue with severity "major" is reported on line 3
 
   Scenario: acyclic hierarchy passes
-    Given a class diagram containing "A <|-- B" and "A <|-- C"
+    Given the diagram:
+      """
+      @startuml taxonomy
+      title Taxonomy
+      A <|-- B
+      A <|-- C
+      @enduml
+      """
     When the linter runs
     Then no "CLS004" issue is reported
 ```
 
 ### CLS005 — Member count limit per class
-**Severity:** minor · **Status:** 🚫 Blocked (no class parser)
+**Severity:** minor · **Status:** ✅ Implemented (v0.9.0)
 
 **Rationale:** A class box with dozens of members is a "god class" smell in the
-model just as in code, and unreadable when rendered.
+model just as in code, and unreadable when rendered. Option: `max` (default 15).
 
 ```gherkin
 Feature: CLS005 member count limit
 
   Scenario: class exceeding the member limit is reported
-    Given a configuration with "max_members_per_class" set to 15
-    And a class declaring 16 attributes and methods combined
+    Given the configuration:
+      """
+      [rules.CLS005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order {
+        +id: UUID
+        +total: Money
+        +lines: List
+        +place()
+      }
+      @enduml
+      """
     When the linter runs
-    Then a "CLS005" issue with severity "minor" is reported on the class
+    Then a "CLS005" issue with severity "minor" is reported on line 3
 
   Scenario: class within the limit passes
-    Given the same configuration and a class with 8 members
+    Given the configuration:
+      """
+      [rules.CLS005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml shop-model
+      title Shop model
+      class Order {
+        +id: UUID
+        +place()
+      }
+      @enduml
+      """
     When the linter runs
     Then no "CLS005" issue is reported
 ```
@@ -1483,11 +1595,11 @@ Feature: XD003 participant name case collision
 | ACT004 | critical | activity | Constructs terminated | ✅ v0.2.0 |
 | ACT005 | minor | activity | Swimlane naming | ✅ v0.4.0 |
 | ACT006 | minor | activity | Verb-first activity names | ✅ v0.4.0 |
-| CLS001 | minor | class | Naming conventions | 🚫 parser |
-| CLS002 | major | class | Multiplicities required | 🚫 parser |
-| CLS003 | minor | class | Relationship labels | 🚫 parser |
-| CLS004 | major | class | No inheritance cycles | 🚫 parser |
-| CLS005 | minor | class | Member count limit | 🚫 parser |
+| CLS001 | minor | class | Naming conventions | ✅ v0.9.0 |
+| CLS002 | major | class | Multiplicities required | ✅ v0.9.0 |
+| CLS003 | minor | class | Relationship labels | ✅ v0.9.0 |
+| CLS004 | major | class | No inheritance cycles | ✅ v0.9.0 |
+| CLS005 | minor | class | Member count limit | ✅ v0.9.0 |
 | STA001 | blocker | state | Exactly one initial state | 🚫 parser |
 | STA002 | major | state | No unreachable states | 🚫 parser |
 | STA003 | minor | state | Transitions labelled | 🚫 parser |
@@ -1498,10 +1610,10 @@ Feature: XD003 participant name case collision
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
 | XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
 
-**Totals:** 35 base-catalog rules — 26 implemented (SEQ008/009/010, ACT005/006 and
-UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in v0.5.0), 9 blocked
-on new parsers (CLS×5, STA×3) or parser extensions (UC003). Separately:
-SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
+**Totals:** 35 base-catalog rules — 31 implemented (SEQ008/009/010, ACT005/006 and
+UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in v0.5.0; CLS001–005
+class pack in v0.9.0), 4 blocked on a new parser (STA×3) or parser extensions
+(UC003). Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
 
 ## Implementation notes
 
@@ -1518,8 +1630,13 @@ SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
   value). Both can build on `pair_calls_and_replies()`.
 - **Type detection:** infer diagram type from the first discriminating construct
   after `@startuml`; activity parsing only engages while the type is
-  `unknown`/`activity`, per the existing parser contract. New CLS/STA parsers must
-  follow the same never-re-type discipline.
+  `unknown`/`activity`, per the existing parser contract. The class parser
+  (v0.9.0) follows the same never-re-type discipline: its markers are classifier
+  declarations (`class`/`abstract class`/`interface`/`enum`) and generalization
+  arrows (`<|--` and friends — no other diagram form uses `<|`); ambiguous plain
+  arrows (`A --> B`) bind as class relations only once the diagram is already
+  typed `class`, so sequence messages keep their meaning. The new STA parser must
+  follow the same discipline.
 - **Registry:** rules declare `applies_to` via the existing decorator; blocked
   rules should not be registered until their parser exists (avoid dead
   registrations surfacing in `--list-rules`).

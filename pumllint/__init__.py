@@ -5,7 +5,7 @@ Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`.
 """
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 from .baseline import (
     BaselineEntry,

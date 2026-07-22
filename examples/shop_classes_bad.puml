@@ -1,0 +1,9 @@
+@startuml
+' Deliberately messy: no name, no title, snake_case class, PascalCase member,
+' association without multiplicities or label.
+class shopping_cart {
+  +AddItem(p: Product)
+}
+class Product
+shopping_cart -- Product
+@enduml

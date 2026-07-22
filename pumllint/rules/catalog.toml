@@ -288,6 +288,48 @@ dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
 
+# --- CLS: class base catalog ------------------------------------------------
+
+[CLS001]
+name = "class-naming"
+description = "Class or member name violates the naming convention"
+severity = "minor"
+dimension = "DIM-CON"
+applies_to = ["class"]
+profiles = []
+
+[CLS002]
+name = "association-multiplicity"
+description = "Association does not declare multiplicities on both ends"
+severity = "major"
+dimension = "DIM-CMP"
+applies_to = ["class"]
+profiles = []
+
+[CLS003]
+name = "unlabelled-association"
+description = "Plain association has no role/verb label"
+severity = "minor"
+dimension = "DIM-AMB"
+applies_to = ["class"]
+profiles = []
+
+[CLS004]
+name = "inheritance-cycle"
+description = "Generalization/realization hierarchy contains a cycle"
+severity = "major"
+dimension = "DIM-SEM"
+applies_to = ["class"]
+profiles = []
+
+[CLS005]
+name = "max-members-per-class"
+description = "Class has more members than the configured maximum"
+severity = "minor"
+dimension = "DIM-RDB"
+applies_to = ["class"]
+profiles = []
+
 # --- UC: use-case base catalog ---------------------------------------------
 
 [UC001]

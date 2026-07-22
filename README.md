@@ -134,6 +134,11 @@ All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 | ACT004 | unterminated-construct | critical | `if`/`while`/`repeat`/`fork`/`switch`/`partition` never closed. |
 | ACT005 | swimlane-naming | minor | Swimlane (`|Lane|`) name violating a configurable `pattern`. |
 | ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist; dormant otherwise. |
+| CLS001 | class-naming | minor | Class/member names violating configurable patterns (default PascalCase classes, camelCase members; enum members exempt). |
+| CLS002 | association-multiplicity | major | Association/aggregation/composition without a quoted multiplicity on both ends. |
+| CLS003 | unlabelled-association | minor | Plain association with no role/verb label (`: places`). |
+| CLS004 | inheritance-cycle | major | Cycle in the generalization/realization hierarchy — invalid UML that PlantUML happily renders. |
+| CLS005 | max-members-per-class | minor | God-class smell: more members than `max` (default 15). |
 
 ### Codegen-readiness pack (profile: `codegen`)
 
@@ -224,11 +229,13 @@ pumllint/
 │                     #   + call/reply pairing & activation-stack helpers
 ├── parser/           # line-oriented parser → semantic Diagram model
 │   ├── sequence.py   #   sequence + use-case + suppression comments
-│   └── activity.py   #   new-style activity syntax (start/if/while/fork/…)
+│   ├── activity.py   #   new-style activity syntax (start/if/while/fork/…)
+│   └── class_.py     #   class diagrams (classifiers, members, relations)
 ├── rules/            # rule packs; auto-discovered via @register decorator
 │   ├── catalog.toml  #   declarative rule metadata (name/desc/severity/scope)
 │   ├── sequence/     #   SEQ*  (participants.py, flows.py, codegen.py)
 │   ├── activity/     #   ACT*  (structure.py)
+│   ├── class_/       #   CLS*  (structure.py)
 │   └── common/       #   GEN*, UC*  (governance.py)
 ├── reporters/        # text / json / sonar; auto-registered via @reporter
 ├── engine.py         # config merge → rule instantiation → run
@@ -278,8 +285,9 @@ class NoSelfMessage(Rule):
   the engine keeps them dormant until that profile is selected. Everything else
   (config, suppressions, reporters) works identically for gated rules.
 - New diagram types slot in as a parser extension plus a rule pack — exactly
-  how activity support (ACT001–004) was added in 0.2.0; class/component
-  diagrams would follow the same pattern with `applies_to = ("class",)`.
+  how activity support (ACT001–004) was added in 0.2.0 and class support
+  (CLS001–005) in 0.9.0; state/component diagrams would follow the same
+  pattern with `applies_to = ("state",)`.
 
 ## CI integration (GitHub Actions)
 
@@ -289,11 +297,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.8.0
+  uses: fdurieux/pumllint@v0.9.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.8.0
+  uses: fdurieux/pumllint@v0.9.0
   with:
     command: score
     paths: docs/diagrams
@@ -334,7 +342,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.8.0
+    rev: v0.9.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

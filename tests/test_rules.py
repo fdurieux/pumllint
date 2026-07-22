@@ -463,6 +463,134 @@ def test_verb_object_usecase_is_clean_for_uc002():
     assert "UC002" not in rule_ids(src, cfg)
 
 
+# --- CLS class-diagram pack -------------------------------------------------
+
+CLASS_CLEAN = """\
+@startuml shop-model
+title Shop model
+class Customer {
+  +name: String
+  --
+  +placeOrder(item: Item): Order
+}
+abstract class BaseEntity
+interface Payable <<service>>
+BaseEntity <|-- Customer
+Customer "1" -- "1..*" Order : places
+Order ..|> Payable
+@enduml
+"""
+
+
+def test_class_diagram_is_detected_and_clean():
+    (d,) = parse_source(CLASS_CLEAN)
+    assert d.diagram_type == "class"
+    assert set(d.classes) == {"Customer", "BaseEntity", "Payable", "Order"}
+    assert d.classes["Customer"].kind == "class"
+    assert d.classes["BaseEntity"].kind == "abstract"
+    assert d.classes["Payable"].stereotype == "service"
+    assert [m.name for m in d.classes["Customer"].members] == ["name", "placeOrder"]
+    assert d.classes["Customer"].members[1].is_method
+    assert [r.kind for r in d.class_relations] == [
+        "extension", "association", "realization",
+    ]
+    assert d.element_count == len(d.classes) + len(d.class_relations)
+    assert lint(CLASS_CLEAN) == []
+
+
+def test_generalization_arrow_types_an_unknown_diagram_as_class():
+    (d,) = parse_source("@startuml t\ntitle T\nA <|-- B\n@enduml\n")
+    assert d.diagram_type == "class"
+    rel = d.class_relations[0]
+    assert (rel.child, rel.parent) == ("B", "A")
+
+
+def test_class_parser_never_retypes_a_sequence_diagram():
+    src = CLEAN + "\n@startuml cls\ntitle Cls\nclass Foo\n@enduml\n"
+    seq, cls = parse_source(src)
+    assert seq.diagram_type == "sequence"
+    assert not seq.classes
+    assert cls.diagram_type == "class"
+
+
+def test_sequence_rules_do_not_fire_on_class_diagrams():
+    assert not any(i.startswith("SEQ") for i in rule_ids(CLASS_CLEAN))
+
+
+def test_given_snake_case_class_then_cls001_fires():
+    src = "@startuml m\ntitle M\nclass order_service\n@enduml\n"
+    assert "CLS001" in rule_ids(src)
+
+
+def test_given_pascal_case_member_then_cls001_fires_but_enum_is_exempt():
+    src = (
+        "@startuml m\ntitle M\nclass Order {\n  +PlaceOrder()\n}\n"
+        "enum Status {\n  OPEN\n  CLOSED\n}\n@enduml\n"
+    )
+    hits = [v for v in lint(src) if v.rule_id == "CLS001"]
+    assert [v.line for v in hits] == [4]
+
+
+def test_cls001_patterns_are_configurable():
+    src = "@startuml m\ntitle M\nclass order_service\n@enduml\n"
+    cfg = {"rules": {"CLS001": {"class_pattern": r"^[a-z_]+$"}}}
+    assert "CLS001" not in rule_ids(src, cfg)
+
+
+def test_given_association_without_multiplicities_then_cls002_fires():
+    src = "@startuml m\ntitle M\nclass A\nclass B\nA -- B : owns\n@enduml\n"
+    assert "CLS002" in rule_ids(src)
+    src_one_end = "@startuml m\ntitle M\nclass A\nclass B\nA \"1\" -- B : owns\n@enduml\n"
+    assert "CLS002" in rule_ids(src_one_end)
+
+
+def test_generalization_needs_no_multiplicities_for_cls002():
+    src = "@startuml m\ntitle M\nclass A\nclass B\nA <|-- B\nA <.. B\n@enduml\n"
+    assert "CLS002" not in rule_ids(src)
+
+
+def test_given_unlabelled_association_then_cls003_fires():
+    src = '@startuml m\ntitle M\nclass A\nclass B\nA "1" -- "1..*" B\n@enduml\n'
+    assert "CLS003" in rule_ids(src)
+
+
+def test_aggregation_and_composition_are_exempt_from_cls003():
+    src = (
+        '@startuml m\ntitle M\nclass A\nclass B\n'
+        'A "1" o-- "0..*" B\nA "1" *-- "1..*" B\n@enduml\n'
+    )
+    assert "CLS003" not in rule_ids(src)
+
+
+def test_given_inheritance_cycle_then_cls004_fires_once_citing_the_cycle():
+    src = "@startuml m\ntitle M\nA <|-- B\nB <|-- C\nC <|-- A\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "CLS004"]
+    assert len(hits) == 1
+    assert "A" in hits[0].message and "->" in hits[0].message
+
+
+def test_acyclic_hierarchy_is_clean_for_cls004():
+    src = "@startuml m\ntitle M\nA <|-- B\nA <|-- C\n@enduml\n"
+    assert "CLS004" not in rule_ids(src)
+
+
+def test_given_too_many_members_then_cls005_fires():
+    members = "\n".join(f"  +field{i}: int" for i in range(16))
+    src = f"@startuml m\ntitle M\nclass Order {{\n{members}\n}}\n@enduml\n"
+    assert "CLS005" in rule_ids(src)
+    assert "CLS005" not in rule_ids(src, {"rules": {"CLS005": {"max": 20}}})
+
+
+def test_member_shorthand_counts_toward_cls005():
+    src = (
+        "@startuml m\ntitle M\nclass Order\n"
+        + "\n".join(f"Order : +field{i}" for i in range(4))
+        + "\n@enduml\n"
+    )
+    cfg = {"rules": {"CLS005": {"max": 3}}}
+    assert "CLS005" in rule_ids(src, cfg)
+
+
 # --- Sonar reporter --------------------------------------------------------
 
 def test_sonar_reporter_emits_valid_generic_issue_format():
