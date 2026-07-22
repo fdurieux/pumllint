@@ -3,7 +3,7 @@
 Semantic validation rules for PlantUML diagrams, modelled on ARIS-style semantic
 checks: every rule has a stable ID, a severity, a scope (`applies_to`), a
 method-convention rationale, Gherkin acceptance criteria, and an implementation
-status against the current codebase (v0.3.0).
+status against the current codebase (v0.5.0).
 
 Syntax validation is out of scope — it is delegated to `plantuml -checkonly` as a
 separate CI gate.

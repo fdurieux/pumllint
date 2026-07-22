@@ -4,7 +4,7 @@ Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`score_groups`, render with :func:`get_reporter`.
 """
 
-__version__ = "0.3.0"
+__version__ = "0.5.0"
 
 from .config import load_config
 from .engine import Engine, collect_files
