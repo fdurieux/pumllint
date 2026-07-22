@@ -1,0 +1,247 @@
+{
+  "mutations/credit_intake_good__L2.puml": {
+    "composite": 99.22,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__L3.puml": {
+    "composite": 89.22,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__L4.puml": {
+    "composite": 86.09,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__L5.puml": {
+    "composite": 79.84,
+    "elements": 8,
+    "level": 3
+  },
+  "mutations/credit_intake_good__L6.puml": {
+    "composite": 76.09,
+    "elements": 8,
+    "level": 3
+  },
+  "mutations/credit_intake_good__S-drop_name.puml": {
+    "composite": 99.84,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-drop_title.puml": {
+    "composite": 99.38,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-self_message.puml": {
+    "composite": 97.22,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-unbalance_activation.puml": {
+    "composite": 93.75,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-undeclare_participant.puml": {
+    "composite": 90.0,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-unlabel_message.puml": {
+    "composite": 96.88,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/credit_intake_good__S-unterminate_block.puml": {
+    "composite": 90.0,
+    "elements": 8,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__L2.puml": {
+    "composite": 99.43,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__L3.puml": {
+    "composite": 99.43,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__L4.puml": {
+    "composite": 96.7,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__L5.puml": {
+    "composite": 88.88,
+    "elements": 10,
+    "level": 3
+  },
+  "mutations/loan_decision_activity_good__L6.puml": {
+    "composite": 79.31,
+    "elements": 9,
+    "level": 3
+  },
+  "mutations/loan_decision_activity_good__L7.puml": {
+    "composite": 70.42,
+    "elements": 9,
+    "level": 3
+  },
+  "mutations/loan_decision_activity_good__S-drop_name.puml": {
+    "composite": 99.89,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-drop_start.puml": {
+    "composite": 92.5,
+    "elements": 10,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-drop_stop.puml": {
+    "composite": 92.5,
+    "elements": 10,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-drop_title.puml": {
+    "composite": 99.55,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-noun_activity.puml": {
+    "composite": 100.0,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-unlabel_branch.puml": {
+    "composite": 97.27,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/loan_decision_activity_good__S-unterminate_construct.puml": {
+    "composite": 92.73,
+    "elements": 11,
+    "level": 4
+  },
+  "mutations/order_payment_codegen_good__L2.puml": {
+    "composite": 99.38,
+    "elements": 10,
+    "level": 5
+  },
+  "mutations/order_payment_codegen_good__L3.puml": {
+    "composite": 86.88,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L4.puml": {
+    "composite": 74.38,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L5.puml": {
+    "composite": 74.38,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L6.puml": {
+    "composite": 51.38,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L7.puml": {
+    "composite": 51.38,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L8.puml": {
+    "composite": 41.38,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__L9.puml": {
+    "composite": 39.38,
+    "elements": 10,
+    "level": 1
+  },
+  "mutations/order_payment_codegen_good__S-drop_name.puml": {
+    "composite": 99.88,
+    "elements": 10,
+    "level": 5
+  },
+  "mutations/order_payment_codegen_good__S-drop_title.puml": {
+    "composite": 99.5,
+    "elements": 10,
+    "level": 5
+  },
+  "mutations/order_payment_codegen_good__S-elision_marker.puml": {
+    "composite": 87.5,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__S-prose_message.puml": {
+    "composite": 87.5,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__S-self_message.puml": {
+    "composite": 86.36,
+    "elements": 11,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__S-unbalance_activation.puml": {
+    "composite": 90.0,
+    "elements": 10,
+    "level": 4
+  },
+  "mutations/order_payment_codegen_good__S-undeclare_participant.puml": {
+    "composite": 77.0,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__S-unlabel_message.puml": {
+    "composite": 85.0,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/order_payment_codegen_good__S-unterminate_block.puml": {
+    "composite": 92.0,
+    "elements": 10,
+    "level": 4
+  },
+  "mutations/order_payment_codegen_good__S-vague_guard.puml": {
+    "composite": 87.5,
+    "elements": 10,
+    "level": 2
+  },
+  "synthetic/empty.puml": {
+    "composite": 100.0,
+    "elements": 0,
+    "level": 1
+  },
+  "synthetic/large_clean.puml": {
+    "composite": 100.0,
+    "elements": 22,
+    "level": 4
+  },
+  "synthetic/large_no_title.puml": {
+    "composite": 99.77,
+    "elements": 22,
+    "level": 4
+  },
+  "synthetic/prose.puml": {
+    "composite": 95.0,
+    "elements": 0,
+    "level": 1
+  },
+  "synthetic/small_clean.puml": {
+    "composite": 100.0,
+    "elements": 4,
+    "level": 4
+  },
+  "synthetic/tiny_clean.puml": {
+    "composite": 87.5,
+    "elements": 2,
+    "level": 3
+  }
+}
