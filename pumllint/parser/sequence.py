@@ -169,6 +169,7 @@ def _iter_logical_lines(text: str) -> Iterator[tuple[int, str]]:
 
 def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
     """Parse a .puml source that may contain multiple @startuml blocks."""
+    text = text.lstrip("\ufeff")  # tolerate a UTF-8 BOM before @startuml
     diagrams: list[Diagram] = []
     current: Optional[Diagram] = None
     block_stack: list[Block] = []

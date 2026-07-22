@@ -20,3 +20,14 @@ venv/
 
 # macOS
 .DS_Store
+
+# Calibration corpus: regenerable via tools/gen_corpus.py; wild/ holds
+# third-party diagrams (mixed licenses) harvested by tools/harvest_corpus.py
+corpus/
+
+# Codegen experiment artifacts: keep the reports (cited by EVIDENCE.md),
+# not the generated throwaway modules
+pilot_results/*
+!pilot_results/report.json
+experiment_results/*
+!experiment_results/report.json

@@ -24,11 +24,19 @@ per pack, overridable per rule). Seven dimensions:
 |---------|------------------------|-------------------------------------------------------------|----------------|
 | DIM-SYN | Syntactic validity     | `plantuml -checkonly` exit code (external gate, pass/fail)  | gate           |
 | DIM-SEM | Semantic correctness   | All pack findings not claimed by a more specific dimension  | 0.20           |
-| DIM-CMP | Completeness           | Typed params/returns, multiplicities, guards, alt/error paths, orphan elements | 0.25 |
+| DIM-CMP | Completeness           | Typed params/returns, multiplicities, guards, alt/error paths, orphan elements | 0.30 |
 | DIM-CON | Consistency            | Naming conventions; cross-diagram entity identity           | 0.15           |
-| DIM-TRC | Traceability           | Title, ID, ownership, requirement/ADR links (GEN pack)      | 0.10           |
-| DIM-RDB | Readability            | Participant count, nesting depth, size thresholds           | 0.10           |
-| DIM-AMB | Ambiguity              | Vague verbs, unlabeled arrows, structure hidden in notes    | 0.20           |
+| DIM-TRC | Traceability           | Title, ID, ownership, requirement/ADR links (GEN pack)      | 0.05           |
+| DIM-RDB | Readability            | Participant count, nesting depth, size thresholds           | 0.05           |
+| DIM-AMB | Ambiguity              | Vague verbs, unlabeled arrows, structure hidden in notes    | 0.25           |
+
+Default weights are **signal-proportional** (calibrated in §9): DIM-TRC and
+DIM-RDB currently carry only two rules each, so their coarse signals carry
+0.05 composite weight apiece until the packs are thickened; the difference
+goes to DIM-CMP/DIM-AMB, the dimensions that carry the generation-readiness
+thesis. Note the per-dimension **gates** (Level 4/5 thresholds, cap C3) apply
+to thin dimensions undiminished — a missing title still blocks
+Generation-ready, and the gap report says exactly that.
 
 DIM-SYN is a **gate**, not a weighted dimension: if syntax fails, the diagram is Level 1
 and no further scoring is reported.
@@ -52,9 +60,13 @@ Default severity weights (SonarQube-aligned):
 | Severity | Weight |
 |----------|--------|
 | blocker  | 10     |
+| critical | 8      |
 | major    | 5      |
 | minor    | 2      |
 | info     | 0.5    |
+
+(`critical` continues the decelerating multiplier ladder — ×4, ×2.5, ×1.6, ×1.25
+— reading as "almost a blocker".)
 
 Composite:
 
@@ -72,12 +84,23 @@ composite = Σ weight(d) × score(d)   for d in weighted dimensions (weights sum
 | 4     | Precise          | Composite ≥ 75, zero blockers, DIM-CMP ≥ 70 **and** DIM-AMB ≥ 70          |
 | 5     | Generation-ready | Composite ≥ 90, every dimension ≥ 80, zero blocker **and** zero major     |
 
+"Zero major" is read as **no finding at major severity or worse** (major,
+critical, blocker) — a critical structural error also blocks generation-ready.
+
 **Caps (anti-gaming rules):**
 
 - C1: Any blocker finding caps the level at **2**, regardless of composite.
 - C2: Syntax gate failure forces level **1**, regardless of anything else.
 - C3: Any single dimension score < 40 caps the level at **3** (no dimension may be
   sacrificed to inflate the composite).
+- C4: A diagram with **zero modelled elements** forces level **1** — scoring
+  rewards absence of findings, so vacuous input must not score at all.
+- C5: An **unrecognized diagram type** (`unknown`) caps the level at **2**.
+- C6: Fewer than `l4_min_elements` elements (default **3**) caps the level at
+  **3** — "Precise" requires enough content to be precise about.
+- C7: Level **5** requires the profile named by `l5_requires_profile` (default
+  **codegen**) to be active — the generation-ready claim is bound to the rule
+  pack that gives it substance. Set to `null` to disable.
 
 All thresholds, weights, and caps are configurable under the `scoring:` key
 (YAML/TOML/JSON, same precedence as rule config).
@@ -111,10 +134,15 @@ not measures, so the maturity object is written to the JSON report only; optiona
 ## 6. CLI
 
 ```
-pumllint score <paths> [--min-level N]
+pumllint score <paths> [--min-level N] [--check-syntax]
 ```
 
 - `--min-level N` — exit non-zero if any scored unit is below level N (CI gate).
+- `--check-syntax` — run the DIM-SYN gate (`<command> -checkonly <file>` per
+  file); failures force Level 1. Also enabled via config: `scoring:
+  {syntax_gate: true, syntax_command: plantuml}` (`syntax_command` may be a
+  string or argv list, e.g. `[java, -jar, plantuml.jar]`). Off by default —
+  it needs a PlantUML/Java install the linter itself does not require.
 - Cross-diagram consistency (DIM-CON multi-file checks) activates when more than one
   file is passed; otherwise DIM-CON scores single-file naming rules only.
 
@@ -202,6 +230,7 @@ Feature: Maturity level assignment
 
   Scenario: Fully disciplined model reaches Generation-ready
     Given a syntactically valid diagram with composite score 91
+    And the codegen profile is active
     And every dimension score is at least 80
     And the diagram has no blocker findings
     And the diagram has no major findings
@@ -210,11 +239,39 @@ Feature: Maturity level assignment
 
   Scenario: A single major finding blocks Generation-ready
     Given a syntactically valid diagram with composite score 94
+    And the codegen profile is active
     And every dimension score is at least 80
     And the diagram has exactly one major finding
     When the scoring reporter runs
     Then the maturity level is 4
     And the gap report lists the major finding as the sole obstacle to Level 5
+
+  # --- Integrity caps (C4-C7) ---
+
+  Scenario: An empty diagram cannot score
+    Given a syntactically valid diagram with zero modelled elements
+    When the scoring reporter runs
+    Then the maturity level is 1
+    And the gap report states the diagram has no modelled content
+
+  Scenario: An unrecognized diagram type caps at Structured
+    Given a diagram whose type is not recognized
+    And the diagram would otherwise have a composite score of 100
+    When the scoring reporter runs
+    Then the maturity level is 2
+
+  Scenario: A near-empty diagram cannot claim Precise
+    Given a clean sequence diagram with 2 modelled elements
+    When the scoring reporter runs
+    Then the maturity level is 3
+    And the gap report states Level 4 requires at least 3 elements
+
+  Scenario: Generation-ready requires the codegen profile
+    Given a clean sequence diagram scored without the codegen profile
+    And the diagram would otherwise reach Level 5
+    When the scoring reporter runs
+    Then the maturity level is 4
+    And the gap report states Level 5 requires the codegen profile
 
   # --- CI gate ---
 
@@ -239,3 +296,56 @@ Feature: Maturity level assignment
 - Cross-diagram consistency (DIM-CON) is the only piece requiring new analysis
   (a symbol table across files); ship the scorer first with DIM-CON limited to
   single-file naming rules, and extend later.
+
+## 9. Calibration notes (Phase 10)
+
+The defaults above were validated against a generated calibration corpus
+(`tools/gen_corpus.py`: mutation ladders over the good examples + synthetic
+boundary probes, plus a wild tier harvested from public GitHub repos) using
+the sensitivity harness `tools/calibrate.py`. Findings that fixed the numbers:
+
+- **K = 50 confirmed.** Zero monotonicity violations at every K tested
+  (25/50/75/100) — a degraded diagram never outscores its parent — but K = 25
+  is too lenient (a known-bad example reaches the same level as its good
+  counterpart) and K ≥ 75 doubles single-finding volatility with no
+  discrimination gain.
+- **Severity weight `critical = 8` confirmed.** `critical = 6` also passes all
+  metrics; 8 is kept for the decelerating multiplier ladder (§3).
+- **Dimension weights are signal-proportional** (§2): the 2-rule dimensions
+  DIM-TRC/DIM-RDB carry 0.05 each; the freed weight goes to DIM-CMP/DIM-AMB.
+  Versus the pre-calibration weights this reduces fragile near-boundary
+  verdicts without changing any pair ordering or expected level. Revisit when
+  the TRC/RDB packs are thickened with more rules.
+- **Small-diagram coarseness is accepted, not patched.** Under ~10 elements a
+  single finding moves a dimension by tens of points — by construction
+  (density has a small denominator). Level assignments stay bounded (at most
+  one density-driven level per single finding in the 5–9-element bucket;
+  larger drops are cap-driven and intended, e.g. a blocker forcing Level 2).
+  Cap C6 floors the tiniest diagrams, and the gap report keeps the verdict
+  actionable even where it is coarse. K-damping and score bands were
+  considered and rejected as complexity the user cannot reason about.
+- **Scores are a public contract.** `tests/golden_scores.json` snapshots the
+  level and composite of every deterministic corpus unit; the golden test
+  fails on any drift. After a deliberate scoring change, re-freeze with
+  `python tools/calibrate.py --freeze tests/golden_scores.json`.
+
+**Codegen-claim experiments (2026-07-22).** A 12-run pilot
+(`tools/pilot_codegen.py`, $0.94) validated the protocol, then the full
+experiment (`tools/codegen_experiment.py`: 25 diagrams spanning L1–L5 × 3
+generations on claude-opus-4-8, judged independently by claude-sonnet-5
+against a split invented-logic/embellishment rubric; 75/75 runs clean,
+$5.24) measured the maturity→codegen relationship. Full write-up:
+**EVIDENCE.md**. Headline results: composite↔fidelity correlation
+**r ≈ 0.49** (holds within scenario families, r = 0.39–0.48); the
+relationship is a **cliff, not a slope** — fidelity is roughly flat above
+composite ~40 and collapses (~49/100, with invented business logic roughly
+doubling) below it; and same-model self-judging inflates fidelity by ~15
+points, so independent judging is mandatory in any rerun.
+
+**Claim language (settled):** Level 5 is described as *"method-convention
+complete — the diagram-side preconditions for faithful generation"*, not
+"guaranteed generation-ready": even pristine L5 diagrams average ~72/100
+fidelity under a strict independent judge, because a sequence diagram
+underdetermines an implementation. The evidence-backed marketing claims are
+the correlation and the cliff: **low-maturity diagrams measurably poison
+generation, and the `--min-level` CI gate is the demonstrated mitigation.**

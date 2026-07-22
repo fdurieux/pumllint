@@ -19,9 +19,9 @@ import pkgutil
 import tomllib
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Iterable, Type
+from typing import Iterable, Sequence, Type
 
-from ..model import Diagram, Severity, Violation
+from ..model import Diagram, Dimension, Severity, Violation
 
 _REGISTRY: dict[str, Type["Rule"]] = {}
 
@@ -54,6 +54,7 @@ class Rule(ABC):
     name: str = ""  # kebab-case, e.g. "undeclared-participant"
     description: str = ""
     default_severity: Severity = Severity.MAJOR
+    dimension: Dimension = Dimension.SEMANTIC  # maturity-scoring bucket (SCORING.md)
     applies_to: tuple[str, ...] = ("sequence",)  # diagram types, or ("*",)
     profiles: tuple[str, ...] = ()
 
@@ -75,7 +76,24 @@ class Rule(ABC):
             file_path=diagram.file_path,
             line=line,
             severity=self.severity,
+            dimension=self.dimension,
         )
+
+
+class CrossDiagramRule(Rule):
+    """Base for cross-diagram rules: a symbol table across the whole batch.
+
+    The engine activates these only when more than one diagram is linted
+    (SCORING.md §6) and attributes each violation back to the diagram that
+    owns its file/line. ``check`` is unused — implement :meth:`check_all`.
+    """
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:  # pragma: no cover
+        return ()
+
+    @abstractmethod
+    def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
+        ...
 
 
 def register(cls: Type[Rule]) -> Type[Rule]:
@@ -90,6 +108,7 @@ def register(cls: Type[Rule]) -> Type[Rule]:
     cls.name = meta["name"]
     cls.description = meta["description"]
     cls.default_severity = Severity(meta["severity"])
+    cls.dimension = Dimension(meta["dimension"])
     cls.applies_to = tuple(meta["applies_to"])
     cls.profiles = tuple(meta.get("profiles", ()))
     _REGISTRY[cls.id] = cls
