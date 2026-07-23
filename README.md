@@ -121,6 +121,10 @@ All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 | GEN003 | inline-skinparam | minor | Per-diagram styling instead of a central theme include. |
 | GEN004 | participant-naming | minor | Names violating a configurable regex (per-kind overrides supported). |
 | GEN005 | max-participants | minor | More lifelines than the configured max. |
+| GEN006 | owner-tag | minor | No ownership tag in title/header/footer/caption/notes. Needs a `pattern`; dormant otherwise. |
+| GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
+| GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |
+| GEN009 | max-elements | minor | More semantic elements than `max` (default 60), any diagram type. |
 | UC001 | orphan-actor-or-usecase | major | Use-case diagrams: actor or use case linked to nothing. |
 | UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist; dormant otherwise. |
 | UC003 | include-extend-direction | minor | `<<include>>`/`<<extend>>` arrow pointing the wrong way (judged via actor connectivity), or involving an actor. |
@@ -129,6 +133,7 @@ All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 | SEQ008 | fragment-nesting-depth | minor | Combined fragments nested past `max_nesting_depth` (default 3) — extract a sub-diagram. |
 | SEQ009 | unpaired-return | minor | Dashed return arrow (`-->`) that pairs with no preceding call. |
 | SEQ010 | explicit-participant-order | info | Participant introduced by first use. Opt-in via `require_explicit_order`. |
+| SEQ011 | max-messages | minor | More messages than `max` (default 30) — split per phase or `ref over`. |
 | ACT001 | missing-start | major | Activity diagram with actions but no `start` node. |
 | ACT002 | missing-stop | major | Activity flow never reaches `stop`/`end` (unterminated flow). |
 | ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label. |
@@ -183,6 +188,11 @@ rules:
       actor: "^[A-Z][a-z]+$"
   max-participants:
     max: 7
+  # Traceability rules are dormant until you supply your project's convention:
+  owner-tag:
+    pattern: "(?i)owner\\s*:"
+  requirement-link:
+    pattern: "REQ-\\d+|ADR-\\d+"
 ```
 
 ## Profiles
@@ -303,11 +313,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.11.0
+  uses: fdurieux/pumllint@v0.12.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.11.0
+  uses: fdurieux/pumllint@v0.12.0
   with:
     command: score
     paths: docs/diagrams
@@ -348,7 +358,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.11.0
+    rev: v0.12.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

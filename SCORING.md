@@ -30,13 +30,17 @@ per pack, overridable per rule). Seven dimensions:
 | DIM-RDB | Readability            | Participant count, nesting depth, size thresholds           | 0.05           |
 | DIM-AMB | Ambiguity              | Vague verbs, unlabeled arrows, structure hidden in notes    | 0.25           |
 
-Default weights are **signal-proportional** (calibrated in §9): DIM-TRC and
-DIM-RDB currently carry only two rules each, so their coarse signals carry
-0.05 composite weight apiece until the packs are thickened; the difference
-goes to DIM-CMP/DIM-AMB, the dimensions that carry the generation-readiness
-thesis. Note the per-dimension **gates** (Level 4/5 thresholds, cap C3) apply
-to thin dimensions undiminished — a missing title still blocks
-Generation-ready, and the gap report says exactly that.
+Default weights are **signal-proportional** (calibrated in §9, revisited in
+v0.12.0 after the TRC/RDB packs were thickened): weight follows the signal
+the dimension emits *by default*. DIM-TRC's rules beyond title/name
+(owner-tag GEN006, requirement-link GEN007) are convention-gated — dormant
+until the project configures its pattern — and DIM-RDB's size guards
+(GEN008/GEN009/SEQ011 alongside GEN005/SEQ008/CLS005) fire only at generous
+tail thresholds, so both keep 0.05 composite weight apiece; the difference
+stays with DIM-CMP/DIM-AMB, the dimensions that carry the
+generation-readiness thesis. Note the per-dimension **gates** (Level 4/5
+thresholds, cap C3) apply to low-weight dimensions undiminished — a missing
+title still blocks Generation-ready, and the gap report says exactly that.
 
 DIM-SYN is a **gate**, not a weighted dimension: if syntax fails, the diagram is Level 1
 and no further scoring is reported.
@@ -346,6 +350,19 @@ the sensitivity harness `tools/calibrate.py`. Findings that fixed the numbers:
   Versus the pre-calibration weights this reduces fragile near-boundary
   verdicts without changing any pair ordering or expected level. Revisit when
   the TRC/RDB packs are thickened with more rules.
+- **Weights revisited after thickening (v0.12.0) — decision: unchanged.**
+  The TRC pack grew to 4 rules and RDB to 6, but the *default* signal is what
+  weight follows, and it did not move: GEN006/GEN007 are convention-gated
+  (dormant until a project supplies its ownership/reference pattern — an
+  always-on tag requirement would demote every diagram below the Level-5
+  dimension gate of 80 by fiat), and GEN008/GEN009/SEQ011 are tail guards at
+  generous defaults that no calibration-corpus unit reaches. Re-running the
+  harness with the thickened packs active: zero monotonicity violations, zero
+  expected-level misses, 6/6 pair orderings (the example-pair set was
+  extended with the class/state/usecase pairs), golden scores byte-identical
+  — no re-freeze required. Projects that enable GEN006/GEN007 are effectively
+  opting their TRC dimension into real signal and can raise its weight via
+  `scoring.dimension_weights` if they want the composite to reflect it.
 - **Small-diagram coarseness is accepted, not patched.** Under ~10 elements a
   single finding moves a dimension by tens of points — by construction
   (density has a small denominator). Level assignments stay bounded (at most

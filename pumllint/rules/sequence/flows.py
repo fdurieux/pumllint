@@ -206,3 +206,25 @@ class UnpairedReturn(Rule):
             if m.is_async or src is None or dst is None or src == dst:
                 continue
             prior_calls.add((src, dst))
+
+
+@register
+class MaxMessages(Rule):
+    """Too many messages = the scenario is doing too much on one page.
+
+    The message-count twin of GEN005's participant limit. Option: ``max``
+    (default 30).
+    """
+
+    id = "SEQ011"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        limit = int(self.options.get("max", 30))
+        count = len(diagram.messages)
+        if count > limit:
+            yield self.violation(
+                diagram,
+                diagram.messages[limit].line,
+                f"Diagram has {count} messages (max {limit}) — split per phase "
+                "or extract a 'ref over' sub-diagram",
+            )

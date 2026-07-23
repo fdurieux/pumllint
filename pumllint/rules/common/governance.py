@@ -96,6 +96,114 @@ class MaxParticipants(Rule):
             )
 
 
+def _prose_directives(diagram: Diagram) -> list:
+    """Directives whose value is free text an owner/requirement tag can live in."""
+    kinds = ("title", "header", "footer", "caption", "note")
+    return [d for d in diagram.directives if d.kind in kinds]
+
+
+@register
+class OwnerTag(Rule):
+    """Diagrams must declare ownership (team, maintainer) somewhere findable.
+
+    There is no universal ownership convention, so the rule is dormant until
+    the project configures one: option ``pattern`` (regex, e.g.
+    ``(?i)owner\\s*:``) is matched against the title, header, footer, caption
+    and note texts.
+    """
+
+    id = "GEN006"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        pattern = self.options.get("pattern")
+        if not pattern:
+            return
+        if any(re.search(pattern, d.value) for d in _prose_directives(diagram)):
+            return
+        yield self.violation(
+            diagram,
+            diagram.start_line,
+            f"No ownership tag matching {pattern!r} in title/header/footer/caption/notes",
+        )
+
+
+@register
+class RequirementLink(Rule):
+    """Diagrams must reference the requirement/ADR they realize.
+
+    Reference schemes are project-specific (``REQ-123``, ``ADR-0007``,
+    ticket keys, URLs), so the rule is dormant until option ``pattern``
+    (regex, e.g. ``REQ-\\d+|ADR-\\d+``) supplies the project's scheme; it is
+    matched against the diagram name plus title/header/footer/caption/notes.
+    """
+
+    id = "GEN007"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        pattern = self.options.get("pattern")
+        if not pattern:
+            return
+        haystacks = [d.value for d in _prose_directives(diagram)]
+        if diagram.name:
+            haystacks.append(diagram.name)
+        if any(re.search(pattern, h) for h in haystacks):
+            return
+        yield self.violation(
+            diagram,
+            diagram.start_line,
+            f"No requirement/ADR reference matching {pattern!r} in name/title/header/footer/caption/notes",
+        )
+
+
+@register
+class NoteDensity(Rule):
+    """Structure drowning in prose: too many notes for the diagram's size.
+
+    Notes annotate; they should not carry the model. Options: ``min_notes``
+    (default 4 — smaller counts never fire) and ``max_ratio`` (default 0.5
+    notes per element).
+    """
+
+    id = "GEN008"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        notes = [d for d in diagram.directives if d.kind == "note"]
+        min_notes = int(self.options.get("min_notes", 4))
+        max_ratio = float(self.options.get("max_ratio", 0.5))
+        if len(notes) < min_notes:
+            return
+        elements = max(1, diagram.element_count)
+        if len(notes) > max_ratio * elements:
+            yield self.violation(
+                diagram,
+                notes[0].line,
+                f"{len(notes)} notes on {elements} element(s) — model the structure "
+                "instead of narrating it in notes",
+            )
+
+
+@register
+class MaxElements(Rule):
+    """Diagram grown past readable size, whatever its type.
+
+    Option: ``max`` (default 60 semantic elements — the same count the
+    maturity scorer uses as its density denominator).
+    """
+
+    id = "GEN009"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        limit = int(self.options.get("max", 60))
+        count = diagram.element_count
+        if count > limit:
+            yield self.violation(
+                diagram,
+                diagram.start_line,
+                f"Diagram has {count} elements (max {limit}) — split it along "
+                "phases, subsystems or scenarios",
+            )
+
+
 @register
 class OrphanUseCaseActor(Rule):
     """Use-case diagram: actor linked to zero use cases, or vice versa."""

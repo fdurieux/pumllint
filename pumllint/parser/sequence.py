@@ -77,6 +77,9 @@ RE_BOX_END = re.compile(r"^end\s*box\s*$", re.IGNORECASE)
 RE_TITLE = re.compile(r"^title\b\s*(?P<v>.*)$", re.IGNORECASE)
 RE_SKINPARAM = re.compile(r"^skinparam\b\s*(?P<v>.*)$", re.IGNORECASE)
 RE_AUTONUMBER = re.compile(r"^autonumber\b\s*(?P<v>.*)$", re.IGNORECASE)
+RE_HEADER = re.compile(r"^(?:center\s+|left\s+|right\s+)?header\b\s*(?P<v>.*)$", re.IGNORECASE)
+RE_FOOTER = re.compile(r"^(?:center\s+|left\s+|right\s+)?footer\b\s*(?P<v>.*)$", re.IGNORECASE)
+RE_CAPTION = re.compile(r"^caption\b\s*(?P<v>.*)$", re.IGNORECASE)
 RE_NOTE_START = re.compile(r"^[hr]?note\b(?!.*:\s*\S).*$", re.IGNORECASE)
 RE_NOTE_END = re.compile(r"^end\s*[hr]?note\s*$", re.IGNORECASE)
 RE_NOTE_INLINE = re.compile(r"^[hr]?note\b[^:]*:\s*(?P<v>.+)$", re.IGNORECASE)
@@ -311,7 +314,14 @@ def _parse_statement(
         return
 
     # --- directives -----------------------------------------------------
-    for regex, kind in ((RE_TITLE, "title"), (RE_SKINPARAM, "skinparam"), (RE_AUTONUMBER, "autonumber")):
+    for regex, kind in (
+        (RE_TITLE, "title"),
+        (RE_SKINPARAM, "skinparam"),
+        (RE_AUTONUMBER, "autonumber"),
+        (RE_HEADER, "header"),
+        (RE_FOOTER, "footer"),
+        (RE_CAPTION, "caption"),
+    ):
         m = regex.match(line)
         if m:
             d.directives.append(Directive(kind=kind, value=m.group("v").strip(), line=lineno))

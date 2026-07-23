@@ -56,6 +56,38 @@ dimension = "DIM-RDB"
 applies_to = ["sequence"]
 profiles = []
 
+[GEN006]
+name = "owner-tag"
+description = "Diagram declares no ownership tag (dormant until a pattern is configured)"
+severity = "minor"
+dimension = "DIM-TRC"
+applies_to = ["*"]
+profiles = []
+
+[GEN007]
+name = "requirement-link"
+description = "Diagram references no requirement/ADR (dormant until a pattern is configured)"
+severity = "minor"
+dimension = "DIM-TRC"
+applies_to = ["*"]
+profiles = []
+
+[GEN008]
+name = "note-density"
+description = "Too many notes for the diagram's size — structure narrated instead of modelled"
+severity = "minor"
+dimension = "DIM-RDB"
+applies_to = ["*"]
+profiles = []
+
+[GEN009]
+name = "max-elements"
+description = "Diagram has more semantic elements than the configured maximum"
+severity = "minor"
+dimension = "DIM-RDB"
+applies_to = ["*"]
+profiles = []
+
 # --- XD: cross-diagram consistency (CrossDiagramRule; active for >1 diagram) -
 
 [XD001]
@@ -161,6 +193,14 @@ name = "explicit-participant-order"
 description = "Participant introduced by first use instead of an explicit declaration"
 severity = "info"
 dimension = "DIM-CMP"
+applies_to = ["sequence"]
+profiles = []
+
+[SEQ011]
+name = "max-messages"
+description = "Diagram has more messages than the configured maximum"
+severity = "minor"
+dimension = "DIM-RDB"
 applies_to = ["sequence"]
 profiles = []
 

@@ -744,6 +744,65 @@ def test_state_description_shorthand_is_consumed_not_mistaken():
     assert lint(src) == []
 
 
+# --- GEN006-009 / SEQ011: TRC & RDB thickening -------------------------------
+
+def test_parser_records_header_footer_caption_directives():
+    src = (
+        "@startuml demo\ntitle Demo\nheader Confidential\n"
+        "footer Owner: team-x\ncaption Fig. 1\nparticipant A\nparticipant B\nA -> B : hi\n@enduml\n"
+    )
+    (d,) = parse_source(src)
+    kinds = {dir.kind for dir in d.directives}
+    assert {"header", "footer", "caption"} <= kinds
+
+
+def test_gen006_and_gen007_are_dormant_without_a_pattern():
+    ids = rule_ids(CLEAN)
+    assert "GEN006" not in ids and "GEN007" not in ids
+
+
+def test_given_pattern_and_no_owner_tag_then_gen006_fires():
+    cfg = {"rules": {"GEN006": {"pattern": r"(?i)owner\s*:"}}}
+    assert "GEN006" in rule_ids(CLEAN, cfg)
+    tagged = CLEAN.replace("title Demo", "title Demo\nfooter Owner: team-x")
+    assert "GEN006" not in rule_ids(tagged, cfg)
+
+
+def test_given_pattern_and_no_requirement_link_then_gen007_fires():
+    cfg = {"rules": {"GEN007": {"pattern": r"REQ-\d+|ADR-\d+"}}}
+    assert "GEN007" in rule_ids(CLEAN, cfg)
+    named = CLEAN.replace("@startuml demo", "@startuml REQ-142-demo")
+    assert "GEN007" not in rule_ids(named, cfg)
+
+
+def test_given_note_heavy_diagram_then_gen008_fires():
+    notes = "note over Customer : blah\n" * 4
+    src = CLEAN.replace("@enduml", notes + "@enduml")
+    assert "GEN008" in rule_ids(src)
+
+
+def test_few_notes_are_clean_for_gen008():
+    src = CLEAN.replace("@enduml", "note over Customer : blah\n" * 3 + "@enduml")
+    assert "GEN008" not in rule_ids(src)
+
+
+def test_given_oversized_diagram_then_gen009_fires():
+    cfg = {"rules": {"GEN009": {"max": 3}}}
+    assert "GEN009" in rule_ids(CLEAN, cfg)  # 2 participants + 2 messages = 4
+    assert "GEN009" not in rule_ids(CLEAN)  # default max 60
+
+
+def test_given_too_many_messages_then_seq011_fires_on_first_excess():
+    msgs = "".join(f"Customer -> FrontOffice : m{i}\n" for i in range(3))
+    src = CLEAN.replace("@enduml", msgs + "@enduml")
+    cfg = {"rules": {"SEQ011": {"max": 2}}}
+    hits = [v for v in lint(src, cfg) if v.rule_id == "SEQ011"]
+    assert len(hits) == 1
+    (d,) = parse_source(src)
+    assert hits[0].line == d.messages[2].line
+    assert "SEQ011" not in rule_ids(src)  # default max 30
+
+
 # --- Sonar reporter --------------------------------------------------------
 
 def test_sonar_reporter_emits_valid_generic_issue_format():

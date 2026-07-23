@@ -255,6 +255,205 @@ Feature: GEN005 participant count limit
     Then no "GEN005" issue is reported
 ```
 
+### GEN006 — Ownership tag
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
+
+**Rationale:** A diagram nobody owns rots silently; an ownership tag (team,
+maintainer) in the title, header, footer, caption or a note keeps it accountable.
+There is no universal ownership convention, so the rule is dormant until option
+`pattern` (regex) supplies the project's convention.
+
+```gherkin
+Feature: GEN006 ownership tag
+
+  Scenario: diagram without an ownership tag is reported
+    Given the configuration:
+      """
+      [rules.GEN006]
+      pattern = '(?i)owner\s*:'
+      """
+    And the diagram:
+      """
+      @startuml payment-flow
+      title Payment flow
+      participant A
+      participant B
+      A -> B : pay
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN006" issue with severity "minor" is reported on line 1
+
+  Scenario: tagged diagram passes
+    Given the configuration:
+      """
+      [rules.GEN006]
+      pattern = '(?i)owner\s*:'
+      """
+    And the diagram:
+      """
+      @startuml payment-flow
+      title Payment flow
+      footer Owner: team-payments
+      participant A
+      participant B
+      A -> B : pay
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN006" issue is reported
+
+  Scenario: without a configured pattern the rule is dormant
+    Given the diagram:
+      """
+      @startuml payment-flow
+      title Payment flow
+      participant A
+      participant B
+      A -> B : pay
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN006" issue is reported
+```
+
+### GEN007 — Requirement/ADR link
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
+
+**Rationale:** A diagram that realizes no traceable requirement or decision cannot
+be checked against intent. Reference schemes are project-specific (`REQ-123`,
+`ADR-0007`, ticket keys, URLs), so the rule is dormant until option `pattern`
+(regex) supplies the scheme; the diagram name, title, header, footer, caption and
+notes are searched.
+
+```gherkin
+Feature: GEN007 requirement link
+
+  Scenario: diagram without a requirement reference is reported
+    Given the configuration:
+      """
+      [rules.GEN007]
+      pattern = 'REQ-\d+|ADR-\d+'
+      """
+    And the diagram:
+      """
+      @startuml payment-flow
+      title Payment flow
+      participant A
+      participant B
+      A -> B : pay
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN007" issue with severity "minor" is reported on line 1
+
+  Scenario: referenced diagram passes
+    Given the configuration:
+      """
+      [rules.GEN007]
+      pattern = 'REQ-\d+|ADR-\d+'
+      """
+    And the diagram:
+      """
+      @startuml payment-flow
+      title Payment flow — realizes REQ-142
+      participant A
+      participant B
+      A -> B : pay
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN007" issue is reported
+```
+
+### GEN008 — Note density
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
+
+**Rationale:** Notes annotate; they should not carry the model. A diagram whose
+structure is narrated in prose defeats both readers and downstream generators.
+Options: `min_notes` (default 4 — smaller counts never fire) and `max_ratio`
+(default 0.5 notes per semantic element).
+
+```gherkin
+Feature: GEN008 note density
+
+  Scenario: note-heavy diagram is reported
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      note over A : step one
+      note over A : step two
+      note over B : step three
+      note over B : step four
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN008" issue with severity "minor" is reported on line 6
+
+  Scenario: lightly annotated diagram passes
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      note over A : step one
+      note over B : step two
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN008" issue is reported
+```
+
+### GEN009 — Element count limit
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
+
+**Rationale:** Past a certain size a diagram of any type stops being readable;
+the semantic element count (the same one the maturity scorer uses as its density
+denominator) is the type-neutral measure. Option `max` (default 60).
+
+```gherkin
+Feature: GEN009 element count limit
+
+  Scenario: oversized diagram is reported
+    Given the configuration:
+      """
+      [rules.GEN009]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      A -> B : again
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN009" issue with severity "minor" is reported on line 1
+
+  Scenario: normal-sized diagram passes
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      A -> B : again
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN009" issue is reported
+```
+
 ---
 
 ## SEQ — Sequence diagram rules (applies_to: sequence)
@@ -706,6 +905,52 @@ Feature: SEQ010 explicit participant ordering
       """
     When the linter runs
     Then no "SEQ010" issue is reported
+```
+
+### SEQ011 — Message count limit
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
+
+**Rationale:** Too many messages means the scenario is doing too much on one page —
+the message-count twin of GEN005's participant limit. The finding is anchored on
+the first message past the limit. Option `max` (default 30).
+
+```gherkin
+Feature: SEQ011 message count limit
+
+  Scenario: diagram exceeding the message limit is reported
+    Given the configuration:
+      """
+      [rules.SEQ011]
+      max = 2
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : one
+      B --> A : two
+      A -> B : three
+      @enduml
+      """
+    When the linter runs
+    Then a "SEQ011" issue with severity "minor" is reported on line 7
+
+  Scenario: diagram within the limit passes
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : one
+      B --> A : two
+      A -> B : three
+      @enduml
+      """
+    When the linter runs
+    Then no "SEQ011" issue is reported
 ```
 
 ---
@@ -1702,6 +1947,10 @@ Feature: XD003 participant name case collision
 | GEN003 | minor | * | No inline skinparam | ✅ v0.1.0 |
 | GEN004 | minor | sequence | Participant naming convention | ✅ v0.1.0 |
 | GEN005 | minor | sequence | Participant count limit | ✅ v0.1.0 |
+| GEN006 | minor | * | Ownership tag (pattern-gated) | ✅ v0.12.0 |
+| GEN007 | minor | * | Requirement/ADR link (pattern-gated) | ✅ v0.12.0 |
+| GEN008 | minor | * | Note density | ✅ v0.12.0 |
+| GEN009 | minor | * | Element count limit | ✅ v0.12.0 |
 | SEQ001 | critical | sequence | No undeclared participants | ✅ v0.1.0 |
 | SEQ002 | minor | sequence | No unused participants | ✅ v0.1.0 |
 | SEQ003 | major | sequence | Balanced activate/deactivate | ✅ v0.1.0 |
@@ -1712,6 +1961,7 @@ Feature: XD003 participant name case collision
 | SEQ008 | minor | sequence | Max fragment nesting depth | ✅ v0.4.0 |
 | SEQ009 | minor | sequence | Returns pair with calls | ✅ v0.4.0 |
 | SEQ010 | info | sequence | Explicit participant ordering | ✅ v0.4.0 |
+| SEQ011 | minor | sequence | Message count limit | ✅ v0.12.0 |
 | ACT001 | major | activity | Start node present | ✅ v0.2.0 |
 | ACT002 | major | activity | Flow terminates | ✅ v0.2.0 |
 | ACT003 | minor | activity | Decision branches labelled | ✅ v0.2.0 |
@@ -1733,11 +1983,13 @@ Feature: XD003 participant name case collision
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
 | XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
 
-**Totals:** 35 base-catalog rules — **all 35 implemented** (SEQ008/009/010,
+**Totals:** 40 base-catalog rules — **all 40 implemented** (SEQ008/009/010,
 ACT005/006 and UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in
 v0.5.0; CLS001–005 class pack in v0.9.0; STA001–003 state pack in v0.10.0;
-UC003 in v0.11.0 closed the catalog). Separately: SEQ101–SEQ109 codegen
-profile pack, ✅ v0.3.0.
+UC003 in v0.11.0 closed the original catalog; GEN006–009 and SEQ011 thickened
+DIM-TRC/DIM-RDB in v0.12.0 — GEN006/007 are convention-gated and dormant until
+a pattern is configured). Separately: SEQ101–SEQ109 codegen profile pack,
+✅ v0.3.0.
 
 ## Implementation notes
 

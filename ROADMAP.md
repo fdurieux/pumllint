@@ -10,9 +10,11 @@ baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
 and the shields.io badge; **v0.8.0** (2026-07-23) added the composite GitHub
 Action and pre-commit hooks; **v0.9.0** (2026-07-23) opened Arc C with the
 class-diagram parser and CLS pack; **v0.10.0** (2026-07-23) added the
-state-diagram parser and STA pack; **v0.11.0** (2026-07-23) closed the base
-catalog with UC003 (35/35 rules implemented). This file tracks what remains,
-grouped into arcs. Keep it updated as items land.
+state-diagram parser and STA pack; **v0.11.0** (2026-07-23) closed the
+original base catalog with UC003; **v0.12.0** (2026-07-23) thickened
+DIM-TRC/DIM-RDB (GEN006–009, SEQ011 — 40 base rules) and settled the weight
+revisit (unchanged, SCORING.md §9). This file tracks what remains, grouped
+into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -57,10 +59,16 @@ grouped into arcs. Keep it updated as items land.
   tuple-unpack compatible), endpoints typed by syntax (`(X)` usecase, `:X:`
   actor), reversed arrows normalized; direction judged via actor
   connectivity, only when exactly one endpoint is actor-connected.
-- [ ] **Thicken DIM-TRC** (deferred from calibration decision 10c): owner
-  tag, requirement/ADR-link rules in the GEN pack. Removes the 2-rule
-  thin-dimension caveat; revisit dimension weights (SCORING.md §9) after.
-- [ ] **Thicken DIM-RDB**: message-count, note-density, diagram-size rules.
+- [x] **Thicken DIM-TRC** *(0.12.0)* — GEN006 owner-tag + GEN007
+  requirement-link, both convention-gated (dormant until the project
+  configures its `pattern` — an always-on tag requirement would demote every
+  diagram below the L5 dimension gate by fiat); parser gained
+  header/footer/caption directives as tag carriers. Weight revisit settled:
+  unchanged, signal-proportional (SCORING.md §9, v0.12.0 bullet).
+- [x] **Thicken DIM-RDB** *(0.12.0)* — SEQ011 max-messages (default 30),
+  GEN008 note-density (≥4 notes and >0.5/element), GEN009 max-elements
+  (default 60, any type). Tail guards: no calibration-corpus unit trips
+  them, so golden scores were unchanged (verified, no re-freeze).
 - [ ] Grow DIM-CON beyond the sequence-only XD pack into cross-*type* entity
   identity (same entity in sequence vs class vs activity diagrams).
 
@@ -97,10 +105,10 @@ marketing claims need escalation:
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
 - Recommended next: Arc B is done except the HTML report (architect-facing;
-  wait for pull or pair it with a real need). Arc C's new-parser work is done
-  (CLS 0.9.0, STA 0.10.0, UC003 0.11.0 — full base catalog); what remains is
-  thickening DIM-TRC/DIM-RDB (which touches dimension weights — re-read
-  SCORING.md §9 and re-calibrate deliberately) and growing DIM-CON
-  cross-type. Consider adding class/state/usecase fixtures to the corpus
-  (gen_corpus.py) with a conscious golden re-freeze before or alongside the
-  thickening work.
+  wait for pull or pair it with a real need). Arc C is done except growing
+  DIM-CON cross-*type* (same entity across sequence/class/activity diagrams —
+  a CrossDiagramRule over the now-complete parser set). Still worth doing at
+  some point: class/state/usecase fixtures in the calibration corpus
+  (gen_corpus.py) with a conscious golden re-freeze — the example pairs cover
+  those packs in calibrate.py's pair metric, but the golden contract itself
+  is still sequence/activity-only.
