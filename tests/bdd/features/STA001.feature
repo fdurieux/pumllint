@@ -1,17 +1,56 @@
-@skip
 Feature: STA001 exactly one initial state
 
   Scenario: missing initial transition is reported
-    Given a state diagram with no "[*] -->" transition at the top level
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      state Open
+      state Closed
+      Open --> Closed : close
+      @enduml
+      """
     When the linter runs
-    Then a "STA001" issue with severity "blocker" is reported
+    Then a "STA001" issue with severity "blocker" is reported on line 1
 
   Scenario: duplicate initial transitions are reported
-    Given a state diagram with two top-level "[*] -->" transitions
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      [*] --> Closed
+      Open --> Closed : close
+      @enduml
+      """
     When the linter runs
-    Then a "STA001" issue with severity "blocker" is reported on the second one
+    Then a "STA001" issue with severity "blocker" is reported on line 4
 
   Scenario: single initial transition passes
-    Given a state diagram with exactly one top-level "[*] --> Idle"
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      Open --> Closed : close
+      Closed --> [*]
+      @enduml
+      """
+    When the linter runs
+    Then no "STA001" issue is reported
+
+  Scenario: initial transitions inside composite states are not top-level
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Operating
+      state Operating {
+        [*] --> Idle
+        Idle --> Busy : work
+      }
+      Operating --> [*]
+      @enduml
+      """
     When the linter runs
     Then no "STA001" issue is reported

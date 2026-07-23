@@ -330,6 +330,32 @@ dimension = "DIM-RDB"
 applies_to = ["class"]
 profiles = []
 
+# --- STA: state base catalog -------------------------------------------------
+
+[STA001]
+name = "single-initial-state"
+description = "State machine must have exactly one top-level '[*] -->' initial transition"
+severity = "blocker"
+dimension = "DIM-SEM"
+applies_to = ["state"]
+profiles = []
+
+[STA002]
+name = "unreachable-state"
+description = "State has no incoming transition"
+severity = "major"
+dimension = "DIM-CMP"
+applies_to = ["state"]
+profiles = []
+
+[STA003]
+name = "unlabelled-transition"
+description = "State-to-state transition has no event/guard/action label"
+severity = "minor"
+dimension = "DIM-AMB"
+applies_to = ["state"]
+profiles = []
+
 # --- UC: use-case base catalog ---------------------------------------------
 
 [UC001]

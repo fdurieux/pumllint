@@ -591,6 +591,105 @@ def test_member_shorthand_counts_toward_cls005():
     assert "CLS005" in rule_ids(src, cfg)
 
 
+# --- STA state-diagram pack --------------------------------------------------
+
+STATE_CLEAN = """\
+@startuml door
+title Door lifecycle
+state "Wide open" as Open <<external>>
+state Operating {
+  [*] --> Idle
+  Idle --> Busy : work requested
+  --
+  [*] --> Monitoring
+}
+[*] --> Open
+Open --> Operating : engage [armed]
+Operating --> Open : release
+Open --> [*]
+@enduml
+"""
+
+
+def test_state_diagram_is_detected_and_clean():
+    (d,) = parse_source(STATE_CLEAN)
+    assert d.diagram_type == "state"
+    assert set(d.states) == {"Open", "Operating", "Idle", "Busy", "Monitoring"}
+    assert d.states["Open"].display_name == "Wide open"
+    assert d.states["Open"].stereotype == "external"
+    assert d.states["Operating"].composite
+    assert d.states["Idle"].container == "Operating"
+    assert d.element_count == len(d.states) + len(d.transitions)
+    assert lint(STATE_CLEAN) == []
+
+
+def test_state_parser_never_retypes_a_sequence_diagram():
+    src = CLEAN + "\n@startuml sm\ntitle SM\n[*] --> Idle\nIdle --> [*]\n@enduml\n"
+    seq, sm = parse_source(src)
+    assert seq.diagram_type == "sequence"
+    assert not seq.states
+    assert sm.diagram_type == "state"
+
+
+def test_sequence_rules_do_not_fire_on_state_diagrams():
+    assert not any(i.startswith("SEQ") for i in rule_ids(STATE_CLEAN))
+
+
+def test_given_no_initial_transition_then_sta001_fires():
+    src = "@startuml sm\ntitle SM\nstate Open\nstate Closed\nOpen --> Closed : close\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "STA001"]
+    assert [v.line for v in hits] == [1]
+
+
+def test_given_duplicate_initial_transitions_then_sta001_fires_on_the_second():
+    src = "@startuml sm\ntitle SM\n[*] --> Open\n[*] --> Closed\nOpen --> Closed : close\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "STA001"]
+    assert [v.line for v in hits] == [4]
+
+
+def test_composite_inner_initial_is_not_top_level_for_sta001():
+    assert "STA001" not in rule_ids(STATE_CLEAN)
+
+
+def test_given_state_without_incoming_transition_then_sta002_fires():
+    src = "@startuml sm\ntitle SM\n[*] --> Open\nOpen --> [*]\nstate Suspended\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "STA002"]
+    assert [v.line for v in hits] == [5]
+
+
+def test_self_transition_does_not_make_a_state_reachable_for_sta002():
+    src = (
+        "@startuml sm\ntitle SM\n[*] --> Open\nOpen --> [*]\n"
+        "Suspended --> Suspended : tick\n@enduml\n"
+    )
+    assert "STA002" in rule_ids(src)
+
+
+def test_given_unlabelled_transition_then_sta003_fires_but_pseudo_states_are_exempt():
+    src = "@startuml sm\ntitle SM\n[*] --> Idle\nIdle --> Active\nActive --> [*]\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "STA003"]
+    assert [v.line for v in hits] == [4]
+
+
+def test_labelled_and_styled_transitions_are_clean_for_sta003():
+    src = (
+        "@startuml sm\ntitle SM\n[*] --> Idle\n"
+        "Idle -[#red]-> Active : powerOn [selfTestOk]\n"
+        "Active -down-> Idle : powerOff\nActive --> [*]\n@enduml\n"
+    )
+    assert "STA003" not in rule_ids(src)
+
+
+def test_state_description_shorthand_is_consumed_not_mistaken():
+    src = (
+        "@startuml sm\ntitle SM\n[*] --> Idle\nIdle --> [*]\n"
+        "Idle : waiting for input\n@enduml\n"
+    )
+    (d,) = parse_source(src)
+    assert set(d.states) == {"Idle"}
+    assert lint(src) == []
+
+
 # --- Sonar reporter --------------------------------------------------------
 
 def test_sonar_reporter_emits_valid_generic_issue_format():

@@ -9,8 +9,9 @@ correlation r ≈ 0.49, sharp degradation below Level 2). **v0.6.0**
 baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
 and the shields.io badge; **v0.8.0** (2026-07-23) added the composite GitHub
 Action and pre-commit hooks; **v0.9.0** (2026-07-23) opened Arc C with the
-class-diagram parser and CLS pack. This file tracks what remains, grouped into
-arcs. Keep it updated as items land.
+class-diagram parser and CLS pack; **v0.10.0** (2026-07-23) added the
+state-diagram parser and STA pack. This file tracks what remains, grouped
+into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -46,7 +47,11 @@ arcs. Keep it updated as items land.
   other forms) + CLS001–005. Note: the corpus still has no class-diagram
   fixtures, so the golden contract does not yet cover CLS scoring — extend
   `tools/gen_corpus.py` and re-freeze deliberately when it should.
-- [ ] **STA pack + state-diagram parser** — STA001–003, same situation.
+- [x] **STA pack + state-diagram parser** *(0.10.0)* — `parser/state.py`
+  (declarations, composite bodies with a container stack, `[*]` endpoints;
+  typed by the `state` keyword and `[*]`, never re-typing other forms) +
+  STA001–003. Same corpus caveat as CLS: no state fixtures in the golden
+  contract yet.
 - [ ] UC003 — needs include/extend parsing in the usecase parser.
 - [ ] **Thicken DIM-TRC** (deferred from calibration decision 10c): owner
   tag, requirement/ADR-link rules in the GEN pack. Removes the 2-rule
@@ -89,4 +94,5 @@ marketing claims need escalation:
   under `python tests/run_tests.py` with the stdlib only.
 - Recommended next: Arc B is done except the HTML report (architect-facing;
   wait for pull or pair it with a real need). Arc C is underway — CLS shipped
-  in 0.9.0; next is the STA pack + state-diagram parser, then UC003.
+  in 0.9.0, STA in 0.10.0; next is UC003 (include/extend parsing in the
+  usecase parser), then the DIM-TRC/DIM-RDB thickening.

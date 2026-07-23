@@ -24,9 +24,10 @@ from ..model import (
     Message,
     PARTICIPANT_KEYWORDS,
     Participant,
+    StateNode,
     Suppression,
 )
-from . import activity, class_
+from . import activity, class_, state
 
 # ---------------------------------------------------------------------------
 # Regexes
@@ -176,6 +177,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
     block_stack: list[Block] = []
     act_stack: list[Block] = []
     cls_stack: list[ClassEntity] = []
+    sta_stack: list[StateNode] = []
     in_note = False
     note_buf: list[str] = []
     note_start = 0
@@ -196,6 +198,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             block_stack = []
             act_stack = []
             cls_stack = []
+            sta_stack = []
             in_note = False
             in_action = False
             continue
@@ -237,7 +240,9 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             )
             continue
 
-        outcome = _parse_statement(current, block_stack, act_stack, cls_stack, lineno, line)
+        outcome = _parse_statement(
+            current, block_stack, act_stack, cls_stack, sta_stack, lineno, line
+        )
         if outcome == "action_open":
             in_action = True
 
@@ -249,6 +254,7 @@ def _parse_statement(
     block_stack: list[Block],
     act_stack: list[Block],
     cls_stack: list[ClassEntity],
+    sta_stack: list[StateNode],
     lineno: int,
     line: str,
 ):
@@ -258,6 +264,9 @@ def _parse_statement(
         return handled if handled == "action_open" else None
     # --- class diagrams -----------------------------------------------------
     if class_.try_parse(d, cls_stack, lineno, line):
+        return None
+    # --- state diagrams -----------------------------------------------------
+    if state.try_parse(d, sta_stack, lineno, line):
         return None
     # --- declarations --------------------------------------------------
     m = RE_DECLARATION.match(line)

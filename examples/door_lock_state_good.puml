@@ -1,0 +1,14 @@
+@startuml door-lock-states
+title Door lock — state machine
+
+state Locked
+state Unlocked
+state Alarmed
+
+[*] --> Locked
+Locked --> Unlocked : badgeScan [badgeValid]
+Unlocked --> Locked : close / logEntry
+Locked --> Alarmed : forceDetected / notifySecurity
+Alarmed --> Locked : reset [securityCleared]
+Unlocked --> [*]
+@enduml

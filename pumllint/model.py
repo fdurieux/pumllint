@@ -255,6 +255,50 @@ class ClassRelation:
         return self.right if "<|" in self.arrow else self.left
 
 
+@dataclass
+class StateNode:
+    """A named state in a state diagram.
+
+    ``composite`` marks states declared with a ``{ ... }`` body;
+    ``container`` names the enclosing composite state, or ``None`` at the
+    top level. The ``[*]`` pseudo-state is never a node — it appears only as
+    a transition endpoint.
+    """
+
+    name: str
+    kind: str  # state | "implicit"
+    line: int
+    declared: bool
+    display_name: Optional[str] = None  # long name when `state "..." as X`
+    stereotype: Optional[str] = None
+    composite: bool = False
+    container: Optional[str] = None
+
+
+@dataclass
+class StateTransition:
+    """A transition edge; ``[*]`` endpoints are kept literal.
+
+    ``container`` names the composite state whose body the transition was
+    written in (``None`` = top level) — STA001 counts only top-level initial
+    transitions, because a composite's inner ``[*]`` is its own entry point.
+    """
+
+    source: str
+    target: str
+    label: str
+    line: int
+    container: Optional[str] = None
+
+    @property
+    def is_initial(self) -> bool:
+        return self.source == "[*]"
+
+    @property
+    def is_final(self) -> bool:
+        return self.target == "[*]"
+
+
 @dataclass(frozen=True)
 class Suppression:
     """Inline suppression parsed from a ``' pumllint: disable...`` comment.
@@ -277,7 +321,7 @@ class Diagram:
     name: Optional[str]  # name after @startuml, if any
     start_line: int
     end_line: Optional[int]
-    diagram_type: str = "unknown"  # sequence | usecase | activity | class | unknown
+    diagram_type: str = "unknown"  # sequence | usecase | activity | class | state | unknown
     participants: dict[str, Participant] = field(default_factory=dict)
     messages: list[Message] = field(default_factory=list)
     activations: list[ActivationEvent] = field(default_factory=list)
@@ -287,6 +331,8 @@ class Diagram:
     activity_nodes: list[ActivityNode] = field(default_factory=list)
     classes: dict[str, ClassEntity] = field(default_factory=dict)
     class_relations: list[ClassRelation] = field(default_factory=list)
+    states: dict[str, StateNode] = field(default_factory=dict)
+    transitions: list[StateTransition] = field(default_factory=list)
     suppressions: list[Suppression] = field(default_factory=list)
 
     # -- convenience accessors -------------------------------------------
@@ -298,8 +344,8 @@ class Diagram:
         for size alone (see SCORING.md §3). Per diagram type:
         sequence = participants + messages; activity = nodes; usecase =
         distinct actors/use-cases + relationships; class = classifiers +
-        relations. ``unknown`` sums whatever the parser populated. The scorer
-        applies ``max(1, ...)`` so 0 is safe.
+        relations; state = states + transitions. ``unknown`` sums whatever the
+        parser populated. The scorer applies ``max(1, ...)`` so 0 is safe.
         """
         if self.diagram_type == "sequence":
             return len(self.participants) + len(self.messages)
@@ -307,6 +353,8 @@ class Diagram:
             return len(self.activity_nodes)
         if self.diagram_type == "class":
             return len(self.classes) + len(self.class_relations)
+        if self.diagram_type == "state":
+            return len(self.states) + len(self.transitions)
         if self.diagram_type == "usecase":
             nodes = set(self.participants)
             for src, dst, _line in self.usecase_links:
@@ -320,6 +368,8 @@ class Diagram:
             + len(self.usecase_links)
             + len(self.classes)
             + len(self.class_relations)
+            + len(self.states)
+            + len(self.transitions)
         )
 
     @property

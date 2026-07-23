@@ -1,0 +1,8 @@
+@startuml
+' Deliberately messy: no name, no title, duplicate initial transitions,
+' unlabelled transition, unreachable state.
+[*] --> Locked
+[*] --> Unlocked
+Locked --> Unlocked
+state Alarmed
+@enduml

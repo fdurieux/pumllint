@@ -1240,71 +1240,149 @@ Feature: CLS005 member count limit
 
 ## STA — State diagram rules (applies_to: state)
 
-**Pack status:** 🚫 Blocked — requires state diagram parsing, which is not yet
-implemented.
+**Pack status:** ✅ Implemented (v0.10.0) — `parser/state.py` recognizes the
+governance-relevant subset: `state` declarations (with alias and stereotype),
+composite `state Foo { ... }` bodies with concurrent-region separators, `[*]`
+pseudo-state endpoints, and transition arrows with labels.
 
 ### STA001 — Exactly one initial state
-**Severity:** blocker · **Status:** 🚫 Blocked (no state parser)
+**Severity:** blocker · **Status:** ✅ Implemented (v0.10.0)
 
 **Rationale:** A state machine without a single unambiguous initial transition
-(`[*] -->`) does not define where execution begins.
+(`[*] -->`) does not define where execution begins — and with two, it defines it
+twice. Initial transitions inside composite-state bodies are those composites'
+own entry points and do not count toward the top level.
 
 ```gherkin
 Feature: STA001 exactly one initial state
 
   Scenario: missing initial transition is reported
-    Given a state diagram with no "[*] -->" transition at the top level
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      state Open
+      state Closed
+      Open --> Closed : close
+      @enduml
+      """
     When the linter runs
-    Then a "STA001" issue with severity "blocker" is reported
+    Then a "STA001" issue with severity "blocker" is reported on line 1
 
   Scenario: duplicate initial transitions are reported
-    Given a state diagram with two top-level "[*] -->" transitions
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      [*] --> Closed
+      Open --> Closed : close
+      @enduml
+      """
     When the linter runs
-    Then a "STA001" issue with severity "blocker" is reported on the second one
+    Then a "STA001" issue with severity "blocker" is reported on line 4
 
   Scenario: single initial transition passes
-    Given a state diagram with exactly one top-level "[*] --> Idle"
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      Open --> Closed : close
+      Closed --> [*]
+      @enduml
+      """
+    When the linter runs
+    Then no "STA001" issue is reported
+
+  Scenario: initial transitions inside composite states are not top-level
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Operating
+      state Operating {
+        [*] --> Idle
+        Idle --> Busy : work
+      }
+      Operating --> [*]
+      @enduml
+      """
     When the linter runs
     Then no "STA001" issue is reported
 ```
 
 ### STA002 — No unreachable states
-**Severity:** major · **Status:** 🚫 Blocked (no state parser)
+**Severity:** major · **Status:** ✅ Implemented (v0.10.0)
 
 **Rationale:** A state with no incoming transition (and not the initial state) is
-dead model content — typically a leftover from refactoring.
+dead model content — typically a leftover from refactoring. Self-transitions do
+not count as incoming: a state only reachable from itself is still unreachable.
 
 ```gherkin
 Feature: STA002 unreachable states
 
   Scenario: state with no incoming transition is reported
-    Given a state diagram declaring state "Suspended"
-    And no transition targets "Suspended"
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      Open --> [*]
+      state Suspended
+      @enduml
+      """
     When the linter runs
-    Then a "STA002" issue with severity "major" is reported on the declaration
+    Then a "STA002" issue with severity "major" is reported on line 5
 
   Scenario: fully connected state machine passes
-    Given a state diagram where every state is reachable from "[*]"
+    Given the diagram:
+      """
+      @startuml door
+      title Door lifecycle
+      [*] --> Open
+      Open --> Closed : close
+      Closed --> [*]
+      @enduml
+      """
     When the linter runs
     Then no "STA002" issue is reported
 ```
 
 ### STA003 — Transitions labelled with event/guard/action
-**Severity:** minor · **Status:** 🚫 Blocked (no state parser)
+**Severity:** minor · **Status:** ✅ Implemented (v0.10.0)
 
 **Rationale:** An unlabelled transition says a state change can occur but not what
 triggers it; the convention `event [guard] / action` keeps machines specifiable.
+Initial and final transitions (`[*]` endpoints) are conventionally unlabelled and
+exempt.
 
 ```gherkin
 Feature: STA003 labelled transitions
 
   Scenario: unlabelled transition is reported
-    Given a state diagram containing "Idle --> Active" with no label
+    Given the diagram:
+      """
+      @startuml device
+      title Device power
+      [*] --> Idle
+      Idle --> Active
+      Active --> [*]
+      @enduml
+      """
     When the linter runs
-    Then a "STA003" issue with severity "minor" is reported on that line
+    Then a "STA003" issue with severity "minor" is reported on line 4
 
   Scenario: labelled transition passes
-    Given a state diagram containing "Idle --> Active : powerOn [selfTestOk]"
+    Given the diagram:
+      """
+      @startuml device
+      title Device power
+      [*] --> Idle
+      Idle --> Active : powerOn [selfTestOk]
+      Active --> [*]
+      @enduml
+      """
     When the linter runs
     Then no "STA003" issue is reported
 ```
@@ -1600,9 +1678,9 @@ Feature: XD003 participant name case collision
 | CLS003 | minor | class | Relationship labels | ✅ v0.9.0 |
 | CLS004 | major | class | No inheritance cycles | ✅ v0.9.0 |
 | CLS005 | minor | class | Member count limit | ✅ v0.9.0 |
-| STA001 | blocker | state | Exactly one initial state | 🚫 parser |
-| STA002 | major | state | No unreachable states | 🚫 parser |
-| STA003 | minor | state | Transitions labelled | 🚫 parser |
+| STA001 | blocker | state | Exactly one initial state | ✅ v0.10.0 |
+| STA002 | major | state | No unreachable states | ✅ v0.10.0 |
+| STA003 | minor | state | Transitions labelled | ✅ v0.10.0 |
 | UC001 | major | usecase | Use cases connected to actors | ✅ v0.1.0 |
 | UC002 | minor | usecase | Verb–object use cases, noun actors | ✅ v0.4.0 |
 | UC003 | minor | usecase | Include/extend direction | 🚫 (needs include/extend parsing) |
@@ -1610,10 +1688,10 @@ Feature: XD003 participant name case collision
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
 | XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
 
-**Totals:** 35 base-catalog rules — 31 implemented (SEQ008/009/010, ACT005/006 and
+**Totals:** 35 base-catalog rules — 34 implemented (SEQ008/009/010, ACT005/006 and
 UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in v0.5.0; CLS001–005
-class pack in v0.9.0), 4 blocked on a new parser (STA×3) or parser extensions
-(UC003). Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
+class pack in v0.9.0; STA001–003 state pack in v0.10.0), 1 blocked on a parser
+extension (UC003). Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
 
 ## Implementation notes
 
@@ -1635,8 +1713,9 @@ class pack in v0.9.0), 4 blocked on a new parser (STA×3) or parser extensions
   declarations (`class`/`abstract class`/`interface`/`enum`) and generalization
   arrows (`<|--` and friends — no other diagram form uses `<|`); ambiguous plain
   arrows (`A --> B`) bind as class relations only once the diagram is already
-  typed `class`, so sequence messages keep their meaning. The new STA parser must
-  follow the same discipline.
+  typed `class`, so sequence messages keep their meaning. The state parser
+  (v0.10.0) does the same with the `state` keyword and `[*]` pseudo-state as its
+  markers.
 - **Registry:** rules declare `applies_to` via the existing decorator; blocked
   rules should not be registered until their parser exists (avoid dead
   registrations surfacing in `--list-rules`).
