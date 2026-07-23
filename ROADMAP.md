@@ -10,8 +10,9 @@ baseline/ratchet mode; **v0.7.0** (2026-07-23) added trend/delta reporting
 and the shields.io badge; **v0.8.0** (2026-07-23) added the composite GitHub
 Action and pre-commit hooks; **v0.9.0** (2026-07-23) opened Arc C with the
 class-diagram parser and CLS pack; **v0.10.0** (2026-07-23) added the
-state-diagram parser and STA pack. This file tracks what remains, grouped
-into arcs. Keep it updated as items land.
+state-diagram parser and STA pack; **v0.11.0** (2026-07-23) closed the base
+catalog with UC003 (35/35 rules implemented). This file tracks what remains,
+grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -52,7 +53,10 @@ into arcs. Keep it updated as items land.
   typed by the `state` keyword and `[*]`, never re-typing other forms) +
   STA001–003. Same corpus caveat as CLS: no state fixtures in the golden
   contract yet.
-- [ ] UC003 — needs include/extend parsing in the usecase parser.
+- [x] UC003 *(0.11.0)* — usecase links now carry label/arrow (`UseCaseLink`,
+  tuple-unpack compatible), endpoints typed by syntax (`(X)` usecase, `:X:`
+  actor), reversed arrows normalized; direction judged via actor
+  connectivity, only when exactly one endpoint is actor-connected.
 - [ ] **Thicken DIM-TRC** (deferred from calibration decision 10c): owner
   tag, requirement/ADR-link rules in the GEN pack. Removes the 2-rule
   thin-dimension caveat; revisit dimension weights (SCORING.md §9) after.
@@ -93,6 +97,10 @@ marketing claims need escalation:
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
 - Recommended next: Arc B is done except the HTML report (architect-facing;
-  wait for pull or pair it with a real need). Arc C is underway — CLS shipped
-  in 0.9.0, STA in 0.10.0; next is UC003 (include/extend parsing in the
-  usecase parser), then the DIM-TRC/DIM-RDB thickening.
+  wait for pull or pair it with a real need). Arc C's new-parser work is done
+  (CLS 0.9.0, STA 0.10.0, UC003 0.11.0 — full base catalog); what remains is
+  thickening DIM-TRC/DIM-RDB (which touches dimension weights — re-read
+  SCORING.md §9 and re-calibrate deliberately) and growing DIM-CON
+  cross-type. Consider adding class/state/usecase fixtures to the corpus
+  (gen_corpus.py) with a conscious golden re-freeze before or alongside the
+  thickening work.

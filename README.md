@@ -123,6 +123,7 @@ All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 | GEN005 | max-participants | minor | More lifelines than the configured max. |
 | UC001 | orphan-actor-or-usecase | major | Use-case diagrams: actor or use case linked to nothing. |
 | UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist; dormant otherwise. |
+| UC003 | include-extend-direction | minor | `<<include>>`/`<<extend>>` arrow pointing the wrong way (judged via actor connectivity), or involving an actor. |
 | SEQ006 | no-self-message | minor | Self-message; internal logic belongs in a note or `ref over`. Option `allowed` whitelists participants. |
 | SEQ007 | unlabelled-block-condition | minor | `alt`/`opt`/`loop`/`break`/`critical` without a condition label. |
 | SEQ008 | fragment-nesting-depth | minor | Combined fragments nested past `max_nesting_depth` (default 3) — extract a sub-diagram. |
@@ -302,11 +303,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.10.0
+  uses: fdurieux/pumllint@v0.11.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.10.0
+  uses: fdurieux/pumllint@v0.11.0
   with:
     command: score
     paths: docs/diagrams
@@ -347,7 +348,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.10.0
+    rev: v0.11.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

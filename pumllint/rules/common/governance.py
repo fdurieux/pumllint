@@ -106,15 +106,77 @@ class OrphanUseCaseActor(Rule):
         if not diagram.usecase_links:
             return
         linked: set[str] = set()
-        for src, dst, _ in diagram.usecase_links:
-            linked.add(src)
-            linked.add(dst)
+        for link in diagram.usecase_links:
+            linked.add(link.source)
+            linked.add(link.target)
         for p in diagram.participants.values():
             if p.declared and p.name not in linked:
                 yield self.violation(
                     diagram,
                     p.line,
                     f"{p.kind.capitalize()} '{p.name}' is not linked to anything",
+                )
+
+
+@register
+class IncludeExtendDirection(Rule):
+    """``<<include>>``/``<<extend>>`` arrows point the right way.
+
+    ``<<include>>`` points from base to included case; ``<<extend>>`` from
+    extension to base. Both relate use cases only — an actor endpoint is
+    always wrong. Direction is judged against actor connectivity (the base
+    case is the one an actor reaches through a plain association) and only
+    when that evidence is unambiguous: exactly one endpoint actor-connected.
+    """
+
+    id = "UC003"
+
+    def check(self, diagram: Diagram) -> Iterable[Violation]:
+        stereo = [
+            link for link in diagram.usecase_links
+            if link.stereotype in ("include", "extend")
+        ]
+        if not stereo:
+            return
+        actors = {
+            p.name for p in diagram.participants.values() if p.kind == "actor"
+        }
+        connected: set[str] = set()  # use cases an actor reaches via plain links
+        for link in diagram.usecase_links:
+            if link.stereotype in ("include", "extend"):
+                continue
+            if link.source in actors and link.target not in actors:
+                connected.add(link.target)
+            elif link.target in actors and link.source not in actors:
+                connected.add(link.source)
+        for link in stereo:
+            st = link.stereotype
+            actor_end = next(
+                (n for n in (link.source, link.target) if n in actors), None
+            )
+            if actor_end:
+                yield self.violation(
+                    diagram,
+                    link.line,
+                    f"<<{st}>> must relate two use cases — '{actor_end}' is an actor",
+                )
+                continue
+            src_conn = link.source in connected
+            if src_conn == (link.target in connected):
+                continue  # neither or both actor-connected: no verdict
+            if st == "include" and not src_conn:
+                yield self.violation(
+                    diagram,
+                    link.line,
+                    f"<<include>> points from base to included case — "
+                    f"'{link.target}' is the actor-facing base, so the arrow appears reversed",
+                )
+            elif st == "extend" and src_conn:
+                yield self.violation(
+                    diagram,
+                    link.line,
+                    f"<<extend>> points from extension to base — "
+                    f"'{link.source}' is the actor-facing base, so the arrow appears reversed",
                 )
 
 

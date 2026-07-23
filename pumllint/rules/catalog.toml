@@ -373,3 +373,11 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["usecase"]
 profiles = []
+
+[UC003]
+name = "include-extend-direction"
+description = "<<include>>/<<extend>> arrow points the wrong way or involves an actor"
+severity = "minor"
+dimension = "DIM-SEM"
+applies_to = ["usecase"]
+profiles = []

@@ -7,6 +7,7 @@ objects. Reporters serialize violations for humans or machines (SonarQube).
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional
@@ -180,6 +181,32 @@ class Directive:
 
 
 @dataclass
+class UseCaseLink:
+    """A relationship edge in a use-case diagram.
+
+    ``source``/``target`` are stripped names (arrow direction normalized:
+    ``A <.. B`` is stored as B → A). ``label`` keeps the text after the
+    colon; ``stereotype`` extracts a lowercase ``<<...>>`` from it, if any.
+    Iterating yields ``(source, target, line)`` — the tuple shape this type
+    replaced — so existing unpacking keeps working.
+    """
+
+    source: str
+    target: str
+    line: int
+    label: str = ""
+    arrow: str = "--"
+
+    @property
+    def stereotype(self) -> Optional[str]:
+        m = re.search(r"<<\s*([^<>]+?)\s*>>", self.label)
+        return m.group(1).lower() if m else None
+
+    def __iter__(self):
+        return iter((self.source, self.target, self.line))
+
+
+@dataclass
 class ActivityNode:
     """A node in an activity diagram (new-style syntax).
 
@@ -327,7 +354,7 @@ class Diagram:
     activations: list[ActivationEvent] = field(default_factory=list)
     blocks: list[Block] = field(default_factory=list)
     directives: list[Directive] = field(default_factory=list)
-    usecase_links: list[tuple[str, str, int]] = field(default_factory=list)
+    usecase_links: list[UseCaseLink] = field(default_factory=list)
     activity_nodes: list[ActivityNode] = field(default_factory=list)
     classes: dict[str, ClassEntity] = field(default_factory=dict)
     class_relations: list[ClassRelation] = field(default_factory=list)
@@ -357,9 +384,9 @@ class Diagram:
             return len(self.states) + len(self.transitions)
         if self.diagram_type == "usecase":
             nodes = set(self.participants)
-            for src, dst, _line in self.usecase_links:
-                nodes.add(src)
-                nodes.add(dst)
+            for link in self.usecase_links:
+                nodes.add(link.source)
+                nodes.add(link.target)
             return len(nodes) + len(self.usecase_links)
         return (
             len(self.participants)

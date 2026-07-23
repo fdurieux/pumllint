@@ -26,6 +26,7 @@ from ..model import (
     Participant,
     StateNode,
     Suppression,
+    UseCaseLink,
 )
 from . import activity, class_, state
 
@@ -372,14 +373,31 @@ def _parse_statement(
     if d.diagram_type == "usecase":
         m = RE_UC_LINK.match(line)
         if m:
-            src = _uc_name(m.group("src"))
-            dst = _uc_name(m.group("dst"))
+            src_raw, dst_raw = m.group("src"), m.group("dst")
+            arrow = m.group("arrow")
+            if arrow.startswith("<") and not arrow.endswith(">"):
+                src_raw, dst_raw = dst_raw, src_raw  # normalize A <.. B to B → A
+            src = _uc_name(src_raw)
+            dst = _uc_name(dst_raw)
             if src and dst:
-                for n in (src, dst):
+                for name, raw in ((src, src_raw), (dst, dst_raw)):
+                    # The endpoint syntax reveals the kind: (X) draws a
+                    # use-case ellipse, :X: a stick-figure actor.
                     d.participants.setdefault(
-                        n, Participant(name=n, kind="implicit", line=lineno, declared=False)
+                        name,
+                        Participant(
+                            name=name, kind=_uc_kind(raw), line=lineno, declared=False
+                        ),
                     )
-                d.usecase_links.append((src, dst, lineno))
+                d.usecase_links.append(
+                    UseCaseLink(
+                        source=src,
+                        target=dst,
+                        line=lineno,
+                        label=(m.group("label") or "").strip(),
+                        arrow=arrow,
+                    )
+                )
             return
 
     # --- sequence messages ------------------------------------------------
@@ -431,6 +449,15 @@ def _uc_name(raw: str) -> Optional[str]:
     if raw.startswith("(") and raw.endswith(")"):
         return raw.strip("()").strip()
     return _strip_ident(raw)
+
+
+def _uc_kind(raw: str) -> str:
+    raw = raw.strip()
+    if raw.startswith(":") and raw.endswith(":"):
+        return "actor"
+    if raw.startswith("(") and raw.endswith(")"):
+        return "usecase"
+    return "implicit"
 
 
 def parse_file(path: str | Path) -> list[Diagram]:

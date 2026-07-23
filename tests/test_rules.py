@@ -463,6 +463,60 @@ def test_verb_object_usecase_is_clean_for_uc002():
     assert "UC002" not in rule_ids(src, cfg)
 
 
+# --- UC003 include/extend direction ------------------------------------------
+
+UC_BASE = "@startuml uc\ntitle Checkout\nusecase (Checkout)\n:Customer: --> (Checkout)\n"
+
+
+def test_given_reversed_extend_then_uc003_fires():
+    src = UC_BASE + "(Checkout) ..> (Apply coupon) : <<extend>>\n@enduml\n"
+    hits = [v for v in lint(src) if v.rule_id == "UC003"]
+    assert [v.line for v in hits] == [5]
+
+
+def test_given_reversed_include_then_uc003_fires():
+    src = UC_BASE + "(Validate cart) ..> (Checkout) : <<include>>\n@enduml\n"
+    assert "UC003" in rule_ids(src)
+
+
+def test_given_include_from_actor_then_uc003_fires():
+    src = (
+        "@startuml uc\ntitle Checkout\nusecase (Checkout)\n"
+        ":Customer: ..> (Checkout) : <<include>>\n@enduml\n"
+    )
+    hits = [v for v in lint(src) if v.rule_id == "UC003"]
+    assert hits and "actor" in hits[0].message
+
+
+def test_correct_include_and_extend_directions_are_clean_for_uc003():
+    src = (
+        UC_BASE
+        + "(Checkout) ..> (Validate cart) : <<include>>\n"
+        + "(Apply coupon) ..> (Checkout) : <<extend>>\n@enduml\n"
+    )
+    assert "UC003" not in rule_ids(src)
+
+
+def test_right_to_left_arrows_are_normalized_for_uc003():
+    # (Checkout) <.. (Apply coupon) means Apply coupon → Checkout: correct.
+    src = UC_BASE + "(Checkout) <.. (Apply coupon) : <<extend>>\n@enduml\n"
+    assert "UC003" not in rule_ids(src)
+    (d,) = parse_source(src)
+    link = next(l for l in d.usecase_links if l.stereotype == "extend")
+    assert (link.source, link.target) == ("Apply coupon", "Checkout")
+
+
+def test_uc003_stays_silent_without_actor_evidence():
+    src = "@startuml uc\ntitle UC\nusecase (A)\n(A) ..> (B) : <<include>>\n@enduml\n"
+    assert "UC003" not in rule_ids(src)
+
+
+def test_usecase_links_still_unpack_as_tuples():
+    (d,) = parse_source(UC_BASE + "@enduml\n")
+    src, dst, line = d.usecase_links[0]
+    assert (src, dst, line) == ("Customer", "Checkout", 4)
+
+
 # --- CLS class-diagram pack -------------------------------------------------
 
 CLASS_CLEAN = """\

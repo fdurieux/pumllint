@@ -1475,23 +1475,68 @@ Feature: UC002 use case and actor naming
 ```
 
 ### UC003 — Correct include/extend direction
-**Severity:** minor · **Status:** 🚫 Blocked (needs include/extend parsing)
+**Severity:** minor · **Status:** ✅ Implemented (v0.11.0)
 
 **Rationale:** `<<include>>` points from base to included case; `<<extend>>` points
 from extension to base. Reversed stereotypes are a frequent and silent modelling
-error.
+error. Both relate use cases only — an actor endpoint is always wrong. Direction
+is judged against actor connectivity (the base case is the one an actor reaches
+through a plain association) and only when that evidence is unambiguous: exactly
+one endpoint actor-connected. Arrows written right-to-left (`A <.. B`) are
+normalized before judging.
 
 ```gherkin
 Feature: UC003 include and extend direction
 
   Scenario: reversed extend arrow is reported
-    Given a use case diagram where the base case points to the extension with "<<extend>>"
+    Given the diagram:
+      """
+      @startuml checkout
+      title Checkout
+      usecase (Checkout)
+      :Customer: --> (Checkout)
+      (Checkout) ..> (Apply coupon) : <<extend>>
+      @enduml
+      """
     When the linter runs
-    Then a "UC003" issue with severity "minor" is reported on that relationship
+    Then a "UC003" issue with severity "minor" is reported on line 5
+
+  Scenario: reversed include arrow is reported
+    Given the diagram:
+      """
+      @startuml checkout
+      title Checkout
+      usecase (Checkout)
+      :Customer: --> (Checkout)
+      (Validate cart) ..> (Checkout) : <<include>>
+      @enduml
+      """
+    When the linter runs
+    Then a "UC003" issue with severity "minor" is reported on line 5
+
+  Scenario: include or extend involving an actor is reported
+    Given the diagram:
+      """
+      @startuml checkout
+      title Checkout
+      usecase (Checkout)
+      :Customer: ..> (Checkout) : <<include>>
+      @enduml
+      """
+    When the linter runs
+    Then a "UC003" issue with severity "minor" is reported on line 4
 
   Scenario: correct directions pass
-    Given "(Checkout) ..> (Validate cart) : <<include>>"
-    And "(Apply coupon) ..> (Checkout) : <<extend>>"
+    Given the diagram:
+      """
+      @startuml checkout
+      title Checkout
+      usecase (Checkout)
+      :Customer: --> (Checkout)
+      (Checkout) ..> (Validate cart) : <<include>>
+      (Apply coupon) ..> (Checkout) : <<extend>>
+      @enduml
+      """
     When the linter runs
     Then no "UC003" issue is reported
 ```
@@ -1683,15 +1728,16 @@ Feature: XD003 participant name case collision
 | STA003 | minor | state | Transitions labelled | ✅ v0.10.0 |
 | UC001 | major | usecase | Use cases connected to actors | ✅ v0.1.0 |
 | UC002 | minor | usecase | Verb–object use cases, noun actors | ✅ v0.4.0 |
-| UC003 | minor | usecase | Include/extend direction | 🚫 (needs include/extend parsing) |
+| UC003 | minor | usecase | Include/extend direction | ✅ v0.11.0 |
 | XD001 | major | sequence (cross) | Conflicting participant kind | ✅ v0.5.0 |
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
 | XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
 
-**Totals:** 35 base-catalog rules — 34 implemented (SEQ008/009/010, ACT005/006 and
-UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in v0.5.0; CLS001–005
-class pack in v0.9.0; STA001–003 state pack in v0.10.0), 1 blocked on a parser
-extension (UC003). Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
+**Totals:** 35 base-catalog rules — **all 35 implemented** (SEQ008/009/010,
+ACT005/006 and UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in
+v0.5.0; CLS001–005 class pack in v0.9.0; STA001–003 state pack in v0.10.0;
+UC003 in v0.11.0 closed the catalog). Separately: SEQ101–SEQ109 codegen
+profile pack, ✅ v0.3.0.
 
 ## Implementation notes
 

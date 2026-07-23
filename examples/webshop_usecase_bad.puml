@@ -1,0 +1,8 @@
+@startuml
+' Deliberately messy: no name, no title, reversed extend arrow,
+' unconnected use case.
+usecase (Place order)
+usecase (Browse catalog)
+:Customer: --> (Place order)
+(Place order) ..> (Apply coupon) : <<extend>>
+@enduml

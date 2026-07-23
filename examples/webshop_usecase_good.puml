@@ -1,0 +1,12 @@
+@startuml webshop-usecases
+title Web shop — use cases
+
+:Customer: as Customer
+usecase (Place order)
+usecase (Validate cart)
+usecase (Apply coupon)
+
+Customer --> (Place order) : initiates
+(Place order) ..> (Validate cart) : <<include>>
+(Apply coupon) ..> (Place order) : <<extend>>
+@enduml
