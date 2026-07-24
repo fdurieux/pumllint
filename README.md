@@ -1,5 +1,6 @@
 # pumllint
 
+[![PyPI](https://img.shields.io/pypi/v/pumllint)](https://pypi.org/project/pumllint/)
 [![License: MIT](https://img.shields.io/github/license/fdurieux/pumllint)](LICENSE)
 
 A **semantic linter for PlantUML diagrams**. PlantUML validates syntax but is,
@@ -131,7 +132,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.21.0
+  uses: fdurieux/pumllint@v0.21.1
   with:
     command: score
     paths: docs/diagrams
@@ -434,11 +435,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.21.0
+  uses: fdurieux/pumllint@v0.21.1
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.21.0
+  uses: fdurieux/pumllint@v0.21.1
   with:
     command: score
     paths: docs/diagrams
@@ -479,7 +480,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.21.0
+    rev: v0.21.1
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score
