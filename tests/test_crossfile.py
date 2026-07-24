@@ -172,3 +172,74 @@ def test_cross_findings_dent_the_owning_diagrams_dim_con_score():
     (_, r_one), (_, r_two) = results
     assert r_one.dimensions[Dimension.CONSISTENCY].score == 100.0
     assert r_two.dimensions[Dimension.CONSISTENCY].score < 100.0
+
+
+# --- XD004/XD005: cross-*type* entity identity -------------------------------
+
+_CLS_SEQ = """\
+@startuml model
+title Model
+class OrderService <<service>>
+class Customer
+Customer "1" -- "1..*" OrderService : uses
+@enduml
+@startuml flow
+title Flow
+participant {P} {ST}
+participant Client
+Client -> {P} : place()
+@enduml
+"""
+
+
+def _cls_seq(participant="OrderService", stereotype=""):
+    return _CLS_SEQ.replace("{P}", participant).replace("{ST}", stereotype)
+
+
+def test_cross_type_case_drift_fires_xd004_at_the_later_site():
+    hits = [v for v in _lint(_cls_seq("orderService")) if v.rule_id == "XD004"]
+    assert len(hits) == 1
+    assert hits[0].line == 9
+    assert "t.puml:3" in hits[0].message  # cites the class site
+
+
+def test_consistent_cross_type_spelling_is_clean_for_xd004():
+    assert not [v for v in _lint(_cls_seq()) if v.rule_id == "XD004"]
+
+
+def test_swimlane_vs_participant_drift_fires_xd004():
+    src = (
+        "@startuml act\ntitle Act\n|billing|\nstart\n:Do thing;\nstop\n@enduml\n"
+        "@startuml seq\ntitle Flow\nparticipant Billing\nparticipant C\n"
+        "C -> Billing : invoice()\n@enduml\n"
+    )
+    hits = [v for v in _lint(src) if v.rule_id == "XD004"]
+    assert len(hits) == 1 and "swimlane" in hits[0].message
+
+
+def test_sequence_only_collisions_are_left_to_xd003():
+    src = (
+        "@startuml one\ntitle A\nparticipant Pay\nparticipant C\nC -> Pay : x()\n@enduml\n"
+        "@startuml two\ntitle B\nparticipant pay\nparticipant C\nC -> pay : y()\n@enduml\n"
+    )
+    ids = {v.rule_id for v in _lint(src)}
+    assert "XD003" in ids and "XD004" not in ids
+
+
+def test_cross_type_stereotype_conflict_fires_xd005():
+    hits = [v for v in _lint(_cls_seq(stereotype="<<gateway>>")) if v.rule_id == "XD005"]
+    assert len(hits) == 1
+    assert hits[0].line == 9
+    assert "<<service>>" in hits[0].message and "t.puml:3" in hits[0].message
+
+
+def test_agreeing_cross_type_stereotypes_are_clean_for_xd005():
+    assert not [v for v in _lint(_cls_seq(stereotype="<<service>>")) if v.rule_id == "XD005"]
+
+
+def test_state_names_are_not_entities_for_xd004():
+    src = (
+        "@startuml sm\ntitle SM\n[*] --> open\nopen --> [*]\n@enduml\n"
+        "@startuml seq\ntitle Flow\nparticipant Open\nparticipant C\nC -> Open : go()\n@enduml\n"
+    )
+    assert not [v for v in _lint(src) if v.rule_id == "XD004"]

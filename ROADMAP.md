@@ -12,9 +12,10 @@ Action and pre-commit hooks; **v0.9.0** (2026-07-23) opened Arc C with the
 class-diagram parser and CLS pack; **v0.10.0** (2026-07-23) added the
 state-diagram parser and STA pack; **v0.11.0** (2026-07-23) closed the
 original base catalog with UC003; **v0.12.0** (2026-07-23) thickened
-DIM-TRC/DIM-RDB (GEN006–009, SEQ011 — 40 base rules) and settled the weight
-revisit (unchanged, SCORING.md §9). This file tracks what remains, grouped
-into arcs. Keep it updated as items land.
+DIM-TRC/DIM-RDB (GEN006–009, SEQ011) and settled the weight revisit
+(unchanged, SCORING.md §9); **v0.13.0** (2026-07-23) finished Arc C with
+cross-type entity identity (XD004–005 — 42 base rules). This file tracks
+what remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -69,8 +70,13 @@ into arcs. Keep it updated as items land.
   GEN008 note-density (≥4 notes and >0.5/element), GEN009 max-elements
   (default 60, any type). Tail guards: no calibration-corpus unit trips
   them, so golden scores were unchanged (verified, no re-freeze).
-- [ ] Grow DIM-CON beyond the sequence-only XD pack into cross-*type* entity
-  identity (same entity in sequence vs class vs activity diagrams).
+- [x] Grow DIM-CON into cross-*type* entity identity *(0.13.0)* — XD004
+  cross-type-name-collision and XD005 cross-type-stereotype-conflict span
+  sequence/use-case participants, class classifiers and activity swimlanes
+  (state names excluded on purpose: modes, not entities). Sequence-internal
+  conflicts stay XD002/XD003's territory — no double reporting. Golden is
+  structurally immune (corpus units score one diagram at a time; cross rules
+  need ≥ 2).
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
@@ -104,11 +110,11 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: Arc B is done except the HTML report (architect-facing;
-  wait for pull or pair it with a real need). Arc C is done except growing
-  DIM-CON cross-*type* (same entity across sequence/class/activity diagrams —
-  a CrossDiagramRule over the now-complete parser set). Still worth doing at
-  some point: class/state/usecase fixtures in the calibration corpus
-  (gen_corpus.py) with a conscious golden re-freeze — the example pairs cover
-  those packs in calibrate.py's pair metric, but the golden contract itself
-  is still sequence/activity-only.
+- Recommended next: **Arc C is complete** (0.13.0). Open threads, all
+  demand-driven: Arc B's HTML report (architect-facing; wait for pull),
+  Arc D evidence deepening (only if marketing claims need escalation),
+  Arc E ecosystem (wait for pull). Still worth doing at some point:
+  class/state/usecase fixtures in the calibration corpus (gen_corpus.py)
+  with a conscious golden re-freeze — the example pairs cover those packs in
+  calibrate.py's pair metric, but the golden contract itself is still
+  sequence/activity-only.

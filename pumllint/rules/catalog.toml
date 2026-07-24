@@ -114,6 +114,22 @@ dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
 
+[XD004]
+name = "cross-type-name-collision"
+description = "Entity names differing only by case across diagram types"
+severity = "minor"
+dimension = "DIM-CON"
+applies_to = ["*"]
+profiles = []
+
+[XD005]
+name = "cross-type-stereotype-conflict"
+description = "Entity carries different stereotypes across diagram types"
+severity = "minor"
+dimension = "DIM-CON"
+applies_to = ["*"]
+profiles = []
+
 # --- SEQ: sequence base catalog --------------------------------------------
 
 [SEQ001]

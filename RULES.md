@@ -1788,17 +1788,20 @@ Feature: UC003 include and extend direction
 
 ---
 
-## XD — Cross-diagram consistency rules (applies_to: sequence, cross-diagram)
+## XD — Cross-diagram consistency rules (cross-diagram)
 
-XD rules build a participant symbol table across every sequence diagram in the
-lint batch: the same entity must keep one identity — one declaration kind, one
-stereotype, one spelling. They activate only when more than one diagram is
-linted (SCORING.md §6); single-diagram runs score DIM-CON from naming rules
-alone. For XD001/XD002 the **majority declaration wins** (ties resolve to the
-first-seen form): violations are attributed to the *minority* sites and
-reference an authoritative majority site, so a single outlier never indicts
-the conforming rest. XD003 flags later case-variants of the first-seen
-spelling.
+XD rules build an entity symbol table across the lint batch: the same entity
+must keep one identity — one declaration kind, one stereotype, one spelling.
+XD001–003 walk the participant tables of sequence diagrams; XD004–005
+(v0.13.0) span diagram *types* — sequence/use-case participants, class
+classifiers and activity swimlanes name entities, while state names stay out
+on purpose (states are modes of an entity, not entities). All activate only
+when more than one diagram is linted (SCORING.md §6); single-diagram runs
+score DIM-CON from naming rules alone. For XD001/XD002/XD005 the **majority
+declaration wins** (ties resolve to the first-seen form): violations are
+attributed to the *minority* sites and reference an authoritative majority
+site, so a single outlier never indicts the conforming rest. XD003/XD004 flag
+later case-variants of the first-seen spelling.
 
 ### XD001 — Conflicting participant kind
 **Severity:** major · **Status:** ✅ Implemented (v0.5.0)
@@ -1938,6 +1941,106 @@ Feature: XD003 participant name case collision
     Then no "XD003" issue is reported
 ```
 
+### XD004 — Cross-type name collision
+**Severity:** minor · **Status:** ✅ Implemented (v0.13.0)
+
+**Rationale:** A class `OrderService` next to a sequence lifeline `orderService`
+is almost certainly the same entity drifting apart across models. First-seen
+spelling is authoritative; pairs where both sites are sequence participants are
+XD003's territory and skipped here.
+
+```gherkin
+Feature: XD004 cross-type name collision
+
+  Scenario: class and sequence participant differ only by case
+    Given the diagram:
+      """
+      @startuml model
+      title Model
+      class OrderService
+      class Customer
+      Customer "1" -- "1..*" OrderService : uses
+      @enduml
+      @startuml flow
+      title Flow
+      participant orderService
+      participant Client
+      Client -> orderService : place()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD004" issue with severity "minor" is reported on line 9
+
+  Scenario: consistent spelling across types passes
+    Given the diagram:
+      """
+      @startuml model
+      title Model
+      class OrderService
+      class Customer
+      Customer "1" -- "1..*" OrderService : uses
+      @enduml
+      @startuml flow
+      title Flow
+      participant OrderService
+      participant Client
+      Client -> OrderService : place()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD004" issue is reported
+```
+
+### XD005 — Cross-type stereotype conflict
+**Severity:** minor · **Status:** ✅ Implemented (v0.13.0)
+
+**Rationale:** `class OrderService <<service>>` versus `participant OrderService
+<<gateway>>` is one entity with two contracts; downstream generators cannot tell
+which is authoritative. Majority wins (ties to first-seen); conflicts confined
+to sequence diagrams are XD002's territory and skipped here.
+
+```gherkin
+Feature: XD005 cross-type stereotype conflict
+
+  Scenario: class and sequence stereotypes disagree
+    Given the diagram:
+      """
+      @startuml model
+      title Model
+      class OrderService <<service>>
+      class Customer
+      Customer "1" -- "1..*" OrderService : uses
+      @enduml
+      @startuml flow
+      title Flow
+      participant OrderService <<gateway>>
+      participant Client
+      Client -> OrderService : place()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD005" issue with severity "minor" is reported on line 9
+
+  Scenario: agreeing stereotypes pass
+    Given the diagram:
+      """
+      @startuml model
+      title Model
+      class OrderService <<service>>
+      class Customer
+      Customer "1" -- "1..*" OrderService : uses
+      @enduml
+      @startuml flow
+      title Flow
+      participant OrderService <<service>>
+      participant Client
+      Client -> OrderService : place()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD005" issue is reported
+```
+
 ## Rule summary
 
 | ID | Severity | Scope | Summary | Status |
@@ -1982,14 +2085,16 @@ Feature: XD003 participant name case collision
 | XD001 | major | sequence (cross) | Conflicting participant kind | ✅ v0.5.0 |
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |
 | XD003 | minor | sequence (cross) | Participant name case collision | ✅ v0.5.0 |
+| XD004 | minor | * (cross) | Cross-type name collision | ✅ v0.13.0 |
+| XD005 | minor | * (cross) | Cross-type stereotype conflict | ✅ v0.13.0 |
 
-**Totals:** 40 base-catalog rules — **all 40 implemented** (SEQ008/009/010,
+**Totals:** 42 base-catalog rules — **all 42 implemented** (SEQ008/009/010,
 ACT005/006 and UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in
 v0.5.0; CLS001–005 class pack in v0.9.0; STA001–003 state pack in v0.10.0;
 UC003 in v0.11.0 closed the original catalog; GEN006–009 and SEQ011 thickened
 DIM-TRC/DIM-RDB in v0.12.0 — GEN006/007 are convention-gated and dormant until
-a pattern is configured). Separately: SEQ101–SEQ109 codegen profile pack,
-✅ v0.3.0.
+a pattern is configured; XD004–005 cross-*type* entity identity in v0.13.0).
+Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
 
 ## Implementation notes
 

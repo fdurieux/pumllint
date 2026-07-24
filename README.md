@@ -149,6 +149,23 @@ All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
 | STA002 | unreachable-state | major | State with no incoming transition (self-loops don't count) — dead model content. |
 | STA003 | unlabelled-transition | minor | Transition without an `event [guard] / action` label; `[*]` transitions exempt. |
 
+### Cross-diagram consistency pack (XD)
+
+Active only when more than one diagram is linted, these build an entity
+symbol table across the whole batch — the same entity must keep one identity
+everywhere. XD001–003 compare sequence-diagram participants (kind,
+stereotype, spelling); XD004–005 span diagram *types*: a class
+`OrderService <<service>>` and a sequence lifeline `orderService <<gateway>>`
+are one entity drifting apart, and the linter says so.
+
+| ID | Name | Default | What it catches |
+|----|------|---------|-----------------|
+| XD001 | conflicting-participant-kind | major | Same participant declared `participant` here, `database` there — majority declaration wins, minority sites are flagged. |
+| XD002 | conflicting-participant-stereotype | minor | Same participant with disagreeing stereotypes across sequence diagrams. |
+| XD003 | participant-name-case-collision | minor | Participant spellings differing only by case across sequence diagrams. |
+| XD004 | cross-type-name-collision | minor | Entity spellings differing only by case across diagram *types* (participants, classifiers, swimlanes). |
+| XD005 | cross-type-stereotype-conflict | minor | Entity stereotyped differently in the class model than in the interaction models. |
+
 ### Codegen-readiness pack (profile: `codegen`)
 
 Rules `SEQ101–SEQ109` validate whether a sequence diagram is precise and
@@ -313,11 +330,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.12.0
+  uses: fdurieux/pumllint@v0.13.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.12.0
+  uses: fdurieux/pumllint@v0.13.0
   with:
     command: score
     paths: docs/diagrams
@@ -358,7 +375,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.12.0
+    rev: v0.13.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score
