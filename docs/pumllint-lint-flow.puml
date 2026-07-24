@@ -1,5 +1,6 @@
 @startuml pumllint-lint-flow
 title pumllint — lint command flow (pumllint <paths>)
+footer owner: fdurieux — spec: README.md (CLI contract), RULES.md (rule catalog)
 
 actor Developer
 participant CLI

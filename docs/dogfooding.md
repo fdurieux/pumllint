@@ -92,10 +92,17 @@ this run motivated, see "What to watch") with the repository's own config
   `100/100 (3 suppressed)`, the model-set line carries the total, and the
   JSON report records `suppressedCount` per diagram and for the set.
   `--no-suppressions` remains the full audit.
-- **Dormant governance rules stay dormant at home.** GEN006/GEN007
-  (owner tag, requirement link) are unconfigured in the repository's own
-  `pumllint.toml`, so its own architecture diagram carries no ownership
-  metadata.
+- **Dormant governance rules stay dormant at home** *(since closed — the
+  fourth finding to become a change)*. GEN006/GEN007 (owner tag,
+  requirement link) were unconfigured in the repository's own
+  `pumllint.toml`, so its own architecture diagram carried no ownership
+  metadata. The config now declares the conventions — an `owner:` tag and
+  references to the repo's spec documents (`README.md`, `RULES.md`, …) —
+  and this diagram carries both in its `footer`. The bundled examples
+  deliberately do not: they model a fictional domain and feed the frozen
+  calibration corpus, so the published pilot report now honestly shows
+  the TRC gap on them (aggregate 88 → 87/100; no level changed anywhere,
+  measured before enabling).
 - **DIM-SYN was not exercised** *(since closed in CI — the third finding
   to become a change)*. The local run environment had no `plantuml`
   binary, so `score --check-syntax` was skipped and syntax was vouched
@@ -110,6 +117,36 @@ this run motivated, see "What to watch") with the repository's own config
   grammar*, and grammar checking alone would miss exactly the breakage
   the maturity model exists to catch.
 
+## The syntax gate, measured
+
+The DIM-SYN closure (the `syntax-gate` CI job) turned out to be a
+measurement instrument in its own right. The job pins both directions —
+every shipped diagram must pass `plantuml -checkonly` (pinned jar), and a
+deliberately broken probe must fail it *and* be forced to Level 1 by the
+C2 cap — and its first runs overturned two predictions:
+
+- **PlantUML accepts all fifteen shipped diagrams, including the three
+  bad examples with unclosed `alt`/`while`.** The original design used
+  those files as the failure-direction probes; the grammar turned out to
+  tolerate unterminated blocks entirely.
+- **The leniency runs deeper than that.** A dangling `Alice ->` also
+  passes `-checkonly`. Of the probed breakages, only a structural parser
+  error (`class {`) and a preprocessor error (`!undefined_function()`)
+  were rejected. The job pins `class {` as its probe — verified end to
+  end on the runner: `syntaxOk=false`, level forced to 1 — and logs the
+  candidate matrix on every run so a future, still more lenient PlantUML
+  is easy to re-pin.
+
+The takeaway inverts the caveat the job was built to close. The worry was
+that pumllint's parser vouches for syntax without a render; the
+measurement shows the sharper fact: **SEQ004/ACT004 are stricter than
+PlantUML's own grammar** on exactly the constructs the maturity model
+cares about. Grammar checking alone would bless every deliberately broken
+example in this repository. The two layers guard different things —
+`-checkonly` catches what will not render, the linter catches what will
+not *mean* — and the maturity model needs the second even where the first
+is silent.
+
 ## Verdict
 
 Sense, decisively — on a sample of one. The default profile flagged
@@ -117,5 +154,7 @@ exactly the deliberate style deviations and nothing else; severity, gating
 and the suppression round-trip behaved like a tool meant for CI; and the
 weak spots found were scoping choices (a signature heuristic since
 tightened, craft-not-truth) rather than false positives. The findings
-above doubled as a to-do list, not a disclaimer: two of them shipped as
-product changes, and a third closed as a CI gate.
+above doubled as a to-do list, not a disclaimer: two shipped as product
+changes, a third closed as a CI gate whose first runs produced findings of
+their own (previous section), and the fourth closed by declaring the
+governance conventions in the repository's own config.

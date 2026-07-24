@@ -29,6 +29,14 @@ missing-start = true
 missing-stop = true
 unlabelled-decision-branch = { require_else_label = true }
 unterminated-construct = true
+# Governance conventions (GEN006/GEN007 are dormant until these patterns
+# exist). The repository's own diagrams under docs/ carry the tags; the
+# bundled examples/ deliberately do NOT — they model a fictional domain, so
+# the published pilot report honestly shows the TRC gap on them. Do not
+# "fix" examples by adding tags: they feed corpus generation and the frozen
+# golden scores.
+owner-tag = { pattern = '(?i)owner\s*:' }
+requirement-link = { pattern = '(ROADMAP|RULES|SCORING|EVIDENCE|README)\.md|ADR-\d+|REQ-\d+' }
 
 # Lexicons are configurable per rule above, e.g.
 #   SEQ103 = { arg_stop_words = ["of", "the", "or"], max_arg_words = 2 }
