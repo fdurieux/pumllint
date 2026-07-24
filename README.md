@@ -21,6 +21,16 @@ python -m pumllint fix diagrams/                 # auto-fix mechanical findings
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
 
+## Documentation by audience
+
+This README is the reference. [docs/](docs/README.md) has role-specific guides:
+[why adopt it](docs/case-for-pumllint.md) (management case, with the measured
+evidence), [setup & CI integration](docs/setup-and-ci.md) (pipelines, ratchet,
+Sonar, badge), [understanding findings & scores](docs/findings-and-scores.md)
+(for report readers and diagram authors), and
+[writing rules](docs/writing-rules.md) (a step-by-step programming guide with
+an end-to-end example, including how the executable Gherkin spec works).
+
 ## Maturity scoring
 
 `pumllint score` aggregates rule findings into a **360° maturity level** per
