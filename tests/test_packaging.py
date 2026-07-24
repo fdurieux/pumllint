@@ -6,11 +6,33 @@ be installed (the zero-dependency promise holds without it).
 """
 
 import inspect
+import re
 from pathlib import Path
 
 _ROOT = Path(__file__).resolve().parent.parent
 _ACTION = (_ROOT / "action.yml").read_text(encoding="utf-8")
 _HOOKS = (_ROOT / ".pre-commit-hooks.yaml").read_text(encoding="utf-8")
+
+
+def test_readme_action_pins_match_the_package_version():
+    import pumllint
+
+    readme = (_ROOT / "README.md").read_text(encoding="utf-8")
+    pins = re.findall(r"fdurieux/pumllint@v([0-9.]+)", readme)
+    assert pins, "README lost its action-pin examples?"
+    assert set(pins) == {pumllint.__version__}, (
+        f"README pins {sorted(set(pins))} but the package is "
+        f"{pumllint.__version__} — bump the @vX examples when releasing"
+    )
+
+
+def test_pyproject_version_matches_the_package():
+    import tomllib
+
+    import pumllint
+
+    data = tomllib.loads((_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    assert data["project"]["version"] == pumllint.__version__
 
 
 def _cli_options() -> set:
