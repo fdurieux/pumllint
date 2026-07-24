@@ -25,7 +25,9 @@ Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` 
 
 This README is the reference. [docs/](docs/README.md) has role-specific guides:
 [why adopt it](docs/case-for-pumllint.md) (management case, with the measured
-evidence), [setup & CI integration](docs/setup-and-ci.md) (pipelines, ratchet,
+evidence), [where the value lands in the SDLC](docs/value-in-the-sdlc.md)
+(a value-stream assessment across the SAFe Continuous Delivery Pipeline),
+[setup & CI integration](docs/setup-and-ci.md) (pipelines, ratchet,
 Sonar, badge), [understanding findings & scores](docs/findings-and-scores.md)
 (for report readers and diagram authors), and
 [writing rules](docs/writing-rules.md) (a step-by-step programming guide with

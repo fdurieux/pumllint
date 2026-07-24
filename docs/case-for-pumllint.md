@@ -124,3 +124,11 @@ Very little, by design:
    diagram feeding code generation.
 4. **Track:** the badge and the model-set level trend become your KPI;
    the gap reports are each team's backlog.
+
+---
+
+*Where do these benefits land in your delivery pipeline? The companion
+assessment [pumllint in the SDLC](value-in-the-sdlc.md) maps them across
+the four aspects of the SAFe Continuous Delivery Pipeline — every claim
+tagged measured / mechanism / hypothesis — and ends in a staged pilot
+measurement plan.*
