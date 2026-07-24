@@ -80,3 +80,65 @@ jobs:
             --files order_payment_codegen_good.puml --verbose
           pre-commit try-repo "$SRC" pumllint-score \
             --files order_payment_codegen_good.puml --verbose
+
+  # DIM-SYN in anger: the C2 gate (`score --check-syntax`) against real
+  # PlantUML over every shipped diagram. Pins both directions — the
+  # grammar-valid set must pass `-checkonly`, and the deliberately broken
+  # examples must fail it AND be forced to Level 1 by the cap — so the
+  # integration cannot rot toward all-pass or all-fail unnoticed. The only
+  # job that needs Java; the linter itself never does.
+  syntax-gate:
+    runs-on: ubuntu-latest
+    env:
+      PLANTUML_VERSION: "1.2026.6"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install pumllint
+        run: pip install -e .
+      - name: Install pinned PlantUML
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/plantuml.jar" \
+            "https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar"
+          printf '#!/bin/sh\nexec java -jar "%s" "$@"\n' "$RUNNER_TEMP/plantuml.jar" \
+            | sudo tee /usr/local/bin/plantuml >/dev/null
+          sudo chmod +x /usr/local/bin/plantuml
+          plantuml -version | head -1
+      - name: Score every shipped diagram through the syntax gate
+        run: pumllint score examples docs --check-syntax -f json -o syntax-report.json
+      - name: Assert verdicts (valid set passes, broken set trips C2)
+        run: |
+          python - <<'EOF'
+          import json, sys
+
+          # Files whose deliberate breakage is grammar-level (unclosed
+          # alt/while): PlantUML itself must reject them, and the C2 cap
+          # must force Level 1. Everything else ships grammar-valid.
+          EXPECTED_INVALID = {
+              "examples/credit_intake_bad.puml",
+              "examples/insurance_claim_bad.puml",
+              "examples/loan_decision_activity_bad.puml",
+          }
+
+          report = json.load(open("syntax-report.json"))
+          problems, seen_invalid = [], set()
+          for d in report["diagrams"]:
+              ok = d["maturity"]["syntaxOk"]
+              level = d["maturity"]["level"]
+              print(f"{'PASS' if ok else 'FAIL':4} L{level}  {d['file']}")
+              if d["file"] in EXPECTED_INVALID:
+                  seen_invalid.add(d["file"])
+                  if ok:
+                      problems.append(f"{d['file']}: expected PlantUML to reject it, but -checkonly passed")
+                  elif level != 1:
+                      problems.append(f"{d['file']}: syntax failed but level is {level} — C2 did not force Level 1")
+              elif not ok:
+                  problems.append(f"{d['file']}: PlantUML rejected a diagram shipped as grammar-valid")
+          for f in EXPECTED_INVALID - seen_invalid:
+              problems.append(f"{f}: expected in the sweep but not scored")
+          for p in problems:
+              print(f"::error::{p}")
+          sys.exit(1 if problems else 0)
+          EOF

@@ -96,10 +96,15 @@ this run motivated, see "What to watch") with the repository's own config
   (owner tag, requirement link) are unconfigured in the repository's own
   `pumllint.toml`, so its own architecture diagram carries no ownership
   metadata.
-- **DIM-SYN was not exercised.** The run environment had no `plantuml`
-  binary, so `score --check-syntax` was skipped; syntax is vouched for by
-  pumllint's own parser, which is evidence of well-formedness, not a
-  render.
+- **DIM-SYN was not exercised** *(since closed in CI — the third finding
+  to become a change)*. The local run environment had no `plantuml`
+  binary, so `score --check-syntax` was skipped and syntax was vouched
+  for only by pumllint's own parser — evidence of well-formedness, not a
+  render. The `syntax-gate` CI job now runs the real gate (a pinned
+  PlantUML jar) over every shipped diagram on every push, pinning both
+  directions: the grammar-valid set must pass `-checkonly`, and the
+  deliberately broken examples with grammar-level damage must fail it
+  *and* be forced to Level 1 by the C2 cap.
 
 ## Verdict
 
@@ -109,4 +114,4 @@ and the suppression round-trip behaved like a tool meant for CI; and the
 weak spots found were scoping choices (a signature heuristic since
 tightened, craft-not-truth) rather than false positives. The findings
 above doubled as a to-do list, not a disclaimer: two of them shipped as
-product changes.
+product changes, and a third closed as a CI gate.
