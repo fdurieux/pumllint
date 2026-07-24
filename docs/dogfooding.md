@@ -102,9 +102,13 @@ this run motivated, see "What to watch") with the repository's own config
   for only by pumllint's own parser — evidence of well-formedness, not a
   render. The `syntax-gate` CI job now runs the real gate (a pinned
   PlantUML jar) over every shipped diagram on every push, pinning both
-  directions: the grammar-valid set must pass `-checkonly`, and the
-  deliberately broken examples with grammar-level damage must fail it
-  *and* be forced to Level 1 by the C2 cap.
+  directions: the whole shipped set must pass `-checkonly`, and a
+  synthetic grammar-broken probe must fail it *and* be forced to Level 1
+  by the C2 cap. The job's first run measured something worth knowing:
+  PlantUML accepts even the deliberately-bad examples — it tolerates
+  unclosed `alt`/`while` — so SEQ004/ACT004 are *stricter than the
+  grammar*, and grammar checking alone would miss exactly the breakage
+  the maturity model exists to catch.
 
 ## Verdict
 

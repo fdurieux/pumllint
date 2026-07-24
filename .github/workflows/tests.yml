@@ -82,11 +82,13 @@ jobs:
             --files order_payment_codegen_good.puml --verbose
 
   # DIM-SYN in anger: the C2 gate (`score --check-syntax`) against real
-  # PlantUML over every shipped diagram. Pins both directions — the
-  # grammar-valid set must pass `-checkonly`, and the deliberately broken
-  # examples must fail it AND be forced to Level 1 by the cap — so the
-  # integration cannot rot toward all-pass or all-fail unnoticed. The only
-  # job that needs Java; the linter itself never does.
+  # PlantUML over every shipped diagram. Pins both directions — every
+  # shipped diagram must pass `-checkonly` (measured: PlantUML tolerates
+  # even the bad examples' unclosed alt/while; SEQ004/ACT004 are stricter
+  # than the grammar), and a synthetic grammar-broken probe must fail it
+  # AND be forced to Level 1 by the cap — so the integration cannot rot
+  # toward all-pass or all-fail unnoticed. The only job that needs Java;
+  # the linter itself never does.
   syntax-gate:
     runs-on: ubuntu-latest
     env:
@@ -108,37 +110,51 @@ jobs:
           plantuml -version | head -1
       - name: Score every shipped diagram through the syntax gate
         run: pumllint score examples docs --check-syntax -f json -o syntax-report.json
-      - name: Assert verdicts (valid set passes, broken set trips C2)
+      - name: Assert every shipped diagram is grammar-valid
         run: |
           python - <<'EOF'
           import json, sys
 
-          # Files whose deliberate breakage is grammar-level (unclosed
-          # alt/while): PlantUML itself must reject them, and the C2 cap
-          # must force Level 1. Everything else ships grammar-valid.
-          EXPECTED_INVALID = {
-              "examples/credit_intake_bad.puml",
-              "examples/insurance_claim_bad.puml",
-              "examples/loan_decision_activity_bad.puml",
-          }
-
+          # Measured on the first run of this job: PlantUML accepts even the
+          # deliberately-bad examples (it tolerates unclosed alt/while — the
+          # linter's SEQ004/ACT004 are stricter than the grammar), so the
+          # whole shipped set must pass. The failure direction is pinned by
+          # the synthetic probe step below.
           report = json.load(open("syntax-report.json"))
-          problems, seen_invalid = [], set()
+          problems = []
           for d in report["diagrams"]:
               ok = d["maturity"]["syntaxOk"]
-              level = d["maturity"]["level"]
-              print(f"{'PASS' if ok else 'FAIL':4} L{level}  {d['file']}")
-              if d["file"] in EXPECTED_INVALID:
-                  seen_invalid.add(d["file"])
-                  if ok:
-                      problems.append(f"{d['file']}: expected PlantUML to reject it, but -checkonly passed")
-                  elif level != 1:
-                      problems.append(f"{d['file']}: syntax failed but level is {level} — C2 did not force Level 1")
-              elif not ok:
+              print(f"{'PASS' if ok else 'FAIL':4} L{d['maturity']['level']}  {d['file']}")
+              if not ok:
                   problems.append(f"{d['file']}: PlantUML rejected a diagram shipped as grammar-valid")
-          for f in EXPECTED_INVALID - seen_invalid:
-              problems.append(f"{f}: expected in the sweep but not scored")
+          if len(report["diagrams"]) < 15:
+              problems.append(f"only {len(report['diagrams'])} diagrams swept — shipped set shrank?")
           for p in problems:
               print(f"::error::{p}")
           sys.exit(1 if problems else 0)
+          EOF
+      - name: Probe the failure direction (broken grammar must trip C2)
+        run: |
+          # Diagnostic matrix first: candidate breakages and their raw
+          # -checkonly exit codes, so a future PlantUML that swallows the
+          # chosen probe is easy to re-pin.
+          for c in 'Alice ->' '!undefined_function()' 'class {' ; do
+            printf '@startuml\n%s\n@enduml\n' "$c" > "$RUNNER_TEMP/cand.puml"
+            plantuml -checkonly "$RUNNER_TEMP/cand.puml" >/dev/null 2>&1 \
+              && echo "candidate '$c': exit 0 (accepted)" \
+              || echo "candidate '$c': rejected"
+          done
+          printf '@startuml\nAlice ->\n@enduml\n' > "$RUNNER_TEMP/broken-probe.puml"
+          pumllint score "$RUNNER_TEMP/broken-probe.puml" --check-syntax -f json -o probe.json
+          python - <<'EOF'
+          import json, sys
+          d = json.load(open("probe.json"))["diagrams"][0]
+          ok, level = d["maturity"]["syntaxOk"], d["maturity"]["level"]
+          print(f"probe: syntaxOk={ok} level={level}")
+          if ok:
+              print("::error::probe: PlantUML accepted a deliberately broken file — the gate cannot detect failures")
+              sys.exit(1)
+          if level != 1:
+              print(f"::error::probe: syntax failed but level is {level} — C2 did not force Level 1")
+              sys.exit(1)
           EOF
