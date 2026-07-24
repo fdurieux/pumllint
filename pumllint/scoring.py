@@ -131,11 +131,19 @@ class DimensionScore:
     violations: list[Violation]  # findings in this dimension (for the gap report)
 
 
+# The closed set of gap-report obstacle kinds. Part of the JSON report
+# contract (pumllint/schemas/score.schema.json) — the schema's enum is
+# sync-tested against this tuple, so extend both together.
+GAP_KINDS = (
+    "syntax", "content", "diagram-type", "blocker", "severity", "profile",
+    "dimension", "composite",
+)
+
+
 @dataclass
 class GapItem:
     """One obstacle blocking promotion to the next level, plus the findings to
-    fix. ``kind`` is one of: ``syntax`` | ``content`` | ``diagram-type`` |
-    ``blocker`` | ``severity`` | ``profile`` | ``dimension`` | ``composite``."""
+    fix. ``kind`` is one of :data:`GAP_KINDS`."""
 
     kind: str
     message: str

@@ -1,9 +1,10 @@
 """Command-line interface.
 
-Three commands:
+Four commands:
   pumllint <paths> [options]          lint (default; no subcommand keyword)
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
   pumllint fix <paths> [options]      auto-fix mechanical findings
+  pumllint schema <report>            print the JSON Schema for a -f json report
 
 Exit codes: 0 = clean / at-or-above gate, 1 = lint violations at/above
 --fail-on (lint), a diagram below --min-level or a --baseline regression
@@ -14,6 +15,7 @@ Designed to drop straight into a CI step.
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -23,6 +25,7 @@ from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .reporters import get_reporter
 from .rules import discover
+from .schema import SCHEMA_NAMES, load_schema
 from .scoring import score_groups
 from .syntax import check_files
 
@@ -125,12 +128,30 @@ def build_fix_parser() -> argparse.ArgumentParser:
     return p
 
 
+def build_schema_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        prog="pumllint schema",
+        description="Print the JSON Schema (draft 2020-12) for a machine-readable "
+        "report — the contract for `-f json` output. The badge and sonar formats "
+        "follow shields.io's and SonarQube's own schemas and are not covered.",
+    )
+    p.add_argument(
+        "report",
+        choices=list(SCHEMA_NAMES),
+        help="Which report: 'lint' (pumllint -f json) or 'score' (pumllint score -f json)",
+    )
+    p.add_argument("-o", "--output", help="Write the schema to a file instead of stdout")
+    return p
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv and argv[0] == "score":
         return _run_score(argv[1:])
     if argv and argv[0] == "fix":
         return _run_fix(argv[1:])
+    if argv and argv[0] == "schema":
+        return _run_schema(argv[1:])
     return _run_lint(argv)
 
 
@@ -277,6 +298,12 @@ def _run_fix(argv: list[str]) -> int:
     remaining = Engine(config).lint_paths([r.path for r in changed])
     note = f"; {len(remaining)} finding(s) remain (run pumllint to see them)" if remaining else ""
     print(f"✔ Applied {n} fix(es) in {len(changed)} file(s){note}")
+    return 0
+
+
+def _run_schema(argv: list[str]) -> int:
+    args = build_schema_parser().parse_args(argv)
+    _emit(json.dumps(load_schema(args.report), indent=2), args.output)
     return 0
 
 

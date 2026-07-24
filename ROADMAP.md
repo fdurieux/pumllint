@@ -20,7 +20,9 @@ diagram type (additive re-freeze, 49 → 83 units); **v0.15.0** (2026-07-24)
 completed Arc B with the architect-facing HTML report; **v0.16.0**
 (2026-07-24) opened Arc E with `pumllint fix`; **v0.17.0** (2026-07-24)
 completed Arc D's deepening (complexity-normalized evidence, third family,
-multi-model waves). This file tracks what remains, grouped into arcs. Keep it updated as items land.
+multi-model waves); **v0.18.0** (2026-07-24) pinned the JSON report shapes
+behind shipped schemas (`pumllint schema`). This file tracks what remains,
+grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -137,10 +139,33 @@ three items — full write-up in EVIDENCE.md §Deepening:
   pending (CI check mode). Deliberately excluded: anything requiring
   invented content (labels, guards, multiplicities). Possible follow-up on
   demand: a `pumllint-fix` pre-commit hook.
-- [ ] LSP server / IDE integration for inline findings.
-- [ ] JSON schema for the report formats (lint + maturity).
+- [x] JSON schema for the report formats *(0.18.0)* — reclassified as
+  *contract hardening*, not ecosystem, and done without waiting for pull:
+  the project already treats scores as a public contract (golden test), but
+  the JSON report *shape* — what CI scripts actually parse — had no
+  equivalent guard. Draft 2020-12 schemas for the lint and score `-f json`
+  outputs ship as package data (`pumllint/schemas/`), printed by
+  `pumllint schema {lint,score}`; tests/test_schema.py validates every
+  emittable report shape against them and sync-tests the enums against the
+  code's canonical sets (Severity, LEVEL_NAMES, dimensions, GAP_KINDS).
+  Validation is a deliberately minimal stdlib subset validator
+  (`pumllint/schema.py`) that refuses unsupported keywords — the
+  zero-dependency promise rules out jsonschema. Badge and sonar are
+  deliberately out of scope: those shapes are shields.io's and SonarQube's
+  contracts. `diagramType` stays an open string (new parsers add values);
+  gap `kind` is a closed enum anchored to `scoring.GAP_KINDS`.
+- [ ] LSP server / IDE integration for inline findings. Note (2026-07-24
+  re-evaluation): `pumllint fix` makes code-actions nearly free if this is
+  ever built, and a stdlib JSON-RPC/stdio server fits the zero-dependency
+  promise — but it is permanent maintenance surface; still strictly
+  wait-for-pull. If the underlying ask turns out to be "inline findings in
+  PRs", a GitHub `::error` annotations reporter is the cheap substitute.
 - [ ] Real SonarQube plugin with measures (replacing the synthetic-issue
-  workaround in the sonar reporter).
+  workaround in the sonar reporter). Bar raised (2026-07-24 re-evaluation):
+  build only for a concrete Sonar-shop user whose need the generic-import
+  route cannot meet — the plugin's sole delta is measures/quality-gate in
+  Sonar's UI, which `--min-level` + baseline already provide in CI, and a
+  Java artifact with its own release train cuts against the repo's ethos.
 
 ## Working agreements (read before picking anything up)
 
@@ -152,8 +177,9 @@ three items — full write-up in EVIDENCE.md §Deepening:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: **Arcs A, B and C are complete** (0.15.0); the golden
-  contract covers every diagram type (0.14.0: additive re-freeze, 49 → 83
-  units). Everything that remains is demand-driven: Arc D evidence deepening
-  (only if marketing claims need escalation) and Arc E ecosystem (wait for
-  pull — `pumllint fix` is the likeliest first ask).
+- Recommended next: **Arcs A–D are complete** and the report shapes are
+  schema-pinned (0.18.0). Everything that remains is strictly demand-driven:
+  Arc E's LSP server and SonarQube plugin (wait for pull — see the
+  re-evaluation notes on each item), plus the documented evidence
+  limitations (cross-vendor models, prompt variation) only if claims need
+  escalation.

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/lint.schema.json",
+  "title": "pumllint lint report",
+  "description": "The output of `pumllint <paths> -f json`: a flat array of rule findings. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py).",
+  "type": "array",
+  "items": { "$ref": "#/$defs/violation" },
+  "$defs": {
+    "violation": {
+      "type": "object",
+      "description": "One rule finding at a location in a source file.",
+      "required": ["ruleId", "severity", "message", "file", "line"],
+      "additionalProperties": false,
+      "properties": {
+        "ruleId": { "type": "string", "description": "Rule identifier, e.g. SEQ001 (see RULES.md)" },
+        "severity": { "enum": ["info", "minor", "major", "critical", "blocker"] },
+        "message": { "type": "string" },
+        "file": { "type": "string", "description": "Source path as given to the CLI" },
+        "line": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -2,10 +2,11 @@
 
 Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`score_groups` (aggregate with :func:`aggregate_scores`), render with
-:func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`.
+:func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`. The JSON
+report shapes are pinned by :mod:`pumllint.schema` (:func:`load_schema`).
 """
 
-__version__ = "0.17.0"
+__version__ = "0.18.0"
 
 from .baseline import (
     BaselineEntry,
@@ -21,6 +22,7 @@ from .engine import Engine, collect_files
 from .model import Diagram, Dimension, Severity, Violation
 from .parser import parse_file, parse_source
 from .reporters import Reporter, get_reporter
+from .schema import load_schema
 from .scoring import (
     DimensionScore,
     GapItem,
@@ -46,6 +48,7 @@ __all__ = [
     "Violation",
     "Reporter",
     "get_reporter",
+    "load_schema",
     "DimensionScore",
     "GapItem",
     "MaturityResult",

@@ -245,6 +245,22 @@ the linter tells you *what*, but will not guess *which*. In GitHub Actions,
 use `command: fix` with `extra-args: --dry-run` as a "fixes pending?" CI
 check.
 
+## Report schemas
+
+The machine-readable reports are a public contract, pinned by JSON Schemas
+(draft 2020-12) shipped inside the package:
+
+```bash
+python -m pumllint schema lint    # the shape of `pumllint -f json`
+python -m pumllint schema score   # the shape of `pumllint score -f json`
+```
+
+Point any standard validator at them when building tooling on top of the
+output. pumllint's own test suite validates every report shape it can emit
+against these schemas — like the golden scores, the shape cannot drift
+silently. The badge and sonar formats are deliberately not covered: those
+shapes are shields.io's and SonarQube's contracts, not pumllint's.
+
 ## Configuration
 
 `pumllint.yaml` (or `.toml` / `.json`) is auto-detected in the working
@@ -326,7 +342,10 @@ pumllint/
 │   ├── class_/       #   CLS*  (structure.py)
 │   ├── state/        #   STA*  (structure.py)
 │   └── common/       #   GEN*, UC*  (governance.py)
-├── reporters/        # text / json / sonar; auto-registered via @reporter
+├── reporters/        # text / json / sonar / badge / html; auto-registered
+│                     #   via @reporter
+├── schemas/          # JSON Schemas — the `-f json` output contract
+├── schema.py         #   loader + minimal validator (drift-guarded in tests)
 ├── engine.py         # config merge → rule instantiation → run
 ├── config.py         # yaml / toml / json loading
 └── cli.py            # argparse CLI, CI-friendly exit codes

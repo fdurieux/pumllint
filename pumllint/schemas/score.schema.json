@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/score.schema.json",
+  "title": "pumllint maturity report",
+  "description": "The output of `pumllint score <paths> -f json`: per-diagram maturity results plus the model-set aggregate (SCORING.md). This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py).",
+  "type": "object",
+  "required": ["diagrams", "modelSet"],
+  "additionalProperties": false,
+  "properties": {
+    "diagrams": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/diagram" }
+    },
+    "modelSet": {
+      "type": ["object", "null"],
+      "description": "Aggregate over all scored diagrams (worst level, element-weighted composite); null when no diagrams were scored.",
+      "required": ["level", "levelName", "score", "diagramCount", "elementCount", "baseline"],
+      "additionalProperties": false,
+      "properties": {
+        "level": { "$ref": "#/$defs/level" },
+        "levelName": { "$ref": "#/$defs/levelName" },
+        "score": { "$ref": "#/$defs/score" },
+        "diagramCount": { "type": "integer", "minimum": 1 },
+        "elementCount": { "type": "integer", "minimum": 0 },
+        "baseline": { "$ref": "#/$defs/baseline" }
+      }
+    }
+  },
+  "$defs": {
+    "level": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "levelName": {
+      "enum": ["Sketchy", "Structured", "Disciplined", "Precise", "Generation-ready"]
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "baseline": {
+      "type": ["object", "null"],
+      "description": "Ratchet trend versus the --baseline file: the recorded level and the delta (current minus baseline). Null outside baseline-compare runs and for diagrams new since the baseline.",
+      "required": ["level", "delta"],
+      "additionalProperties": false,
+      "properties": {
+        "level": { "$ref": "#/$defs/level" },
+        "delta": { "type": "integer", "minimum": -4, "maximum": 4 }
+      }
+    },
+    "diagram": {
+      "type": "object",
+      "required": ["file", "name", "diagramType", "maturity", "baseline"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "name": { "type": ["string", "null"], "description": "The @startuml name, when the diagram has one" },
+        "diagramType": {
+          "type": "string",
+          "description": "Currently sequence | usecase | activity | class | state | unknown — an open set: new parsers add values, so consumers must tolerate unknown strings."
+        },
+        "maturity": { "$ref": "#/$defs/maturity" },
+        "baseline": { "$ref": "#/$defs/baseline" }
+      }
+    },
+    "maturity": {
+      "type": "object",
+      "required": ["level", "levelName", "score", "syntaxOk", "elementCount", "dimensions", "gapReport"],
+      "additionalProperties": false,
+      "properties": {
+        "level": { "$ref": "#/$defs/level" },
+        "levelName": { "$ref": "#/$defs/levelName" },
+        "score": { "$ref": "#/$defs/score" },
+        "syntaxOk": { "type": "boolean", "description": "DIM-SYN gate result; true unless --check-syntax (or the config gate) found a failure" },
+        "elementCount": { "type": "integer", "minimum": 0 },
+        "dimensions": {
+          "type": "object",
+          "description": "Per-dimension scores. DIM-SYN is a gate, not a scored dimension, so it never appears here.",
+          "required": ["DIM-SEM", "DIM-CMP", "DIM-CON", "DIM-TRC", "DIM-RDB", "DIM-AMB"],
+          "additionalProperties": false,
+          "properties": {
+            "DIM-SEM": { "$ref": "#/$defs/dimensionScore" },
+            "DIM-CMP": { "$ref": "#/$defs/dimensionScore" },
+            "DIM-CON": { "$ref": "#/$defs/dimensionScore" },
+            "DIM-TRC": { "$ref": "#/$defs/dimensionScore" },
+            "DIM-RDB": { "$ref": "#/$defs/dimensionScore" },
+            "DIM-AMB": { "$ref": "#/$defs/dimensionScore" }
+          }
+        },
+        "gapReport": {
+          "type": "array",
+          "description": "Obstacles blocking promotion to the next level, with the findings to fix; empty at Level 5.",
+          "items": { "$ref": "#/$defs/gap" }
+        }
+      }
+    },
+    "dimensionScore": {
+      "type": "object",
+      "required": ["score", "penalty", "weight"],
+      "additionalProperties": false,
+      "properties": {
+        "score": { "$ref": "#/$defs/score" },
+        "penalty": { "type": "number", "minimum": 0 },
+        "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "gap": {
+      "type": "object",
+      "required": ["kind", "message", "dimension", "current", "required", "findings"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": ["syntax", "content", "diagram-type", "blocker", "severity", "profile", "dimension", "composite"]
+        },
+        "message": { "type": "string" },
+        "dimension": {
+          "description": "The dimension a 'dimension'-kind gap concerns; null for the other kinds.",
+          "enum": ["DIM-SYN", "DIM-SEM", "DIM-CMP", "DIM-CON", "DIM-TRC", "DIM-RDB", "DIM-AMB", null]
+        },
+        "current": { "type": ["number", "null"] },
+        "required": { "type": ["number", "null"] },
+        "findings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/violation" }
+        }
+      }
+    },
+    "violation": {
+      "type": "object",
+      "required": ["ruleId", "severity", "message", "file", "line"],
+      "additionalProperties": false,
+      "properties": {
+        "ruleId": { "type": "string" },
+        "severity": { "enum": ["info", "minor", "major", "critical", "blocker"] },
+        "message": { "type": "string" },
+        "file": { "type": "string" },
+        "line": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}
