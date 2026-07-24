@@ -135,6 +135,12 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
   with: { name: maturity-report, path: maturity-report.html }
 ```
 
+A published example of this report — the bundled [examples/](examples/)
+scored by the tool itself — lives at
+<https://fdurieux.github.io/pumllint/example-maturity-report.html>
+(`docs/example-maturity-report.html`, drift-guarded by
+`tests/test_pilot_example.py`).
+
 Why gate on it: in a measured experiment (75 generation runs, independent
 LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with
 the fidelity of code generated from the diagrams (r ≈ 0.49), and diagrams

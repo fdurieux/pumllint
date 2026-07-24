@@ -47,3 +47,6 @@ but they are a useful cross-check that no audience was forgotten.
   scores and code-generation fidelity.
 - [ROADMAP.md](../ROADMAP.md) — what remains, and the working agreements for
   contributors.
+- [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
+  — the pilot's Phase-0 artefact: the tool's own score run over the bundled
+  `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).

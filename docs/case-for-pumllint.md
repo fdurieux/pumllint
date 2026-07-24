@@ -136,7 +136,10 @@ Very little, by design:
 
 1. **Week 1:** run the scorer read-only on one existing repository and
    circulate the HTML maturity report. This costs one step in the build
-   pipeline and produces the conversation-starter.
+   pipeline and produces the conversation-starter. A live example of
+   exactly this artefact — this repository's own diagrams, scored by the
+   tool itself — is published here:
+   [example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html).
 2. **Week 2:** record today's levels as the committed baseline — the
    pipeline now blocks regressions only.
 3. **When ready:** require Level 2 as the floor for the whole diagram set

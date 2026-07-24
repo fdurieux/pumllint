@@ -353,6 +353,22 @@ and produces the evidence for the next ([setup guide](setup-and-ci.md)):
 | **2 — Floor** (a PI) | `--min-level 2` on the model set — the measured cliff — plus `--profile codegen --min-level 5` wherever diagrams feed AI generation | Gate hit-rates; whether AI-fed diagrams meet method-convention completeness |
 | **Ongoing** | KPIs on the dashboard | Model-set level trend (the badge), share of diagrams at Level 3+, suppression count, regressions per PI |
 
+This repository practises Phase 0 on itself. Its bundled example diagrams
+— seven good/bad pairs, deliberately mixed quality — are scored by the
+tool, and the resulting report is published as the live pilot example:
+**[example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)**.
+The good diagrams reach Level 4 (held from Level 5 only by the codegen
+profile), every flawed one is caught at Level 2–3 with its gap report,
+and the set as a whole scores Level 2 — the worst-member principle doing
+its job:
+
+![example model-set maturity](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/fdurieux/pumllint/main/docs/example-badge.json)
+
+A test in the repository regenerates the report on every run and fails if
+the published copy drifts from what the tool actually produces — the
+pilot example is held to the same no-silent-drift standard as the scores
+themselves.
+
 Optionally, pair the KPIs with soft flow indicators: review round-trips on
 diagram-touching PRs, incidents in which stale or ambiguous diagrams were
 cited, onboarding feedback. Stated honestly: those indicators establish
