@@ -75,14 +75,14 @@ grouped into arcs. Keep it updated as items land.
 - [x] **CLS pack + class-diagram parser** *(0.9.0)* — `parser/class_.py`
   (classifiers, brace-body members, relations with multiplicities; typed by
   classifier declarations and `<|` generalization arrows, never re-typing
-  other forms) + CLS001–005. Note: the corpus still has no class-diagram
-  fixtures, so the golden contract does not yet cover CLS scoring — extend
-  `tools/gen_corpus.py` and re-freeze deliberately when it should.
+  other forms) + CLS001–005. The corpus caveat this note originally carried
+  was closed in 0.14.0: mutation ladders and clean probes for every diagram
+  type, golden re-frozen additively — the contract now covers CLS scoring.
 - [x] **STA pack + state-diagram parser** *(0.10.0)* — `parser/state.py`
   (declarations, composite bodies with a container stack, `[*]` endpoints;
   typed by the `state` keyword and `[*]`, never re-typing other forms) +
-  STA001–003. Same corpus caveat as CLS: no state fixtures in the golden
-  contract yet.
+  STA001–003. Same corpus history as CLS: state fixtures joined the golden
+  contract in 0.14.0.
 - [x] UC003 *(0.11.0)* — usecase links now carry label/arrow (`UseCaseLink`,
   tuple-unpack compatible), endpoints typed by syntax (`(X)` usecase, `:X:`
   actor), reversed arrows normalized; direction judged via actor
