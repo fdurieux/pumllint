@@ -50,3 +50,6 @@ but they are a useful cross-check that no audience was forgotten.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
+- [Dogfooding: pumllint on its own lint flow](dogfooding.md) — the linter
+  applied to [a sequence diagram of its own pipeline](pumllint-lint-flow.puml):
+  what held up, and what to watch.

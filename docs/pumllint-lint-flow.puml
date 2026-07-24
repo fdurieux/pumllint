@@ -1,0 +1,84 @@
+@startuml pumllint-lint-flow
+title pumllint — lint command flow (pumllint <paths>)
+
+actor Developer
+participant CLI
+participant Config
+participant Engine
+participant Registry
+participant Parser
+participant Rule
+participant Reporter
+
+Developer -> CLI : pumllint paths [--fail-on sev] [-f format]
+activate CLI
+
+CLI -> Config : load_config(explicit path or auto-detect)
+activate Config
+Config --> CLI : config (rules, profile, suppressions)
+deactivate Config
+note right of Config
+  Auto-detects pumllint.yaml / .yml /
+  .toml / .json in the working directory.
+end note
+
+CLI -> Engine : Engine(config)
+activate Engine
+Engine -> Registry : discover()
+activate Registry
+Registry --> Engine : rule classes + catalog.toml metadata
+deactivate Registry
+' Intended self-call: rule wiring is Engine-internal by design (RULES.md SEQ006).
+' pumllint: disable=SEQ006
+Engine -> Engine : instantiate rules\n(profile gating, disables, severity escalation)
+Engine --> CLI : engine (rules wired)
+deactivate Engine
+
+CLI -> Engine : lint_paths(paths)
+activate Engine
+' pumllint: disable=SEQ006
+Engine -> Engine : collect_files(paths, recursing directories)
+
+loop each collected diagram file
+    Engine -> Parser : parse_file(file)
+    activate Parser
+    Parser --> Engine : diagrams (one per startuml block)
+    deactivate Parser
+end
+
+loop each diagram, each applicable rule
+    Engine -> Rule : check(diagram)
+    activate Rule
+    Rule --> Engine : violations
+    deactivate Rule
+    ' pumllint: disable=SEQ006
+    Engine -> Engine : drop findings suppressed by inline disable comments
+end
+
+opt batch holds two or more diagrams
+    Engine -> Rule : check_all(diagrams) for cross-diagram rules
+    activate Rule
+    Rule --> Engine : cross-diagram violations, attributed to owning diagram
+    deactivate Rule
+end
+
+Engine --> CLI : violations sorted by (file, line, rule id)
+deactivate Engine
+
+CLI -> Reporter : get_reporter(format).render(violations)
+activate Reporter
+Reporter --> CLI : report (text / json / sonar)
+deactivate Reporter
+
+alt no finding at or above --fail-on
+    CLI --> Developer : report, exit 0
+else findings at or above --fail-on
+    CLI --> Developer : report, exit 1
+end
+deactivate CLI
+
+note over CLI
+  Config or path errors abort earlier
+  with exit 2 (usage error).
+end note
+@enduml
