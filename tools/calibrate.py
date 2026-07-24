@@ -37,6 +37,7 @@ PAIRS = [
     ("credit_intake_good", "credit_intake_bad", None),
     ("loan_decision_activity_good", "loan_decision_activity_bad", None),
     ("order_payment_codegen_good", "order_payment_codegen_bad", "codegen"),
+    ("insurance_claim_good", "insurance_claim_bad", "codegen"),
     ("shop_classes_good", "shop_classes_bad", None),
     ("door_lock_state_good", "door_lock_state_bad", None),
     ("webshop_usecase_good", "webshop_usecase_bad", None),

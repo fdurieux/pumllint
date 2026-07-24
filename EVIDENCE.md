@@ -2,6 +2,80 @@
 
 Phase 10e experiment record — 2026-07-22. Raw data: `experiment_results/report.json`
 (75 runs, zero failures, $5.24 API spend). Harness: `tools/codegen_experiment.py`.
+Deepened 2026-07-24 (Arc D, v0.17.0) — see "Deepening" below; analysis:
+`tools/analyze_evidence.py`, `experiment_results/analysis.json`.
+
+## Deepening — pre-registered expectations (written 2026-07-24, before the waves ran)
+
+Three additional waves address the §Limitations items. Recorded before any
+wave result was seen:
+
+- **D1 (complexity normalization):** controlling for *hard demand* (the
+  judge's count of guards + failure paths expected — the obligations a
+  generator can get semantically wrong), the composite↔fidelity partial
+  correlation is at least as strong as the raw r. Rationale: the synthetic
+  confound *suppresses* the raw correlation (trivial diagrams score high
+  fidelity at any maturity), so the control should recover signal, not
+  destroy it.
+- **D2 (generator robustness):** the below-composite-40 cliff reproduces
+  under a weaker generator (`claude-haiku-4-5`), plausibly with a larger
+  drop — a weaker generator has less capacity to compensate for diagram
+  flaws.
+- **D3 (judge robustness):** a second judge (`claude-haiku-4-5`) re-scoring
+  the same artifacts agrees on the *ranking* (fidelity correlation between
+  judges substantial, r ≥ 0.5) even if its absolute fidelity scale is
+  offset; the composite↔fidelity correlation survives the judge swap.
+
+## Deepening — waves and results (2026-07-24)
+
+Three waves, 243 runs, zero failures, $10.19 total; a third scenario family
+(`insurance_claim`, L5→L1 via the corpus mutation ladder) joined the pool:
+
+| Wave | Gen | Judge | Diagrams | Runs | Cost |
+|---|---|---|---|---|---|
+| main2 | opus-4-8 | sonnet-5 | 31 (incl. insurance family) | 93 | $7.38 |
+| rejudge | opus-4-8 (main2 artifacts) | **haiku-4-5** | 31 | 93 | $0.40 |
+| gen-haiku | **haiku-4-5** | sonnet-5 | 19 | 57 | $2.41 |
+
+**Replication first:** main2 independently reproduces the original result —
+raw r = 0.414 (was 0.489), cliff 60.8 vs 73.5 (was 59.2 vs 75.1), identical
+level ordering with the same synthetic-L3 outlier.
+
+**D1 — confirmed, and it is the headline.** Controlling for *hard demand*
+(guards + failure paths expected) the per-diagram partial correlation lands
+in a tight band across every wave — **0.66 / 0.70 / 0.65 / 0.68** (original,
+main2, haiku-gen, haiku-judge) — versus raw per-diagram r of 0.54 / 0.46 /
+0.22 / 0.58. The synthetic-triviality confound was *suppressing* the true
+relationship; held at fixed semantic difficulty, maturity predicts fidelity
+at r ≈ 0.65–0.70 regardless of which generator wrote the code or which judge
+scored it. (Controlling for *total* demand instead weakens r to ~0.3 — total
+obligation count co-varies with maturity in this corpus, so the two controls
+bracket the raw number; hard demand is the semantically defensible control
+and the one pre-registered.)
+
+**D2 — confirmed.** Under the weaker generator the cliff reproduces and
+steepens: below composite 40 fidelity is 56.6 vs 72.1 above (opus: 60.8 vs
+73.5), and the level gradient excluding the synthetic bucket is cleanly
+monotone (70.2 / 64.3 / 63.2 / 56.6). The weak generator's raw r (0.203) is
+dominated by the synthetic outlier in a 19-diagram sample; the hard-demand
+partial recovers 0.554. A weaker generator compensates less, so low-maturity
+diagrams cost *more* — the gate matters more, not less, for cheaper models.
+
+**D3 — confirmed.** Over the same 93 artifacts the two judges' fidelity
+scores correlate at r = 0.715 with a nearly constant offset — haiku scores
+~9 points more leniently (means 79.2 vs 70.2, mean |diff| 10.5) — and the
+composite↔fidelity correlation is essentially unchanged under the swap
+(0.490 haiku vs 0.414 sonnet; per-diagram 0.58 vs 0.46). Absolute fidelity
+is judge-relative; rankings and correlations are not.
+
+**Larger n:** pooling the two identical-config waves gives 168 runs over 38
+diagrams, 18 of them at n = 6 (per-diagram means tightened from ±8 toward
+±5); pooled per-diagram r = 0.472, hard-demand partial 0.619 — consistent
+with the per-wave numbers.
+
+Analysis: `tools/analyze_evidence.py` → `experiment_results/analysis.json`;
+wave reports under `experiment_results/wave_*/report.json` (the original
+`experiment_results/report.json` is unchanged).
 
 ## Method
 
@@ -72,22 +146,35 @@ independent judge.
 
 ## Limitations
 
-Single generator and single judge model; two scenario families dominate the
-corpus; n = 3 runs/diagram leaves per-diagram means noisy (±8); fidelity has
-no complexity normalization (hence the synthetic confound); the judge rubric,
-while schema-constrained, is still an LLM judgment.
+Addressed by the 2026-07-24 deepening: complexity normalization (hard-demand
+partial correlations), a third scenario family (insurance_claim), n = 6 on
+the 18 diagrams shared across identical-config waves, and a second generator
+plus a second judge (haiku-4-5), all reproducing the findings.
+
+Still standing: all models are Claude-family (no cross-vendor generator or
+judge); the generation prompt is fixed (one prompting style); the judge
+rubric, while schema-constrained, is still an LLM judgment — absolute
+fidelity numbers are judge-relative (~±10 between judges) and only rankings
+and correlations should be quoted.
 
 ## What the product may claim
 
-Supported by this data:
+Supported by this data (updated after the deepening):
 
-- *"Maturity scores correlate with the fidelity of generated code
-  (r ≈ 0.5)."*
+- *"Maturity scores correlate with the fidelity of generated code — raw
+  r ≈ 0.4–0.5 across replications; at fixed semantic difficulty (guards and
+  failure paths held constant) the per-diagram correlation is **r ≈ 0.65–0.70,
+  stable across two generators and two judges**."*
 - *"Diagrams below Level 2 measurably degrade generation: fidelity drops by
-  roughly a third and invented business logic roughly doubles."*
+  roughly a third and invented business logic roughly doubles."* The cliff
+  reproduced in every wave, and is **steeper for a weaker generator** —
+  the gate matters more, not less, for cheaper models.
 - The `--min-level` CI gate is evidence-backed **as a risk filter**: its
   demonstrated value is keeping low-maturity diagrams out, which is exactly
   what a CI gate is for.
+- Quote correlations and the cliff, never absolute fidelity values —
+  absolute fidelity is judge-relative (two judges differ by ~9 points on
+  identical code while agreeing on ranking, r = 0.715).
 
 **Not supported:** "Level 5 ⇒ generation-ready" as an absolute. Under a
 strict independent judge, even pristine L5 diagrams average ~72 fidelity

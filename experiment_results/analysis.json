@@ -1,0 +1,260 @@
+{
+  "waves": {
+    "experiment_results/report.json": {
+      "gen_model": "claude-opus-4-8",
+      "judge_model": "claude-sonnet-5",
+      "runs": 75,
+      "diagrams": 25,
+      "r_raw": 0.489,
+      "r_fidelity_demand": 0.49,
+      "r_partial_given_demand": 0.309,
+      "r_partial_given_hard_demand": 0.581,
+      "per_diagram": {
+        "r_raw": 0.542,
+        "r_partial_given_demand": 0.354,
+        "r_partial_given_hard_demand": 0.662
+      },
+      "terciles": {
+        "low": {
+          "n": 25,
+          "demand_range": [
+            4,
+            10
+          ],
+          "r": 0.825,
+          "mean_fidelity": 62.9
+        },
+        "mid": {
+          "n": 25,
+          "demand_range": [
+            10,
+            14
+          ],
+          "r": 0.37,
+          "mean_fidelity": 68.9
+        },
+        "high": {
+          "n": 25,
+          "demand_range": [
+            14,
+            22
+          ],
+          "r": -0.694,
+          "mean_fidelity": 78.4
+        }
+      },
+      "cliff": {
+        "below_40": {
+          "runs": 24,
+          "mean_fidelity": 59.2,
+          "invented_per_run": 4.12
+        },
+        "at_or_above_40": {
+          "runs": 51,
+          "mean_fidelity": 75.1,
+          "invented_per_run": 2.75
+        }
+      }
+    },
+    "experiment_results/wave_gen_haiku/report.json": {
+      "gen_model": "claude-haiku-4-5-20251001",
+      "judge_model": "claude-sonnet-5",
+      "runs": 57,
+      "diagrams": 19,
+      "r_raw": 0.203,
+      "r_fidelity_demand": 0.107,
+      "r_partial_given_demand": 0.174,
+      "r_partial_given_hard_demand": 0.554,
+      "per_diagram": {
+        "r_raw": 0.216,
+        "r_partial_given_demand": 0.191,
+        "r_partial_given_hard_demand": 0.646
+      },
+      "terciles": {
+        "low": {
+          "n": 19,
+          "demand_range": [
+            4,
+            14
+          ],
+          "r": 0.894,
+          "mean_fidelity": 65.2
+        },
+        "mid": {
+          "n": 19,
+          "demand_range": [
+            14,
+            16
+          ],
+          "r": -0.178,
+          "mean_fidelity": 71.4
+        },
+        "high": {
+          "n": 19,
+          "demand_range": [
+            16,
+            22
+          ],
+          "r": -0.814,
+          "mean_fidelity": 69.8
+        }
+      },
+      "cliff": {
+        "below_40": {
+          "runs": 12,
+          "mean_fidelity": 56.6,
+          "invented_per_run": 4.25
+        },
+        "at_or_above_40": {
+          "runs": 45,
+          "mean_fidelity": 72.1,
+          "invented_per_run": 3.16
+        }
+      }
+    },
+    "experiment_results/wave_main2/report.json": {
+      "gen_model": "claude-opus-4-8",
+      "judge_model": "claude-sonnet-5",
+      "runs": 93,
+      "diagrams": 31,
+      "r_raw": 0.414,
+      "r_fidelity_demand": 0.304,
+      "r_partial_given_demand": 0.296,
+      "r_partial_given_hard_demand": 0.622,
+      "per_diagram": {
+        "r_raw": 0.46,
+        "r_partial_given_demand": 0.33,
+        "r_partial_given_hard_demand": 0.698
+      },
+      "terciles": {
+        "low": {
+          "n": 31,
+          "demand_range": [
+            4,
+            10
+          ],
+          "r": 0.662,
+          "mean_fidelity": 62.7
+        },
+        "mid": {
+          "n": 31,
+          "demand_range": [
+            10,
+            16
+          ],
+          "r": 0.416,
+          "mean_fidelity": 75.4
+        },
+        "high": {
+          "n": 31,
+          "demand_range": [
+            16,
+            22
+          ],
+          "r": -0.671,
+          "mean_fidelity": 72.5
+        }
+      },
+      "cliff": {
+        "below_40": {
+          "runs": 24,
+          "mean_fidelity": 60.8,
+          "invented_per_run": 3.92
+        },
+        "at_or_above_40": {
+          "runs": 69,
+          "mean_fidelity": 73.5,
+          "invented_per_run": 2.71
+        }
+      }
+    },
+    "experiment_results/wave_rejudge_haiku/report.json": {
+      "gen_model": "claude-opus-4-8",
+      "judge_model": "claude-haiku-4-5-20251001",
+      "runs": 93,
+      "diagrams": 31,
+      "r_raw": 0.49,
+      "r_fidelity_demand": 0.367,
+      "r_partial_given_demand": 0.357,
+      "r_partial_given_hard_demand": 0.592,
+      "per_diagram": {
+        "r_raw": 0.578,
+        "r_partial_given_demand": 0.411,
+        "r_partial_given_hard_demand": 0.684
+      },
+      "terciles": {
+        "low": {
+          "n": 31,
+          "demand_range": [
+            4,
+            10
+          ],
+          "r": 0.791,
+          "mean_fidelity": 71.9
+        },
+        "mid": {
+          "n": 31,
+          "demand_range": [
+            10,
+            14
+          ],
+          "r": 0.216,
+          "mean_fidelity": 83.4
+        },
+        "high": {
+          "n": 31,
+          "demand_range": [
+            14,
+            22
+          ],
+          "r": -0.497,
+          "mean_fidelity": 82.3
+        }
+      },
+      "cliff": {
+        "below_40": {
+          "runs": 24,
+          "mean_fidelity": 69.2,
+          "invented_per_run": 4.12
+        },
+        "at_or_above_40": {
+          "runs": 69,
+          "mean_fidelity": 82.7,
+          "invented_per_run": 2.38
+        }
+      }
+    }
+  },
+  "judge_agreement": [
+    {
+      "judges": [
+        "claude-sonnet-5",
+        "claude-haiku-4-5-20251001"
+      ],
+      "shared_runs": 93,
+      "r_fidelity": 0.715,
+      "mean_fidelity": [
+        70.2,
+        79.2
+      ],
+      "mean_abs_diff": 10.5
+    }
+  ],
+  "pooled_same_config": {
+    "gen_model": "claude-opus-4-8",
+    "judge_model": "claude-sonnet-5",
+    "waves": 2,
+    "diagrams": 38,
+    "runs": 168,
+    "n_per_diagram": {
+      "min": 3,
+      "max": 6,
+      "n>=6": 18
+    },
+    "r_runs": 0.443,
+    "per_diagram": {
+      "r_raw": 0.472,
+      "r_partial_given_hard_demand": 0.619
+    }
+  }
+}

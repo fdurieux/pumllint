@@ -18,8 +18,9 @@ cross-type entity identity (XD004–005 — 42 base rules); **v0.14.0**
 (2026-07-24) extended the calibration corpus and golden contract to every
 diagram type (additive re-freeze, 49 → 83 units); **v0.15.0** (2026-07-24)
 completed Arc B with the architect-facing HTML report; **v0.16.0**
-(2026-07-24) opened Arc E with `pumllint fix`. This file tracks what
-remains, grouped into arcs. Keep it updated as items land.
+(2026-07-24) opened Arc E with `pumllint fix`; **v0.17.0** (2026-07-24)
+completed Arc D's deepening (complexity-normalized evidence, third family,
+multi-model waves). This file tracks what remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -104,16 +105,25 @@ remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
-EVIDENCE.md delivered the measured maturity→codegen relationship. Only if
-marketing claims need escalation:
+EVIDENCE.md delivered the measured maturity→codegen relationship; the
+2026-07-24 deepening (v0.17.0, 3 waves, 243 runs, $10.19) addressed all
+three items — full write-up in EVIDENCE.md §Deepening:
 
-- [ ] Complexity-normalized fidelity (kills the synthetic-diagram confound
-  where trivial diagrams score near-perfect fidelity regardless of maturity).
-- [ ] More scenario families beyond order_payment/credit_intake; larger n
-  per diagram (current n=3 leaves ±8 noise on per-diagram means).
-- [ ] Multiple generator and judge models (current: Opus 4.8 gen, Sonnet 5
-  judge; remember the ~15-point self-judging bias — always judge
-  independently).
+- [x] Complexity-normalized fidelity *(0.17.0)* — `tools/analyze_evidence.py`
+  computes partial correlations controlling for *hard demand* (judge-counted
+  guards + failure paths). Headline: the confound was **suppressing** the
+  signal — per-diagram r(composite, fidelity | hard demand) ≈ 0.65–0.70,
+  stable across two generators and two judges (raw r 0.22–0.58).
+- [x] Third scenario family + larger n *(0.17.0)* — `insurance_claim` pair
+  (good = L5/100 under codegen, bad = L1/24) wired into the corpus ladder
+  (additive golden re-freeze, 83 → 97 units); pooling the identical-config
+  waves puts 18 diagrams at n = 6.
+- [x] Multiple generator and judge models *(0.17.0)* — harness gained
+  --gen-model/--judge-model/--results-dir and a judge-only --rejudge mode
+  (judge robustness at ~$0.40). Cliff reproduces and *steepens* under
+  haiku-4-5 generation; judges agree on ranking (r = 0.715) with a ~9-point
+  leniency offset — quote correlations, never absolute fidelity. Remaining
+  (documented, demand-driven): cross-vendor models, prompt variation.
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 

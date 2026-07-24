@@ -1,0 +1,14 @@
+@startuml
+' Deliberately messy: no name, no title, prose message, vague guard,
+' implicit participant, unterminated alt, activation never closed.
+participant ClaimService
+participant FraudChecker <<external>>
+
+ClaimService -> FraudChecker : check whether it looks fishy
+
+alt probably fine
+  ClaimService -> ClaimDB : keep it somewhere ... etc
+
+activate ClaimService
+ClaimDB --> ClaimService : ok
+@enduml

@@ -31,3 +31,7 @@ pilot_results/*
 !pilot_results/report.json
 experiment_results/*
 !experiment_results/report.json
+!experiment_results/analysis.json
+!experiment_results/wave_*/
+experiment_results/wave_*/*
+!experiment_results/wave_*/report.json

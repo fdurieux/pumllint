@@ -48,8 +48,9 @@ import _scorelib  # noqa: E402
 GEN_MODEL = "claude-opus-4-8"
 JUDGE_MODEL = "claude-sonnet-5"
 PRICES = {  # $/M tokens (input, output)
-    GEN_MODEL: (5.00, 25.00),
-    JUDGE_MODEL: (3.00, 15.00),
+    "claude-opus-4-8": (5.00, 25.00),
+    "claude-sonnet-5": (3.00, 15.00),
+    "claude-haiku-4-5-20251001": (1.00, 5.00),
 }
 RESULTS_DIR = REPO_ROOT / "experiment_results"
 MAX_CALLS = 300
@@ -197,6 +198,13 @@ def select_diagrams(per_level: int) -> list[dict]:
 _USAGE_LOCK = threading.Lock()  # usage is shared across the worker pool
 
 
+def _thinking(model: str) -> dict:
+    """Adaptive thinking where supported; omitted where not (haiku)."""
+    if model.startswith("claude-haiku"):
+        return {}
+    return {"thinking": {"type": "adaptive"}}
+
+
 def _call(client, model: str, usage: dict, **kwargs):
     resp = client.messages.create(model=model, **kwargs)
     with _USAGE_LOCK:  # += is a non-atomic read-modify-write across threads
@@ -210,7 +218,7 @@ def _generate(client, diagram_text: str, usage: dict) -> dict:
     resp = _call(
         client, GEN_MODEL, usage,
         max_tokens=12000,
-        thinking={"type": "adaptive"},
+        **_thinking(GEN_MODEL),
         messages=[{"role": "user", "content": GEN_PROMPT.format(diagram=diagram_text)}],
     )
     code = _strip_fences(
@@ -247,7 +255,7 @@ def _run_one(client, unit: dict, run_idx: int, usage: dict) -> dict:
     judge = _call(
         client, JUDGE_MODEL, usage,
         max_tokens=6000,
-        thinking={"type": "adaptive"},
+        **_thinking(JUDGE_MODEL),
         output_config={"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
         messages=[{
             "role": "user",
@@ -330,13 +338,125 @@ def _ensure_corpus() -> None:
         print(f"(generated corpus at {corpus})")
 
 
+def _rejudge(client, base_dir: Path, base_report: dict, usage: dict) -> list[dict]:
+    """Judge an earlier wave's stored artifacts with the current JUDGE_MODEL.
+
+    Judge-only calls: generator robustness costs generation, but judge
+    robustness is nearly free because every artifact is on disk.
+    """
+    results: list[dict] = []
+    ok_runs = [r for r in base_report["runs"] if "error" not in r]
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        def one(r: dict) -> dict:
+            diagram_text = (REPO_ROOT / next(
+                u["path"] for u in base_report["selected"] if u["label"] == r["label"]
+            )).read_text(encoding="utf-8")
+            code = (base_dir / r["code_file"]).read_text(encoding="utf-8")
+            judge = _call(
+                client, JUDGE_MODEL, usage,
+                max_tokens=6000,
+                **_thinking(JUDGE_MODEL),
+                output_config={"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
+                messages=[{
+                    "role": "user",
+                    "content": JUDGE_PROMPT.format(diagram=diagram_text, code=code),
+                }],
+            )
+            return {
+                "label": r["label"], "run": r["run"],
+                "compile_first_try": r["compile_first_try"],
+                "compiles": r["compiles"], "retried": r.get("retried", False),
+                "gen_stop_reason": r.get("gen_stop_reason"),
+                "code_file": r["code_file"],
+                "judge_stop_reason": judge.stop_reason,
+                "judge": json.loads(next(b.text for b in judge.content if b.type == "text")),
+            }
+
+        futures = {pool.submit(one, r): (r["label"], r["run"]) for r in ok_runs}
+        for future, (label, i) in futures.items():
+            try:
+                results.append(future.result())
+                print(f"  rejudged {label} run{i}")
+            except Exception as e:  # noqa: BLE001 — record and continue
+                results.append({"label": label, "run": i, "error": f"{type(e).__name__}: {e}"})
+                print(f"  FAIL {label} run{i}: {e}", file=sys.stderr)
+    return results
+
+
 def main(argv: list[str] | None = None) -> int:
+    global GEN_MODEL, JUDGE_MODEL, RESULTS_DIR
     ap = argparse.ArgumentParser(description="Maturity -> codegen-outcome experiment")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--runs", type=int, default=3)
     ap.add_argument("--per-level", type=int, default=8)
+    ap.add_argument("--gen-model", default=GEN_MODEL)
+    ap.add_argument("--judge-model", default=JUDGE_MODEL)
+    ap.add_argument(
+        "--results-dir", default=str(RESULTS_DIR),
+        help="Where artifacts + report.json land (waves must not clobber the "
+        "original evidence record)",
+    )
+    ap.add_argument(
+        "--rejudge", metavar="REPORT",
+        help="Judge an existing wave's stored artifacts with --judge-model "
+        "instead of generating (judge robustness, judge-only cost)",
+    )
     args_ns = ap.parse_args(argv)
     dry_run, runs, per_level = args_ns.dry_run, args_ns.runs, args_ns.per_level
+    GEN_MODEL, JUDGE_MODEL = args_ns.gen_model, args_ns.judge_model
+    RESULTS_DIR = Path(args_ns.results_dir)
+    for m in (GEN_MODEL, JUDGE_MODEL):
+        if m not in PRICES:
+            print(f"error: no pricing for model '{m}' — add it to PRICES", file=sys.stderr)
+            return 2
+
+    if args_ns.rejudge:
+        base_path = Path(args_ns.rejudge)
+        base_report = json.loads(base_path.read_text(encoding="utf-8"))
+        ok_runs = [r for r in base_report["runs"] if "error" not in r]
+        print(f"Re-judge plan: {len(ok_runs)} stored artifacts from {base_path} "
+              f"(gen={base_report['gen_model']}) judged by {JUDGE_MODEL}")
+        if len(ok_runs) > MAX_CALLS:
+            print(f"error: plan exceeds the {MAX_CALLS}-call cost guard", file=sys.stderr)
+            return 2
+        if dry_run:
+            print("(dry run — no API calls made)")
+            return 0
+        if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
+            print("error: no API credentials in the environment.", file=sys.stderr)
+            return 2
+        import anthropic
+
+        client = anthropic.Anthropic()
+        RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+        usage: dict = {}
+        results = _rejudge(client, base_path.parent, base_report, usage)
+        selected = base_report["selected"]
+        per_diagram, per_level_summary = _aggregate(selected, results)
+        composites = {u["label"]: u["composite"] for u in selected}
+        xs = [composites[r["label"]] for r in results if "error" not in r]
+        ys = [r["judge"]["fidelity_score"] for r in results if "error" not in r]
+        correlation = round(statistics.correlation(xs, ys), 3) if len(xs) > 2 else None
+        cost = sum(
+            u["in"] / 1e6 * PRICES[m][0] + u["out"] / 1e6 * PRICES[m][1]
+            for m, u in usage.items()
+        )
+        report = {
+            "gen_model": base_report["gen_model"], "judge_model": JUDGE_MODEL,
+            "rejudge_of": str(base_path),
+            "runs_per_diagram": base_report["runs_per_diagram"],
+            "selected": selected, "per_level": per_level_summary,
+            "per_diagram": per_diagram,
+            "correlation_composite_fidelity": correlation,
+            "runs": results, "usage": usage, "cost_usd": round(cost, 2),
+            "failures": [r for r in results if "error" in r],
+        }
+        (RESULTS_DIR / "report.json").write_text(
+            json.dumps(report, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"\ncorrelation(composite, fidelity) = {correlation}")
+        print(f"cost: ${cost:.2f}   report: {RESULTS_DIR / 'report.json'}")
+        return 0
 
     _ensure_corpus()  # corpus/ is gitignored; a fresh clone must still work
     selected = select_diagrams(per_level)

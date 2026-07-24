@@ -229,6 +229,20 @@ PLANS = [
         [],
     ),
     (
+        "insurance_claim_good.puml",
+        "codegen",
+        [
+            ("drop_title", op_drop_title),
+            ("drop_name", op_drop_name),
+            ("vague_guard", op_vague_guard),
+            ("undeclare_participant", op_undeclare_participant),
+            ("unlabel_message", op_unlabel_message),
+            ("unbalance_activation", op_unbalance_activation),
+            ("unterminate_block", op_unterminate_block),
+        ],
+        [("self_message", op_self_message)],
+    ),
+    (
         "shop_classes_good.puml",
         None,
         [

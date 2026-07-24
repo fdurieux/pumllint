@@ -109,6 +109,76 @@
     "elements": 8,
     "level": 3
   },
+  "mutations/insurance_claim_good__L2.puml": {
+    "composite": 99.52,
+    "elements": 13,
+    "level": 5
+  },
+  "mutations/insurance_claim_good__L3.puml": {
+    "composite": 89.9,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__L4.puml": {
+    "composite": 72.21,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__L5.puml": {
+    "composite": 60.67,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__L6.puml": {
+    "composite": 52.98,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__L7.puml": {
+    "composite": 46.83,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__S-drop_name.puml": {
+    "composite": 99.9,
+    "elements": 13,
+    "level": 5
+  },
+  "mutations/insurance_claim_good__S-drop_title.puml": {
+    "composite": 99.62,
+    "elements": 13,
+    "level": 5
+  },
+  "mutations/insurance_claim_good__S-self_message.puml": {
+    "composite": 89.29,
+    "elements": 14,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__S-unbalance_activation.puml": {
+    "composite": 92.31,
+    "elements": 13,
+    "level": 4
+  },
+  "mutations/insurance_claim_good__S-undeclare_participant.puml": {
+    "composite": 82.31,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__S-unlabel_message.puml": {
+    "composite": 88.46,
+    "elements": 13,
+    "level": 2
+  },
+  "mutations/insurance_claim_good__S-unterminate_block.puml": {
+    "composite": 93.85,
+    "elements": 13,
+    "level": 4
+  },
+  "mutations/insurance_claim_good__S-vague_guard.puml": {
+    "composite": 90.38,
+    "elements": 13,
+    "level": 2
+  },
   "mutations/loan_decision_activity_good__L2.puml": {
     "composite": 99.43,
     "elements": 11,

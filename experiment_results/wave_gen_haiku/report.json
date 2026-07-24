@@ -1,0 +1,2395 @@
+{
+  "gen_model": "claude-haiku-4-5-20251001",
+  "judge_model": "claude-sonnet-5",
+  "runs_per_diagram": 3,
+  "selected": [
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L2.puml",
+      "label": "L5_order_payment_codegen_good__L2",
+      "level": 5,
+      "composite": 99.4,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-drop_title.puml",
+      "label": "L5_order_payment_codegen_good__S-drop_title",
+      "level": 5,
+      "composite": 99.5,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-drop_name.puml",
+      "label": "L5_order_payment_codegen_good__S-drop_name",
+      "level": 5,
+      "composite": 99.9,
+      "elements": 10
+    },
+    {
+      "path": "examples/order_payment_codegen_good.puml",
+      "label": "L5_order_payment_codegen_good",
+      "level": 5,
+      "composite": 100.0,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-unbalance_activation.puml",
+      "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+      "level": 4,
+      "composite": 90.0,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-unterminate_block.puml",
+      "label": "L4_order_payment_codegen_good__S-unterminate_block",
+      "level": 4,
+      "composite": 92.0,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-unbalance_activation.puml",
+      "label": "L4_insurance_claim_good__S-unbalance_activation",
+      "level": 4,
+      "composite": 92.3,
+      "elements": 13
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-unterminate_block.puml",
+      "label": "L4_insurance_claim_good__S-unterminate_block",
+      "level": 4,
+      "composite": 93.8,
+      "elements": 13
+    },
+    {
+      "path": "corpus/synthetic/small_clean.puml",
+      "label": "L3_small_clean",
+      "level": 3,
+      "composite": 70.0,
+      "elements": 4
+    },
+    {
+      "path": "corpus/synthetic/large_no_title.puml",
+      "label": "L3_large_no_title",
+      "level": 3,
+      "composite": 72.5,
+      "elements": 22
+    },
+    {
+      "path": "corpus/synthetic/large_clean.puml",
+      "label": "L3_large_clean",
+      "level": 3,
+      "composite": 72.7,
+      "elements": 22
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L8.puml",
+      "label": "L2_order_payment_codegen_good__L8",
+      "level": 2,
+      "composite": 41.4,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "label": "L2_credit_intake_good__S-drop_title",
+      "level": 2,
+      "composite": 55.6,
+      "elements": 8
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-undeclare_participant.puml",
+      "label": "L2_insurance_claim_good__S-undeclare_participant",
+      "level": 2,
+      "composite": 82.3,
+      "elements": 13
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-vague_guard.puml",
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "level": 2,
+      "composite": 90.4,
+      "elements": 13
+    },
+    {
+      "path": "examples/credit_intake_bad.puml",
+      "label": "L1_credit_intake_bad",
+      "level": 1,
+      "composite": 22.9,
+      "elements": 10
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__L5.puml",
+      "label": "L1_credit_intake_good__L5",
+      "level": 1,
+      "composite": 26.1,
+      "elements": 8
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__L3.puml",
+      "label": "L1_credit_intake_good__L3",
+      "level": 1,
+      "composite": 36.1,
+      "elements": 8
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L9.puml",
+      "label": "L1_order_payment_codegen_good__L9",
+      "level": 1,
+      "composite": 39.4,
+      "elements": 10
+    }
+  ],
+  "per_level": [
+    {
+      "level": 5,
+      "diagrams": 4,
+      "runs": 12,
+      "compile_first_try": 1.0,
+      "mean_fidelity": 70.2,
+      "mean_guard_faith": 0.85,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 4.92
+    },
+    {
+      "level": 4,
+      "diagrams": 4,
+      "runs": 12,
+      "compile_first_try": 1.0,
+      "mean_fidelity": 64.3,
+      "mean_guard_faith": 0.86,
+      "invented_per_run": 4.33,
+      "embellish_per_run": 4.92
+    },
+    {
+      "level": 3,
+      "diagrams": 3,
+      "runs": 9,
+      "compile_first_try": 1.0,
+      "mean_fidelity": 96.7,
+      "mean_guard_faith": 0.0,
+      "invented_per_run": 0.0,
+      "embellish_per_run": 2.11
+    },
+    {
+      "level": 2,
+      "diagrams": 4,
+      "runs": 12,
+      "compile_first_try": 1.0,
+      "mean_fidelity": 63.2,
+      "mean_guard_faith": 0.82,
+      "invented_per_run": 3.83,
+      "embellish_per_run": 5.17
+    },
+    {
+      "level": 1,
+      "diagrams": 4,
+      "runs": 12,
+      "compile_first_try": 1.0,
+      "mean_fidelity": 56.6,
+      "mean_guard_faith": 0.98,
+      "invented_per_run": 4.25,
+      "embellish_per_run": 4.58
+    }
+  ],
+  "per_diagram": [
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L2.puml",
+      "label": "L5_order_payment_codegen_good__L2",
+      "level": 5,
+      "composite": 99.4,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 72.7,
+      "mean_guard_faith": 0.83,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-drop_title.puml",
+      "label": "L5_order_payment_codegen_good__S-drop_title",
+      "level": 5,
+      "composite": 99.5,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 72.0,
+      "mean_guard_faith": 0.92,
+      "invented_per_run": 3.33,
+      "embellish_per_run": 5.67
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-drop_name.puml",
+      "label": "L5_order_payment_codegen_good__S-drop_name",
+      "level": 5,
+      "composite": 99.9,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 75.3,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 4.0,
+      "embellish_per_run": 5.0
+    },
+    {
+      "path": "examples/order_payment_codegen_good.puml",
+      "label": "L5_order_payment_codegen_good",
+      "level": 5,
+      "composite": 100.0,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 60.7,
+      "mean_guard_faith": 0.67,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 4.33
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-unbalance_activation.puml",
+      "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+      "level": 4,
+      "composite": 90.0,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 73.3,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 4.0,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__S-unterminate_block.puml",
+      "label": "L4_order_payment_codegen_good__S-unterminate_block",
+      "level": 4,
+      "composite": 92.0,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 72.0,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-unbalance_activation.puml",
+      "label": "L4_insurance_claim_good__S-unbalance_activation",
+      "level": 4,
+      "composite": 92.3,
+      "elements": 13,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 50.7,
+      "mean_guard_faith": 0.67,
+      "invented_per_run": 4.67,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-unterminate_block.puml",
+      "label": "L4_insurance_claim_good__S-unterminate_block",
+      "level": 4,
+      "composite": 93.8,
+      "elements": 13,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 61.3,
+      "mean_guard_faith": 0.78,
+      "invented_per_run": 5.0,
+      "embellish_per_run": 5.67
+    },
+    {
+      "path": "corpus/synthetic/small_clean.puml",
+      "label": "L3_small_clean",
+      "level": 3,
+      "composite": 70.0,
+      "elements": 4,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 96.0,
+      "mean_guard_faith": 0.0,
+      "invented_per_run": 0.0,
+      "embellish_per_run": 2.33
+    },
+    {
+      "path": "corpus/synthetic/large_no_title.puml",
+      "label": "L3_large_no_title",
+      "level": 3,
+      "composite": 72.5,
+      "elements": 22,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 97.0,
+      "mean_guard_faith": 0.0,
+      "invented_per_run": 0.0,
+      "embellish_per_run": 1.67
+    },
+    {
+      "path": "corpus/synthetic/large_clean.puml",
+      "label": "L3_large_clean",
+      "level": 3,
+      "composite": 72.7,
+      "elements": 22,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 97.0,
+      "mean_guard_faith": 0.0,
+      "invented_per_run": 0.0,
+      "embellish_per_run": 2.33
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L8.puml",
+      "label": "L2_order_payment_codegen_good__L8",
+      "level": 2,
+      "composite": 41.4,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 68.7,
+      "mean_guard_faith": 0.83,
+      "invented_per_run": 2.67,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "label": "L2_credit_intake_good__S-drop_title",
+      "level": 2,
+      "composite": 55.6,
+      "elements": 8,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 72.0,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 5.0
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-undeclare_participant.puml",
+      "label": "L2_insurance_claim_good__S-undeclare_participant",
+      "level": 2,
+      "composite": 82.3,
+      "elements": 13,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 56.3,
+      "mean_guard_faith": 0.78,
+      "invented_per_run": 5.33,
+      "embellish_per_run": 5.67
+    },
+    {
+      "path": "corpus/mutations/insurance_claim_good__S-vague_guard.puml",
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "level": 2,
+      "composite": 90.4,
+      "elements": 13,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 56.0,
+      "mean_guard_faith": 0.67,
+      "invented_per_run": 3.67,
+      "embellish_per_run": 5.33
+    },
+    {
+      "path": "examples/credit_intake_bad.puml",
+      "label": "L1_credit_intake_bad",
+      "level": 1,
+      "composite": 22.9,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 37.7,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 5.67,
+      "embellish_per_run": 5.33
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__L5.puml",
+      "label": "L1_credit_intake_good__L5",
+      "level": 1,
+      "composite": 26.1,
+      "elements": 8,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 54.0,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 4.67,
+      "embellish_per_run": 4.67
+    },
+    {
+      "path": "corpus/mutations/credit_intake_good__L3.puml",
+      "label": "L1_credit_intake_good__L3",
+      "level": 1,
+      "composite": 36.1,
+      "elements": 8,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 62.0,
+      "mean_guard_faith": 1.0,
+      "invented_per_run": 3.33,
+      "embellish_per_run": 4.0
+    },
+    {
+      "path": "corpus/mutations/order_payment_codegen_good__L9.puml",
+      "label": "L1_order_payment_codegen_good__L9",
+      "level": 1,
+      "composite": 39.4,
+      "elements": 10,
+      "runs_ok": 3,
+      "compile_first_try": 1.0,
+      "compile_final": 1.0,
+      "mean_fidelity": 72.7,
+      "mean_guard_faith": 0.92,
+      "invented_per_run": 3.33,
+      "embellish_per_run": 4.33
+    }
+  ],
+  "correlation_composite_fidelity": 0.203,
+  "runs": [
+    {
+      "label": "L5_order_payment_codegen_good__L2",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__L2_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 1,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Order status field with 'pending'/'completed'/'compensated' states and update_order_status calls not present in diagram",
+          "Zero-total order handling that bypasses PaymentGateway entirely and returns a synthetic 'N/A' receipt, diverging from the diagram's alt condition semantics (which only distinguishes successful charge vs charge error, not total<=0 as a separate no-op path)",
+          "Negative-amount validation in PaymentGateway.charge raising PaymentError for amount<0, a domain rule invented by the generator",
+          "Auto-incrementing transaction_count used to generate transaction IDs for receipts, a concrete mechanism never specified in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError for control flow",
+          "Dataclasses for Order and Receipt with type hints",
+          "try/except wrapping in main() with print-based error reporting",
+          "Constructor methods (__init__) for OrderDB, PaymentGateway, OrderService",
+          "save_order helper method on OrderDB not required by diagram"
+        ],
+        "fidelity_score": 62,
+        "notes": "All three participants and the core message flow (find order, order-not-found error, charge, payment error leading to compensate) are represented, generally via exceptions and return values rather than explicit message objects, which is an acceptable translation for sequence semantics. However, the second alt guard's meaning is altered: the diagram treats 'order.total > 0' vs 'charge error' as two outcomes of the same charging attempt, but the code introduces a third, undiagrammed path where total<=0 orders complete without any payment interaction, changing the guard's semantic boundary. Additional invented business rules (order status lifecycle, negative-amount validation, transaction ID generation) add domain meaning not present in the diagram. The compensate self-message is faithfully realized. Overall structurally sound but with meaningful semantic drift and unrequested business logic."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__L2",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__L2_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge raises PaymentError when amount<0 \u2014 diagram never specifies this validation rule for the 'charge error' branch",
+          "OrderService explicitly branches on order.total<=0 as a separate 'no-op' case with its own print message, subtly diverging from the diagram's binary alt (charge vs charge-error) by introducing a third semantic state",
+          "Generated transactionId format (txn_{order_id}_{amount}) as part of receipt \u2014 invented payload structure not specified by diagram"
+        ],
+        "defensive_embellishments": [
+          "print() logging calls for order/payment status",
+          "OrderDB.add_order helper method not present in diagram",
+          "custom exception classes (OrderNotFoundError, PaymentError) used to implement message semantics",
+          "__main__ script with sample data and manual test invocations",
+          "try/except wrapping instead of explicit message returns"
+        ],
+        "fidelity_score": 78,
+        "notes": "All participants, messages, and guards are represented, and both alt blocks are translated faithfully as try/except plus conditional logic, preserving the intended control flow (order lookup failure and payment failure trigger compensating actions equivalent to the diagram's error branches). However, the code adds an invented validation rule (negative amount check) inside PaymentGateway.charge that the diagram never specifies, and introduces a third implicit state (total<=0 skips charging entirely) that isn't cleanly one of the diagram's two alt outcomes. Receipt/transactionId details are also fabricated. These are business-logic inventions rather than benign scaffolding. Overall structure and message/guard coverage is complete and correct, but the domain-specific additions lower fidelity somewhat from a perfect score."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__L2",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__L2_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Transaction ID generation format (txn_{order_id}_{int(amount*100)}) invented as a concrete implementation of the generic 'receipt' message",
+          "Receipt dataclass adds status='success' and transaction_id fields not specified anywhere in the diagram",
+          "compensate(orderId) self-message is given concrete business meaning by tracking a compensated_orders set, an implementation detail invented by the generator",
+          "Hardcoded order catalog (order_001, order_002 with specific totals) invented as concrete domain data not present in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Extensive docstrings and type hints on all classes/methods",
+          "Exception message wrapping (e.g. 'Cannot process order: {e}', 'Payment failed for order {id}: {e}')",
+          "Redundant amount<=0 validation inside PaymentGateway.charge duplicating the already-checked order.total>0 guard",
+          "main() demonstration harness with print statements exercising three test cases not specified in the diagram"
+        ],
+        "fidelity_score": 78,
+        "notes": "All 3 participants and all 7 message interactions (including the self-message compensate(orderId)) are represented, and both alt guards (order found/not found; total>0/charge error) preserve their semantic meaning via try/except control flow rather than literal message passing, which is a reasonable translation for sequence-diagram-to-code. Both failure paths (not found, charge error) are implemented. However, the code invents several concrete domain details beyond the diagram's abstract labels: a specific transaction ID scheme, extra Receipt fields, a compensated_orders tracking mechanism as the concrete realization of 'compensate', and hardcoded sample order data used to drive the demo. These are plausible but ungrounded guesses at business logic. Defensive additions (docstrings, type hints, redundant validation, demo harness) are benign and don't affect core fidelity much. Overall the control flow and message/guard fidelity is strong, but domain-specific inventions pull the score down from a perfect match."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_title",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_title_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added an implicit third path for order.total <= 0 that silently returns None, a case never specified by the diagram's alt/else structure",
+          "PaymentGateway.charge() invents a rule that amount<=0 triggers PaymentError, conflating the 'order.total>0' guard semantics with the internal charge-error guard",
+          "Re-raising PaymentError after compensate() adds a control-flow decision (propagate exception to caller) not specified in the diagram"
+        ],
+        "defensive_embellishments": [
+          "OrderDB seeded with hardcoded sample orders (ORDER001, ORDER002) for demonstration",
+          "Type hints and dataclasses for Order/Receipt",
+          "print() logging statements for lookup failure, payment failure, and compensation",
+          "compensation_log list to record compensation actions",
+          "Docstrings on all methods/classes",
+          "main() function with test-case demonstrations"
+        ],
+        "fidelity_score": 78,
+        "notes": "All 3 participants and all 7 messages/interactions are realized, and the two top-level alt/else guards are structurally present (order found/not found; charge success/error) with compensate() correctly triggered as a self-message on payment failure. However, the code introduces an unspecified third branch (order.total<=0 silently returns None) that the diagram's guard structure does not clearly define, and moves the 'order.total>0' condition to double as both the outer business guard and an internal validation check inside PaymentGateway.charge, slightly conflating two different guard concepts from the diagram. The re-raise of PaymentError after compensation is a reasonable but unspecified design choice. Overall the interaction skeleton is faithful; deductions are for the invented total<=0 path and the charge amount validation which assign concrete unspecified semantics to guard boundaries."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_title",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_title_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added an unspecified third branch for order.total <= 0 that skips payment entirely and marks the order as 'completed' \u2014 the diagram's alt only distinguishes 'total > 0' vs 'charge error', not a zero/negative-total path",
+          "Introduced concrete order status values ('pending','paid','payment_failed','completed') and persistent status transitions in OrderDB, none of which appear in the diagram",
+          "Added a _compensated_orders set to prevent double-compensation \u2014 an invented idempotency rule not present in the sequence diagram",
+          "Invented transaction ID generation scheme (TXN-{counter}) for the receipt, assigning concrete meaning to the otherwise abstract 'receipt' message"
+        ],
+        "defensive_embellishments": [
+          "Dataclasses for Order and Receipt with type hints",
+          "Docstrings on every class and method",
+          "Custom exception classes with descriptive messages",
+          "Constructor-based dependency injection for OrderService",
+          "print-based demo harness in main() with four test cases",
+          "try/except reraise pattern preserving original exception semantics"
+        ],
+        "fidelity_score": 66,
+        "notes": "All participants and all 7 messages are structurally represented, and both major alt/failure paths (order not found, charge error->compensate) are faithfully implemented via exceptions. However, the code invents a third business path (zero-total orders bypassing payment) that the diagram never specifies, and it bolts on persistent order-status semantics and idempotency tracking that have no basis in the diagram. These are domain-meaningful additions (not mere defensive code), which is why fidelity is docked despite complete message/participant coverage. The self-message compensate(orderId) is preserved correctly as an async self-call analog."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_title",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_title_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 4,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added a special-case business rule for orders with total == 0: skips the charge call entirely and returns a 'success' result with a custom message ('Order total is 0, no charge required'), a behavior never specified in the diagram (the diagram's else-branch for the payment alt was meant to represent a charge failure, not a zero-total shortcut).",
+          "Invented concrete receipt/transaction_id format (f'txn_{order_id}_{int(amount*100)}') and receipt dict shape, assigning specific domain meaning to the vague 'receipt' label from the diagram.",
+          "Seeded OrderDB with two hardcoded demo orders (order_123, order_456) and a PaymentGateway failure-toggle parameter (fail_for_order_id) \u2014 these are invented state/configuration not present in the diagram."
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError with docstrings",
+          "Type hints on all methods",
+          "Compensated_orders set for bookkeeping of compensation calls",
+          "Docstrings explaining each class/method responsibility",
+          "__main__ block with multiple print-based manual test scenarios"
+        ],
+        "fidelity_score": 72,
+        "notes": "All participants and message intents are represented, and the two top-level alt/guard structures (order lookup, payment charge/error) are functionally preserved via try/except control flow, including the compensate() self-call on payment failure. However, the code adds an unrequested third behavioral branch (zero-total orders skip charging and succeed silently) that is not implied by the diagram's alt structure \u2014 the diagram's second branch of the payment alt is explicitly 'charge error', not 'order.total <= 0', so this is an invented business rule rather than a faithful realization of the sequence. Additional invented specifics (receipt/transaction ID format, seeded demo data) add unspecified domain semantics. These are the main fidelity deductions; the rest of the control flow, error handling, and compensation logic map cleanly to the diagram."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_name",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_name_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Hardcoded sample order data (ORD001, ORD002, ORD003) with specific totals not specified in diagram",
+          "Receipt dataclass with transaction_id generation formula and status field \u2014 diagram only specifies an opaque 'receipt' message",
+          "PaymentGateway simulated failure via failure_order_id constructor parameter \u2014 invents a mechanism for triggering the charge-error branch not described in diagram",
+          "compensated_orders set as a persistent tracking mechanism for compensation \u2014 diagram only specifies a self-call compensate(orderId), not a stored ledger of compensations",
+          "Zero-total order returns None as a distinct 'no charge needed' business outcome \u2014 diagram's alt only shows charge vs charge-error, not a third skip-charge path with special return semantics"
+        ],
+        "defensive_embellishments": [
+          "Extensive docstrings on all classes and methods",
+          "Type hints throughout (Optional, dataclass fields)",
+          "OrderNotFoundError and PaymentError custom exception classes used to carry error semantics instead of return values",
+          "try/except wrapping in process_payment and in main()",
+          "main() demonstration harness with print statements/logging for four scenarios",
+          "Default constructor values and dataclass boilerplate"
+        ],
+        "fidelity_score": 74,
+        "notes": "All 3 participants and all 7 diagram messages have corresponding realizations, and both alt guards (order found/not found, total>0/charge error) are semantically preserved via try/except and if/else. However, the diagram's explicit return-message style (OrderDB --> OrderService : notFoundError, PaymentGateway --> OrderService : paymentError) is reinterpreted as raised exceptions rather than returned messages \u2014 an architectural liberty that is reasonable in Python idiom but not strictly 'faithful' to the arrow semantics. More concerning are several invented domain details not present in the diagram: canned order data, a fabricated transaction_id scheme, a receipt 'status' field, a compensated_orders tracking set, and a special-cased zero-total 'no-op' return value \u2014 none of which the diagram specifies. These are plausible but ungrounded business-logic guesses. The bulk of the extra code (docstrings, type hints, demo main()) is benign defensive scaffolding that doesn't alter domain semantics ."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_name",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_name_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added an implicit 'order.total <= 0' success path returning {'status':'success','message':'No payment required'} \u2014 not specified anywhere in the diagram, which only defines a charge-error else branch",
+          "PaymentGateway.charge raises PaymentError based on an invented threshold (amount < 0) rather than any diagram-specified failure condition",
+          "Hardcoded sample order data (ORDER001, ORDER002) and ad-hoc ORDER003 injection in main() implies business assumptions about test/order provisioning not in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclass for Order and custom exception classes (OrderNotFoundError, PaymentError) for control flow instead of explicit return messages",
+          "Type hints throughout",
+          "compensated_orders set to track compensation calls (extra state not required by diagram)",
+          "print-based demonstration harness in main() with multiple test scenarios"
+        ],
+        "fidelity_score": 76,
+        "notes": "All three participants are represented and every diagram message has a corresponding code interaction, though messages are realized via Python exceptions/return values rather than explicit message passing \u2014 an acceptable translation. Both alt guards are structurally preserved (order found/not found via try/except; total>0 leading to charge attempt with success/error handling matching the diagram's charge-error else branch). The compensate() self-message is faithfully implemented as a private method call. However, the code invents an unspecified 'zero/negative total' success path and an arbitrary charge-error threshold (amount<0), both of which assign concrete business semantics the diagram never specified. Remaining additions (type hints, dataclasses, demo harness) are benign engineering embellishments that don't alter domain semantics."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good__S-drop_name",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good__S-drop_name_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Order.total <= 0 is treated as an automatic PaymentError, a business rule the diagram never specified (diagram only shows total>0 vs an unrelated 'charge error' branch)",
+          "Transaction ID generation scheme (f'TXN-{order_id}-{hash(order_id)%10000}') invents a concrete receipt format not present in the diagram",
+          "PaymentGateway.failure_mode flag invents a business toggle for forcing payment failure that has no diagram counterpart",
+          "Duplicate/overlapping guard inside charge() (amount<=0 check) reinterprets the total>0 alt semantics rather than passing through the diagram's single guard"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError/PaymentError with docstrings",
+          "Type hints and detailed docstrings on all methods",
+          "OrderDB.saveOrder helper method not present in diagram, used only for test setup",
+          "compensated_orders set for tracking compensation state (extra bookkeeping)",
+          "__main__ example/test harness exercising success, not-found, and failure+compensation paths"
+        ],
+        "fidelity_score": 76,
+        "notes": "All 3 participants and all 7 messages/interactions from the diagram are represented, mapped naturally to Python calls, return values, and exceptions. Both alt blocks are structurally preserved (order found/not found; total>0/charge error) and both failure paths (OrderNotFoundError, PaymentError+compensate) are implemented. However, the code adds unspecified business semantics: it silently redefines the meaning of the 'charge error' branch to also cover order.total<=0, invents a transaction ID scheme, and introduces a failure_mode toggle for the gateway \u2014 none of which are grounded in the diagram. These are moderate-severity inventions since they assign concrete business meaning to intentionally abstract diagram elements. Embellishments (docstrings, saveOrder, test harness) are benign and don't affect fidelity much."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 6,
+        "guards_expected": 2,
+        "guards_faithful": 1,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Added a new business branch for order.total <= 0 that returns a 'no charge required' string \u2014 not present anywhere in the diagram, which only distinguishes 'order.total > 0' vs 'charge error' outcomes",
+          "Tied the PaymentError/charge-error trigger to 'amount <= 0', which is logically unreachable given the outer order.total>0 guard, effectively neutering the diagram's charge-error/compensate path",
+          "Invented transaction_id format (TXN_{order_id}_{int(amount)}) as concrete receipt content never specified by diagram",
+          "Added persistent compensated_orders state tracking not implied by the sequence diagram's compensate(orderId) call"
+        ],
+        "defensive_embellishments": [
+          "Dataclasses for Order and Receipt",
+          "print() logging statements in compensate() and main()",
+          "try/except wrapping in main() for demonstration",
+          "Seed data dictionary in OrderDB.__init__ for two sample orders used only for local testing"
+        ],
+        "fidelity_score": 42,
+        "notes": "All three participants are represented as classes, and most literal message shapes (find order, return order, charge, return receipt, self-call compensate) are present. However, the second alt block's guard semantics are altered: the diagram treats 'order.total > 0' and 'charge error' as two outcomes of an attempted charge, but the code introduces an entirely new order.total<=0 branch returning a made-up 'no charge required' message, and ties the charge-error condition to amount<=0 \u2014 a condition that can never be true given the outer guard, making the compensate/charge-error failure path effectively dead code and never exercised in the provided test harness. The order-not-found path is preserved in spirit (via exception) though implemented as a raised exception rather than a returned message, which is an acceptable transliteration. Overall the code captures the shape of the diagram but silently reinterprets and partially disables one of its two failure paths, which is a meaningful behavioral deviation, not just cosmetic embellishment."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge() invents a validation rule (raises PaymentError if amount<=0) not present in the diagram",
+          "OrderService adds a new branch for order.total<=0 that returns an 'Invalid order total' message, diverging from the diagram's alt structure where the else branch represents a charge failure, not a total<=0 case",
+          "Transaction ID generation scheme (f'TXN_{order_id}_{int(amount)}') invented with no diagrammatic basis",
+          "compensated_orders set added as new persistent state not implied by the diagram's simple compensate() self-call"
+        ],
+        "defensive_embellishments": [
+          "Dataclasses for Order and Receipt",
+          "Custom exception classes for OrderNotFoundError and PaymentError",
+          "Print-based logging in compensate()",
+          "Type hints and Optional/Union annotations",
+          "Hardcoded sample data in OrderDB constructor for testing"
+        ],
+        "fidelity_score": 68,
+        "notes": "All participants and message interactions are structurally represented, and both alt blocks are recognizable via try/except and if/else control flow. However, the code subtly alters the second alt's guard semantics by introducing a new mutually exclusive branch (order.total<=0) that the diagram never specifies \u2014 the diagram's alt was strictly 'success charge' vs 'charge error', not 'positive total' vs 'non-positive total'. This is an invented business rule that changes the meaning of the guard. Additional invented specifics (amount<=0 validation inside charge, transaction ID format, compensated_orders tracking) add domain assumptions beyond the diagram. Defensive additions (dataclasses, exceptions, type hints, logging) are benign and don't affect fidelity much."
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L5_order_payment_codegen_good_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge raises PaymentError only when amount<=0, giving a concrete (and effectively unreachable given the prior order.total>0 guard) meaning to the diagram's vague 'charge error' branch",
+          "Hardcoded OrderDB seed data (ORDER001, ORDER002) inventing specific order records and totals not present in the diagram",
+          "Order-not-found path converted into a generic {'status':'error'} dict rather than propagating a distinct notFoundError signal, subtly reshaping the contract"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses and custom exception classes (OrderNotFoundError, PaymentError) for structure",
+          "Type hints throughout methods",
+          "print-based compensate logging instead of a domain no-op",
+          "main() demo harness exercising three test cases, unrelated to the sequence diagram itself"
+        ],
+        "fidelity_score": 72,
+        "notes": "All three participants and all seven message interactions are structurally present and functionally wired correctly (find order, return/error, charge, receipt/error, compensate). The order-found/not-found guard and order.total>0 guard are faithfully preserved. However, the 'charge error' guard's triggering condition is invented (amount<=0) and is logically unreachable given the preceding total>0 check, making that failure path present in code but dead in practice \u2014 a semantic drift from the diagram's intent of charge failure being a live possibility. The self-message compensate is realized as a plain synchronous method call rather than reflecting any async nature, though this is a minor deviation. Overall a solid, mostly faithful translation with one meaningful invented-logic issue and typical harmless demo scaffolding."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unbalance_activation_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge enforces an undocumented maximum limit of 10000, rejecting amounts above it \u2014 a business rule not present in the diagram",
+          "Order.status state machine ('pending' -> 'paid' -> 'compensated') is invented; diagram never specifies order status semantics",
+          "compensate() re-fetches the order from OrderDB and mutates its status \u2014 the diagram only shows a self-message with no specified internal behavior, so this concrete implementation is a guess",
+          "PaymentError is re-raised after compensate(), silently deciding the post-compensation control flow/return contract that the diagram leaves unspecified",
+          "transaction_id format 'txn-{order_id}-{int(amount*100)}' is an invented concrete payload shape for the 'receipt' message"
+        ],
+        "defensive_embellishments": [
+          "amount <= 0 validation in charge()",
+          "dataclasses and type hints for Order/Receipt",
+          "try/except OrderNotFoundError swallow inside compensate()",
+          "print-based logging/demo harness in main()"
+        ],
+        "fidelity_score": 74,
+        "notes": "Structurally the code covers all 3 participants, all 7 messages, both alt guards, and both failure paths (order-not-found and charge error) with correct control flow (find->charge->receipt, or error->compensate). However, several details are invented rather than derived from the diagram: a hardcoded max charge limit, an order status state machine, and concrete internal behavior for compensate() (DB lookup + status mutation) where the diagram only specifies an opaque self-message. These invented pieces add believable-looking domain logic that wasn't authorized by the spec, which is the main fidelity deduction; the defensive embellishments (validation, dataclasses, logging) are benign and cost little."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unbalance_activation_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Invented amount>10000 threshold that raises PaymentError, not specified anywhere in the diagram",
+          "Invented explicit business rule that order.total<=0 returns a distinct error message, adding a third branch not present in the 'order.total>0 / charge error' alt",
+          "Invented transaction_id generation scheme (f'txn_{order_id}_{int(amount)}') with no diagram basis"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses for Order/Receipt",
+          "print() logging in compensate() and main()",
+          "Type hints throughout",
+          "Seed data and demonstration harness in main()",
+          "try/except wrapping for exception-based error propagation instead of return-value messaging"
+        ],
+        "fidelity_score": 74,
+        "notes": "All 3 participants and all 7 message interactions are represented, and both alt blocks map to try/except control flow that preserves the two core failure paths (order not found, charge error->compensate). However, the code invents extra domain logic beyond the diagram: a hardcoded $10,000 charge limit, a separate zero/negative total branch not specified in the 'order.total > 0' alt, and a fabricated transaction ID scheme. These are business-logic guesses rather than harmless scaffolding. The self-message compensate() is faithfully implemented as an async-style call after failure. Overall structure is sound but the added business rules reduce fidelity."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unbalance_activation_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge() raises PaymentError when amount <= 0 \u2014 a validation rule never specified in the diagram",
+          "OrderService.process_order_payment() raises PaymentError directly (bypassing the charge/compensate flow) when order.total <= 0, inventing a third path not present in the diagram's two-guard structure",
+          "_compensated_orders set and get_compensated_orders() \u2014 invented persistent state/tracking mechanism for compensation not implied by the diagram's simple compensate(orderId) self-message",
+          "Receipt.transaction_id format 'TXN-{order_id}-001' \u2014 invented concrete receipt content where diagram only specified an opaque 'receipt' return"
+        ],
+        "defensive_embellishments": [
+          "print() logging statements for errors and compensation",
+          "dataclasses for Order/Receipt with type hints",
+          "OrderDB.store_order() helper method for test setup",
+          "Docstrings and Args/Returns/Raises documentation",
+          "main() demonstration harness with three scenarios"
+        ],
+        "fidelity_score": 72,
+        "notes": "All 3 participants and all 7 diagram interactions are structurally realized (via method calls/exceptions/returns rather than literal arrows), and both alt guards are faithfully preserved with both failure paths (not-found, charge error+compensate) implemented. However, the code invents additional business logic beyond the diagram's scope: a charge-amount validation rule inside PaymentGateway, a separate raise for order.total<=0 that diverts from the diagram's two-branch alt structure, and stateful compensation tracking. These are plausible-looking but ungrounded additions that alter the domain semantics slightly, which along with embellishments (logging, dataclasses, demo harness) justify a moderate deduction from a perfect score."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unterminate_block",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unterminate_block_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 6,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added an entirely new 'no payment required' success path for orders with total<=0, which the diagram never specifies (diagram only covers total>0 vs charge error)",
+          "PaymentGateway.charge invents its own validation rule (amount<=0 raises PaymentError) that is never in the diagram and is actually unreachable given the caller's guard",
+          "Invented concrete receipt schema (transactionId format 'txn_{orderId}_{amount}', status field) not specified by diagram's abstract 'receipt' message",
+          "Invented compensation record structure with 'action': 'order_rollback' field, assigning concrete meaning to the abstract compensate(orderId) call"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes for OrderNotFoundError and PaymentError (reasonable but diagram just shows return messages)",
+          "add_order helper method on OrderDB not part of diagram",
+          "print/logging statements and full main() test harness exercising three scenarios",
+          "try/except wrapping and re-raising with augmented error messages",
+          "compensations dict for tracking state, an implementation detail not specified"
+        ],
+        "fidelity_score": 62,
+        "notes": "Core structure is present: all three participants exist, findOrderById/charge/compensate calls occur in the right direction, and both alt guards (order found/not found, total>0 vs charge error) are semantically preserved via try/except rather than explicit return arrows. The self-message compensate(orderId) is correctly triggered only on charge failure. However, the code invents an undiagrammed branch (total<=0 => 'no payment required' success), which introduces new business semantics absent from the sequence diagram, and adds an unreachable, invented validation rule inside PaymentGateway.charge. Messages are realized through exceptions/return values rather than explicit message passing, which is an acceptable code-level translation but obscures the notFoundError/paymentError arrows as distinct interactions. Overall a reasonably faithful but not fully faithful translation, moderately marked down for the invented business path and embellished receipt/compensation payload shapes."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unterminate_block",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unterminate_block_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Concrete receipt payload shape (amount, status, transactionId) invented for the vague 'receipt' label",
+          "Specific transactionId format string (f'txn_{orderId}_{amount}') invented",
+          "Implicit branch for order.total <= 0 returning a success response with 'No charge needed' \u2014 the diagram's second alt only specifies 'order.total > 0' vs 'charge error', not a total<=0 success path"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError/PaymentError used to model return/error messages",
+          "add_order() convenience method on OrderDB not in diagram",
+          "main() demo script with print statements and try/except wrapping",
+          "compensated_orders set for bookkeeping beyond the diagram's simple compensate() call"
+        ],
+        "fidelity_score": 78,
+        "notes": "All three participants and all seven diagram messages are represented, with errors modeled faithfully as exceptions (findOrderById/charge raising, caught and reported) matching the diagram's --> error arrows, and compensate(orderId) correctly invoked as a self-message on payment failure before re-raising. Both alt guards (order found/not found, total>0/charge error) are structurally preserved via try/except and if/else. However, the code invents a concrete receipt schema and transaction ID format not specified in the diagram, and adds an unspecified success path for order.total<=0 (diagram never defines this branch), which is domain-guessing beyond the sequence diagram's scope. Remaining additions (custom exceptions, demo main(), bookkeeping set) are harmless scaffolding."
+      }
+    },
+    {
+      "label": "L4_order_payment_codegen_good__S-unterminate_block",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_order_payment_codegen_good__S-unterminate_block_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added a 'no_charge' return path when order.total <= 0, a scenario the diagram never defines (only the 'order.total > 0' branch is specified)",
+          "Ties the 'charge error' failure to a concrete business rule (amount <= 0 triggers PaymentError), inventing the cause of the payment failure that the diagram leaves unspecified",
+          "Hardcoded order data (ORD001/ORD002 with specific totals) as a stand-in database, inventing concrete domain data not implied by the diagram",
+          "Generates a specific transactionId format for the receipt, inventing payment-gateway response shape not specified in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes (OrderNotFoundError, PaymentError) for control flow",
+          "print() logging statements throughout for tracing execution",
+          "try/except wrapping around DB and payment calls for exception propagation",
+          "__main__ test harness exercising multiple scenarios",
+          "Simple constructors for OrderDB/PaymentGateway/OrderService"
+        ],
+        "fidelity_score": 76,
+        "notes": "All three participants and all seven diagram messages are realized, and both guard conditions (order found / order.total > 0) are structurally preserved via try/except and if-checks, with both failure paths (not-found, charge error) implemented and triggering the compensate() self-message. However, the code fills in ambiguous/underspecified diagram semantics with concrete business guesses: it invents a 'no_charge' outcome for the order.total<=0 case (which the diagram never shows a branch for) and invents a specific validation rule (amount<=0) as the cause of the 'charge error' path, which the diagram leaves abstract. These are plausible but unverified business-logic assumptions rather than faithful transcriptions. Remaining additions (logging, exceptions-as-control-flow, hardcoded sample data, test harness) are benign defensive/demo scaffolding that don't misrepresent the diagram's intent."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unbalance_activation",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unbalance_activation_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 7,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Policy 'active' guard implemented as mere key-presence check in a dict, ignoring the policy's actual 'status' field that was stored but never inspected \u2014 invents the meaning of 'active'",
+          "Risk score formula invented (risk_score = min(100, amount/1000)) with no basis in the diagram",
+          "RiskServiceError trigger invented as 'amount < 0' \u2014 diagram never specifies what causes a risk service failure",
+          "StorageError re-purposed to mean 'duplicate claim_id already stored' instead of being tied to the diagram's coverageLimit-exceeded else-branch, breaking the guard's intended semantics",
+          "A new 'rejected' status/outcome for exceeding coverageLimit is invented, diverging from the diagram's storageError message for that branch entirely \u2014 storeClaim is never even invoked on this path"
+        ],
+        "defensive_embellishments": [
+          "__init__ constructors for PolicyRegistry, ClaimDB, ClaimService",
+          "add_policy helper method not in diagram",
+          "try/except wrapping for control flow (defensive plumbing)",
+          "__main__ test harness with print statements and multiple manual scenarios"
+        ],
+        "fidelity_score": 52,
+        "notes": "All four participants and the overall three-branch alt/else skeleton are present, and exceptions map cleanly to the diagram's named error messages (PolicyLapsedError, RiskServiceError, StorageError), which is a good structural match. However, the third guard's semantics are broken: the diagram ties storageError to the coverageLimit-exceeded else-branch, but the code instead invents a brand-new 'rejected' outcome for exceeding the limit and repurposes storageError for an unrelated duplicate-claim-id check that ClaimDB never signals in the diagram. The first guard also silently substitutes 'policy_id exists in dict' for 'policy is active', ignoring the status field it itself defines. Risk scoring and its error trigger are pure invention. These are business-logic guesses rather than harmless scaffolding, which meaningfully lowers fidelity despite decent surface-level structure and message realization."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unbalance_activation",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unbalance_activation_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Risk score formula invented as min(amount/10000, 100.0) \u2014 diagram never specifies how riskScore is computed",
+          "RiskServiceError triggering condition invented as amount<0 \u2014 diagram leaves the cause of 'risk service error' unspecified",
+          "Claim-to-policy correlation invented via claim_id.split('-')[0] to derive policyId \u2014 no such parsing/business rule exists in diagram",
+          "Coverage-limit breach raises a new ValueError entirely decoupled from ClaimDB, contradicting the diagram's guard where amount<=coverageLimit determines success/failure of the storeClaim interaction itself (ClaimDB participates in producing storageError)",
+          "StorageError re-purposed to mean 'duplicate claim_id already exists' \u2014 an invented condition unrelated to the diagram's amount-vs-coverageLimit guard that was supposed to gate the storage step"
+        ],
+        "defensive_embellishments": [
+          "Type hints on all method signatures",
+          "Simple constructors for Policy, Claim, ClaimRecord value objects",
+          "Try/except blocks that catch and re-raise with augmented error messages",
+          "Demonstration/logging code in __main__ with print statements and multiple test scenarios",
+          "Dictionary-based in-memory storage for PolicyRegistry and ClaimDB with existence checks"
+        ],
+        "fidelity_score": 48,
+        "notes": "All 4 participants and all 9 diagram arrows have a corresponding interaction, and exception classes exist for all 3 named error types, so structurally the code looks complete. However, the third alt guard (claim.amount <= policy.coverageLimit) is not faithfully realized: in the diagram this condition determines whether the ClaimDB store succeeds or emits storageError, meaning ClaimDB is invoked either way and the amount check gates its outcome. In the code, the amount check is moved out of the storage flow entirely, raises an unrelated ValueError before ClaimDB is ever called, and StorageError is instead invented to represent a duplicate-claim-ID condition that has no basis in the diagram. This is a genuine guard-semantics violation, not just an embellishment. Additional invented business rules (risk score formula, risk-service failure trigger, claim-id-to-policy-id parsing) add domain assumptions the diagram never made. These push the score down despite good structural coverage of participants and message counts."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unbalance_activation",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unbalance_activation_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Added a wholly new exception (ClaimAmountExceedsLimitError) that changes the meaning of the third alt block; the diagram's guard 'claim.amount <= policy.coverageLimit' with else 'storage error' becomes a separate business-rule rejection path not present in the diagram",
+          "Invented concrete risk-score formula (amount/10000 capped at 100, then *0.75) as FraudChecker logic \u2014 diagram only specifies an opaque riskScore return",
+          "Hardcoded PolicyRegistry seed data (POL001 active/100000 limit, POL002 lapsed/50000 limit) and treating unknown policy IDs as PolicyLapsedError, inventing registry semantics not in the diagram",
+          "Introduced ClaimStatus enum and always setting stored claims to PENDING, a state transition not specified anywhere in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses and Enums for Policy/Claim/ClaimRecord/PolicyStatus/RiskLevel/ClaimStatus",
+          "fail_risk_check/fail_storage boolean flags added to constructors purely to simulate error branches for demonstration",
+          "Re-wrapping caught exceptions with additional descriptive messages before re-raising",
+          "Module-level __main__ demonstration/test harness exercising each path",
+          "Type hints throughout methods"
+        ],
+        "fidelity_score": 52,
+        "notes": "All four participants and the general call/return shape of each interaction are present, and the first two alt/else guards (policy active/lapsed, risk assessed/error) are faithfully realized as try/except around calls to PolicyRegistry and FraudChecker. However the third guard is not faithfully preserved: the diagram ties the coverageLimit condition directly to the storeClaim/storageError branch, but the code inserts an entirely new, diagram-absent exception (ClaimAmountExceedsLimitError) for the amount-exceeds-limit case and treats storage failure as an unrelated, separately-triggered flag-based error, diverging from the diagram's guard semantics. The code also invents concrete business logic \u2014 a risk-score formula, hardcoded policy data, and a ClaimStatus/PENDING state \u2014 that the diagram leaves abstract or unspecified. Message-level plumbing (calls and return values) otherwise maps cleanly to the diagram's arrows, and the extra code (dataclasses, demo harness, exception message wrapping) is benign engineering rather than harmful invention, but the altered guard semantics and added business exception meaningfully reduce fidelity."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unterminate_block",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unterminate_block_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "FraudChecker.assess_risk uses invented numeric thresholds (>100000\u21920.9, >50000\u21920.7, >10000\u21920.5, else 0.2) to compute risk score, a concrete business rule never specified in the diagram",
+          "get_risk_level() introduces an entirely new domain concept (LOW/MEDIUM/HIGH risk levels with 0.8/0.5 cutoffs) with no basis in the diagram",
+          "Coverage-limit check is implemented as a hard rejection via ValueError raised inside ClaimService rather than as the diagram's ClaimDB-originated 'storage error', changing which component/reason drives the failure",
+          "StorageError is triggered by a 'claim already exists' duplicate-ID check, a specific storage failure cause invented by the generator",
+          "PolicyRegistry raises PolicyLapsedError not only for a lapsed status but also when the policy_id is entirely unregistered, conflating a 'not found' scenario with 'lapsed' that the diagram does not describe",
+          "FraudChecker raises RiskServiceError for negative claim amounts \u2014 an invented validation rule with no diagram basis"
+        ],
+        "defensive_embellishments": [
+          "Use of Python dataclasses (Policy, Claim, ClaimRecord) for structured data",
+          "Enum classes for PolicyStatus and RiskLevel",
+          "Type hints throughout methods",
+          "Wrapping and re-raising exceptions with additional descriptive context strings",
+          "main() demo harness with print statements and sample data to exercise the flows",
+          "get_claim() lookup helper on ClaimDB not required by the diagram"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 4 participants and all 9 diagrammed arrows are structurally represented (calls, returns, and exceptions map onto the sequence's messages), and the three top-level alt/exception outcomes (lapsed policy, risk service error, storage error) all exist in some form. However, the third alt block's guard semantics are altered: the diagram's 'claim.amount <= coverageLimit / else storage error' branch is reinterpreted as a distinct ValueError-based coverage rejection separate from the storage failure path, which is not what the diagram specifies (the else branch was framed as an infrastructure-level storage error, not a business rejection). The code also invents substantial new domain logic absent from the diagram: numeric risk-scoring thresholds, a risk-level classification scheme, a duplicate-ID storage failure trigger, negative-amount validation, and conflating 'policy not found' with 'lapsed'. These are significant unstated business rules layered onto a diagram that only sketched three success/failure branches with opaque conditions. Structural completeness is high, but domain-fidelity is medium due to the invented specifics."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unterminate_block",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unterminate_block_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "FraudChecker.assess_risk uses a fabricated scoring formula (amount/10000 capped at 1.0, +0.3 if amount>50000) never specified in the diagram",
+          "ClaimService.process_claim raises a new ValueError when claim.amount exceeds policy.coverage_limit, splitting what the diagram modeled as a single alt (amount<=limit vs storageError) into two unrelated failure semantics \u2014 inventing a new business rule/error type not present in the sequence",
+          "PolicyRegistry hardcodes two specific policies (POL001 active, POL002 lapsed) with concrete coverage limits, inventing concrete data/state not specified by the diagram",
+          "find_policy also raises PolicyLapsedError for unknown policy IDs, conflating 'not found' with 'lapsed' which the diagram never specified"
+        ],
+        "defensive_embellishments": [
+          "Use of Enum classes for PolicyStatus and RiskLevel",
+          "Dataclasses for Policy, Claim, ClaimRecord with extra fields (description, status) not in diagram",
+          "Custom exception classes with re-wrapped error messages via try/except re-raise",
+          "main() demonstration harness with print statements and multiple test scenarios",
+          "Constructor flags (fail_risk_check, fail_storage) to simulate failure paths for testing"
+        ],
+        "fidelity_score": 62,
+        "notes": "All 4 participants and all 9 messages are structurally represented via method calls/returns/exceptions, and all 3 top-level failure paths (policy lapsed, risk service error, storage error) exist in some form. However, guard 3 (claim.amount <= coverageLimit vs storageError) is reinterpreted: the code treats over-limit as a distinct ValueError business rule separate from storage failure, which is not what the diagram specifies (it ties the amount check directly to the storeClaim/storageError alt). The risk-scoring formula and hardcoded policy dataset are invented domain logic with no basis in the diagram, which is the most consequential deviation. Structural completeness is strong, but the invented business rules around risk scoring and coverage-limit rejection significantly reduce fidelity to the diagram's specified guard semantics."
+      }
+    },
+    {
+      "label": "L4_insurance_claim_good__S-unterminate_block",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L4_insurance_claim_good__S-unterminate_block_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 3,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Risk scoring thresholds (0.9 for >100k, 0.6 for >50k, 0.3 for >10k, 0.1 otherwise) invented; diagram never specifies how riskScore is computed",
+          "Negative claim amount triggers RiskServiceError \u2014 a validation rule not present in the diagram",
+          "Storage failure is redefined as 'claim ID already exists' (duplicate detection) rather than a generic storage error, inventing a concrete cause the diagram left abstract",
+          "Missing policy ID is treated identically to a lapsed policy (raises PolicyLapsedError for 'not found or lapsed'), conflating two distinct domain states not distinguished in the diagram",
+          "Coverage-limit violation raises a generic ClaimServiceException, effectively inventing a new failure path not present as a labeled message in the diagram (diagram only shows storageError as the else-branch for that alt)"
+        ],
+        "defensive_embellishments": [
+          "Dataclasses for Policy, Claim, ClaimRecord",
+          "Enum types for PolicyStatus and RiskLevel (RiskLevel unused)",
+          "Exception class hierarchy (ClaimServiceException base class)",
+          "Type hints throughout",
+          "__main__ demonstration block with sample policies and claims not specified in diagram",
+          "Wrapping and re-raising exceptions with augmented messages (e.g., f-string context)"
+        ],
+        "fidelity_score": 64,
+        "notes": "All 4 participants and all 9 messages/return-arrows are structurally represented, and all 3 guards/failure paths exist as try/except branches, giving good structural coverage. However the code invents concrete domain semantics the diagram left abstract: specific risk-score thresholds, a negative-amount validation rule, redefinition of storage failure as duplicate-ID detection, and conflation of 'policy not found' with 'policy lapsed'. The coverage-limit check also raises a generic exception rather than clearly mapping to the diagram's storageError else-branch, slightly blurring the third alt's semantics. These are typical 'reasonable-sounding' inventions a generator makes to fill in unspecified logic, which is exactly the kind of harmful embellishment to flag despite good structural fidelity."
+      }
+    },
+    {
+      "label": "L3_small_clean",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_small_clean_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 2,
+        "participants_implemented": 2,
+        "messages_expected": 2,
+        "messages_implemented": 2,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "print/logging statements for tracing calls",
+          "constructor for dependency injection of Bob into Alice"
+        ],
+        "fidelity_score": 97,
+        "notes": "Simple diagram faithfully implemented: Alice.greet() calls Bob.greet(), which returns 'ack' representing the return message. No guards or failure paths specified or needed. Only additions are benign logging/print statements and a constructor for wiring dependencies, neither of which introduce invented domain logic."
+      }
+    },
+    {
+      "label": "L3_small_clean",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_small_clean_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 2,
+        "participants_implemented": 2,
+        "messages_expected": 2,
+        "messages_implemented": 2,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "print/logging statements for tracing calls",
+          "storing last_ack state on Alice",
+          "docstrings and main() entry point wrapper"
+        ],
+        "fidelity_score": 96,
+        "notes": "The code faithfully implements both messages: Alice->Bob greet() and Bob-->Alice ack return, matching the diagram exactly. No guards or failure paths exist in the diagram, and none were fabricated. Only benign embellishments (logging, docstrings, state storage) were added, with no invented business logic. Minor deduction for the added instance state (last_ack) which is unspecified but harmless."
+      }
+    },
+    {
+      "label": "L3_small_clean",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_small_clean_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 2,
+        "participants_implemented": 2,
+        "messages_expected": 2,
+        "messages_implemented": 2,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "print statements logging message flow",
+          "constructor for dependency injection of bob into Alice"
+        ],
+        "fidelity_score": 95,
+        "notes": "Simple diagram with two messages faithfully implemented: Alice.greet() calls Bob.greet() which returns 'ack', matching the synchronous call and return message. No guards or failure paths specified or needed. Only additions are print-based logging and a constructor, both benign engineering with no invented domain logic."
+      }
+    },
+    {
+      "label": "L3_large_no_title",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_no_title_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "Result strings are wrapped in f-string composition (e.g., result1(result2)) rather than plain pass-through, a stylistic implementation detail not specified in diagram"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements all 8 participants and the full chain of 7 forward calls and 7 return values, matching the diagram's linear step1-step7 pattern exactly. No guards or failure paths were specified, and none were added. The only minor deviation is that return values are concatenated into nested strings rather than simple pass-through, which is a benign stylistic choice with no domain semantics invented."
+      }
+    },
+    {
+      "label": "L3_large_no_title",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_no_title_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "result string formatting wrapping (f-string concatenation) not specified in diagram",
+          "main block instantiation and wiring order"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements all 8 participants and the full call/return chain across all 7 steps, matching the diagram's synchronous call and return message pattern exactly. No guards or failure paths were specified, and none were added. The only minor embellishment is the string formatting of return values (e.g., 'result1(result2)') which adds a cosmetic detail not specified but carries no domain logic risk. This is a near-perfect linear translation of the diagram."
+      }
+    },
+    {
+      "label": "L3_large_no_title",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_no_title_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "Constructors used purely for dependency wiring, no logic added",
+          "Simple f-string result composition to simulate return values, not specified in diagram but harmless"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements the linear call chain Svc1->Svc2->...->Svc8 and the corresponding return path, matching all 8 participants and 14 messages (7 calls + 7 returns) in the diagram. No guards or failure paths exist in the diagram, and none are added in the code. The only minor deviation is the synthetic string formatting for return values (e.g., 'result1(result2(...))') which is a benign implementation detail to make the return chain visible, not an invented business rule. Overall this is a near-perfect, faithful translation of the sequence diagram into code."
+      }
+    },
+    {
+      "label": "L3_large_clean",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_clean_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "Result strings wrapped in nested formatted labels like 'result1(result2(...))' instead of plain independent return values",
+          "Main block instantiation and wiring order not specified in diagram"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements all 8 participants and the full call/return chain matching each step/result pair in sequence. No guards or failure paths existed in the diagram, and none were invented. The only minor deviation is the return value formatting (nesting result strings) which is a benign stylistic choice with no domain semantics, not altering the message flow or call structure."
+      }
+    },
+    {
+      "label": "L3_large_clean",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_clean_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "Constructor-based dependency injection for wiring services",
+          "Hardcoded return string 'result7' in Svc8.step7 as a concrete stand-in for the abstract result7 message",
+          "Main block instantiation and print statement for demonstration purposes"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements the linear call chain across all 8 participants, with each step()/result pair realized as a method call and return value, matching the synchronous request/response arrows in the diagram. No guards or failure paths were specified, and none were added. The only additions are trivial wiring and a placeholder return value, which are benign defensive/structural embellishments with no invented domain logic."
+      }
+    },
+    {
+      "label": "L3_large_clean",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L3_large_clean_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 8,
+        "participants_implemented": 8,
+        "messages_expected": 14,
+        "messages_implemented": 14,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [],
+        "defensive_embellishments": [
+          "Svc8.step7 returns a hardcoded string 'result7' instead of a generic value",
+          "main block wiring and print statement for demonstration"
+        ],
+        "fidelity_score": 97,
+        "notes": "The code faithfully implements the full chain of 8 services with each step() call and return value mirroring the synchronous call/return pairs in the diagram. All 7 forward calls and 7 return messages are represented via Python function calls and return statements. No guards or failure paths exist in the diagram, and none were invented in the code. The only minor embellishment is the hardcoded return value in Svc8 and the demonstration main block, which are benign and don't introduce new domain logic."
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L8",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_order_payment_codegen_good__L8_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 1,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentError is triggered by amount<=0 rather than an unspecified external gateway failure, making the diagram's 'charge error' branch effectively unreachable since order.total>0 is already guaranteed before charge is called",
+          "Special-cased 'order total is 0' success path with a custom message, which the diagram never distinguished as a separate business outcome from the alt guard",
+          "Hardcoded sample order data (order_1, order_2) with specific totals used to drive the demo, implying business meaning for 'sometimes' guard as dictionary membership"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError for control flow",
+          "compensated_orders set to track compensation state, not specified in diagram",
+          "print statements and main() test harness for demonstration",
+          "Try/except wrapping around get_order and charge calls"
+        ],
+        "fidelity_score": 58,
+        "notes": "All participants and messages are structurally present, and both alt/error paths exist syntactically, but the second guard's semantics are compromised: the code makes the charge-error path logically unreachable once total>0 is enforced, since PaymentError is invented to fire only when amount<=0. This turns a diagram-specified failure path into dead code, which is a meaningful guard-fidelity violation. The first guard ('sometimes') is loosely mapped to dictionary lookup, which is a reasonable but unspecified interpretation. Compensation call and receipt/error returns are realized via Python exceptions and return dicts rather than explicit messages, which is an acceptable translation but loses some of the diagram's explicit synchronous/async message distinctions (e.g., ->> for compensate not clearly asynchronous in code)."
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L8",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_order_payment_codegen_good__L8_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge only raises PaymentError when amount<0, inventing a concrete (and practically unreachable) business rule for the 'charge error' branch that the diagram left unspecified",
+          "Hardcoded order data (order_1 total=100.0, order_2 total=0.0) used to drive the 'sometimes' and 'order.total>0' guards, inventing concrete domain values not specified in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError for control flow",
+          "print() logging statements throughout for debugging/tracing",
+          "main() function with test-case demonstrations",
+          "Dictionary-based receipt/result structures with status fields not specified by diagram"
+        ],
+        "fidelity_score": 72,
+        "notes": "Structure (3 participants, 7 messages, 2 alt guards, 2 failure paths) is preserved and mapped correctly via try/except patterns substituting for arrows. The order.total>0 guard is faithfully implemented. However the 'charge error' branch's actual trigger condition (amount<0) is an invented business rule with no basis in the diagram and is unreachable given the invented order data, making that failure path effectively dead code. The 'order not found' guard's 'sometimes' condition is reasonably mapped to an existence check but the specific dataset is invented. Overall control flow and message realizations are faithful; deductions mainly for the invented charge-error threshold and dead code path."
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L8",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_order_payment_codegen_good__L8_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added amount<0 validation in PaymentGateway.charge() that raises PaymentError \u2014 a concrete failure trigger the diagram never specified (diagram's 'charge error' branch has no defined cause)",
+          "Invented a 'No charge required' success response for zero-total orders \u2014 the diagram's second alt block has no else path for order.total<=0, so this behavior/message is fabricated",
+          "Hardcoded sample order data (order_001, order_002) with specific totals used to drive demo flows, not part of the sequence diagram"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError for control flow",
+          "Receipt dict construction with transaction_id, status fields",
+          "compensated_orders set tracking for observability",
+          "try/except wrapping around DB and gateway calls",
+          "print-based main() test harness exercising three scenarios",
+          "Constructors and default state initialization for OrderDB/OrderService/PaymentGateway"
+        ],
+        "fidelity_score": 76,
+        "notes": "All three participants and all seven diagram messages (get order, order/notFoundError, charge, receipt/paymentError, self-compensate) are realized in equivalent Python calls. The two alt guards are structurally translated faithfully: found/not-found via try/except, and total>0 gating the charge attempt with a nested try/except mirroring the receipt/paymentError branch and triggering compensate(). However, the diagram never defines what happens when order.total<=0 nor what causes 'charge error' \u2014 the code invents a specific 'No charge required' response and an amount<0 validation rule to give these vague branches concrete meaning, which counts as invented business logic. Everything else (exception types, receipt shape, logging harness, sample data) is benign scaffolding that doesn't alter the modeled control flow."
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_credit_intake_good__S-drop_title_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete acceptance threshold of 650 assigned to the vague 'score acceptable' condition",
+          "Random score generation range (500-800) invented as the scoring mechanism, giving arbitrary concrete semantics to CreditEngine's internal scoring logic"
+        ],
+        "defensive_embellishments": [
+          "Customer class tracks application_submitted and response_received state not in diagram",
+          "Return of structured dict payloads (status, customer, risk_score, message) instead of simple message passing",
+          "Extensive print-statement logging of each interaction",
+          "main() harness demonstrating two customer runs",
+          "Type hints and constructor validation-free initialization"
+        ],
+        "fidelity_score": 80,
+        "notes": "All three participants and all five messages are faithfully realized, and the alt/else guard structure (acceptable vs rejected) is preserved with correct directionality of messages. The rejection failure path is implemented. However, the code invents concrete business logic not specified in the diagram: a specific numeric threshold (650) for what counts as 'acceptable' and a random scoring formula, which assign hard domain semantics the diagram intentionally left abstract. Everything else (logging, dict returns, demo harness) is benign defensive/structural embellishment that doesn't alter the sequence semantics."
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_credit_intake_good__S-drop_title_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete scoring formula (base 50, +credit_history*10, +income/10000 capped at 30)",
+          "Hardcoded acceptable score threshold of 60",
+          "Specific text content for offer proposal and rejection letter messages",
+          "Unused RiskLevel enum implying a categorical scoring model not present in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Type hints throughout",
+          "Docstrings on all classes/methods",
+          "min/max score clamping to 0-100 range",
+          "Customer class storing last_response state",
+          "main() demonstration/driver function with sample data"
+        ],
+        "fidelity_score": 78,
+        "notes": "All 3 participants and 5 messages are structurally realized, and the single alt guard (acceptable vs rejected) is preserved with correct branching semantics. However, the diagram leaves 'score acceptable'/'score rejected' as abstract conditions, and the code invents a concrete threshold (60), a specific scoring formula, and specific message text \u2014 none of which are specified in the diagram. These are plausible but ungrounded business-logic choices. Embellishments (docstrings, type hints, clamping, demo main) are benign and don't affect fidelity much. No failure/error paths beyond the rejection branch exist in either diagram or code, so that's consistent."
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_credit_intake_good__S-drop_title_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [
+          "Concrete ACCEPTABLE_THRESHOLD=600 score cutoff not specified in diagram",
+          "Multi-tier RiskLevel enum (LOW/MEDIUM/HIGH/REJECTED) invented beyond diagram's binary acceptable/rejected outcome",
+          "Income-based scoring formula (income/50000*100 capped at 200) invented as scoring algorithm",
+          "Credit limit amounts ($5000/$2000) and interest rates (4.5%/7.5%) invented for offer proposals",
+          "Specific rejection reason text tied to invented threshold value"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses for CreditApplication and RiskScore",
+          "Type hints throughout",
+          "Docstrings on methods",
+          "Enum for RiskLevel",
+          "__main__ demonstration block with sample good/poor applicants"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 3 participants and all 5 message interactions (submit, score, risk score return, and the alt branch outcomes) are structurally present. The alt guard's high-level semantic (acceptable vs rejected) is preserved, but the code invents substantial unspecified business logic: a concrete scoring formula, a numeric threshold, multiple risk tiers (LOW/MEDIUM/HIGH) collapsing into a binary diagram guard, and concrete credit limits/interest rates for offers. The diagram only specifies 'score acceptable' vs 'score rejected' with no numeric or tiered semantics, so these are generator inventions rather than faithful realizations. No genuine failure/error paths exist in either diagram or code (rejection is a business outcome, not an exception), so failure path counts are both zero. Embellishments (dataclasses, type hints, docstrings, demo main) are benign and don't affect fidelity much, but the invented scoring/pricing logic significantly lowers fidelity since it fabricates domain rules absent from the diagram."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-undeclare_participant",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-undeclare_participant_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 3,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Concrete risk score formula (amount/100000*50, capped at 100) invented \u2014 diagram only specifies a 'riskScore' output with no calculation",
+          "Hardcoded coverage limit value (100000) invented as a business constant not present in diagram",
+          "Policy lapsed condition implemented as a specific string check (policy_id == 'lapsed' or falsy) \u2014 diagram leaves 'policy active/lapsed' abstract, this assigns a concrete unspecified rule",
+          "Risk service error triggered specifically by negative claim amount \u2014 diagram never specifies what causes 'risk service error'",
+          "Storage error triggered specifically by falsy claim_id \u2014 diagram never specifies what causes 'storage error'"
+        ],
+        "defensive_embellishments": [
+          "Try/except blocks wrapping each service call for control flow",
+          "Docstrings on every method",
+          "Type hints on method signatures",
+          "ClaimDB internal dict storage and __init__ constructor",
+          "Print-based manual test harness in __main__ block",
+          "Structured dict return values with 'status'/'code' fields not specified in diagram"
+        ],
+        "fidelity_score": 62,
+        "notes": "Structurally the three alt/else blocks and all 9 request/response/error arrows are represented via method calls and exceptions, and the coverage-limit guard is faithfully reproduced with correct comparison semantics. However, the code invents concrete triggering conditions and domain values for policy lapse, risk scoring, and error conditions that the diagram leaves abstract \u2014 these are guesses that could mislead future implementers into thinking they are specified business rules. The exception-based control flow is a reasonable code-level realization of the alt/else guards, and per-branch messages are all present. Embellishments (docstrings, type hints, constructors, print-based tests) are benign. Deductions are mainly for invented business logic rather than structural gaps."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-undeclare_participant",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-undeclare_participant_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 3,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Policy lapsed condition redefined as policy_id being None/empty rather than an actual policy status check",
+          "Hardcoded coverageLimit value of 100000 in findPolicy, never specified by diagram",
+          "Risk score computed via invented formula min(100, (amount/50000)*100) instead of an opaque assessRisk call",
+          "RiskServiceError triggered by negative claim amount \u2014 an invented business rule for when the fraud service fails",
+          "StorageError triggered by claim_id being None/empty \u2014 an invented rule for storage failure, unrelated to real storage concerns",
+          "Claim exceeding coverageLimit conflated with the diagram's separate 'storage error' else-branch, inventing a rejection reason and status categorization ('rejected' vs 'error') not specified in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Explicit custom exception classes for each error type",
+          "claims dict initialized in ClaimDB constructor to hold state",
+          "Type/empty-string guard checks before raising domain exceptions",
+          "Inline test harness with print statements at bottom of file",
+          "Return of structured dicts with 'status'/'reason' keys as a convention not specified by diagram"
+        ],
+        "fidelity_score": 55,
+        "notes": "Structurally the code covers all 4 participants, all 9 message interactions (as calls/returns/exceptions), and all 3 alt/else guard pairs with corresponding failure paths, so control-flow shape is faithful. However, none of the diagram's guard conditions (policy active, risk assessed, amount<=coverageLimit) had concrete triggering logic specified, and the code invents concrete, arbitrary business rules for all three (id-emptiness checks, a specific risk-score formula, a hardcoded coverage limit) \u2014 these are guesses presented as domain logic and materially change what would happen under real inputs. The third alt's mismatched condition/else-label in the diagram itself is 'resolved' by the code in a plausible but unstated way (splitting into a coverage-limit rejection and a separate storage-error path), which is a reasonable interpretation but still an invention. Guards are structurally faithful but their semantic content is largely invented, which is the main fidelity concern."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-undeclare_participant",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-undeclare_participant_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 1,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Negative claim amount triggers RiskServiceError \u2014 diagram never specifies what causes 'risk service error'",
+          "Concrete risk-score thresholds (>500k=0.95, >100k=0.65, >50k=0.35, else=0.10) invented for FraudChecker.assess_risk, diagram only shows an opaque 'riskScore' return",
+          "Duplicate claim_id triggers StorageError \u2014 diagram's storage-error branch is left as an abstract alternative, code invents a specific concrete cause",
+          "Coverage-limit exceedance raises a generic ValueError instead of routing through ClaimDB's storageError path, breaking the diagram's guard->failure mapping where amount>coverageLimit should manifest as a ClaimDB-originated storageError",
+          "Hardcoded seed policy data (POL001 active/100000 limit, POL002 lapsed/50000 limit) invents concrete policy records not present in the diagram"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses/Enums for Policy, Claim, ClaimRecord, PolicyStatus, RiskLevel",
+          "print() logging statements on failure paths",
+          "try/except wrapping around each call purely for logging before re-raising",
+          "datetime.now() timestamp added to ClaimRecord",
+          "main() demo harness exercising both success and lapsed-policy scenarios",
+          "RiskLevel enum defined but never used"
+        ],
+        "fidelity_score": 52,
+        "notes": "All four participants and the full set of nine request/response/error messages are structurally present, and the first alt (policy active/lapsed) is faithfully realized via PolicyRegistry.find_policy raising PolicyLapsedError. However, the second and third alts diverge from the diagram's intent: the risk-service-error trigger and risk-score computation are invented wholesale (diagram leaves these opaque), and the third alt's guard/failure mapping is broken \u2014 the diagram ties amount>coverageLimit to a ClaimDB-originated storageError, but the code instead raises a bare ValueError for that case and invents an unrelated duplicate-claim-id condition to produce StorageError. This reassigns concrete meaning to two of the three guards in ways the diagram never specified, which counts as invented business logic rather than a faithful realization. Participant/message coverage is complete, but guard fidelity is weak (1/3), justifying a mid-range score."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-vague_guard_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "PolicyRegistry.find_policy uses a hardcoded policy dict and an invented 'is_active' flag to decide PolicyLapsedError, giving concrete business meaning to the diagram's vague 'sometimes' guard",
+          "FraudChecker.assess_risk invents a specific risk-scoring formula (amount/100000, capped at 1.0) and a negative-amount check to trigger RiskServiceError, none of which the diagram specifies",
+          "ClaimDB.store_claim invents a duplicate-claim-id check as the concrete cause of StorageError, a business rule not present in the diagram",
+          "A new exception type CoverageLimitExceededError is introduced for the third alt's false branch, diverging from the diagram where the else branch is explicitly labeled 'storageError' (implying failure originates from ClaimDB, not a pre-check exception) \u2014 this alters the guard's failure semantics"
+        ],
+        "defensive_embellishments": [
+          "Extensive docstrings and type hints on all methods",
+          "try/except blocks with print-based error logging around each service call",
+          "Use of dataclasses for Policy, Claim, ClaimRecord value objects",
+          "Constructor initialization of PolicyRegistry/FraudChecker/ClaimDB with default state",
+          "Demo main() function with multiple test scenarios not required by the diagram"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 4 participants and all 9 request/response interactions are structurally present, and the three-stage alt/else flow (policy lookup, risk assessment, storage) is preserved in sequence. However, two of the three guards ('sometimes', 'risk assessed') are vague in the diagram and the code fills them with invented concrete business rules (hardcoded policy activity flag, an arbitrary risk formula, a duplicate-id storage check), which look intentional but are pure invention. More seriously, the third guard's else-branch semantics are altered: the diagram's else message is 'storageError' (implying ClaimDB failure), but the code instead raises a new, diagram-absent CoverageLimitExceededError before ever reaching ClaimDB, and reserves StorageError for an unrelated duplicate-key scenario. This reassigns the meaning of the guard and adds an extra failure path outside the diagram's scope. Overall the message/participant skeleton is faithful, but domain semantics are meaningfully embellished and one guard's else-path is functionally rewritten."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-vague_guard_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Risk score computed via arbitrary formula (amount/10000*100) \u2014 diagram never specifies how riskScore is derived",
+          "RiskServiceError triggered by negative claim amount \u2014 an invented condition not present in the diagram's abstract 'risk service error' branch",
+          "StorageError triggered by duplicate claim_id in ClaimDB \u2014 diagram's storage error branch has no specified trigger, this is a fabricated business rule",
+          "ValueError raised when claim.amount exceeds coverage_limit instead of following the diagram's mapping where that condition should lead toward the storeClaim/storageError alt \u2014 this substitutes a new exception type and behavior not present in the diagram, effectively short-circuiting the third alt block's intended flow"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses and Enums for Policy, Claim, ClaimRecord, PolicyStatus, RiskLevel",
+          "Timestamp field added to ClaimRecord not requested by diagram",
+          "register_policy convenience method on PolicyRegistry",
+          "print-based logging of success/failure in main()",
+          "Type hints throughout",
+          "RiskLevel enum defined but never used",
+          "Wrapping and re-raising exceptions with augmented messages (e.g. 'Cannot process claim: ...')"
+        ],
+        "fidelity_score": 52,
+        "notes": "All 4 participants and all 9 message interactions are structurally present via method calls/returns/exceptions, and all 3 failure exception types exist. However, the third alt block's guard semantics are broken: the diagram ties claim.amount<=coverageLimit directly to storeClaim vs storageError, but the code instead raises an unrelated ValueError for exceeding coverage limit and reassigns storageError to an invented duplicate-claim-id condition, decoupling the guard's condition from its diagram-specified consequence. The first two alt blocks (policy lookup, risk assessment) are reasonably faithful in control flow (try/except mapping to success/failure branches) even though the diagram leaves the actual trigger conditions abstract ('sometimes'), and the code invents concrete triggers (negative amount) for one of them. Overall the code is runnable and covers the message surface but introduces several invented business rules that misrepresent the diagram's intended branching logic, particularly in the final alt block."
+      }
+    },
+    {
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L2_insurance_claim_good__S-vague_guard_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 9,
+        "messages_implemented": 9,
+        "guards_expected": 3,
+        "guards_faithful": 2,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "invented_business_logic": [
+          "Derives policyId from claim_id via string split (claim_id.split('-')[0]) \u2014 a concrete parsing rule the diagram never specified.",
+          "Introduces a new ClaimAmountExceedsCoverageLimitError raised when amount exceeds coverage limit, replacing the diagram's actual else-branch semantics (storage error) with an invented business rule and exception type.",
+          "Implements a concrete risk-scoring formula (amount/100000 capped at 1.0) for FraudChecker.assessRisk, inventing domain logic the diagram left abstract as 'riskScore'."
+        ],
+        "defensive_embellishments": [
+          "Input validation in ClaimDB.store_claim for empty claim_id and out-of-range risk_score",
+          "Negative amount check in FraudChecker.assess_risk",
+          "Dataclasses, docstrings, and type hints throughout",
+          "Console demo/logging block at bottom of script"
+        ],
+        "fidelity_score": 58,
+        "notes": "All participants and message arrows are structurally present, and two of the three alt/exception pairs (policy lapse, risk service failure) are faithfully preserved via try/except mapping to the diagram's alt/else. However, the third guard (claim.amount <= policy.coverageLimit) is altered: instead of following the diagram's implied else path (storageError), the code invents a new exception (ClaimAmountExceedsCoverageLimitError) for the failing condition, changing the guard's real-world meaning. Additional invented business logic includes deriving policyId from claim_id string parsing and hardcoding a specific risk-score formula, both of which assign concrete domain meaning where the diagram left placeholders. These invented rules are why the fidelity score is only moderate despite full structural coverage."
+      }
+    },
+    {
+      "label": "L1_credit_intake_bad",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_bad_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 5,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Score formula (amount/1000 capped at 100) \u2014 no basis in diagram",
+          "Risk level thresholds (LOW<30, MEDIUM<70, HIGH>=70) invented wholesale",
+          "Rejection flow for HIGH risk \u2014 diagram's alt is unterminated with no else branch specified",
+          "Proposal ID generation scheme (hash-based PROP-#### format)",
+          "Concrete meaning assigned to the diagram's empty final message (FrontOffice->CreditEngine with blank label) as a FrontOffice->Notary 'record_transaction' call \u2014 wrong participant and invented semantics",
+          "Notary only records on success, an invented conditional business rule"
+        ],
+        "defensive_embellishments": [
+          "print() logging statements throughout",
+          "dataclasses and type hints for CreditApplication/RiskScore",
+          "Enum for RiskLevel",
+          "score clamping via min/max",
+          "Optional return type checks in main()"
+        ],
+        "fidelity_score": 38,
+        "notes": "Core linear flow (Customer->FrontOffice->CreditEngine->FrontOffice) is preserved and the 'score acceptable' branch is honored, but the code fabricates substantial domain logic the diagram never specified: a scoring formula, numeric thresholds, a rejection path, proposal ID scheme, and a Notary interaction that misreads the diagram's empty/unterminated final message as a business action. The diagram's typo'd recipient 'Custmer' is correctly resolved to Customer. Because the diagram is deliberately incomplete/malformed, the code had to guess \u2014 but it guessed with confident, concrete business rules rather than flagging ambiguity, which is the harmful pattern being audited for. Message 5 (blank label to CreditEngine) is not realized at all; instead an unrelated Notary call is invented in its place."
+      }
+    },
+    {
+      "label": "L1_credit_intake_bad",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_bad_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 5,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete credit-score-to-risk-score mapping (750/650 cutoffs, 25/50/75 scores) invented \u2014 diagram never specified scoring mechanics",
+          "Acceptable risk threshold of 50 invented to decide the alt branch outcome",
+          "Entire Notary interaction (finalize_agreement call) invented; diagram declared Notary as a participant but never sent any message to/from it",
+          "Loan amount and interest rate calculation formulas in _create_proposal invented with no diagram basis",
+          "Explicit rejection branch with status REJECTED and reason string invented; diagram's alt was unterminated and only specified the acceptable-score path, leaving the else-case undefined",
+          "The diagram's malformed second message from FrontOffice to CreditEngine (empty label) was silently reinterpreted/replaced by a call to Notary instead"
+        ],
+        "defensive_embellishments": [
+          "ValueError checks for missing applicant_data/agreement_data",
+          "ApplicationStatus and RiskLevel enums for type safety",
+          "application_id generation and self.applications dict bookkeeping",
+          "print() logging of proposal details",
+          "docstrings and __init__ constructors across classes",
+          "RuntimeError guard if front_office not set on Customer"
+        ],
+        "fidelity_score": 33,
+        "notes": "The diagram itself is deliberately broken (typo'd 'Custmer' participant, unterminated alt, empty-label message, unused actor), which limits how faithful any implementation can be. The code correctly realizes the first three messages (submit application, score applicant, return risk score) and preserves the qualitative meaning of the 'score acceptable' guard (lower risk score -> offer proposal). However, it invents substantial domain logic not present in the diagram: concrete scoring thresholds, an acceptance threshold, loan/interest formulas, a full rejection path, and an entire Notary sub-flow that the diagram never depicted via any message (Notary was declared but unused). The ambiguous empty-label message to CreditEngine was not implemented at all, instead replaced by unrelated Notary logic. Overall the code captures the skeleton of the happy path but layers on significant invented business rules while dropping/reinterpreting the diagram's final ambiguous instruction."
+      }
+    },
+    {
+      "label": "L1_credit_intake_bad",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_bad_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 4,
+        "participants_implemented": 4,
+        "messages_expected": 5,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Specific credit scoring formula mapping credit_history to numeric scores (750/550/600)",
+          "Invented acceptance threshold of risk_score >= 650 not present in diagram",
+          "Added an entire rejection/failure branch with reason 'Risk score too low' that the diagram never specified (diagram only showed the acceptable path before being cut off)",
+          "Concrete proposal terms (amount 50000, interest rate 4.5%, term 60 months) invented with no basis in diagram",
+          "Notary's notarize_agreement business logic invented despite Notary being unused in the diagram's message flow"
+        ],
+        "defensive_embellishments": [
+          "Customer class tracks received_offer/received_rejection boolean flags",
+          "Docstrings on every method",
+          "print() statements and main() test harness simulating two scenarios",
+          "Notary class instantiated and wired into FrontOffice constructor even though never invoked per diagram",
+          "Type/membership check on applicant_info before scoring"
+        ],
+        "fidelity_score": 42,
+        "notes": "Core actors and the first three messages (submit application, score request, risk score return) are faithfully realized. The alt guard's true branch (offer proposal) is implemented, but the diagram's empty/unterminated second message inside the alt is silently dropped, and the code invents an entire false-branch (rejection) with its own business justification, scoring formula, and proposal terms that have no basis in the sketchy diagram. The diagram's ambiguity (unterminated alt, empty label, typo'd participant) is 'resolved' by the generator inventing concrete semantics rather than preserving the ambiguity or flagging it. Notary remains structurally present but functionally unused, consistent with the diagram, though the code adds unrequested logic to it anyway. Overall the skeleton is faithful but the domain logic is substantially invented."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L5",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L5_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Specific threshold value (700) for acceptable score, not specified in diagram",
+          "Concrete credit_history-based scoring algorithm (850/720/500 tiers) invented entirely by code",
+          "Default applicant data {'credit_history': 750} invented for demo purposes",
+          "Specific message text content ('Your application has been approved with favorable terms.', etc.) invented",
+          "Return dict structure with 'status'/'message'/'score' keys not specified in diagram"
+        ],
+        "defensive_embellishments": [
+          "Print statements for logging each step",
+          "Docstrings on all methods",
+          "Internal _calculate_score helper method for encapsulation",
+          "use of .get() with default fallback for missing dict keys",
+          "Customer.receive_message storing last_message state"
+        ],
+        "fidelity_score": 62,
+        "notes": "All 3 participants and 5 messages are structurally present, and the alt/else guard for acceptable vs rejected score is preserved in meaning (branches to correct message). However, the diagram left 'Score applicant' and risk scoring as abstract black-box operations, and the code invents a full concrete business logic layer around it: specific scoring tiers tied to a 'credit_history' field, a hardcoded acceptable threshold of 700, default test data, and specific message content. This is a case of the generator inventing domain-specific rules for something the diagram intentionally left abstract, which is riskier than simple embellishment. The additional print/logging/docstring embellishments are benign. Overall control flow and message/guard fidelity is good, but the invented scoring logic and threshold constitute meaningful unrequested business logic, warranting a moderate fidelity score."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L5",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L5_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 4,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [
+          "Threshold of score >= 60 for acceptability, not specified in diagram",
+          "Default fallback score of 75 when parsing LLM response fails",
+          "Specific parsing logic to extract numeric score from free-text LLM response",
+          "Credit line amount and interest rate scaling rules embedded in LLM prompt (business rules invented)",
+          "Use of LLM (anthropic API) to generate risk score and offer/rejection content, a concrete implementation choice not specified by diagram"
+        ],
+        "defensive_embellishments": [
+          "try/except around score parsing",
+          "Customer class storing received_message attribute",
+          "Constructors for Customer, CreditEngine, FrontOffice",
+          "Use of applicant_data.get with defaults for missing fields",
+          "Demo main() function with sample applicants and print statements"
+        ],
+        "fidelity_score": 55,
+        "notes": "The code correctly implements the three participants and the four core message exchanges (Customer->FrontOffice, FrontOffice->CreditEngine score request, CreditEngine->FrontOffice risk score reply, and FrontOffice->Customer offer/rejection). The alt/else guard is preserved semantically (acceptable vs rejected path). However, the diagram leaves 'score acceptable' as an abstract condition with no implementation detail, whereas the code invents a concrete threshold (score>=60), a specific LLM-based scoring mechanism, fragile text-parsing logic to extract the score, and business content (credit line scaling, interest rate rules) inside generated prompts \u2014 none of which are specified in the diagram. These are significant invented business logic additions that go beyond what the sequence diagram authorizes, even though the message flow and guard structure are otherwise faithfully preserved. No failure paths were specified or added, which is consistent between diagram and code."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L5",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L5_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "invented_business_logic": [
+          "Uses an LLM (Claude) to generate the risk score and decision itself, inventing a scoring methodology and JSON schema with 'risk_score', 'decision', 'reason' fields never specified in the diagram",
+          "Uses another LLM call to generate free-text offer/rejection letter content with invented terms like 'estimated terms and next steps' or courteous rejection explanations",
+          "Maintains conversation_history state across CreditEngine and FrontOffice, an invented architectural detail not present in the diagram",
+          "Applicant info schema (age, income, credit_history, existing_debt, employment_status, loan_amount_requested, loan_purpose) is entirely invented domain data"
+        ],
+        "defensive_embellishments": [
+          "print statements for logging each step",
+          "default fallback values via .get() with defaults for risk_score and decision",
+          "docstring-like prompt formatting",
+          "main() function with sample data to run the flow"
+        ],
+        "fidelity_score": 45,
+        "notes": "The code implements the correct participants and overall message flow (Customer->FrontOffice->CreditEngine->FrontOffice->Customer) and preserves the alt/else guard structure (acceptable vs rejected). However, it invents substantial business logic: the actual scoring mechanism, decision criteria, and response content are all delegated to an LLM with fabricated prompts, schemas, and reasoning fields that have no basis in the diagram, which only says 'Score applicant' and 'Risk score' abstractly. This turns an abstract, technology-agnostic sequence into a concrete, opinionated implementation with invented data structures and external service calls. No failure paths were specified or implemented, which is consistent. Overall structure/messages are faithful but domain-logic invention is significant."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L3",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L3_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 4,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete scoring formula: base 50 + credit_history*10 + income/1000, clamped 0-100 \u2014 diagram never specified scoring algorithm",
+          "Threshold of risk_score >= 50 as the acceptable/rejected cutoff \u2014 diagram left 'score acceptable' vague",
+          "Specific applicant_data fields (credit_history, income) used as scoring inputs \u2014 invented domain schema"
+        ],
+        "defensive_embellishments": [
+          "Docstrings on all methods",
+          "min/max clamping of score to 0-100 range",
+          "__main__ test harness with sample applicant dicts",
+          "last_response attribute storage on Customer"
+        ],
+        "fidelity_score": 62,
+        "notes": "All 3 participants and all 4 messages (submit, score, return risk score, offer/rejection) are present, and the alt/else guard structure is preserved structurally. However, the code invents a specific, concrete scoring algorithm and a hard threshold (>=50) that the diagram never specified \u2014 this is exactly the kind of business-logic invention that risks being mistaken for the actual spec. The diagram only said 'score acceptable' vs 'score rejected' abstractly. No failure/exception paths beyond the two branches are needed, and both are implemented. Deductions are for invented scoring formula/threshold/schema, not for structural omissions."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L3",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L3_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 4,
+        "messages_implemented": 4,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete scoring formula (base 50 + credit_history*10 + income/1000 - debt_ratio*5)",
+          "Specific acceptance threshold of 60 for risk score",
+          "Specific data fields required: credit_history, income, debt_ratio"
+        ],
+        "defensive_embellishments": [
+          "Clamping score between 0 and 100 with max/min",
+          "Docstrings on all methods",
+          "Type hints on method signatures",
+          "Example usage block with sample data and print statements"
+        ],
+        "fidelity_score": 62,
+        "notes": "The code correctly implements the overall structure and control flow: Customer -> FrontOffice -> CreditEngine -> FrontOffice -> Customer, with the alt/else branching for acceptable vs rejected scores faithfully preserved in meaning. All 4 messages and both branches of the guard are present. However, the diagram leaves 'score acceptable' as an abstract condition, and the code invents a specific scoring algorithm and a hard-coded threshold (60) that constitute business logic never specified in the diagram. This is a significant invention since it defines concrete domain rules (how risk is computed and what counts as acceptable) that could differ from intended business requirements. The defensive additions (clamping, docstrings, type hints, example runner) are benign and don't affect fidelity to the sequence flow itself."
+      }
+    },
+    {
+      "label": "L1_credit_intake_good__L3",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_credit_intake_good__L3_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 5,
+        "messages_implemented": 5,
+        "guards_expected": 1,
+        "guards_faithful": 1,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "invented_business_logic": [
+          "Concrete risk-scoring formula: (credit_history*0.4)+(income*0.3)-(debt_ratio*0.3), clamped to 0-100",
+          "Specific acceptable-score threshold of 60 for approval/rejection decision",
+          "Specific applicant_data schema (credit_history, income, debt_ratio, name) invented as the domain data model",
+          "Concrete response payload structure (status/message/risk_score/applicant fields) invented as the 'Offer proposal'/'Rejection letter' content"
+        ],
+        "defensive_embellishments": [
+          "Null/missing-field guard in _calculate_risk_score returning 0",
+          "Docstrings on all methods",
+          "max/min clamping to keep score in [0,100] range",
+          "__main__ demonstration block with sample good/poor applicants and print statements"
+        ],
+        "fidelity_score": 62,
+        "notes": "All 3 participants and all 5 messages (submit, score request, score return, offer, rejection) are structurally present, and the alt guard's two branches are both implemented with correct direction/faithful high-level semantics (accept vs reject). However, since the diagram leaves 'score acceptable/rejected' abstract, the code had to invent the entire decision mechanism: a specific weighted formula, a hard threshold of 60, and a concrete applicant data schema \u2014 none of which were specified and could easily diverge from intended business rules. These are non-trivial invented business logic rather than incidental scaffolding, which caps fidelity despite otherwise complete structural coverage. Embellishments (validation, docstrings, demo block) are benign and don't affect core semantics."
+      }
+    },
+    {
+      "label": "L1_order_payment_codegen_good__L9",
+      "run": 1,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_order_payment_codegen_good__L9_run1.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Hardcoded specific order catalog (order_123 with total 99.99, order_456 with total 0.00) not specified in diagram",
+          "PaymentGateway failed_charges set as mechanism to simulate charge failure - an invented state model not in diagram",
+          "Receipt transaction_id format 'txn_{order_id}_{amount}' invented concrete data shape",
+          "compensated_orders set tracking as concrete meaning for 'compensate(orderId)' self-message"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes OrderNotFoundError and PaymentError for control flow",
+          "Dataclasses for Order and Receipt with type hints",
+          "Optional typing on get_order",
+          "__main__ block demonstrating usage scenarios with print statements"
+        ],
+        "fidelity_score": 78,
+        "notes": "All 3 participants (OrderService, OrderDB, PaymentGateway) and both guard conditions (order found/not found, total>0 charge/error) are faithfully realized with matching control flow. All 7 messages have a corresponding interaction, though the two OrderDB response messages (order vs notFoundError) are collapsed into a single get_order return value handled via None-check rather than distinct messages, which is a minor structural simplification but preserves semantics. The self-message compensate(orderId) is realized as a private method call, matching intent. The diagram's nesting of the second alt inside the first alt's failure branch is ambiguous/likely a diagram authoring quirk; code instead sequences the total>0 check only after successful order retrieval, which is the more sensible interpretation and doesn't contradict intended business logic. Main fidelity loss comes from invented concrete data (specific order IDs/amounts, transaction id format, in-memory failure-simulation state) that the diagram left abstract \u2014 these are reasonable implementation choices for a runnable demo but constitute invented specifics beyond the diagram's scope. Embellishments (dataclasses, exceptions, demo main) are benign engineering additions with no altered semantics."
+      }
+    },
+    {
+      "label": "L1_order_payment_codegen_good__L9",
+      "run": 2,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_order_payment_codegen_good__L9_run2.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 4,
+        "guards_faithful": 3,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "PaymentGateway.charge raises PaymentError for amount<0 or amount==0, a concrete validation rule never specified in the diagram",
+          "OrderService explicitly skips payment and prints a message when order.total<=0, assigning concrete business meaning beyond the bare guard condition",
+          "Hard-coded two sample orders (order_123, order_456) in OrderDB as the concrete realization of the vague 'sometimes' condition, effectively turning it into an existence-lookup rule"
+        ],
+        "defensive_embellishments": [
+          "Use of dataclasses for Order and Receipt",
+          "Custom exception classes OrderNotFoundError and PaymentError instead of diagram's plain return messages",
+          "print() logging statements throughout process_order and compensate",
+          "compensation_log list for tracking compensations, not present in diagram",
+          "main() function with multiple test-case demonstrations"
+        ],
+        "fidelity_score": 74,
+        "notes": "All three participants and all seven interactions (including the self-message compensate) are conceptually realized, though messages are implemented via exception raising/catching rather than explicit return arrows\u2014an acceptable translation. Both alt/else guard pairs are structurally preserved (order lookup success/failure, total>0 charge/failure), but the vague 'sometimes' condition is given a concrete, invented meaning (dictionary lookup with two hardcoded orders) and the charge() function invents extra validation logic (rejecting zero/negative amounts) that has no basis in the diagram. Both failure paths (not-found, charge-error+compensate) are correctly implemented. Overall structure is faithful but the added charge-validation and the hidden concrete interpretation of ambiguous guards reduce fidelity somewhat; embellishments (logging, dataclasses, demo main) are harmless."
+      }
+    },
+    {
+      "label": "L1_order_payment_codegen_good__L9",
+      "run": 3,
+      "compile_first_try": true,
+      "retried": false,
+      "gen_stop_reason": "end_turn",
+      "compiles": true,
+      "code_file": "L1_order_payment_codegen_good__L9_run3.py",
+      "judge_stop_reason": "end_turn",
+      "judge": {
+        "participants_expected": 3,
+        "participants_implemented": 3,
+        "messages_expected": 7,
+        "messages_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "invented_business_logic": [
+          "Added a third outcome ('No charge required' success) for order.total <= 0 that the diagram never specified \u2014 the diagram only shows two outcomes (successful charge or charge error) under the order.total>0 guard.",
+          "PaymentGateway.charge() invents a business rule raising PaymentError for amount<=0, which is unreachable given the guard structure and not mentioned in the diagram.",
+          "Hardcoded specific order IDs and totals ('order_123'->100.0, 'order_456'->50.0) as concrete domain data invented for a diagram that left order data abstract."
+        ],
+        "defensive_embellishments": [
+          "Exception-based control flow (OrderNotFoundError, PaymentError) used to implement the notFoundError/paymentError messages instead of explicit message objects \u2014 reasonable engineering choice.",
+          "Demo main() function with print statements exercising sample scenarios, not present in diagram.",
+          "Auxiliary Order/Receipt data classes with __repr__ methods for readability.",
+          "Try/except wrapping and status/message dict return format not specified in diagram."
+        ],
+        "fidelity_score": 66,
+        "notes": "All three participants and all seven messages/interactions are represented, and both alt/else guard pairs are structurally preserved (order lookup success/failure, charge success/failure with compensate). However, the code invents an unspecified third outcome ('No charge required') for the order.total<=0 case, which the diagram never depicts as a distinct message path, and adds a dead invented validation rule inside charge(). The diagram's malformed nesting (missing 'end' before the second alt) makes intent ambiguous, but the code's sequential-alt interpretation is a reasonable resolution. Overall the skeleton is faithful but colored by invented business branches that go beyond the diagram's guard conditions."
+      }
+    }
+  ],
+  "usage": {
+    "claude-haiku-4-5-20251001": {
+      "in": 18357,
+      "out": 58889
+    },
+    "claude-sonnet-5": {
+      "in": 145917,
+      "out": 110649
+    }
+  },
+  "cost_usd": 2.41,
+  "failures": []
+}
