@@ -98,107 +98,110 @@ match exactly (both "a" and "an" work). If your rule needs an assertion this
 vocabulary can't express, extend `test_features.py` deliberately — the
 vocabulary is meant to grow slowly.
 
-## End-to-end example: adding GEN010 `title-max-length`
+## End-to-end example: GEN009 `max-elements`
 
-A worked example (not shipped code): flag diagram titles longer than a
-configurable maximum, because over-long titles wrap in renders and make
-review references unwieldy.
+A walkthrough of a real shipped rule — GEN009 flags diagrams that have grown
+past readable size, whatever their type. It shipped in v0.12.0; every
+artifact below is quoted from the repo, so you can open the files and see
+the same thing in context.
 
 ### Step 0 — Design decisions first
 
-- **ID:** next free number in the pack whose scope matches. Applies to every
-  diagram type → `GEN` pack → `GEN010`. IDs are stable once shipped; never
-  reuse or renumber.
-- **Severity:** violates a recommended convention, nothing is broken →
-  `minor` (see the severity table in RULES.md).
-- **Dimension:** which maturity dimension does the finding erode? A long
-  title is a readability concern → `DIM-RDB`. Every rule carries exactly one
-  dimension; this is how the scorer buckets your findings (SCORING.md §2).
-- **Default or dormant?** Two settled patterns to choose from:
-  - *Convention-gated* (like GEN006/GEN007): if the rule enforces a house
-    convention that has no universal default, ship it **dormant** — it only
-    activates when the project configures a pattern. An always-on convention
-    rule would demote every existing diagram by fiat.
-  - *Tail guard* (like GEN008/GEN009): a sensible universal default that no
-    reasonable diagram trips. GEN010 fits here — default `max = 60` is
-    generous.
+- **ID:** next free number in the pack whose scope matches. Size is a
+  concern for every diagram type → `GEN` pack → `GEN009`. IDs are stable
+  once shipped; never reuse or renumber.
+- **Severity:** an oversized diagram violates a recommended convention,
+  nothing is broken → `minor` (see the severity table in RULES.md).
+- **Dimension:** which maturity dimension does the finding erode? Size is a
+  readability concern → `DIM-RDB`. Every rule carries exactly one dimension;
+  this is how the scorer buckets your findings (SCORING.md §2).
+- **Default or dormant?** Two settled patterns to choose from — v0.12.0
+  shipped examples of both, side by side:
+  - *Convention-gated* (GEN006 `owner-tag`, GEN007 `requirement-link`): a
+    rule enforcing a house convention with no universal default ships
+    **dormant** — it only activates when the project configures its
+    `pattern`. An always-on ownership-tag requirement would have demoted
+    every existing diagram below the Level 5 dimension gate by fiat.
+  - *Tail guard* (GEN008 `note-density`, GEN009): a sensible universal
+    default that no reasonable diagram trips. GEN009 fits here — `max = 60`
+    semantic elements is generous.
 
 ### Step 1 — Specify it in RULES.md
 
-Add the rule section, rationale, and the Gherkin acceptance block:
+The rule's section carries its rationale and the Gherkin acceptance block
+(RULES.md, GEN009):
 
 ````markdown
-### GEN010 — Title length limit
-**Severity:** minor · **Status:** ⏳ Planned
+### GEN009 — Element count limit
+**Severity:** minor · **Status:** ✅ Implemented (v0.12.0)
 
-**Rationale:** Over-long titles wrap in rendered output and make diagrams
-awkward to reference in reviews. Keep the title a label; narrative belongs
-in a note or the accompanying document.
+**Rationale:** Past a certain size a diagram of any type stops being readable;
+the semantic element count (the same one the maturity scorer uses as its density
+denominator) is the type-neutral measure. Option `max` (default 60).
 
 ```gherkin
-Feature: GEN010 title length limit
+Feature: GEN009 element count limit
 
-  Scenario: over-long title is reported
-    Given the diagram:
-      """
-      @startuml demo
-      title This title rambles on far past any reasonable length for a diagram heading in a review
-      participant A
-      participant B
-      A -> B : hi
-      @enduml
-      """
-    When the linter runs
-    Then a "GEN010" issue with severity "minor" is reported on line 2
-
-  Scenario: short title passes
-    Given the diagram:
-      """
-      @startuml demo
-      title Order Processing
-      participant A
-      participant B
-      A -> B : hi
-      @enduml
-      """
-    When the linter runs
-    Then no "GEN010" issue is reported
-
-  Scenario: configured maximum is respected
+  Scenario: oversized diagram is reported
     Given the configuration:
       """
-      [rules.GEN010]
-      max = 10
+      [rules.GEN009]
+      max = 3
       """
     And the diagram:
       """
       @startuml demo
-      title Order Processing
+      title Demo
       participant A
       participant B
       A -> B : hi
+      A -> B : again
       @enduml
       """
     When the linter runs
-    Then a "GEN010" issue is reported on line 2
+    Then a "GEN009" issue with severity "minor" is reported on line 1
+
+  Scenario: normal-sized diagram passes
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      A -> B : again
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN009" issue is reported
 ```
 ````
+
+Two things worth noticing: the first scenario uses the
+`Given the configuration:` step (TOML docstring) to lower the threshold —
+that's how you make a tail guard testable without a 60-element fixture; and
+the same 6-element diagram serves both scenarios, so the pair isolates the
+option's effect.
 
 Then regenerate and commit the feature file:
 
 ```bash
-python tools/extract_features.py     # writes tests/bdd/features/GEN010.feature
+python tools/extract_features.py     # writes tests/bdd/features/GEN009.feature
 ```
 
-At this point `pytest` runs your scenarios and (correctly) skips or fails
-them — the spec exists before the code, which is the intended order.
+At this point `pytest` runs your scenarios and (correctly) fails them —
+writing the spec before the code is the intended order; a not-yet-implemented
+rule can also sit in RULES.md as ⏳ Planned, which emits its feature with a
+`@skip` tag.
 
 ### Step 2 — Declare it in catalog.toml
 
+From `pumllint/rules/catalog.toml`:
+
 ```toml
-[GEN010]
-name = "title-max-length"
-description = "Title exceeds the configured maximum length"
+[GEN009]
+name = "max-elements"
+description = "Diagram has more semantic elements than the configured maximum"
 severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["*"]
@@ -211,35 +214,45 @@ ways.
 
 ### Step 3 — Implement it
 
-Governance rules live in `pumllint/rules/common/governance.py` (or drop a new
-module anywhere under `pumllint/rules/` — discovery walks the package):
+The whole implementation, from `pumllint/rules/common/governance.py`:
 
 ```python
 @register
-class TitleMaxLength(Rule):
-    id = "GEN010"
+class MaxElements(Rule):
+    """Diagram grown past readable size, whatever its type.
+
+    Option: ``max`` (default 60 semantic elements — the same count the
+    maturity scorer uses as its density denominator).
+    """
+
+    id = "GEN009"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        title = diagram.title          # a Directive (kind/value/line), or None
-        if title is None:
-            return                     # missing title is GEN001's finding, not ours
-        max_len = self.options.get("max", 60)
-        if len(title.value) > max_len:
+        limit = int(self.options.get("max", 60))
+        count = diagram.element_count
+        if count > limit:
             yield self.violation(
-                diagram, title.line,
-                f"Title is {len(title.value)} characters (max {max_len})",
+                diagram,
+                diagram.start_line,
+                f"Diagram has {count} elements (max {limit}) — split it along "
+                "phases, subsystems or scenarios",
             )
 ```
 
-Idioms to copy from the existing packs:
+Idioms to copy:
 
-- **One concern per rule** — GEN010 stays silent on a *missing* title; that
-  is GEN001's finding. No double reporting (the same agreement keeps
-  XD004/XD005 out of XD002/XD003's territory).
+- **Reuse the model's vocabulary instead of inventing your own.** GEN009
+  doesn't define "size" per diagram type — it uses `Diagram.element_count`,
+  the exact count the maturity scorer already uses as its density
+  denominator. One definition, shared everywhere.
 - **Options with defaults** via `self.options.get(...)` — every threshold a
   project might reasonably tune should be an option, documented in the
   README rules table.
-- **Point at the most actionable line** — the title line, not line 1.
+- **Point at the most meaningful line.** GEN009 reports on
+  `diagram.start_line` because the finding is about the diagram as a whole;
+  a rule about one construct points at that construct's line instead.
+- **Say what to do, not just what's wrong** — "split it along phases,
+  subsystems or scenarios" makes the finding a suggestion, not a scolding.
 
 ### Step 4 — Run the tests, all of them
 
@@ -257,27 +270,30 @@ the standard library.
 **Scores are a public contract.** `tests/test_golden_scores.py` pins the
 maturity score of every calibration-corpus unit. A new always-on rule that
 fires anywhere in the corpus will shift scores and fail that test — *by
-design*, so score changes are always a conscious act. Your options:
+design*, so score changes are always a conscious act. How v0.12.0's three
+new default-on rules played out is the case study:
 
-- If the corpus shouldn't trip the rule (tail guard with a generous default,
-  like GEN010): the golden test passes untouched — verify, and say so in the
-  changelog.
-- If scores legitimately move: inspect the diff, and re-freeze deliberately
-  with `python tools/calibrate.py --freeze tests/golden_scores.json`. The
-  re-freeze commit is where reviewers scrutinize *how much* your rule demotes
-  existing diagrams.
-- If the rule would demote broad swaths of reasonable diagrams: that's the
-  signal to make it convention-gated (dormant without config) or
-  profile-gated (`profiles = ["codegen"]`) instead.
+- GEN008, GEN009 and SEQ011 were designed as tail guards precisely so that
+  **no calibration-corpus unit trips them** — the golden test passed
+  untouched, which was verified and recorded (SCORING.md §9) rather than
+  assumed.
+- GEN006/GEN007 would have moved scores massively had they shipped
+  always-on — every corpus diagram lacks an owner tag. That is *why* they
+  are convention-gated: the golden-score impact analysis is the moment this
+  choice gets forced.
+- If your rule's score shifts are legitimate, inspect the diff and re-freeze
+  deliberately with `python tools/calibrate.py --freeze
+  tests/golden_scores.json`. The re-freeze commit is where reviewers
+  scrutinize *how much* your rule demotes existing diagrams.
 
 Read the "Working agreements" section of [ROADMAP.md](../ROADMAP.md) before
 changing anything score-adjacent.
 
 ### Step 6 — Document it
 
-- Add the row to the README rules table (ID, name, default severity, what it
-  catches, notable options).
-- Flip the RULES.md status to ✅ with the version.
+- Add the row to the README rules table — GEN009's reads: *"More semantic
+  elements than `max` (default 60), any diagram type."*
+- Flip the RULES.md status to ✅ with the version (v0.12.0 for GEN009).
 
 That's the complete loop: **spec → catalog → code → tests → golden check →
 docs.** For a typical rule it's an afternoon, most of it spent on Step 0.
