@@ -17,7 +17,8 @@ DIM-TRC/DIM-RDB (GEN006–009, SEQ011) and settled the weight revisit
 cross-type entity identity (XD004–005 — 42 base rules); **v0.14.0**
 (2026-07-24) extended the calibration corpus and golden contract to every
 diagram type (additive re-freeze, 49 → 83 units); **v0.15.0** (2026-07-24)
-completed Arc B with the architect-facing HTML report. This file tracks what
+completed Arc B with the architect-facing HTML report; **v0.16.0**
+(2026-07-24) opened Arc E with `pumllint fix`. This file tracks what
 remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
@@ -116,8 +117,16 @@ marketing claims need escalation:
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
-- [ ] `pumllint fix` — auto-remediation for mechanical findings (declare
-  implicit participants, add titles, name diagrams).
+- [x] `pumllint fix` *(0.16.0)* — auto-remediation for exactly the
+  mechanical findings where nothing has to be invented: GEN002 (name from
+  file stem, ordinal suffixes for multi-diagram files), GEN001 (humanized
+  title), SEQ001/SEQ101 (declare implicit participants in first-use order,
+  anchored after existing declarations). Fixes are driven by the engine's
+  violations — suppressed/disabled findings are never fixed — and the run
+  is idempotent; `--dry-run` prints a diff and exits 1 when fixes are
+  pending (CI check mode). Deliberately excluded: anything requiring
+  invented content (labels, guards, multiplicities). Possible follow-up on
+  demand: a `pumllint-fix` pre-commit hook.
 - [ ] LSP server / IDE integration for inline findings.
 - [ ] JSON schema for the report formats (lint + maturity).
 - [ ] Real SonarQube plugin with measures (replacing the synthetic-issue

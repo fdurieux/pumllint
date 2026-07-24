@@ -1,12 +1,13 @@
 """Command-line interface.
 
-Two commands:
+Three commands:
   pumllint <paths> [options]          lint (default; no subcommand keyword)
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
+  pumllint fix <paths> [options]      auto-fix mechanical findings
 
 Exit codes: 0 = clean / at-or-above gate, 1 = lint violations at/above
---fail-on (lint) or a diagram below --min-level or a --baseline regression
-(score), 2 = usage/config error.
+--fail-on (lint), a diagram below --min-level or a --baseline regression
+(score), or pending fixes under --dry-run (fix), 2 = usage/config error.
 Designed to drop straight into a CI step.
 """
 
@@ -98,10 +99,38 @@ def _apply_cli_overrides(config: dict, args: argparse.Namespace) -> dict:
     return config
 
 
+def build_fix_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        prog="pumllint fix",
+        description="Auto-fix mechanical findings (add titles, name diagrams, "
+        "declare implicit participants). Nothing is ever invented: only "
+        "deterministic, semantics-preserving fixes are applied.",
+    )
+    p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
+    p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
+    p.add_argument(
+        "--profile",
+        help="Activate a rule profile (e.g. codegen); overrides `profile:` in the config",
+    )
+    p.add_argument(
+        "--no-suppressions",
+        action="store_true",
+        help="Ignore inline \"' pumllint: disable\" comments (fix everything fixable)",
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show the diff without writing; exit 1 if fixes are pending (CI check mode)",
+    )
+    return p
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv and argv[0] == "score":
         return _run_score(argv[1:])
+    if argv and argv[0] == "fix":
+        return _run_fix(argv[1:])
     return _run_lint(argv)
 
 
@@ -200,6 +229,55 @@ def _run_score(argv: list[str]) -> int:
     if args.min_level is not None:
         failed |= any(r.level < args.min_level for _, r in results)
     return 1 if failed else 0
+
+
+def _run_fix(argv: list[str]) -> int:
+    args = build_fix_parser().parse_args(argv)
+    if not args.paths:
+        print("error: no paths given", file=sys.stderr)
+        return 2
+
+    try:
+        config = _apply_cli_overrides(load_config(args.config), args)
+        from .fixer import fix_paths
+
+        results = fix_paths(args.paths, config)
+    except (FileNotFoundError, ValueError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+
+    changed = [r for r in results if r.changed]
+    if args.dry_run:
+        import difflib
+
+        for r in changed:
+            diff = difflib.unified_diff(
+                r.original.splitlines(keepends=True),
+                r.fixed.splitlines(keepends=True),
+                fromfile=str(r.path),
+                tofile=f"{r.path} (fixed)",
+            )
+            sys.stdout.write("".join(diff))
+        n = sum(len(r.fixes) for r in changed)
+        print(
+            f"would apply {n} fix(es) in {len(changed)} file(s)"
+            if changed
+            else "✔ Nothing to fix."
+        )
+        return 1 if changed else 0
+
+    for r in changed:
+        r.path.write_text(r.fixed, encoding="utf-8")
+        for f in r.fixes:
+            print(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}")
+    if not changed:
+        print("✔ Nothing to fix.")
+        return 0
+    n = sum(len(r.fixes) for r in changed)
+    remaining = Engine(config).lint_paths([r.path for r in changed])
+    note = f"; {len(remaining)} finding(s) remain (run pumllint to see them)" if remaining else ""
+    print(f"✔ Applied {n} fix(es) in {len(changed)} file(s){note}")
+    return 0
 
 
 def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:

@@ -9,7 +9,7 @@ branding:
 
 inputs:
   command:
-    description: "'lint' or 'score'"
+    description: "'lint', 'score' or 'fix'"
     default: "lint"
   paths:
     description: ".puml files or directories to check (space-separated)"
@@ -68,23 +68,26 @@ runs:
       run: |
         set -euo pipefail
         cmd=(python3 -m pumllint)
-        if [ "${IN_COMMAND}" = "score" ]; then
-          cmd+=(score)
+        if [ "${IN_COMMAND}" = "score" ] || [ "${IN_COMMAND}" = "fix" ]; then
+          cmd+=("${IN_COMMAND}")
         elif [ "${IN_COMMAND}" != "lint" ]; then
-          echo "::error::command must be 'lint' or 'score', got '${IN_COMMAND}'"
+          echo "::error::command must be 'lint', 'score' or 'fix', got '${IN_COMMAND}'"
           exit 2
         fi
         read -r -a path_args <<< "${IN_PATHS}"
         cmd+=("${path_args[@]}")
         if [ -n "${IN_CONFIG}" ]; then cmd+=(-c "${IN_CONFIG}"); fi
         if [ -n "${IN_PROFILE}" ]; then cmd+=(--profile "${IN_PROFILE}"); fi
-        if [ -n "${IN_FORMAT}" ]; then cmd+=(-f "${IN_FORMAT}"); fi
-        if [ -n "${IN_OUTPUT}" ]; then cmd+=(-o "${IN_OUTPUT}"); fi
+        if [ "${IN_COMMAND}" != "fix" ]; then
+          if [ -n "${IN_FORMAT}" ]; then cmd+=(-f "${IN_FORMAT}"); fi
+          if [ -n "${IN_OUTPUT}" ]; then cmd+=(-o "${IN_OUTPUT}"); fi
+        fi
         if [ "${IN_COMMAND}" = "score" ]; then
           if [ -n "${IN_MIN_LEVEL}" ]; then cmd+=(--min-level "${IN_MIN_LEVEL}"); fi
           if [ -n "${IN_BASELINE}" ]; then cmd+=(--baseline "${IN_BASELINE}"); fi
           if [ "${IN_UPDATE_BASELINE}" = "true" ]; then cmd+=(--update-baseline); fi
-        else
+        fi
+        if [ "${IN_COMMAND}" = "lint" ]; then
           if [ -n "${IN_FAIL_ON}" ]; then cmd+=(--fail-on "${IN_FAIL_ON}"); fi
         fi
         if [ -n "${IN_EXTRA_ARGS}" ]; then

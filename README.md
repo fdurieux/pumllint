@@ -16,6 +16,7 @@ python -m pumllint --list-rules              # what can it check?
 python -m pumllint diagrams/ -f sonar -o pumllint-sonar.json
 python -m pumllint --profile codegen diagrams/   # + codegen-readiness rules
 python -m pumllint score diagrams/ --min-level 3 # maturity gate (see below)
+python -m pumllint fix diagrams/                 # auto-fix mechanical findings
 ```
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
@@ -112,7 +113,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.15.0
+  uses: fdurieux/pumllint@v0.16.0
   with:
     command: score
     paths: docs/diagrams
@@ -215,6 +216,34 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 
 The vagueness / elision / non-informative lexicons are configurable per rule
 (`vague_terms`, `tokens`, `failure_keywords`, `non_informative`).
+
+## Auto-fix
+
+`pumllint fix` applies the mechanical fixes — the ones that are
+deterministic and semantics-preserving, where nothing has to be invented:
+
+| Finding | Fix |
+|---------|-----|
+| GEN002 unnamed-diagram | `@startuml <name>` derived from the file stem (ordinal suffix for multiple diagrams per file) |
+| GEN001 missing-title | `title <Humanized>` inserted after `@startuml` |
+| SEQ001/SEQ101 undeclared-participant | `participant X` declarations in first-use order, anchored after the existing declarations |
+
+```bash
+python -m pumllint fix diagrams/            # apply fixes in place
+python -m pumllint fix diagrams/ --dry-run  # show the diff; exit 1 if fixes
+                                            # are pending (CI check mode)
+```
+
+Fixes are driven by the linter's actual findings, so suppressed findings and
+disabled rules are never "fixed", and the run is idempotent. The fixer also
+inherits the linter's judgment calls: SEQ001 deliberately stays quiet in
+files that declare no participants at all (ad-hoc sketches aren't punished),
+so such files get no declaration fixes either — set
+`SEQ001: {only_if_any_declared: false}` if you want sketches fixed too.
+Everything else (labels, guards, multiplicities) stays a human decision —
+the linter tells you *what*, but will not guess *which*. In GitHub Actions,
+use `command: fix` with `extra-args: --dry-run` as a "fixes pending?" CI
+check.
 
 ## Configuration
 
@@ -357,11 +386,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.15.0
+  uses: fdurieux/pumllint@v0.16.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.15.0
+  uses: fdurieux/pumllint@v0.16.0
   with:
     command: score
     paths: docs/diagrams
@@ -402,7 +431,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.15.0
+    rev: v0.16.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score
