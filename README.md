@@ -95,6 +95,33 @@ artifact) and embed:
 Colors follow the level: red (1) → orange (2) → yellow (3) → yellowgreen (4)
 → brightgreen (5).
 
+### HTML report
+
+`-f html` renders the score run as a single self-contained page for
+architect-facing reviews — the model-set verdict first, then per-diagram
+cards sorted worst-first, each with its level, per-dimension score bars, the
+prescriptive gap report, and baseline trends when ratcheting:
+
+```bash
+python -m pumllint score diagrams/ -f html -o maturity-report.html
+```
+
+No scripts, no external requests, no timestamps: the file renders offline
+and is byte-identical across runs over the same model set — publish it as a
+CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
+
+```yaml
+- name: Maturity report
+  uses: fdurieux/pumllint@v0.15.0
+  with:
+    command: score
+    paths: docs/diagrams
+    format: html
+    output: maturity-report.html
+- uses: actions/upload-artifact@v4
+  with: { name: maturity-report, path: maturity-report.html }
+```
+
 Why gate on it: in a measured experiment (75 generation runs, independent
 LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with
 the fidelity of code generated from the diagrams (r ≈ 0.49), and diagrams
@@ -330,11 +357,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.14.0
+  uses: fdurieux/pumllint@v0.15.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.14.0
+  uses: fdurieux/pumllint@v0.15.0
   with:
     command: score
     paths: docs/diagrams
@@ -375,7 +402,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.14.0
+    rev: v0.15.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

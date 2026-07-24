@@ -193,3 +193,78 @@ def test_badge_reporter_rejects_lint_output():
         assert "score" in str(e)
     else:
         assert False, "expected ValueError for badge lint rendering"
+
+
+# --- html (0.15.0) ----------------------------------------------------------
+
+def test_html_reporter_emits_self_contained_report():
+    import re
+
+    results = _results()
+    _, r = results[0]
+    out = get_reporter("html").render_maturity(results)
+    assert out.startswith("<!DOCTYPE html>")
+    assert "pumllint maturity report" in out
+    assert f"Level {r.level} — {r.level_name}" in out
+    assert "order.puml" in out
+    assert ("To reach Level" in out) == bool(r.gap_report)
+    # self-contained: no external scripts, stylesheets, images or fonts
+    assert not re.search(r'(src|href)="', out)
+    assert "<script" not in out
+
+
+def test_html_reporter_sorts_diagrams_worst_first():
+    src = (
+        "@startuml good\ntitle Good\nparticipant A\nparticipant B\n"
+        "A -> B : go()\nB --> A : ok\n@enduml\n"
+        "@startuml\nAlice -> Bob :\nalt maybe\nAlice -> Bob : retry\n@enduml\n"
+    )
+    results = _results(src)
+    out = get_reporter("html").render_maturity(results)
+    levels = {r.level for _, r in results}
+    assert len(levels) > 1, "fixture must span levels"
+    worst = min(results, key=lambda dr: dr[1].level)[0]
+    best = max(results, key=lambda dr: dr[1].level)[0]
+    from pumllint.reporters.builtin import _diagram_label
+
+    assert out.index(_diagram_label(worst)) < out.index(_diagram_label(best))
+
+
+def test_html_reporter_escapes_untrusted_text():
+    src = '@startuml <img>\ntitle T\nparticipant A\nA -> A : <script>alert(1)</script>\n@enduml\n'
+    out = get_reporter("html").render_maturity(_results(src))
+    assert "<script>alert" not in out
+    assert "<img>" not in out.split("<h2>")[1].split("</h2>")[0].replace("&lt;img&gt;", "")
+
+
+def test_html_reporter_annotates_baseline_trends():
+    results = _results()
+    _, r = results[0]
+    out = get_reporter("html").render_maturity(
+        results, baseline=_baseline_for(results, offset=-1)
+    )
+    assert f"Level {r.level - 1} → {r.level} since last baseline" in out
+    out_new = get_reporter("html").render_maturity(results, baseline={})
+    assert "new since baseline" in out_new
+
+
+def test_html_reporter_is_deterministic():
+    results = _results()
+    assert (
+        get_reporter("html").render_maturity(results)
+        == get_reporter("html").render_maturity(results)
+    )
+
+
+def test_html_reporter_handles_an_empty_set():
+    out = get_reporter("html").render_maturity([])
+    assert "No diagrams to score." in out
+
+
+def test_html_reporter_rejects_lint_output():
+    try:
+        get_reporter("html").render([])
+    except ValueError as e:
+        assert "score" in str(e)
+    else:
+        assert False, "expected ValueError for html lint rendering"

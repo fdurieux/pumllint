@@ -21,7 +21,7 @@ inputs:
     description: "Rule profile to activate (e.g. codegen)"
     default: ""
   format:
-    description: "Output format: text | json | sonar | badge (badge: score only)"
+    description: "Output format: text | json | sonar | badge | html (badge/html: score only)"
     default: ""
   output:
     description: "Write the report to this file instead of stdout"

@@ -172,6 +172,13 @@ pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--upda
   "Level 3 — Disciplined", "color": "yellow"}`); level→color runs
   red/orange/yellow/yellowgreen/brightgreen, `lightgrey` when nothing was
   scored. Score-only: the lint command rejects it.
+- `-f html` (0.15.0) — a single self-contained page for architect reviews:
+  model-set verdict first, then per-diagram cards sorted worst-first (the
+  set is only as trustworthy as its weakest diagram) with level pill,
+  per-dimension score bars, the gap report to the next level, and baseline
+  trend annotations when ratcheting. No scripts, no external requests, no
+  timestamps — output is deterministic and renders offline (CI artifact,
+  wiki, email). Score-only, like the badge.
 - `--check-syntax` — run the DIM-SYN gate (`<command> -checkonly <file>` per
   file); failures force Level 1. Also enabled via config: `scoring:
   {syntax_gate: true, syntax_command: plantuml}` (`syntax_command` may be a

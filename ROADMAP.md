@@ -16,7 +16,8 @@ DIM-TRC/DIM-RDB (GEN006–009, SEQ011) and settled the weight revisit
 (unchanged, SCORING.md §9); **v0.13.0** (2026-07-23) finished Arc C with
 cross-type entity identity (XD004–005 — 42 base rules); **v0.14.0**
 (2026-07-24) extended the calibration corpus and golden contract to every
-diagram type (additive re-freeze, 49 → 83 units). This file tracks what
+diagram type (additive re-freeze, 49 → 83 units); **v0.15.0** (2026-07-24)
+completed Arc B with the architect-facing HTML report. This file tracks what
 remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
@@ -27,7 +28,7 @@ remains, grouped into arcs. Keep it updated as items land.
   it. `--min-level` gates on the model-set level by construction (set level
   = worst diagram level).
 
-## Arc B — Trust & adoption (highest-value next arc)
+## Arc B — Trust & adoption (done)
 
 - [x] **Baseline/ratchet mode** *(0.6.0)* — `pumllint score --baseline
   maturity.json` records per-diagram levels on first run, then fails CI only
@@ -43,7 +44,27 @@ remains, grouped into arcs. Keep it updated as items land.
   mirroring the CLI, installs from the pinned ref) and pre-commit hooks
   (`.pre-commit-hooks.yaml`: `pumllint`, `pumllint-score`); both dogfooded
   in tests.yml and drift-guarded by tests/test_packaging.py.
-- [ ] HTML report (single self-contained file) for architect-facing reviews.
+- [x] HTML report *(0.15.0)* — `pumllint score -f html`: single
+  self-contained page (no scripts, no external requests, no timestamps —
+  deterministic and offline-renderable), model-set verdict first, diagram
+  cards worst-first with dimension bars, gap report and baseline trends.
+  Score-only like the badge; Action `format: html` + upload-artifact is the
+  CI recipe (README). **Arc B is complete.**
+
+  *Design record (inception reviewed before building):* the report serves
+  the one audience the maturity score was built for but no output reached —
+  the architect/reviewer who never runs CLIs; the gap report (the product's
+  most persuasive feature) previously existed only as terminal text. The
+  original one-liner was kept in spirit but sharpened four ways: (1) bound
+  to the *score* pipeline, not lint — an architect report of raw findings
+  is just a prettier error list, the value is levels/gaps/trends; (2)
+  worst-first ordering, because the product's own thesis is that the set is
+  only as trustworthy as its weakest diagram; (3) no JS and no timestamps —
+  native `<details>`-free simplicity, deterministic and diffable output as
+  a feature; (4) deliberately no charts/history — the baseline file is the
+  only trend state the product has, and a snapshot + deltas is the honest
+  scope. Fit was near-zero-cost by construction: `render_maturity()` was
+  already the pluggable seam, so `-f html` needed no CLI or Action changes.
 
 ## Arc C — Coverage growth
 
@@ -112,9 +133,8 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: **Arc C is complete** (0.13.0), and the golden contract
-  now covers every diagram type (0.14.0: class/state/usecase mutation
-  ladders + per-type clean probes, additive re-freeze 49 → 83 units).
-  Open threads, all demand-driven: Arc B's HTML report (architect-facing;
-  wait for pull), Arc D evidence deepening (only if marketing claims need
-  escalation), Arc E ecosystem (wait for pull).
+- Recommended next: **Arcs A, B and C are complete** (0.15.0); the golden
+  contract covers every diagram type (0.14.0: additive re-freeze, 49 → 83
+  units). Everything that remains is demand-driven: Arc D evidence deepening
+  (only if marketing claims need escalation) and Arc E ecosystem (wait for
+  pull — `pumllint fix` is the likeliest first ask).

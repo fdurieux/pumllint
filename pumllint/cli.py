@@ -36,7 +36,7 @@ def _add_common_arguments(p: argparse.ArgumentParser) -> None:
     )
     p.add_argument(
         "-f", "--format", default="text",
-        help="Output format: text | json | sonar | badge (badge: score only)",
+        help="Output format: text | json | sonar | badge | html (badge/html: score only)",
     )
     p.add_argument("-o", "--output", help="Write report to file instead of stdout")
     p.add_argument(
