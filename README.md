@@ -153,7 +153,7 @@ faithful generation, bound to the `codegen` profile so it cannot be claimed
 without those rules running.
 
 Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
-All knobs are configurable under the `scoring:` key (see `pumllint.yaml`).
+All knobs are configurable under the `scoring` key (see `pumllint.toml`).
 
 ## Rules
 
@@ -343,6 +343,11 @@ Batch -> Batch : self-trigger
 Rules can be referenced by id or kebab-case name. CI can audit what is being
 suppressed by running with `--no-suppressions` (or `suppressions: false` in
 the config), which reports everything regardless of comments.
+
+Suppressed findings never vanish silently from maturity scores: `pumllint
+score` annotates every affected diagram — `100/100 (3 suppressed)` — and the
+JSON report carries a `suppressedCount` per diagram and for the model set,
+so a suppressed-clean diagram is always distinguishable from a clean one.
 
 ## Architecture
 

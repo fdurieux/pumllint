@@ -56,6 +56,7 @@ def _maturity_to_dict(r: MaturityResult) -> dict:
         "score": round(r.composite, 2),
         "syntaxOk": r.syntax_ok,
         "elementCount": r.element_count,
+        "suppressedCount": r.suppressed_count,
         "dimensions": {
             dim.value: {
                 "score": round(ds.score, 2),
@@ -101,6 +102,8 @@ class TextReporter(Reporter):
             header = (
                 f"{_diagram_label(diagram)}: Level {r.level} ({r.level_name}) — {r.composite:.0f}/100"
             )
+            if r.suppressed_count:  # a suppressed-clean run must say so
+                header += f" ({r.suppressed_count} suppressed)"
             if baseline is not None:
                 d = deltas.get(key)
                 if d is None:
@@ -126,6 +129,8 @@ class TextReporter(Reporter):
             f"Model set: Level {agg.level} ({agg.level_name}) — "
             f"{agg.composite:.0f}/100 weighted across {agg.diagram_count} diagram(s)"
         )
+        if agg.suppressed_count:
+            set_line += f" ({agg.suppressed_count} finding(s) suppressed)"
         if baseline is not None:
             base_levels = [baseline[k].level for k in keys if k in baseline]
             if base_levels and min(base_levels) != agg.level:
@@ -167,6 +172,7 @@ class JsonReporter(Reporter):
                 "score": round(agg.composite, 2),
                 "diagramCount": agg.diagram_count,
                 "elementCount": agg.element_count,
+                "suppressedCount": agg.suppressed_count,
                 "baseline": None
                 if not base_levels
                 else {"level": min(base_levels), "delta": agg.level - min(base_levels)},
@@ -267,13 +273,18 @@ class SonarReporter(Reporter):
                 if r.gap_report
                 else ""
             )
+            suppressed = (
+                f"; {r.suppressed_count} finding(s) suppressed"
+                if r.suppressed_count
+                else ""
+            )
             issues.append(
                 {
                     "ruleId": self.MATURITY_RULE_ID,
                     "primaryLocation": {
                         "message": (
                             f"Level {r.level} ({r.level_name}) — "
-                            f"composite {r.composite:.0f}/100{obstacles}"
+                            f"composite {r.composite:.0f}/100{obstacles}{suppressed}"
                         ),
                         "filePath": diagram.file_path,
                         "textRange": {"startLine": max(1, diagram.start_line)},

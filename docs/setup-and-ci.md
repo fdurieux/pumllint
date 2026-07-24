@@ -175,7 +175,10 @@ pumllint's.)
 ## Auditing suppressions
 
 Authors can silence findings with `' pumllint: disable=…` comments
-(see [findings guide](findings-and-scores.md#suppressions)). For a periodic
-audit, run CI once with `--no-suppressions` — everything is reported
-regardless of comments, so you can see what is being suppressed and decide
-whether that's fine.
+(see [findings guide](findings-and-scores.md#suppressions)). Every maturity
+report already discloses how much is being silenced — an affected diagram
+shows `100/100 (3 suppressed)` and the JSON report carries the count as
+`suppressedCount` — so a rising count is visible on every run, not just
+during audits. For a full audit, run CI once with `--no-suppressions` —
+everything is reported regardless of comments, so you can see what is being
+suppressed and decide whether that's fine.

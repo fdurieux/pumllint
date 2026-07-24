@@ -14,7 +14,7 @@
     "modelSet": {
       "type": ["object", "null"],
       "description": "Aggregate over all scored diagrams (worst level, element-weighted composite); null when no diagrams were scored.",
-      "required": ["level", "levelName", "score", "diagramCount", "elementCount", "baseline"],
+      "required": ["level", "levelName", "score", "diagramCount", "elementCount", "suppressedCount", "baseline"],
       "additionalProperties": false,
       "properties": {
         "level": { "$ref": "#/$defs/level" },
@@ -22,6 +22,7 @@
         "score": { "$ref": "#/$defs/score" },
         "diagramCount": { "type": "integer", "minimum": 1 },
         "elementCount": { "type": "integer", "minimum": 0 },
+        "suppressedCount": { "type": "integer", "minimum": 0, "description": "Sum of the per-diagram suppressedCount values — findings hidden by inline suppressions across the whole set, none of which entered the scores." },
         "baseline": { "$ref": "#/$defs/baseline" }
       }
     }
@@ -67,7 +68,7 @@
     },
     "maturity": {
       "type": "object",
-      "required": ["level", "levelName", "score", "syntaxOk", "elementCount", "dimensions", "gapReport"],
+      "required": ["level", "levelName", "score", "syntaxOk", "elementCount", "suppressedCount", "dimensions", "gapReport"],
       "additionalProperties": false,
       "properties": {
         "level": { "$ref": "#/$defs/level" },
@@ -75,6 +76,7 @@
         "score": { "$ref": "#/$defs/score" },
         "syntaxOk": { "type": "boolean", "description": "DIM-SYN gate result; true unless --check-syntax (or the config gate) found a failure" },
         "elementCount": { "type": "integer", "minimum": 0 },
+        "suppressedCount": { "type": "integer", "minimum": 0, "description": "Findings hidden by inline ' pumllint: disable comments — excluded from the score and every dimension, so a suppressed-clean diagram is distinguishable from a clean one. Audit them with --no-suppressions." },
         "dimensions": {
           "type": "object",
           "description": "Per-dimension scores. DIM-SYN is a gate, not a scored dimension, so it never appears here.",

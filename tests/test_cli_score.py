@@ -1,7 +1,7 @@
 """CLI tests for the `score` subcommand (Phase 6). Plain assert functions; all
 output is routed to a file with -o so nothing prints under the zero-dependency
 runner, and an explicit empty JSON config isolates tests from the repo's
-pumllint.yaml.
+pumllint.toml.
 """
 
 import json
@@ -333,3 +333,45 @@ def test_badge_format_is_rejected_for_lint():
         rc, err = _main_quiet([str(puml), "-c", str(cfg), "-f", "badge", "-o", str(out)])
         assert rc == 2
         assert "score command" in err
+
+
+# --- suppressed-findings disclosure (0.19.0) --------------------------------
+
+_SUPPRESSED_SRC = (
+    "@startuml Flow\n"
+    "title Flow\n"
+    "participant Alice\n"
+    "' pumllint: disable=SEQ006\n"
+    "Alice -> Alice : tick()\n"
+    "@enduml\n"
+)
+
+
+def _suppressed_fixture(tmp: str):
+    puml = Path(tmp) / "s.puml"
+    puml.write_text(_SUPPRESSED_SRC, encoding="utf-8")
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text("{}", encoding="utf-8")
+    return puml, cfg
+
+
+def test_score_reports_disclose_suppressed_findings_end_to_end():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _suppressed_fixture(tmp)
+        txt, js = Path(tmp) / "r.txt", Path(tmp) / "r.json"
+        assert main(["score", str(puml), "-c", str(cfg), "-o", str(txt)]) == 0
+        assert "(1 suppressed)" in txt.read_text(encoding="utf-8")
+        assert main(["score", str(puml), "-c", str(cfg), "-f", "json", "-o", str(js)]) == 0
+        data = json.loads(js.read_text(encoding="utf-8"))
+        assert data["diagrams"][0]["maturity"]["suppressedCount"] == 1
+        assert data["modelSet"]["suppressedCount"] == 1
+
+
+def test_no_suppressions_surfaces_the_finding_instead_of_the_count():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _suppressed_fixture(tmp)
+        js = Path(tmp) / "r.json"
+        assert main(["score", str(puml), "-c", str(cfg), "--no-suppressions",
+                     "-f", "json", "-o", str(js)]) == 0
+        data = json.loads(js.read_text(encoding="utf-8"))
+        assert data["diagrams"][0]["maturity"]["suppressedCount"] == 0

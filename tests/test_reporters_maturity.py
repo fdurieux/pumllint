@@ -13,13 +13,28 @@ from pumllint.scoring import score_groups
 # dimensions so the result sits below Level 5 with a non-empty gap report.
 _SRC = "@startuml\nAlice -> Bob : hi\n@enduml\n"
 
+# Clean except for one self-message hidden by an inline suppression: scores
+# like a clean diagram but must be reported as suppressed-clean.
+_SUPPRESSED_SRC = (
+    "@startuml Flow\n"
+    "title Flow\n"
+    "participant Alice\n"
+    "participant Bob\n"
+    "' pumllint: disable=SEQ006\n"
+    "Alice -> Alice : tick()\n"
+    "Alice -> Bob : go()\n"
+    "Bob --> Alice : ok\n"
+    "@enduml\n"
+)
+
 _DIMENSIONS = {"DIM-SEM", "DIM-CMP", "DIM-CON", "DIM-TRC", "DIM-RDB", "DIM-AMB"}
 
 
 def _results(src: str = _SRC):
     diagrams = parse_source(src, "order.puml")
-    groups = Engine({}).lint_diagrams_grouped(diagrams)
-    return score_groups(groups)
+    engine = Engine({})
+    groups = engine.lint_diagrams_grouped(diagrams)
+    return score_groups(groups, engine=engine)
 
 
 def test_text_reporter_shows_level_and_gap():
@@ -60,7 +75,8 @@ def test_json_reporter_emits_maturity_object():
     assert entry["file"] == "order.puml"
     maturity = entry["maturity"]
     assert set(maturity) == {
-        "level", "levelName", "score", "syntaxOk", "elementCount", "dimensions", "gapReport"
+        "level", "levelName", "score", "syntaxOk", "elementCount",
+        "suppressedCount", "dimensions", "gapReport"
     }
     assert isinstance(maturity["level"], int)
     assert set(maturity["dimensions"]) == _DIMENSIONS
@@ -72,7 +88,8 @@ def test_json_reporter_emits_model_set_summary():
     payload = json.loads(get_reporter("json").render_maturity(results))
     ms = payload["modelSet"]
     assert set(ms) == {
-        "level", "levelName", "score", "diagramCount", "elementCount", "baseline"
+        "level", "levelName", "score", "diagramCount", "elementCount",
+        "suppressedCount", "baseline"
     }
     # one diagram: the set summary mirrors it
     _, r = results[0]
@@ -107,6 +124,54 @@ def test_sonar_reporter_emits_one_synthetic_issue_per_diagram():
     assert issue["primaryLocation"]["message"].startswith("Level ")
     assert issue["primaryLocation"]["filePath"] == "order.puml"
     assert payload["rules"][0]["id"] == "pumllint-maturity"
+
+
+# --- suppressed-findings disclosure (0.19.0) --------------------------------
+# A suppressed-clean diagram must never render identically to a clean one:
+# every report carries the per-diagram count of findings hidden by inline
+# suppressions (the score itself is unchanged — golden scores stay frozen).
+
+def test_text_reporter_annotates_suppressed_findings():
+    out = get_reporter("text").render_maturity(_results(_SUPPRESSED_SRC))
+    assert "(1 suppressed)" in out              # per-diagram header
+    assert "(1 finding(s) suppressed)" in out   # model-set line
+
+
+def test_text_reporter_stays_silent_without_suppressions():
+    assert "suppressed" not in get_reporter("text").render_maturity(_results())
+
+
+def test_json_reporter_emits_suppressed_counts():
+    payload = json.loads(get_reporter("json").render_maturity(_results(_SUPPRESSED_SRC)))
+    assert payload["diagrams"][0]["maturity"]["suppressedCount"] == 1
+    assert payload["modelSet"]["suppressedCount"] == 1
+
+    clean = json.loads(get_reporter("json").render_maturity(_results()))
+    assert clean["diagrams"][0]["maturity"]["suppressedCount"] == 0
+    assert clean["modelSet"]["suppressedCount"] == 0
+
+
+def test_html_reporter_annotates_suppressed_findings():
+    out = get_reporter("html").render_maturity(_results(_SUPPRESSED_SRC))
+    assert "1 finding(s) suppressed inline" in out
+    assert "suppressed" not in get_reporter("html").render_maturity(_results())
+
+
+def test_sonar_reporter_mentions_suppressed_findings():
+    payload = json.loads(get_reporter("sonar").render_maturity(_results(_SUPPRESSED_SRC)))
+    assert "1 finding(s) suppressed" in payload["issues"][0]["primaryLocation"]["message"]
+
+
+def test_suppression_annotation_does_not_change_the_score():
+    honoured = _results(_SUPPRESSED_SRC)[0][1]
+    diagrams = parse_source(_SUPPRESSED_SRC, "order.puml")
+    engine = Engine({"suppressions": False})
+    audited = score_groups(engine.lint_diagrams_grouped(diagrams), engine=engine)[0][1]
+    # Suppression hides a real finding, so the audited score is lower — and
+    # the honoured run must disclose the count rather than absorb it silently.
+    assert honoured.suppressed_count == 1
+    assert audited.suppressed_count == 0
+    assert audited.composite < honoured.composite
 
 
 def test_empty_results_render_gracefully():

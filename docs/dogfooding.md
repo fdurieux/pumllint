@@ -22,8 +22,10 @@ inline `' pumllint: disable=SEQ006` comments marking them as genuinely
 intended — so the suppression mechanism the diagram *documents* is also the
 mechanism that *cleans* it.
 
-All results below are from pumllint **0.18.1** with the repository's own
-`pumllint.yaml`, run from the repository root.
+All results below are from the tool as built from this repository (first run
+on **0.18.1**, score rows re-run after the suppressed-count annotation that
+run motivated — see "What to watch") with the repository's own config
+(`pumllint.toml`), run from the repository root.
 
 ## The runs
 
@@ -31,7 +33,7 @@ All results below are from pumllint **0.18.1** with the repository's own
 |---------|--------|
 | `pumllint docs/pumllint-lint-flow.puml` | ✔ No issues found, exit 0 |
 | `pumllint --no-suppressions docs/pumllint-lint-flow.puml` | 3 × SEQ006 (self-message, minor), exit 0 |
-| `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100; Level 5 refused without the codegen profile |
+| `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100 (3 suppressed); Level 5 refused without the codegen profile |
 | `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98/100 |
 | `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 11 findings (4 blocker, 7 major), exit 1 |
 | `pumllint --profile codegen --no-suppressions …` | 14 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
@@ -75,14 +77,17 @@ All results below are from pumllint **0.18.1** with the repository's own
   wrong order would still score 100/100. No rule can check a diagram
   against the code it describes; this is why the maturity levels claim
   "Precise", not "correct", and why that claim language should not drift.
-- **Suppressed findings leave no trace in reports.** Adding three disable
-  comments moved the score from 98 to 100 with nothing in the output
-  saying so. `--no-suppressions` exists for audits, but a
-  "N suppressed" annotation in the reports would make a clean run
-  self-disclosing. (Improvement candidate at the time of writing.)
+- **Suppressed findings left no trace in reports** *(since fixed — this
+  run's finding became the change)*. Adding three disable comments moved
+  the score from 98 to 100 with nothing in the output saying so, so a team
+  could have inflated its level by suppress-spamming. Score reports now
+  disclose the exclusion on every run: the affected diagram reads
+  `100/100 (3 suppressed)`, the model-set line carries the total, and the
+  JSON report records `suppressedCount` per diagram and for the set.
+  `--no-suppressions` remains the full audit.
 - **Dormant governance rules stay dormant at home.** GEN006/GEN007
   (owner tag, requirement link) are unconfigured in the repository's own
-  `pumllint.yaml`, so its own architecture diagram carries no ownership
+  `pumllint.toml`, so its own architecture diagram carries no ownership
   metadata.
 - **DIM-SYN was not exercised.** The run environment had no `plantuml`
   binary, so `score --check-syntax` was skipped; syntax is vouched for by

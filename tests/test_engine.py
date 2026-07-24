@@ -70,3 +70,52 @@ def test_lint_paths_grouped_over_a_file():
         groups = Engine({}).lint_paths_grouped([p])
     assert len(groups) == 2
     assert all(v.file_path == str(p) for _, vs in groups for v in vs)
+
+
+# --- suppressed-findings accounting (0.19.0) --------------------------------
+
+# First diagram suppresses its self-message (SEQ006), the second keeps an
+# identical one visible — the per-diagram discriminator for the counts.
+_SUPPRESSED_PAIR = """\
+@startuml Alpha
+title Alpha
+participant Alice
+' pumllint: disable=SEQ006
+Alice -> Alice : tick()
+@enduml
+
+@startuml Beta
+title Beta
+participant Carol
+Carol -> Carol : spin()
+@enduml
+"""
+
+
+def test_grouped_run_counts_suppressed_findings_per_diagram():
+    diagrams = parse_source(_SUPPRESSED_PAIR, "test.puml")
+    engine = Engine({})
+    groups = engine.lint_diagrams_grouped(diagrams)
+    assert engine.suppressed_count(diagrams[0]) == 1
+    assert engine.suppressed_count(diagrams[1]) == 0
+    # The suppressed finding is hidden, its visible twin is reported.
+    assert "SEQ006" not in {v.rule_id for v in groups[0][1]}
+    assert "SEQ006" in {v.rule_id for v in groups[1][1]}
+
+
+def test_suppressed_counts_are_from_the_most_recent_run_only():
+    diagrams = parse_source(_SUPPRESSED_PAIR, "test.puml")
+    engine = Engine({})
+    engine.lint_diagrams_grouped(diagrams)
+    assert engine.suppressed_count(diagrams[0]) == 1
+    engine.lint_diagrams_grouped(parse_source(_TWO_DIAGRAMS, "other.puml"))
+    # Stale diagrams make no claim rather than reporting a stale count.
+    assert engine.suppressed_count(diagrams[0]) == 0
+
+
+def test_no_suppressions_mode_counts_nothing_as_suppressed():
+    diagrams = parse_source(_SUPPRESSED_PAIR, "test.puml")
+    engine = Engine({"suppressions": False})
+    groups = engine.lint_diagrams_grouped(diagrams)
+    assert engine.suppressed_count(diagrams[0]) == 0
+    assert "SEQ006" in {v.rule_id for v in groups[0][1]}

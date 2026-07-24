@@ -72,6 +72,15 @@ Default severity weights (SonarQube-aligned):
 (`critical` continues the decelerating multiplier ladder — ×4, ×2.5, ×1.6, ×1.25
 — reading as "almost a blocker".)
 
+**Suppressions.** Findings silenced by inline `' pumllint: disable` comments
+are excluded from every penalty above — the score assesses the diagram as its
+authors configured it, and an inline suppression is a reviewable, diff-visible
+configuration act. The exclusion is disclosed, never silent: each scored
+diagram carries a **suppressed-findings count** that every report surfaces
+(§5), so a suppressed-clean diagram cannot pose as a clean one and
+suppress-spamming cannot quietly inflate a level. `--no-suppressions`
+re-scores with the comments ignored for a full audit.
+
 Composite:
 
 ```
@@ -147,6 +156,13 @@ JSON reporter emits `score`, `level`, `dimensions{}`, and `gap_report[]` as a to
 `maturity` object. SonarQube reporter: the Generic Issue Import Format carries issues,
 not measures, so the maturity object is written to the JSON report only; optionally one
 `info`-severity synthetic issue summarizing the level can be emitted for visibility.
+
+Suppression disclosure (§3) rides on every format: the JSON report carries
+`suppressedCount` per diagram and summed on `modelSet`; the text and HTML
+reports annotate any non-zero count next to the score — `100/100 (3
+suppressed)` — and stay unannotated when nothing was suppressed, so clean
+output is unchanged; the SonarQube synthetic issue appends the count to its
+message.
 
 ## 6. CLI
 

@@ -214,3 +214,14 @@ def test_cli_schema_command_rejects_unknown_reports():
         assert e.code == 2
     else:
         assert False, "expected argparse to exit 2 for an unknown report"
+
+
+def test_score_report_with_suppressed_findings_validates():
+    src = (
+        "@startuml Flow\ntitle Flow\nparticipant Alice\n"
+        "' pumllint: disable=SEQ006\nAlice -> Alice : tick()\n@enduml\n"
+    )
+    payload = get_reporter("json").render_maturity(_score_results(src, "flow.puml"))
+    instance = _assert_valid(payload, "score")
+    assert instance["diagrams"][0]["maturity"]["suppressedCount"] == 1
+    assert instance["modelSet"]["suppressedCount"] == 1

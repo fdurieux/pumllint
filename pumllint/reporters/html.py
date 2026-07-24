@@ -134,11 +134,16 @@ class HtmlReporter(Reporter):
                     f' <span class="trend">(Level {min(base_levels)} → '
                     f"{agg.level} since last baseline)</span>"
                 )
+            set_suppressed = (
+                f", {agg.suppressed_count} finding(s) suppressed inline"
+                if agg.suppressed_count
+                else ""
+            )
             summary = (
                 f"<p>{_pill(agg.level, agg.level_name)} "
                 f"<strong>{agg.composite:.0f}/100</strong> weighted across "
                 f"{agg.diagram_count} diagram(s), {agg.element_count} "
-                f"element(s).{set_trend}</p>"
+                f"element(s){set_suppressed}.{set_trend}</p>"
             )
 
         # Worst-first: the set is only as trustworthy as its weakest diagram.
@@ -158,13 +163,18 @@ class HtmlReporter(Reporter):
                         f'<span class="trend">Level {d.baseline_level} → '
                         f"{d.current_level} since last baseline</span>"
                     )
+            suppressed = (
+                f" · {r.suppressed_count} finding(s) suppressed inline"
+                if r.suppressed_count
+                else ""
+            )
             cards.append(
                 '<section class="card"><header>'
                 f"<h2>{escape(_diagram_label(diagram))}</h2>"
                 f"{_pill(r.level, r.level_name)}</header>"
                 f'<p class="meta">{r.composite:.0f}/100 · '
                 f"{escape(diagram.diagram_type)} diagram · "
-                f"{r.element_count} element(s) {trend}</p>"
+                f"{r.element_count} element(s){suppressed} {trend}</p>"
                 f"{_dim_rows(r)}{_gap_section(r)}</section>"
             )
 

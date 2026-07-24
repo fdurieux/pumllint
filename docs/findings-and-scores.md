@@ -143,6 +143,12 @@ Rules can be referenced by ID or name. Be sparing: CI can audit all
 suppressions at any time (`--no-suppressions` reports everything regardless),
 and a suppression in a diff is a natural review conversation.
 
+Suppressions are also visible in the score reports themselves: a diagram
+whose findings were silenced shows the count next to its score — `100/100
+(3 suppressed)` — in the text and HTML reports, and the JSON report records
+it as `suppressedCount`. A perfect score earned by suppressing findings
+never looks the same as one earned by fixing them.
+
 ### If you think a rule is wrong
 
 Sometimes it is — for your context. The escalation ladder: suppress the one

@@ -448,3 +448,23 @@ def test_aggregate_weights_empty_diagrams_at_one_element():
     )
     assert _approx(agg.composite, expected)
     assert agg.element_count == full.element_count  # the empty one adds none
+
+
+def test_score_carries_the_suppressed_count_without_moving_the_score():
+    d = _seq_diagram(2, 3)
+    plain = score([], d)
+    disclosed = score([], d, suppressed_count=3)
+    assert plain.suppressed_count == 0
+    assert disclosed.suppressed_count == 3
+    # Disclosure only: level and composite are untouched (golden scores).
+    assert disclosed.composite == plain.composite
+    assert disclosed.level == plain.level
+
+
+def test_aggregate_sums_suppressed_counts_across_the_set():
+    d1, d2 = _seq_diagram(2, 2), _seq_diagram(2, 2)
+    agg = aggregate_scores([
+        (d1, score([], d1, suppressed_count=2)),
+        (d2, score([], d2, suppressed_count=1)),
+    ])
+    assert agg.suppressed_count == 3

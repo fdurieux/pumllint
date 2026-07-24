@@ -33,6 +33,9 @@ class Engine:
 
         self.rules: list[Rule] = []
         self.cross_rules: list[CrossDiagramRule] = []
+        # Per-diagram counts of findings hidden by inline suppressions in the
+        # most recent grouped run, keyed by id(diagram) — see suppressed_count.
+        self._suppressed_counts: dict[int, int] = {}
         for rule_id, cls in sorted(discover().items()):
             if cls.profiles and not (
                 (profile is not None and profile in cls.profiles)
@@ -60,16 +63,23 @@ class Engine:
         The single-diagram unit the maturity scorer consumes; the flat and
         grouped accessors below both build on it.
         """
+        violations, _ = self._lint_diagram(diagram)
+        return violations
+
+    def _lint_diagram(self, diagram: Diagram) -> tuple[list[Violation], int]:
+        """(kept violations, count of findings hidden by inline suppressions)."""
         honor_suppressions = self.config.get("suppressions", True) is not False
         violations: list[Violation] = []
+        suppressed = 0
         for rule in self.rules:
             if "*" not in rule.applies_to and diagram.diagram_type not in rule.applies_to:
                 continue
             for v in rule.check(diagram):
                 if honor_suppressions and _is_suppressed(diagram, rule, v):
+                    suppressed += 1
                     continue
                 violations.append(v)
-        return sorted(violations, key=lambda v: (v.file_path, v.line, v.rule_id))
+        return sorted(violations, key=_SORT_KEY), suppressed
 
     def lint_diagrams(self, diagrams: Iterable[Diagram]) -> list[Violation]:
         # Flatten the grouped result so flat and grouped output are identical
@@ -83,28 +93,46 @@ class Engine:
         """One (diagram, its-violations) pair per diagram — the per-unit input
         for maturity scoring. Flattening this yields the same set as
         :meth:`lint_diagrams`; cross-diagram findings land in the group of the
-        diagram that owns their file/line."""
+        diagram that owns their file/line. Also records how many findings each
+        diagram's inline suppressions hid — see :meth:`suppressed_count`."""
         diagrams = list(diagrams)
-        cross = self._cross_violations(diagrams)
+        cross, cross_suppressed = self._cross_violations(diagrams)
+        counts: dict[int, int] = {}
         groups: list[tuple[Diagram, list[Violation]]] = []
         for d in diagrams:
-            vs = self.lint_diagram(d)
+            vs, suppressed = self._lint_diagram(d)
+            counts[id(d)] = suppressed + cross_suppressed.get(id(d), 0)
             extra = cross.get(id(d))
             if extra:
                 vs = sorted(vs + extra, key=_SORT_KEY)
             groups.append((d, vs))
+        self._suppressed_counts = counts
         return groups
 
-    def _cross_violations(self, diagrams: list[Diagram]) -> dict[int, list[Violation]]:
-        """Cross-diagram findings keyed by ``id()`` of the owning diagram.
+    def suppressed_count(self, diagram: Diagram) -> int:
+        """Findings hidden by this diagram's inline suppressions in the most
+        recent grouped run (0 for diagrams outside that run).
+
+        Suppressed findings are excluded from the group's violations — and so
+        from lint output and maturity scores. Reporters surface this count so
+        a suppressed-clean diagram stays distinguishable from a clean one.
+        """
+        return self._suppressed_counts.get(id(diagram), 0)
+
+    def _cross_violations(
+        self, diagrams: list[Diagram]
+    ) -> tuple[dict[int, list[Violation]], dict[int, int]]:
+        """Cross-diagram findings, and per-diagram counts of the ones hidden
+        by inline suppressions, both keyed by ``id()`` of the owning diagram.
 
         Active only for batches of more than one diagram (SCORING.md §6); each
         rule sees only the diagrams matching its ``applies_to``, and needs at
         least two of them to compare.
         """
         out: dict[int, list[Violation]] = {}
+        suppressed: dict[int, int] = {}
         if len(diagrams) < 2 or not self.cross_rules:
-            return out
+            return out, suppressed
         honor_suppressions = self.config.get("suppressions", True) is not False
         for rule in self.cross_rules:
             applicable = [
@@ -124,9 +152,10 @@ class Engine:
                         applicable[0],
                     )
                 if honor_suppressions and _is_suppressed(owner, rule, v):
+                    suppressed[id(owner)] = suppressed.get(id(owner), 0) + 1
                     continue
                 out.setdefault(id(owner), []).append(v)
-        return out
+        return out, suppressed
 
     def lint_paths(self, paths: Iterable[str | Path]) -> list[Violation]:
         return self.lint_diagrams(self._parse_paths(paths))

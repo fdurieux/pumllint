@@ -162,6 +162,9 @@ class MaturityResult:
     element_count: int
     dimensions: dict[Dimension, DimensionScore]
     gap_report: list[GapItem] = field(default_factory=list)
+    # Findings hidden by inline suppressions — excluded from every number
+    # above, carried so reports can disclose the exclusion (SCORING.md §3).
+    suppressed_count: int = 0
 
 
 def _clamp(x: float, lo: float, hi: float) -> float:
@@ -449,13 +452,16 @@ def score(
     syntax_ok: bool = True,
     config: Optional[Mapping] = None,
     active_profile: Optional[str] = None,
+    suppressed_count: int = 0,
 ) -> MaturityResult:
     """Aggregate one diagram's violations into a :class:`MaturityResult`.
 
     ``syntax_ok`` is the DIM-SYN gate result (see :mod:`pumllint.syntax`); it
     defaults to True so scoring is testable without the external tool.
     ``active_profile`` is the engine's active rule profile, used by the C7
-    profile-binding cap.
+    profile-binding cap. ``suppressed_count`` is the number of findings the
+    engine hid via inline suppressions before handing over ``violations`` —
+    it does not enter any score, only the report annotation.
     """
     cfg = ScoringConfig.from_dict(config)
     violations = list(violations)
@@ -490,6 +496,7 @@ def score(
         element_count=element_count,
         dimensions=dim_scores,
         gap_report=gap_report,
+        suppressed_count=suppressed_count,
     )
 
 
@@ -502,6 +509,8 @@ class ModelSetResult:
     is the element-weighted mean of per-diagram composites, so a large
     detailed diagram moves the set score more than a stub (each diagram
     weighs at least 1 element so empty diagrams still register).
+    ``suppressed_count`` sums the per-diagram counts of findings hidden by
+    inline suppressions — none of them entered the scores above.
     """
 
     level: int
@@ -509,6 +518,7 @@ class ModelSetResult:
     composite: float
     diagram_count: int
     element_count: int
+    suppressed_count: int = 0
 
 
 def aggregate_scores(
@@ -533,6 +543,7 @@ def aggregate_scores(
         composite=composite,
         diagram_count=len(results),
         element_count=sum(r.element_count for _, r in results),
+        suppressed_count=sum(r.suppressed_count for _, r in results),
     )
 
 
@@ -553,12 +564,16 @@ def score_groups(
 
     Pass the ``engine`` that produced the groups whenever you have it: its
     active profile is then used for the C7 cap, so a diagram can only be
-    certified Level 5 when the profile's rules actually ran. A bare
-    ``active_profile`` string is trusted as-is — it must match the engine
-    configuration that produced ``groups``, or the certification lies.
+    certified Level 5 when the profile's rules actually ran, and the
+    per-diagram counts of suppression-hidden findings it recorded are stamped
+    onto the results so reports can disclose them. A bare ``active_profile``
+    string is trusted as-is — it must match the engine configuration that
+    produced ``groups``, or the certification lies.
     """
+    suppressed_of = None
     if engine is not None:
         active_profile = getattr(engine, "profile", None)
+        suppressed_of = getattr(engine, "suppressed_count", None)
     def _ok(d: Diagram) -> bool:
         if syntax_results is None:
             return syntax_ok
@@ -570,6 +585,7 @@ def score_groups(
             score(
                 violations, diagram,
                 syntax_ok=_ok(diagram), config=config, active_profile=active_profile,
+                suppressed_count=suppressed_of(diagram) if suppressed_of else 0,
             ),
         )
         for diagram, violations in groups
