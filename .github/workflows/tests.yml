@@ -144,7 +144,10 @@ jobs:
               && echo "candidate '$c': exit 0 (accepted)" \
               || echo "candidate '$c': rejected"
           done
-          printf '@startuml\nAlice ->\n@enduml\n' > "$RUNNER_TEMP/broken-probe.puml"
+          # Chosen probe: 'class {' — a structural parser error. (Measured:
+          # PlantUML even accepts a dangling 'Alice ->', so the matrix above
+          # documents which breakages the grammar actually rejects.)
+          printf '@startuml\nclass {\n@enduml\n' > "$RUNNER_TEMP/broken-probe.puml"
           pumllint score "$RUNNER_TEMP/broken-probe.puml" --check-syntax -f json -o probe.json
           python - <<'EOF'
           import json, sys
