@@ -59,6 +59,56 @@
     "elements": 8,
     "level": 4
   },
+  "mutations/door_lock_state_good__L2.puml": {
+    "composite": 99.31,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/door_lock_state_good__L3.puml": {
+    "composite": 96.53,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/door_lock_state_good__L4.puml": {
+    "composite": 86.72,
+    "elements": 8,
+    "level": 3
+  },
+  "mutations/door_lock_state_good__L5.puml": {
+    "composite": 70.54,
+    "elements": 7,
+    "level": 2
+  },
+  "mutations/door_lock_state_good__S-drop_initial.puml": {
+    "composite": 87.5,
+    "elements": 8,
+    "level": 2
+  },
+  "mutations/door_lock_state_good__S-drop_name.puml": {
+    "composite": 99.86,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/door_lock_state_good__S-drop_title.puml": {
+    "composite": 99.44,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/door_lock_state_good__S-duplicate_initial.puml": {
+    "composite": 90.0,
+    "elements": 10,
+    "level": 2
+  },
+  "mutations/door_lock_state_good__S-unlabel_transition.puml": {
+    "composite": 97.22,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/door_lock_state_good__S-unreachable_state.puml": {
+    "composite": 90.62,
+    "elements": 8,
+    "level": 3
+  },
   "mutations/loan_decision_activity_good__L2.puml": {
     "composite": 99.43,
     "elements": 11,
@@ -214,6 +264,116 @@
     "elements": 10,
     "level": 2
   },
+  "mutations/shop_classes_good__L2.puml": {
+    "composite": 99.31,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__L3.puml": {
+    "composite": 90.97,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__L4.puml": {
+    "composite": 88.19,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__L5.puml": {
+    "composite": 86.53,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__L6.puml": {
+    "composite": 84.86,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__L7.puml": {
+    "composite": 84.31,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-drop_multiplicities.puml": {
+    "composite": 91.67,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-drop_name.puml": {
+    "composite": 99.86,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-drop_title.puml": {
+    "composite": 99.44,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-god_class.puml": {
+    "composite": 99.44,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-inheritance_cycle.puml": {
+    "composite": 95.0,
+    "elements": 10,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-pascal_member.puml": {
+    "composite": 98.33,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-snake_case_class.puml": {
+    "composite": 98.33,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/shop_classes_good__S-unlabel_association.puml": {
+    "composite": 97.22,
+    "elements": 9,
+    "level": 4
+  },
+  "mutations/webshop_usecase_good__L2.puml": {
+    "composite": 99.11,
+    "elements": 7,
+    "level": 4
+  },
+  "mutations/webshop_usecase_good__L3.puml": {
+    "composite": 96.25,
+    "elements": 7,
+    "level": 4
+  },
+  "mutations/webshop_usecase_good__L4.puml": {
+    "composite": 83.12,
+    "elements": 6,
+    "level": 3
+  },
+  "mutations/webshop_usecase_good__S-drop_name.puml": {
+    "composite": 99.82,
+    "elements": 7,
+    "level": 4
+  },
+  "mutations/webshop_usecase_good__S-drop_title.puml": {
+    "composite": 99.29,
+    "elements": 7,
+    "level": 4
+  },
+  "mutations/webshop_usecase_good__S-orphan_usecase.puml": {
+    "composite": 87.5,
+    "elements": 6,
+    "level": 3
+  },
+  "mutations/webshop_usecase_good__S-reverse_extend.puml": {
+    "composite": 97.14,
+    "elements": 7,
+    "level": 4
+  },
+  "synthetic/class_clean.puml": {
+    "composite": 100.0,
+    "elements": 3,
+    "level": 4
+  },
   "synthetic/empty.puml": {
     "composite": 100.0,
     "elements": 0,
@@ -239,9 +399,19 @@
     "elements": 4,
     "level": 4
   },
+  "synthetic/state_clean.puml": {
+    "composite": 100.0,
+    "elements": 6,
+    "level": 4
+  },
   "synthetic/tiny_clean.puml": {
     "composite": 87.5,
     "elements": 2,
     "level": 3
+  },
+  "synthetic/usecase_clean.puml": {
+    "composite": 100.0,
+    "elements": 5,
+    "level": 4
   }
 }

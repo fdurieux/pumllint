@@ -14,8 +14,10 @@ state-diagram parser and STA pack; **v0.11.0** (2026-07-23) closed the
 original base catalog with UC003; **v0.12.0** (2026-07-23) thickened
 DIM-TRC/DIM-RDB (GEN006–009, SEQ011) and settled the weight revisit
 (unchanged, SCORING.md §9); **v0.13.0** (2026-07-23) finished Arc C with
-cross-type entity identity (XD004–005 — 42 base rules). This file tracks
-what remains, grouped into arcs. Keep it updated as items land.
+cross-type entity identity (XD004–005 — 42 base rules); **v0.14.0**
+(2026-07-24) extended the calibration corpus and golden contract to every
+diagram type (additive re-freeze, 49 → 83 units). This file tracks what
+remains, grouped into arcs. Keep it updated as items land.
 
 ## Arc A — Integrity (done)
 
@@ -110,11 +112,9 @@ marketing claims need escalation:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: **Arc C is complete** (0.13.0). Open threads, all
-  demand-driven: Arc B's HTML report (architect-facing; wait for pull),
-  Arc D evidence deepening (only if marketing claims need escalation),
-  Arc E ecosystem (wait for pull). Still worth doing at some point:
-  class/state/usecase fixtures in the calibration corpus (gen_corpus.py)
-  with a conscious golden re-freeze — the example pairs cover those packs in
-  calibrate.py's pair metric, but the golden contract itself is still
-  sequence/activity-only.
+- Recommended next: **Arc C is complete** (0.13.0), and the golden contract
+  now covers every diagram type (0.14.0: class/state/usecase mutation
+  ladders + per-type clean probes, additive re-freeze 49 → 83 units).
+  Open threads, all demand-driven: Arc B's HTML report (architect-facing;
+  wait for pull), Arc D evidence deepening (only if marketing claims need
+  escalation), Arc E ecosystem (wait for pull).

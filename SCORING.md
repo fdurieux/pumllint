@@ -375,6 +375,16 @@ the sensitivity harness `tools/calibrate.py`. Findings that fixed the numbers:
   level and composite of every deterministic corpus unit; the golden test
   fails on any drift. After a deliberate scoring change, re-freeze with
   `python tools/calibrate.py --freeze tests/golden_scores.json`.
+- **Corpus extended to every diagram type (v0.14.0).** The deterministic
+  corpus gained mutation ladders over the class/state/use-case good examples
+  (CLS/STA/UC operators, same ladder discipline: element-adding operators are
+  singles-only) and three per-type clean synthetic probes pinned at Level 4.
+  The re-freeze was **purely additive** — 49 → 83 units, every pre-existing
+  entry byte-identical — because no scoring behavior changed, only coverage.
+  All metrics stayed clean (0 monotonicity violations, 0 expected-level
+  misses, 6/6 pairs). The 5–9-element volatility bucket now records a
+  2-level single-finding drop: the state pack's duplicate-initial blocker
+  forcing Level 2 — cap-driven and intended, per the coarseness note above.
 
 **Codegen-claim experiments (2026-07-22).** A 12-run pilot
 ($0.94; harness since retired in favor of the full tool — raw pilot data in

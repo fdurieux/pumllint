@@ -112,6 +112,77 @@ def op_unterminate_construct(text):
     return _sub(r"^\s+endif\n", "", text)
 
 
+# -- class-diagram operators (shop_classes_good) ----------------------------
+
+def op_drop_multiplicities(text):  # CLS002
+    return _sub(r'^(\w+) "[^"]+" -- "[^"]+" (\w+)', r"\1 -- \2", text)
+
+
+def op_unlabel_association(text):  # CLS003
+    return _sub(r'^(\w+ "[^"]+" -- "[^"]+" \w+) : .+$', r"\1", text)
+
+
+def op_snake_case_class(text):  # CLS001 (renames every occurrence: no new entity)
+    if "Product" not in text:
+        return None
+    return text.replace("Product", "product_catalog")
+
+
+def op_pascal_member(text):  # CLS001
+    if "+placeOrder" not in text:
+        return None
+    return text.replace("+placeOrder", "+PlaceOrder", 1)
+
+
+def op_god_class(text):  # CLS005 (members are not elements -> ladder-safe)
+    if "+email: String\n" not in text:
+        return None
+    filler = "".join(f"  +field{i:02d}: String\n" for i in range(1, 15))
+    return text.replace("  +email: String\n", "  +email: String\n" + filler, 1)
+
+
+def op_inheritance_cycle(text):  # CLS004; adds a relation -> singles only
+    if "Order ..|> Payable" not in text or "@enduml" not in text:
+        return None
+    return text.replace("@enduml", "Order <|-- Payable\n@enduml", 1)
+
+
+# -- state-diagram operators (door_lock_state_good) -------------------------
+
+def op_unlabel_transition(text):  # STA003
+    return _sub(r"^(Alarmed --> Locked) : .+$", r"\1", text)
+
+
+def op_unreachable_state(text):  # STA002 (removes a transition)
+    return _sub(r"^Locked --> Alarmed : .+\n", "", text)
+
+
+def op_drop_initial(text):  # STA001 blocker (removes the initial transition)
+    return _sub(r"^\[\*\] --> Locked\n", "", text)
+
+
+def op_duplicate_initial(text):  # STA001; adds a transition -> singles only
+    if "[*] --> Locked" not in text or "@enduml" not in text:
+        return None
+    return text.replace("@enduml", "[*] --> Unlocked\n@enduml", 1)
+
+
+# -- use-case operators (webshop_usecase_good) ------------------------------
+
+def op_reverse_extend(text):  # UC003 (same entities, same link count)
+    if "(Apply coupon) ..> (Place order) : <<extend>>" not in text:
+        return None
+    return text.replace(
+        "(Apply coupon) ..> (Place order) : <<extend>>",
+        "(Place order) ..> (Apply coupon) : <<extend>>",
+        1,
+    )
+
+
+def op_orphan_usecase(text):  # UC001 (removes a link)
+    return _sub(r"^\(Place order\) \.\.> \(Validate cart\) : <<include>>\n", "", text)
+
+
 # Per-parent operator plans: (example file, profile, ladder ops, single-only ops)
 PLANS = [
     (
@@ -157,6 +228,43 @@ PLANS = [
         ],
         [],
     ),
+    (
+        "shop_classes_good.puml",
+        None,
+        [
+            ("drop_title", op_drop_title),
+            ("drop_name", op_drop_name),
+            ("drop_multiplicities", op_drop_multiplicities),
+            ("unlabel_association", op_unlabel_association),
+            ("snake_case_class", op_snake_case_class),
+            ("pascal_member", op_pascal_member),
+            ("god_class", op_god_class),
+        ],
+        [("inheritance_cycle", op_inheritance_cycle)],
+    ),
+    (
+        "door_lock_state_good.puml",
+        None,
+        [
+            ("drop_title", op_drop_title),
+            ("drop_name", op_drop_name),
+            ("unlabel_transition", op_unlabel_transition),
+            ("unreachable_state", op_unreachable_state),
+            ("drop_initial", op_drop_initial),
+        ],
+        [("duplicate_initial", op_duplicate_initial)],
+    ),
+    (
+        "webshop_usecase_good.puml",
+        None,
+        [
+            ("drop_title", op_drop_title),
+            ("drop_name", op_drop_name),
+            ("reverse_extend", op_reverse_extend),
+            ("orphan_usecase", op_orphan_usecase),
+        ],
+        [],
+    ),
 ]
 
 
@@ -190,6 +298,25 @@ SYNTHETIC = [
     ),
     ("large_clean", 4, _large_clean()),
     ("large_no_title", 4, _large_clean().replace("title Large clean flow\n", "")),
+    # Per-type clean probes (v0.14.0): the non-sequence parsers must carry a
+    # clean diagram to Level 4 exactly like the sequence path does.
+    (
+        "class_clean", 4,
+        "@startuml class-clean\ntitle Class clean\nclass Customer\nclass Order\n"
+        'Customer "1" -- "0..*" Order : places\n@enduml\n',
+    ),
+    (
+        "state_clean", 4,
+        "@startuml state-clean\ntitle State clean\n[*] --> Idle\n"
+        "Idle --> Busy : work\nBusy --> Idle : done\nBusy --> [*]\n@enduml\n",
+    ),
+    (
+        "usecase_clean", 4,
+        "@startuml usecase-clean\ntitle Usecase clean\n:Shopper: as Shopper\n"
+        "usecase (Browse catalog)\nusecase (Place order)\n"
+        "Shopper --> (Browse catalog) : starts\n"
+        "Shopper --> (Place order) : completes\n@enduml\n",
+    ),
 ]
 
 
