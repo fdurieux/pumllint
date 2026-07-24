@@ -1,0 +1,64 @@
+# pumllint configuration — rules keyed by id or kebab-case name.
+# Value: false = off, true/absent = defaults, table = options + severity override.
+# TOML (stdlib tomllib) so the repository lints itself with zero dependencies —
+# the yaml/json formats remain fully supported for consumers.
+
+# Set to false to ignore inline "' pumllint: disable" comments
+# (same as the --no-suppressions CLI flag).
+suppressions = true
+
+# Profiles: uncomment `profile` here (or pass --profile codegen) to activate the
+# codegen-readiness pack (SEQ101-109) declared under [profiles.codegen] below.
+# profile = "codegen"
+
+[rules]
+SEQ001 = { severity = "critical", only_if_any_declared = true }  # undeclared-participant
+unused-participant = true
+unbalanced-activation = true
+unterminated-block = true
+unlabelled-message = { allow_unlabelled_returns = true }
+missing-title = { severity = "major" }
+unnamed-diagram = true
+inline-skinparam = { allowed = [] }                # e.g. ["responseMessageBelowArrow"]
+participant-naming = { pattern = "^[A-Z][A-Za-z0-9]*$" }
+max-participants = { max = 9 }
+orphan-actor-or-usecase = true
+no-self-message = { allowed = [] }                 # participants for which self-messages are OK
+unlabelled-block-condition = true
+missing-start = true
+missing-stop = true
+unlabelled-decision-branch = { require_else_label = true }
+unterminated-construct = true
+
+# Lexicons are configurable per rule above, e.g.
+#   SEQ105 = { vague_terms = ["otherwise", "sometimes", "if needed", "maybe", "as required"] }
+#   SEQ106 = { tokens = ["...", "…", "TBD", "TODO", "etc", "???", "and so on"] }
+#   SEQ107 = { failure_keywords = ["error", "failure", "timeout", "exception"] }
+#   SEQ109 = { non_informative = ["ok", "done", "success", "response", "result"] }
+
+# Maturity scoring (pumllint score) — defaults shown, calibrated in SCORING.md §9.
+# Uncomment to override; dimension weights must sum to 1.0.
+# [scoring]
+# k = 50                             # density scaling constant
+# severity_weights = { blocker = 10, critical = 8, major = 5, minor = 2, info = 0.5 }
+# dimension_weights = { DIM-SEM = 0.20, DIM-CMP = 0.30, DIM-CON = 0.15, DIM-TRC = 0.05, DIM-RDB = 0.05, DIM-AMB = 0.25 }
+# thresholds = { l2_composite = 40, l3_composite = 60, l4_composite = 75, l4_dim_min = 70, l5_composite = 90, l5_dim_min = 80, c3_dim_floor = 40, l4_min_elements = 3 }
+# l5_requires_profile = "codegen"    # omit/empty disables the Level-5 profile binding (C7)
+# syntax_gate = false                # true runs `plantuml -checkonly` per file (C2)
+# syntax_command = "plantuml"
+
+# A profile may also enable extra gated rules by id/name and escalate
+# severities of existing rules.
+[profiles.codegen]
+enable = [
+  "SEQ101",   # codegen-implicit-participant   (blocker)
+  "SEQ102",   # codegen-untyped-participant    (major)
+  "SEQ103",   # codegen-prose-message          (blocker)
+  "SEQ104",   # codegen-missing-return         (major)
+  "SEQ105",   # codegen-vague-guard            (blocker)
+  "SEQ106",   # codegen-elision-marker         (blocker)
+  "SEQ107",   # codegen-missing-failure-path   (major)
+  "SEQ108",   # codegen-activation-lifecycle   (major)
+  "SEQ109",   # codegen-uninformative-reply    (minor)
+]
+escalate = { SEQ001 = "blocker" }   # undeclared participant becomes blocking for codegen

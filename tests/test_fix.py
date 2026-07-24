@@ -120,7 +120,7 @@ def test_fix_paths_only_flags_changed_files():
 
 
 # An explicit empty JSON config isolates CLI tests from the repo's
-# pumllint.yaml (which needs PyYAML — absent under the zero-dep CI job).
+# pumllint.toml (tests must not inherit the repo's own rule settings).
 def _cli_fixture(tmp: str) -> tuple[Path, Path]:
     f = Path(tmp) / "credit_check.puml"
     f.write_text(_MESSY, encoding="utf-8")

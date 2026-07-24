@@ -64,9 +64,8 @@ jobs:
           python-version: "3.12"
       - name: Install pre-commit
         run: pip install pre-commit
-      # Run from a scratch repo, like a real consumer: hook envs are isolated
-      # (no PyYAML), so running inside this repo would trip over the
-      # repo-local pumllint.yaml config.
+      # Run from a scratch repo, like a real consumer: keeps the repo-local
+      # pumllint.toml config out of the hooks' auto-detection.
       - name: Run both hooks as a user repo would
         run: |
           set -euo pipefail

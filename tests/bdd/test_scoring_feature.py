@@ -205,7 +205,7 @@ def given_file_at_level(context, n, tmp_path):
     puml = tmp_path / "d.puml"
     puml.write_text(_LEVEL_SOURCES[n], encoding="utf-8")
     cfg = tmp_path / "cfg.json"
-    cfg.write_text("{}", encoding="utf-8")  # isolate from the repo's pumllint.yaml
+    cfg.write_text("{}", encoding="utf-8")  # isolate from the repo's pumllint.toml
     context.update(file=puml, cfgfile=cfg, outfile=tmp_path / "out.txt")
 
 
