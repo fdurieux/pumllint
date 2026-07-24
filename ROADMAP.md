@@ -167,6 +167,45 @@ three items — full write-up in EVIDENCE.md §Deepening:
   Sonar's UI, which `--min-level` + baseline already provide in CI, and a
   Java artifact with its own release train cuts against the repo's ethos.
 
+## Arc F — AI-authored rules (demand-driven; wait for pull)
+
+Feasibility investigated 2026-07-24: having an AI implement rules from the
+RULES.md Gherkin is viable *because* the harness already exists — the blocks
+are executable acceptance tests (extract_features + pytest-bdd + sync test),
+rules are 15–40 lines over a parsed model, and the golden-score contract
+catches silent over-firing. The residual risk is **not** hallucination (the
+BDD/golden/parity gates fail loudly) but *under-specification*: code that
+passes 2–4 example scenarios yet generalizes wrongly, and an implementer
+editing its own oracle. Build these safeguards only when rule authoring
+actually becomes a recurring pipeline rather than occasional sessions:
+
+- [ ] **Spec/implementation separation** — two-phase workflow: the RULES.md
+  section (rationale, severity, dimension, default-vs-dormant, Gherkin) is
+  authored and human-reviewed first; a *fresh* session implements from the
+  spec. Step 0 design judgment and golden re-freezes stay human — the AI
+  writes steps 2–4 of the writing-rules.md loop, never signs off step 0/5.
+- [ ] **Thickened Gherkin bar** — before handing a rule to an implementer,
+  its block must cover: fire case, pass case, each option's effect
+  (GEN009 pattern: same diagram, threshold via config), dormancy case if
+  convention-gated, and one boundary case (at-limit, suppression). Optional
+  overfit detector: hold one scenario out of the implementer's context and
+  run it only at verification.
+- [ ] **Implementer diff gate** — the implementation diff may touch only
+  `pumllint/rules/**`, `catalog.toml`, the README rules-table row, and the
+  RULES.md status flip ⏳→✅. Any change to Gherkin blocks, `tests/bdd/**`,
+  or golden files rejects the run (the oracle is read-only for the agent
+  that must satisfy it).
+- [ ] **Corpus-firing report** — beyond pass/fail golden scores, run the new
+  rule over the calibration corpus (and wild tier) and emit where it fires
+  and how often, as a human review artifact. Catches "semantically wrong but
+  golden-neutral" rules; this is the analysis that forced GEN006/GEN007's
+  dormancy decision, made routine.
+- [ ] **Adversarial verify pass** — an independent agent prompted to refute:
+  construct a diagram where the implementation contradicts the RULES.md
+  rationale. Concentrate the strongest model here and on algorithmic rules
+  (cycles, reachability, XD majority attribution); pattern-following rules
+  can use a cheaper implementer — the harness carries them.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -180,6 +219,7 @@ three items — full write-up in EVIDENCE.md §Deepening:
 - Recommended next: **Arcs A–D are complete** and the report shapes are
   schema-pinned (0.18.0). Everything that remains is strictly demand-driven:
   Arc E's LSP server and SonarQube plugin (wait for pull — see the
-  re-evaluation notes on each item), plus the documented evidence
-  limitations (cross-vendor models, prompt variation) only if claims need
-  escalation.
+  re-evaluation notes on each item), Arc F's AI-authored-rules safeguards
+  (build when rule authoring becomes a recurring pipeline), plus the
+  documented evidence limitations (cross-vendor models, prompt variation)
+  only if claims need escalation.
