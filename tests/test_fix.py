@@ -119,27 +119,35 @@ def test_fix_paths_only_flags_changed_files():
         assert by_name["messy.puml"].changed
 
 
-def test_cli_fix_applies_and_second_run_is_clean(capsys=None):
+# An explicit empty JSON config isolates CLI tests from the repo's
+# pumllint.yaml (which needs PyYAML — absent under the zero-dep CI job).
+def _cli_fixture(tmp: str) -> tuple[Path, Path]:
+    f = Path(tmp) / "credit_check.puml"
+    f.write_text(_MESSY, encoding="utf-8")
+    cfg = Path(tmp) / "cfg.json"
+    cfg.write_text("{}", encoding="utf-8")
+    return f, cfg
+
+
+def test_cli_fix_applies_and_second_run_is_clean():
     with tempfile.TemporaryDirectory() as tmp:
-        f = Path(tmp) / "credit_check.puml"
-        f.write_text(_MESSY, encoding="utf-8")
-        assert main(["fix", tmp]) == 0
+        f, cfg = _cli_fixture(tmp)
+        assert main(["fix", str(f), "-c", str(cfg)]) == 0
         assert "title Credit check" in f.read_text(encoding="utf-8")
-        assert main(["fix", tmp]) == 0
+        assert main(["fix", str(f), "-c", str(cfg)]) == 0
 
 
 def test_cli_fix_dry_run_writes_nothing_and_signals_pending():
     with tempfile.TemporaryDirectory() as tmp:
-        f = Path(tmp) / "credit_check.puml"
-        f.write_text(_MESSY, encoding="utf-8")
-        assert main(["fix", tmp, "--dry-run"]) == 1
+        f, cfg = _cli_fixture(tmp)
+        assert main(["fix", str(f), "-c", str(cfg), "--dry-run"]) == 1
         assert f.read_text(encoding="utf-8") == _MESSY
         # clean tree: dry-run exits 0
         f.write_text(
             "@startuml ok\ntitle Ok\nparticipant A\nA -> A : x()\n@enduml\n",
             encoding="utf-8",
         )
-        assert main(["fix", tmp, "--dry-run"]) == 0
+        assert main(["fix", str(f), "-c", str(cfg), "--dry-run"]) == 0
 
 
 def test_cli_fix_requires_paths():
