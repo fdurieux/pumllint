@@ -23,8 +23,9 @@ intended — so the suppression mechanism the diagram *documents* is also the
 mechanism that *cleans* it.
 
 All results below are from the tool as built from this repository (first run
-on **0.18.1**, score rows re-run after the suppressed-count annotation that
-run motivated — see "What to watch") with the repository's own config
+on **0.18.1**; the score rows were re-run after the suppressed-count
+annotation and the codegen rows after the SEQ103 tightening — both changes
+this run motivated, see "What to watch") with the repository's own config
 (`pumllint.toml`), run from the repository root.
 
 ## The runs
@@ -35,8 +36,8 @@ run motivated — see "What to watch") with the repository's own config
 | `pumllint --no-suppressions docs/pumllint-lint-flow.puml` | 3 × SEQ006 (self-message, minor), exit 0 |
 | `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100 (3 suppressed); Level 5 refused without the codegen profile |
 | `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98/100 |
-| `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 11 findings (4 blocker, 7 major), exit 1 |
-| `pumllint --profile codegen --no-suppressions …` | 14 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
+| `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 12 findings (5 blocker, 7 major), exit 1 |
+| `pumllint --profile codegen --no-suppressions …` | 15 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
 | `pumllint fix --dry-run docs/pumllint-lint-flow.puml` | "Nothing to fix", exit 0 |
 
 ## What held up
@@ -68,11 +69,17 @@ run motivated — see "What to watch") with the repository's own config
 
 ## What to watch
 
-- **SEQ103 checks shape, not content.**
-  `check_all(diagrams) for cross-diagram rules` is a blocker (trailing
-  prose), yet `load_config(explicit path or auto-detect)` passes — prose
-  *inside* the parentheses reads as a signature. Directionally right,
-  trivially gameable: wrapping prose in parentheses "compiles".
+- **SEQ103 checked shape, not content** *(since tightened — this run's
+  second finding to become a change)*. At the time of the run,
+  `check_all(diagrams) for cross-diagram rules` was a blocker (trailing
+  prose) yet `load_config(explicit path or auto-detect)` passed — prose
+  *inside* the parentheses read as a signature, so wrapping prose in
+  parentheses "compiled". The rule now inspects the argument list — a
+  function-word lexicon plus a two-word width cap, both configurable;
+  `name: Type` params and quoted literals stay legal — and that label is
+  a blocker (the codegen rows above show the post-tightening counts).
+  Deliberately precision-first: a two-word argument with no function
+  word (`recursing directories`) still passes.
 - **Craft is not truth.** A 100/100 diagram with the calls drawn in the
   wrong order would still score 100/100. No rule can check a diagram
   against the code it describes; this is why the maturity levels claim
@@ -99,6 +106,7 @@ run motivated — see "What to watch") with the repository's own config
 Sense, decisively — on a sample of one. The default profile flagged
 exactly the deliberate style deviations and nothing else; severity, gating
 and the suppression round-trip behaved like a tool meant for CI; and the
-weak spots found are scoping choices (a shape-only signature heuristic,
-craft-not-truth) rather than false positives. The findings above double as
-a to-watch list, not a disclaimer.
+weak spots found were scoping choices (a signature heuristic since
+tightened, craft-not-truth) rather than false positives. The findings
+above doubled as a to-do list, not a disclaimer: two of them shipped as
+product changes.

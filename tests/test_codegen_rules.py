@@ -144,6 +144,58 @@ def test_seq103_reply_arrows_are_exempt_from_the_parenthesis_requirement():
     assert "SEQ103" not in rule_ids(src)
 
 
+def test_seq103_prose_hidden_inside_parentheses_is_reported():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : handle(the payment stuff)"
+    )
+    v = violations_for(src, "SEQ103")
+    assert v and "prose" in v[0].message
+    assert v[0].severity == Severity.BLOCKER
+
+
+def test_seq103_function_word_argument_is_reported():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : load_config(explicit path or auto-detect)"
+    )
+    v = violations_for(src, "SEQ103")
+    assert v and "prose" in v[0].message
+
+
+def test_seq103_typed_dotted_and_two_word_parameters_pass():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : charge(orderId, order.total)\n"
+        "OrderService -> OrderDB : find(id: OrderId)\n"
+        "OrderService -> OrderDB : store(Order order)\n"
+        "OrderService -> OrderDB : poll()"
+    )
+    assert "SEQ103" not in rule_ids(src)
+
+
+def test_seq103_quoted_literal_argument_passes():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        'OrderService -> OrderDB : log("user not found")'
+    )
+    assert "SEQ103" not in rule_ids(src)
+
+
+def test_seq103_argument_lexicon_and_width_are_configurable():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : handle(the payment stuff)"
+    )
+    lenient = {"rules": {"SEQ103": {"arg_stop_words": ["foo"], "max_arg_words": 5}}}
+    assert "SEQ103" not in rule_ids(src, lenient)
+    strict = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : handle(foo)"
+    )
+    assert violations_for(strict, "SEQ103", lenient)
+
+
 # --- SEQ104 synchronous calls must have an explicit return -------------------
 
 def test_seq104_missing_return_message_is_reported_as_major():

@@ -31,6 +31,7 @@ unlabelled-decision-branch = { require_else_label = true }
 unterminated-construct = true
 
 # Lexicons are configurable per rule above, e.g.
+#   SEQ103 = { arg_stop_words = ["of", "the", "or"], max_arg_words = 2 }
 #   SEQ105 = { vague_terms = ["otherwise", "sometimes", "if needed", "maybe", "as required"] }
 #   SEQ106 = { tokens = ["...", "…", "TBD", "TODO", "etc", "???", "and so on"] }
 #   SEQ107 = { failure_keywords = ["error", "failure", "timeout", "exception"] }

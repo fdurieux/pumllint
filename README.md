@@ -226,7 +226,7 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 |----|------|---------|-----------------|
 | SEQ101 | codegen-implicit-participant | blocker | Lifeline created implicitly on first use — the generator must guess what `OrderSvc` is. |
 | SEQ102 | codegen-untyped-participant | major | Bare `participant X` with no typed keyword or `<<stereotype>>` — no mapping signal (actor → API boundary, `database` → repository, `<<external>>` → client stub). |
-| SEQ103 | codegen-prose-message | blocker | Call labels that aren't operation signatures: `fetch the order details` instead of `findOrderById(orderId)`. |
+| SEQ103 | codegen-prose-message | blocker | Call labels that aren't operation signatures: `fetch the order details` instead of `findOrderById(orderId)` — including prose hiding inside the parentheses (`handle(the payment stuff)`); `name: Type` params and quoted literals stay legal. |
 | SEQ104 | codegen-missing-return | major | Synchronous call (`->`) with no reply arrow or `return` — return type left undefined. Async `->>` is exempt. |
 | SEQ105 | codegen-vague-guard | blocker | `alt`/`opt`/`loop` with an empty or vague guard (`sometimes`, `if needed`, …). `else` must carry a guard, or literal `[else]` in a two-branch alt. |
 | SEQ106 | codegen-elision-marker | blocker | `...`, `TBD`, `TODO`, `etc`, `???`, `and so on` in labels, guards or notes — deliberately omitted behaviour the generator would fill with fiction. |

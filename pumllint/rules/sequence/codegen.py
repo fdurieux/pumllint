@@ -71,23 +71,72 @@ class TypedParticipants(_CodegenRule):
                 )
 
 
+def _prose_argument(label: str, stop_words: tuple[str, ...], max_words: int) -> str | None:
+    """Why the parenthesised argument list reads as prose, or None if it is
+    signature-shaped.
+
+    Precision-first heuristic: function words and wide multi-word arguments
+    are prose signals; ``name: Type`` params collapse to one token and fully
+    quoted literals pass as single compilable values. Two-word arguments with
+    no function word (``Order order``) deliberately pass.
+    """
+    inner = label[label.find("(") + 1 : label.rfind(")")]
+    for arg in inner.split(","):
+        arg = arg.strip()
+        if not arg:
+            continue
+        if len(arg) >= 2 and arg[0] == arg[-1] and arg[0] in "\"'":
+            continue  # quoted literal — a compilable value, not prose
+        tokens = re.sub(r":\s+", ":", arg).split()
+        if len(tokens) > max_words:
+            return f"'{arg}' reads as {len(tokens)} words"
+        for t in tokens:
+            if t.strip(".,:;!?\"'()[]").lower() in stop_words:
+                return f"function word in '{arg}'"
+    return None
+
+
 @register
 class SignatureMessages(_CodegenRule):
     id = "SEQ103"
 
+    # Function words that never name a compilable parameter; overridable via
+    # the `arg_stop_words` option, like the other codegen lexicons.
+    DEFAULT_ARG_STOP_WORDS = (
+        "a", "an", "the", "and", "or", "but", "nor",
+        "is", "are", "was", "were", "be", "been",
+        "we", "you", "it", "they",
+        "if", "then", "else", "when", "while", "that", "this", "which", "whether",
+        "not", "no",
+        "of", "with", "for", "to", "from", "by", "at", "on", "in", "into",
+        "per", "via", "as", "etc", "some", "stuff",
+    )
+
     def check(self, diagram: Diagram):
         pattern = re.compile(self.options.get("pattern", _SIGNATURE.pattern))
+        stop_words = self.lexicon("arg_stop_words", self.DEFAULT_ARG_STOP_WORDS)
+        max_words = int(self.options.get("max_arg_words", 2))
         for m in diagram.messages:
             if m.is_return_arrow:
                 continue  # replies are SEQ109's concern
             label = m.label.strip()
+            shown = label or "<unlabelled>"
             if not pattern.fullmatch(label):
-                shown = label or "<unlabelled>"
                 yield self.violation(
                     diagram,
                     m.line,
                     f"Message '{shown}' is not an operation signature; "
                     "use name(params) so the operation is compilable",
+                )
+                continue
+            reason = _prose_argument(label, stop_words, max_words)
+            if reason:
+                yield self.violation(
+                    diagram,
+                    m.line,
+                    f"Message '{shown}' hides prose in its arguments "
+                    f"({reason}); use identifier parameters so the "
+                    "signature is compilable",
                 )
 
 
