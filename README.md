@@ -127,7 +127,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.19.0
+  uses: fdurieux/pumllint@v0.20.0
   with:
     command: score
     paths: docs/diagrams
@@ -430,11 +430,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.19.0
+  uses: fdurieux/pumllint@v0.20.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.19.0
+  uses: fdurieux/pumllint@v0.20.0
   with:
     command: score
     paths: docs/diagrams
@@ -475,7 +475,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.19.0
+    rev: v0.20.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score
