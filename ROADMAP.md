@@ -70,7 +70,7 @@ grouped into arcs. Keep it updated as items land.
   scope. Fit was near-zero-cost by construction: `render_maturity()` was
   already the pluggable seam, so `-f html` needed no CLI or Action changes.
 
-## Arc C — Coverage growth
+## Arc C — Coverage growth (base catalog done; further growth demand-driven)
 
 - [x] **CLS pack + class-diagram parser** *(0.9.0)* — `parser/class_.py`
   (classifiers, brace-body members, relations with multiplicities; typed by
@@ -104,6 +104,20 @@ grouped into arcs. Keep it updated as items land.
   conflicts stay XD002/XD003's territory — no double reporting. Golden is
   structurally immune (corpus units score one diagram at a time; cross rules
   need ≥ 2).
+- [ ] **Further coverage (demand-driven; wait for pull).** The base catalog
+  is done — five diagram types parsed, 42 rules, every type under the
+  golden contract — and no further pack is queued. Candidate directions if
+  a concrete user pulls: **new type packs** (component and deployment
+  first, the common architecture-documentation forms; object/ER/timing are
+  progressively more niche), **deepening the thinner packs** (CLS 5, STA 3,
+  UC 3 rules against the sequence family's 11 base + 9 codegen), and
+  **growing the XD family** across more entity kinds. The bar is higher
+  than "parser + rules": a new pack ships with corpus mutation ladders and
+  clean probes, a deliberate additive golden re-freeze, pilot regeneration,
+  and ideally an evidence extension — scores are a public contract.
+  Implementation recipe: the new-parser pattern and registry discipline in
+  RULES.md's implementation notes (type markers no other form uses; never
+  re-type; blocked rules stay unregistered until their parser exists).
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
