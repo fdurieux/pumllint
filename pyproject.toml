@@ -1,13 +1,39 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pumllint"
 version = "0.21.0"
-description = "Semantic linter for PlantUML diagrams with SonarQube export"
-license = {text = "MIT"}
+description = "Semantic linter and maturity scorer for PlantUML diagrams, with SonarQube export"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
+authors = [{ name = "fdurieux", email = "fdurieux@i-kei.com" }]
+keywords = [
+    "plantuml",
+    "uml",
+    "linter",
+    "lint",
+    "static-analysis",
+    "diagrams",
+    "architecture",
+    "maturity-model",
+    "sonarqube",
+    "ci",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation",
+    "Topic :: Software Development :: Quality Assurance",
+]
 dependencies = []
 
 [project.optional-dependencies]
@@ -16,6 +42,13 @@ test = ["pytest>=7", "pytest-bdd>=7"]
 
 [project.scripts]
 pumllint = "pumllint.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/fdurieux/pumllint"
+Documentation = "https://github.com/fdurieux/pumllint/tree/main/docs"
+Changelog = "https://github.com/fdurieux/pumllint/releases"
+Issues = "https://github.com/fdurieux/pumllint/issues"
+"Live example report" = "https://fdurieux.github.io/pumllint/example-maturity-report.html"
 
 [tool.setuptools.packages.find]
 include = ["pumllint*"]

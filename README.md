@@ -13,13 +13,17 @@ Zero runtime dependencies (PyYAML only if you use a YAML config). Python ≥ 3.1
 ## Quick start
 
 ```bash
-python -m pumllint examples/                 # lint a directory recursively
-python -m pumllint --list-rules              # what can it check?
-python -m pumllint diagrams/ -f sonar -o pumllint-sonar.json
-python -m pumllint --profile codegen diagrams/   # + codegen-readiness rules
-python -m pumllint score diagrams/ --min-level 3 # maturity gate (see below)
-python -m pumllint fix diagrams/                 # auto-fix mechanical findings
+pip install pumllint                         # or: pipx / uv tool install pumllint
+
+pumllint diagrams/                           # lint a directory recursively
+pumllint --list-rules                        # what can it check?
+pumllint diagrams/ -f sonar -o pumllint-sonar.json
+pumllint --profile codegen diagrams/         # + codegen-readiness rules
+pumllint score diagrams/ --min-level 3       # maturity gate (see below)
+pumllint fix diagrams/                       # auto-fix mechanical findings
 ```
+
+(`python -m pumllint` is equivalent wherever the console script is not on PATH.)
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
 

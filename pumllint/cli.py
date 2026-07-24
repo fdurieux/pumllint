@@ -19,6 +19,7 @@ import json
 import sys
 from pathlib import Path
 
+from . import __version__
 from .config import load_config
 from .engine import Engine, collect_files
 from .model import SEVERITY_ORDER as _SEV_ORDER
@@ -30,8 +31,15 @@ from .scoring import score_groups
 from .syntax import check_files
 
 
+def _add_version_argument(p: argparse.ArgumentParser) -> None:
+    p.add_argument(
+        "--version", action="version", version=f"pumllint {__version__}"
+    )
+
+
 def _add_common_arguments(p: argparse.ArgumentParser) -> None:
     """Arguments shared by the lint and score commands."""
+    _add_version_argument(p)
     p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
     p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
     p.add_argument(
@@ -109,6 +117,7 @@ def build_fix_parser() -> argparse.ArgumentParser:
         "declare implicit participants). Nothing is ever invented: only "
         "deterministic, semantics-preserving fixes are applied.",
     )
+    _add_version_argument(p)
     p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
     p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
     p.add_argument(
@@ -135,6 +144,7 @@ def build_schema_parser() -> argparse.ArgumentParser:
         "report — the contract for `-f json` output. The badge and sonar formats "
         "follow shields.io's and SonarQube's own schemas and are not covered.",
     )
+    _add_version_argument(p)
     p.add_argument(
         "report",
         choices=list(SCHEMA_NAMES),

@@ -14,16 +14,21 @@ _ACTION = (_ROOT / "action.yml").read_text(encoding="utf-8")
 _HOOKS = (_ROOT / ".pre-commit-hooks.yaml").read_text(encoding="utf-8")
 
 
-def test_readme_action_pins_match_the_package_version():
+def test_docs_pin_the_current_version():
+    """Every `fdurieux/pumllint@vX` and `rev: vX` pin in the user-facing docs
+    must match the package. docs/setup-and-ci.md sat on v0.18.0 for three
+    releases while only the README was guarded — hence the file list."""
     import pumllint
 
-    readme = (_ROOT / "README.md").read_text(encoding="utf-8")
-    pins = re.findall(r"fdurieux/pumllint@v([0-9.]+)", readme)
-    assert pins, "README lost its action-pin examples?"
-    assert set(pins) == {pumllint.__version__}, (
-        f"README pins {sorted(set(pins))} but the package is "
-        f"{pumllint.__version__} — bump the @vX examples when releasing"
-    )
+    for rel in ("README.md", "docs/setup-and-ci.md"):
+        text = (_ROOT / rel).read_text(encoding="utf-8")
+        pins = re.findall(r"fdurieux/pumllint@v([0-9.]+)", text)
+        pins += re.findall(r"rev: v([0-9.]+)", text)
+        assert pins, f"{rel} lost its version-pinned examples?"
+        assert set(pins) == {pumllint.__version__}, (
+            f"{rel} pins {sorted(set(pins))} but the package is "
+            f"{pumllint.__version__} — bump the @vX / rev: examples when releasing"
+        )
 
 
 def test_pyproject_version_matches_the_package():
@@ -33,6 +38,25 @@ def test_pyproject_version_matches_the_package():
 
     data = tomllib.loads((_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     assert data["project"]["version"] == pumllint.__version__
+
+
+def test_version_flag_reports_the_package_version():
+    """`pumllint --version` is the first thing a pip-install user runs."""
+    import contextlib
+    import io
+
+    import pumllint
+    from pumllint.cli import build_parser
+
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        try:
+            build_parser().parse_args(["--version"])
+        except SystemExit as e:
+            assert e.code == 0
+        else:
+            raise AssertionError("--version did not exit")
+    assert out.getvalue().strip() == f"pumllint {pumllint.__version__}"
 
 
 def _cli_options() -> set:
