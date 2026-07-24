@@ -1,8 +1,9 @@
 # pumllint in the SDLC: a value-stream assessment
 
 *Audience: IT management, transformation leads, quality and governance
-owners — anyone deciding whether a model linter deserves a place in the
-delivery pipeline. Structure: a two-page executive brief, then the full
+owners. No familiarity with the tooling is assumed — technical terms are
+introduced in plain language as they first appear. Structure: a two-page
+executive brief, then the full
 assessment, then a practice-domain-level mapping as an appendix. The
 companion document [The case for pumllint](case-for-pumllint.md) covers
 what the tool is, what it costs and what the evidence supports; this one
@@ -14,9 +15,9 @@ mapped to the four aspects of the
 tags, in decreasing order of strength:
 
 - **[measured]** — backed by controlled experiments
-  ([EVIDENCE.md](../EVIDENCE.md): over 300 code-generation runs across two
-  generator models, two independent judge models and three scenario
-  families).
+  ([EVIDENCE.md](../EVIDENCE.md)): over 300 runs in which AI models wrote
+  code from diagrams of varying quality and independent AI judges scored
+  the result, across three business scenarios.
 - **[mechanism]** — a concrete causal chain exists, but it has not been
   measured inside an organisation. The [pilot plan](#pilot-turning-mechanism-into-your-numbers)
   is how these become your own numbers.
@@ -30,62 +31,87 @@ of what is being proposed for adoption.
 
 ## Executive brief
 
-**The premise.** Design diagrams used to be decoration: helpful, optional,
-and invisible when they rotted. Two shifts are making them load-bearing.
-AI coding agents now *consume* diagrams as specifications — and measured
-evidence shows that the quality of the diagram going in drives the
-fidelity of the code coming out. AI assistants also *produce* diagrams at
-near-zero cost — volume that arrives without verification. When an
-artefact class becomes machine-read and machine-written, its quality stops
-being a documentation nicety and becomes a pipeline property. Code went
-through this transition years ago (linters, static analysis, quality
-gates); infrastructure-as-code and API specifications followed. Models are
-among the last unguarded artefacts in the pipeline. [mechanism]
+**What this is about.** Engineering teams record how systems work — which
+components talk to which, in what order, what happens when a step fails —
+as diagrams. Increasingly, those diagrams are not drawn in a drawing tool
+but *written as plain text* using **PlantUML**, a widely used open-source
+tool: the text lives next to the source code, is versioned and reviewed
+like code, and the picture is rendered from it. **pumllint is an
+automatic quality checker for those diagram files** — what software
+engineers call a "linter". It reads each diagram and flags mistakes,
+ambiguity and inconsistency, the way a grammar checker reads prose, and
+it grades every diagram on a five-level maturity scale.
 
-**The instrument.** pumllint is a semantic linter for PlantUML — 42 base
-rules plus a cross-diagram consistency pack and a codegen-readiness pack —
-topped by a maturity score: every diagram graded Level 1 (*Sketchy*) to
-Level 5 (*Generation-ready*), a prescriptive gap report listing exactly
-what blocks the next level, CI gates, and a brownfield-friendly ratchet
-mode. One scope guard up front: the score measures how *disciplined and
-precise the model is*, not whether the architecture it depicts is any
-good. It filters out untrustworthy artefacts; it does not replace
-architecture review — it frees review to spend its time on substance.
+**Why now.** Design diagrams used to be decoration: helpful, optional,
+and invisible when they went stale. Two shifts are making them
+load-bearing. AI coding assistants now *read* diagrams as specifications
+and write code from them — and the measured evidence below shows that the
+quality of the diagram going in drives the quality of the code coming
+out. AI assistants also *write* diagrams at near-zero cost — volume that
+arrives with no quality control attached. Once a document type is
+routinely read and written by machines, its quality stops being a
+documentation nicety and becomes a property of the delivery pipeline.
+Source code went through exactly this transition years ago: automatic
+quality checks on every change are now universal, and nobody relies on
+human reviewers to spot typos. Diagrams are among the last artefacts in
+the pipeline with no such check. [mechanism]
+
+**What the tool does.** Forty-two kinds of checks, covering real mistakes
+that PlantUML itself happily accepts (a misspelled name that silently
+becomes a second, phantom component), ambiguity (a decision branch
+labelled "sometimes"), and inconsistency (the same service described
+differently in two diagrams). On top of the checks sits the maturity
+score: every diagram graded Level 1 (*Sketchy*) to Level 5
+(*Generation-ready*), with a gap report listing exactly what to fix to
+reach the next level. Enforcement fits existing reality: a minimum level
+can be required for new work, while existing diagrams are covered by a
+**ratchet** — today's state is accepted as the baseline, and the
+automated checks fail only if a diagram gets *worse*. No cleanup project
+is needed to start. One scope guard up front: the score measures how
+disciplined and precise a diagram is, not whether the design it shows is
+any good. It filters out untrustworthy diagrams; it does not replace
+design review by architects — it frees that review to spend its time on
+substance.
 
 **Where the value lands**, mapped to the four aspects of the pipeline:
 
 | Aspect | pumllint's role | Strength |
 |---|---|---|
-| **Continuous Exploration** | Ambiguity, inconsistency and missing traceability caught while solution intent is being written; design reviews spend their rounds on substance instead of hygiene | Direct [mechanism] |
-| **Continuous Integration** | The execution point: pre-commit hooks, a GitHub Action, `--min-level` and ratchet gates, SonarQube export, deterministic auto-fix — models get the same PR discipline as code, and model decay fails the build instead of silently misleading | Direct [fact] |
-| **Continuous Deployment** | No role in deploy, verify or monitor. Inherited value only: responders inherit diagrams that are current and show failure paths | Inherited [hypothesis] |
-| **Release on Demand** | Governed, audit-ready design documentation; the maturity trend becomes a measure of documentation health; gap reports feed improvement backlogs | Supporting [mechanism] |
+| **Continuous Exploration** | Ambiguity and inconsistency are caught while designs are being written, before anyone builds on a misreading; design reviews spend their rounds on the design itself instead of on decoding diagrams | Direct [mechanism] |
+| **Continuous Integration** | Where the tool actually runs: the automated checks that already guard every code change now also guard the diagrams — an outdated or sloppy diagram fails the check just like broken code, and findings appear in the quality dashboards many organisations already run (SonarQube) | Direct [fact] |
+| **Continuous Deployment** | No role while software is being deployed, verified or monitored. Indirect value only: when an incident hits, responders find diagrams that are up to date and show the failure paths | Inherited [hypothesis] |
+| **Release on Demand** | Audit-ready evidence that design documentation is current and governed; the maturity trend becomes a management metric for documentation health; gap reports feed each team's improvement backlog | Supporting [mechanism] |
 
 The asymmetry is deliberate honesty: pumllint is an upstream instrument.
-Its downstream value is carried by the artefacts it disciplines, not by
+Its downstream value is carried by the diagrams it disciplines, not by
 anything it does downstream itself.
 
-**The AI case in three sentences.** In over 300 measured generation runs,
-diagram maturity correlated with the fidelity of the code generated from
-the diagrams — r ≈ 0.4–0.5 raw, rising to r ≈ 0.65–0.70 once the semantic
-difficulty of the diagram is held constant, stable across two generator
-models and two independent judges. Below Level 2 there is a cliff:
-fidelity drops by roughly a third and invented business logic roughly
-doubles — and the cliff *steepens* for cheaper generator models. The
-`--min-level` CI gate is the demonstrated mitigation: it keeps exactly
-those diagrams out of any AI-assisted pipeline. [measured]
+**The AI evidence in three sentences.** In over 300 measured runs in
+which AI models wrote code from diagrams, higher-maturity diagrams
+produced measurably more faithful code — a solid statistical link
+(correlation ≈ 0.65–0.70 when comparing diagrams of similar complexity,
+≈ 0.4–0.5 before that adjustment), holding across two different AI
+generators and two independent AI judges. Below Level 2 the relationship
+is a cliff, not a slope: faithfulness drops by roughly a third, and
+*invented* behaviour — business logic the diagram never specified —
+roughly doubles; the drop is steeper with cheaper AI models. A
+minimum-level gate in the pipeline is the demonstrated countermeasure: it
+keeps exactly those diagrams away from AI-assisted work. [measured]
 
-**Cost.** Zero runtime dependencies, no server, no licence fee, drop-in CI
-(a dozen lines of YAML), SonarQube integration without a plugin, and a
-ratchet mode that accepts today's state and only blocks regression — no
-big-bang cleanup. Details: [What adoption costs](case-for-pumllint.md#what-adoption-costs).
+**Cost.** Free and open source, with nothing to operate: no server, no
+licence fee, no new system to run. Switching it on is a small
+configuration change in the existing build pipeline, and findings flow
+into quality dashboards already in place — nothing extra to build.
+Details: [What adoption costs](case-for-pumllint.md#what-adoption-costs).
 
-**The ask.** Approve a two-step advisory pilot: (1) one read-only CI step
-scoring an existing repository, its HTML maturity report circulated to the
-architecture community; (2) a committed baseline with regression-only
-gating. Both steps are reversible and near-zero cost. Hard floors and the
-codegen gate come only after the pilot has produced your organisation's
-own numbers — see [the pilot plan](#pilot-turning-mechanism-into-your-numbers).
+**The ask.** Approve a two-step, report-only pilot: (1) run the checker
+read-only on one existing code repository and circulate its
+self-contained maturity report to the architecture community; (2) record
+today's levels as the baseline and let the pipeline block only
+regressions. Both steps are reversible and cost close to nothing. Hard
+minimum levels and the AI-readiness gate come only after the pilot has
+produced the organisation's own numbers — see
+[the pilot plan](#pilot-turning-mechanism-into-your-numbers).
 
 ---
 
