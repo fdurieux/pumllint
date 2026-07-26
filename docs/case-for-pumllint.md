@@ -132,6 +132,32 @@ Very little, by design:
   requirement links, naming verbs) stay **dormant until you configure your
   organisation's convention** — the tool never invents a house style for you.
 
+## What else is out there
+
+Short answer: for this specific job, nothing we could find.
+
+- **Existing PlantUML tooling stops at "does it draw?"** A landscape
+  survey (July 2026, ~100 sources reviewed) found editors, renderers and
+  syntax validators — including validators built so AI assistants can
+  check their own diagram output — but no tool that checks whether a
+  PlantUML diagram makes *sense*, and none that scores diagram quality.
+  (Honesty note: a survey can establish "none found", not "none exists" —
+  small or private tools may sit below the radar.)
+- **The pattern itself is proven elsewhere.** For API contract files,
+  a rule-based checker of exactly this kind — a tool called Spectral —
+  is established enterprise practice: teams block changes on it in their
+  pipelines. pumllint applies that same proven pattern to design
+  diagrams, a slot that was simply unoccupied.
+- **The AI-specification trend has the need, but not the gate.** The
+  2025–26 wave of "spec-driven development" tools (GitHub Spec Kit, AWS
+  Kiro and others) is built on the idea that AI implements what a written
+  specification says — which makes the quality of the specification the
+  bottleneck. The quality checks those tools offer are themselves
+  AI-generated opinions: a different answer every run, so they cannot
+  serve as a pass/fail gate. pumllint's score is deterministic — the same
+  diagrams get the same score, every time — which is what makes it usable
+  as an enforcement gate and auditable afterwards.
+
 ## Suggested rollout
 
 1. **Week 1:** run the scorer read-only on one existing repository and

@@ -140,6 +140,17 @@ three items — full write-up in EVIDENCE.md §Deepening:
   haiku-4-5 generation; judges agree on ranking (r = 0.715) with a ~9-point
   leniency offset — quote correlations, never absolute fidelity. Remaining
   (documented, demand-driven): cross-vendor models, prompt variation.
+- [ ] **Execution-based oracle wave (claims-driven).** The one standing
+  methodological critique from the 2026-07-26 auto-improvement research
+  (see *Settled questions*): EVIDENCE.md's fidelity signal is LLM-judged,
+  and the code-eval literature trusts execution — generated code must
+  compile and pass hand-written acceptance tests — over judges, which
+  misjudge code correctness. A wave adding an execution oracle to the
+  existing scenario families would harden the r ≈ 0.65–0.70 headline and
+  should carry the other standing limitations (cross-vendor models,
+  prompt variation) in the same run. Same scale as the 0.17.0 deepening
+  (tens of dollars, results land in EVIDENCE.md); build when claims need
+  escalation — it is the queued next wave if evidence work resumes.
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
@@ -220,6 +231,47 @@ actually becomes a recurring pipeline rather than occasional sessions:
   (cycles, reachability, XD majority attribution); pattern-following rules
   can use a cheaper implementer — the harness carries them.
 
+## Settled questions (decision records — don't re-litigate without new evidence)
+
+- **Auto-improvement / self-tuning (2026-07-26): measurement yes,
+  promotion loop no.** A deep-research pass (~100 sources: Google
+  Tricorder, Meta Infer/Getafix/SapFix, BitsAI-CR, champion–challenger
+  practice in regulated decisioning, LLM-eval methodology) assessed an
+  empirical auto-improvement system for pumllint — propose config/rule
+  changes, shadow-run candidate vs champion, auto-activate on a
+  codegen-fitness delta. Verdict, adopted here:
+  - *Evidence-backed rule governance* is the endorsed practice — and is
+    already this project's (Arc D evidence, golden contract,
+    corpus-firing analysis, dogfooding scorecard, suppression
+    disclosure).
+  - *Shadow runs* (a `--shadow-config` champion–challenger mode: evaluate
+    both configs, log finding-level diffs, never affect exit codes) are
+    sound, cheap and governance-native, but strictly wait-for-pull: they
+    only pay off when someone actually iterates a config against a live
+    corpus. This is the single loop component kept on the shelf.
+  - *Unattended promote-on-delta* is **rejected**: no shipped system
+    anywhere closes this loop (Tricorder, Meta, SonarQube, BitsAI-CR all
+    keep humans on actuation); at realistic corpus sizes a paired config
+    comparison detects only ~4–10 pp effects while LLM-generation
+    nondeterminism plus repeated comparisons guarantee eventual
+    promotion-on-noise; and a fitness score routed through an LLM judge
+    is Goodhart-exposed (optimizes judge-pleasing diagrams) and silently
+    decays when the generation model version changes. Regulated-industry
+    governance points the same way: challengers never auto-promote —
+    promotion is a reviewed decision over an evidence dossier.
+  - The research's proposed phases map onto existing arcs: its telemetry
+    ≈ suppression disclosure + ratchet/trends (built); its fitness
+    benchmark ≈ Arc D (built, with its judged-vs-execution critique
+    queued there as the execution-oracle wave); its rule-authoring
+    safeguards ≈ Arc F (parked).
+  - *Packaging*: measurement/lab machinery stays **in this repo** —
+    `tools/` plus the gitignored corpus, with optional extras if a
+    shippable piece ever needs a dependency. The zero-dep wheel already
+    provides the isolation a separate `pumllint-lab` distribution would
+    buy, without a second release train (same ethos bar as the Sonar
+    plugin). Split only if the harness itself gains a concrete external
+    user.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -234,6 +286,9 @@ actually becomes a recurring pipeline rather than occasional sessions:
   schema-pinned (0.18.0). Everything that remains is strictly demand-driven:
   Arc E's LSP server and SonarQube plugin (wait for pull — see the
   re-evaluation notes on each item), Arc F's AI-authored-rules safeguards
-  (build when rule authoring becomes a recurring pipeline), plus the
-  documented evidence limitations (cross-vendor models, prompt variation)
-  only if claims need escalation.
+  (build when rule authoring becomes a recurring pipeline), plus Arc D's
+  execution-oracle wave and the documented evidence limitations
+  (cross-vendor models, prompt variation) only if claims need escalation.
+  Auto-improvement is a settled question (see *Settled questions*):
+  measurement and evidence-dossier surfaces on demand, never an unattended
+  promote-on-delta loop.
