@@ -46,7 +46,12 @@ rules:
   requirement-link: { pattern: "REQ-\\d+|ADR-\\d+" }
 ```
 
-The CLI `--profile` flag overrides the config's `profile:` key. All scoring
+The CLI `--profile` flag overrides the config's `profile:` key. To run the
+same diagram set under several setups (lenient local, strict CI, codegen),
+prefer named `profiles:` in one config, selected per run with `--profile`,
+over parallel near-copies of the config file; separate files selected with
+`-c` (e.g. `-c pumllint-ci.toml`) are for genuinely different diagram sets
+with their own conventions and suppressions. All scoring
 knobs (weights, thresholds, caps) live under a `scoring:` key — see
 [SCORING.md](../SCORING.md); the defaults are calibrated, change them
 deliberately.
