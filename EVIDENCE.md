@@ -246,6 +246,45 @@ contract (r = 0.390 / 0.415 vs 0.25 legacy) — a standardized entry point
 appears to remove some measurement noise — but stays at the X3 threshold:
 the oracles remain complementary, not interchangeable.
 
+## Cross-vendor wave — pre-registered expectations (written 2026-07-26, before any scored run)
+
+Every number above comes from Claude-family models on both sides of the
+experiment. This committed follow-up (ROADMAP Arc D) swaps the vendor on
+each side in turn:
+
+- **Generator wave:** `gemini-3.1-pro-preview` generates the 28 family
+  diagrams — legacy prompt, 3 runs, sonnet-5 judge; identical to wave
+  main2's family subset except the generator vendor. Model-choice caveat,
+  recorded up front: Google has retired `gemini-2.5-pro` (the stable
+  pro-class SKU) for new API keys, so the strongest model available to
+  this key is a *preview* SKU — the exact id and date are recorded here
+  because preview models are not a stable reproduction target.
+- **Judge wave:** the same Gemini model re-judges wave main2's stored
+  artifacts (judge-only cost) — the cross-vendor mirror of D3.
+- **Execution oracle** over the Gemini-generated artifacts — the
+  vendor-neutral leg: no LLM of any vendor is in that scoring loop.
+- Harness: stdlib REST shim (`_gemini_call`), thinking tokens billed and
+  counted as output; smoke-tested on trivial calls only (~$0.005) before
+  this freeze. Cost guard unchanged ($25); estimate ≈ $12.
+
+**Expectations:**
+
+- **XV1 (generator, judged):** composite↔fidelity correlation positive
+  under the Gemini generator; the below-composite-40 cliff reproduces in
+  direction with a judged-fidelity gap ≥ 8 points (precedent: opus 12.7,
+  haiku 15.5).
+- **XV2 (generator, executed):** X1/X2 signs hold on the Gemini
+  artifacts — positive per-diagram composite↔pass-rate correlation and a
+  cliff@40 gap ≥ 10 pp. This is the load-bearing cross-vendor claim.
+- **XV3 (judge):** Gemini re-judging main2's artifacts agrees with
+  sonnet-5 on ranking — between-judge per-run fidelity correlation
+  r ≥ 0.5 (the D3 bar; sonnet↔haiku was 0.715). Absolute offset
+  unconstrained, as before.
+
+Absolute fidelity and pass-rate numbers are not comparable across
+vendors; only signs, gaps and correlations are claimed. No bar is set on
+per-run judged-vs-executed agreement (X3 precedent: expected weak).
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the

@@ -51,6 +51,11 @@ PRICES = {  # $/M tokens (input, output)
     "claude-opus-4-8": (5.00, 25.00),
     "claude-sonnet-5": (3.00, 15.00),
     "claude-haiku-4-5-20251001": (1.00, 5.00),
+    # Cross-vendor (output price includes Gemini thinking tokens, which we
+    # count as output). gemini-2.5-pro is retired for new API keys; the
+    # 3.1-pro-preview rates are the ≤200k-context published figures.
+    "gemini-2.5-pro": (1.25, 10.00),
+    "gemini-3.1-pro-preview": (2.00, 12.00),
 }
 RESULTS_DIR = REPO_ROOT / "experiment_results"
 MAX_CALLS = 300
@@ -257,21 +262,146 @@ def _call(client, model: str, usage: dict, **kwargs):
     return resp
 
 
+# ---------------------------------------------------------------- Gemini shim
+# Cross-vendor evidence wave (EVIDENCE.md §Cross-vendor). Stdlib REST only —
+# no new dependency; the anthropic SDK keeps serving the Claude calls.
+
+def _is_gemini(model: str) -> bool:
+    return model.startswith("gemini")
+
+
+def _gemini_schema(schema: dict):
+    """JSON schema -> Gemini responseSchema subset (uppercase types, no
+    additionalProperties)."""
+    if not isinstance(schema, dict):
+        return schema
+    out = {}
+    for k, v in schema.items():
+        if k == "additionalProperties":
+            continue
+        if k == "type" and isinstance(v, str):
+            out[k] = v.upper()
+        elif k in ("properties",):
+            out[k] = {pk: _gemini_schema(pv) for pk, pv in v.items()}
+        elif k == "items":
+            out[k] = _gemini_schema(v)
+        else:
+            out[k] = v
+    return out
+
+
+def _gemini_call(model: str, prompt: str, max_tokens: int, usage: dict,
+                 schema: dict | None = None) -> tuple[str, str]:
+    """One generateContent call. Returns (text, stop_reason). Retries
+    transient throttling/5xx with backoff; thinking tokens count as output."""
+    import time
+    import urllib.error
+    import urllib.request
+
+    key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    body: dict = {
+        "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+        "generationConfig": {"maxOutputTokens": max_tokens},
+    }
+    if schema is not None:
+        body["generationConfig"]["responseMimeType"] = "application/json"
+        body["generationConfig"]["responseSchema"] = _gemini_schema(schema)
+    req = urllib.request.Request(
+        "https://generativelanguage.googleapis.com/v1beta/models/"
+        f"{model}:generateContent",
+        data=json.dumps(body).encode(),
+        headers={"Content-Type": "application/json", "x-goog-api-key": key},
+        method="POST",
+    )
+    # framework Pythons on macOS miss the system trust store; certifi rides
+    # along with the anthropic SDK this harness already requires
+    import ssl
+    try:
+        import certifi
+        ctx = ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        ctx = ssl.create_default_context()
+
+    delay = 15.0
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=300, context=ctx) as r:
+                resp = json.load(r)
+            break
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 503) and attempt < 4:
+                time.sleep(delay)
+                delay = min(delay * 2, 60)
+                continue
+            raise
+    um = resp.get("usageMetadata", {})
+    with _USAGE_LOCK:
+        u = usage.setdefault(model, {"in": 0, "out": 0})
+        u["in"] += um.get("promptTokenCount", 0)
+        u["out"] += (um.get("candidatesTokenCount", 0)
+                     + um.get("thoughtsTokenCount", 0))
+    cand = resp["candidates"][0]
+    text = "".join(p.get("text", "")
+                   for p in cand.get("content", {}).get("parts", []))
+    stop = "max_tokens" if cand.get("finishReason") == "MAX_TOKENS" else "end_turn"
+    return text, stop
+
+
+def _workers() -> int:
+    """Gemini throttles harder than the Anthropic tier we run at."""
+    return 4 if (_is_gemini(GEN_MODEL) or _is_gemini(JUDGE_MODEL)) else 8
+
+
+def _require_credentials() -> str | None:
+    """Return an error string if the configured models' keys are missing."""
+    needs_claude = not (_is_gemini(GEN_MODEL) and _is_gemini(JUDGE_MODEL))
+    if needs_claude and not (os.environ.get("ANTHROPIC_API_KEY")
+                             or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
+        return "no Anthropic API credentials in the environment"
+    if (_is_gemini(GEN_MODEL) or _is_gemini(JUDGE_MODEL)) and not (
+            os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")):
+        return "no Gemini API credentials in the environment"
+    return None
+
+
+def _judge_call(client, diagram_text: str, code: str, usage: dict) -> tuple[dict, str]:
+    """Judge one artifact with JUDGE_MODEL (Claude or Gemini); returns
+    (judge dict, stop_reason)."""
+    prompt = JUDGE_PROMPT.format(diagram=diagram_text, code=code)
+    if _is_gemini(JUDGE_MODEL):
+        text, stop = _gemini_call(JUDGE_MODEL, prompt, 6000, usage,
+                                  schema=JUDGE_SCHEMA)
+        return json.loads(text), stop
+    resp = _call(
+        client, JUDGE_MODEL, usage,
+        max_tokens=6000,
+        **_thinking(JUDGE_MODEL),
+        output_config={"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return (json.loads(next(b.text for b in resp.content if b.type == "text")),
+            resp.stop_reason)
+
+
 ACTIVE_PROMPT = GEN_PROMPT  # overridden by --prompt-variant
 
 
 def _generate(client, diagram_text: str, usage: dict) -> dict:
-    resp = _call(
-        client, GEN_MODEL, usage,
-        max_tokens=12000,
-        **_thinking(GEN_MODEL),
-        messages=[{"role": "user", "content": ACTIVE_PROMPT.format(diagram=diagram_text)}],
-    )
-    code = _strip_fences(
-        next(b.text for b in resp.content if b.type == "text")
-    ).strip()
+    prompt = ACTIVE_PROMPT.format(diagram=diagram_text)
+    if _is_gemini(GEN_MODEL):
+        text, stop_reason = _gemini_call(GEN_MODEL, prompt, 12000, usage)
+    else:
+        resp = _call(
+            client, GEN_MODEL, usage,
+            max_tokens=12000,
+            **_thinking(GEN_MODEL),
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = next(b.text for b in resp.content if b.type == "text")
+        stop_reason = resp.stop_reason
+    code = _strip_fences(text).strip()
     ok, err = _compiles(code)
-    return {"code": code, "stop_reason": resp.stop_reason, "compiles": ok, "syntax_error": err}
+    return {"code": code, "stop_reason": stop_reason, "compiles": ok, "syntax_error": err}
 
 
 def _run_one(client, unit: dict, run_idx: int, usage: dict) -> dict:
@@ -298,18 +428,9 @@ def _run_one(client, unit: dict, run_idx: int, usage: dict) -> dict:
     code_file.write_text(attempt["code"] + "\n", encoding="utf-8")
     out["code_file"] = code_file.name
 
-    judge = _call(
-        client, JUDGE_MODEL, usage,
-        max_tokens=6000,
-        **_thinking(JUDGE_MODEL),
-        output_config={"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
-        messages=[{
-            "role": "user",
-            "content": JUDGE_PROMPT.format(diagram=diagram_text, code=attempt["code"]),
-        }],
-    )
-    out["judge_stop_reason"] = judge.stop_reason
-    out["judge"] = json.loads(next(b.text for b in judge.content if b.type == "text"))
+    judge, judge_stop = _judge_call(client, diagram_text, attempt["code"], usage)
+    out["judge_stop_reason"] = judge_stop
+    out["judge"] = judge
     return out
 
 
@@ -392,30 +513,21 @@ def _rejudge(client, base_dir: Path, base_report: dict, usage: dict) -> list[dic
     """
     results: list[dict] = []
     ok_runs = [r for r in base_report["runs"] if "error" not in r]
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=_workers()) as pool:
         def one(r: dict) -> dict:
             diagram_text = (REPO_ROOT / next(
                 u["path"] for u in base_report["selected"] if u["label"] == r["label"]
             )).read_text(encoding="utf-8")
             code = (base_dir / r["code_file"]).read_text(encoding="utf-8")
-            judge = _call(
-                client, JUDGE_MODEL, usage,
-                max_tokens=6000,
-                **_thinking(JUDGE_MODEL),
-                output_config={"format": {"type": "json_schema", "schema": JUDGE_SCHEMA}},
-                messages=[{
-                    "role": "user",
-                    "content": JUDGE_PROMPT.format(diagram=diagram_text, code=code),
-                }],
-            )
+            judge, judge_stop = _judge_call(client, diagram_text, code, usage)
             return {
                 "label": r["label"], "run": r["run"],
                 "compile_first_try": r["compile_first_try"],
                 "compiles": r["compiles"], "retried": r.get("retried", False),
                 "gen_stop_reason": r.get("gen_stop_reason"),
                 "code_file": r["code_file"],
-                "judge_stop_reason": judge.stop_reason,
-                "judge": json.loads(next(b.text for b in judge.content if b.type == "text")),
+                "judge_stop_reason": judge_stop,
+                "judge": judge,
             }
 
         futures = {pool.submit(one, r): (r["label"], r["run"]) for r in ok_runs}
@@ -479,8 +591,9 @@ def main(argv: list[str] | None = None) -> int:
         if dry_run:
             print("(dry run — no API calls made)")
             return 0
-        if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
-            print("error: no API credentials in the environment.", file=sys.stderr)
+        err = _require_credentials()
+        if err:
+            print(f"error: {err}.", file=sys.stderr)
             return 2
         import anthropic
 
@@ -536,8 +649,9 @@ def main(argv: list[str] | None = None) -> int:
     if dry_run:
         print("(dry run — no API calls made)")
         return 0
-    if not (os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
-        print("error: no API credentials in the environment.", file=sys.stderr)
+    err = _require_credentials()
+    if err:
+        print(f"error: {err}.", file=sys.stderr)
         return 2
 
     import anthropic
@@ -548,7 +662,7 @@ def main(argv: list[str] | None = None) -> int:
 
     tasks = [(u, i) for u in selected for i in range(1, runs + 1)]
     results: list[dict] = []
-    with ThreadPoolExecutor(max_workers=8) as pool:
+    with ThreadPoolExecutor(max_workers=_workers()) as pool:
         futures = {pool.submit(_run_one, client, u, i, usage): (u["label"], i) for u, i in tasks}
         for future, (label, i) in futures.items():
             try:
