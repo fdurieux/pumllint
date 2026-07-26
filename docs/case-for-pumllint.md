@@ -72,6 +72,15 @@ code matched the diagram.
   third, and the amount of *invented business logic* — behaviour the
   diagram never specified — roughly **doubles**. A minimum-level gate
   keeps exactly those diagrams out of your AI pipeline.
+- The cliff is **not an AI-judge artifact**. In a follow-up study the
+  generated code was actually *run* against hand-written tests encoding
+  each diagram's intended behaviour (tests written down and locked before
+  any result was seen). Below Level 2, roughly **one intended behaviour
+  in three failed** when the code executed, versus about one in ten
+  above — consistently across five measurement rounds and three ways of
+  prompting the AI. Notably, better prompting rescued moderately untidy
+  diagrams but **never the below-cliff ones**: no prompt can restore
+  decision rules the diagram simply doesn't contain.
 
 Two honesty notes, deliberately part of the product's claim language:
 

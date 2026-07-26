@@ -138,19 +138,29 @@ three items — full write-up in EVIDENCE.md §Deepening:
   --gen-model/--judge-model/--results-dir and a judge-only --rejudge mode
   (judge robustness at ~$0.40). Cliff reproduces and *steepens* under
   haiku-4-5 generation; judges agree on ranking (r = 0.715) with a ~9-point
-  leniency offset — quote correlations, never absolute fidelity. Remaining
-  (documented, demand-driven): cross-vendor models, prompt variation.
-- [ ] **Execution-based oracle wave (claims-driven).** The one standing
-  methodological critique from the 2026-07-26 auto-improvement research
-  (see *Settled questions*): EVIDENCE.md's fidelity signal is LLM-judged,
-  and the code-eval literature trusts execution — generated code must
-  compile and pass hand-written acceptance tests — over judges, which
-  misjudge code correctness. A wave adding an execution oracle to the
-  existing scenario families would harden the r ≈ 0.65–0.70 headline and
-  should carry the other standing limitations (cross-vendor models,
-  prompt variation) in the same run. Same scale as the 0.17.0 deepening
-  (tens of dollars, results land in EVIDENCE.md); build when claims need
-  escalation — it is the queued next wave if evidence work resumes.
+  leniency offset — quote correlations, never absolute fidelity. Of the two
+  limitations this left standing, prompt variation was resolved by the
+  execution-oracle waves (2026-07-26, three prompt styles); cross-vendor
+  is the committed follow-up below.
+- [x] **Execution-based oracle wave** *(2026-07-26)* — the research's one
+  standing critique (fidelity was LLM-judged) answered with hand-written
+  acceptance suites per scenario family (frozen + pre-registered before
+  any scored run; `tools/acceptance/`, sandboxed per-scenario children).
+  Phase A retro-executed 756 scenario runs over the three stored waves at
+  $0; Phase B added two fresh pinned-entry waves ($15.03, three prompt
+  styles total). Results (EVIDENCE.md §Execution oracle): the **cliff is
+  oracle-robust** (16–25 pp executed pass-rate, 21.9 pp pooled) and
+  **scaffold-resistant** (entry-contract pinning lifts L2 to ≈ pristine
+  but does not rescue L1); pre-registered X3 **failed** — judged fidelity
+  is not a per-run proxy for executed correctness (r ≈ 0.25) — so the two
+  oracles are quoted separately, never merged. Fixed-prompt limitation
+  resolved by XB.
+- [ ] **Cross-vendor evidence wave (committed follow-up — a must-do, not
+  demand-driven; user decision 2026-07-26).** Re-run generation (and
+  ideally judging) on at least one non-Claude model family; the harness
+  needs a thin client shim plus PRICES entries, and the run needs a
+  non-Anthropic API key from the user. Until it runs, every evidence
+  claim carries the Claude-family-only caveat.
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
@@ -261,8 +271,8 @@ actually becomes a recurring pipeline rather than occasional sessions:
     promotion is a reviewed decision over an evidence dossier.
   - The research's proposed phases map onto existing arcs: its telemetry
     ≈ suppression disclosure + ratchet/trends (built); its fitness
-    benchmark ≈ Arc D (built, with its judged-vs-execution critique
-    queued there as the execution-oracle wave); its rule-authoring
+    benchmark ≈ Arc D (built; its judged-vs-execution critique landed as
+    the execution-oracle wave, 2026-07-26); its rule-authoring
     safeguards ≈ Arc F (parked).
   - *Packaging*: measurement/lab machinery stays **in this repo** —
     `tools/` plus the gitignored corpus, with optional extras if a
@@ -282,13 +292,13 @@ actually becomes a recurring pipeline rather than occasional sessions:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: **Arcs A–D are complete** and the report shapes are
-  schema-pinned (0.18.0). Everything that remains is strictly demand-driven:
-  Arc E's LSP server and SonarQube plugin (wait for pull — see the
-  re-evaluation notes on each item), Arc F's AI-authored-rules safeguards
-  (build when rule authoring becomes a recurring pipeline), plus Arc D's
-  execution-oracle wave and the documented evidence limitations
-  (cross-vendor models, prompt variation) only if claims need escalation.
-  Auto-improvement is a settled question (see *Settled questions*):
-  measurement and evidence-dossier surfaces on demand, never an unattended
-  promote-on-delta loop.
+- Recommended next: **Arcs A–D are complete** (the execution-oracle wave
+  landed 2026-07-26) and the report shapes are schema-pinned (0.18.0).
+  One committed follow-up stands: Arc D's **cross-vendor evidence wave**
+  (a must-do per the 2026-07-26 decision; blocked on a non-Anthropic API
+  key). Everything else is strictly demand-driven: Arc E's LSP server and
+  SonarQube plugin (wait for pull — see the re-evaluation notes on each
+  item), Arc F's AI-authored-rules safeguards (build when rule authoring
+  becomes a recurring pipeline). Auto-improvement is a settled question
+  (see *Settled questions*): measurement and evidence-dossier surfaces on
+  demand, never an unattended promote-on-delta loop.
