@@ -293,13 +293,15 @@ diagram underdetermines an implementation no matter how clean it is.
 [measured] ([EVIDENCE.md](../EVIDENCE.md))
 
 The same relationship holds when opinion is taken out of the measurement.
-In a follow-up wave the generated code was **executed** against
+In follow-up waves the generated code was **executed** against
 hand-written behavioural tests encoding each diagram's intended behaviour
 — tests written down and locked before any result was seen. Below Level 2
 roughly one intended behaviour in three failed when the code ran, versus
 about one in ten above; the gap reproduced in every measurement round
-(16–25 percentage points across five rounds) and across three different
-ways of prompting the generator. Two further findings sharpen the case.
+(16–25 percentage points across six rounds), across three different ways
+of prompting the generator, and across generator models from **two
+different AI vendors** — the cliff is not a one-vendor artifact. Two
+further findings sharpen the case.
 First, **prompt engineering is not a substitute for diagram quality**:
 pinning a stricter generation contract lifted moderately degraded
 diagrams almost to pristine pass-rates but left below-cliff diagrams far
@@ -339,7 +341,10 @@ by roughly 15 points, so every number above comes from an independent
 judge model. Second, an AI judge's *opinion* of code turned out not to be
 a substitute for *running* it: judged faithfulness and executed test
 results agreed on the overall trend but only weakly on individual pieces
-of code (correlation ≈ 0.25). If your organisation is evaluating AI
+of code (correlation ≈ 0.25) — and on code written by a *different
+vendor's* model, not at all (≈ 0.0), even while two AI judges agreed
+comfortably with each other (≈ 0.7). Two judges agreeing is
+*reliability*, not *validity*. If your organisation is evaluating AI
 tooling anywhere, both findings travel: *insist on independent judging,
 and prefer execution over opinion wherever behaviour can be executed.*
 [measured]

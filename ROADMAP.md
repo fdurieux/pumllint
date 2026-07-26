@@ -138,10 +138,10 @@ three items — full write-up in EVIDENCE.md §Deepening:
   --gen-model/--judge-model/--results-dir and a judge-only --rejudge mode
   (judge robustness at ~$0.40). Cliff reproduces and *steepens* under
   haiku-4-5 generation; judges agree on ranking (r = 0.715) with a ~9-point
-  leniency offset — quote correlations, never absolute fidelity. Of the two
-  limitations this left standing, prompt variation was resolved by the
-  execution-oracle waves (2026-07-26, three prompt styles); cross-vendor
-  is the committed follow-up below.
+  leniency offset — quote correlations, never absolute fidelity. Both
+  limitations this left standing were resolved 2026-07-26: prompt
+  variation by the execution-oracle waves (three prompt styles),
+  cross-vendor by the wave below.
 - [x] **Execution-based oracle wave** *(2026-07-26)* — the research's one
   standing critique (fidelity was LLM-judged) answered with hand-written
   acceptance suites per scenario family (frozen + pre-registered before
@@ -155,12 +155,18 @@ three items — full write-up in EVIDENCE.md §Deepening:
   is not a per-run proxy for executed correctness (r ≈ 0.25) — so the two
   oracles are quoted separately, never merged. Fixed-prompt limitation
   resolved by XB.
-- [ ] **Cross-vendor evidence wave (committed follow-up — a must-do, not
-  demand-driven; user decision 2026-07-26).** Re-run generation (and
-  ideally judging) on at least one non-Claude model family; the harness
-  needs a thin client shim plus PRICES entries, and the run needs a
-  non-Anthropic API key from the user. Until it runs, every evidence
-  claim carries the Claude-family-only caveat.
+- [x] **Cross-vendor evidence wave** *(2026-07-26, $8.66 — run the day
+  the key arrived)* — `gemini-3.1-pro-preview` as generator and as judge
+  (Google had retired the stable 2.5-pro for new API keys; the preview
+  caveat was pre-registered, expectations XV1–XV3). **XV2 confirmed on
+  the vendor-neutral oracle**: executed cliff 20.9 pp (opus pooled 21.9)
+  — the below-Level-2 gate now stands on three generators across two
+  vendors, measured by behavior. **XV1 failed**: sonnet judging Gemini
+  code is nearly flat (gap 3.2 pts) and tracks execution at r = 0.002 —
+  judged fidelity has no validity across the vendor boundary. **XV3
+  confirmed**: judges agree with each other on ranking (r = 0.682,
+  ~19-pt leniency offset) — better than either agrees with execution;
+  reliability is not validity. Full record: EVIDENCE.md §Cross-vendor.
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
@@ -292,13 +298,12 @@ actually becomes a recurring pipeline rather than occasional sessions:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
-- Recommended next: **Arcs A–D are complete** (the execution-oracle wave
-  landed 2026-07-26) and the report shapes are schema-pinned (0.18.0).
-  One committed follow-up stands: Arc D's **cross-vendor evidence wave**
-  (a must-do per the 2026-07-26 decision; blocked on a non-Anthropic API
-  key). Everything else is strictly demand-driven: Arc E's LSP server and
-  SonarQube plugin (wait for pull — see the re-evaluation notes on each
-  item), Arc F's AI-authored-rules safeguards (build when rule authoring
-  becomes a recurring pipeline). Auto-improvement is a settled question
-  (see *Settled questions*): measurement and evidence-dossier surfaces on
+- Recommended next: **Arcs A–D are complete** — including the
+  execution-oracle and cross-vendor waves (2026-07-26) — and the report
+  shapes are schema-pinned (0.18.0). No committed follow-ups remain;
+  everything is strictly demand-driven: Arc E's LSP server and SonarQube
+  plugin (wait for pull — see the re-evaluation notes on each item),
+  Arc F's AI-authored-rules safeguards (build when rule authoring becomes
+  a recurring pipeline). Auto-improvement is a settled question (see
+  *Settled questions*): measurement and evidence-dossier surfaces on
   demand, never an unattended promote-on-delta loop.
