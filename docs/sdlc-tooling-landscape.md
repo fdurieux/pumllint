@@ -1,0 +1,503 @@
+# Where tooling pays: lead time, quality, and AI in the delivery pipeline
+
+*Audience: IT management and transformation leads. No familiarity with the
+tooling is assumed — technical terms are introduced in plain language as
+they first appear. This is the landscape-level companion to
+[pumllint in the SDLC](value-in-the-sdlc.md): that document maps **one
+tool** onto the SAFe Continuous Delivery Pipeline; this one maps the
+**whole tooling landscape** onto the same skeleton — which capabilities
+have real evidence of shortening lead time and improving quality, what AI
+changes about that, and where pumllint's category sits within it.
+Produced 2026-07-26 by a fan-out research harness: 5 search angles, 21
+sources fetched, 104 claims extracted, 25 adversarially verified by
+three-reviewer refutation panels — 24 confirmed 3–0, 1 refuted (reported
+in the annex). Revised the same day to make the who-does/who-checks
+distinction first-class.*
+
+**How to read the claims.** Every load-bearing statement carries a tag,
+in decreasing order of strength:
+
+- **[research]** — from DORA, Accelerate, or peer-reviewed work; each
+  such claim survived a three-reviewer refutation panel checking it
+  against the primary source. (This plays the role **[measured]** plays
+  in this repository's other documents — measured, but by others.)
+- **[practitioner]** — industry consensus and expert judgment, including
+  every Wardley position, every named tool, and the who-does/who-checks
+  classification below; no outcome study backs those. (Comparable to
+  this repository's **[mechanism]**: a stated causal chain, unmeasured.)
+- **[vendor]** — a supplier's own claim, unverified.
+- **[measured, internal]** — this repository's own controlled
+  experiments ([EVIDENCE.md](../EVIDENCE.md)); rigorous, but our
+  measurement, not independent literature.
+
+One discipline up front, because the whole report leans on it: DORA's
+findings are correlations from large self-reported surveys —
+"associated with", never proven causation — and its headline numbers are
+year-specific. They are the best outcome evidence this field has; they
+are not physics.
+
+---
+
+## Executive brief: five findings
+
+**1 · The evidence is about capabilities, not products.** The only
+sustained research program linking tooling to delivery outcomes — DORA,
+Google's roughly decade-long "State of DevOps" study — deliberately
+names zero vendors. It ranks *capabilities*: continuous testing,
+monitoring and observability, deployment and database automation,
+working in small batches, version control. Teams strong in these
+outperformed weak ones by extraordinary margins (in the 2018 study: 46×
+more frequent deployments, 2,555× faster lead time, 2,604× faster
+recovery, 7× fewer failed changes). Buy tools to implement capabilities;
+never expect a tool purchase to be the capability. [research]
+
+**2 · AI made generation cheap and delivery less stable.** DORA 2024
+found AI adoption improved almost every local measure — documentation,
+code quality, review speed — while *delivery* throughput and stability
+both got worse. DORA 2025 (≈5,000 respondents) saw throughput turn
+positive, but instability persisted, and the report explicitly tested
+and rejected the idea that AI-driven speed compensates for it: "this
+argument does not hold up." [research]
+
+**3 · The bottleneck has moved downstream of writing code.** DORA's own
+explanation is larger change batches that are harder to review, and its
+named remedies are small batches, robust testing, and fluent use of
+rollback — AI's team-level benefit is measurably contingent on how often
+teams use version-control rollback. 90% of practitioners now use AI; 30%
+report little or no trust in its output. In this report's terms: the
+stability penalty is what *AI does the work, humans check it by hand*
+looks like at industry scale — generation accelerated, verification
+didn't. [research]
+
+**4 · Checking machinery is the one immature layer.** On a Wardley map —
+a strategy chart that positions each capability by how evolved it is,
+from genesis (novel, uncertain) to commodity (standardized,
+buy-it-anywhere) — nearly everything with strong outcome evidence sits
+at product or commodity: version control, CI, deployment automation,
+observability, feature flags. The immature band is *deterministic
+verification of AI-produced artifacts*: machine checks with exact,
+repeatable verdicts for the code, tests, diagrams, and configs that AI
+now writes in volume. Peer-reviewed work shows why it matters:
+strengthening a weak test oracle cut measured AI-code correctness by up
+to 19.3–28.9% — the code didn't change, the checking did.
+[research] [practitioner]
+
+**5 · Strategy follows the map.** Adopt commodities (never build them),
+buy products but standardize on open interfaces, and reserve building
+for the genesis band — where pumllint's category, the deterministic
+verifier for AI-read and AI-written artifacts, sits with external demand
+signals now corroborating it. Place AI by the check, not the demo: it
+belongs where a deterministic check exists, and it is never itself the
+gate — three independent evidence lines say an AI's opinion of AI output
+is not a substitute for executing or deterministically checking it.
+[practitioner] [measured, internal]
+
+---
+
+## Part 1 — What actually moves lead time and quality
+
+Two terms, defined once. **Lead time** is the clock from a code change
+being committed to it running in production. **Quality-in-operation** is
+whether changes survive contact with production — measured by how often
+deployments cause failures and how fast service is restored. DORA's
+"four keys" pair them: deployment frequency and change lead time on the
+speed side, change failure rate and recovery time on the stability side.
+A fifth of the report's scope — *functional* quality (does the software
+do what was intended) — is where the AI-era evidence in Part 2 lands.
+
+DORA's capability catalog is the reference answer to "what should we
+invest in": roughly thirty named capabilities — technical (continuous
+integration, test automation, deployment automation, trunk-based
+development), process (working in small batches, streamlined change
+approval), and cultural (generative, learning-oriented culture) — each
+linked by the research to faster delivery and better organizational
+performance. It names no products at all; "empowering teams to choose
+their own tools" is itself listed as a capability. [research]
+
+The named capabilities with direct outcome evidence, from the 2018
+deep-dive that remains the most-cited: **continuous testing** (test
+early, test constantly, on every change), **monitoring and
+observability** (instruments that show what production is doing),
+**database change management** (schema changes automated and versioned
+like code), and **integrating security early** ("shift-left" — security
+checks during development, not after). Teams meeting all five essential
+characteristics of cloud infrastructure as NIST defines them were 23×
+more likely to be elite performers — and only 22% of self-described
+"cloud" users actually met them, a warning that adoption theater is
+common. All year-specific figures; direction, not constants. [research]
+
+| DORA 2018, elite vs low performers | |
+|---|---|
+| Deployment frequency | 46× more frequent |
+| Lead time for changes | 2,555× faster |
+| Time to restore service | 2,604× faster |
+| Change failure rate | 7× lower |
+
+The uncomfortable, useful part: these are the boring capabilities. The
+multipliers do not come from novel tooling — they come from disciplined
+use of things that are now commodities. That asymmetry is what Part 4's
+map is for.
+
+## Part 2 — What AI changes, and what it doesn't buy back
+
+**2024: the paradox.** DORA's 2024 report measured what a 25% increase
+in AI adoption was associated with. Nearly everything local improved.
+Delivery got worse on both axes. [research]
+
+| Per 25% increase in AI adoption (DORA 2024) | |
+|---|---|
+| Documentation quality | +7.5% |
+| Code quality | +3.4% |
+| Code review speed | +3.1% |
+| **Delivery throughput** | **−1.5%** |
+| **Delivery stability** | **−7.2%** |
+
+DORA's own summary: "improving the development process does not
+automatically improve software delivery."
+
+**2025: the update that must always travel with the 2024 numbers.** The
+2025 report — ~5,000 technology professionals surveyed, 100+ hours of
+qualitative data; still the latest edition as of this writing — found
+the throughput association had turned *positive*. The stability penalty
+persisted. The report's explanation: "teams are adapting for speed,
+[but] their underlying systems have not yet evolved to safely manage
+AI-accelerated development," naming the missing piece as "robust control
+systems, like strong automated testing, mature version control
+practices, and fast feedback loops." [research]
+
+**Speed does not purchase stability back.** DORA 2025 explicitly tested
+the argument that AI-accelerated throughput compensates for instability,
+and rejected it: no moderating effect was found, and instability "still
+has significant detrimental effects on crucial outcomes like product
+performance and burnout … which can ultimately negate any perceived
+gains in throughput." (A null result in survey data is "no evidence of,"
+not proof of absence.) [research]
+
+**The mechanism DORA names sits downstream of generation.** Three
+verified pieces: (a) 2024 — AI makes it "possible, even likely, that
+changelists are growing in size," and larger changes are consistently
+slower and less stable (DORA's stated hypothesis, not demonstrated
+causation); (b) 2025 — instability rises "in part, because it is harder
+to review larger batches of code"; (c) 2025 — AI's positive effect on
+*team* performance is contingent on frequent use of version-control
+rollback: at very low rollback use the benefit is statistically
+unsupported, at high use it is a medium increase. Rollback is a
+deterministic recovery mechanism — a button whose behavior is exact and
+repeatable. [research]
+
+**The trust gap sizes the verification demand.** 90% of 2025
+respondents use AI at work (up ~14 points year over year); more than 80%
+report productivity gains; 30% report little or no trust in AI-generated
+code (23% "a little", 7% "not at all", 46% "somewhat"). DORA reads this
+as a need for "critical validation skills." Honest direction note:
+distrust *shrank* from 39% — the demand comes from volume at
+near-universal adoption plus residual distrust, not rising panic.
+[research]
+
+### The oracle evidence
+
+An **oracle**, in testing, is whatever decides "correct or not." A
+**deterministic** oracle — a compiler, a test suite, a linter, a schema
+check — gives the same exact verdict every time. The question AI forces
+is whether our oracles are strong enough to carry the volume.
+
+- **Weak oracles overstate AI correctness — by a measured amount.** When
+  the standard AI-coding benchmark HumanEval had its test suite expanded
+  80-fold (HumanEval+, NeurIPS 2023), the measured pass rates of 26
+  popular models — GPT-4 included — dropped by up to 19.3–28.9%
+  (worst-case relative reductions across settings). Same code, stronger
+  checking, different verdict. [research]
+- **The oracle problem predates AI.** The canonical software-engineering
+  survey (Barr et al., IEEE TSE 2015) identified the lack of automated
+  oracles — not test *generation* — as the binding bottleneck on test
+  automation. AI industrialized generation on both sides; the bottleneck
+  stayed put. [research] (fetched and cited; not put through this
+  report's refutation panel)
+- **AI judging AI is not a check.** Recent benchmark studies find LLM
+  code judges exhibit significant randomness and systematically
+  hallucinate defects that are not there. This repository's experiments
+  agree from the other direction: across 500+ generation runs, an AI
+  judge's score of generated code tracked the code's *executed* test
+  results at r ≈ 0.25 within one vendor and r ≈ 0.002 across vendors —
+  while two AI judges agreed with each other at r ≈ 0.7. Two judges
+  agreeing is reliability, not validity. [research] [measured, internal]
+- **Input quality has a cliff, and only a deterministic gate catches
+  it.** This repository's execution-tested evidence: architecture
+  diagrams below maturity Level 2 produced code failing roughly one
+  intended behavior in three when run, versus about one in ten above — a
+  ~21-point gap that held across three generators from two vendors, and
+  that better prompting never rescued. [measured, internal]
+  ([EVIDENCE.md](../EVIDENCE.md))
+
+### The thesis, tested
+
+> *"As AI makes generation cheap, deterministic verification becomes the
+> binding constraint on both lead time and quality."*
+
+**Verdict: supported, not proven — and the attribution matters.** Every
+verified DORA finding is consistent with it: the stability penalty, the
+batch-size mechanism, the rollback contingency, the "robust control
+systems" language, the trust gap. The oracle literature supplies the
+mechanism. But DORA never says "deterministic verification" or "binding
+constraint" — its words are robust testing, small batches, critical
+validation skills. The framing is this report's inference, stated as
+such, resting on correlational survey evidence plus one internal
+measured result.
+
+## Part 3 — The sixteen activities, mapped
+
+SAFe — the Scaled Agile Framework, the enterprise delivery playbook this
+report uses as its skeleton — describes a **Continuous Delivery
+Pipeline** with four aspects, each containing four activities. SAFe's
+public pages verify the four aspects and the activity names of the
+middle two aspects; the Continuous Exploration and Release on Demand
+activity names sit behind its login wall and rest on secondary sources
+(marked *). SAFe's definition makes automation constitutive of the
+pipeline — "the workflows, activities, and automation needed to guide
+new functionality from ideation to an on-demand release of value" —
+which is what licenses mapping tooling onto activities at all.
+[research]
+
+### Who does the work, who checks it
+
+Before the grid, its organizing distinction. For every activity, ask two
+separate questions: who *does* the work, and who *checks* it — with
+three possible actors for each: a **human**, an **AI**, or
+**deterministic automation** (a machine step whose behavior is exact and
+repeatable). Familiar setups are cells of that grid, not categories of
+their own:
+
+| Work done by | Checked by | Example | Reading |
+|---|---|---|---|
+| Human | Human | Design review, incident command | Where judgment is the activity |
+| Human | Deterministic | A hypothesis behind a pre-registered A/B test | Instrumented judgment |
+| AI | Human | AI-written code, manually reviewed | The configuration behind DORA's stability penalty: generation accelerated, review capacity didn't |
+| AI | Deterministic | AI code behind compiler/tests/linters; AI-written infrastructure config behind plan-diff + policy checks | The safe insertion pattern |
+| Deterministic | Deterministic | Build, deploy, guarded rollout | What commodity means |
+
+The mode is not a fixed property — it follows Wardley evolution. Genesis
+work is done by humans because novelty demands judgment; as a capability
+evolves, AI becomes usable; at commodity the work runs as deterministic
+automation end to end. AI is the *transitional actor* between artisan
+and automation — which is Simon Wardley's own reading of "conversational
+programming". [practitioner]
+
+That gives "human-only" two very different meanings, with opposite
+strategies. An activity can be human-only *for now* — because AI there
+is still genesis, or because the deterministic check that would make AI
+safe doesn't exist yet (watch it; this is the build list). Or it can be
+human-only *durably* — because the judgment is intrinsic to the
+activity: whether a design is right, what a metric means, what the
+organization should learn (protect it; don't wait for AI to absorb it).
+The grid marks which is which. And one rule from Part 2's evidence
+carries throughout: AI belongs on the *does* side; on the *checks* side
+it is triage at most, never the gate. The classification itself is the
+author's analysis. [practitioner]
+
+Column guide for the grid: capability cluster with representative tools
+(instances, not endorsements — all tool naming is [practitioner]),
+Wardley evolution stage (→ marks AI-driven movement), then who does and
+who checks today. Depth is deliberately uneven: Develop, Build, Test
+End-to-End, Deploy, Monitor, and Release get full treatment;
+practice-heavy activities are covered briefly and say so.
+
+### Continuous Exploration — where intent is formed *(names per secondary sources)*
+
+| Activity | Capability cluster · representative tools | Evolution | Who does the work today | Who checks it today |
+|---|---|---|---|---|
+| Hypothesize* | Experimentation & product analytics — Amplitude, Statsig, LaunchDarkly Experimentation. Practice-heavy; covered briefly. | Product | **Human, durably** — choosing what to bet on is a value judgment; AI drafts hypotheses and result summaries (genesis→custom) | **Deterministic by design** — a pre-registered experiment is the oracle for a value hypothesis (statistical, not exact) |
+| Collaborate & Research* | Collaborative design & research repositories — Figma/FigJam, Miro, Dovetail. Practice-heavy; covered briefly. | Product → commodity | **Human** — AI synthesis of research and meetings assists (custom→product) | **Human, durably** — no oracle for "did we understand the users"; real validation belongs to Hypothesize's experiments |
+| Architect* | Architecture-as-code modeling — PlantUML, Mermaid, Structurizr; conformance checks — ArchUnit; **diagram verifiers — pumllint** | Modeling: product · verifiers: genesis → custom | **Human design; AI drafts** — diagrams and decision records now generated at near-zero cost, volume with no quality control attached | **Split** — hygiene, consistency, maturity: deterministic (pumllint [measured, internal]); design *semantics*: human, durably. The split is the category's scope guard |
+| Synthesize* | Backlog & program tooling — Jira, Azure Boards, Jira Align | Commodity | **Human prioritization; AI drafts** stories and grooming (custom→product) | **Human, for now** — no acceptance-criteria/spec linter exists yet; a named oracle gap (Part 5), so AI-drafted stories are hand-checked or unchecked |
+
+### Continuous Integration — where the checks run *(names page-verified)*
+
+| Activity | Capability cluster · representative tools | Evolution | Who does the work today | Who checks it today |
+|---|---|---|---|---|
+| Develop | Version control — git, GitHub, GitLab; AI coding assistants — GitHub Copilot, Claude Code, Cursor; static analysis — ESLint, ruff, SonarQube; code review incl. AI reviewers | VCS, linters: commodity · assistants: product → commodity · AI review: custom → product | **AI + human pair** — the largest AI surface in the SDLC; DORA: +3.4% code quality, +3.1% review speed per 25% adoption, against the delivery-stability penalty [research] | **Deterministic first, human residue** — compiler, types, linters, unit tests carry the volume; human review carries what they can't; AI review triages but must not gate. Densest oracle stack in the pipeline — why AI landed here first. Rollback fluency is the DORA-evidenced recovery condition [research] |
+| Build | CI build automation — GitHub Actions, GitLab CI, Jenkins; build systems — Gradle, Bazel; supply-chain integrity — Sigstore, SLSA, SBOM tooling | CI: commodity · build systems: product · supply chain: custom → product | **Deterministic** — automation is the activity; AI assists pipeline authoring and failure triage | **Deterministic by construction** — compile, resolve, sign, attest; binary verdicts. DORA capability: continuous integration [research] |
+| Test End-to-End | Test automation — Playwright, Cypress; contract testing — Pact; **test-oracle quality** — mutation testing: Stryker, mutmut. DORA 2018: continuous testing crucial [research] | Automation: product · oracle-quality: custom, thin adoption → | **Human + AI author; deterministic executes** — AI test generation moving custom→product fast; "self-healing" tests [vendor] | **The suite checks the product; humans check the suite — for now.** The deterministic check-of-the-check exists (mutation testing) but adoption is thin; HumanEval+ measured what weak suites hide: up to 19.3–28.9% overstated correctness [research]. When AI writes the tests too, this gap is the risk |
+| Stage | Infrastructure-as-code — Terraform/OpenTofu, Pulumi; policy-as-code — OPA, Checkov; ephemeral environments; containers — Kubernetes | IaC: product → commodity · policy: product · containers: commodity | **AI increasingly writes; deterministic applies** — infrastructure config is a text artifact AI generates well | **Deterministic** — plan diffs and policy engines give exact verdicts before production. The model configuration: AI does, machine checks |
+
+### Continuous Deployment — to production, safely *(names page-verified)*
+
+| Activity | Capability cluster · representative tools | Evolution | Who does the work today | Who checks it today |
+|---|---|---|---|---|
+| Deploy | Deployment automation — Argo CD, Spinnaker, Octopus; progressive delivery — Argo Rollouts, Flagger; database change management — Liquibase, Flyway — both DORA-named capabilities [research] | Product; mechanics commoditizing | **Deterministic** — humans on exception only; AI risk scoring exists [vendor] | **Deterministic** — health checks, canary thresholds, automated rollback triggers |
+| Verify | Post-deployment verification — smoke suites, synthetic probes (Checkly), canary analysis (Kayenta), chaos engineering (Gremlin, LitmusChaos) | Custom → product | **Deterministic** — probes, smoke runs, injected failures on schedule | **Deterministic** — service-level objectives (SLOs: explicit numeric reliability targets) turn "is it healthy?" into arithmetic; AI anomaly detection assists, never gates alone |
+| Monitor | Observability — Prometheus/Grafana, Datadog, OpenTelemetry. DORA 2018: monitoring & observability crucial [research] | Product → commodity (OpenTelemetry standardization) | **Deterministic collection; AI summarizes** — AIOps anomaly detection and incident summaries (custom→product) | **Deterministic rules, human interpretation** — alert thresholds and SLO math are exact; deciding what the picture *means* stays human, durably |
+| Respond | Incident management — PagerDuty, incident.io; rollback/revert mechanics (the deterministic recovery lever DORA ties AI's benefit to [research]) | Product → commodity | **Human command, durably** — AI drafts summaries and suggests causes; rollback executes deterministically | **Split** — recovery is deterministically checkable (service restored per SLO); root-cause *correctness* has no oracle, so AI root-cause analysis stays a suggestion, checked by humans |
+
+### Release on Demand — value, governed *(names per secondary sources)*
+
+| Activity | Capability cluster · representative tools | Evolution | Who does the work today | Who checks it today |
+|---|---|---|---|---|
+| Release* | Feature flags & release orchestration — LaunchDarkly, Unleash, Split; OpenFeature standard. SAFe verified: deployment and release are decoupled [research]; flags as the standard instantiation is [practitioner] | Product → commodity (OpenFeature) | **Human decision, deterministic mechanics** — releasing is a business call, durably human; flags execute it exactly and reversibly. AI writes the release notes | **Deterministic** — guarded rollout rules and flag-gated exposure make "who sees this" checkable and revocable |
+| Stabilize* | SRE practice tooling — error budgets, SLO platforms (Nobl9), resilience/DR testing. Covered briefly. | Custom → product | **Human practice; deterministic tracking** — AI drafts runbooks, summarizes toil | **Deterministic** — error-budget arithmetic is exact once SLOs are set |
+| Measure* | Engineering intelligence & value-stream management — DX, LinearB, Faros, Plandek | Product | **Deterministic instruments** — AI narrates insights [vendor] | **Human, durably** — deciding what the numbers mean, and spotting metric gaming (Goodhart), is judgment; these instruments are themselves the pipeline's oracle, with survey-vs-telemetry divergence the known caveat |
+| Learn* | Retrospective & postmortem practice; tooling deliberately thin. DORA: generative culture is a measured capability [research]. Practice-heavy; covered briefly. | Practice, not product | **Human, durably** — organizational learning is not delegable; AI drafts postmortems | **None by machine** — whether the organization actually learned is unverifiable |
+
+## Part 4 — The Wardley map
+
+How to read it, in one paragraph. The vertical axis is **visibility**:
+how close a component sits to the anchoring user need at the top — here,
+*release valuable, working software on demand*. The horizontal axis is
+**evolution**: how far the capability has traveled from genesis (novel,
+uncertain, hand-built) through custom-built and product toward commodity
+(standardized, rented, undifferentiated). Position is a property of the
+capability in the market, never a score for a vendor. Arrows show
+movement AI is causing now. Every position is expert judgment —
+[practitioner] — informed by the verified evidence in Parts 1–2.
+
+![Wardley map of SDLC tooling capabilities](sdlc-wardley-map.svg)
+
+Three things the map says at a glance. First, **everything with strong
+outcome evidence is on the right** — the capabilities DORA's multipliers
+reward are products and commodities; there is no glory in building them,
+only in adopting them well. Second, **AI is pulling the middle rightward
+fast**: coding assistants, LLM APIs, observability, feature flags are
+all commoditizing (Simon Wardley's own reading is that hand-written
+coding itself is commoditizing under "conversational programming" —
+[practitioner]). Third, **the left side is nearly empty except for
+verification**: the one genuinely immature layer is deterministic
+checking for the artifacts AI now mass-produces — and the dashed nodes
+(code review, architecture modeling, test-oracle quality, root-cause
+analysis) mark exactly the places where, in the grid's terms, checking
+is still human-only.
+
+## Part 5 — Strategic read
+
+**Commodity — adopt, never build, measure the discipline.** Version
+control (with rollback fluency — the specific practice DORA ties AI's
+team benefit to), CI build, container/cloud platform, mainstream
+linters, feature flags as they standardize on OpenFeature. The oldest,
+strongest evidence lives here, and differentiation is impossible by
+construction. The only investment that pays is adoption depth: the 2018
+finding that only 22% of "cloud" users met the essential characteristics
+is the standing warning. [research]
+
+**Product — buy, integrate, standardize on open interfaces.** Deployment
+automation, progressive delivery, end-to-end test platforms,
+observability (insist on OpenTelemetry), engineering intelligence,
+incident management. Tool choice among credible products is rarely the
+differentiator — practice is. Prefer open interfaces so commoditization
+works for you, not against you. [practitioner]
+
+**Genesis / custom-built — the only zone where building
+differentiates.** Deterministic verifiers for AI-read and AI-written
+artifacts; oracle-quality tooling (mutation testing for AI-generated
+test suites); policy-as-code for artifact types that never had checks.
+The demand signals are external now: DORA 2025 names missing "robust
+control systems" as why AI speed converts to instability; 30% of
+practitioners don't trust AI output; HumanEval+ quantifies what weak
+checking hides. This is where pumllint already sits.
+[research] [practitioner]
+
+### Rules for the AI-heavy pipeline
+
+- **Gate AI-produced work on deterministic checks, not AI opinion.**
+  Compilers, tests, linters, plan diffs, policy engines — verdicts that
+  are exact and repeatable. Three independent evidence lines (judge
+  randomness and defect-hallucination studies; this repository's
+  judged-vs-executed r ≈ 0.25 / 0.002) say an AI judging AI output is
+  reliability theater: judges agree with each other more than any of
+  them agrees with reality. [research] [measured, internal]
+- **Place AI by the check, not the demo.** Where checking is
+  deterministic (Develop, Stage, test execution), AI can do the work
+  safely today. Where checking is durably human (design semantics,
+  incident command, interpreting metrics, learning), buy assistance,
+  never autonomy. Where checking is human-only just because an oracle is
+  missing — acceptance criteria, test-assertion strength, diagram
+  semantics — that is the build list: Part 4's dashed nodes.
+  [practitioner]
+- **Keep batches small and rollback fluent** — DORA's two named,
+  evidenced countermeasures to the AI stability penalty. [research]
+- **Check inputs, not just outputs.** The one measured input-side
+  result: diagram maturity below a machine-checkable threshold cost ~21
+  points of executed correctness in generated code, and no prompt
+  engineering rescued it. Where AI reads an artifact as specification,
+  lint the artifact first. [measured, internal]
+
+### pumllint, positioned
+
+The category — deterministic verifiers for AI-made artifacts — sits at
+genesis moving into custom-built, serving Architect, Develop, and Build
+(the per-activity detail is [pumllint in the SDLC](value-in-the-sdlc.md)).
+That is the correct place for it: the map's only under-built layer, with
+corroborating external demand signals, and its internal evidence (the
+below-Level-2 cliff; execution beats judgment) is the micro-scale
+version of what DORA measures at industry scale. The
+[roadmap's](../ROADMAP.md) demand-driven stance is right. The adjacent
+oracle gaps worth watching for pull, nearest asset first:
+
+- **Diagram↔code conformance** — does the implementation still match
+  the model? Bridges Architect to Develop; pumllint's parsed model is
+  the natural asset. [practitioner]
+- **Oracle quality for AI-generated tests** — assertion strength and
+  mutation coverage as a gate; the strongest external evidence base of
+  the four (HumanEval+). [research]
+- **Spec and acceptance-criteria linting** — the Synthesize activity's
+  missing check, upstream of everything AI generates from stories.
+  [practitioner]
+- **Prompt/agent-configuration linting** — a new artifact class with no
+  checks at all; earliest-stage, least defined. [practitioner]
+
+### What would change this picture
+
+- DORA showing the AI-instability association shrinking where test
+  automation and small batches are strong — the direct test of this
+  report's thesis, not yet published.
+- The contents and evidence base of DORA's new AI capabilities model
+  (it exists; this report's attempt to enumerate its members was refuted
+  in verification and is honestly excluded).
+- Outcome-grade evidence for oracle strength on non-code artifacts —
+  diagrams, IaC, specs — beyond this repository's internal results;
+  today that evidence base is one project deep.
+- A DORA 2026 report; 2025 is current as of this writing.
+
+---
+
+## Annex — evidence discipline
+
+**The claim that failed verification.** "DORA has added a dedicated AI
+capability category listing six capabilities…" — refuted 0–3. An
+AI-related capability grouping does exist on dora.dev, and verifier
+notes reference a seven-capability 2025 AI Capabilities Model, but the
+six-member enumeration did not survive checking against the source. This
+report therefore cites the model's existence and refuses to list its
+members.
+
+**Standing caveats.**
+
+- All DORA evidence is correlational, self-reported survey research;
+  "associated with," never proven causation. Survey-vs-telemetry
+  divergence is a known critique.
+- Headline multipliers are year-specific (2018's 46×/2,555× swung to
+  208×/106× in 2019); use them as illustrations of capability
+  separation, not constants.
+- The 2024 AI findings must always travel with the 2025 update
+  (throughput flipped positive; the stability penalty is what held).
+- Eight of the sixteen SAFe activity names (Continuous Exploration and
+  Release on Demand) rest on secondary sources — the primary articles
+  are login-gated; the four aspects and the CI/CD activity names are
+  page-verified.
+- Wardley positions and all named tools are practitioner judgment. The
+  who-does/who-checks classification per activity is likewise the
+  author's analysis — consistent with, but not asserted by, the cited
+  research. This repository's numbers are internal measurements,
+  consistent with but not part of the externally verified set.
+
+**Principal sources.**
+
+- *Primary:* dora.dev — capability catalog, 2018 report, 2024 report +
+  PDF, 2025 report + PDF ("State of AI-assisted Software Development");
+  framework.scaledagile.com — Continuous Delivery Pipeline, Continuous
+  Integration, Continuous Deployment; HumanEval+/EvalPlus (NeurIPS
+  2023); Barr et al., "The Oracle Problem in Software Testing" (IEEE
+  TSE 2015); LLM-judge reliability studies (arXiv 2025–26).
+- *Secondary:* RedMonk, Jellyfish, RDEL close-reads of DORA 2025; SAFe
+  6.x practitioner material for the gated activity names.
+- *Strategic lens:* Simon Wardley, "Why the fuss about conversational
+  programming?"; practitioner Wardley analyses of the DevOps toolchain.
+- *Internal:* [EVIDENCE.md](../EVIDENCE.md) — 500+ generation runs,
+  execution-tested, cross-vendor.

@@ -1,0 +1,131 @@
+<svg viewBox="0 0 960 712" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Wardley map of SDLC tooling capabilities: most evidence-backed capabilities sit in product and commodity; deterministic verifiers for AI-made artifacts sit in genesis moving toward custom-built.">
+  <!-- Hand-authored figure for sdlc-tooling-landscape.md. Light palette baked in
+       (no CSS variables) so the file renders standalone, including inside GitHub's
+       dark theme, on its own paper background. -->
+  <rect x="0" y="0" width="960" height="712" fill="#F7F8FA"/>
+  <!-- evolution bands -->
+  <rect x="70" y="40" width="215" height="540" fill="#14636B" fill-opacity="0.03"/>
+  <rect x="500" y="40" width="215" height="540" fill="#14636B" fill-opacity="0.03"/>
+  <line x1="285" y1="40" x2="285" y2="580" stroke="#D8DEE4" stroke-dasharray="3 4"/>
+  <line x1="500" y1="40" x2="500" y2="580" stroke="#D8DEE4" stroke-dasharray="3 4"/>
+  <line x1="715" y1="40" x2="715" y2="580" stroke="#D8DEE4" stroke-dasharray="3 4"/>
+  <line x1="70" y1="580" x2="930" y2="580" stroke="#6E7883" stroke-width="1"/>
+  <line x1="70" y1="580" x2="70" y2="40" stroke="#6E7883" stroke-width="1"/>
+  <!-- axis labels -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#6E7883">
+    <text x="177" y="600" text-anchor="middle" letter-spacing="1">Genesis</text>
+    <text x="392" y="600" text-anchor="middle" letter-spacing="1">Custom-built</text>
+    <text x="607" y="600" text-anchor="middle" letter-spacing="1">Product (+rental)</text>
+    <text x="822" y="600" text-anchor="middle" letter-spacing="1">Commodity (+utility)</text>
+    <text x="930" y="620" text-anchor="end" font-size="10.5">Evolution &#8594;</text>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5" fill="#6E7883">
+    <text transform="translate(56 310) rotate(-90)" text-anchor="middle">&#8592; Invisible&#160;&#160;&#183;&#160;&#160;Visibility to the need&#160;&#160;&#183;&#160;&#160;Visible &#8594;</text>
+  </g>
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#7E2608"/>
+    </marker>
+  </defs>
+
+  <!-- dependency edges -->
+  <g stroke="#6E7883" stroke-width="1" opacity="0.28">
+    <line x1="470" y1="78" x2="640" y2="112"/>
+    <line x1="452" y1="78" x2="592" y2="162"/>
+    <line x1="640" y1="112" x2="662" y2="212"/>
+    <line x1="662" y1="212" x2="800" y2="468"/>
+    <line x1="662" y1="212" x2="782" y2="532"/>
+    <line x1="600" y1="262" x2="800" y2="468"/>
+    <line x1="600" y1="262" x2="336" y2="300"/>
+    <line x1="560" y1="330" x2="606" y2="540"/>
+    <line x1="560" y1="330" x2="497" y2="376"/>
+    <line x1="700" y1="352" x2="782" y2="532"/>
+    <line x1="643" y1="398" x2="700" y2="352"/>
+    <line x1="800" y1="468" x2="833" y2="512"/>
+    <line x1="540" y1="452" x2="170" y2="392"/>
+    <line x1="624" y1="486" x2="782" y2="532"/>
+  </g>
+  <!-- highlighted dependency: safe AI-assisted delivery depends on artifact verifiers -->
+  <line x1="560" y1="330" x2="170" y2="392" stroke="#14636B" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.75"/>
+
+  <!-- movement arrows (AI-driven, happening now) -->
+  <g stroke="#7E2608" stroke-width="2" fill="none">
+    <line x1="576" y1="330" x2="716" y2="330" marker-end="url(#arr)"/>
+    <line x1="622" y1="540" x2="780" y2="540" marker-end="url(#arr)"/>
+    <line x1="716" y1="352" x2="790" y2="352" marker-end="url(#arr)"/>
+    <line x1="656" y1="112" x2="726" y2="112" marker-end="url(#arr)"/>
+    <line x1="513" y1="376" x2="580" y2="376" marker-end="url(#arr)"/>
+    <line x1="186" y1="392" x2="316" y2="392" marker-end="url(#arr)"/>
+    <line x1="352" y1="300" x2="404" y2="300" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- anchor -->
+  <g font-family="Helvetica, Arial, sans-serif">
+    <rect x="300" y="52" width="170" height="40" rx="4" fill="none" stroke="#1A2430" stroke-width="1.2"/>
+    <text x="385" y="69" text-anchor="middle" font-size="10" fill="#6E7883" letter-spacing="1.2">USER NEED</text>
+    <text x="385" y="83" text-anchor="middle" font-size="11" fill="#1A2430" font-weight="600">Release working software, on demand</text>
+  </g>
+
+  <!-- nodes: filled = deterministic check in the cluster; dashed = check weak/missing -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="11.5">
+    <circle cx="640" cy="112" r="7" fill="#14636B"/>
+    <text x="628" y="116" text-anchor="end" fill="#1A2430">Feature flags &amp; release orchestration</text>
+    <circle cx="600" cy="166" r="7" fill="#14636B"/>
+    <text x="588" y="170" text-anchor="end" fill="#1A2430">Delivery metrics &amp; engineering intelligence</text>
+    <circle cx="662" cy="216" r="7" fill="#14636B"/>
+    <text x="648" y="220" text-anchor="end" fill="#1A2430">Deployment automation &amp; progressive delivery</text>
+    <circle cx="600" cy="262" r="7" fill="#14636B"/>
+    <text x="588" y="266" text-anchor="end" fill="#1A2430">End-to-end test automation</text>
+    <circle cx="336" cy="300" r="7" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
+    <text x="322" y="304" text-anchor="end" fill="#1A2430">Test-oracle quality (mutation testing)</text>
+    <circle cx="560" cy="330" r="7" fill="#14636B"/>
+    <text x="548" y="322" text-anchor="end" fill="#1A2430">AI coding assistants</text>
+    <circle cx="700" cy="352" r="7" fill="#14636B"/>
+    <text x="714" y="374" fill="#1A2430">Observability</text>
+    <circle cx="497" cy="376" r="7" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
+    <text x="485" y="380" text-anchor="end" fill="#1A2430">Code review (human + AI)</text>
+    <circle cx="643" cy="398" r="7" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
+    <text x="657" y="402" fill="#1A2430">Incident response</text>
+    <circle cx="170" cy="392" r="11" fill="none" stroke="#14636B" stroke-opacity="0.18" stroke-width="7"/>
+    <circle cx="170" cy="392" r="7" fill="#14636B"/>
+    <text x="160" y="374" text-anchor="start" fill="#1A2430" font-weight="650">Deterministic verifiers</text>
+    <text x="160" y="412" text-anchor="start" fill="#46525F" font-size="10.5">for AI-made artifacts &#8212; pumllint's category</text>
+    <circle cx="540" cy="452" r="7" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
+    <text x="528" y="456" text-anchor="end" fill="#1A2430">Architecture-as-code modeling</text>
+    <circle cx="620" cy="482" r="7" fill="#14636B"/>
+    <text x="634" y="486" fill="#1A2430">Infrastructure- &amp; policy-as-code</text>
+    <circle cx="800" cy="468" r="7" fill="#14636B"/>
+    <text x="800" y="453" text-anchor="middle" fill="#1A2430">CI build automation</text>
+    <circle cx="833" cy="516" r="7" fill="#14636B"/>
+    <text x="820" y="520" text-anchor="end" fill="#1A2430">Version control + rollback</text>
+    <circle cx="782" cy="552" r="7" fill="#14636B"/>
+    <text x="796" y="556" fill="#1A2430">Container &amp; cloud platform</text>
+    <circle cx="606" cy="540" r="7" fill="#14636B"/>
+    <text x="592" y="544" text-anchor="end" fill="#1A2430">LLM APIs / model serving</text>
+  </g>
+
+  <!-- zone annotations -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5" fill="#6E7883" font-style="italic">
+    <text x="177" y="470" text-anchor="middle">the build zone &#8212;</text>
+    <text x="177" y="484" text-anchor="middle">where custom tooling differentiates</text>
+    <text x="822" y="252" text-anchor="middle">the adopt zone &#8212;</text>
+    <text x="822" y="266" text-anchor="middle">the DORA multipliers live here</text>
+  </g>
+
+  <!-- legend -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5" fill="#46525F">
+    <line x1="70" y1="642" x2="930" y2="642" stroke="#D8DEE4"/>
+    <circle cx="78" cy="664" r="6" fill="#14636B"/>
+    <text x="90" y="668">deterministic check available in the cluster</text>
+    <circle cx="330" cy="664" r="6" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
+    <text x="342" y="668">check weak or missing &#8212; AI leverage capped</text>
+    <line x1="600" y1="664" x2="622" y2="664" stroke="#7E2608" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="638" y="668">movement AI is causing now</text>
+    <circle cx="78" cy="692" r="9" fill="none" stroke="#14636B" stroke-opacity="0.18" stroke-width="6"/>
+    <circle cx="78" cy="692" r="6" fill="#14636B"/>
+    <text x="90" y="696">pumllint's category</text>
+    <line x1="330" y1="692" x2="360" y2="692" stroke="#14636B" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <text x="368" y="696">safe AI-assisted delivery depends on artifact verifiers</text>
+  </g>
+</svg>
