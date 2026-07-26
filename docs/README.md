@@ -57,4 +57,6 @@ but they are a useful cross-check that no audience was forgotten.
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
 - [Dogfooding: pumllint on its own lint flow](dogfooding.md) — the linter
   applied to [a sequence diagram of its own pipeline](pumllint-lint-flow.puml):
-  what held up, and what to watch.
+  what held up, and what to watch. The diagram source itself is described
+  construct by construct in
+  [the annotated walkthrough](pumllint-lint-flow-explained.md).

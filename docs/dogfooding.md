@@ -10,7 +10,10 @@ default lint command drawn from `cli.py` (`_run_lint`) and `engine.py` —
 CLI → config auto-detection → engine construction (rule discovery from
 `catalog.toml`, profile gating, severity escalation) → file collection →
 parsing → per-diagram rules → suppression filter → cross-diagram rules →
-reporter → exit code.
+reporter → exit code. A construct-by-construct description of the
+diagram source — every PlantUML element, the rule it satisfies, and the
+code it maps to — is in
+[the annotated walkthrough](pumllint-lint-flow-explained.md).
 
 The diagram was authored in house style (named diagram, title, declared
 PascalCase participants, labelled messages and blocks, balanced
@@ -39,6 +42,32 @@ this run motivated, see "What to watch") with the repository's own config
 | `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 12 findings (5 blocker, 7 major), exit 1 |
 | `pumllint --profile codegen --no-suppressions …` | 15 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
 | `pumllint fix --dry-run docs/pumllint-lint-flow.puml` | "Nothing to fix", exit 0 |
+
+## Re-running the checks
+
+The table above is the historical record; the three commands below
+re-verify the current state at any time — after edits to the diagram,
+the rules, or the config. Run from the repository root (`python3 -m
+pumllint …` works where the `pumllint` console script is not on the
+path):
+
+```sh
+pumllint docs/pumllint-lint-flow.puml
+# expected: ✔ No issues found — exit 0
+
+pumllint score docs/pumllint-lint-flow.puml
+# expected: Level 4 (Precise) — 100/100 (3 suppressed);
+#           Level 5 refused without the codegen profile
+
+pumllint --no-suppressions docs/pumllint-lint-flow.puml
+# expected: exactly 3 × SEQ006 (minor) — the Engine self-messages
+#           documented above, and nothing else
+```
+
+Any other output means something changed — a new finding, a shifted
+score, or a suppression hiding more than the three documented
+exceptions. Treat it like a golden-test failure: investigate before
+shipping.
 
 ## What held up
 
