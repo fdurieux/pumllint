@@ -1,5 +1,8 @@
 # Does the maturity score predict codegen outcome?
 
+*No-background-assumed walkthrough of this file's program and findings:
+[docs/evidence-explained.md](docs/evidence-explained.md).*
+
 Phase 10e experiment record — 2026-07-22. Raw data: `experiment_results/report.json`
 (75 runs, zero failures, $5.24 API spend). Harness: `tools/codegen_experiment.py`.
 Deepened 2026-07-24 (Arc D, v0.17.0) — see "Deepening" below; analysis:

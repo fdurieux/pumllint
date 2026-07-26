@@ -5,6 +5,7 @@ one that matches why you are here:
 
 | You are… | You want to know… | Read |
 |----------|-------------------|------|
+| New to all of this — no technical background | What the evidence actually established, from first principles, every term defined | [The evidence, explained from scratch](evidence-explained.md) |
 | An IT manager, architecture lead, or sponsor | Why this tool is worth mandating; what the measurable payoff is | [The case for pumllint](case-for-pumllint.md), then [pumllint in the SDLC](value-in-the-sdlc.md) |
 | A DevOps / platform engineer | How to install it and wire it into the pipeline | [Setup and CI integration](setup-and-ci.md) |
 | An architect reading the reports, or a modeller whose diagrams get checked | What the findings and maturity levels mean, and how to act on them | [Understanding findings and scores](findings-and-scores.md) |
@@ -44,7 +45,8 @@ but they are a useful cross-check that no audience was forgotten.
 - [SCORING.md](../SCORING.md) — the maturity model: dimensions, formula,
   levels, caps, calibration notes.
 - [EVIDENCE.md](../EVIDENCE.md) — the measured relationship between maturity
-  scores and code-generation fidelity.
+  scores and code-generation outcomes; plain-language walkthrough:
+  [The evidence, explained from scratch](evidence-explained.md).
 - [ROADMAP.md](../ROADMAP.md) — what remains, and the working agreements for
   contributors.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
