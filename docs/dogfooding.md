@@ -41,6 +41,7 @@ this run motivated, see "What to watch") with the repository's own config
 | `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98/100 |
 | `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 12 findings (5 blocker, 7 major), exit 1 |
 | `pumllint --profile codegen --no-suppressions …` | 15 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
+| `pumllint score --profile codegen docs/pumllint-lint-flow.puml` | Level 2 (Structured) — 62/100 (3 suppressed); the 5 SEQ103 blockers cap the level — the generation contract correctly refuses a diagram drawn for human readers |
 | `pumllint fix --dry-run docs/pumllint-lint-flow.puml` | "Nothing to fix", exit 0 |
 
 ## Re-running the checks
