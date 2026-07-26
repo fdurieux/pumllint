@@ -21,7 +21,7 @@ pumllint score diagrams/                # maturity report (read-only)
 ```
 
 To install from source instead (e.g. to try an unreleased commit):
-`pip install git+https://github.com/fdurieux/pumllint@v0.21.1`.
+`pip install git+https://github.com/fdurieux/pumllint@v0.22.0`.
 `python -m pumllint` is equivalent to the `pumllint` script everywhere.
 
 `.puml`, `.plantuml`, `.iuml` and `.wsd` files are picked up.
@@ -70,12 +70,12 @@ The repo ships an action; pin the ref, inputs mirror the CLI:
 - uses: actions/checkout@v4
 
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.21.1
+  uses: fdurieux/pumllint@v0.22.0
   with:
     paths: docs/diagrams
 
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.21.1
+  uses: fdurieux/pumllint@v0.22.0
   with:
     command: score
     paths: docs/diagrams
@@ -83,7 +83,7 @@ The repo ships an action; pin the ref, inputs mirror the CLI:
     min-level: "2"
 
 - name: Maturity report (artifact for reviewers)
-  uses: fdurieux/pumllint@v0.21.1
+  uses: fdurieux/pumllint@v0.22.0
   with:
     command: score
     paths: docs/diagrams
@@ -121,7 +121,7 @@ diff shows exactly what was conceded).
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.21.1
+    rev: v0.22.0
     hooks:
       - id: pumllint                  # lint staged diagrams
       - id: pumllint-score
