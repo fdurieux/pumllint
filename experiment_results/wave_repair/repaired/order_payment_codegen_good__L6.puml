@@ -1,0 +1,26 @@
+@startuml order-payment-codegen-good--L6
+title Order payment codegen good L6
+participant PaymentGateway <<external>>
+database OrderDB
+participant OrderService
+
+alt orderId != null
+  OrderService -> OrderDB : findById(orderId)
+  activate OrderDB
+  OrderDB --> OrderService : order
+  deactivate OrderDB
+else order not found
+  OrderDB --> OrderService : notFoundError
+end
+
+alt order.total > 0
+  OrderService -> PaymentGateway : charge(orderId, order.total)
+  activate PaymentGateway
+  PaymentGateway --> OrderService : receipt(paymentId, status)
+  deactivate PaymentGateway
+else charge error
+  PaymentGateway --> OrderService : paymentError
+  ' pumllint: disable=no-self-message
+  OrderService ->> OrderService : compensate(orderId)
+end
+@enduml

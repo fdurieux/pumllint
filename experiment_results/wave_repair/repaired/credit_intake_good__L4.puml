@@ -1,0 +1,30 @@
+@startuml credit-intake-good--L4
+title Credit intake good L4
+
+actor Customer
+participant FrontOffice
+participant CreditEngine <<service>>
+
+Customer -> FrontOffice : submitCreditApplication(applicantId, requestedAmount)
+activate FrontOffice
+
+FrontOffice -> CreditEngine : scoreApplicant(applicantId)
+activate CreditEngine
+
+alt CreditEngine responds successfully
+    CreditEngine --> FrontOffice : return riskScore
+    deactivate CreditEngine
+
+    alt riskScore >= 650
+        FrontOffice --> Customer : return offerProposal(offerId, terms)
+    else riskScore < 650
+        FrontOffice --> Customer : return rejectionLetter(reasonCode)
+    end
+else CreditEngine unavailable
+    CreditEngine --> FrontOffice : return ServiceUnavailableException
+    deactivate CreditEngine
+    FrontOffice --> Customer : return rejectionLetter(reasonCode: "SERVICE_UNAVAILABLE")
+end
+
+deactivate FrontOffice
+@enduml

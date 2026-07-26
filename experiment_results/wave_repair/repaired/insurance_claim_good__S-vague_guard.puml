@@ -1,0 +1,34 @@
+@startuml insurance-claim-good
+title Insurance claim intake — codegen-ready
+participant ClaimService <<service>>
+participant FraudChecker <<external>>
+participant PolicyRegistry <<service>>
+database ClaimDB
+
+alt claim.policyStatus == "ACTIVE"
+  ClaimService -> PolicyRegistry : findPolicy(policyId)
+  activate PolicyRegistry
+  PolicyRegistry --> ClaimService : policy
+  deactivate PolicyRegistry
+else policy lapsed
+  PolicyRegistry --> ClaimService : policyLapsedError
+end
+
+alt risk assessed
+  ClaimService -> FraudChecker : assessRisk(claimId, claim.amount)
+  activate FraudChecker
+  FraudChecker --> ClaimService : riskScore
+  deactivate FraudChecker
+else risk service error
+  FraudChecker --> ClaimService : riskServiceError
+end
+
+alt claim.amount <= policy.coverageLimit
+  ClaimService -> ClaimDB : storeClaim(claimId, riskScore)
+  activate ClaimDB
+  ClaimDB --> ClaimService : claimRecord
+  deactivate ClaimDB
+else storage error
+  ClaimDB --> ClaimService : storageError
+end
+@enduml

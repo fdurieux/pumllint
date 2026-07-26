@@ -1,0 +1,46 @@
+@startuml insurance-claim-bad
+title Insurance Claim Fraud Check and Storage Flow
+
+control ClaimService
+participant FraudChecker <<external>>
+database ClaimDB
+
+activate ClaimService
+ClaimService -> FraudChecker : checkClaimForFraud(claimId)
+activate FraudChecker
+
+alt fraud check succeeds (no exception thrown)
+    FraudChecker --> ClaimService : isFraudulent
+    deactivate FraudChecker
+
+    alt isFraudulent == false
+        ClaimService -> ClaimDB : storeClaim(claimId, claimData)
+        activate ClaimDB
+
+        alt storage succeeds
+            ClaimDB --> ClaimService : claimRecordId
+        else storage fails
+            ClaimDB --> ClaimService : StorageException
+            ClaimService -> ClaimService : handleStorageFailure(claimId)
+            activate ClaimService
+            ClaimService --> ClaimService : storageFailureHandled
+            deactivate ClaimService
+        end
+        deactivate ClaimDB
+    else isFraudulent == true
+        ClaimService -> ClaimService : flagClaimForReview(claimId)
+        activate ClaimService
+        ClaimService --> ClaimService : claimFlagged
+        deactivate ClaimService
+    end
+else fraud check fails (FraudCheckException thrown)
+    FraudChecker --> ClaimService : FraudCheckException
+    deactivate FraudChecker
+    ClaimService -> ClaimService : handleFraudCheckFailure(claimId)
+    activate ClaimService
+    ClaimService --> ClaimService : failureHandled
+    deactivate ClaimService
+end
+
+deactivate ClaimService
+@enduml

@@ -1,0 +1,4883 @@
+{
+  "wave": "repair",
+  "report": "experiment_results/wave_repair/report.json",
+  "gen_model": "claude-opus-4-8",
+  "judge_model": "claude-sonnet-5",
+  "suite_version": "phase-a-frozen",
+  "rows": [
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 68,
+      "hard_demand": 1,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 68,
+      "hard_demand": 1,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 68,
+      "hard_demand": 1,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal offered to 1 for $1.00 (risk score 850). | 'proposal offered to 1 for $1.00 (risk score 850).'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "rejection letter issued to 1 (risk score 5). | 'rejection letter issued to 1 (risk score 5).'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal offered to 1 for $1.00 (risk score 700). | 'proposal offered to 1 for $1.00 (risk score 700).'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offer proposal for 1: approved amount 10000.00 (risk score 850) | 'offer proposal for 1: approved amount 10000.00 (risk score 850)'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offer proposal for 1: approved amount 10000.00 (risk score 5) | 'offer proposal for 1: approved amount 10000.00 (risk score 5)'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "level": 2,
+      "composite": 55.6,
+      "judge_fidelity": 62,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offer proposal for 1: approved amount 10000.00 (risk score 700) | 'offer proposal for 1: approved amount 10000.00 (risk score 700)'",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | status=error reason=notfounderror detail=order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | status=error reason=notfounderror detail=order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | status=error reason=notfounderror detail=order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror', 'detail': 'order ord-1 not found'} | status=error reason=notfounderror detail=order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | status=error reason=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | status=error reason=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | status=error reason=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "level": 2,
+      "composite": 51.4,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process",
+      "detail": "{'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | {'status': 'error', 'reason': 'notfounderror: order ord-1 not found'} | status=error reason=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=100, amount=100, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'compensated': false, 'rechecked': true} | {'order_id': 'ord-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': none, 'receipt': none, 'compensated': false, 'rechecked': false, 'error': 'notfounderror: order ord-1 not found'} | {'order_id': 'ord-1', 'order': none, 'receipt': none, 'compensated': false, 'rechecked': false, 'error': 'notfounderror: order ord-1 not found'} | order_",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=100, amount=100, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': none, 'compensated': true, 'rechecked': true, 'error': 'paymenterror: charge declined by gateway'} | {'order_id': 'ord-1', 'order': proteanobj(total=100, amount=1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=0, amount=0, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': none, 'compensated': false, 'rechecked': true} | {'order_id': 'ord-1', 'order': proteanobj(total=0, amount=0, order_id='ord-1', id='ord-1', status='found', order='ord",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'charged', 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | {'status': 'charged', 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | status=charged receipt=protean",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'not_found', 'order_id': 'ord-1'} | {'status': 'not_found', 'order_id': 'ord-1'} | status=not_found order_id=ord-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'payment_error', 'order_id': 'ord-1'} | {'status': 'payment_error', 'order_id': 'ord-1'} | status=payment_error order_id=ord-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "level": 2,
+      "composite": 86.4,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "unknown",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'no_charge', 'order_id': 'ord-1'} | {'status': 'no_charge', 'order_id': 'ord-1'} | status=no_charge order_id=ord-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "('closed', 'unexpected decision: 1') | ('closed', 'unexpected decision: 1')",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_application",
+      "detail": "('rejected', 'insufficient score') | ('rejected', 'insufficient score')",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "('closed', 'unexpected decision: 1') | ('closed', 'unexpected decision: 1')",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 64,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'status': 'closed', 'reason': 'offer declined'} | {'status': 'closed', 'reason': 'offer declined'} | status=closed reason=offer declined",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 64,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'status': 'closed', 'reason': 'offer declined'} | {'status': 'closed', 'reason': 'offer declined'} | status=closed reason=offer declined",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 64,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'status': 'closed', 'reason': 'offer declined'} | {'status': 'closed', 'reason': 'offer declined'} | status=closed reason=offer declined",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "level": 4,
+      "composite": 94.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 65,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 65,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 65,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 66,
+      "hard_demand": 7,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 66,
+      "hard_demand": 7,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 66,
+      "hard_demand": 7,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submit_application",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 58,
+      "hard_demand": 7,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('offerproposal', 850) | ('offerproposal', 850)",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 58,
+      "hard_demand": 7,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('rejectionletter', 'score below acceptance threshold') | ('rejectionletter', 'score below acceptance threshold')",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 58,
+      "hard_demand": 7,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('offerproposal', 700) | ('offerproposal', 700)",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 82,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitCreditApplication",
+      "detail": "applicationresult(offer=offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)-0001\", terms='approved amount: 10000.00; apr based on risk score 850'), rejection=none) | applicationresult(offer=offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)-0001\", terms='appr",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 82,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitCreditApplication",
+      "detail": "applicationresult(offer=none, rejection=rejectionletter(reason_code='low_risk_score')) | applicationresult(offer=none, rejection=rejectionletter(reason_code='low_risk_score')) | {'offer': none, 'rejection': rejectionletter(reason_code='low_risk_score')}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 82,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitCreditApplication",
+      "detail": "applicationresult(offer=offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)-0001\", terms='approved amount: 10000.00; apr based on risk score 700'), rejection=none) | applicationresult(offer=offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)-0001\", terms='appr",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms='amount=10000, apr=11.0%, months=36') | offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms='amount=10000, apr=11.0%, months=36') | {'offer_id': \"offer-proteanobj(name='jane doe', amount=10000",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "rejectionletter(reason_code='low_score') | rejectionletter(reason_code='low_score') | {'reason_code': 'low_score'}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms='amount=10000, apr=14.0%, months=36') | offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms='amount=10000, apr=14.0%, months=36') | {'offer_id': \"offer-proteanobj(name='jane doe', amount=10000",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms={'amount': 10000, 'apr': 5.0, 'term_months': 36}) | offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms={'amount': 10000, 'apr': 5.0, 'term_months': 36}) | {'offer_id': \"offer-proteanobj(name=",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "rejectionletter(reason_code='low_score') | rejectionletter(reason_code='low_score') | {'reason_code': 'low_score'}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms={'amount': 10000, 'apr': 5.0, 'term_months': 36}) | offerproposal(offer_id=\"offer-proteanobj(name='jane doe', amount=10000)\", terms={'amount': 10000, 'apr': 5.0, 'term_months': 36}) | {'offer_id': \"offer-proteanobj(name=",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "none | none",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "none | none",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 88,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "none | none",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 90,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('offerproposal', 850) | ('offerproposal', 850)",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 90,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('rejectionletter', 5) | ('rejectionletter', 5)",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 90,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "('offerproposal', 700) | ('offerproposal', 700)",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 80,
+      "hard_demand": 3,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 80,
+      "hard_demand": 3,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 80,
+      "hard_demand": 3,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "1 | 1 | {}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 72,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 850}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 72,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_application",
+      "detail": "rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 5}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 72,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 700}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 80,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 850}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 80,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 5}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 80,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 700}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=850) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 850}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_application",
+      "detail": "rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | rejectionletter(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=5) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 5}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | offerproposal(applicant_id=proteanobj(name='jane doe', amount=10000), risk_score=700) | {'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 700}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.processClaim",
+      "detail": "claimflagged | 'claimflagged'",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.checkClaimForFraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.storeClaim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 1,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.processClaim",
+      "detail": "claimflagged | 'claimflagged'",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.checkClaimForFraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.storeClaim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 1,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.processClaim",
+      "detail": "claimflagged | 'claimflagged'",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.checkClaimForFraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.storeClaim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 1,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.processClaim",
+      "detail": "failurehandled | 'failurehandled'",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.checkClaimForFraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.storeClaim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 1,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.processClaim",
+      "detail": "claimflagged | 'claimflagged'",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.checkClaimForFraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.storeClaim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "{'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | {'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | status=claimflagged claimid=proteanobj",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 2,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "{'status': 'claimflagged', 'claimid': proteanobj(amount=50000, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=50000)} | {'status': 'claimflagged', 'claimid': proteanobj(amount=50000, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=50000)} | status=claimflagged claimid=pr",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 2,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "{'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | {'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | status=claimflagged claimid=proteanobj",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 2,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.process_claim",
+      "detail": "{'status': 'failurehandled', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | {'status': 'failurehandled', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | status=failurehandled claimid=prot",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 2,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 90,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "{'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | {'status': 'claimflagged', 'claimid': proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)} | status=claimflagged claimid=proteanobj",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 93,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500) | \"claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)\"",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 3,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 93,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "claimflagged:proteanobj(amount=50000, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=50000) | \"claimflagged:proteanobj(amount=50000, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=50000)\"",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 3,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 93,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500) | \"claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)\"",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 3,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 93,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.process_claim",
+      "detail": "failurehandled:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500) | \"failurehandled:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)\"",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "run": 3,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "level": 3,
+      "composite": 78.3,
+      "judge_fidelity": 93,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "unknown",
+      "entry": "ClaimService.process_claim",
+      "detail": "claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500) | \"claimflagged:proteanobj(amount=500, claim_id='clm-1', id='clm-1', policy_id='pol-1', claim_amount=500)\"",
+      "configs_applied": {
+        "registry_find_policy": [],
+        "fraud_assess_risk": [
+          "FraudChecker.check_claim_for_fraud"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 78,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "storeconfirmation(order_id='ord-1') | storeconfirmation(order_id='ord-1') | {'order_id': 'ord-1'}",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 78,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "storeconfirmation(order_id='ord-1') | storeconfirmation(order_id='ord-1') | {'order_id': 'ord-1'}",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 78,
+      "hard_demand": 4,
+      "stage": "missing_call",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "missing ['compensat', 'refund', 'rollback', 'revert', 'reverse', 'undo']; paymenterror: payment failed with error code: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 78,
+      "hard_demand": 4,
+      "stage": "forbidden_call",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "forbidden ['charge', 'pay', 'authorize', 'debit', 'capture', 'transact', 'process']; storeconfirmation(order_id='ord-1') | storeconfirmation(order_id='ord-1') | {'order_id': 'ord-1'}",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 85,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "{'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | {'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | status=success order_id=ord-1 transaction_id=txn-1",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 85,
+      "hard_demand": 5,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "{'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | {'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | status=success order_id=ord-1 transaction_id=txn-1",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 85,
+      "hard_demand": 5,
+      "stage": "missing_call",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order_payment",
+      "detail": "missing ['compensat', 'refund', 'rollback', 'revert', 'reverse', 'undo']; {'status': 'payment_failed', 'order_id': 'ord-1', 'error_code': 'paymenterror: charge declined by gateway'} | {'status': 'payment_failed', 'order_id': 'ord-1', 'error_code': 'paymenterror: charge declined by gateway'} | status=payment_failed order_id=ord-1 error_code=paymenterror: charge declined by",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 85,
+      "hard_demand": 5,
+      "stage": "forbidden_call",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "forbidden ['charge', 'pay', 'authorize', 'debit', 'capture', 'transact', 'process']; {'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | {'status': 'success', 'order_id': 'ord-1', 'transaction_id': 'txn-1'} | status=success order_id=ord-1 transaction_id=txn-1",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "{'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'confirmation': {'orderid': 'ord-1', 'confirmed': true}} | {'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "{'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'confirmation': {'orderid': 'ord-1', 'confirmed': true}} | {'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "missing_call",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_order_payment",
+      "detail": "missing ['compensat', 'refund', 'rollback', 'revert', 'reverse', 'undo']; {'status': 'payment_failed', 'orderid': 'ord-1', 'errorcode': 'paymenterror: charge declined by gateway'} | {'status': 'payment_failed', 'orderid': 'ord-1', 'errorcode': 'paymenterror: charge declined by gateway'} | status=payment_failed orderid=ord-1 errorcode=paymenterror: charge declined by gatew",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "level": 4,
+      "composite": 80.6,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "forbidden_call",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_order_payment",
+      "detail": "forbidden ['charge', 'pay', 'authorize', 'debit', 'capture', 'transact', 'process']; {'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'confirmation': {'orderid': 'ord-1', 'confirmed': true}} | {'status': 'completed', 'orderid': 'ord-1', 'transactionid': proteanobj(success=",
+      "configs_applied": {
+        "db_find": [],
+        "gateway_charge": [
+          "PaymentGateway.charge_customer"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: order not found: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: payment error for order paymenterror: charge declined by gateway: charge failed",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 83,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: order not found: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: payment failed for order paymenterror: charge declined by gateway: charge error",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: order not found: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: payment error for order paymenterror: charge declined by gateway: charge failed",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='ea09c0b1-1eee-40db-86ee-938eaf617a6d', approved_amount=1, interest_rate=6.5, message='congratulations, your application has been pre-approved.') | offerproposal(application_id='ea09c0b1-1eee-40db-86ee-938eaf617a6d', approved_amount=1, interest_rate=6.5, message='congrat",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "rejectionnotice(application_id='2fff6de8-2957-4362-9705-c850b0395d2f', reason='unfortunately, your application did not meet our criteria.') | rejectionnotice(application_id='2fff6de8-2957-4362-9705-c850b0395d2f', reason='unfortunately, your application did not meet our criteria.') | {'application_id",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='d353f0ad-dd4a-473e-ad5b-770e5a39f865', approved_amount=1, interest_rate=8.0, message='congratulations, your application has been pre-approved.') | offerproposal(application_id='d353f0ad-dd4a-473e-ad5b-770e5a39f865', approved_amount=1, interest_rate=8.0, message='congrat",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='f1bd3c38-d25f-48e9-8e56-ce639c7abe43', risk_score=850, terms='standard 36-month term at 5.9% apr') | offerproposal(application_id='f1bd3c38-d25f-48e9-8e56-ce639c7abe43', risk_score=850, terms='standard 36-month term at 5.9% apr') | {'application_id': 'f1bd3c38-d25f-48e9",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='41503068-0725-469e-9fe9-32e7f7b150fe', risk_score=5, terms='standard 36-month term at 5.9% apr') | offerproposal(application_id='41503068-0725-469e-9fe9-32e7f7b150fe', risk_score=5, terms='standard 36-month term at 5.9% apr') | {'application_id': '41503068-0725-469e-9fe",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 78,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='f6d34b47-7e8f-4718-a2aa-5e8f0aca5ffe', risk_score=700, terms='standard 36-month term at 5.9% apr') | offerproposal(application_id='f6d34b47-7e8f-4718-a2aa-5e8f0aca5ffe', risk_score=700, terms='standard 36-month term at 5.9% apr') | {'application_id': 'f6d34b47-7e8f-4718",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='71570535-f3dd-46a9-b7a0-83639c3c21de', risk_score=850, approved_amount=1) | offerproposal(application_id='71570535-f3dd-46a9-b7a0-83639c3c21de', risk_score=850, approved_amount=1) | {'application_id': '71570535-f3dd-46a9-b7a0-83639c3c21de', 'risk_score': 850, 'approved_",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "rejectionnotice(application_id='bff8db0c-1bef-4b19-a2a4-c50eb3b7a134', risk_score=5, reason='risk score below approval threshold') | rejectionnotice(application_id='bff8db0c-1bef-4b19-a2a4-c50eb3b7a134', risk_score=5, reason='risk score below approval threshold') | {'application_id': 'bff8db0c-1bef-",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "level": 4,
+      "composite": 82.5,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "offerproposal(application_id='e0a089ce-0efb-42a8-a2d0-d35c4a908fd3', risk_score=700, approved_amount=1) | offerproposal(application_id='e0a089ce-0efb-42a8-a2d0-d35c4a908fd3', risk_score=700, approved_amount=1) | {'application_id': 'e0a089ce-0efb-42a8-a2d0-d35c4a908fd3', 'risk_score': 700, 'approved_",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "{'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 850, 'message': 'congratulations, here is your credit offer.'} | {'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 850, 'message': 'congratulations, here is",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_application",
+      "detail": "{'type': 'rejectionletter', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 5, 'message': 'we are unable to approve your application at this time.'} | {'type': 'rejectionletter', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 5, 'message': 'we are unabl",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 68,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_application",
+      "detail": "{'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 700, 'message': 'congratulations, here is your credit offer.'} | {'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 700, 'message': 'congratulations, here is",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 72,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 850, 'message': 'congratulations, here is your credit offer.'} | {'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 850, 'message': 'congratulations, here is",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 72,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'rejectionletter', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 5, 'message': 'we are unable to approve your application at this time.'} | {'type': 'rejectionletter', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 5, 'message': 'we are unabl",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 72,
+      "hard_demand": 3,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 700, 'message': 'congratulations, here is your credit offer.'} | {'type': 'offerproposal', 'applicantid': proteanobj(name='jane doe', amount=10000), 'riskscore': 700, 'message': 'congratulations, here is",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 55,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'offerproposal', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 850, 'message': 'congratulations, your credit application is approved.'} | {'type': 'offerproposal', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 850, 'message': 'congratula",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 55,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'rejectionletter', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 5, 'message': 'we regret to inform you your application was declined.'} | {'type': 'rejectionletter', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 5, 'message': 'we regret",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "level": 4,
+      "composite": 81.2,
+      "judge_fidelity": 55,
+      "hard_demand": 5,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submitApplication",
+      "detail": "{'type': 'offerproposal', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 700, 'message': 'congratulations, your credit application is approved.'} | {'type': 'offerproposal', 'applicant_id': proteanobj(name='jane doe', amount=10000), 'risk_score': 700, 'message': 'congratula",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.scoreApplicant"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 1,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policy pol-1 status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policy pol-1 status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policy pol-1 status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policy pol-1 status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "run": 2,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policy pol-1 status is 1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 62,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "attributeerror: 'str' object has no attribute 'total'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 62,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "attributeerror: 'str' object has no attribute 'total'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 62,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "attributeerror: 'str' object has no attribute 'total'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 62,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "attributeerror: 'str' object has no attribute 'total'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: invalid total for order 'ord-1'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: invalid total for order 'ord-1'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 74,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: invalid total for order 'ord-1'",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "level": 4,
+      "composite": 92.5,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: cannot charge non-positive total for order ord-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 56,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 56,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: order not found: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 56,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: payment failed for order: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 56,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "level": 4,
+      "composite": 90.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=100, amount=100, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'payment_error': none, 'compensation_result': none, 'recheck_r",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: order not found: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=100, amount=100, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': none, 'payment_error': 'payment failed for order paymenterror: charge declined by gateway: charge error', 'compensation_result': {'order_id': 'ord-1', 'status': '",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 76,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'order_id': 'ord-1', 'order': proteanobj(total=0, amount=0, order_id='ord-1', id='ord-1', status='found', order='ord-1'), 'receipt': none, 'payment_error': none, 'compensation_result': none, 'recheck_result': {'order_id': 'ord-1', 'status': 'rechecked', 'consistent': true}} | {'order_id': 'ord-1', ",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'compensation': none, 'recheck': <artifact.recheckresult object at 0x109b49400>} | {'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'receipt': none, 'compensation': <artifact.compensationresult object at 0x10291d220>, 'recheck': <artifact.recheckresult object at 0x10291e660>} | {'receipt': none, 'compensation': <artifact.compensationresult object at 0x10291d220>, 'recheck': <artifact.recheckresult object at 0x10291e660>} | rece",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 80,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'receipt': none, 'compensation': none, 'recheck': <artifact.recheckresult object at 0x10fd45010>} | {'receipt': none, 'compensation': none, 'recheck': <artifact.recheckresult object at 0x10fd45010>} | receipt=none compensation=none recheck=<artifact.recheckresult object at 0x10fd45010>",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 72,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'ok', 'order_id': 'ord-1', 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100), 'recheck': {'order_id': 'ord-1', 'rechecked': true}} | {'status': 'ok', 'order_id': 'ord-1', 'receipt': proteanobj(success=true, status='approved', rec",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.findOrderById"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 72,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'error', 'reason': 'order_not_found', 'detail': 'notfounderror: order ord-1 not found'} | {'status': 'error', 'reason': 'order_not_found', 'detail': 'notfounderror: order ord-1 not found'} | status=error reason=order_not_found detail=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.findOrderById"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 72,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'error', 'order_id': 'ord-1', 'reason': 'payment_error', 'detail': 'paymenterror: charge declined by gateway', 'compensation': {'order_id': 'ord-1', 'compensated': true}, 'recheck': {'order_id': 'ord-1', 'rechecked': true}} | {'status': 'error', 'order_id': 'ord-1', 'reason': 'payment_err",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.findOrderById"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 72,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "unknown",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'skipped', 'order_id': 'ord-1', 'reason': 'no_charge_required', 'recheck': {'order_id': 'ord-1', 'rechecked': true}} | {'status': 'skipped', 'order_id': 'ord-1', 'reason': 'no_charge_required', 'recheck': {'order_id': 'ord-1', 'rechecked': true}} | status=skipped order_id=ord-1 reason=no_",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.findOrderById"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 58,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'ok', 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | {'status': 'ok', 'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | status=ok receipt=proteanobj(success=tru",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 58,
+      "hard_demand": 4,
+      "stage": "wrong_outcome",
+      "passed": false,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'error', 'reason': 'order_not_found'} | {'status': 'error', 'reason': 'order_not_found'} | status=error reason=order_not_found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 58,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'error', 'reason': 'payment_failed'} | {'status': 'error', 'reason': 'payment_failed'} | status=error reason=payment_failed",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 58,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'status': 'ok', 'receipt': none} | {'status': 'ok', 'receipt': none} | status=ok receipt=none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 85,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "{'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | {'receipt': proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100)} | receipt=proteanobj(success=true, status='approved', receipt='receipt', t",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'error': 'notfounderror: order ord-1 not found'} | {'error': 'notfounderror: order ord-1 not found'} | error=notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'error': 'paymenterror: charge declined by gateway'} | {'error': 'paymenterror: charge declined by gateway'} | error=paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "level": 5,
+      "composite": 97.5,
+      "judge_fidelity": 66,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "{'error': 'order total must be greater than 0'} | {'error': 'order total must be greater than 0'} | error=order total must be greater than 0",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    }
+  ],
+  "per_diagram": [
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "level": 2,
+      "composite": 55.6,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 0.667
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "level": 2,
+      "composite": 51.4,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.417
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "level": 2,
+      "composite": 86.4,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.917
+    },
+    {
+      "label": "R_L1_credit_intake_bad",
+      "level": 4,
+      "composite": 94.0,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 0.444
+    },
+    {
+      "label": "R_L1_credit_intake_good__L3",
+      "level": 4,
+      "composite": 92.5,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 0.333
+    },
+    {
+      "label": "R_L1_credit_intake_good__L4",
+      "level": 4,
+      "composite": 82.5,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L1_credit_intake_good__L5",
+      "level": 4,
+      "composite": 82.5,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 0.667
+    },
+    {
+      "label": "R_L1_credit_intake_good__S-undeclare_participant",
+      "level": 4,
+      "composite": 92.5,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L1_insurance_claim_bad",
+      "level": 3,
+      "composite": 78.3,
+      "family": "insurance_claim",
+      "artifacts": 3,
+      "scenario_runs": 15,
+      "pass_rate": 0.2
+    },
+    {
+      "label": "R_L1_order_payment_codegen_bad",
+      "level": 4,
+      "composite": 80.6,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.25
+    },
+    {
+      "label": "R_L1_order_payment_codegen_good__L9",
+      "level": 4,
+      "composite": 90.0,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-drop_title",
+      "level": 4,
+      "composite": 82.5,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L2_credit_intake_good__S-self_message",
+      "level": 4,
+      "composite": 81.2,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L2_insurance_claim_good__S-vague_guard",
+      "level": 5,
+      "composite": 100.0,
+      "family": "insurance_claim",
+      "artifacts": 2,
+      "scenario_runs": 10,
+      "pass_rate": 0.4
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L5",
+      "level": 5,
+      "composite": 100.0,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.667
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L6",
+      "level": 4,
+      "composite": 92.5,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__L8",
+      "level": 4,
+      "composite": 90.0,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.917
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-self_message",
+      "level": 5,
+      "composite": 100.0,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.833
+    },
+    {
+      "label": "R_L2_order_payment_codegen_good__S-vague_guard",
+      "level": 5,
+      "composite": 97.5,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 0.917
+    }
+  ]
+}

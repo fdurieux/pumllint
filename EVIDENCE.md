@@ -417,6 +417,77 @@ the generator; k = 1 repair per diagram (repair stochasticity
 unmeasured); n = 3 runs per repaired diagram — pooled tiers carry the
 claims, never single diagrams.
 
+## Agent-repair wave — results (2026-07-27, $5.95)
+
+Run notes, recorded before the verdicts: (1) the first launch was
+aborted during the repair phase — a driver bug (adaptive-thinking
+responses that exhaust `max_tokens` carry no text block; `next()`
+raised a bare StopIteration) lost two repair calls; no scored run had
+completed, the fix is commit-logged, and the wave restarted from
+scratch. (2) One generation run was lost to a truncated judge response
+(`R_L2_insurance_claim_good__S-vague_guard` run 3 → n = 2 for that
+unit). (3) At analysis time a *third* target proved absent from both
+stored waves (`L2_order_payment_codegen_good__S-self_message`) — the
+frozen list named two, but the pre-registered *rule* (fresh degraded
+baseline under the identical config) is what was applied, +$0.24.
+(4) X-R1's Level-5 arm was internally inconsistent with the frozen
+driver: the second repair pass triggered only below Level 4, so a
+diagram reaching L4 on pass 1 never attempted L5 — that arm was
+unreachable by construction and is scored as failed per the freeze.
+
+**Pooled executed pass-rates** (full = semantic throughout: every
+artifact imported and drove; all failures were wrong outcomes, not
+broken adapters):
+
+| tier | pass-rate | n (scenario runs) |
+|---|---|---|
+| pristine L5 (stored) | 0.949 | 156 |
+| degraded L2 (stored + fresh) | 0.741 | 201 |
+| **repaired L2** | **0.841** | 88 |
+| degraded L1 (stored) | 0.642 | 162 |
+| **repaired L1** | **0.583** | 84 |
+
+**Verdicts:**
+
+- **X-R1 — failed.** Final levels: 4× L5, 11× L4, 1× L3 (the deepest
+  hand-degraded diagram, `insurance_claim_bad`, 11 invented
+  decisions). 15/16 reached ≥ L4, not 16/16; the L5 arm fell to the
+  protocol inconsistency above. All 16 clear the Level-2 gate.
+- **X-R2 — failed.** Repaired-L2 recovered +10.0 pp of the 20.8 pp
+  deficit — about half, not to within 5 pp of pristine.
+- **X-R3a — failed, and the failure is the headline.** Repaired-L1 sits
+  **5.9 pp below the untouched degraded baseline** (0.583 vs 0.642).
+  Author-less repair below the cliff is not merely bounded — pooled, it
+  is net-negative.
+- **X-R3b — confirmed** (trivially, given X-R3a).
+- **X-R4 — confirmed.** Every repaired-L1 diagram passes the
+  `--min-level 2` gate while the tier executes 36.6 pp below pristine.
+  A passed gate after author-less repair certifies method-convention
+  completeness, not intent recovery.
+
+**The mechanism, visible per diagram (bimodal, not uniform):** where
+the damage was *structural* — the intent still in the file — repair
+produced the largest recoveries in the whole evidence program
+(self-message mutant 0.33 → 1.00, ladder rung L6 0.42 → 1.00,
+undeclared-participant mutant 0.50 → 1.00). Where the repairer had to
+*invent* content, it destroyed working behavior: one single invented
+guard took a near-pristine executor from 0.93 to 0.40;
+`credit_intake_bad` (10 inventions) fell 1.00 → 0.44. Per-diagram
+deltas on the L1 tier: 4 losses, 3 gains, 1 flat — the pooled −5.9 pp
+is a gamble's expected value, not a uniform effect. The reading: the
+generator's own domain priors are often *better* than a repairer's
+invented rules, and a wrong rule written into the diagram gets
+implemented faithfully — the diagram's authority is exactly why
+invented content in it is worse than invented content in code. The
+docs/agents.md covenant ("ask, never invent") predicted this a priori;
+this wave measured it.
+
+**Per the pre-committed interpretation matrix** (X-R3a failed):
+gap-report-driven repair below the cliff without the author is recorded
+as net-harmful, and docs/agents.md now says so. The recipe's measured
+value concentrates in structural repair; its content-bearing step is an
+*escalation* step, evidence-backed as the only safe path.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
@@ -558,6 +629,16 @@ Supported by this data (updated after the deepening):
   Claude generators (16–25 pp) — so the below-Level-2 gate is not a
   one-vendor artifact. Three generators, two vendors, one behavioral
   oracle."*
+- *(2026-07-27, agent-repair)* — *"Gap-report-driven repair without the
+  diagram's author splits by damage type: structural damage is
+  measurably recoverable (repaired-L2 regained ~10 pp of a 21 pp
+  deficit; single structural mutants often to full pass), but inventing
+  the missing decisions is net-negative below the cliff (−5.9 pp pooled
+  vs leaving the diagram alone; one invented guard cost one diagram
+  53 pp) — and every such repaired diagram still passes the gate. The
+  gate is an input filter, not a content certifier, and the repair
+  covenant's 'ask, never invent' is a measured necessity, not a style
+  preference."*
 - Quote correlations and the cliff, never absolute fidelity values —
   absolute fidelity is judge-relative (two judges differ by ~9 points on
   identical code while agreeing on ranking, r = 0.715). Executed

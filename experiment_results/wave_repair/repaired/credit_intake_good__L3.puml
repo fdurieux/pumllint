@@ -1,0 +1,29 @@
+@startuml credit-intake-good--L3
+title Credit intake good L3
+
+actor Customer
+boundary FrontOffice
+participant CreditEngine
+
+Customer -> FrontOffice : submitApplication(applicantId, applicationData)
+activate FrontOffice
+
+FrontOffice -> CreditEngine : scoreApplicant(applicantId)
+activate CreditEngine
+
+alt scoring succeeds
+    CreditEngine --> FrontOffice : riskScore
+else scoring service unavailable (timeout or exception)
+    CreditEngine --> FrontOffice : scoringError(reason)
+end
+deactivate CreditEngine
+
+alt score acceptable
+    FrontOffice --> Customer : offerProposal(riskScore)
+else score rejected
+    FrontOffice --> Customer : rejectionLetter(reason)
+else scoring service unavailable
+    FrontOffice --> Customer : applicationPending(reason)
+end
+deactivate FrontOffice
+@enduml

@@ -1,0 +1,30 @@
+@startuml credit-intake-good--L5
+title Credit Intake Process (Good, Level 5)
+
+actor Customer
+control CreditEngine
+participant FrontOffice
+
+Customer -> FrontOffice : submitApplication(applicantData)
+activate FrontOffice
+
+FrontOffice -> CreditEngine : scoreApplicant(applicantId)
+activate CreditEngine
+
+alt CreditEngine reachable
+    CreditEngine --> FrontOffice : riskScore
+    deactivate CreditEngine
+
+    alt riskScore >= approvalThreshold
+        FrontOffice --> Customer : offerProposal(riskScore)
+    else riskScore < approvalThreshold
+        FrontOffice --> Customer : rejectionLetter(riskScore)
+    end
+else scoring service unavailable
+    CreditEngine --> FrontOffice : ScoringServiceException
+    deactivate CreditEngine
+    FrontOffice --> Customer : rejectionLetter("service unavailable")
+end
+
+deactivate FrontOffice
+@enduml

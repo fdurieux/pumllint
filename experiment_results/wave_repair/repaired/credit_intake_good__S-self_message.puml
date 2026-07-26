@@ -1,0 +1,35 @@
+@startuml credit-intake-happy-path
+title Credit intake — happy path
+
+actor Customer
+boundary FrontOffice
+participant CreditEngine
+
+Customer -> FrontOffice : submitApplication(applicantId, applicationData)
+activate FrontOffice
+FrontOffice -> CreditEngine : scoreApplicant(applicantId, applicationData)
+activate CreditEngine
+
+alt scoring service responded
+    CreditEngine --> FrontOffice : riskScore
+    deactivate CreditEngine
+
+    alt riskScore >= approvalThreshold
+        FrontOffice --> Customer : offerProposal
+    else riskScore < approvalThreshold
+        FrontOffice --> Customer : rejectionLetter
+    end
+else scoring service unavailable
+    CreditEngine --> FrontOffice : ScoringServiceException
+    deactivate CreditEngine
+    FrontOffice --> Customer : intakeError
+end
+
+deactivate FrontOffice
+
+Customer -> Customer : recheckSubmittedData(applicationData)
+activate Customer
+Customer --> Customer : reviewResult
+deactivate Customer
+
+@enduml

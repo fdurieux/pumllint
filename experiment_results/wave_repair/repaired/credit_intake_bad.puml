@@ -1,0 +1,57 @@
+@startuml credit-intake
+title Credit Intake Process
+' Repaired: participants typed, operation signatures added, guards made
+' concrete, return arrows added, failure paths added for external calls,
+' alt blocks balanced and labelled, activations balanced, Notary now used.
+skinparam backgroundColor #EEEBDC
+
+actor Customer
+participant FrontOffice <<service>>
+participant CreditEngine <<service>>
+participant Notary <<external>>
+
+Customer -> FrontOffice : submitApplication(applicantId, income, requestedAmount)
+activate FrontOffice
+
+FrontOffice -> CreditEngine : scoreApplicant(applicantId, income, requestedAmount)
+activate CreditEngine
+
+alt scoring succeeds
+    CreditEngine --> FrontOffice : riskScore
+else scoring service unavailable
+    CreditEngine --> FrontOffice : ScoringServiceError
+end
+deactivate CreditEngine
+
+alt riskScore >= acceptanceThreshold
+    FrontOffice -> Customer : proposeOffer(applicantId, offerAmount, interestRate)
+
+    FrontOffice -> CreditEngine : recordDecision(applicantId, "offered")
+    activate CreditEngine
+    CreditEngine --> FrontOffice : decisionRecorded
+    deactivate CreditEngine
+
+    Customer --> FrontOffice : offerDecision
+
+    alt offerDecision == "accepted"
+        FrontOffice -> Notary : notarizeContract(applicantId, offerAmount)
+        activate Notary
+
+        alt notarization succeeds
+            Notary --> FrontOffice : contractId
+            FrontOffice --> Customer : applicationApproved(contractId)
+        else notarization fails
+            Notary --> FrontOffice : NotarizationError
+            FrontOffice --> Customer : applicationFailed(reason: "notarization error")
+        end
+        deactivate Notary
+    else offerDecision == "declined"
+        FrontOffice --> Customer : applicationClosed(reason: "offer declined")
+    end
+else riskScore < acceptanceThreshold
+    FrontOffice --> Customer : applicationRejected(reason: "insufficient score")
+end
+
+deactivate FrontOffice
+
+@enduml

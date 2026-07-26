@@ -1,0 +1,25 @@
+@startuml order-payment-codegen-good--L9
+title Order payment codegen good L9
+participant PaymentGateway <<external>>
+database OrderDB
+control OrderService
+
+OrderService -> OrderDB : findOrder(orderId)
+activate OrderDB
+alt order != null
+  OrderDB --> OrderService : order
+else order not found
+  OrderDB --> OrderService : notFoundError
+end
+deactivate OrderDB
+
+alt order.total > 0
+  OrderService -> PaymentGateway : charge(orderId, order.total)
+  activate PaymentGateway
+  PaymentGateway --> OrderService : receipt
+  deactivate PaymentGateway
+else charge error
+  PaymentGateway --> OrderService : paymentError
+  OrderService ->> OrderService : compensate(orderId)
+end
+@enduml

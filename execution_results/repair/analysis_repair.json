@@ -1,0 +1,188 @@
+{
+  "pooled": {
+    "pristine": {
+      "scenario_runs": 156,
+      "pass_rate": 0.949,
+      "semantic_runs": 156,
+      "semantic_rate": 0.949
+    },
+    "degraded_l2": {
+      "scenario_runs": 201,
+      "pass_rate": 0.741,
+      "semantic_runs": 201,
+      "semantic_rate": 0.741
+    },
+    "repaired_l2": {
+      "scenario_runs": 88,
+      "pass_rate": 0.841,
+      "semantic_runs": 88,
+      "semantic_rate": 0.841
+    },
+    "degraded_l1": {
+      "scenario_runs": 162,
+      "pass_rate": 0.642,
+      "semantic_runs": 162,
+      "semantic_rate": 0.642
+    },
+    "repaired_l1": {
+      "scenario_runs": 84,
+      "pass_rate": 0.583,
+      "semantic_runs": 84,
+      "semantic_rate": 0.583
+    }
+  },
+  "expectations": {
+    "X-R1": false,
+    "X-R2": false,
+    "X-R3a": false,
+    "X-R3b": true,
+    "X-R4": true
+  },
+  "half_recovery_bar": 0.795,
+  "per_diagram_pairs": [
+    {
+      "label": "L1_credit_intake_bad",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 1.0,
+      "repaired": 0.444,
+      "delta": -0.556,
+      "invented": 10
+    },
+    {
+      "label": "L1_credit_intake_good__L3",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.833,
+      "repaired": 0.333,
+      "delta": -0.5,
+      "invented": 7
+    },
+    {
+      "label": "L1_credit_intake_good__L4",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.667,
+      "repaired": 1.0,
+      "delta": 0.333,
+      "invented": 6
+    },
+    {
+      "label": "L1_credit_intake_good__L5",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.833,
+      "repaired": 0.667,
+      "delta": -0.166,
+      "invented": 9
+    },
+    {
+      "label": "L1_credit_intake_good__S-undeclare_participant",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.5,
+      "repaired": 1.0,
+      "delta": 0.5,
+      "invented": 9
+    },
+    {
+      "label": "L1_insurance_claim_bad",
+      "orig_level": 1,
+      "repaired_level": 3,
+      "base": 0.4,
+      "repaired": 0.2,
+      "delta": -0.2,
+      "invented": 11
+    },
+    {
+      "label": "L1_order_payment_codegen_bad",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.208,
+      "repaired": 0.25,
+      "delta": 0.042,
+      "invented": 7
+    },
+    {
+      "label": "L1_order_payment_codegen_good__L9",
+      "orig_level": 1,
+      "repaired_level": 4,
+      "base": 0.875,
+      "repaired": 1.0,
+      "delta": 0.125,
+      "invented": 7
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "orig_level": 2,
+      "repaired_level": 4,
+      "base": 0.667,
+      "repaired": 1.0,
+      "delta": 0.333,
+      "invented": 7
+    },
+    {
+      "label": "L2_credit_intake_good__S-self_message",
+      "orig_level": 2,
+      "repaired_level": 4,
+      "base": 0.333,
+      "repaired": 1.0,
+      "delta": 0.667,
+      "invented": 7
+    },
+    {
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "orig_level": 2,
+      "repaired_level": 5,
+      "base": 0.933,
+      "repaired": 0.4,
+      "delta": -0.533,
+      "invented": 1
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L5",
+      "orig_level": 2,
+      "repaired_level": 5,
+      "base": 0.417,
+      "repaired": 0.667,
+      "delta": 0.25,
+      "invented": 3
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "orig_level": 2,
+      "repaired_level": 4,
+      "base": 0.417,
+      "repaired": 1.0,
+      "delta": 0.583,
+      "invented": 3
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L8",
+      "orig_level": 2,
+      "repaired_level": 4,
+      "base": 0.917,
+      "repaired": 0.917,
+      "delta": 0.0,
+      "invented": 3
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "orig_level": 2,
+      "repaired_level": 5,
+      "base": 0.917,
+      "repaired": 0.833,
+      "delta": -0.084,
+      "invented": 6
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-vague_guard",
+      "orig_level": 2,
+      "repaired_level": 5,
+      "base": 0.875,
+      "repaired": 0.917,
+      "delta": 0.042,
+      "invented": 2
+    }
+  ]
+}

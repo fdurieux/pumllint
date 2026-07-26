@@ -1,0 +1,569 @@
+{
+  "repair_model": "claude-sonnet-5",
+  "max_passes": 2,
+  "repairs": [
+    {
+      "orig_label": "L1_credit_intake_bad",
+      "orig_level": 1,
+      "orig_composite": 22.9,
+      "orig_path": "examples/credit_intake_bad.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_bad.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 4,
+          "composite": 93.95,
+          "invented": 10
+        }
+      ],
+      "invented_decisions": [
+        "Converted prose message 'Submit credit application' into operation signature submitApplication(applicantId, income, requestedAmount)",
+        "Converted prose message 'Score applicant' into operation signature scoreApplicant(applicantId, income, requestedAmount)",
+        "Named the CreditEngine return value 'riskScore' and wrapped it in an alt/else with a ScoringServiceError failure path since CreditEngine is an external scoring service call",
+        "Converted prose message 'Offer proposal' into operation signature proposeOffer(applicantId, offerAmount, interestRate)",
+        "Replaced the empty/elided message on the original line 22 (FrontOffice -> CreditEngine :) with recordDecision(applicantId, \"offered\") plus a matching return value decisionRecorded, since the diagram gave no clue what that call was for",
+        "Replaced the vague guard 'score acceptable' with the concrete condition 'riskScore >= acceptanceThreshold' (and its complement for the else branch), inventing the threshold concept since none was specified",
+        "Fixed the typo'd duplicate participant 'Custmer' to the already-declared actor 'Customer' rather than keeping a second identity for the same person",
+        "Added a Customer response message (offerDecision) and a nested alt for accepted/declined outcomes, since the original diagram opened the offer step but never closed the interaction or said what happens after",
+        "Gave the previously-unused Notary participant a concrete role: notarizeContract(applicantId, offerAmount) in the accepted-offer path, with a notarization-success/failure alt and NotarizationError failure path, since an unused declared actor needed a purpose",
+        "Renamed the diagram id/title from 'credit-intake-bad' / 'Credit intake bad' to 'credit-intake' / 'Credit Intake Process' since the 'bad' naming described the pre-repair sketch, not the process itself"
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 1,
+        "composite": 25.5
+      },
+      "final": {
+        "level": 4,
+        "composite": 93.95
+      }
+    },
+    {
+      "orig_label": "L1_credit_intake_good__L3",
+      "orig_level": 1,
+      "orig_composite": 36.1,
+      "orig_path": "corpus/mutations/credit_intake_good__L3.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__L3.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 85.0,
+          "invented": 6
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 92.5,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Defined operation signature submitApplication(applicantId, applicationData) for the initial customer request, inventing plausible parameter names since none were specified.",
+        "Defined operation signature scoreApplicant(applicantId) for the FrontOffice\u2192CreditEngine call, inventing the parameter name.",
+        "Renamed the return value 'Risk score' to the variable-style name riskScore to match operation-signature style parameter naming used elsewhere.",
+        "Added a failure path for the external CreditEngine call (a new alt branch 'scoring service unavailable (timeout or exception)' returning scoringError(reason)), since the diagram had no failure handling for this external dependency.",
+        "Added a third branch to the main decision alt ('scoring service unavailable') so the customer is notified via applicationPending(reason) when the external scoring call fails, keeping the two original branches (offerProposal/rejectionLetter) intact.",
+        "Named the rejection return value's parameter as reason (rejectionLetter(reason)) since no data name was given for the rejection cause.",
+        "Declared FrontOffice with the 'boundary' stereotype keyword, treating it as the boundary component that mediates between the external Customer actor and the internal CreditEngine, since the diagram did not specify its architectural role."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 56.25
+      },
+      "final": {
+        "level": 4,
+        "composite": 92.5
+      }
+    },
+    {
+      "orig_label": "L1_credit_intake_good__L4",
+      "orig_level": 1,
+      "orig_composite": 36.1,
+      "orig_path": "corpus/mutations/credit_intake_good__L4.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__L4.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 4,
+          "composite": 82.5,
+          "invented": 6
+        }
+      ],
+      "invented_decisions": [
+        "Named the initial Customer\u2192FrontOffice call submitCreditApplication(applicantId, requestedAmount) since the original message was unlabelled",
+        "Named the FrontOffice\u2192CreditEngine call scoreApplicant(applicantId) as the operation signature for 'Score applicant'",
+        "Chose riskScore >= 650 / riskScore < 650 as the concrete acceptance/rejection threshold replacing the vague 'score acceptable'/'score rejected' guards",
+        "Added an explicit failure path for the external CreditEngine call, modeled as a CreditEngine-unavailable branch returning a ServiceUnavailableException and resulting in a rejection letter with reasonCode SERVICE_UNAVAILABLE",
+        "Renamed the 'Offer proposal' and 'Rejection letter' return messages to named return values offerProposal(offerId, terms) and rejectionLetter(reasonCode) to satisfy the return-arrow naming requirement",
+        "Tagged CreditEngine with a <<service>> stereotype to make its external-service nature explicit"
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 56.25
+      },
+      "final": {
+        "level": 4,
+        "composite": 82.5
+      }
+    },
+    {
+      "orig_label": "L1_credit_intake_good__L5",
+      "orig_level": 1,
+      "orig_composite": 26.1,
+      "orig_path": "corpus/mutations/credit_intake_good__L5.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__L5.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 75.0,
+          "invented": 8
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 82.5,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Converted the unlabeled Customer->FrontOffice message into submitApplication(applicantData) since no signature was given",
+        "Converted 'Score applicant' into scoreApplicant(applicantId) as the compilable operation signature",
+        "Named the risk-score return value 'riskScore' and treated it as the value returned by scoreApplicant",
+        "Introduced a concrete guard 'riskScore >= approvalThreshold' / 'riskScore < approvalThreshold' to replace the vague 'score acceptable'/'score rejected' guards, inventing the threshold concept 'approvalThreshold'",
+        "Added an explicit failure path for the CreditEngine external scoring call, wrapping the score exchange in an outer alt with an else branch 'scoring service unavailable' that returns a ScoringServiceException and results in a rejection letter",
+        "Invented the exception type name 'ScoringServiceException' and the fallback rejection reason string 'service unavailable'",
+        "Added the missing deactivate CreditEngine to balance the activation introduced for the scoring call",
+        "Parameterized offerProposal and rejectionLetter messages with riskScore to make them concrete operation signatures rather than prose labels",
+        "Classified CreditEngine as a UML 'control' participant, since it performs business-logic scoring computation (scoreApplicant) rather than storing data (database) or acting as a user interface (boundary), which best matches its role of orchestrating the risk-scoring decision."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 43.75
+      },
+      "final": {
+        "level": 4,
+        "composite": 82.5
+      }
+    },
+    {
+      "orig_label": "L1_credit_intake_good__S-undeclare_participant",
+      "orig_level": 1,
+      "orig_composite": 36.9,
+      "orig_path": "corpus/mutations/credit_intake_good__S-undeclare_participant.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__S-undeclare_participant.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 85.0,
+          "invented": 8
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 92.5,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Defined operation signature submitApplication(applicantId, applicationData) for the prose message 'Submit credit application', inventing the parameter names applicantId and applicationData",
+        "Defined operation signature scoreApplicant(applicantId, applicationData) for the prose message 'Score applicant', reusing the same invented parameter names for consistency",
+        "Named the returned value of the CreditEngine call 'riskScore' (return riskScore) to satisfy the requirement that return arrows name the returned value",
+        "Marked CreditEngine with an <<external>> stereotype since it represents a scoring service outside FrontOffice's direct control, justifying the added failure path",
+        "Added a failure branch 'scoring service unavailable' for the CreditEngine call, returning an invented ScoringServiceUnavailableException, since no failure path existed for this external call",
+        "Invented a concrete threshold-based guard condition 'riskScore >= acceptanceThreshold' / 'riskScore < acceptanceThreshold' to replace the vague guards 'score acceptable' / 'score rejected', naming the invented variable acceptanceThreshold",
+        "Added a third alt branch so the customer is notified with an invented 'applicationOnHoldNotice' return value when the scoring service is unavailable, since the original diagram had no path for that failure case reaching the customer",
+        "Renamed the returned proposal/rejection messages to 'return offerProposal' and 'return rejectionLetter' to make explicit that these are the return values of the original submitApplication call, and to give the return arrows named values",
+        "Classified FrontOffice as a 'boundary' participant, since it is the front-facing component that receives the Customer's application and mediates with the external CreditEngine \u2014 the most domain-plausible role type given its name and behavior."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 56.25
+      },
+      "final": {
+        "level": 4,
+        "composite": 92.5
+      }
+    },
+    {
+      "orig_label": "L1_insurance_claim_bad",
+      "orig_level": 1,
+      "orig_composite": 24.0,
+      "orig_path": "examples/insurance_claim_bad.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/insurance_claim_bad.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 66.67,
+          "invented": 8
+        },
+        {
+          "pass": 2,
+          "level": 3,
+          "composite": 78.33,
+          "invented": 3
+        }
+      ],
+      "invented_decisions": [
+        "Interpreted 'check whether it looks fishy' as an operation FraudChecker.checkClaimForFraud(claimId) returning a boolean 'isFraudulent'.",
+        "Interpreted 'keep it somewhere ... etc' as an operation ClaimDB.storeClaim(claimId, claimData) returning a 'claimRecordId' confirmation value.",
+        "Replaced vague guard 'probably fine' with concrete condition 'isFraudulent == false', and added the complementary branch 'isFraudulent == true' leading to ClaimService.flagClaimForReview(claimId) since no alternate behavior was specified.",
+        "Added an outer alt for the FraudChecker call ('fraud check succeeds' / 'fraud check fails') with a FraudCheckException return and a ClaimService.handleFraudCheckFailure(claimId) handler, since no failure path existed for this external call.",
+        "Added an inner alt for the ClaimDB call ('storage succeeds' / 'storage fails') with a StorageException return and a ClaimService.handleStorageFailure(claimId) handler, since no failure path existed for this database call.",
+        "Declared ClaimDB with the 'database' typed keyword instead of a plain participant, since it represents persistent storage.",
+        "Balanced all activations: ClaimService is activated at the top and deactivated at the end; FraudChecker and ClaimDB are activated on invocation and deactivated once their (successful or failed) response is returned.",
+        "Reworded the title from the placeholder 'Insurance claim bad' to 'Insurance Claim Fraud Check and Storage Flow' to reflect the actual (repaired) behavior; the diagram name/id was left unchanged.",
+        "Declared ClaimService as a 'control' participant, since it orchestrates the fraud-check/storage workflow rather than owning data or being an actor/boundary/database",
+        "Clarified the outer alt guards for the checkClaimForFraud call ('fraud check succeeds (no exception thrown)' / 'fraud check fails (FraudCheckException thrown)') to make explicit that this alt is the modelled failure path for the FraudChecker call, since the meaning was already implied but not explicit",
+        "Added activation/deactivation and a named return arrow for each previously fire-and-forget self-call (handleStorageFailure -> storageFailureHandled, flagClaimForReview -> claimFlagged, handleFraudCheckFailure -> failureHandled) to balance activations and record the outcome of each recovery/handling routine, since none was specified by the original author"
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 1,
+        "composite": 25.0
+      },
+      "final": {
+        "level": 3,
+        "composite": 78.33
+      }
+    },
+    {
+      "orig_label": "L1_order_payment_codegen_bad",
+      "orig_level": 1,
+      "orig_composite": 25.0,
+      "orig_path": "examples/order_payment_codegen_bad.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_bad.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 4,
+          "composite": 80.56,
+          "invented": 7
+        }
+      ],
+      "invented_decisions": [
+        "Defined the charge call as an operation signature chargeCustomer(orderId, amount) instead of the prose 'charge the customer somehow'.",
+        "Replaced the vague 'sometimes' guard with a machine-evaluable condition paymentResult == \"success\" / paymentResult == \"failure\", modelling the previously-missing failure path for the external PaymentGateway call.",
+        "Defined the storage call as an operation signature storePaymentResult(orderId, transactionId, status) instead of the elided 'store the result ... etc'.",
+        "Added an explicit success/failure branch (storageSucceeds == true / false) around the OrderDB call to expose a failure path for the database interaction, since none existed.",
+        "Named the return values instead of the bare 'ok' reply: chargeResult(transactionId) and storeConfirmation(orderId) for the happy path, chargeError(errorCode) and storageError(orderId, errorCode) for the failure paths.",
+        "Assigned the <<service>> stereotype to OrderService and declared OrderDB with the 'database' keyword to remove the implicit participant declarations.",
+        "Renamed the title from 'Order payment \u2014 not codegen-ready' to 'Order payment \u2014 codegen-ready' since the diagram now models a complete, compilable flow."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 1,
+        "composite": 28.33
+      },
+      "final": {
+        "level": 4,
+        "composite": 80.56
+      }
+    },
+    {
+      "orig_label": "L1_order_payment_codegen_good__L9",
+      "orig_level": 1,
+      "orig_composite": 39.4,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__L9.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L9.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 82.5,
+          "invented": 6
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 90.0,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Replaced the non-evaluable guard 'sometimes' with the boolean expression 'order != null', inferred from the existing else-branch label 'order not found'.",
+        "Named the previously unlabelled OrderService -> OrderDB message as the operation signature 'findOrder(orderId)', assuming orderId is the natural lookup key.",
+        "Moved the OrderDB lookup call to occur once, before the found/not-found alt block, so the guard evaluates a value ('order') that has actually been fetched, while preserving the original call-then-branch message order.",
+        "Resolved the elided return 'receipt ...' by specifying the concrete already-modelled return value 'receipt' with no further omitted fields.",
+        "Removed the pre-existing 'pumllint: disable=no-self-message' suppression comment, since no active finding required it and the repair covenant disallows suppression directives.",
+        "Added a single 'deactivate OrderDB' after the merged found/not-found alt block to balance the previously unmatched 'activate OrderDB'.",
+        "Classified OrderService as a 'control' (controller/business-logic) participant, since the diagram implied it orchestrates order lookup and payment charging but did not specify a role type."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 49.5
+      },
+      "final": {
+        "level": 4,
+        "composite": 90.0
+      }
+    },
+    {
+      "orig_label": "L2_credit_intake_good__S-drop_title",
+      "orig_level": 2,
+      "orig_composite": 55.6,
+      "orig_path": "corpus/mutations/credit_intake_good__S-drop_title.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__S-drop_title.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 75.0,
+          "invented": 6
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 82.5,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Named the parameters of submitApplication as customerId and applicationData, since the original prose message did not specify them",
+        "Named the parameter of scoreApplicant as applicationId",
+        "Renamed the returned risk-score message to 'return riskScore' to satisfy the return-arrow naming requirement",
+        "Replaced the vague guard 'score acceptable'/'score rejected' with the concrete condition 'riskScore >= approvalThreshold' / 'riskScore < approvalThreshold', inventing the threshold name approvalThreshold",
+        "Renamed the offer/rejection messages to 'return offerProposal' and 'return rejectionNotice' to make them explicit return values",
+        "Added a failure path for the CreditEngine call (external scoring service) modeled as an outer alt 'scoring succeeded' / 'scoring service unavailable', returning a ScoringUnavailableError and notifying the customer with an 'applicationPendingNotice'",
+        "Declared FrontOffice as a 'boundary' participant, since it is the customer-facing entry point that receives the initial submitApplication request and returns final notices/offers to the Customer, distinguishing it from the internal CreditEngine logic component."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 56.25
+      },
+      "final": {
+        "level": 4,
+        "composite": 82.5
+      }
+    },
+    {
+      "orig_label": "L2_credit_intake_good__S-self_message",
+      "orig_level": 2,
+      "orig_composite": 58.3,
+      "orig_path": "corpus/mutations/credit_intake_good__S-self_message.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/credit_intake_good__S-self_message.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 75.0,
+          "invented": 6
+        },
+        {
+          "pass": 2,
+          "level": 4,
+          "composite": 81.25,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Interpreted the prose message 'Submit credit application' as the operation signature submitApplication(applicantId, applicationData)",
+        "Interpreted 'Score applicant' as the operation signature scoreApplicant(applicantId, applicationData)",
+        "Interpreted the trailing self-message 'recheck data' on Customer as recheckSubmittedData(applicationData), representing the customer reviewing the application details after receiving the outcome, and added a matching reviewResult return with balanced activate/deactivate",
+        "Introduced an explicit variable name 'approvalThreshold' so the score guards ('riskScore >= approvalThreshold' / 'riskScore < approvalThreshold') are concrete comparisons instead of vague prose ('score acceptable'/'score rejected')",
+        "Added a failure path for the external CreditEngine scoring call (scoring service unavailable) returning a ScoringServiceException, propagated to the customer as an intakeError, since no failure handling existed for this external dependency",
+        "Named all return arrows with concrete returned values: riskScore, offerProposal, rejectionLetter, ScoringServiceException, intakeError, reviewResult",
+        "Classified FrontOffice as a 'boundary' participant, since it represents the customer-facing intake system that receives applications and forwards them to the internal CreditEngine \u2014 the most domain-plausible typed role given no stereotype was specified in the original diagram."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 58.33
+      },
+      "final": {
+        "level": 4,
+        "composite": 81.25
+      }
+    },
+    {
+      "orig_label": "L2_insurance_claim_good__S-vague_guard",
+      "orig_level": 2,
+      "orig_composite": 90.4,
+      "orig_path": "corpus/mutations/insurance_claim_good__S-vague_guard.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/insurance_claim_good__S-vague_guard.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 5,
+          "composite": 100.0,
+          "invented": 1
+        }
+      ],
+      "invented_decisions": [
+        "Replaced the non-evaluable guard 'sometimes' with the concrete boolean expression 'claim.policyStatus == \"ACTIVE\"', assuming the claim object carries a policyStatus field that determines whether the policy lookup proceeds or the 'policy lapsed' branch is taken (since no author-specified condition existed for this branch)."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 90.38
+      },
+      "final": {
+        "level": 5,
+        "composite": 100.0
+      }
+    },
+    {
+      "orig_label": "L2_order_payment_codegen_good__L5",
+      "orig_level": 2,
+      "orig_composite": 74.4,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__L5.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L5.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 5,
+          "composite": 100.0,
+          "invented": 3
+        }
+      ],
+      "invented_decisions": [
+        "Guard 'sometimes' was replaced with the machine-evaluable condition 'orderId != null' to represent the precondition for looking up the order, consistent with the existing 'order not found' else-branch.",
+        "The prose message 'handle the order data somehow' was turned into the operation signature 'findOrder(orderId)', matching the returned 'order' value and the 'notFoundError' failure path already present.",
+        "The elided return 'receipt ...' was specified as the concrete return value 'receipt(receiptId, confirmationCode)', inventing plausible payment-receipt fields since none were given in the original diagram."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 75.0
+      },
+      "final": {
+        "level": 5,
+        "composite": 100.0
+      }
+    },
+    {
+      "orig_label": "L2_order_payment_codegen_good__L6",
+      "orig_level": 2,
+      "orig_composite": 51.4,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__L6.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L6.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 4,
+          "composite": 92.5,
+          "invented": 3
+        }
+      ],
+      "invented_decisions": [
+        "Replaced the non-evaluable guard 'sometimes' with the boolean expression 'orderId != null', treating the first alt as a validity check on the incoming order identifier (consistent with the existing 'order not found' else branch).",
+        "Converted the prose message 'handle the order data somehow' into the operation signature 'findById(orderId)', matching the OrderDB lookup implied by the surrounding guard and its 'order' / 'notFoundError' outcomes.",
+        "Resolved the elision marker in 'receipt ...' by specifying the elided return payload as 'receipt(paymentId, status)', assuming the receipt carries a payment identifier and status field consistent with a successful charge() response."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 67.5
+      },
+      "final": {
+        "level": 4,
+        "composite": 92.5
+      }
+    },
+    {
+      "orig_label": "L2_order_payment_codegen_good__L8",
+      "orig_level": 2,
+      "orig_composite": 41.4,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__L8.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__L8.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 4,
+          "composite": 90.0,
+          "invented": 3
+        }
+      ],
+      "invented_decisions": [
+        "Guard 'sometimes' was resolved to 'orderId != null' \u2014 assuming the order lookup only proceeds when a valid orderId is supplied, and an absent id short-circuits directly to the 'order not found' else branch.",
+        "Unlabelled OrderService -> OrderDB message was given the operation signature 'findOrder(orderId)' to represent the order lookup implied by its 'order' / 'notFoundError' returns.",
+        "Elided 'receipt ...' return was specified as the concrete operation-style value 'receipt(receiptId)', assuming a receipt identifier is the salient returned field."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 57.5
+      },
+      "final": {
+        "level": 4,
+        "composite": 90.0
+      }
+    },
+    {
+      "orig_label": "L2_order_payment_codegen_good__S-self_message",
+      "orig_level": 2,
+      "orig_composite": 86.4,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__S-self_message.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-self_message.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 3,
+          "composite": 92.31,
+          "invented": 4
+        },
+        {
+          "pass": 2,
+          "level": 5,
+          "composite": 100.0,
+          "invented": 2
+        }
+      ],
+      "invented_decisions": [
+        "Renamed the vague self-message 'recheck data' to the operation signature recheckOrderData(orderId), assuming it re-validates the order's post-payment state using the order identifier already in scope.",
+        "Added a return arrow 'recheckResult' for the new recheckOrderData(orderId) self-call, since no return value was specified but the repair covenant requires naming returned values.",
+        "Added a return arrow 'compensationResult' for the existing compensate(orderId) self-call in the 'charge error' branch, and wrapped both new self-calls in matching activate/deactivate pairs to keep activations balanced.",
+        "Removed the inline 'pumllint: disable=no-self-message' suppression comment since the covenant forbids suppression comments and the underlying self-message now has a proper operation signature, making the suppression unnecessary.",
+        "Replaced the two OrderService self-messages (compensate(orderId) and recheckOrderData(orderId)) with 'ref over OrderService' references, since pumllint flagged self-messages as ambiguous (SEQ006); the operation name and its returned value are preserved in the ref label rather than as a call/return pair.",
+        "Assumed that these internal operations do not require explicit activation bars since they are now represented as references to internal processing rather than message exchanges."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 86.36
+      },
+      "final": {
+        "level": 5,
+        "composite": 100.0
+      }
+    },
+    {
+      "orig_label": "L2_order_payment_codegen_good__S-vague_guard",
+      "orig_level": 2,
+      "orig_composite": 87.5,
+      "orig_path": "corpus/mutations/order_payment_codegen_good__S-vague_guard.puml",
+      "repaired_path": "experiment_results/wave_repair/repaired/order_payment_codegen_good__S-vague_guard.puml",
+      "passes": [
+        {
+          "pass": 1,
+          "level": 5,
+          "composite": 97.5,
+          "invented": 2
+        }
+      ],
+      "invented_decisions": [
+        "Replaced the vague guard 'sometimes' with the concrete, machine-evaluable condition 'orderId != null', since the true branch performs the OrderDB lookup and the else branch ('order not found') is the natural outcome when no valid orderId is supplied to attempt the lookup.",
+        "Removed the pre-existing 'pumllint: disable=no-self-message' suppression comment covering the compensate(orderId) self-message, since the async self-call (->>) is a legitimate compensation-action pattern and does not need to be suppressed; no suppression comments should remain in the repaired diagram."
+      ],
+      "mechanical_retries": 0,
+      "after_fix": {
+        "level": 2,
+        "composite": 87.5
+      },
+      "final": {
+        "level": 5,
+        "composite": 97.5
+      }
+    }
+  ],
+  "repair_cost_usd": 1.21
+}

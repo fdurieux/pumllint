@@ -1,0 +1,32 @@
+@startuml order-payment-codegen
+title Order payment — codegen-ready
+
+participant OrderService <<service>>
+participant PaymentGateway <<external>>
+database OrderDB
+
+activate OrderService
+OrderService -> PaymentGateway : chargeCustomer(orderId, amount)
+activate PaymentGateway
+
+alt paymentResult == "success"
+  PaymentGateway --> OrderService : chargeResult(transactionId)
+  deactivate PaymentGateway
+
+  OrderService -> OrderDB : storePaymentResult(orderId, transactionId, status)
+  activate OrderDB
+
+  alt storageSucceeds == true
+    OrderDB --> OrderService : storeConfirmation(orderId)
+  else storageSucceeds == false
+    OrderDB --> OrderService : storageError(orderId, errorCode)
+  end
+  deactivate OrderDB
+
+else paymentResult == "failure"
+  PaymentGateway --> OrderService : chargeError(errorCode)
+  deactivate PaymentGateway
+end
+
+deactivate OrderService
+@enduml
