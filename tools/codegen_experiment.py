@@ -73,6 +73,47 @@ Diagram:
 {diagram}
 """
 
+# Execution-oracle entry-point contract (EVIDENCE.md §Execution oracle,
+# expectation XB). Deliberately generic: it names the request-key PATTERN
+# and outcome vocabulary but never which systems or branches exist — the
+# diagram (or its degraded absence) must remain the only source of that.
+REQUEST_CONTRACT = """\
+Additionally expose a module-level function:
+
+    def handle(request: dict) -> dict
+
+that runs one end-to-end flow. `request` carries the scenario input: \
+entity ids and amounts, existence flags (keys like "<entity>_exists" / \
+"<entity>_found"), and — where your implementation depends on an external \
+system's outcome — keys of the form "<system>_result" / "<system>_status" \
+whose values are short words such as "approved", "declined", "active", \
+"lapsed", "stored", "assessed", "error", or a number for scores. Return a \
+dict whose "status" key names the outcome (e.g. "confirmed", "rejected", \
+"error: <reason>").
+"""
+
+PINNED_MINIMAL_PROMPT = """\
+Implement the behavior specified by the following PlantUML sequence \
+diagram as a single self-contained Python module. Where the diagram is \
+ambiguous or incomplete, make your best guess and implement something \
+concrete. Output ONLY Python code. No markdown fences, no prose.
+
+""" + REQUEST_CONTRACT + """
+Diagram:
+
+{diagram}
+"""
+
+PROMPTS = {
+    "legacy": GEN_PROMPT,
+    "pinned_structured": GEN_PROMPT.replace(
+        "\nDiagram:\n\n{diagram}",
+        "\n" + REQUEST_CONTRACT + "\nDiagram:\n\n{diagram}"),
+    "pinned_minimal": PINNED_MINIMAL_PROMPT,
+}
+
+FAMILY_KEYS = ("order_payment", "credit_intake", "insurance_claim")
+
 JUDGE_SCHEMA = {
     "type": "object",
     "additionalProperties": False,
@@ -144,7 +185,7 @@ def _compiles(code: str) -> tuple[bool, str | None]:
         return False, str(e)
 
 
-def select_diagrams(per_level: int) -> list[dict]:
+def select_diagrams(per_level: int, families_only: bool = False) -> list[dict]:
     pool: list[dict] = []
     paths = _scorelib.collect_puml(
         REPO_ROOT / "examples",
@@ -152,6 +193,8 @@ def select_diagrams(per_level: int) -> list[dict]:
         REPO_ROOT / "corpus/synthetic",
         REPO_ROOT / "corpus/wild",
     )
+    if families_only:  # execution-oracle waves: only suite-covered families
+        paths = [p for p in paths if any(k in str(p) for k in FAMILY_KEYS)]
     for p in paths:
         entry = _scorelib.lint_first_diagram(p, "codegen")
         if entry is None:
@@ -214,12 +257,15 @@ def _call(client, model: str, usage: dict, **kwargs):
     return resp
 
 
+ACTIVE_PROMPT = GEN_PROMPT  # overridden by --prompt-variant
+
+
 def _generate(client, diagram_text: str, usage: dict) -> dict:
     resp = _call(
         client, GEN_MODEL, usage,
         max_tokens=12000,
         **_thinking(GEN_MODEL),
-        messages=[{"role": "user", "content": GEN_PROMPT.format(diagram=diagram_text)}],
+        messages=[{"role": "user", "content": ACTIVE_PROMPT.format(diagram=diagram_text)}],
     )
     code = _strip_fences(
         next(b.text for b in resp.content if b.type == "text")
@@ -401,10 +447,21 @@ def main(argv: list[str] | None = None) -> int:
         help="Judge an existing wave's stored artifacts with --judge-model "
         "instead of generating (judge robustness, judge-only cost)",
     )
+    ap.add_argument(
+        "--prompt-variant", choices=sorted(PROMPTS), default="legacy",
+        help="generation prompt (execution-oracle waves use the pinned_* "
+        "variants; see EVIDENCE.md §Execution oracle, expectation XB)",
+    )
+    ap.add_argument(
+        "--families-only", action="store_true",
+        help="restrict selection to the acceptance-suite families",
+    )
     args_ns = ap.parse_args(argv)
     dry_run, runs, per_level = args_ns.dry_run, args_ns.runs, args_ns.per_level
     GEN_MODEL, JUDGE_MODEL = args_ns.gen_model, args_ns.judge_model
     RESULTS_DIR = Path(args_ns.results_dir)
+    global ACTIVE_PROMPT
+    ACTIVE_PROMPT = PROMPTS[args_ns.prompt_variant]
     for m in (GEN_MODEL, JUDGE_MODEL):
         if m not in PRICES:
             print(f"error: no pricing for model '{m}' — add it to PRICES", file=sys.stderr)
@@ -459,7 +516,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     _ensure_corpus()  # corpus/ is gitignored; a fresh clone must still work
-    selected = select_diagrams(per_level)
+    selected = select_diagrams(per_level, families_only=args_ns.families_only)
     composites = {}
     for u in selected:
         composites[u["label"]] = u["composite"]
@@ -517,6 +574,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     report = {
         "gen_model": GEN_MODEL, "judge_model": JUDGE_MODEL, "runs_per_diagram": runs,
+        "prompt_variant": args_ns.prompt_variant,
         "selected": selected,
         "per_level": per_level_summary,
         "per_diagram": per_diagram,
