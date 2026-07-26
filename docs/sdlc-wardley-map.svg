@@ -127,13 +127,13 @@
     <circle cx="78" cy="664" r="6" fill="#14636B"/>
     <text x="90" y="668">deterministic check available in the cluster</text>
     <circle cx="330" cy="664" r="6" fill="#F7F8FA" stroke="#14636B" stroke-width="2" stroke-dasharray="3 2.5"/>
-    <text x="342" y="668">check weak or missing &#8212; AI leverage capped</text>
-    <line x1="600" y1="664" x2="622" y2="664" stroke="#7E2608" stroke-width="2" marker-end="url(#arr)"/>
-    <text x="638" y="668">movement AI is causing now</text>
+    <text x="342" y="668">check weak, missing, or not yet widely adopted &#8212; AI leverage capped</text>
     <circle cx="78" cy="692" r="9" fill="none" stroke="#14636B" stroke-opacity="0.18" stroke-width="6"/>
     <circle cx="78" cy="692" r="6" fill="#14636B"/>
     <text x="90" y="696">pumllint's category</text>
     <line x1="330" y1="692" x2="360" y2="692" stroke="#14636B" stroke-width="1.6" stroke-dasharray="5 4"/>
     <text x="368" y="696">safe AI-assisted delivery depends on artifact verifiers</text>
+    <line x1="700" y1="692" x2="722" y2="692" stroke="#7E2608" stroke-width="2" marker-end="url(#arr)"/>
+    <text x="738" y="696">movement AI is causing now</text>
   </g>
 </svg>

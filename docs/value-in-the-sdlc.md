@@ -9,7 +9,10 @@ companion document [The case for pumllint](case-for-pumllint.md) covers
 what the tool is, what it costs and what the evidence supports; this one
 covers **where** the value lands in the software delivery life cycle,
 mapped to the four aspects of the
-[SAFe Continuous Delivery Pipeline](https://framework.scaledagile.com/continuous-delivery-pipeline).*
+[SAFe Continuous Delivery Pipeline](https://framework.scaledagile.com/continuous-delivery-pipeline).
+The landscape-level companion, [Where tooling pays](sdlc-tooling-landscape.md),
+maps the **whole delivery-tooling market** onto the same skeleton and
+locates this tool's category within it.*
 
 **How to read the claims.** Every value claim below carries one of three
 tags, in decreasing order of strength:

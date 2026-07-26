@@ -32,6 +32,10 @@ in decreasing order of strength:
   experiments ([EVIDENCE.md](../EVIDENCE.md)); rigorous, but our
   measurement, not independent literature.
 
+One companion tag has no analog here: the assessment's **[fact]** — a
+shipped, verifiable integration — is stronger than [practitioner]
+wherever the companion asserts it.
+
 One discipline up front, because the whole report leans on it: DORA's
 findings are correlations from large self-reported surveys —
 "associated with", never proven causation — and its headline numbers are
@@ -380,7 +384,7 @@ practice-heavy activities are covered briefly and say so.
 | Hypothesize* | Experimentation & product analytics — Amplitude, Statsig, LaunchDarkly Experimentation. Practice-heavy; covered briefly. | Product | **Human, durably** — choosing what to bet on is a value judgment; AI drafts hypotheses and result summaries (genesis→custom) | **Deterministic by design** — a pre-registered experiment is the oracle for a value hypothesis (statistical, not exact) |
 | Collaborate & Research* | Collaborative design & research repositories — Figma/FigJam, Miro, Dovetail. Practice-heavy; covered briefly. | Product → commodity | **Human** — AI synthesis of research and meetings assists (custom→product) | **Human, durably** — no oracle for "did we understand the users"; real validation belongs to Hypothesize's experiments |
 | Architect* | Architecture-as-code modeling — PlantUML, Mermaid, Structurizr; conformance checks — ArchUnit; **diagram verifiers — pumllint** | Modeling: product · verifiers: genesis → custom | **Human design; AI drafts** — diagrams and decision records now generated at near-zero cost, volume with no quality control attached | **Split** — hygiene, consistency, maturity: deterministic (pumllint [measured, internal]); design *semantics*: human, durably. The split is the category's scope guard |
-| Synthesize* | Backlog & program tooling — Jira, Azure Boards, Jira Align | Commodity | **Human prioritization; AI drafts** stories and grooming (custom→product) | **Human, for now** — no acceptance-criteria/spec linter exists yet; a named oracle gap (Part 5), so AI-drafted stories are hand-checked or unchecked |
+| Synthesize* | Backlog & program tooling — Jira, Azure Boards, Jira Align | Commodity | **Human prioritization; AI drafts** stories and grooming (custom→product) | **Human, for now** — no linter for the *stories themselves* exists yet; the model-side half of the traceability link is already checkable (convention-gated requirement/ADR-link and owner-tag rules). The story-side check is the named oracle gap (Part 5), so AI-drafted stories are hand-checked or unchecked |
 
 ### Continuous Integration — where the checks run *(names page-verified)*
 
@@ -435,7 +439,9 @@ verification**: the one genuinely immature layer is deterministic
 checking for the artifacts AI now mass-produces — and the dashed nodes
 (code review, architecture modeling, test-oracle quality, root-cause
 analysis) mark exactly the places where, in the grid's terms, checking
-is still human-only.
+is still human-only — or, for architecture modeling, where the
+deterministic check exists but the category delivering it is still
+genesis: the dashed node depends on the highlighted one.
 
 Revision 2 added two components straight from the new primary
 documents. **AI context & internal data access** (custom-built, moving
@@ -513,14 +519,21 @@ literally this category's shipping forms. [research, rev. 2]
 ### pumllint, positioned
 
 The category — deterministic verifiers for AI-made artifacts — sits at
-genesis moving into custom-built, serving Architect, Develop, and Build
-(the per-activity detail is [pumllint in the SDLC](value-in-the-sdlc.md)).
-That is the correct place for it: the map's only under-built layer, with
-corroborating external demand signals, and its internal evidence (the
-below-Level-2 cliff; execution beats judgment) is the micro-scale
-version of what DORA measures at industry scale. The
-[roadmap's](../ROADMAP.md) demand-driven stance is right. The adjacent
-oracle gaps worth watching for pull, nearest asset first:
+genesis moving into custom-built, serving Architect, Develop, and
+Build: the three activities where the companion assessment claims
+*direct* action (rules act in Architect; hooks, CLI and auto-fix run in
+Develop; the Action, gates and Sonar export run in Build) — with four
+more supported (Collaborate & Research, Synthesize, Measure, Learn)
+and, deliberately, no claim at all in five (per-activity detail:
+[pumllint in the SDLC](value-in-the-sdlc.md)). The grid above names
+market-representative tools only; this repository's tool is named
+solely where its artifact class lives. That placement is correct: the
+map's only under-built layer, with corroborating external demand
+signals, and its internal evidence (the below-Level-2 cliff; execution
+beats judgment) is the micro-scale version of what DORA measures at
+industry scale. The [roadmap's](../ROADMAP.md) demand-driven stance is
+right. The adjacent oracle gaps worth watching for pull, nearest asset
+first:
 
 - **Diagram↔code conformance** — does the implementation still match
   the model? Bridges Architect to Develop; pumllint's parsed model is
