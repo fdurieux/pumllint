@@ -52,6 +52,11 @@ but they are a useful cross-check that no audience was forgotten.
   [The evidence, explained from scratch](evidence-explained.md).
 - [ROADMAP.md](../ROADMAP.md) — what remains, and the working agreements for
   contributors.
+- [Demand scan: PlantUML in markdown specs](demand-scan-embedded-plantuml.md)
+  — dated evidence note (2026-07-26) behind the ROADMAP's
+  markdown-extraction settlement: the spec-driven ecosystem's public
+  footprint, measured under pre-registered decision rules before anything
+  was built.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).

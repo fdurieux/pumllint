@@ -326,6 +326,43 @@ actually becomes a recurring pipeline rather than occasional sessions:
     moderation to verification-capability strength, or outcome-grade
     oracle evidence for non-code artifacts.
 
+- **Markdown-embedded PlantUML extraction (2026-07-26): watch, don't
+  build — the demand was measured and isn't there.** A review of the
+  vendor/practitioner AI-codegen literature (engineering-layer companion
+  to the tooling-landscape research) surfaced one product-shaped
+  candidate: extract and lint fenced PlantUML from markdown, where the
+  spec-driven ecosystem (GitHub spec-kit, AWS Kiro) keeps its artifacts.
+  Instead of waiting for pull, the pull was measured the same day —
+  pre-registered decision rules, GitHub code search, repo-level join,
+  raw-file inspection (docs/demand-scan-embedded-plantuml.md):
+  - Genuine embedded-PlantUML spec content: ≈ 3–8 repos out of ~2,120
+    public Kiro spec sets (≈ 0.2%, against a pre-registered 2% bar);
+    spec-kit side ≈ zero (3 file hits, none organic on inspection;
+    0/25 sampled spec-kit repos contain any `@startuml`).
+  - The raw count nominally passed the pre-registered absolute bar
+    (64 ≥ 50 files) and failed inspection: 37/61 Kiro hits are
+    standalone `.puml` files pumllint lints today, and of the 9
+    markdown hits in Kiro spec dirs one confirmed false positive is
+    PlantUML inside a test fixture. Raw token counts are not demand —
+    the scan's own reliability-vs-validity moment.
+  - Mermaid dominates the same directories 76× (`.kiro/`) and 437×
+    (spec-kit plan.md); globally, embedded PlantUML-in-markdown (8,068
+    files) is 16× smaller than the standalone `.puml` ecosystem
+    (131,008) the tool already serves.
+  - Side-findings kept: Kiro's PlantUML users co-locate `.puml` files
+    inside `.kiro/specs/` — served today, a documentation pattern, not
+    a feature; steering/skills files teaching agents to author
+    PlantUML corroborate the agent-consumption-recipe candidate;
+    Mermaid support would be a sibling stack (parser, corpus,
+    calibration, golden) under the same Arc E bar — recorded, not
+    queued.
+  - Re-litigate on: a concrete user with fenced diagrams; a
+    spec-driven tool emitting or recommending PlantUML in its
+    artifacts; a GitLab-side measurement showing material embedding
+    (GitLab renders PlantUML fences natively and was outside this
+    scan's reach); the global embedded footprint passing the
+    pre-registered 10k bar.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -347,4 +384,6 @@ actually becomes a recurring pipeline rather than occasional sessions:
   demand, never an unattended promote-on-delta loop. The adjacent
   verifier categories from the tooling-landscape research
   (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
-  build (see *Settled questions*).
+  build (see *Settled questions*) — as is markdown-embedded PlantUML
+  extraction, demand-tested 2026-07-26 and failed
+  (docs/demand-scan-embedded-plantuml.md).
