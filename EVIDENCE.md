@@ -331,6 +331,92 @@ survive because the execution oracle carries them; the judged numbers
 remain useful for ranking and for the invention taxonomy, and are quoted
 strictly as judgments.
 
+## Agent-repair wave — pre-registered expectations (written 2026-07-27, before any scored run)
+
+The question this wave adds: the standing evidence is *variant-based*
+(lab-authored pristine vs degraded diagrams). The docs/agents.md recipe
+asserts a *mechanism* — repair the diagram per the gap report before
+generating — that has never been run end-to-end. This wave measures the
+interventional claim, and simultaneously the honest scope of the gate
+after author-less repair: what does a passed gate certify when the
+repairer had to invent?
+
+**Protocol (frozen before any scored run):**
+
+- **Targets:** the 16 suite-family diagrams at Level ≤ 2 under the
+  codegen profile from the families-only selection (8 L1, 8 L2 —
+  mutation-ladder rungs, single-op mutants, and the three hand-authored
+  `*_bad` examples).
+- **Repair agent:** `claude-sonnet-5` — the mainline agent-class model,
+  deliberately distinct from the generator. Per diagram: one
+  deterministic `pumllint fix` pass, then one LLM repair pass given
+  exactly (a) the diagram source, (b) the full
+  `score --profile codegen -f json` gap report, (c) the repair covenant
+  from docs/agents.md adapted to lab mode: *no author is available;
+  where a decision is missing, choose the most domain-plausible
+  resolution and log it in a structured invented-decisions list*. At
+  most one second pass, taken iff the re-scored level is still < 4.
+  The repair agent never sees the pristine variant, the acceptance
+  suites, the family metadata, or these expectations. Repairs must be
+  additive/clarifying (no redesign) and must not add suppressions.
+- **Generation arm:** `claude-opus-4-8`, legacy prompt, 3 runs per
+  repaired diagram, judge `claude-sonnet-5` — exactly the stored
+  wave-main2 configuration — executed against the frozen phase-a
+  acceptance suites (unchanged since the 2026-07-26 freeze).
+- **Baselines (stored, same config):** executed results for the same
+  diagrams from the pooled identical-config waves (original + main2).
+  Two targets absent from both stored waves
+  (`L2_credit_intake_good__S-drop_title`,
+  `L2_order_payment_codegen_good__L6`) get fresh degraded-baseline
+  runs inside this wave under the identical configuration. Pristine
+  reference: pooled L5 family pass-rate from the same stored waves.
+- **Primary metric:** executed scenario pass-rate (full and semantic),
+  pooled per *original*-level tier; per-diagram paired deltas as
+  supporting detail. Judged fidelity is recorded but **not comparable
+  across arms** — repaired-arm code is judged against the repaired
+  diagram, a different ground truth — so no cross-arm fidelity claims.
+- **Cost:** ceiling $20 (estimate ≈ $6); ≤ 34 repair calls, 108
+  generation+judge calls, execution $0.
+
+**Expectations:**
+
+- **X-R1 (repairability, deterministic):** every repaired diagram
+  reaches Level ≥ 4 under the codegen profile within ≤ 2 repair
+  passes, and ≥ 12/16 reach Level 5 — the gap report is sufficient
+  instructions for a mainline agent to clear the gate.
+- **X-R2 (recoverable tier):** pooled repaired-L2 executed pass-rate
+  comes within 5 pp of the pooled pristine reference — the L2 deficit
+  under the legacy prompt is dominantly structural/ambiguity damage,
+  which repair can restore without the author.
+- **X-R3a (repair helps below the cliff):** pooled repaired-L1 beats
+  the pooled stored degraded-L1 baseline by ≥ 5 pp.
+- **X-R3b (bounded by authorship):** repaired-L1 recovers **at most
+  half** the L1 deficit: pooled repaired-L1 ≤ pristine − (pristine −
+  degraded-L1)/2. Below-cliff rungs *removed content* (guards, failure
+  paths, message semantics); an author-less repair restores convention
+  and domain-obvious decisions, not arbitrary intent.
+- **X-R4 (gate honesty):** repaired-L1 diagrams pass the `--min-level 2`
+  gate (per X-R1) while executing below the pristine reference (per
+  X-R3b) — i.e. a passed gate after author-less repair certifies
+  method-convention completeness, **not** intent recovery.
+
+**Interpretation matrix (pre-committed):** if X-R3b fails *upward*
+(repaired-L1 ≈ pristine), the author-bound share of the cliff is
+smaller than the current language implies for these families, and the
+claim weakens to "prompting cannot restore it; an inventing repairer
+largely can" — with suite sensitivity flagged. If X-R3a fails (no
+lift), gap-report repair below the cliff is theater without the author,
+and docs/agents.md must say so. If both hold, the cliff decomposes into
+a mechanically recoverable share and an author-bound share, and the
+recipe's value is measured for the first and honestly bounded for the
+second. In every branch, docs/agents.md's measured-vs-not section is
+updated to whatever this wave measured.
+
+Standing limitations, pre-declared: one repair model, same vendor as
+the generator; k = 1 repair per diagram (repair stochasticity
+unmeasured); n = 3 runs per repaired diagram — pooled tiers carry the
+claims, never single diagrams.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
