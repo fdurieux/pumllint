@@ -147,6 +147,64 @@ fidelity): quote gradients and correlations, never bare percentages, and
 never compare across families. Phase A costs $0 (stored artifacts only);
 Phase B regenerates family diagrams with the pinned prompt (~$8/variant).
 
+## Execution oracle — Phase A results (2026-07-26, stored artifacts, $0 API)
+
+756 scenario runs over 148 family artifacts from the three stored waves
+(original 228, main2 336, gen_haiku 192), zero harness errors; analysis in
+`tools/analyze_execution.py` → `execution_results/analysis.json`. Pooled
+identical-config (original + main2, opus generation) per-level pass-rate:
+
+| Level | Diagrams | Artifact runs | Executed pass-rate |
+|---|---|---|---|
+| 5 | 8 | 24 | 0.949 |
+| 4 | 4 | 12 | 0.910 |
+| 2 | 13 | 39 | 0.756 |
+| 1 | 9 | 27 | 0.642 |
+
+(The families have no L3 diagrams — the L3 bucket was the synthetic set,
+which has no suite by design.)
+
+**X1 — confirmed in the identical-config waves.** The gradient is monotone
+in both opus waves and pooled; composite↔pass-rate per-diagram r = 0.545
+pooled (0.371 / 0.510 per wave), per-run r = 0.411. Under gen_haiku the
+full-rate correlation stays positive (per-diagram 0.374) but the level
+table is non-monotone at the top — 4 diagrams per level is thin.
+
+**X2 — confirmed in every wave.** The cliff survives the oracle swap:
+pass-rate below composite 40 vs above is 15.9 pp (original), 25.4 pp
+(main2), 19.7 pp (gen_haiku), 21.9 pp pooled (0.642 vs 0.861). Below the
+cliff roughly one intended behavior in three fails when the code runs;
+above it, roughly one in ten.
+
+**X3 — FAILED.** Per-run r(judged fidelity, executed pass-rate) = 0.185 /
+0.328 / −0.002 (original / main2 / gen_haiku), 0.25 pooled — all below the
+pre-registered 0.4. A post-hoc check at diagram granularity is no better
+(0.351 / 0.347 / −0.035). Stated plainly: **judged fidelity is not a proxy
+for executed correctness** at artifact granularity. Both oracles
+independently show the maturity gradient and the cliff — the product-level
+relationship is oracle-robust — but they disagree on individual artifacts,
+so the two must always be quoted separately, and prior waves' fidelity
+numbers are structural-faithfulness judgments, not correctness
+measurements.
+
+**X4 — confirmed where it matters, failed under gen_haiku.** In the
+identical-config waves every failure was semantic (adapter stages ≈ 0), so
+the semantic-only correlation is identical (0.545) by construction. Under
+gen_haiku the semantic-only per-diagram r collapses to −0.027: haiku's
+low-maturity brokenness concentrates in import failures (both
+import_errors are runs of one L1 diagram), which the pre-registered
+taxonomy conservatively classes as adapter stages even though
+does-not-import is arguably the strongest behavioral failure there is.
+The 16-diagram haiku sample carries little weight either way; the
+identical-config result is the load-bearing one.
+
+**Post-hoc observation (not pre-registered):** the hard-demand partial is
+≈ 0 for execution (0.081 pooled) — in hindsight, expected: D1's
+triviality confound does not exist under a fixed family suite, because a
+degraded diagram faces the *same tests* as its pristine sibling; there is
+no easier-oracle-for-easier-diagrams effect to control away. The raw
+per-diagram r is the right execution statistic.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
@@ -222,10 +280,15 @@ the 18 diagrams shared across identical-config waves, and a second generator
 plus a second judge (haiku-4-5), all reproducing the findings.
 
 Still standing: all models are Claude-family (no cross-vendor generator or
-judge); the generation prompt is fixed (one prompting style); the judge
-rubric, while schema-constrained, is still an LLM judgment — absolute
-fidelity numbers are judge-relative (~±10 between judges) and only rankings
-and correlations should be quoted.
+judge — a committed follow-up, see ROADMAP Arc D); the generation prompt is
+fixed (one prompting style — Phase B of the execution-oracle wave targets
+this); the judge rubric, while schema-constrained, is still an LLM
+judgment — absolute fidelity numbers are judge-relative (~±10 between
+judges) and only rankings and correlations should be quoted. The execution
+oracle (2026-07-26) removes the judge-only limitation for *behavior* —
+but its pass-rates are suite-relative (three families, 12 hand-written
+scenarios) and its per-run agreement with judged fidelity is weak
+(r ≈ 0.2–0.3): the oracles are complementary, never interchangeable.
 
 ## What the product may claim
 
@@ -242,9 +305,20 @@ Supported by this data (updated after the deepening):
 - The `--min-level` CI gate is evidence-backed **as a risk filter**: its
   demonstrated value is keeping low-maturity diagrams out, which is exactly
   what a CI gate is for.
+- *(2026-07-26, execution oracle)* — *"The cliff is not a judge artifact:
+  under hand-written acceptance tests actually executed against the
+  generated code (frozen, pre-registered suites), diagrams below the cliff
+  lose ~16–25 pp of executed pass-rate (21.9 pp pooled across the opus
+  waves) — roughly one intended behavior in three failing when the code
+  runs, versus one in ten above the cliff."*
 - Quote correlations and the cliff, never absolute fidelity values —
   absolute fidelity is judge-relative (two judges differ by ~9 points on
-  identical code while agreeing on ranking, r = 0.715).
+  identical code while agreeing on ranking, r = 0.715). Executed
+  pass-rates are likewise suite-relative. **Never merge the two oracles
+  into one number**: their per-run agreement is weak (r ≈ 0.2–0.3, the
+  pre-registered X3 threshold failed) — judged fidelity measures
+  structural faithfulness, execution measures behavioral correctness, and
+  each must be quoted as what it is.
 
 **Not supported:** "Level 5 ⇒ generation-ready" as an absolute. Under a
 strict independent judge, even pristine L5 diagrams average ~72 fidelity
