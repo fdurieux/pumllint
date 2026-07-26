@@ -1,0 +1,28 @@
+@startuml credit-intake-bad
+title Credit intake bad
+
+skinparam backgroundColor #EEEBDC
+
+actor Customer
+participant FrontOffice <<component>>
+participant CreditEngine <<component>>
+
+Customer -> FrontOffice : submitCreditApplication()
+activate FrontOffice
+FrontOffice --> Customer : Application received
+FrontOffice -> CreditEngine : scoreApplicant()
+activate CreditEngine
+CreditEngine --> FrontOffice : Risk score
+deactivate CreditEngine
+
+alt score acceptable
+    FrontOffice -> Customer : offerProposal()
+    FrontOffice --> Customer : Proposal acknowledged
+else score rejected
+    FrontOffice -> Customer : rejectionLetter()
+    FrontOffice --> Customer : Rejection acknowledged
+end
+
+deactivate FrontOffice
+
+@enduml

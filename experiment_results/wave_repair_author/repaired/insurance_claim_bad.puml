@@ -1,0 +1,39 @@
+@startuml insurance-claim-bad
+title Insurance claim bad
+
+participant ClaimService
+participant FraudChecker <<external>>
+participant PolicyRegistry
+participant ClaimDB
+
+ClaimService -> FraudChecker : assessRisk(claimId, claim.amount)
+activate FraudChecker
+
+alt risk assessed
+  FraudChecker --> ClaimService : riskScore
+
+  ClaimService -> PolicyRegistry : findPolicy(policyId)
+  activate PolicyRegistry
+  PolicyRegistry --> ClaimService : policy
+  deactivate PolicyRegistry
+
+  alt claim.amount <= policy.coverageLimit
+    ClaimService -> ClaimDB : storeClaim(claimId, riskScore)
+    activate ClaimDB
+
+    alt storage success
+      ClaimDB --> ClaimService : claimRecord
+    else storage error
+      ClaimDB --> ClaimService : storageError
+    end
+
+    deactivate ClaimDB
+  else amount exceeds coverage limit
+  end
+
+else risk service error
+  FraudChecker --> ClaimService : riskServiceError
+end
+
+deactivate FraudChecker
+@enduml

@@ -573,6 +573,66 @@ not a human; one repair model, one author model, same vendor; k = 1
 repair per diagram; n = 3 runs per repaired diagram — pooled tiers
 carry the claims.
 
+## Agent-repair, with-author arm — results (2026-07-27, $5.73)
+
+A clean run: all 16 targets repaired, no generation failures, no
+protocol deviations. 255 questions asked (100 finding-driven, 155
+exploratory), 255 answers.
+
+**Pooled executed pass-rates** (full = semantic):
+
+| tier | pass-rate | n |
+|---|---|---|
+| pristine L5 (stored) | 0.949 | 156 |
+| degraded L2 → no-author → **with-author** | 0.741 → 0.841 → **0.957** | 201/88/93 |
+| degraded L1 → no-author → **with-author** | 0.642 → 0.583 → **0.857** | 162/84/84 |
+
+**Verdicts:**
+
+- **X-A1 — failed.** Final levels: 9× L5, 4× L4, 3× L3. The three
+  hand-authored `*_bad` diagrams capped at Level 3 on the DIM-CMP ≥ 70
+  Level-4 gate — the frozen two-pass budget ended before
+  convention-completeness caught up. Their *executed* rates still
+  recovered to 1.00 / 0.93 / 0.75: execution led, the score stayed
+  conservative. All 16 clear the Level-2 gate.
+- **X-A2 — confirmed, decisively.** With-author repaired-L1 executes at
+  **0.857**: +21.5 pp over the untouched degraded baseline and
+  +27.4 pp over the author-less arm. Every no-author catastrophe
+  reversed (0.40 → 1.00, 0.44 → 1.00, 0.20 → 0.93).
+- **X-A3 — confirmed, with the mechanism honestly revised.** The
+  ceiling held (0.857 ≤ 0.899), but the residual is *not* mostly the
+  pre-registered traceless-omission mechanism: six of the L1 tier's 27
+  failing runs are one diagram's artifacts hanging in a blocking retry
+  loop (killed at 15 s; 2 of its 3 generations hang, the third passes
+  3/3) — a newly observed failure mode where an authored answer about
+  retry behavior became an infinite loop. Excluding nothing (no
+  post-hoc exclusions), the ceiling stands; its composition is
+  documented rather than assumed.
+- **X-A4 — failed.** 45 invented decisions against the ≤ 19 bar —
+  ask-first cut invention by 54%, not 80%. Even with an author on
+  call, the repairer guessed low-stakes details instead of asking. Per
+  the pre-committed matrix: the ask-first instruction is insufficient
+  as written; recorded as a wording obligation on the recipe, not a
+  mechanism failure.
+- **X-A5 — confirmed.** With-author repaired-L2 at **0.957** —
+  statistically at the pristine reference (0.949). The bar the
+  no-author arm missed by 10.8 pp closes completely with the author.
+
+**Leakage audit:** 2 of 255 answers flagged (both from one diagram's
+author, containing arrow syntax; one names a return message verbatim).
+Answer discipline otherwise held: mean 16.7 words, max 29 (budget 40).
+The affected diagram (`order_payment_codegen_bad`, with-author 0.75)
+is flagged in the per-diagram detail. The exploratory-question
+majority (61%) means agent curiosity, not only the gap report, drove
+the asking — the finding/exploratory split is recorded per diagram.
+
+**The two arms together are the finding.** Same loop, same repair
+model, same gap reports, same generator, same suites — the only
+difference is where content-bearing decisions came from. Invention:
+−5.9 pp below the cliff. The author: +21.5 pp. The pair isolates
+step 3 of docs/agents.md as the causal ingredient: **asking versus
+inventing is worth ~27 pp of executed correctness below the cliff.**
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
@@ -724,6 +784,18 @@ Supported by this data (updated after the deepening):
   gate is an input filter, not a content certifier, and the repair
   covenant's 'ask, never invent' is a measured necessity, not a style
   preference."*
+- *(2026-07-27, with-author arm)* — *"The same repair loop with the
+  author answering recovers the cliff: below-cliff diagrams repaired
+  via Q&A executed at 0.857 versus 0.583 author-less and 0.642
+  untouched, and repaired mid-tier diagrams reached pristine-level
+  pass-rates (0.957 vs 0.949). Same loop, same models, same gap
+  reports — the author is the isolated causal ingredient, worth
+  ~27 pp of executed correctness below the cliff. Not a guarantee:
+  a ~9 pp residual remains (in this wave dominated by one
+  blocking-loop artifact, a newly observed failure mode), invention
+  persisted at roughly half rate even with an author available, and
+  the lab author was an LLM stand-in under a disclosed leakage
+  audit."*
 - Quote correlations and the cliff, never absolute fidelity values —
   absolute fidelity is judge-relative (two judges differ by ~9 points on
   identical code while agreeing on ranking, r = 0.715). Executed

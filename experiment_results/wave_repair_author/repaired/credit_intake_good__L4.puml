@@ -1,0 +1,21 @@
+@startuml credit-intake-good--L4
+title Credit intake good L4
+
+actor Customer
+control CreditEngine
+boundary FrontOffice
+
+Customer -> FrontOffice : submitApplication(customerId, applicationData)
+activate FrontOffice
+FrontOffice -> CreditEngine : scoreApplicant(applicationId, applicantData)
+activate CreditEngine
+CreditEngine --> FrontOffice : RiskScore score
+deactivate CreditEngine
+
+alt riskScore >= 700
+    FrontOffice --> Customer : Offer proposal
+else riskScore < 700
+    FrontOffice --> Customer : Rejection letter
+end
+deactivate FrontOffice
+@enduml

@@ -1,0 +1,28 @@
+@startuml order-payment-codegen-bad
+title Order payment — not codegen-ready
+
+participant OrderService <<service>>
+participant PaymentGateway <<external>>
+database OrderDB
+
+OrderService -> OrderDB : findOrderById(orderId)
+activate OrderDB
+alt order != null
+  OrderDB --> OrderService : order
+else order not found
+  OrderDB --> OrderService : notFoundError
+  break
+end
+deactivate OrderDB
+
+OrderService -> PaymentGateway : charge(orderId, order.total)
+activate PaymentGateway
+alt order.total > 0
+  PaymentGateway --> OrderService : receipt
+else charge error
+  PaymentGateway --> OrderService : paymentError
+  OrderService ->> OrderService : compensate(orderId)
+end
+deactivate PaymentGateway
+
+@enduml

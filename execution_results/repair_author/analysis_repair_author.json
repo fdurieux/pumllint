@@ -1,0 +1,226 @@
+{
+  "pooled": {
+    "pristine": {
+      "scenario_runs": 156,
+      "pass_rate": 0.949,
+      "semantic_runs": 156,
+      "semantic_rate": 0.949
+    },
+    "degraded_l2": {
+      "scenario_runs": 201,
+      "pass_rate": 0.741,
+      "semantic_runs": 201,
+      "semantic_rate": 0.741
+    },
+    "noauthor_l2": {
+      "scenario_runs": 88,
+      "pass_rate": 0.841,
+      "semantic_runs": 88,
+      "semantic_rate": 0.841
+    },
+    "author_l2": {
+      "scenario_runs": 93,
+      "pass_rate": 0.957,
+      "semantic_runs": 93,
+      "semantic_rate": 0.957
+    },
+    "degraded_l1": {
+      "scenario_runs": 162,
+      "pass_rate": 0.642,
+      "semantic_runs": 162,
+      "semantic_rate": 0.642
+    },
+    "noauthor_l1": {
+      "scenario_runs": 84,
+      "pass_rate": 0.583,
+      "semantic_runs": 84,
+      "semantic_rate": 0.583
+    },
+    "author_l1": {
+      "scenario_runs": 84,
+      "pass_rate": 0.857,
+      "semantic_runs": 84,
+      "semantic_rate": 0.857
+    }
+  },
+  "expectations": {
+    "X-A1": false,
+    "X-A2": true,
+    "X-A3": true,
+    "X-A4": false,
+    "X-A5": true
+  },
+  "qa_audit": {
+    "questions": 255,
+    "finding": 100,
+    "exploratory": 155,
+    "answers": 255,
+    "leak_flags": 2,
+    "answer_words_mean": 16.7,
+    "answer_words_max": 29,
+    "invented_total": 45,
+    "noauthor_invented_total": 98
+  },
+  "per_diagram": [
+    {
+      "label": "L1_credit_intake_bad",
+      "orig_level": 1,
+      "final_level": 3,
+      "base": 1.0,
+      "no_author": 0.444,
+      "with_author": 1.0,
+      "questions": 22,
+      "invented": 7
+    },
+    {
+      "label": "L1_credit_intake_good__L3",
+      "orig_level": 1,
+      "final_level": 5,
+      "base": 0.833,
+      "no_author": 0.333,
+      "with_author": 1.0,
+      "questions": 18,
+      "invented": 4
+    },
+    {
+      "label": "L1_credit_intake_good__L4",
+      "orig_level": 1,
+      "final_level": 5,
+      "base": 0.667,
+      "no_author": 1.0,
+      "with_author": 0.333,
+      "questions": 20,
+      "invented": 2
+    },
+    {
+      "label": "L1_credit_intake_good__L5",
+      "orig_level": 1,
+      "final_level": 5,
+      "base": 0.833,
+      "no_author": 0.667,
+      "with_author": 1.0,
+      "questions": 22,
+      "invented": 2
+    },
+    {
+      "label": "L1_credit_intake_good__S-undeclare_participant",
+      "orig_level": 1,
+      "final_level": 5,
+      "base": 0.5,
+      "no_author": 1.0,
+      "with_author": 1.0,
+      "questions": 21,
+      "invented": 5
+    },
+    {
+      "label": "L1_insurance_claim_bad",
+      "orig_level": 1,
+      "final_level": 3,
+      "base": 0.4,
+      "no_author": 0.2,
+      "with_author": 0.933,
+      "questions": 24,
+      "invented": 4
+    },
+    {
+      "label": "L1_order_payment_codegen_bad",
+      "orig_level": 1,
+      "final_level": 3,
+      "base": 0.208,
+      "no_author": 0.25,
+      "with_author": 0.75,
+      "questions": 22,
+      "invented": 5
+    },
+    {
+      "label": "L1_order_payment_codegen_good__L9",
+      "orig_level": 1,
+      "final_level": 4,
+      "base": 0.875,
+      "no_author": 1.0,
+      "with_author": 0.833,
+      "questions": 12,
+      "invented": 0
+    },
+    {
+      "label": "L2_credit_intake_good__S-drop_title",
+      "orig_level": 2,
+      "final_level": 5,
+      "base": 0.667,
+      "no_author": 1.0,
+      "with_author": 1.0,
+      "questions": 20,
+      "invented": 6
+    },
+    {
+      "label": "L2_credit_intake_good__S-self_message",
+      "orig_level": 2,
+      "final_level": 4,
+      "base": 0.333,
+      "no_author": 1.0,
+      "with_author": 1.0,
+      "questions": 19,
+      "invented": 3
+    },
+    {
+      "label": "L2_insurance_claim_good__S-vague_guard",
+      "orig_level": 2,
+      "final_level": 5,
+      "base": 0.933,
+      "no_author": 0.4,
+      "with_author": 1.0,
+      "questions": 11,
+      "invented": 1
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L5",
+      "orig_level": 2,
+      "final_level": 5,
+      "base": 0.417,
+      "no_author": 0.667,
+      "with_author": 1.0,
+      "questions": 8,
+      "invented": 1
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L6",
+      "orig_level": 2,
+      "final_level": 4,
+      "base": 0.417,
+      "no_author": 1.0,
+      "with_author": 1.0,
+      "questions": 8,
+      "invented": 1
+    },
+    {
+      "label": "L2_order_payment_codegen_good__L8",
+      "orig_level": 2,
+      "final_level": 4,
+      "base": 0.917,
+      "no_author": 0.917,
+      "with_author": 0.833,
+      "questions": 10,
+      "invented": 1
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-self_message",
+      "orig_level": 2,
+      "final_level": 5,
+      "base": 0.917,
+      "no_author": 0.833,
+      "with_author": 0.833,
+      "questions": 8,
+      "invented": 2
+    },
+    {
+      "label": "L2_order_payment_codegen_good__S-vague_guard",
+      "orig_level": 2,
+      "final_level": 5,
+      "base": 0.875,
+      "no_author": 0.917,
+      "with_author": 1.0,
+      "questions": 10,
+      "invented": 1
+    }
+  ]
+}
