@@ -40,3 +40,6 @@ experiment_results/wave_*/*
 !experiment_results/wave_repair/repair_log.json
 !experiment_results/wave_repair/repaired/
 !experiment_results/wave_repair/repaired/**
+!experiment_results/wave_repair_author/repair_log.json
+!experiment_results/wave_repair_author/repaired/
+!experiment_results/wave_repair_author/repaired/**

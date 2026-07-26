@@ -488,6 +488,91 @@ as net-harmful, and docs/agents.md now says so. The recipe's measured
 value concentrates in structural repair; its content-bearing step is an
 *escalation* step, evidence-backed as the only safe path.
 
+## Agent-repair, with-author arm — pre-registered expectations (written 2026-07-27, before any scored run)
+
+The no-author arm measured the recipe's worst case. This arm measures
+its *intended* use: step 3 followed as written — content-bearing
+decisions come from the author. The lab stand-in for the author is an
+LLM that knows the intended design; the leakage question that raises is
+part of the protocol, not an afterthought.
+
+**Protocol (frozen before any scored run):**
+
+- **Targets:** the same 16 family diagrams (8 L1, 8 L2). Degraded
+  baselines now exist for all of them (stored waves + the previous
+  wave's three fresh baselines); no new baselines are needed. Pristine
+  reference unchanged.
+- **Repair loop:** per diagram, `pumllint fix` first, then a three-step
+  conversation, at most twice (second pass iff the re-scored level is
+  still < 4):
+  1. *Ask* — the repair agent (`claude-sonnet-5`) gets the diagram +
+     full gap report + the covenant, with an author available: for
+     every decision the diagram does not contain, ask. Questions are
+     structured JSON, each tagged `finding` (driven by a gap-report
+     entry) or `exploratory` (behavior the agent suspects is missing —
+     e.g. unhappy paths the linter cannot flag). Both kinds allowed;
+     the tag is recorded for the ceiling analysis.
+  2. *Author* — a separate `claude-sonnet-5` context receives ONLY the
+     pristine diagram and the questions — never the degraded copy, the
+     gap report, or these expectations, so it cannot diff-and-volunteer.
+     It answers each question in ≤ ~40 words, strictly what was asked,
+     no diagram source; questions about things not in the design get
+     "not part of my design".
+  3. *Repair* — the agent receives the answers and outputs the repaired
+     diagram + a log separating `authored_decisions` (from answers)
+     from `invented_decisions` (still guessed — should be ≈ none).
+- **Leakage audit (mechanical, reported):** every Q&A pair is logged
+  and committed; answers containing PlantUML arrow/element syntax are
+  counted as leakage flags (target 0; any nonzero count is disclosed
+  and the affected diagrams flagged in the per-diagram detail). Mean
+  and max answer lengths reported.
+- **Generation arm:** unchanged — `claude-opus-4-8`, legacy prompt,
+  3 runs, `claude-sonnet-5` judge, frozen suites.
+- **Cost:** ceiling $20 (estimate ≈ $8).
+
+**Expectations** (reference numbers from published waves: pristine
+0.949, degraded-L2 0.741, degraded-L1 0.642; no-author repaired
+0.841 / 0.583; no-author invented-decision total 98):
+
+- **X-A1 (repairability):** all 16 reach Level ≥ 4 within ≤ 2 passes —
+  the author unblocks what stopped the deepest diagram at L3. (No L5
+  arm this time: the driver's stopping rule ends at ≥ 4; the previous
+  freeze's inconsistency is not repeated.)
+- **X-A2 (authored content recovers):** pooled with-author repaired-L1
+  ≥ degraded-L1 + 10 pp (≥ 0.742) — the direct reversal of the
+  no-author −5.9 pp.
+- **X-A3 (the gap-report ceiling):** pooled with-author repaired-L1
+  stays ≤ pristine − 5 pp (≤ 0.899). Mechanism: asking is directed by
+  the gap report, and the gap report cannot flag *traceless* omissions
+  — a branch deleted without residue scores clean. If this fails
+  *upward*, the gap report (plus agent curiosity) is a sufficient
+  question generator and the claim strengthens; the finding/exploratory
+  tags say which. Either direction is informative.
+- **X-A4 (invention eliminated):** total invented decisions across all
+  16 repairs ≤ 19 (≤ 20% of the no-author total of 98).
+- **X-A5 (recoverable tier closes):** pooled with-author repaired-L2
+  within 5 pp of pristine (≥ 0.899) — the bar X-R2 failed without the
+  author.
+
+**Interpretation matrix (pre-committed):** X-A2 and X-A3 both hold →
+the intended-use loop is measured effective, and the residual gap is
+the linter's honest limit (traceless omissions) — docs/agents.md gains
+the measured with-author result and that limit. X-A2 fails → the Q&A
+loop itself does not target what matters; step 3's asking strategy
+needs redesign before the recipe can claim the loop. X-A3 fails upward
+→ report the split by question tag: if exploratory questions carried
+the recovery, agent curiosity — not the gap report — closed the gap,
+and the claim credits it accordingly. X-A4 fails → the repair prompt's
+ask-first instruction is insufficient as written; fix wording, note it.
+In every branch, docs/agents.md's measured-vs-not section is updated
+to what was measured.
+
+Standing limitations, pre-declared: the author is an LLM reading the
+pristine diagram — a strong stand-in with a disclosed leakage audit,
+not a human; one repair model, one author model, same vendor; k = 1
+repair per diagram; n = 3 runs per repaired diagram — pooled tiers
+carry the claims.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
