@@ -12,7 +12,9 @@ Produced 2026-07-26 by a fan-out research harness: 5 search angles, 21
 sources fetched, 104 claims extracted, 25 adversarially verified by
 three-reviewer refutation panels — 24 confirmed 3–0, 1 refuted (reported
 in the annex). Revised the same day to make the who-does/who-checks
-distinction first-class.*
+distinction first-class, and again (rev. 2) to incorporate two DORA
+primary documents read directly from the PDFs: the AI Capabilities Model
+(v2025.1) and The ROI of AI-assisted Software Development (v2026.1).*
 
 **How to read the claims.** Every load-bearing statement carries a tag,
 in decreasing order of strength:
@@ -35,6 +37,10 @@ findings are correlations from large self-reported surveys —
 "associated with", never proven causation — and its headline numbers are
 year-specific. They are the best outcome evidence this field has; they
 are not physics.
+
+Revision 2 note: claims drawn from the two later-arriving primary
+documents are primary-sourced [research] but did not pass through the
+original refutation panels; they are marked "rev. 2" where they land.
 
 ---
 
@@ -194,6 +200,67 @@ distrust *shrank* from 39% — the demand comes from volume at
 near-universal adoption plus residual distrust, not rising panic.
 [research]
 
+### Revision 2 — what the two new primary documents add
+
+**The AI Capabilities Model, enumerated at last.** The model this
+report previously refused to enumerate (after a refuted claim — see
+annex) contains **seven** capabilities, under one organizing frame:
+"AI's primary role in software development is to amplify. It magnifies
+the strengths of high-performing organizations and the dysfunctions of
+struggling ones." The seven, each with what it measurably amplifies
+when paired with AI adoption: *clear and communicated AI stance*
+(individual effectiveness, organizational performance, throughput;
+reduces friction); *healthy data ecosystems* (organizational
+performance); *AI-accessible internal data* (individual effectiveness,
+code quality); *strong version control practices* (frequent commits →
+individual effectiveness; rollback fluency → team performance);
+*working in small batches* (product performance, less friction — at a
+slight cost to perceived individual effectiveness, which DORA argues is
+the right trade); *user-centric focus* (team performance — and without
+it, AI adoption *can harm* teams); *quality internal platforms*
+(organizational performance). One honest limit: none of the seven is
+shown moderating the delivery-*instability* penalty itself — small
+batches is argued as the countermeasure ("can help prevent
+AI-accelerated development from leading to increased instability"), but
+its measured moderation is on product performance and friction.
+[research, rev. 2]
+
+**DORA has named the thesis: "the verification tax."** The 2026 ROI
+report models AI value realization as a J-Curve whose dip has three
+named phases — the learning curve, *the verification tax*, and pipeline
+adaptation. The definition: developers "invest time reviewing generated
+code due to concerns about the trustworthiness of output and
+hallucinations," multiplied by sheer volume of output. The cost model
+makes the tax a direct throughput constraint: "the higher the
+verification tax, the fewer annual software deployments will be
+possible. Similarly, the lead time for changes will increase because of
+this heightened verification burden" — and, flatly: "the most immediate
+barrier to ROI is the verification tax." Friction does not vanish under
+AI; "the friction moves … replaced by a verification tax — the
+cognitive load required to iterate on prompts and rigorously audit
+AI-generated code that looks remarkably similar to correct code." That
+last clause is the plausibility problem this report's oracle evidence
+measures. [research, rev. 2]
+
+**And prescribed the remedy this report argued for.** The ROI report's
+five systemic keys of adoption are "trust, platform, data, users, and
+guardrails" — where guardrails means "shifting from manual checkpoints
+to automated nonoptional security and quality gates … By automating the
+verification of AI-generated commits, teams ensure that the increased
+throughput enabled by the agentic era results in high-quality product,
+not a higher volume of incidents." Named mitigations for the
+verification tax include "nonoptional checkpoints and pre-commit hooks
+paired with static analysis," heavy investment in automated testing,
+and better context for the AI to improve initial output quality. The
+capabilities model adds that the developer's work "shifts from writing
+code to decomposing, prompting, and verifying," and that 21% of
+practitioners already store AI prompts in version control. On the
+market divide, the ROI report cites 78% of executives reporting return
+on at least one gen-AI use case and 88% of agentic early adopters
+seeing returns — figures from Google Cloud's own commissioned research,
+so treat them as [vendor]-adjacent — against MIT's "shadow AI" findings
+and Stanford's flat measured productivity. [research, rev. 2]
+
 ### The oracle evidence
 
 An **oracle**, in testing, is whatever decides "correct or not." A
@@ -234,15 +301,20 @@ is whether our oracles are strong enough to carry the volume.
 > *"As AI makes generation cheap, deterministic verification becomes the
 > binding constraint on both lead time and quality."*
 
-**Verdict: supported, not proven — and the attribution matters.** Every
-verified DORA finding is consistent with it: the stability penalty, the
-batch-size mechanism, the rollback contingency, the "robust control
-systems" language, the trust gap. The oracle literature supplies the
-mechanism. But DORA never says "deterministic verification" or "binding
-constraint" — its words are robust testing, small batches, critical
-validation skills. The framing is this report's inference, stated as
-such, resting on correlational survey evidence plus one internal
-measured result.
+**Verdict (revised): supported, and now largely stated by DORA itself —
+still not causally proven.** At first publication this framing was the
+report's own inference; DORA's words were "robust testing, small
+batches, critical validation skills." The 2026 ROI report closes most
+of that attribution gap: it names *the verification tax*, models it as
+the direct suppressor of deployment frequency and lead time for
+changes, calls it "the most immediate barrier to ROI," and prescribes
+automated, nonoptional verification gates as the remedy. What remains
+this report's own sharpening is one word — *deterministic* — as the
+property those gates need (DORA's "automated nonoptional" is
+functionally the same demand), plus the standing caveat: all of this
+rests on correlational survey research and guidance essays, not causal
+measurement. The direct test — does the instability penalty shrink
+where verification capability is strong — remains unpublished.
 
 ## Part 3 — The sixteen activities, mapped
 
@@ -314,7 +386,7 @@ practice-heavy activities are covered briefly and say so.
 
 | Activity | Capability cluster · representative tools | Evolution | Who does the work today | Who checks it today |
 |---|---|---|---|---|
-| Develop | Version control — git, GitHub, GitLab; AI coding assistants — GitHub Copilot, Claude Code, Cursor; static analysis — ESLint, ruff, SonarQube; code review incl. AI reviewers | VCS, linters: commodity · assistants: product → commodity · AI review: custom → product | **AI + human pair** — the largest AI surface in the SDLC; DORA: +3.4% code quality, +3.1% review speed per 25% adoption, against the delivery-stability penalty [research] | **Deterministic first, human residue** — compiler, types, linters, unit tests carry the volume; human review carries what they can't; AI review triages but must not gate. Densest oracle stack in the pipeline — why AI landed here first. Rollback fluency is the DORA-evidenced recovery condition [research] |
+| Develop | Version control — git, GitHub, GitLab; AI coding assistants — GitHub Copilot, Claude Code, Cursor; static analysis — ESLint, ruff, SonarQube; code review incl. AI reviewers | VCS, linters: commodity · assistants: product → commodity · AI review: custom → product | **AI + human pair** — the largest AI surface in the SDLC; DORA: +3.4% code quality, +3.1% review speed per 25% adoption, against the delivery-stability penalty [research] | **Deterministic first, human residue** — compiler, types, linters, unit tests carry the volume; human review carries what they can't; AI review triages but must not gate. Densest oracle stack in the pipeline — why AI landed here first. Rollback fluency is the DORA-evidenced recovery condition [research]. DORA 2026's name for this checking burden: "the verification tax" (rev. 2) |
 | Build | CI build automation — GitHub Actions, GitLab CI, Jenkins; build systems — Gradle, Bazel; supply-chain integrity — Sigstore, SLSA, SBOM tooling | CI: commodity · build systems: product · supply chain: custom → product | **Deterministic** — automation is the activity; AI assists pipeline authoring and failure triage | **Deterministic by construction** — compile, resolve, sign, attest; binary verdicts. DORA capability: continuous integration [research] |
 | Test End-to-End | Test automation — Playwright, Cypress; contract testing — Pact; **test-oracle quality** — mutation testing: Stryker, mutmut. DORA 2018: continuous testing crucial [research] | Automation: product · oracle-quality: custom, thin adoption → | **Human + AI author; deterministic executes** — AI test generation moving custom→product fast; "self-healing" tests [vendor] | **The suite checks the product; humans check the suite — for now.** The deterministic check-of-the-check exists (mutation testing) but adoption is thin; HumanEval+ measured what weak suites hide: up to 19.3–28.9% overstated correctness [research]. When AI writes the tests too, this gap is the risk |
 | Stage | Infrastructure-as-code — Terraform/OpenTofu, Pulumi; policy-as-code — OPA, Checkov; ephemeral environments; containers — Kubernetes | IaC: product → commodity · policy: product · containers: commodity | **AI increasingly writes; deterministic applies** — infrastructure config is a text artifact AI generates well | **Deterministic** — plan diffs and policy engines give exact verdicts before production. The model configuration: AI does, machine checks |
@@ -365,6 +437,21 @@ checking for the artifacts AI now mass-produces — and the dashed nodes
 analysis) mark exactly the places where, in the grid's terms, checking
 is still human-only.
 
+Revision 2 added two components straight from the new primary
+documents. **AI context & internal data access** (custom-built, moving
+right) is the capabilities model's context layer — AI-accessible
+internal data, healthy data ecosystems, and the ROI roadmap's first
+capital investment: documentation that is "high fidelity and machine
+readable." It is drawn dashed deliberately: the context the agents feed
+on has no strong verifier of its own, which makes it both the newest
+dependency of safe AI-assisted delivery and another face of the
+check-inputs problem. **Internal developer platform** (custom-built
+edge, productizing) is the model's "quality internal platforms"
+capability — in the ROI report's words, "the risk mitigator and the
+context provider for AI agents." It is drawn filled: a platform's
+guardrails are exactly the automated, nonoptional gates DORA
+prescribes. [research, rev. 2] [practitioner]
+
 ## Part 5 — Strategic read
 
 **Commodity — adopt, never build, measure the discipline.** Version
@@ -391,7 +478,12 @@ The demand signals are external now: DORA 2025 names missing "robust
 control systems" as why AI speed converts to instability; 30% of
 practitioners don't trust AI output; HumanEval+ quantifies what weak
 checking hides. This is where pumllint already sits.
-[research] [practitioner]
+[research] [practitioner] Rev. 2: DORA's 2026 ROI report turns these
+signals into doctrine — "guardrails" is one of its five systemic keys
+of adoption, the verification tax is "the most immediate barrier to
+ROI," and the named mitigations (nonoptional checkpoints, pre-commit
+hooks paired with static analysis, heavy automated testing) are
+literally this category's shipping forms. [research, rev. 2]
 
 ### Rules for the AI-heavy pipeline
 
@@ -440,20 +532,36 @@ oracle gaps worth watching for pull, nearest asset first:
   missing check, upstream of everything AI generates from stories.
   [practitioner]
 - **Prompt/agent-configuration linting** — a new artifact class with no
-  checks at all; earliest-stage, least defined. [practitioner]
+  checks at all; earliest-stage, least defined. Rev. 2 upgraded this
+  signal: DORA finds 21% of practitioners already store AI prompts in
+  version control — the artifact class is forming in repositories now.
+  [research, rev. 2] [practitioner]
+- **AI-context and documentation quality checks** (new in rev. 2) — the
+  ROI roadmap's first capital investment is a context layer whose
+  stated goal is documentation that is "high fidelity and machine
+  readable," because a fragmented knowledge graph makes AI "generate
+  bloat." Machine-checkable context quality is an oracle gap the whole
+  agentic stack sits on — and this repository's model-set-as-AI-context
+  hypothesis is one instance of it. [research, rev. 2] [practitioner]
 
 ### What would change this picture
 
+Two of the four items listed at first publication resolved the same
+day, when the primary documents arrived: the AI capabilities model's
+contents (now enumerated in Part 2) and a 2026 DORA publication (the
+ROI report — guidance built on the 2025 survey, not a new survey).
+Still open:
+
 - DORA showing the AI-instability association shrinking where test
   automation and small batches are strong — the direct test of this
-  report's thesis, not yet published.
-- The contents and evidence base of DORA's new AI capabilities model
-  (it exists; this report's attempt to enumerate its members was refuted
-  in verification and is honestly excluded).
+  report's thesis. The capabilities model moderates value outcomes
+  (performance, quality, friction), not the instability penalty itself;
+  the test remains unpublished.
 - Outcome-grade evidence for oracle strength on non-code artifacts —
   diagrams, IaC, specs — beyond this repository's internal results;
   today that evidence base is one project deep.
-- A DORA 2026 report; 2025 is current as of this writing.
+- A 2026 State of AI-assisted Software Development survey edition —
+  new measured effects rather than guidance.
 
 ---
 
@@ -463,9 +571,18 @@ oracle gaps worth watching for pull, nearest asset first:
 capability category listing six capabilities…" — refuted 0–3. An
 AI-related capability grouping does exist on dora.dev, and verifier
 notes reference a seven-capability 2025 AI Capabilities Model, but the
-six-member enumeration did not survive checking against the source. This
-report therefore cites the model's existence and refuses to list its
-members.
+six-member enumeration did not survive checking against the source. At
+first publication this report therefore cited the model's existence and
+refused to list its members.
+
+*Resolution (rev. 2):* the primary PDF confirms the refutation was
+correct. The model has seven members, not six; the refuted list was
+missing *working in small batches* and misnamed two others (the model
+says *quality internal platforms*, not "platform engineering", and
+*strong version control practices*, not "version control" — though
+DORA's own capability-page URL for platforms is still
+/platform-engineering). The enumeration now in Part 2 comes from the
+primary document.
 
 **Standing caveats.**
 
@@ -486,15 +603,24 @@ members.
   author's analysis — consistent with, but not asserted by, the cited
   research. This repository's numbers are internal measurements,
   consistent with but not part of the externally verified set.
+- Rev. 2 additions from the AI Capabilities Model (v2025.1) and the ROI
+  report (v2026.1) were read directly from the primary PDFs and did not
+  pass through the original three-reviewer refutation panels. The ROI
+  report's market-divide figures (78% / 88%) come from Google Cloud's
+  own commissioned research — vendor-adjacent despite appearing in a
+  DORA publication. The ROI report is guidance built on the 2025
+  survey; it adds no new measured survey effects.
 
 **Principal sources.**
 
 - *Primary:* dora.dev — capability catalog, 2018 report, 2024 report +
   PDF, 2025 report + PDF ("State of AI-assisted Software Development");
-  framework.scaledagile.com — Continuous Delivery Pipeline, Continuous
-  Integration, Continuous Deployment; HumanEval+/EvalPlus (NeurIPS
-  2023); Barr et al., "The Oracle Problem in Software Testing" (IEEE
-  TSE 2015); LLM-judge reliability studies (arXiv 2025–26).
+  DORA AI Capabilities Model (v2025.1) and The ROI of AI-assisted
+  Software Development (v2026.1) — primary PDFs, read directly
+  (rev. 2); framework.scaledagile.com — Continuous Delivery Pipeline,
+  Continuous Integration, Continuous Deployment; HumanEval+/EvalPlus
+  (NeurIPS 2023); Barr et al., "The Oracle Problem in Software Testing"
+  (IEEE TSE 2015); LLM-judge reliability studies (arXiv 2025–26).
 - *Secondary:* RedMonk, Jellyfish, RDEL close-reads of DORA 2025; SAFe
   6.x practitioner material for the gated activity names.
 - *Strategic lens:* Simon Wardley, "Why the fuss about conversational
