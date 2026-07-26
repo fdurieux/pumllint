@@ -205,6 +205,47 @@ degraded diagram faces the *same tests* as its pristine sibling; there is
 no easier-oracle-for-easier-diagrams effect to control away. The raw
 per-diagram r is the right execution statistic.
 
+## Execution oracle — Phase B results (2026-07-26, fresh waves, $15.03)
+
+Two fresh opus-4-8 waves over the 28 family diagrams (3 runs each, sonnet-5
+judge kept), generation prompt pinned to the `handle(request)` entry
+contract: **V1 pinned_structured** keeps the class-per-participant scaffold
+($6.77, 167/168 runs — one judge-response parse error, logged in the wave
+report), **V2 pinned_minimal** drops it ($8.26, 168/168). Pre-generation
+amendment, committed before any artifact existed (4de71b6): the suites'
+request dicts gained synonym keys so classless artifacts are not penalized
+for key-name guesses — stubs, expectations and outcome rules untouched.
+
+| Executed pass-rate | L5 | L4 | L2 | L1 | cliff@40 | per-diagram r |
+|---|---|---|---|---|---|---|
+| legacy prompt (pooled A) | 0.949 | 0.910 | 0.756 | 0.642 | 21.9 pp | 0.545 |
+| V1 pinned_structured | 0.963 | 0.959 | 0.946 | 0.762 | 19.4 pp | 0.334 |
+| V2 pinned_minimal | 0.963 | 0.981 | 0.935 | 0.714 | 24.3 pp | 0.490 |
+
+**XB — confirmed.** Under both prompt variants the gradient's sign
+reproduces (positive per-diagram correlation; L1 clearly lowest; V2's
+L4/L5 inversion is 0.02 at n = 4 diagrams) and the cliff clears the 10 pp
+bar in both (19.4 / 24.3 pp). The judged oracle agrees: fidelity gradients
+66.2/66.3/64.4/**51.2** (V1) and 63.6/65.7/61.6/**47.1** (V2), composite↔
+fidelity r = 0.604 / 0.635 — so the maturity→outcome relationship now
+stands across **three prompt styles, two oracles, and two generators**.
+
+**The pre-registered compression happened — but only above the cliff.**
+Pinning the entry contract lifted moderately degraded diagrams almost to
+pristine level (L2: 0.756 legacy → 0.946/0.935 pinned) while below-cliff
+diagrams barely moved (L1: 0.642 → 0.762/0.714). Read plainly:
+**scaffolding rescues diagrams with moderate hygiene findings; it does not
+rescue diagrams below the cliff** — their missing guards and failure paths
+stay missing no matter how the generator is prompted. This narrows the
+per-diagram correlation above the cliff (hence V1's r = 0.334) and is
+precisely the compression the pre-registration anticipated; the cliff, not
+the slope, remains the robust product claim.
+
+**Post-hoc:** judge↔execution per-run agreement rises under the pinned
+contract (r = 0.390 / 0.415 vs 0.25 legacy) — a standardized entry point
+appears to remove some measurement noise — but stays at the X3 threshold:
+the oracles remain complementary, not interchangeable.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
@@ -280,15 +321,16 @@ the 18 diagrams shared across identical-config waves, and a second generator
 plus a second judge (haiku-4-5), all reproducing the findings.
 
 Still standing: all models are Claude-family (no cross-vendor generator or
-judge — a committed follow-up, see ROADMAP Arc D); the generation prompt is
-fixed (one prompting style — Phase B of the execution-oracle wave targets
-this); the judge rubric, while schema-constrained, is still an LLM
-judgment — absolute fidelity numbers are judge-relative (~±10 between
-judges) and only rankings and correlations should be quoted. The execution
-oracle (2026-07-26) removes the judge-only limitation for *behavior* —
-but its pass-rates are suite-relative (three families, 12 hand-written
-scenarios) and its per-run agreement with judged fidelity is weak
-(r ≈ 0.2–0.3): the oracles are complementary, never interchangeable.
+judge — a **committed follow-up**, see ROADMAP Arc D); the judge rubric,
+while schema-constrained, is still an LLM judgment — absolute fidelity
+numbers are judge-relative (~±10 between judges) and only rankings and
+correlations should be quoted. Resolved 2026-07-26: the fixed-prompt
+limitation — the gradient and cliff now reproduce across three prompt
+styles (legacy, pinned_structured, pinned_minimal). The execution oracle
+removes the judge-only limitation for *behavior* — but its pass-rates are
+suite-relative (three families, 12 hand-written scenarios) and its per-run
+agreement with judged fidelity is weak (r ≈ 0.2–0.4): the oracles are
+complementary, never interchangeable.
 
 ## What the product may claim
 
@@ -310,7 +352,11 @@ Supported by this data (updated after the deepening):
   generated code (frozen, pre-registered suites), diagrams below the cliff
   lose ~16–25 pp of executed pass-rate (21.9 pp pooled across the opus
   waves) — roughly one intended behavior in three failing when the code
-  runs, versus one in ten above the cliff."*
+  runs, versus one in ten above the cliff. The cliff reproduces across
+  three prompt styles and is scaffold-resistant: pinning an entry contract
+  lifts moderately degraded diagrams (L2 ≈ pristine under pinning) but
+  does not rescue below-cliff diagrams — prompt engineering cannot restore
+  guards and failure paths the diagram never specified."*
 - Quote correlations and the cliff, never absolute fidelity values —
   absolute fidelity is judge-relative (two judges differ by ~9 points on
   identical code while agreeing on ranking, r = 0.715). Executed

@@ -759,6 +759,626 @@
           "hard_demand": 1.0
         }
       ]
+    },
+    {
+      "wave": "pinned_v1",
+      "scenario_runs": 334,
+      "artifact_runs": 83,
+      "diagrams": 28,
+      "per_level": [
+        {
+          "level": 5,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.963,
+          "semantic_rate": 0.963
+        },
+        {
+          "level": 4,
+          "diagrams": 4,
+          "artifact_runs": 11,
+          "pass_rate": 0.959,
+          "semantic_rate": 0.959
+        },
+        {
+          "level": 2,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.946,
+          "semantic_rate": 0.946
+        },
+        {
+          "level": 1,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.762,
+          "semantic_rate": 0.762
+        }
+      ],
+      "cliff_at_40": {
+        "below_40_rate": 0.762,
+        "above_40_rate": 0.956,
+        "runs_below": 24,
+        "runs_above": 59,
+        "gap_pp": 19.4
+      },
+      "correlations": {
+        "per_run_r": 0.314,
+        "per_diagram_r": 0.334,
+        "per_diagram_partial_hard_demand": 0.115,
+        "per_diagram_semantic_r": 0.334,
+        "fidelity_vs_execution_per_run_r": 0.39
+      },
+      "stages": {
+        "pass": 303,
+        "wrong_outcome": 25,
+        "missing_call": 3,
+        "forbidden_call": 3
+      },
+      "per_diagram": [
+        {
+          "label": "L5_insurance_claim_good",
+          "level": 5,
+          "composite": 100.0,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good",
+          "level": 5,
+          "composite": 100.0,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_insurance_claim_good__S-drop_name",
+          "level": 5,
+          "composite": 99.9,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__S-drop_name",
+          "level": 5,
+          "composite": 99.9,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_insurance_claim_good__S-drop_title",
+          "level": 5,
+          "composite": 99.6,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_insurance_claim_good__L2",
+          "level": 5,
+          "composite": 99.5,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__S-drop_title",
+          "level": 5,
+          "composite": 99.5,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__L2",
+          "level": 5,
+          "composite": 99.4,
+          "runs": 3,
+          "pass_rate": 0.833,
+          "semantic_rate": 0.833,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L4_insurance_claim_good__S-unterminate_block",
+          "level": 4,
+          "composite": 93.8,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_insurance_claim_good__S-unbalance_activation",
+          "level": 4,
+          "composite": 92.3,
+          "runs": 2,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_order_payment_codegen_good__S-unterminate_block",
+          "level": 4,
+          "composite": 92.0,
+          "runs": 3,
+          "pass_rate": 0.833,
+          "semantic_rate": 0.833,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_insurance_claim_good__S-vague_guard",
+          "level": 2,
+          "composite": 90.4,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+          "level": 4,
+          "composite": 90.0,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.667
+        },
+        {
+          "label": "L2_order_payment_codegen_good__S-vague_guard",
+          "level": 2,
+          "composite": 87.5,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__S-self_message",
+          "level": 2,
+          "composite": 86.4,
+          "runs": 3,
+          "pass_rate": 0.75,
+          "semantic_rate": 0.75,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L5",
+          "level": 2,
+          "composite": 74.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_credit_intake_good__S-self_message",
+          "level": 2,
+          "composite": 58.3,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.333
+        },
+        {
+          "label": "L2_credit_intake_good__S-drop_title",
+          "level": 2,
+          "composite": 55.6,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.333
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L6",
+          "level": 2,
+          "composite": 51.4,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L8",
+          "level": 2,
+          "composite": 41.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.667
+        },
+        {
+          "label": "L1_order_payment_codegen_good__L9",
+          "level": 1,
+          "composite": 39.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L1_credit_intake_good__S-undeclare_participant",
+          "level": 1,
+          "composite": 36.9,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_good__L3",
+          "level": 1,
+          "composite": 36.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_good__L4",
+          "level": 1,
+          "composite": 36.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.333
+        },
+        {
+          "label": "L1_credit_intake_good__L5",
+          "level": 1,
+          "composite": 26.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_order_payment_codegen_bad",
+          "level": 1,
+          "composite": 25.0,
+          "runs": 3,
+          "pass_rate": 0.167,
+          "semantic_rate": 0.167,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_insurance_claim_bad",
+          "level": 1,
+          "composite": 24.0,
+          "runs": 3,
+          "pass_rate": 0.4,
+          "semantic_rate": 0.4,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_bad",
+          "level": 1,
+          "composite": 22.9,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        }
+      ]
+    },
+    {
+      "wave": "pinned_v2",
+      "scenario_runs": 339,
+      "artifact_runs": 84,
+      "diagrams": 28,
+      "per_level": [
+        {
+          "level": 5,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.963,
+          "semantic_rate": 0.963
+        },
+        {
+          "level": 4,
+          "diagrams": 4,
+          "artifact_runs": 12,
+          "pass_rate": 0.981,
+          "semantic_rate": 0.981
+        },
+        {
+          "level": 2,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.935,
+          "semantic_rate": 0.935
+        },
+        {
+          "level": 1,
+          "diagrams": 8,
+          "artifact_runs": 24,
+          "pass_rate": 0.714,
+          "semantic_rate": 0.714
+        }
+      ],
+      "cliff_at_40": {
+        "below_40_rate": 0.714,
+        "above_40_rate": 0.957,
+        "runs_below": 24,
+        "runs_above": 60,
+        "gap_pp": 24.3
+      },
+      "correlations": {
+        "per_run_r": 0.418,
+        "per_diagram_r": 0.49,
+        "per_diagram_partial_hard_demand": 0.322,
+        "per_diagram_semantic_r": 0.49,
+        "fidelity_vs_execution_per_run_r": 0.415
+      },
+      "stages": {
+        "missing_call": 7,
+        "pass": 304,
+        "wrong_outcome": 25,
+        "forbidden_call": 3
+      },
+      "per_diagram": [
+        {
+          "label": "L5_insurance_claim_good",
+          "level": 5,
+          "composite": 100.0,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good",
+          "level": 5,
+          "composite": 100.0,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_insurance_claim_good__S-drop_name",
+          "level": 5,
+          "composite": 99.9,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__S-drop_name",
+          "level": 5,
+          "composite": 99.9,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_insurance_claim_good__S-drop_title",
+          "level": 5,
+          "composite": 99.6,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_insurance_claim_good__L2",
+          "level": 5,
+          "composite": 99.5,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__S-drop_title",
+          "level": 5,
+          "composite": 99.5,
+          "runs": 3,
+          "pass_rate": 0.833,
+          "semantic_rate": 0.833,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L5_order_payment_codegen_good__L2",
+          "level": 5,
+          "composite": 99.4,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L4_insurance_claim_good__S-unterminate_block",
+          "level": 4,
+          "composite": 93.8,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_insurance_claim_good__S-unbalance_activation",
+          "level": 4,
+          "composite": 92.3,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_order_payment_codegen_good__S-unterminate_block",
+          "level": 4,
+          "composite": 92.0,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_insurance_claim_good__S-vague_guard",
+          "level": 2,
+          "composite": 90.4,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 6.0
+        },
+        {
+          "label": "L4_order_payment_codegen_good__S-unbalance_activation",
+          "level": 4,
+          "composite": 90.0,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__S-vague_guard",
+          "level": 2,
+          "composite": 87.5,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__S-self_message",
+          "level": 2,
+          "composite": 86.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L5",
+          "level": 2,
+          "composite": 74.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_credit_intake_good__S-self_message",
+          "level": 2,
+          "composite": 58.3,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L2_credit_intake_good__S-drop_title",
+          "level": 2,
+          "composite": 55.6,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L6",
+          "level": 2,
+          "composite": 51.4,
+          "runs": 3,
+          "pass_rate": 0.833,
+          "semantic_rate": 0.833,
+          "hard_demand": 4.0
+        },
+        {
+          "label": "L2_order_payment_codegen_good__L8",
+          "level": 2,
+          "composite": 41.4,
+          "runs": 3,
+          "pass_rate": 0.917,
+          "semantic_rate": 0.917,
+          "hard_demand": 4.667
+        },
+        {
+          "label": "L1_order_payment_codegen_good__L9",
+          "level": 1,
+          "composite": 39.4,
+          "runs": 3,
+          "pass_rate": 0.833,
+          "semantic_rate": 0.833,
+          "hard_demand": 4.667
+        },
+        {
+          "label": "L1_credit_intake_good__S-undeclare_participant",
+          "level": 1,
+          "composite": 36.9,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.333
+        },
+        {
+          "label": "L1_credit_intake_good__L3",
+          "level": 1,
+          "composite": 36.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_good__L4",
+          "level": 1,
+          "composite": 36.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_good__L5",
+          "level": 1,
+          "composite": 26.1,
+          "runs": 3,
+          "pass_rate": 1.0,
+          "semantic_rate": 1.0,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_order_payment_codegen_bad",
+          "level": 1,
+          "composite": 25.0,
+          "runs": 3,
+          "pass_rate": 0.167,
+          "semantic_rate": 0.167,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_insurance_claim_bad",
+          "level": 1,
+          "composite": 24.0,
+          "runs": 3,
+          "pass_rate": 0.4,
+          "semantic_rate": 0.4,
+          "hard_demand": 1.0
+        },
+        {
+          "label": "L1_credit_intake_bad",
+          "level": 1,
+          "composite": 22.9,
+          "runs": 3,
+          "pass_rate": 0.667,
+          "semantic_rate": 0.667,
+          "hard_demand": 1.0
+        }
+      ]
     }
   ],
   "pooled_identical_config": {
