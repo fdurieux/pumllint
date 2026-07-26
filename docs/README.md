@@ -53,6 +53,11 @@ but they are a useful cross-check that no audience was forgotten.
   [The evidence, explained from scratch](evidence-explained.md).
 - [ROADMAP.md](../ROADMAP.md) — what remains, and the working agreements for
   contributors.
+- [Pilot charter (template)](pilot-charter.md) — fill-in-the-blanks plan
+  for a first pilot on real diagrams: phases, roles, ADKAR change
+  checklist, pre-agreed decision gates; with
+  [a starter config](pilot-starter-config.toml) and a read-only dialect
+  census (`tools/pilot_census.py`) to run before anything gates.
 - [Demand scan: PlantUML in markdown specs](demand-scan-embedded-plantuml.md)
   — dated evidence note (2026-07-26) behind the ROADMAP's
   markdown-extraction settlement: the spec-driven ecosystem's public

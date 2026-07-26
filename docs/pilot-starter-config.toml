@@ -1,0 +1,69 @@
+# pumllint pilot starter configuration
+# ------------------------------------
+# Copy to your repository root as `pumllint.toml` (auto-detected) and fill
+# in the three ORG-CONVENTION patterns below. Everything not listed here
+# keeps its calibrated default — the full catalog is `pumllint --list-rules`
+# and the README rules table. Companion documents: pilot-charter.md
+# (the phased plan) and tools/pilot_census.py (run this BEFORE gating).
+
+# Inline "' pumllint: disable=…" comments are honored but always disclosed
+# (suppressedCount in reports). CI can audit them with --no-suppressions.
+suppressions = true
+
+# Profile discipline for a pilot: hygiene rules everywhere FIRST; enable the
+# codegen pack only for diagrams that actually feed AI code generation —
+# expect it to flag heavily on diagrams drawn for human readers (that is it
+# working, not failing). Uncomment when phase 4 starts:
+# profile = "codegen"
+
+[rules]
+# ---------------------------------------------------------------- ORG
+# CONVENTIONS — the three patterns only your organisation can supply.
+# These rules stay DORMANT until a pattern exists, so filling them in is
+# what switches the traceability dimension on.
+
+# Who owns this diagram? Match your tag style, e.g. "Owner: team-payments".
+# owner-tag = { pattern = '(?i)owner\s*:' }
+
+# Requirement/decision traceability. Jira keys + ADR ids shown; adjust to
+# your tracker and architecture-decision-record convention.
+# requirement-link = { pattern = '[A-Z][A-Z0-9]+-\d+|ADR-\d+' }
+
+# Participant naming. Default is PascalCase; per-kind overrides available.
+# participant-naming = { pattern = "^[A-Z][A-Za-z0-9]*$" }
+
+# ------------------------------------------------------- CALIBRATION WEEK
+# Expect some rules to misfire on your house dialect in week one. Triage in
+# this order, and have ONE named owner disposition every recurring finding:
+#   1. genuinely right        -> fix the diagram (pumllint fix does the
+#                                mechanical ones)
+#   2. right rule, wrong bar  -> tune the option or override the severity:
+#                                max-participants = { max = 12 }
+#                                missing-title = { severity = "info" }
+#   3. wrong for one diagram  -> inline suppression IN the diagram (visible
+#                                in review, counted in reports):
+#                                ' pumllint: disable=SEQ006
+#   4. wrong for this org     -> disable the rule, with a dated comment why:
+#                                inline-skinparam = false   # theme via CI, 2026-…
+# Never pre-disable rules you have not seen fire — let the census firing
+# histogram drive this section.
+
+# Common first-week tuning knobs (uncomment to change):
+# max-participants  = { max = 9 }
+# max-messages      = { max = 30 }          # SEQ011
+# max-elements      = { max = 60 }          # GEN009
+# no-self-message   = { allowed = [] }      # participants where self-calls are fine
+# SEQ001            = { only_if_any_declared = true }   # sketches stay unpunished
+
+# Codegen-pack lexicons (only relevant once profile = "codegen"):
+# SEQ105 = { vague_terms = ["otherwise", "sometimes", "if needed", "maybe"] }
+# SEQ106 = { tokens = ["...", "…", "TBD", "TODO", "etc"] }
+# SEQ107 = { failure_keywords = ["error", "failure", "timeout", "exception"] }
+
+# --------------------------------------------------------------- SCORING
+# Leave scoring defaults alone during the pilot: they are calibrated and
+# frozen behind the project's golden tests (SCORING.md §9), and changing
+# them mid-pilot invalidates your own baseline comparisons. Gate sequence:
+#   phase 1  advisory:  pumllint score <paths> -f html -o report.html
+#   phase 2  ratchet:   pumllint score <paths> --baseline maturity.json
+#   phase 3  floor:     add --min-level 2   (the evidence-backed cliff)
