@@ -139,7 +139,8 @@ symmetrically, flips both — raw token counts are not demand.
    `.kiro/` are steering/skills/agents files — people teaching their
    agents to *author* PlantUML. A small corroboration for the
    agent-consumption-recipe candidate (documentation telling coding
-   agents to run `score`, read the gap JSON, fix, and re-score).
+   agents to run `score`, read the gap JSON, fix, and re-score) —
+   since built as [Using pumllint from a coding agent](agents.md).
 3. **Mermaid's dominance is the strategic datum.** If this category ever
    extends notation coverage, demand points at Mermaid — but that is a
    sibling stack (parser, corpus, calibration ladder, golden contract,

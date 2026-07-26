@@ -352,7 +352,8 @@ actually becomes a recurring pipeline rather than occasional sessions:
   - Side-findings kept: Kiro's PlantUML users co-locate `.puml` files
     inside `.kiro/specs/` — served today, a documentation pattern, not
     a feature; steering/skills files teaching agents to author
-    PlantUML corroborate the agent-consumption-recipe candidate;
+    PlantUML corroborate the agent-consumption-recipe candidate
+    (since built: docs/agents.md);
     Mermaid support would be a sibling stack (parser, corpus,
     calibration, golden) under the same Arc E bar — recorded, not
     queued.

@@ -36,9 +36,11 @@ evidence), [where the value lands in the SDLC](docs/value-in-the-sdlc.md)
 (a value-stream assessment across the SAFe Continuous Delivery Pipeline),
 [setup & CI integration](docs/setup-and-ci.md) (pipelines, ratchet,
 Sonar, badge), [understanding findings & scores](docs/findings-and-scores.md)
-(for report readers and diagram authors), and
+(for report readers and diagram authors),
 [writing rules](docs/writing-rules.md) (a step-by-step programming guide with
-an end-to-end example, including how the executable Gherkin spec works).
+an end-to-end example, including how the executable Gherkin spec works), and
+[using pumllint from a coding agent](docs/agents.md) (the score → repair →
+re-score loop for AI agents implementing from diagrams).
 
 ## Maturity scoring
 

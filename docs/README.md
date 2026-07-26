@@ -10,6 +10,7 @@ one that matches why you are here:
 | A DevOps / platform engineer | How to install it and wire it into the pipeline | [Setup and CI integration](setup-and-ci.md) |
 | An architect reading the reports, or a modeller whose diagrams get checked | What the findings and maturity levels mean, and how to act on them | [Understanding findings and scores](findings-and-scores.md) |
 | A developer extending the linter | How to specify, implement, and test a new rule | [Writing rules](writing-rules.md) |
+| A coding agent implementing from diagrams — or the person wiring one up | The score → repair → re-score loop to run before generating code | [Using pumllint from a coding agent](agents.md) |
 
 The management shelf is three documents: the *case* (what the tool is, what
 it costs, what the evidence supports), the *SDLC assessment* (where the
