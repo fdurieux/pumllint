@@ -156,23 +156,33 @@ executed correctness, invented logic roughly doubling — is
 oracle-robust, vendor-robust and prompt-robust. That is the case for
 gating your inputs.
 
-Also measured (agent-repair wave, 2026-07-27 — this loop run
-end-to-end *without* an author, the worst case): the result is
-two-sided. Structural repair works — repaired mid-tier diagrams
-regained about half their executed deficit, and diagrams with purely
-structural damage recovered to full pass-rates. Inventing the missing
-decisions instead of asking is **net-negative**: below-cliff diagrams
-repaired by invention executed worse than the unrepaired originals,
-and every one of them still passed the maturity gate. Which is the
-final honesty note: the gate is an evidence-backed *input filter* —
-it verifies that the diagram states its decisions, and cannot verify
-that the stated decisions are the author's. Step 3's "ask" is the
-measured load-bearing move of this recipe.
+Also measured (agent-repair waves, 2026-07-27 — this loop run
+end-to-end in *both* directions): the two arms differ only in where
+content-bearing decisions came from, and the difference is the
+finding. **Without an author** (decisions invented), below-cliff
+diagrams repaired to gate-passing executed *worse* than the unrepaired
+originals (−6 pp pooled). **With the author answering** (step 3
+followed as written), the same loop recovered the cliff: below-cliff
+diagrams executed at 0.857 versus 0.642 untouched, and mid-tier
+repaired diagrams reached pristine-level pass-rates. Asking versus
+inventing is worth ~27 pp of executed correctness below the cliff —
+step 3's "ask" is the measured load-bearing move of this recipe, not a
+courtesy. Two caveats travel with that: even with an author on call,
+the measured repairer still guessed low-stakes details instead of
+asking (insist on asking in your instructions — hence the wording of
+the drop-in block), and one authored answer about retry behavior
+became an infinite loop in generated code — repair changes what you
+must review, it does not remove review.
 
-Not measured: the with-author loop — this recipe followed as written,
-with a human supplying the content-bearing decisions in step 3. The
-lab ran the author-less worst case; the with-author case is the
-recipe's intended use.
+And the gate-scope honesty note, measured in both arms: every repaired
+diagram passed the maturity gate regardless of whether its content was
+authored or invented. The gate is an evidence-backed *input filter* —
+it verifies that the diagram states its decisions; it cannot verify
+that the stated decisions are the author's.
+
+Not measured: a human author (the lab's author was an LLM holding the
+intended design, under a disclosed leakage audit); repair models from
+another vendor; repair-run variance (one repair per diagram).
 
 Related reading: [understanding findings and
 scores](findings-and-scores.md) (what each finding means),

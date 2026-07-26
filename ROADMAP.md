@@ -169,6 +169,18 @@ three items — full write-up in EVIDENCE.md §Deepening:
   (X-R4): the gate is an input filter, never a content certifier. The
   recipe's "ask, never invent" covenant is now measured, and
   docs/agents.md §What-is-measured carries the two-sided result.
+  **With-author arm** *(same day, $5.73)*: the intended-use loop —
+  firewalled LLM author (pristine + questions only), tagged Q&A,
+  leakage audit (2/255 answers flagged, disclosed) — **recovers the
+  cliff**: repaired-L1 0.857 (vs 0.583 author-less, 0.642 untouched;
+  X-A2), repaired-L2 0.957 ≈ pristine 0.949 (X-A5); the ceiling below
+  pristine held (X-A3, mechanism honestly revised: dominated by one
+  blocking-loop artifact, a new failure mode); X-A1/X-A4 failed
+  informatively (deep rebuilds cap at L3 on the DIM-CMP gate while
+  executing at 0.75–1.0 — score conservative, execution led; invention
+  halved but not eliminated). The two arms isolate the author as the
+  causal ingredient: asking vs inventing ≈ 27 pp executed below the
+  cliff.
 - [x] **Cross-vendor evidence wave** *(2026-07-26, $8.66 — run the day
   the key arrived)* — `gemini-3.1-pro-preview` as generator and as judge
   (Google had retired the stable 2.5-pro for new API keys; the preview
