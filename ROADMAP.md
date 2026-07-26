@@ -288,6 +288,44 @@ actually becomes a recurring pipeline rather than occasional sessions:
     plugin). Split only if the harness itself gains a concrete external
     user.
 
+- **Adjacent verifier categories (2026-07-26): watch, don't build.**
+  The tooling-landscape research (docs/sdlc-tooling-landscape.md — a
+  verified fan-out research pass over DORA 2018/2024/2025, the 2025 AI
+  Capabilities Model, the 2026 ROI report, SAFe's CDP and the oracle
+  literature) positioned this project's category — deterministic
+  verifiers for AI-read/AI-written artifacts — as the delivery
+  pipeline's one under-built layer, now externally corroborated: DORA
+  2026 names the "verification tax" as "the most immediate barrier to
+  ROI", lists "guardrails" among its five systemic keys of adoption,
+  and its named mitigations are literally pre-commit hooks paired with
+  static analysis. Five adjacent oracle gaps were evaluated. Decision:
+  **none is queued** — the Arc E bar applies (build only for a concrete
+  user whose need the current tool cannot meet). Recorded so the
+  evaluation isn't re-derived:
+  - *Diagram↔code conformance* — nearest by asset (the parsed model),
+    farthest by scope: requires parsing implementation languages,
+    straining the zero-dependency promise. Pull looks like: a user
+    asking to gate PRs on model↔code drift.
+  - *Oracle quality for AI-generated tests* — strongest external
+    evidence (HumanEval+: weak suites overstate AI-code correctness by
+    up to 19.3–28.9%), weakest asset fit: nothing here parses test
+    suites; this would be a sibling tool, not a rule pack.
+  - *Spec/acceptance-criteria linting* — the architecture transfers
+    (text artifact → parser → rules → score) but grammar, corpus, and
+    calibration start from zero. Pull: a team feeding stories to AI
+    asks for a floor.
+  - *Prompt/agent-config linting* — the artifact class is forming
+    (DORA: 21% of practitioners already store prompts in version
+    control) but no convention exists to lint against; any rules would
+    be dormant-by-default (GEN006/GEN007 pattern). Earliest, least
+    defined.
+  - *AI-context/documentation quality* — the bounded version (the
+    model set as AI context) is closest to the existing XD family; the
+    unbounded version ("all docs") is out of scope by construction.
+  - Re-litigate on: concrete pull, a DORA result tying instability
+    moderation to verification-capability strength, or outcome-grade
+    oracle evidence for non-code artifacts.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -306,4 +344,7 @@ actually becomes a recurring pipeline rather than occasional sessions:
   Arc F's AI-authored-rules safeguards (build when rule authoring becomes
   a recurring pipeline). Auto-improvement is a settled question (see
   *Settled questions*): measurement and evidence-dossier surfaces on
-  demand, never an unattended promote-on-delta loop.
+  demand, never an unattended promote-on-delta loop. The adjacent
+  verifier categories from the tooling-landscape research
+  (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
+  build (see *Settled questions*).
