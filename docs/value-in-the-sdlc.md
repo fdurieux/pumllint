@@ -15,9 +15,11 @@ mapped to the four aspects of the
 tags, in decreasing order of strength:
 
 - **[measured]** — backed by controlled experiments
-  ([EVIDENCE.md](../EVIDENCE.md)): over 300 runs in which AI models wrote
-  code from diagrams of varying quality and independent AI judges scored
-  the result, across three business scenarios.
+  ([EVIDENCE.md](../EVIDENCE.md)): over 500 runs in which AI models wrote
+  code from diagrams of varying quality, scored two independent ways —
+  by AI judges, and by **actually running the generated code** against
+  behavioural tests that were written down and locked before any result
+  was seen — across three business scenarios.
 - **[mechanism]** — a concrete causal chain exists, but it has not been
   measured inside an organisation. The [pilot plan](#pilot-turning-mechanism-into-your-numbers)
   is how these become your own numbers.
@@ -86,7 +88,7 @@ The asymmetry is deliberate honesty: pumllint is an upstream instrument.
 Its downstream value is carried by the diagrams it disciplines, not by
 anything it does downstream itself.
 
-**The AI evidence in three sentences.** In over 300 measured runs in
+**The AI evidence, briefly.** In over 500 measured runs in
 which AI models wrote code from diagrams, higher-maturity diagrams
 produced measurably more faithful code — a solid statistical link
 (correlation ≈ 0.65–0.70 when comparing diagrams of similar complexity,
@@ -94,9 +96,14 @@ produced measurably more faithful code — a solid statistical link
 generators and two independent AI judges. Below Level 2 the relationship
 is a cliff, not a slope: faithfulness drops by roughly a third, and
 *invented* behaviour — business logic the diagram never specified —
-roughly doubles; the drop is steeper with cheaper AI models. A
-minimum-level gate in the pipeline is the demonstrated countermeasure: it
-keeps exactly those diagrams away from AI-assisted work. [measured]
+roughly doubles; the drop is steeper with cheaper AI models. The cliff is
+not an artifact of AI judges either: when the generated code was actually
+*run* against pre-written behavioural tests, diagrams below Level 2
+failed roughly one intended behaviour in three, versus about one in ten
+above — and better prompting of the AI rescued moderately untidy diagrams
+but never the below-cliff ones. A minimum-level gate in the pipeline is
+the demonstrated countermeasure: it keeps exactly those diagrams away
+from AI-assisted work. [measured]
 
 **Cost.** Free and open source, with nothing to operate: no server, no
 licence fee, no new system to run. Switching it on is a small
@@ -268,7 +275,7 @@ are about to stop being decoration at both ends of the pipeline.
 
 **1. Models as AI input — the measured case.** When a diagram is handed to
 an AI coding agent as a specification, its maturity measurably drives the
-outcome. Across more than 300 generation runs: fidelity of the generated
+outcome. Across more than 500 generation runs: fidelity of the generated
 code correlates with the maturity composite at r ≈ 0.4–0.5 raw, and at
 **r ≈ 0.65–0.70** per diagram once semantic difficulty (the guards and
 failure paths a diagram demands) is held constant — stable across two
@@ -284,6 +291,23 @@ pipeline. One boundary kept deliberately honest: Level 5 is defined as
 generation* — never "guaranteed generation-ready", because a sequence
 diagram underdetermines an implementation no matter how clean it is.
 [measured] ([EVIDENCE.md](../EVIDENCE.md))
+
+The same relationship holds when opinion is taken out of the measurement.
+In a follow-up wave the generated code was **executed** against
+hand-written behavioural tests encoding each diagram's intended behaviour
+— tests written down and locked before any result was seen. Below Level 2
+roughly one intended behaviour in three failed when the code ran, versus
+about one in ten above; the gap reproduced in every measurement round
+(16–25 percentage points across five rounds) and across three different
+ways of prompting the generator. Two further findings sharpen the case.
+First, **prompt engineering is not a substitute for diagram quality**:
+pinning a stricter generation contract lifted moderately degraded
+diagrams almost to pristine pass-rates but left below-cliff diagrams far
+behind — no prompt can restore decision rules and failure paths the
+diagram never specified. Second, the AI judges' scores and the execution
+results agree on the overall maturity relationship but only weakly on
+individual runs — so this document never merges the two into one number,
+and neither should any evaluation you run. [measured]
 
 **2. Models as AI output — the verifier.** AI assistants produce plausible
 PlantUML at near-zero cost. That inverts the economics: generation stops
@@ -309,11 +333,16 @@ corpus does not merely fail to help an LLM; it actively misleads it. This
 is engineering judgment, not measurement — the one AI claim here that is.
 [hypothesis]
 
-One methodological export worth more than the tool itself: the experiments
-found that same-model self-judging inflated fidelity scores by roughly 15
-points, so every number above comes from an independent judge model. If
-your organisation is evaluating AI tooling anywhere, that finding —
-*insist on independent judging* — travels. [measured]
+Two methodological exports worth more than the tool itself. First, the
+experiments found that same-model self-judging inflated fidelity scores
+by roughly 15 points, so every number above comes from an independent
+judge model. Second, an AI judge's *opinion* of code turned out not to be
+a substitute for *running* it: judged faithfulness and executed test
+results agreed on the overall trend but only weakly on individual pieces
+of code (correlation ≈ 0.25). If your organisation is evaluating AI
+tooling anywhere, both findings travel: *insist on independent judging,
+and prefer execution over opinion wherever behaviour can be executed.*
+[measured]
 
 ### Costs, frictions, and how they are contained
 
