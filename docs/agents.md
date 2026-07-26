@@ -78,9 +78,15 @@ itself already determines the answer; where naming or intent is needed
 The dividing line is the same covenant the auto-fixer follows: *the
 linter tells you what, but will not guess which* — and neither should
 you. A guard you invent inside the diagram is worse than one invented in
-code, because it now looks specified. Silent fabrication is precisely
-the failure mode the measured cliff quantifies (below-cliff diagrams
-roughly double the generator's invented business logic).
+code, because it now looks specified — and this is measured, not
+rhetoric: in the agent-repair wave ([EVIDENCE.md](../EVIDENCE.md)
+§Agent-repair), an agent that repaired below-cliff diagrams by
+inventing the missing decisions produced code that executed *worse*
+than code generated from the unrepaired diagrams (−6 pp pooled; one
+invented guard cost a single diagram 53 pp of executed pass-rate),
+while the same repair loop on *structural* damage recovered up to full
+pass-rates. Asking is not the polite option; it is the only one that
+works.
 
 ### 4. Never suppress your way through the gate
 
@@ -150,11 +156,23 @@ executed correctness, invented logic roughly doubling — is
 oracle-robust, vendor-robust and prompt-robust. That is the case for
 gating your inputs.
 
-Not measured: that an agent following this recipe end-to-end produces
-better code than one that does not. The recipe operationalizes a
-measured *input-side* effect; the interventional claim (repair per the
-gap report → outcomes improve) is the mechanism the evidence points at,
-stated here as exactly that — a mechanism, not a measured result.
+Also measured (agent-repair wave, 2026-07-27 — this loop run
+end-to-end *without* an author, the worst case): the result is
+two-sided. Structural repair works — repaired mid-tier diagrams
+regained about half their executed deficit, and diagrams with purely
+structural damage recovered to full pass-rates. Inventing the missing
+decisions instead of asking is **net-negative**: below-cliff diagrams
+repaired by invention executed worse than the unrepaired originals,
+and every one of them still passed the maturity gate. Which is the
+final honesty note: the gate is an evidence-backed *input filter* —
+it verifies that the diagram states its decisions, and cannot verify
+that the stated decisions are the author's. Step 3's "ask" is the
+measured load-bearing move of this recipe.
+
+Not measured: the with-author loop — this recipe followed as written,
+with a human supplying the content-bearing decisions in step 3. The
+lab ran the author-less worst case; the with-author case is the
+recipe's intended use.
 
 Related reading: [understanding findings and
 scores](findings-and-scores.md) (what each finding means),

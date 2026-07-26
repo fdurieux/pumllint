@@ -155,6 +155,20 @@ three items — full write-up in EVIDENCE.md §Deepening:
   is not a per-run proxy for executed correctness (r ≈ 0.25) — so the two
   oracles are quoted separately, never merged. Fixed-prompt limitation
   resolved by XB.
+- [x] **Agent-repair evidence wave** *(2026-07-27, $5.95)* — the
+  interventional test of the docs/agents.md loop, run author-less (the
+  worst case), pre-registered as X-R1..X-R4 with a pre-committed
+  interpretation matrix. Repair = sonnet-5 from the gap report alone
+  (≤ 2 passes, `pumllint fix` first, invented decisions logged);
+  generation under the exact stored wave-main2 config; frozen suites.
+  Results (EVIDENCE.md §Agent-repair): **structural repair recovers**
+  (repaired-L2 +10 pp of a 20.8 pp deficit; structural mutants to full
+  pass) but **invention is net-negative below the cliff** (repaired-L1
+  0.583 vs 0.642 unrepaired — X-R3a failed in the informative
+  direction) — and every repaired diagram still passes the gate
+  (X-R4): the gate is an input filter, never a content certifier. The
+  recipe's "ask, never invent" covenant is now measured, and
+  docs/agents.md §What-is-measured carries the two-sided result.
 - [x] **Cross-vendor evidence wave** *(2026-07-26, $8.66 — run the day
   the key arrived)* — `gemini-3.1-pro-preview` as generator and as judge
   (Google had retired the stable 2.5-pro for new API keys; the preview
@@ -375,7 +389,8 @@ actually becomes a recurring pipeline rather than occasional sessions:
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
 - Recommended next: **Arcs A–D are complete** — including the
-  execution-oracle and cross-vendor waves (2026-07-26) — and the report
+  execution-oracle and cross-vendor waves (2026-07-26) and the
+  agent-repair wave (2026-07-27) — and the report
   shapes are schema-pinned (0.18.0). No committed follow-ups remain;
   everything is strictly demand-driven: Arc E's LSP server and SonarQube
   plugin (wait for pull — see the re-evaluation notes on each item),
