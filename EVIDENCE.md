@@ -423,6 +423,25 @@ validity. Execution pass-rates are suite-relative (three families, 12
 hand-written scenarios). Quote rankings, gaps and correlations; never
 absolute numbers, and never one oracle as a stand-in for the other.
 
+External sensitivity check (added 2026-07-26): Anthropic's measurement
+of infrastructure noise in agentic coding evals reports that harness
+resourcing alone swings benchmark scores by ~6 percentage points
+(Terminal-Bench 2.0, p < 0.01 —
+<https://www.anthropic.com/engineering/infrastructure-noise>). Read that
+band as an upper-bound analogy, not a measurement of this harness: the
+setup here is single-shot generation plus sandboxed acceptance
+execution, not a long-running agentic loop. The cliff clears the band
+three ways. Magnitude: 16–25 pp executed, ~3.5× the reported band.
+Design: comparisons are paired — pristine and degraded variants run
+under the identical harness configuration within each wave, so shared
+infrastructure effects difference out of the gap even where they would
+shift absolute pass-rates. Replication: the gap reproduced across six
+waves, three prompt styles, two oracles, three generators and two
+vendors — configurations whose incidental infrastructure differed.
+Absolute pass-rates remain infra- and suite-relative regardless, which
+is one more reason for the standing rule: quote the gap, never the
+levels.
+
 ## What the product may claim
 
 Supported by this data (updated after the deepening):
