@@ -285,6 +285,49 @@ Absolute fidelity and pass-rate numbers are not comparable across
 vendors; only signs, gaps and correlations are claimed. No bar is set on
 per-run judged-vs-executed agreement (X3 precedent: expected weak).
 
+## Cross-vendor wave — results (2026-07-26, $8.66)
+
+Generator wave $6.20 (167/168 runs — one sonnet judge response
+unterminated, logged and excluded), rejudge $2.46 (93/93).
+
+**XV2 — confirmed, and it is the cross-vendor headline.** On the
+execution oracle — the leg with no LLM of any vendor in the scoring
+loop — the Gemini-generated artifacts show the same cliff as every
+Claude wave: executed pass-rate 0.643 below composite 40 vs 0.852 above,
+a **20.9 pp gap** (bar ≥ 10; opus pooled was 21.9), per-diagram
+composite↔pass-rate r = 0.354 with the level gradient in the expected
+order (0.932 / 0.963 / 0.699 / 0.643). The below-Level-2 cliff is now
+demonstrated for **three generators across two vendors**, on the oracle
+that measures behavior rather than opinion.
+
+**XV1 — FAILED.** The sonnet-5 judge saw almost none of it: judged
+fidelity is nearly flat across levels (66.7 / 66.9 / 66.5 / 63.4),
+below-vs-above-40 gap **3.2 points** (bar ≥ 8), composite↔fidelity
+r = 0.133. The execution result rules out the charitable reading (a
+generator so strong the cliff vanished — it didn't; the executed cliff
+is fully present). What failed is the *judge on cross-vendor code*:
+per-run judged-fidelity↔executed-pass-rate agreement on the Gemini
+artifacts is **r = 0.002 — zero**. Sonnet judging opus code tracked
+execution weakly (r ≈ 0.25); sonnet judging Gemini code does not track
+it at all. LLM-judged fidelity degrades across the vendor boundary,
+plausibly because the judge's structural rubric is calibrated to the
+generation idiom it knows.
+
+**XV3 — confirmed.** Gemini re-judging main2's stored (opus-written)
+artifacts agrees with sonnet-5 on ranking: between-judge per-run
+r = **0.682** (bar ≥ 0.5; sonnet↔haiku was 0.715), with a large leniency
+offset (means 89.5 vs 70.2, mean |diff| 19.4 — twice haiku's). Under the
+Gemini judge the composite↔fidelity correlation is 0.572 — the maturity
+relationship survives a cross-vendor judge swap.
+
+**The uncomfortable synthesis, stated plainly:** the two judges agree
+with each other (0.682) far better than either agrees with what the code
+actually does when run (0.25 same-vendor, 0.002 cross-vendor).
+**Inter-judge reliability is not validity.** The maturity→outcome claims
+survive because the execution oracle carries them; the judged numbers
+remain useful for ranking and for the invention taxonomy, and are quoted
+strictly as judgments.
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
@@ -359,17 +402,23 @@ partial correlations), a third scenario family (insurance_claim), n = 6 on
 the 18 diagrams shared across identical-config waves, and a second generator
 plus a second judge (haiku-4-5), all reproducing the findings.
 
-Still standing: all models are Claude-family (no cross-vendor generator or
-judge — a **committed follow-up**, see ROADMAP Arc D); the judge rubric,
-while schema-constrained, is still an LLM judgment — absolute fidelity
-numbers are judge-relative (~±10 between judges) and only rankings and
-correlations should be quoted. Resolved 2026-07-26: the fixed-prompt
-limitation — the gradient and cliff now reproduce across three prompt
-styles (legacy, pinned_structured, pinned_minimal). The execution oracle
-removes the judge-only limitation for *behavior* — but its pass-rates are
-suite-relative (three families, 12 hand-written scenarios) and its per-run
-agreement with judged fidelity is weak (r ≈ 0.2–0.4): the oracles are
-complementary, never interchangeable.
+Resolved 2026-07-26: the fixed-prompt limitation (gradient and cliff
+reproduce across three prompt styles) and the Claude-family-only
+limitation (the executed cliff reproduces under a Gemini generator —
+20.9 pp — and the maturity↔fidelity ranking survives a Gemini judge).
+Cross-vendor scope is honest but narrow: one non-Claude model
+(`gemini-3.1-pro-preview`, a preview SKU — Google had retired the stable
+pro model for new API keys at run time), one vendor.
+
+Still standing: the judge rubric is an LLM judgment — absolute fidelity
+is judge-relative (offsets of ~9 points between Claude judges, ~19
+between vendors), and **judged fidelity must never be treated as
+correctness**: its per-run agreement with execution is weak same-vendor
+(r ≈ 0.25) and zero on cross-vendor code (r = 0.002), even though judges
+agree with each other on ranking (0.68–0.72) — reliability without
+validity. Execution pass-rates are suite-relative (three families, 12
+hand-written scenarios). Quote rankings, gaps and correlations; never
+absolute numbers, and never one oracle as a stand-in for the other.
 
 ## What the product may claim
 
@@ -396,6 +445,11 @@ Supported by this data (updated after the deepening):
   lifts moderately degraded diagrams (L2 ≈ pristine under pinning) but
   does not rescue below-cliff diagrams — prompt engineering cannot restore
   guards and failure paths the diagram never specified."*
+- *(2026-07-26, cross-vendor)* — *"The executed cliff is vendor-robust:
+  under a Gemini generator it is 20.9 pp — the same magnitude as under
+  Claude generators (16–25 pp) — so the below-Level-2 gate is not a
+  one-vendor artifact. Three generators, two vendors, one behavioral
+  oracle."*
 - Quote correlations and the cliff, never absolute fidelity values —
   absolute fidelity is judge-relative (two judges differ by ~9 points on
   identical code while agreeing on ranking, r = 0.715). Executed
