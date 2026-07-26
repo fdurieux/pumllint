@@ -1,0 +1,920 @@
+{
+  "wave": "calib",
+  "report": "experiment_results/wave_main2/report.json",
+  "gen_model": "claude-opus-4-8",
+  "judge_model": "claude-sonnet-5",
+  "suite_version": "phase-a-frozen",
+  "rows": [
+    {
+      "label": "L2_credit_intake_good",
+      "run": 1,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal(applicant_name=1, approved_amount=10000, risk_score=850) | proposal(applicant_name=1, approved_amount=10000, risk_score=850) | {'applicant_name': 1, 'approved_amount': 10000, 'risk_score': 850}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 1,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "rejectionletter(applicant_name=1, risk_score=5, reason='risk score below acceptable threshold.') | rejectionletter(applicant_name=1, risk_score=5, reason='risk score below acceptable threshold.') | {'applicant_name': 1, 'risk_score': 5, 'reason': 'risk score below acceptable threshold.'}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 1,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal(applicant_name=1, approved_amount=10000, risk_score=700) | proposal(applicant_name=1, approved_amount=10000, risk_score=700) | {'applicant_name': 1, 'approved_amount': 10000, 'risk_score': 700}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 2,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 72,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "{'type': 'proposal', 'risk_score': 850, 'message': 'we are pleased to offer you a credit proposal.'} | {'type': 'proposal', 'risk_score': 850, 'message': 'we are pleased to offer you a credit proposal.'} | type=proposal risk_score=850 message=we are pleased to offer you a credit proposal.",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 2,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 72,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "{'type': 'rejection', 'risk_score': 5, 'message': 'we regret to inform you that your application was rejected.'} | {'type': 'rejection', 'risk_score': 5, 'message': 'we regret to inform you that your application was rejected.'} | type=rejection risk_score=5 message=we regret to inform you that your ",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 2,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 72,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "{'type': 'proposal', 'risk_score': 700, 'message': 'we are pleased to offer you a credit proposal.'} | {'type': 'proposal', 'risk_score': 700, 'message': 'we are pleased to offer you a credit proposal.'} | type=proposal risk_score=700 message=we are pleased to offer you a credit proposal.",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 3,
+      "scenario": "decision_at_high_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal(applicant_name=1, approved_amount=10000, interest_rate=10.0) | proposal(applicant_name=1, approved_amount=10000, interest_rate=10.0) | {'applicant_name': 1, 'approved_amount': 10000, 'interest_rate': 10.0}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 3,
+      "scenario": "decision_at_low_score",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal(applicant_name=1, approved_amount=10000, interest_rate=26.9) | proposal(applicant_name=1, approved_amount=10000, interest_rate=26.9) | {'applicant_name': 1, 'approved_amount': 10000, 'interest_rate': 26.9}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L2_credit_intake_good",
+      "run": 3,
+      "scenario": "scores_applicant",
+      "family": "credit_intake",
+      "path": "examples/credit_intake_good.puml",
+      "level": 2,
+      "composite": 56.2,
+      "judge_fidelity": 58,
+      "hard_demand": 1,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "FrontOffice.submit_credit_application",
+      "detail": "proposal(applicant_name=1, approved_amount=10000, interest_rate=13.0) | proposal(applicant_name=1, approved_amount=10000, interest_rate=13.0) | {'applicant_name': 1, 'approved_amount': 10000, 'interest_rate': 13.0}",
+      "configs_applied": {
+        "engine_score": [
+          "CreditEngine.score_applicant"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "ClaimService.intake_claim",
+      "detail": "proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | {'_fields': {'status': 'stored', 'claim_record': 'claimrecord', 'id': 'clm-1'}, '_truthy': true}",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 1,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "coveragelimitexceedederror: claim amount 50000 exceeds coverage limit 10000 for policy 'pol-1'",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 1,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "policylapsederror: policylapsederror: policy pol-1 lapsed",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 1,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "riskserviceerror: riskserviceerror: risk service unavailable",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 1,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 78,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "storageerror: storageerror: could not store claim clm-1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "ClaimService.intake",
+      "detail": "proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | {'_fields': {'status': 'stored', 'claim_record': 'claimrecord', 'id': 'clm-1'}, '_truthy': true}",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 2,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "storageerror: claim amount 50000 exceeds coverage limit 10000",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 2,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "policylapsederror: policylapsederror: policy pol-1 lapsed",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 2,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "riskserviceerror: riskserviceerror: risk service unavailable",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 2,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 66,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake",
+      "detail": "storageerror: storageerror: could not store claim clm-1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "ClaimService.intake_claim",
+      "detail": "proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | proteanobj(status='stored', claim_record='claimrecord', id='clm-1') | {'_fields': {'status': 'stored', 'claim_record': 'claimrecord', 'id': 'clm-1'}, '_truthy': true}",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 3,
+      "scenario": "over_coverage_limit",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "storageerror: claim amount 50000 exceeds coverage limit 10000",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 3,
+      "scenario": "policy_lapsed",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "policylapsederror: policylapsederror: policy pol-1 lapsed",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 3,
+      "scenario": "risk_service_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "riskserviceerror: riskserviceerror: risk service unavailable",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "run": 3,
+      "scenario": "storage_error",
+      "family": "insurance_claim",
+      "path": "examples/insurance_claim_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 68,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "ClaimService.intake_claim",
+      "detail": "storageerror: storageerror: could not store claim clm-1",
+      "configs_applied": {
+        "registry_find_policy": [
+          "PolicyRegistry.find_policy"
+        ],
+        "fraud_assess_risk": [
+          "FraudChecker.assess_risk"
+        ],
+        "db_store_claim": [
+          "ClaimDB.store_claim"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 1,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 1,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 1,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 1,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 82,
+      "hard_demand": 4,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 2,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 2,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 2,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 2,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: order ord-1 has non-positive total",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 3,
+      "scenario": "happy_path",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "success",
+      "entry": "OrderService.process_payment",
+      "detail": "proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | proteanobj(success=true, status='approved', receipt='receipt', transaction_id='txn-1', amount=100) | {'_fields': {'success': true, 'status': 'approved', 'receipt': 'receipt', 'transaction_id': 'txn-1",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 3,
+      "scenario": "order_not_found",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "ordernotfounderror: notfounderror: order ord-1 not found",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 3,
+      "scenario": "payment_error",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "paymenterror: paymenterror: charge declined by gateway",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "run": 3,
+      "scenario": "zero_total",
+      "family": "order_payment",
+      "path": "examples/order_payment_codegen_good.puml",
+      "level": 5,
+      "composite": 100.0,
+      "judge_fidelity": 74,
+      "hard_demand": 6,
+      "stage": "pass",
+      "passed": true,
+      "outcome_class": "failure",
+      "entry": "OrderService.process_payment",
+      "detail": "none | none",
+      "configs_applied": {
+        "db_find": [
+          "OrderDB.find_order_by_id"
+        ],
+        "gateway_charge": [
+          "PaymentGateway.charge"
+        ]
+      }
+    }
+  ],
+  "per_diagram": [
+    {
+      "label": "L2_credit_intake_good",
+      "level": 2,
+      "composite": 56.2,
+      "family": "credit_intake",
+      "artifacts": 3,
+      "scenario_runs": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "L5_insurance_claim_good",
+      "level": 5,
+      "composite": 100.0,
+      "family": "insurance_claim",
+      "artifacts": 3,
+      "scenario_runs": 15,
+      "pass_rate": 1.0
+    },
+    {
+      "label": "L5_order_payment_codegen_good",
+      "level": 5,
+      "composite": 100.0,
+      "family": "order_payment",
+      "artifacts": 3,
+      "scenario_runs": 12,
+      "pass_rate": 1.0
+    }
+  ]
+}

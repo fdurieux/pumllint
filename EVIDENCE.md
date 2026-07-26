@@ -77,6 +77,76 @@ Analysis: `tools/analyze_evidence.py` → `experiment_results/analysis.json`;
 wave reports under `experiment_results/wave_*/report.json` (the original
 `experiment_results/report.json` is unchanged).
 
+## Execution oracle — pre-registered expectations (written 2026-07-26, before any scored run)
+
+Everything above measures fidelity through an LLM judge. This wave adds the
+harder oracle the code-eval literature trusts: **execution against
+hand-written acceptance tests**. One suite per scenario family, derived from
+the pristine diagram — degraded variants describe the *same intended
+system* (degradation removes information; it does not change what the
+system is supposed to do), so one suite scores code generated from every
+variant of its family. The hypothesis: code generated from degraded
+diagrams fails more of the intended behavior *when actually run*, because
+where the diagram went vague the generator guessed, and wrong guesses
+produce observably wrong outcomes.
+
+**Setup** (normative detail in `tools/acceptance/runner_child.py`'s
+docstring and `tools/acceptance/suites.py`): 12 scenarios —
+order_payment 4 (happy, not-found, payment-error-with-compensation,
+zero-total), insurance_claim 5 (happy, policy-lapsed, risk-service-error,
+over-coverage-limit, storage-error), credit_intake 3 (flow-shape only: the
+accept/reject threshold is unspecified even in the pristine diagram, so
+branch direction cannot be asserted). Each (artifact, scenario) runs in a
+sandboxed child process (`python -I`, sockets disabled, stdin closed, 15 s
+timeout). Guard-else branches the diagram leaves underspecified
+(zero_total, over_coverage_limit) assert only the interaction contract
+(charge/store must not happen) with the outcome unconstrained. Synthetic
+and wild diagrams have no ground truth and are excluded. **Unrunnable is a
+failed scenario** — but every failure carries a stage
+(import_error / no_entry / construct_error / crash / timeout /
+wrong_outcome / missing_call / forbidden_call), and two metrics are
+reported: **full pass-rate** (primary — all stages count) and
+**semantic-only pass-rate** (secondary — conditioned on the adapter stages
+succeeding), so adapter artifacts stay visible instead of hiding in the
+signal.
+
+**Calibration protocol (executed before this freeze):** the adapter and
+suites were developed against the nine pristine-example artifacts only
+(`L5_order_payment_codegen_good`, `L5_insurance_claim_good`,
+`L2_credit_intake_good` × 3 runs, wave main2). Three adapter bugs were
+found and fixed (sys.modules registration for dataclass artifacts;
+score-ranked constructor matching so `order_db` resolves to `OrderDB`, not
+`Order`; builtin exception type names excluded from outcome
+classification) and two suite arg bugs (protean customer objects; the
+over-limit scenario overriding every amount carrier). Final calibration:
+**36/36** (`execution_results/calib/execution.json`). No degraded
+artifact was executed before this freeze.
+
+**Expectations:**
+
+- **X1 (gradient):** per-run execution pass-rate increases with maturity
+  level within each realistic family; composite↔pass-rate correlation is
+  positive (pooled and per-diagram).
+- **X2 (cliff):** below composite ~40 the mean pass-rate is at least
+  10 pp lower than above it — the judged-fidelity cliff reproduces under
+  execution.
+- **X3 (judge audit):** per-run judged fidelity correlates with executed
+  pass-rate at r ≥ 0.4 over the family artifacts (wave main2). If this
+  fails, the prior waves' fidelity signal is in question and the write-up
+  must say so.
+- **X4 (adapter honesty):** X1's sign holds on the semantic-only pass-rate
+  as well — the gradient must not be an artifact of runnability stages.
+- **XB (Phase B, prompt variation):** with the entry point pinned
+  (`handle(request)`) and under both prompt variants (V1 keeps the
+  class-per-participant scaffold, V2 drops it), X1's sign reproduces.
+  Pinning is scaffolding, so the good–bad gap may compress — the
+  pre-registered claim is the sign, not the magnitude.
+
+Absolute pass-rates are **suite-relative** (the analogue of judge-relative
+fidelity): quote gradients and correlations, never bare percentages, and
+never compare across families. Phase A costs $0 (stored artifacts only);
+Phase B regenerates family diagrams with the pinned prompt (~$8/variant).
+
 ## Method
 
 - **Corpus:** 25 sequence diagrams spanning maturity levels L1–L5 under the
