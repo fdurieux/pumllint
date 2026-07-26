@@ -2,6 +2,7 @@
 
 *Audience: anyone — no software, statistics or AI background assumed.
 This page walks through what the [v0.22.0 "evidence release"](https://github.com/fdurieux/pumllint/releases/tag/v0.22.0)
+and the [v0.23.0 "agent release"](https://github.com/fdurieux/pumllint/releases/tag/v0.23.0)
 actually established, starting from zero and defining every term as it
 appears. The rigorous record with all the numbers is
 [EVIDENCE.md](../EVIDENCE.md); the business case built on it is
@@ -62,7 +63,8 @@ later.
 
 **Wave.** One batch of measurements: take ~28 diagrams of deliberately
 mixed quality, generate code from each one three times, measure the
-results. Six waves have now been run.
+results. Eight waves have now been run (the last two are Part 4's
+repair experiment).
 
 **Pre-registration.** Before running an experiment, you write down — and
 permanently record — exactly what you predict and exactly what number
@@ -239,15 +241,113 @@ worth more than the tool itself.
 
 ---
 
-## Part 4 — The impact, in three lines
+## Part 4 — Release 0.23.0: can an AI *repair* a bad diagram?
+
+The 0.22.0 evidence ended on a hard fact: below the cliff, better
+prompting cannot compensate — no instruction can restore a business
+rule the diagram never contained. But pumllint doesn't just grade a
+diagram; it produces a **gap report** — a to-do list of exactly what is
+missing, item by item. So the obvious next question: if an AI assistant
+*follows that to-do list and repairs the diagram first*, does the code
+get better? Release 0.23.0 ships that experiment — run twice, once for
+each of the two ways a missing decision can be filled in.
+
+**The two arms.** (An "arm" is one variant of an experiment, run so the
+variants can be compared.) Both arms took the sixteen worst diagrams
+from the earlier waves, gave the same AI assistant the diagram plus
+pumllint's to-do list, and let it repair. Then the same code-writing AI
+as before implemented the repaired diagrams, and the code was graded by
+*actually running it* against the same locked behavioural tests. The
+only difference between the arms:
+
+- **Arm one — repair by guessing.** Nobody to ask. Where a business
+  decision was missing (which condition? what happens on failure?), the
+  repairer chose the most plausible answer itself.
+- **Arm two — repair by asking.** The repairer could put questions to
+  the diagram's *author* — played, in the lab, by a separate AI that
+  had been given the original intended design, under strict rules:
+  answer only what is asked, in at most 40 words, never show the design
+  itself. Every question and answer was recorded, and audited
+  afterwards for accidental give-aways.
+
+### Verdict — guessing made things worse; asking recovered almost everything
+
+**Arm one (guessing), predicted:** repairs should help at least a
+little, even below the cliff. **Happened: the opposite.** Repaired
+below-cliff diagrams produced code that failed *more* behavioural tests
+than code from the unrepaired originals — 58% passing versus 64%. The
+starkest case: a nearly-good diagram whose one real flaw was a single
+vague decision label. The repairer replaced it with a confident,
+plausible — and wrong — rule, and that diagram's pass rate fell from
+93% to 40%. The explanation is uncomfortable and important: the
+code-writing AI treats whatever the diagram says as the truth. A wrong
+rule written into a diagram *looks exactly like a right one*, and it
+overrides the sensible guess the code-writer would otherwise have made.
+(Purely *structural* damage — an undeclared component, a malformed
+block — was repaired reliably in this same arm, several diagrams
+jumping to 100%. Structure can be repaired from the to-do list;
+*content* cannot be safely guessed.)
+
+**Arm two (asking), predicted and happened:** with the author
+answering, the same below-cliff diagrams produced code passing **86%**
+of intended behaviours — versus 64% untouched and 58% under guessing.
+The moderately-flawed diagrams did even better: statistically
+indistinguishable from perfect ones (96% vs 95%). Since the two arms
+differed *only* in where missing decisions came from, the comparison
+isolates one ingredient: **asking instead of guessing was worth about
+27 percentage points of working behaviour.** That is the release's
+headline number.
+
+### The gate's honest limit — now measured, not just stated
+
+One more result, and it is deliberately uncomfortable: **every repaired
+diagram passed pumllint's quality gate — including the ones repaired
+with wrong guesses.** That is not a newly discovered flaw; it is the
+tool's known boundary, now demonstrated by measurement. The checker
+verifies that a diagram *states* its decisions; it cannot verify the
+decisions are *true*. Automated checking filters out missing and vague
+content — catching what silently ruins AI-generated code — but only the
+author, or actually running the result, can vouch for the content
+itself. This is exactly why the product's claim language has always
+said "method-convention complete", never "guaranteed correct".
+
+### The honesty notes
+
+- Predictions failed here too, on the record: the repairs did not reach
+  the top maturity level as predicted (three deeply-damaged diagrams
+  stalled one level lower — while their *code* nonetheless worked; the
+  score errs conservative by design). And even with an author on call,
+  the repairer still guessed small details 45 times instead of asking —
+  "ask first" instructions cut guessing in half, not to zero.
+- A new failure mode appeared: one author answer about retry behaviour
+  became code that retries *forever* — it hung until the sealed sandbox
+  killed it. Moral: repair changes what a reviewer must look at; it
+  does not remove the reviewer.
+- The "author" was an AI stand-in reading the true design, not a
+  human — and the audit flagged 2 of its 255 answers for containing
+  diagram notation they shouldn't have. Both facts are disclosed in the
+  record rather than smoothed over.
+- Cost of both arms together: about **$12** in AI usage fees.
+
+For teams pointing AI assistants at diagrams, the practical rule this
+measures is short: *let the AI repair structure from the gap report;
+make it ask a human about content.* The step-by-step version lives in
+[Using pumllint from a coding agent](agents.md).
+
+---
+
+## Part 5 — The impact, in four lines
 
 1. **For users of pumllint:** the "block bad diagrams from AI work" gate
    now rests on real executed behaviour, across three AIs and two
    vendors — the strongest evidence available, with the boundaries of
    that evidence stated as carefully as the claims.
-2. **For the project's credibility:** predictions were locked before
-   results, one failed, and the failure is published as prominently as
-   the successes.
-3. **For everyone else:** AI graders agreeing with each other is
+2. **For teams using AI on diagrams:** repair-by-guessing measurably
+   backfires; repair-by-asking recovers the cliff — a ~27-point
+   difference from one habit: the AI asks instead of inventing.
+3. **For the project's credibility:** predictions were locked before
+   results, several failed, and the failures are published as
+   prominently as the successes.
+4. **For everyone else:** AI graders agreeing with each other is
    *reliability*; only matching reality is *validity* — and this program
    measured a case where the first was high and the second was zero.

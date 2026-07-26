@@ -338,7 +338,7 @@ corpus does not merely fail to help an LLM; it actively misleads it. This
 is engineering judgment, not measurement — the one AI claim here that is.
 [hypothesis]
 
-Two methodological exports worth more than the tool itself. First, the
+Three methodological exports worth more than the tool itself. First, the
 experiments found that same-model self-judging inflated fidelity scores
 by roughly 15 points, so every number above comes from an independent
 judge model. Second, an AI judge's *opinion* of code turned out not to be
@@ -347,10 +347,19 @@ results agreed on the overall trend but only weakly on individual pieces
 of code (correlation ≈ 0.25) — and on code written by a *different
 vendor's* model, not at all (≈ 0.0), even while two AI judges agreed
 comfortably with each other (≈ 0.7). Two judges agreeing is
-*reliability*, not *validity*. If your organisation is evaluating AI
-tooling anywhere, both findings travel: *insist on independent judging,
-and prefer execution over opinion wherever behaviour can be executed.*
-[measured]
+*reliability*, not *validity*. Third, from the repair experiment: the
+same AI remediation loop was run both ways on the worst diagrams — a
+repairer that *guessed* the missing decisions made executed results
+worse than leaving the diagrams alone, while the same repairer *asking*
+the design's author recovered them almost entirely. The gap between the
+two habits was about **27 percentage points of executed behaviour**, and
+every repaired diagram passed the quality gate either way — a gate can
+verify that decisions are stated, never that they are right. If your
+organisation is evaluating AI tooling anywhere, all three findings
+travel: *insist on independent judging; prefer execution over opinion
+wherever behaviour can be executed; and split AI remediation by decision
+type — structure to the machine loop, content to the people who own the
+intent.* [measured]
 
 ### Costs, frictions, and how they are contained
 

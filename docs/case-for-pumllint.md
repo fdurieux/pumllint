@@ -83,8 +83,21 @@ code matched the diagram.
   rescued moderately untidy diagrams but **never the below-cliff ones**:
   no prompt can restore decision rules the diagram simply doesn't
   contain.
+- **Repair was tested too — in both directions.** A follow-up experiment
+  had an AI assistant repair the worst diagrams using the tool's own gap
+  report (the "what to fix" list every score comes with). When the
+  assistant **guessed** the missing decisions, the generated code got
+  *worse* than leaving the diagram alone — a wrong rule written into a
+  diagram looks exactly like a right one, and the code generator follows
+  it faithfully. When the assistant could **ask the diagram's author**
+  instead, repaired bad diagrams reached 86% of intended behaviours when
+  run (versus 64% untouched), and mid-grade diagrams became
+  indistinguishable from the best ones. The difference between guessing
+  and asking: about **27 percentage points of working behaviour**.
+  Practical consequence: the gap report tells teams *what* to fix; the
+  decisions themselves must come from people who know the intent.
 
-Two honesty notes, deliberately part of the product's claim language:
+Three honesty notes, deliberately part of the product's claim language:
 
 - These are **correlations under a measured setup**, not guarantees.
   Absolute scores vary by judge (~9-point differences in leniency were
@@ -93,6 +106,11 @@ Two honesty notes, deliberately part of the product's claim language:
   preconditions for faithful generation are met. It is never marketed as
   "guaranteed generation-ready", and Level 5 cannot even be claimed unless
   the AI-readiness checks are actually running.
+- The gate checks that decisions are **stated**, not that they are
+  *right*: in the repair experiment, diagrams repaired with confident
+  wrong guesses still passed it. That boundary was measured on purpose —
+  the gate is an entry filter for AI pipelines; the content stays the
+  author's responsibility.
 
 ## What adoption costs
 
