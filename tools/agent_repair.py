@@ -114,6 +114,23 @@ def parse_repair_output(text: str) -> tuple[str | None, dict]:
     return diagram, log
 
 
+def _repair_call(client, prompt: str, usage: dict):
+    """One repair call; retries transient API errors with backoff."""
+    import time
+    delay = 20.0
+    for attempt in range(3):
+        try:
+            return ce._call(
+                client, REPAIR_MODEL, usage, max_tokens=12000,
+                **ce._thinking(REPAIR_MODEL),
+                messages=[{"role": "user", "content": prompt}])
+        except Exception:
+            if attempt == 2:
+                raise
+            time.sleep(delay)
+            delay *= 2
+
+
 def repair_one(client, unit: dict, usage: dict) -> dict:
     """Fix + <=2 LLM repair passes for one target. Returns the repair record."""
     stem = Path(unit["path"]).stem
@@ -141,13 +158,13 @@ def repair_one(client, unit: dict, usage: dict) -> dict:
                  "score": m["score"], "gapReport": m["gapReport"]}, indent=1),
             diagram=out_path.read_text(encoding="utf-8"),
         )
-        for attempt in (1, 2):                        # 1 mechanical retry max
-            resp = ce._call(
-                client, REPAIR_MODEL, usage, max_tokens=8000,
-                **ce._thinking(REPAIR_MODEL),
-                messages=[{"role": "user", "content": prompt}],
-            )
-            text = next(b.text for b in resp.content if b.type == "text")
+        diagram, log = None, {}
+        for attempt in (1, 2, 3):     # tolerate empty/truncated model output
+            resp = _repair_call(client, prompt, usage)
+            # A max_tokens-exhausted adaptive-thinking response can contain
+            # no text block at all — join() instead of next() so that case
+            # lands in the mechanical retry, not a StopIteration.
+            text = "".join(b.text for b in resp.content if b.type == "text")
             diagram, log = parse_repair_output(text)
             if diagram:
                 break
