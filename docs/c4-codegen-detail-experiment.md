@@ -253,6 +253,139 @@ moderate rungs, does not restore missing content) is expected to
 transfer, not re-tested here. Cross-vendor and human-authored C4 are
 out of scope.
 
-## Results
+## Results (2026-07-27, $4.03 total: calibration $0.22 + wave $2.52 + re-judge $1.29)
 
-*(appended after the wave)*
+**Run notes, recorded before the verdicts:** (1) 15/15 generations
+compiled first-try; every failure at every rung was semantic —
+full = semantic pass-rate throughout. (2) 9/15 first-pass judge calls
+died of token exhaustion (the known adaptive-thinking zero-text-block
+mode: C4 rung specs are far larger than the sequence diagrams the house
+judge budget of 6000 was sized for). Harness repaired
+(`JUDGE_MAX_TOKENS = 16000`, retry-once on parse failure) and the nine
+re-judged against the stored artifacts — no regeneration; generation,
+conformance and execution rows untouched. (3) The `--rejudge` mode and
+the budget constant are post-freeze harness repairs, disclosed here;
+prompts, schema, models and oracles unchanged.
+
+**The ladder, all three oracles** (pooled, n = 3 artifacts × 8
+scenarios per rung; judged numbers are judgments, never merged with
+executed):
+
+| Rung | Executed pass-rate | Edge recall (mech.) | Extra edges | Invented/run (judged) | Fidelity (judged) |
+|---|---|---|---|---|---|
+| R0 bare | 0.417 | 1.00 | 0 | 6.67 | 59.3 |
+| R1 checklist | 0.500 | 1.00 | 0 | 7.00 | 46.3 |
+| R2 components | 0.625 | 1.00 | 1 | 6.67 | 57.3 |
+| R3 dynamics | 0.917 | 1.00 | 0 | 6.00 | 62.0 |
+| R4 companion spec | 0.917 | 1.00 | 0 | 4.00 | 66.3 |
+
+(Judged fidelity is scored against each rung's own richer spec — a
+harder target as the ladder climbs — so it is not comparable across
+rungs; recorded, not interpreted.)
+
+**Verdicts:**
+
+- **EC1 — confirmed, decisively.** Group-edge recall is 1.00 at every
+  rung including R0; one extra cross-group edge in the whole wave (one
+  R2 artifact gave the engine a reverse reference to the api) and one
+  extra class (a `Decision` DTO). Under a conforming prompt, bare
+  structure already secures structural conformance — the ladder's
+  executed value is entirely behavioral.
+- **EC2 — failed as located, direction intact.** Invention falls
+  R0→R4 (6.67 → 4.00) but not monotonically (R1 ticks *up* to 7.00),
+  and the largest drop is **R3→R4 (−2.0)**, not the pre-registered
+  R2→R3 (−0.67). Per the matrix: the invention reduction belongs to
+  the **companion spec**, not the dynamic diagrams. The two oracles
+  split cleanly: dynamics fix executed outcomes; the written contract
+  reduces guessing.
+- **EC3 — half confirmed, and the failed half is the headline.**
+  Monotone ✓; **R3−R2 = +29.2 pp** ✓ (the largest single step —
+  behavioral content arriving); R1−R0 = +8.3 pp < R3−R2 ✓. But
+  **R4−R3 = 0.0 executed** (bar ≥ 10 pp) — failed. Post-hoc mechanism,
+  labeled as such: the suite's thresholds (approve ≥ 700, review band,
+  amount cap) are domain-canonical values, and the generator's priors
+  guessed them: the 700-boundary passed 3/3 from R0 up; one R2 run
+  invented `MAX_AMOUNT = 50000` from the validator description's
+  "product limits" — a *different* rule than R4's 100 000, yet
+  agreeing with the suite on every tested point. The suite measures
+  agreement at tested points, not rule identity — the judge saw what
+  the suite could not.
+- **EC4 — confirmed.** R4 still averages 4.0 judged inventions per run
+  (e.g. a default credit score of 700 *auto-approving* when no score
+  key is recognized; fabricated notification-delivery payloads) and
+  executes at 0.917, not 1.0 (one run notified despite storage failure
+  and mishandled the bureau-failure object). No rung is
+  hallucination-free; the floor at full SDD-grade detail ≈ 4
+  judged inventions/run and ~8 pp executed shortfall on this suite.
+- **EC5 — confirmed in substance.** Every rung file scores **Level 1**
+  under v0.23.0's codegen profile via the zero-modelled-elements cap
+  (element_count 0 throughout). One nuance: R0's unnamed diagram draws
+  GEN002 (composite 98.75 vs 100.0) — the governance rules see the
+  file, so R0 vs R1 is *faintly* visible; R1 through R4 are entirely
+  indistinguishable to the current tool. The pack gap, measured inside
+  this experiment: pumllint currently discriminates none of a ladder
+  whose executed outcomes span 50 pp.
+
+**What failed where (the residual at R3/R4):** the two error-policy
+scenarios. Two runs (one R3, one R4) notified the applicant despite a
+storage failure (forbidden call) and treated the bureau's failure
+object as a score (TypeError surfaced as an unclassified error text) —
+error-path discipline is the last thing to become reliable, echoing
+the with-author arm's residual. The review branch is a pure R3+
+effect: 0/3 at every rung below R3 (the concept does not exist in a
+static C4 model), 3/3 at R3 and R4.
+
+**Read for the user's question — "what detail level does
+near-hallucination-free need?":** *near-hallucination-free is not on
+this menu at any rung* (EC4). What the ladder buys, measured:
+annotations (R1) ≈ +8 pp executed, no invention reduction — they cue
+defensive validation (invalid-zero went 1/3 → 3/3), and their wording
+*steers* invention (the "product limits" description conjured a
+concrete invented cap). Behavioral diagrams (R3) ≈ +29 pp executed —
+presence of flows, branches and failure paths is the single biggest
+lever. The companion contract (R4) bought no executed points *on this
+suite* — because the tested decisions were canonical — but cut judged
+invention by a third; where business rules are idiosyncratic
+(non-canonical thresholds, unusual caps), that written contract is the
+only rung that pins them, and the R2 cap incident shows what happens
+otherwise: a plausible, wrong, *confidently implemented* rule that
+tests at the observed points cannot distinguish.
+
+## Implications for a C4 pack (rule-selection evidence, census-gated)
+
+Recorded for the build decision if/when the ROADMAP trigger fires —
+this experiment adds rule *selection* evidence, not a build trigger:
+
+1. **Presence-of-behavioral-content is the evidence-backed codegen
+   rule.** A model set whose C4 content is purely static (no dynamic
+   diagrams, no companion spec reference) sits on the wrong side of a
+   29 pp executed step. Shape: codegen-profile finding when a C4 model
+   set declares containers/components but no behavioral artifact
+   covers the flows.
+2. **Vague-decision-language lexicons port to C4.** R3's qualitative
+   guards ("[score sufficient]") executed at 0.917 here only because
+   the true thresholds were canonical; the existing sequence
+   vagueness-lexicon mechanism applied to C4 Rel labels and
+   descriptions — flagging decision words with no number or pointer —
+   is the honest mitigation, and the "product limits" incident
+   motivates the same rule for element *descriptions* that name
+   rules without stating them.
+3. **Annotation-completeness rules (Tier 1/3) are hygiene with a
+   measured but modest executed effect** (+8 pp, invention-neutral).
+   Claim language: input hygiene, misread prevention (per the fit
+   evaluation), validation cueing — not outcome guarantees.
+4. **Structural conformance is not the bottleneck** under a conforming
+   prompt (EC1) — structural rules justify as misread-prevention, not
+   codegen-outcome rules.
+5. **The gate stays an input filter.** The R2 invented-cap incident is
+   the C4 rehearsal of the standing claim: passing observable checks
+   never certifies content. Nothing here weakens — everything here
+   re-confirms — the settled claim language.
+
+**Limitations, standing:** one family, one generator (opus-4-8), one
+judge, one suite, n = 3/rung; suite thresholds are domain-canonical
+(post-hoc identified confound for R4−R3 — an adversarial-threshold
+replication is the obvious follow-up if this ever needs to carry more
+weight); scaffold-pinned prompt (conformance measured under the
+favorable condition); judged fidelity not comparable across rungs.
+Quote gaps and orderings, never absolutes.

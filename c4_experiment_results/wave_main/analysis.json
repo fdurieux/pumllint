@@ -1,0 +1,112 @@
+{
+  "R0": {
+    "artifacts": 3,
+    "compile_first_try": 3,
+    "executed_pass_rate": 0.417,
+    "semantic_pass_rate": 0.417,
+    "scenario_pass": {
+      "approved_boundary": "3/3",
+      "approved_high": "3/3",
+      "borderline_review": "0/3",
+      "bureau_error": "0/3",
+      "declined_low": "3/3",
+      "invalid_zero": "1/3",
+      "over_cap": "0/3",
+      "storage_error": "0/3"
+    },
+    "group_edge_recall_mean": 1.0,
+    "extra_group_edges_total": 0,
+    "extra_classes_total": 0,
+    "invented_mean": 6.67,
+    "embellish_mean": 5.0,
+    "fidelity_mean": 59.33
+  },
+  "R1": {
+    "artifacts": 3,
+    "compile_first_try": 3,
+    "executed_pass_rate": 0.5,
+    "semantic_pass_rate": 0.5,
+    "scenario_pass": {
+      "approved_boundary": "3/3",
+      "approved_high": "3/3",
+      "borderline_review": "0/3",
+      "bureau_error": "0/3",
+      "declined_low": "3/3",
+      "invalid_zero": "3/3",
+      "over_cap": "0/3",
+      "storage_error": "0/3"
+    },
+    "group_edge_recall_mean": 1.0,
+    "extra_group_edges_total": 0,
+    "extra_classes_total": 0,
+    "invented_mean": 7.0,
+    "embellish_mean": 5.0,
+    "fidelity_mean": 46.33
+  },
+  "R2": {
+    "artifacts": 3,
+    "compile_first_try": 3,
+    "executed_pass_rate": 0.625,
+    "semantic_pass_rate": 0.625,
+    "scenario_pass": {
+      "approved_boundary": "3/3",
+      "approved_high": "3/3",
+      "borderline_review": "0/3",
+      "bureau_error": "0/3",
+      "declined_low": "3/3",
+      "invalid_zero": "3/3",
+      "over_cap": "3/3",
+      "storage_error": "0/3"
+    },
+    "group_edge_recall_mean": 1.0,
+    "extra_group_edges_total": 1,
+    "extra_classes_total": 0,
+    "invented_mean": 6.67,
+    "embellish_mean": 5.67,
+    "fidelity_mean": 57.33
+  },
+  "R3": {
+    "artifacts": 3,
+    "compile_first_try": 3,
+    "executed_pass_rate": 0.917,
+    "semantic_pass_rate": 0.917,
+    "scenario_pass": {
+      "approved_boundary": "3/3",
+      "approved_high": "3/3",
+      "borderline_review": "3/3",
+      "bureau_error": "2/3",
+      "declined_low": "3/3",
+      "invalid_zero": "3/3",
+      "over_cap": "3/3",
+      "storage_error": "2/3"
+    },
+    "group_edge_recall_mean": 1.0,
+    "extra_group_edges_total": 0,
+    "extra_classes_total": 1,
+    "invented_mean": 6.0,
+    "embellish_mean": 5.67,
+    "fidelity_mean": 62.0
+  },
+  "R4": {
+    "artifacts": 3,
+    "compile_first_try": 3,
+    "executed_pass_rate": 0.917,
+    "semantic_pass_rate": 0.917,
+    "scenario_pass": {
+      "approved_boundary": "3/3",
+      "approved_high": "3/3",
+      "borderline_review": "3/3",
+      "bureau_error": "2/3",
+      "declined_low": "3/3",
+      "invalid_zero": "3/3",
+      "over_cap": "3/3",
+      "storage_error": "2/3"
+    },
+    "group_edge_recall_mean": 1.0,
+    "extra_group_edges_total": 0,
+    "extra_classes_total": 0,
+    "invented_mean": 4.0,
+    "embellish_mean": 4.33,
+    "fidelity_mean": 66.33
+  }
+}

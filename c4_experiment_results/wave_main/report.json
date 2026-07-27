@@ -1,0 +1,2414 @@
+{
+  "gen_model": "claude-opus-4-8",
+  "judge_model": "claude-sonnet-5",
+  "runs_per_rung": 3,
+  "calibrating": false,
+  "prompt": "Implement the system specified below as a single self-contained Python module. The specification is a C4 model: one or more PlantUML diagrams using C4 macros (Person / Container / Component / System_Ext / Rel), possibly followed by a companion markdown specification.\n\nRules:\n- One class per Container, ContainerDb and System_Ext element. If component diagrams are provided, additionally one class per Component; a component class implements part of its container's responsibility.\n- Name each class after the element's alias in CamelCase (alias credit_bureau -> class CreditBureau).\n- Relationships (Rel) become method calls from the source element's class to the target element's class. Do not add calls between elements that have no declared relationship.\n- Where the specification describes flows, steps, guards or rules, implement them; failure paths become raised exceptions or error returns.\n- External systems (System_Ext) are outside the system boundary: implement each as a simple class whose methods return plausible values.\n- Where the specification is ambiguous or incomplete, make your best guess and implement something concrete.\n- Output ONLY Python code. No markdown fences, no prose.\n\nAdditionally expose a module-level function:\n\n    def handle(request: dict) -> dict\n\nthat runs one end-to-end flow. `request` carries the scenario input: entity ids and amounts, existence flags (keys like \"<entity>_exists\" / \"<entity>_found\"), and \u2014 where your implementation depends on an external system's outcome \u2014 keys of the form \"<system>_result\" / \"<system>_status\" whose values are short words such as \"approved\", \"declined\", \"active\", \"lapsed\", \"stored\", \"assessed\", \"error\", or a number for scores. Return a dict whose \"status\" key names the outcome (e.g. \"confirmed\", \"rejected\", \"error: <reason>\").\n\nSPECIFICATION:\n\n{spec}\n",
+  "usage": {
+    "claude-opus-4-8": {
+      "in": 45537,
+      "out": 39943
+    },
+    "claude-sonnet-5": {
+      "in": 152742,
+      "out": 141795
+    }
+  },
+  "spend_usd": 3.81,
+  "pumllint_view": {
+    "R0": [
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 98.75,
+        "element_count": 0,
+        "findings": [
+          "GEN002"
+        ]
+      }
+    ],
+    "R1": [
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ],
+    "R2": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ],
+    "R3": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "dynamics.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ],
+    "R4": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "dynamics.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ]
+  },
+  "runs": [
+    {
+      "rung": "R0",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R0_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | status=confirmed details={'decision': 'approved', 'score': 760}"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'details': {'decision': 'approved', 'score': 700}} | {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 700}} | status=confirmed details={'decision': 'approved', 'score': 700}"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'details': {'decision': 'declined', 'score': 540, 'reason': 'low score'}} | {'status': 'rejected', 'details': {'decision': 'declined', 'score': 540, 'reason': 'low score'}} | status=rejected details={'decision': 'declined', 'score': 540, 'reason': 'low score'}"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 660}} | {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 660}} | status=confirmed details={'decision': 'approved', 'score': 660}"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | status=confirmed details={'decision': 'approved', 'score': 760}"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['score', 'report', 'pull', 'fetch', 'get', 'check', 'credit', 'inquir', 'request', 'retrieve', 'lookup']; {'status': 'rejected', 'details': {'decision': 'declined', 'score': 760, 'reason': 'amount too high'}} | {'status': 'rejected', 'details': {'decision': 'declined', 'score': 760, 'reason': 'amount too high'}} | status=rejected details={'decision': 'declined', 'score': 760, 'reason': 'amount too high'"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | {'status': 'confirmed', 'details': {'decision': 'approved', 'score': 760}} | status=confirmed details={'decision': 'approved', 'score': 760}"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "MIN_SCORE=650 credit score threshold for approval",
+          "MAX_AMOUNT=100000 loan amount cap causing automatic decline",
+          "Specific credit score values (720 default, 500 for 'declined' result)",
+          "Decision outcome mapping (approved/declined) and associated messages",
+          "Application status lifecycle values ('submitted' -> decision status)",
+          "Applicant-not-found business rule based on request flags not present in spec",
+          "Notification message content tied to decision outcome"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping in handle() returning error status strings",
+          "Input validation raising ValueError for missing applicant_id/application_id",
+          "KeyError handling in ApplicationStore.update_status for missing records",
+          "Docstrings describing C4 roles",
+          "Defensive type coercion (int(result)) with fallback logic in CreditBureau"
+        ],
+        "fidelity_score": 58,
+        "notes": "All six C4 elements and five Uses relationships from the container diagram are structurally realized via corresponding classes and method calls, giving strong structural fidelity. However, the specification contains no guards, failure paths, or technology annotations to honor, so those categories are trivially satisfied (all zero/zero). The code substantially invents domain logic absent from the spec: concrete credit score thresholds, loan amount caps, decision/status vocabularies, and notification content, none of which were specified in the bare container diagram. This invented business logic is the main fidelity concern; embellishments like validation and error handling are benign additions."
+      }
+    },
+    {
+      "rung": "R0",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R0_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'score': 760} | {'status': 'confirmed', 'score': 760} | status=confirmed score=760"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'score': 700} | {'status': 'confirmed', 'score': 700} | status=confirmed score=700"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'score': 540} | {'status': 'rejected', 'score': 540} | status=rejected score=540"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'score': 660} | {'status': 'confirmed', 'score': 660} | status=confirmed score=660"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: invalid amount'} | {'status': 'error: invalid amount'} | status=error: invalid amount"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'score': 760} | {'status': 'confirmed', 'score': 760} | status=confirmed score=760"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'score': 760} | {'status': 'confirmed', 'score': 760} | status=confirmed score=760"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "APPROVAL_THRESHOLD = 650 credit score cutoff not present in spec",
+          "Specific credit score value mappings (750 for approved, 500 for declined, 700 default)",
+          "Application status vocabulary ('confirmed'/'rejected') diverging from decision engine's 'approved'/'declined'",
+          "Input validation rules: missing applicant_id and amount<=0 raise ValueError",
+          "Default application_id fallback value 'app-1'",
+          "Specific error message strings for bureau/notification/store failures implying defined failure semantics not in spec"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapper in handle() converting exceptions to status string",
+          "isinstance check in CreditBureau.get_credit_score for numeric result override",
+          "In-memory dict-based ApplicationStore implementation details",
+          "Docstrings labeling each class with C4 element type",
+          "Constructors wiring dependencies (DI) not specified but expected engineering scaffolding"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 6 elements and all 5 relationships from the container diagram are structurally realized with correctly directed calls (Applicant->API->{Store,Engine,Notifications}, Engine->CreditBureau). No guards, failure paths, or technology annotations were specified in the PlantUML (no tech tags, no dynamic diagram conditions), so those expected counts are zero, and none were meaningfully required to be honored. However, the code invents substantial domain semantics beyond the spec's plain structural intent: a hardcoded approval threshold, concrete credit score values, bespoke status vocabulary, and validation/error-handling business rules that were never specified. These are the kind of invented business logic that could mislead a reader into thinking the spec mandated them. Embellishments like try/except and isinstance guards are benign engineering additions. Given perfect structural coverage but heavy unrequested business-rule invention, fidelity is moderate."
+      }
+    },
+    {
+      "rung": "R0",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R0_run3.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | {'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | status=confirmed application_id=app-cust-1 score=760"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 700} | {'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 700} | status=confirmed application_id=app-cust-1 score=700"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'low score', 'score': 540} | {'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'low score', 'score': 540} | status=rejected application_id=app-cust-1 reason=low score score=540"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'amount too high for score', 'score': 660} | {'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'amount too high for score', 'score': 660} | status=rejected application_id=app-cust-1 reason=amount too high for score score"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | {'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | status=confirmed application_id=app-cust-1 score=760"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['score', 'report', 'pull', 'fetch', 'get', 'check', 'credit', 'inquir', 'request', 'retrieve', 'lookup']; {'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'amount too high for score', 'score': 760} | {'status': 'rejected', 'application_id': 'app-cust-1', 'reason': 'amount too high for score', 'score': 760} | status=rejected application_id=app-cust-1 reason=amount too high for score score"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '<' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '<' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '<' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | {'status': 'confirmed', 'application_id': 'app-cust-1', 'score': 760} | status=confirmed application_id=app-cust-1 score=760"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "APPROVAL_THRESHOLD = 650 credit score cutoff",
+          "Additional amount-based scoring rule (score < threshold + amount//1000) for declining larger loans",
+          "Default credit score of 700 when no score info provided",
+          "Parsing of request fields like credit_bureau_status/credit_bureau_result/credit_bureau_score to simulate credit bureau behavior",
+          "Applicant existence check via 'applicant_exists' flag raising ValueError",
+          "Auto-generation of application_id as f'app-{applicant_id}' when not provided",
+          "Status transitions 'received' -> 'approved'/'declined' with specific notification messages"
+        ],
+        "defensive_embellishments": [
+          "ValueError raised in ApplicationStore.save for missing application_id",
+          "KeyError raised in ApplicationStore.update_status for missing application",
+          "try/except wrapper in handle() converting exceptions to error status dict",
+          "Type checking (isinstance) in CreditBureau.get_score for status parsing",
+          "Default empty dict for request parameter in get_score"
+        ],
+        "fidelity_score": 62,
+        "notes": "All 6 elements and 5 relationships from the container diagram are structurally realized with matching call directions (Applicant->API->Store, API->Engine, Engine->CreditBureau, API->Notifications). No guards, failure paths, or technology annotations were specified in the minimal C4 spec, so those categories are vacuously satisfied. However, the code invents substantial domain logic absent from the spec: a concrete credit score threshold, an amount-based secondary decision rule, default score fallback, applicant-existence validation, and specific status/message semantics. These are plausible but unsanctioned business rules that go well beyond the structural relationships the spec actually defines, which is the main fidelity concern. Defensive coding (error raises, try/except, type checks) is benign and expected engineering elaboration."
+      }
+    },
+    {
+      "rung": "R1",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R1_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | status=confirmed decision=approved score=760 application_id=app-1"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': 'app-1'} | status=confirmed decision=approved score=700 application_id=app-1"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': 'app-1'} | {'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': 'app-1'} | status=rejected decision=declined score=540 application_id=app-1"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'decision': 'approved', 'score': 660, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 660, 'application_id': 'app-1'} | status=confirmed decision=approved score=660 application_id=app-1"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount must be positive'} | {'status': 'error: amount must be positive'} | status=error: amount must be positive"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | status=confirmed decision=approved score=760 application_id=app-1"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '>=' not supported between instances of 'nonetype' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | status=confirmed decision=approved score=760 application_id=app-1"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Fixed credit-score approval threshold of 650 to decide approved/declined outcome (spec only says decision engine 'determines' decision from score, no threshold given)",
+          "Hard-coded default credit score of 720 and default request-derived score logic in CreditBureau",
+          "Explicit override path via 'decision_engine_result'/'decision_engine_status' request keys that bypasses the score-based decision entirely",
+          "Application field validation rules (required application_id, applicant_id, amount; amount must be positive/numeric) invented wholesale, not specified anywhere",
+          "Mapping of decision outcomes to unrelated status vocabulary ('confirmed'/'rejected') in the handle() wrapper",
+          "Default application values (APP-1, CUST-1, amount 5000) fabricated for the entry point",
+          "Simulated failure/error triggers via magic request keys like 'credit_bureau_status'/'notification_service_status' causing RuntimeError, which invents a failure-injection protocol not in the spec"
+        ],
+        "defensive_embellishments": [
+          "request = request or {} guards throughout",
+          "try/except int/float coercion around score and amount parsing",
+          "KeyError guard in ApplicationStore.update_decision for missing application",
+          "Docstrings restating element descriptions",
+          "Simple constructors wiring dependencies (Applicant, OriginationApi, DecisionEngine)"
+        ],
+        "fidelity_score": 35,
+        "notes": "All 6 elements and all 5 relationships from the container diagram are structurally represented and wired in the expected direction (Applicant->API->Store/DecisionEngine->CreditBureau, API->NotificationService), so the topology is faithful. However, the spec is a static container diagram with no guards, thresholds, validation rules, or failure paths specified, yet the code invents a large amount of concrete business logic (650 score threshold, field validation, status renaming, override backdoors, simulated failure injection) that has no basis in the specification. Additionally, none of the 8 technology annotations (FastAPI, rules library, PostgreSQL 16, JSON/HTTPS, SQL/TCP, XML/HTTPS, REST/HTTPS) are reflected in the code \u2014 everything is plain in-memory Python with no framework, DB, or protocol-specific shaping. The combination of unspecified invented domain rules and completely unhonored technology stack significantly lowers fidelity despite correct structural skeleton."
+      }
+    },
+    {
+      "rung": "R1",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R1_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'decision': 'approved', 'score': 760} | status=confirmed decision=approved score=760"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 700} | {'status': 'confirmed', 'decision': 'approved', 'score': 700} | status=confirmed decision=approved score=700"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'decision': 'declined', 'score': 540} | {'status': 'rejected', 'decision': 'declined', 'score': 540} | status=rejected decision=declined score=540"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'rejected', 'decision': 'declined', 'score': 660} | {'status': 'rejected', 'decision': 'declined', 'score': 660} | status=rejected decision=declined score=660"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount must be positive'} | {'status': 'error: amount must be positive'} | status=error: amount must be positive"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'decision': 'approved', 'score': 760} | status=confirmed decision=approved score=760"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '>=' not supported between instances of 'nonetype' and 'int'\"} | {'status': \"error: '>=' not supported between instances of 'nonetype' and 'int'\"} | status=error: '>=' not supported between instances of 'nonetype' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'decision': 'approved', 'score': 760} | status=confirmed decision=approved score=760"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Hard-coded APPROVE_THRESHOLD = 680 credit score cutoff for approve/decline decision, never specified in the diagram",
+          "Specific validation rules (required application_id/applicant_id/amount, amount must be positive) invented wholesale \u2014 spec only says 'validates them' with no rule content",
+          "Default credit score of 720 fabricated when bureau response is missing/invalid",
+          "Concrete status vocabulary ('received','confirmed','rejected','stored','updated') invented as internal state machine not present in spec",
+          "ExternalSystemError triggered by a magic 'credit_bureau_status'/'credit_bureau_result' == 'error' sentinel \u2014 an invented protocol for simulating bureau failure",
+          "RecordNotFound raised when application_id missing from store \u2014 an invented failure mode with no spec basis"
+        ],
+        "defensive_embellishments": [
+          "Generic try/except Exception catch-all in handle() beyond the specific exception types",
+          "isinstance/type coercion checks for credit score and amount fields",
+          "Docstrings labeling each class with its C4 element type",
+          "Simple constructor dependency injection with no logic",
+          "Use of dict.get with defaults for request payload parsing"
+        ],
+        "fidelity_score": 56,
+        "notes": "All 6 elements and all 5 relationships from the container diagram are structurally represented and wired in the correct direction (Applicant\u2192API\u2192Store/Engine\u2192Bureau, API\u2192Notification). However, none of the specified technology annotations (FastAPI, PostgreSQL, SQL/TCP, JSON/HTTPS, XML/HTTPS, REST/HTTPS) are reflected in naming, comments, or interface shape \u2014 the code is generic Python method calls with no protocol/format distinction. Because this is a static container diagram with no dynamic flow, there are no guards or failure paths specified, yet the code invents a substantial amount of concrete business logic (approval threshold, validation rules, default score, status vocabulary, and failure-simulation protocols) that the specification never provided, which is the most significant fidelity concern. Structural/relationship fidelity is high; technology fidelity is very low; invented domain logic is extensive."
+      }
+    },
+    {
+      "rung": "R1",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R1_run3.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationStore",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [],
+        "component_edge_recall": null,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 760, 'reason': 'meets criteria'} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id="
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 700, 'reason': 'meets criteria'} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id="
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 540, 'reason': 'score below minimum threshold'} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 660, 'reason': 'requested amount exceeds limit for score'} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, a"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: invalid loan amount'} | {'status': 'error: invalid loan amount'} | status=error: invalid loan amount"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['score', 'report', 'pull', 'fetch', 'get', 'check', 'credit', 'inquir', 'request', 'retrieve', 'lookup']; {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 760, 'reason': 'requested amount exceeds limit for score'} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, a"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<' not supported between instances of 'nonetype' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'alert', 'email', 'sms', 'message']; {'status': 'approved', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 'score': 760, 'reason': 'meets criteria'} | {'status': 'approved', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 's"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "MIN_SCORE = 650 credit-score threshold for decline, not specified in spec",
+          "MAX_AMOUNT_FOR_SCORE tiered loan-amount limits per score bracket (800/750/700/650 -> 100k/50k/30k/15k)",
+          "Specific validation rules for application fields (missing applicant_id, application_id, amount, amount<=0) invented wholesale",
+          "Credit bureau override mechanism simulating error/score values (credit_override logic) invented as a testing/business hook not in spec",
+          "Concrete decision 'reason' text strings ('score below minimum threshold', 'requested amount exceeds limit for score', 'meets criteria') invented",
+          "Applicant-not-found short-circuit ('applicant_exists' flag) invented as a failure path not in spec",
+          "Default notification channel hardcoded to 'email' though spec mentions e-mail and SMS options generically",
+          "Status mapping of decision to 'approved'/'rejected' and generic 'error: ...' strings is an invented API contract"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping for ValueError/KeyError/RuntimeError in handle()",
+          "isinstance type-checking in CreditBureau.get_credit_report for override coercion",
+          "In-memory dict-based ApplicationStore with __init__ constructor and existence check on update",
+          "Docstrings/comments annotating each class with its C4 element type (Person/Container/ContainerDb/System_Ext)",
+          "Default field fallbacks in handle() (e.g., 'APP-1', 'CUST-1', amount 10000)"
+        ],
+        "fidelity_score": 48,
+        "notes": "All 6 C4 elements and all 5 specified relationships are structurally present and wired correctly (applicant->API->store/engine->bureau, API->notifier), so the topology is faithful. However the specification is a static container diagram with no guards or failure paths defined, yet the code invents a substantial decision-engine rule set (score thresholds, tiered loan limits, specific decline/validation reasons) that has real domain semantics not present in the spec \u2014 this is the most damaging category of invention. Technology annotations fare worst: none of FastAPI, PostgreSQL, SQL, XML/HTTPS, JSON/HTTPS, or REST/HTTPS are reflected in naming, interfaces, or comments; the code is plain in-memory Python with no protocol or storage cues, so only a loose, generous credit (rules-like conditionals for 'rules library') can be given. Overall the interaction skeleton is faithful but the domain logic and technology fidelity are largely fabricated or absent."
+      }
+    },
+    {
+      "rung": "R2",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R2_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | status=confirmed decision=approved application_id=app-1"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | status=confirmed decision=approved application_id=app-1"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'decision': 'declined', 'application_id': 'app-1'} | {'status': 'rejected', 'decision': 'declined', 'application_id': 'app-1'} | status=rejected decision=declined application_id=app-1"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | status=confirmed decision=approved application_id=app-1"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount outside product limits'} | {'status': 'error: amount outside product limits'} | status=error: amount outside product limits"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount outside product limits'} | {'status': 'error: amount outside product limits'} | status=error: amount outside product limits"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'application_id': 'app-1'} | status=confirmed decision=approved application_id=app-1"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 9,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "technologies_expected": 14,
+        "technologies_honored": 7,
+        "invented_business_logic": [
+          "Concrete credit-score approval threshold of 650 (ScoringPolicy.APPROVE_THRESHOLD) \u2014 spec only says the policy 'maps score to decision', no value given",
+          "Concrete loan amount validation limits MIN_AMOUNT=1000 / MAX_AMOUNT=50000 \u2014 spec only says validator checks 'product limits', no numbers given",
+          "Fallback default credit score of 700 when bureau response is malformed \u2014 invented resilience/business rule not in spec",
+          "Simulated notification failure via request['notification_service_status']=='error' raising RuntimeError \u2014 spec never describes a notification failure mode",
+          "ApplicationStore.update_decision raising KeyError when application id is missing \u2014 an invented failure path not present in the spec",
+          "Concrete API response contract with 'confirmed'/'rejected'/'error: ...' status strings \u2014 invented interface shape not specified anywhere in the C4 model"
+        ],
+        "defensive_embellishments": [
+          "isinstance/type coercion checks on credit score and amount fields",
+          "request.get() fallback chains for optional/alternate keys (credit_bureau_status vs credit_bureau_result, etc.)",
+          "try/except wrapping around float() conversion in ApplicationValidator",
+          "_build_system() dependency-wiring helper function",
+          "dict copying/defaulting of incoming request and application payloads in handle()",
+          "broad except clauses catching ValueError/RuntimeError/KeyError uniformly in handle()"
+        ],
+        "fidelity_score": 60,
+        "notes": "Core actor/component graph and call sequence are faithfully realized: Applicant\u2192ApplicationService\u2192{Validator, Store, DecisionEngine\u2192ScoringPolicy\u2192BureauGateway\u2192CreditBureau, NotificationService} all present and wired in the correct order, matching all three PUML views once container/component duplicates are collapsed to 7 logical relationships. Origination API is not modeled as a discrete class/container (only its internal components exist), so element coverage is 9/10. Guard concepts (application completeness/limits check, score\u2192decision mapping) are structurally preserved, but the code invents concrete numeric thresholds (650, 1000\u201350000) the spec never specifies, and invents an unspecified notification failure mode and store-lookup failure path \u2014 these are domain-meaningful additions the spec doesn't authorize. Technology fidelity is weak: PostgreSQL, FastAPI, JSON/HTTPS, XML/HTTPS, REST/HTTPS, SQL/TCP and the 'rules library' aspect of Decision Engine are not reflected in the implementation at all (everything is plain in-process Python calls passing dicts); only the 'Python class' annotations and in-process-call relationships are genuinely honored, plus a passing docstring mention of PostgreSQL. Overall the architecture and interaction shape are faithful, but several concrete business values and failure semantics are the generator's invention rather than derived from the spec."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R2",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R2_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [
+          [
+            "decision_engine",
+            "origination_api"
+          ]
+        ],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='a"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 700} | {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='a"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'declined', 'score': 540} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'declined', 'score': 660} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount_below_minimum'} | {'status': 'error: amount_below_minimum'} | status=error: amount_below_minimum"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount_above_maximum'} | {'status': 'error: amount_above_maximum'} | status=error: amount_above_maximum"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '>=' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'alert', 'email', 'sms', 'message']; {'status': 'confirmed', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 'dec"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 10,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 2,
+        "guards_faithful": 2,
+        "failure_paths_expected": 1,
+        "failure_paths_implemented": 1,
+        "technologies_expected": 14,
+        "technologies_honored": 6,
+        "invented_business_logic": [
+          "Concrete validation limits MIN_AMOUNT=1000 / MAX_AMOUNT=50000 invented; spec only says 'within product limits' with no numbers",
+          "Concrete APPROVE_THRESHOLD=700 for credit-score decision invented; spec only says decision is 'mapped' from score, no threshold given",
+          "Default fallback credit score of 720 when bureau data is absent, an invented business value",
+          "REQUIRED_FIELDS limited to (applicant_id, amount) as the definition of 'complete application' is an invented specific not present in the spec",
+          "Mapping decision outcomes to caller-facing status strings 'confirmed'/'rejected' is an invented vocabulary not specified anywhere in the diagrams",
+          "Distinct invented failure taxonomies (application_not_found, application_store_unavailable, bureau_no_score, notification_delivery_failed) go beyond the single failure concept the spec actually calls out (bureau_gateway 'failure modes')",
+          "Auto-generated application ID scheme 'app-%d' is an invented identifier format"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping float() conversion of amount with generic ValueError/TypeError handling",
+          "Catch-all generic Exception handling in handle() producing 'error: %s' strings",
+          "Constructor default-injection pattern (x or DefaultClass()) throughout for testability",
+          "Docstrings explicitly cross-referencing Rel() lines from the PlantUML source",
+          "In-memory dict-based ApplicationStore as a stand-in implementation of the persistence layer"
+        ],
+        "fidelity_score": 57,
+        "notes": "All 10 C4 elements and all 7 distinct relationships (submit, validate, store/update, request-decision, notify, get-score, pull-report) are structurally present and wired in the correct call order, and the single explicitly-called-out failure concept (bureau 'failure modes') is implemented via try/except re-raising. However, technology annotations are largely unhonored: PostgreSQL 16, SQL/TCP, JSON/HTTPS, REST/HTTPS, XML/HTTPS, FastAPI, and 'rules library' are never reflected in interface shape (everything is a synchronous in-process Python call operating on dicts, with no HTTP, SQL, or serialization boundary) \u2014 only the plain 'Python class' and 'in-process call' annotations are naturally satisfied. The two implicit guards (application completeness/limits check, score-to-decision mapping) are structurally faithful in intent but the code invents specific numeric thresholds and a decision-to-status vocabulary that the specification never provided, which is the most concerning fidelity gap since these look like deliberate business rules rather than generator guesses. Failure handling is broader than specified (multiple named RuntimeErrors) which adds unspecified failure semantics beyond the one failure mode called out in the diagrams. Overall the control-flow skeleton is faithful but technology fidelity is weak and several concrete business values are invented."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R2",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R2_run3.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='a"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 700} | {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='a"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'declined', 'score': 540} | {'status': 'rejected', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 660} | {'status': 'confirmed', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='a"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount_out_of_limits'} | {'status': 'error: amount_out_of_limits'} | status=error: amount_out_of_limits"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: amount_out_of_limits'} | {'status': 'error: amount_out_of_limits'} | status=error: amount_out_of_limits"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'alert', 'email', 'sms', 'message']; {'status': 'confirmed', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 'decision': 'approved', 'score': 760} | {'status': 'confirmed', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false), 'dec"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 9,
+        "relationships_expected": 8,
+        "relationships_implemented": 8,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 2,
+        "failure_paths_implemented": 2,
+        "technologies_expected": 12,
+        "technologies_honored": 3,
+        "invented_business_logic": [
+          "MIN_AMOUNT=1000 / MAX_AMOUNT=50000 product limits invented \u2014 spec only says 'within product limits' without values",
+          "APPROVE_THRESHOLD=650 credit-score cutoff invented \u2014 spec only says the policy 'maps credit score to decision', no threshold given",
+          "Default fallback score of 700 when bureau score is missing/unparseable \u2014 no such fallback specified",
+          "Application ID generation scheme 'app-{n}' invented as a storage/business detail not in spec",
+          "Request-flag-driven simulation contract (applicant_exists, applicant_found, credit_bureau_status/result, notification_service_status/result) \u2014 an entirely invented request/response protocol not present anywhere in the C4 spec",
+          "handle() response vocabulary ('confirmed', 'rejected', 'error: ...') invented as an API contract not described by the spec",
+          "Notification failure path (notification_failed) invented \u2014 the spec never describes a failure mode for the Notification Service"
+        ],
+        "defensive_embellishments": [
+          "try/except float() coercion for amount in ApplicationValidator",
+          "try/except int() coercion for bureau score",
+          "Optional/type hints throughout",
+          "Deep-copy of application/request dicts to avoid mutation",
+          "Docstrings restating component descriptions from the spec",
+          "ApplicationStore.get() convenience accessor not required by any relationship"
+        ],
+        "fidelity_score": 55,
+        "notes": "Structurally the code faithfully mirrors the component graph: Applicant\u2192ApplicationService\u2192{Validator, Store, DecisionEngine\u2192ScoringPolicy\u2192BureauGateway\u2192CreditBureau, NotificationService} matches all 8 distinct relationships across the three diagrams, and all but one element (the origination_api container boundary itself, which has no direct class but is represented via its components) are present. However, the code invents substantial concrete business logic that the C4 diagrams (which only carry structural/prose descriptions, no dynamic guards or thresholds) never specified: dollar limits, a score threshold, a default score fallback, an ID scheme, and \u2014 most notably \u2014 an entire request-flag simulation protocol and response-status vocabulary that has no basis in the specification. Technology annotations (FastAPI, PostgreSQL 16, rules library, JSON/HTTPS, SQL/TCP, REST/HTTPS, XML/HTTPS) are almost entirely unrealized \u2014 the implementation is a pure in-memory/in-process simulation with no HTTP, SQL, or messaging code, only docstring mentions in a couple of cases. No dynamic-diagram guards exist in the spec to violate, but the invented thresholds/limits effectively fabricate business semantics that could mislead downstream consumers of the code into thinking these are the real product rules."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R3",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R3_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [
+          "Decision"
+        ],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=declined application_id"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'under_review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'under_review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=under_review ap"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'amount outside product limits'} | {'status': 'rejected', 'reason': 'amount outside product limits'} | status=rejected reason=amount outside product limits"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'amount outside product limits'} | {'status': 'rejected', 'reason': 'amount outside product limits'} | status=rejected reason=amount outside product limits"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureauunavailableerror: credit bureau timeout', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'pending'} | {'status': 'error: bureau_unavailable', 'reason': 'burea"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storageerror: application store unavailable'} | {'status': 'error: storageerror: application store unavailable'} | status=error: storageerror: application store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 9,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 3,
+        "invented_business_logic": [
+          "Concrete score thresholds APPROVE_THRESHOLD=700 and DECLINE_THRESHOLD=600 invented to realize the vague 'score sufficient'/'score too low'/'score borderline' guards",
+          "Concrete product limits MIN_AMOUNT=1000 and MAX_AMOUNT=50000 invented to realize 'within product limits' validation, which the spec never quantifies",
+          "Specific validator field rules (applicant_id required, amount required and numeric) invented as the concrete meaning of 'complete' application, not specified in the spec",
+          "Default synthetic credit score of 720 returned by CreditBureau when no result is configured, an invented default outcome not present in the spec",
+          "Default 'sent' status returned unconditionally by NotificationService regardless of any real delivery outcome, an invented always-success behavior"
+        ],
+        "defensive_embellishments": [
+          "Generic safety-net try/except wrapping the whole handle() call",
+          "Type coercion of amount via float() with a ValueError guard",
+          "_resolve() helper for reading multiple alternative request keys with defaults",
+          "Use of a Decision Enum class for readability",
+          "Dict-based in-memory record store with default id fallback ('app-1')",
+          "Docstrings restating component descriptions from the spec"
+        ],
+        "fidelity_score": 68,
+        "notes": "All 10 spec elements are conceptually represented (origination_api itself is only implicit as the composition of ApplicationService/ApplicationValidator rather than an explicit class) and all 7 distinct relationships (deduplicated across component/container/dynamic views, treating return edges as part of their call edge) are faithfully realized as direct method calls between the corresponding classes. All 6 guard conditions (validation, three score-decision branches, bureau failure, storage failure) are semantically preserved, and all 3 failure paths (invalid application, bureau unavailable, storage unavailable) are implemented with the correct side-effect suppression specified (no store on invalid, no notification on bureau failure, no credit pull on storage failure). However, technology fidelity is weak: FastAPI, JSON/HTTPS, SQL/TCP, REST/HTTPS, XML/HTTPS and the Python 3.12/rules-library annotations are not reflected anywhere in code (everything is plain in-process Python calls/dicts with no HTTP, SQL, or serialization boundary, and PostgreSQL is only referenced in a docstring). The code also invents several concrete numeric business rules (score thresholds, amount limits, default score/notification outcomes) that the spec deliberately left abstract, which is the main fidelity risk since these values could silently diverge from intended business policy."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R3",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R3_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': 'app-1'} | status=confirmed decision=approved score=760 application_id=app-1"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': 'app-1'} | {'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': 'app-1'} | status=confirmed decision=approved score=700 application_id=app-1"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': 'app-1'} | {'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': 'app-1'} | status=rejected decision=declined score=540 application_id=app-1"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "unknown",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'decision': 'review', 'score': 660, 'application_id': 'app-1'} | {'status': 'review', 'decision': 'review', 'score': 660, 'application_id': 'app-1'} | status=review decision=review score=660 application_id=app-1"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'amount out of product limits'} | {'status': 'rejected', 'reason': 'amount out of product limits'} | status=rejected reason=amount out of product limits"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'amount out of product limits'} | {'status': 'rejected', 'reason': 'amount out of product limits'} | status=rejected reason=amount out of product limits"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureauunavailableerror: credit bureau timeout'} | {'status': 'error: bureau_unavailable', 'reason': 'bureauunavailableerror: credit bureau timeout'} | status=error: bureau_unavailable reason=bureauunavailableerror: credit bureau timeout"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storageerror: application store unavailable'} | {'status': 'error: storageerror: application store unavailable'} | status=error: storageerror: application store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 10,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 7,
+        "guards_faithful": 7,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 2,
+        "invented_business_logic": [
+          "Concrete validation thresholds MIN_AMOUNT=1000 and MAX_AMOUNT=50000 in ApplicationValidator \u2014 spec only says 'within product limits' without values",
+          "Concrete required-field checks (applicant_id, amount, application_exists) as the definition of 'complete' application \u2014 not specified",
+          "Concrete score thresholds APPROVE_THRESHOLD=700 and DECLINE_THRESHOLD=600 in ScoringPolicy defining approve/decline/review boundaries \u2014 spec never gives numeric thresholds",
+          "Ad-hoc simulation protocol using request dict keys like 'credit_bureau_status'/'application_store_status' to trigger unavailability \u2014 an invented testing/control mechanism not present in the spec",
+          "Default fallback credit score of 720 when score is missing/invalid \u2014 invented default value",
+          "Hardcoded notification channel 'email' and delivery-status derivation logic in NotificationService \u2014 not specified",
+          "Default application_id 'app-1' and applicant_id 'cust-1' fallback values \u2014 invented",
+          "Response status vocabulary mapping (e.g. 'confirmed', 'error: storage_failure', 'error: bureau_unavailable') as concrete API contract \u2014 spec only describes narrative outcomes, not response schema"
+        ],
+        "defensive_embellishments": [
+          "Unused logging.getLogger setup with no actual log calls",
+          "Custom exception classes (ApplicationInvalidError, StorageError, BureauUnavailableError) used purely for internal control flow",
+          "Generic try/except Exception wrapper in handle() for unexpected errors",
+          "Type-coercion try/except around amount and score casting",
+          "Docstrings on every class restating component descriptions",
+          "_build_service() factory function wiring dependencies, not present in spec"
+        ],
+        "fidelity_score": 58,
+        "notes": "Structural coverage is strong: all ten spec elements (Person, three containers, four components, two external systems) have a corresponding code counterpart, and all seven distinct relationship pairs (submit, validate, store, request-decision, obtain-score, pull-report, notify) are realized as method calls between the matching classes. All three named failure paths (invalid application, bureau unavailable, storage unavailable) are implemented with matching consequences (no decision made / no notification sent, as specified). All seven bracket guards are structurally preserved (valid/invalid, sufficient/too-low/borderline score, bureau/store unavailable), though the code invents the concrete decision logic behind almost every guard (specific score cutoffs, amount limits, required fields) since the spec leaves these abstract \u2014 this is the main source of invented business logic. Technology fidelity is weak: none of the protocol/technology annotations (JSON/HTTPS, SQL/TCP, XML/HTTPS, REST/HTTPS, FastAPI, PostgreSQL) are reflected in naming, comments, or interface shape; the implementation is a plain in-memory Python simulation with no protocol-specific code, only the generic 'Python class' and 'in-process call' annotations are implicitly honored. The Person actor and Origination API container are represented only implicitly via dict-based request/response rather than explicit classes, which is an acceptable but notable simplification given the component decomposition shown in the API component diagram."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R3",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R3_run3.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': proteanobj(status='stored', stored=true, succe"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'confirmed', 'decision': 'approved', 'score': 700, 'application_id': proteanobj(status='stored', stored=true, succe"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'rejected', 'decision': 'declined', 'score': 540, 'application_id': proteanobj(status='stored', stored=true, success"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'decision': 'review', 'score': 660, 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'review', 'decision': 'review', 'score': 660, 'application_id': proteanobj(status='stored', stored=true, success=true, a"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid application'} | {'status': 'rejected', 'reason': 'invalid application'} | status=rejected reason=invalid application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid application'} | {'status': 'rejected', 'reason': 'invalid application'} | status=rejected reason=invalid application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': \"error: '<' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '<' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '<' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'alert', 'email', 'sms', 'message']; {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false)} | {'status': 'confirmed', 'decision': 'approved', 'score': 760, 'application_id': proteanobj(status='error', error='storage_unavailabl"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 9,
+        "relationships_expected": 13,
+        "relationships_implemented": 12,
+        "guards_expected": 7,
+        "guards_faithful": 7,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 3,
+        "invented_business_logic": [
+          "Concrete score thresholds (DECLINE_BELOW=580, APPROVE_AT_OR_ABOVE=680) invented \u2014 spec only says 'score sufficient/too low/borderline' without numbers",
+          "Concrete validation limits MIN_AMOUNT=1000, MAX_AMOUNT=50000 and REQUIRED_FIELDS=('applicant_id','amount') invented \u2014 spec only says 'complete and within product limits'",
+          "Magic-string test hooks (application_store_status/application_valid/credit_bureau_status flags) invented as the mechanism for simulating failure paths, not implied by the spec",
+          "Default fallback credit score of 720 invented when no score is supplied",
+          "Mapping of decision to specific stored/outcome strings ('under_manual_review','confirmed','rejected','review') invented status vocabulary not present in spec"
+        ],
+        "defensive_embellishments": [
+          "try/except float conversion and type coercion for amount field",
+          "broad except Exception wrapper in handle() with pragma no cover",
+          "defensive dict copy of incoming request before processing",
+          "in-memory _records dict bookkeeping inside ApplicationStore",
+          "docstrings restating component descriptions"
+        ],
+        "fidelity_score": 60,
+        "notes": "Core actor/component graph (Applicant, ApplicationValidator, ApplicationStore, DecisionEngine/ScoringPolicy/BureauGateway, CreditBureau, NotificationService) and the orchestration flow (validate\u2192store\u2192decide\u2192update\u2192notify\u2192respond) faithfully mirror the spec's containers/components and all five dynamic scenarios (approved/declined/review/invalid/bureau-unavailable/storage-failure) are structurally reproduced with correct short-circuiting (no store on invalid, no decision request on storage failure, no notification on bureau failure). However, the spec deliberately leaves score thresholds and validation limits abstract ('sufficient', 'too low', 'borderline', 'within product limits'), and the code invents specific numeric business rules and a magic-string failure-injection protocol that has no basis in the spec \u2014 this is the main fidelity loss. Technology annotations (FastAPI, Python 3.12, SQL/TCP, XML/HTTPS, REST/HTTPS, JSON/HTTPS) are almost entirely absent from the implementation, which uses plain in-process dict-based calls throughout; only PostgreSQL-in-a-docstring, 'in-process call', and generic Python classes are honored. The Origination API container itself is never materialized as an explicit module/class (only its two components exist), slightly under-realizing the element set."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R4",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R4_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=declined application_id"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=review application_id=prote"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "bureauunavailableerror: storageerror: application store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 10,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 3,
+        "invented_business_logic": [
+          "CreditBureau.pull_report defaults to a score of 700 (auto-approval) when no recognizable score key is present in the request \u2014 a fallback behavior never specified",
+          "Bureau/store availability is determined by inspecting ad-hoc request keys ('credit_bureau_status'/'application_store_status') against a fixed vocabulary ('error','unavailable','down','timeout') \u2014 a concrete, invented trigger mechanism for the abstract 'bureau unavailable'/'store unavailable' guards",
+          "NotificationService.send_notification fabricates a delivery-acknowledgment payload ({'delivered': True, ...}) that the spec never describes"
+        ],
+        "defensive_embellishments": [
+          "isinstance/bool-exclusion checks in ApplicationValidator beyond the stated numeric-range rules",
+          "Zero-padded application_id format 'app-{:06d}' and an internal counter/dict store",
+          "Custom exception hierarchy (BureauUnavailableError, StorageUnavailableError, InvalidApplicationError) with docstrings",
+          "Default-constructor dependency injection (None-coalescing) across every component"
+        ],
+        "fidelity_score": 78,
+        "notes": "Structurally and behaviorally the code is a strong match: all 10 spec elements are represented (Applicant, ApplicationService, ApplicationValidator, ApplicationStore, DecisionEngine/ScoringPolicy/BureauGateway, NotificationService, CreditBureau), the call chain matches the component decomposition (validate -> store -> decide via bureau -> update -> notify -> respond), the validation thresholds (1-100000, 6-120) and decision thresholds (>=700 approved, 620-699 review, <620 declined) are reproduced exactly, and all three failure paths (invalid application, bureau unavailable, storage unavailable) short-circuit correctly with the exact response strings and correct suppression of downstream calls/notifications specified in spec.md and the dynamic diagrams. Weaknesses: technology annotations are almost entirely unhonored beyond docstrings \u2014 no FastAPI/HTTP surface, no SQL, no XML/REST protocol shape is reflected, everything is plain in-process Python calls passing dicts, so most of the 9 distinct tech annotations in the diagrams have no code-level reflection. The bureau/store failure-detection mechanism and the missing-score-defaults-to-700 fallback are invented specifics filling gaps the spec intentionally leaves to an external system's real behavior, which is reasonable for a runnable simulation but is not itself specified and slightly risks masking real failure semantics (e.g., silently approving on missing score data)."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R4",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R4_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=declined application_id"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=review application_id=prote"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '>=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'alert', 'email', 'sms', 'message']; {'status': 'approved', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false)} | {'status': 'approved', 'application_id': proteanobj(status='error', error='storage_unavailable', success=false, stored=false)} | status=approved application_id=proteanobj("
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 8,
+        "relationships_expected": 7,
+        "relationships_implemented": 7,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 2,
+        "invented_business_logic": [
+          "Magic request keys (credit_bureau_result/bureau_status/etc.) invented to simulate bureau outcomes \u2014 no such trigger mechanism exists in the spec",
+          "Default fallback credit score of 700 when no bureau signal is present in the request, an invented default not specified anywhere",
+          "Arbitrary text-to-error mapping in CreditBureau (e.g. 'lapsed', 'declined' strings treated as bureau errors) \u2014 invented semantics for an unspecified input",
+          "NotificationService hardcodes channel 'email' with no basis in spec, which describes both email and SMS without selection logic",
+          "Magic request keys (application_store_status/storage_result/etc.) invented to simulate storage failures \u2014 a business-logic-shaped test hook not in the spec"
+        ],
+        "defensive_embellishments": [
+          "uuid4-based application_id generation (spec only requires an application_id string, not its generation scheme)",
+          "isinstance/bool-exclusion type checks in ApplicationValidator beyond the spec's simple numeric-range wording",
+          "dict copy of application record before storing",
+          "try/except RuntimeError wrapping around bureau and store calls to convert exceptions into status codes"
+        ],
+        "fidelity_score": 57,
+        "notes": "Core orchestration logic (validate -> store pending -> decision -> update -> notify -> respond), the three decision thresholds (>=700 approved, 620-699 review, <620 declined), and the three named failure paths (invalid, bureau_unavailable, storage_unavailable) are all faithfully realized with correct guard semantics and correct suppression of notifications/bureau calls on early failures \u2014 this is the strongest part of the implementation. However, structural fidelity to the C4 model is weaker: Person (applicant) and the Origination API container itself are not modeled as explicit elements/classes, only implied by function call shape. Technology annotations are almost entirely unhonored: no FastAPI, no SQL/PostgreSQL, no XML, no REST are reflected even superficially in naming or interface shape; CreditBureau and ApplicationStore are plain in-memory/dict-based mocks. The code also invents a nontrivial business-logic-shaped mechanism (magic request keys to simulate bureau/store failures, default score of 700, and a hardcoded notification channel) that the specification never described, which is the most concerning deviation since it could mask real integration behavior behind test-hook semantics presented as production logic."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    },
+    {
+      "rung": "R4",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R4_run3.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 760} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 760} | st"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 700} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 700} | st"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 540} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 540} | st"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 660} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 660} | status"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "bureauunavailableerror: storageerror: application store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 10,
+        "elements_implemented": 9,
+        "relationships_expected": 9,
+        "relationships_implemented": 9,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 9,
+        "technologies_honored": 3,
+        "invented_business_logic": [
+          "CreditBureau.pull_report defaults to a score of 750 when no score is supplied in context \u2014 an invented default not specified anywhere",
+          "A hidden 'context' dict channel (credit_bureau_status, application_store_status, credit_bureau_score, etc.) is invented as the mechanism for triggering failure paths; this extends the API contract beyond the three specified fields (customer_id, amount, term_months) with undocumented control flags",
+          "The response payload includes an extra 'score' field on success, which is not part of the specified API contract (only status and application_id are specified)",
+          "ApplicationStore.update_status raises StorageUnavailableError for an unknown application id \u2014 an invented error condition with no basis in the spec"
+        ],
+        "defensive_embellishments": [
+          "Extra isinstance/bool-exclusion checks in ApplicationValidator beyond the literal numeric range rules",
+          "Docstrings on every class annotating its C4 role (Person, System_Ext, etc.)",
+          "In-memory dict-based ApplicationStore with an auto-incrementing counter for IDs (reasonable stand-in for PostgreSQL persistence)",
+          "try/except wrapping around store.store_pending and decision_engine.request_decision calls",
+          "_build_system() factory function that wires dependencies together"
+        ],
+        "fidelity_score": 64,
+        "notes": "Structurally the code is a faithful, complete realization of the flow shape: all major elements (Applicant, ApplicationService, ApplicationValidator, ApplicationStore, DecisionEngine, ScoringPolicy, BureauGateway, CreditBureau, NotificationService) are present and wired exactly as the component/container diagrams specify, and every relationship (submit, validate, store/update, request decision, obtain score, pull report, notify, return response) is realized in the correct direction between the correct components. The validation rules, decision thresholds (>=700 approved, 620-699 review, <620 declined, inclusive boundaries exactly as specified), and all three failure/error paths (invalid application, bureau unavailable, storage unavailable) are implemented with correct semantics and correct side-effect suppression (no bureau call after invalid, no notification after bureau/storage failure, no store update after bureau failure). This part is essentially spec-perfect. Where the implementation falls short is technology fidelity: none of the concrete technologies (FastAPI/HTTP for the API, SQL/PostgreSQL persistence, XML/HTTPS to the bureau, REST/HTTPS to the notification service) are reflected in interface shape, naming, or comments beyond a single PostgreSQL docstring mention and the 'Python class' component type; everything is a plain in-process function call, and the API is a bare dict-in/dict-out function rather than anything resembling FastAPI/JSON-over-HTTP. The code also introduces an invented, spec-external side-channel (the 'context' dict of status/score overrides) to make the failure paths testable, plus a couple of minor invented additions (default score, extra 'score' field in the response, an error on unknown application id) that were not specified. These are contained and low-risk but do count as invented business logic layered on top of an otherwise very faithful behavioral implementation."
+      },
+      "judge_note": "re-judged at max_tokens=16000"
+    }
+  ]
+}

@@ -561,15 +561,27 @@ def generate_one(client, rung: str, run_idx: int, usage: dict) -> dict:
             "attempts": attempts, "compiles": ok}
 
 
+JUDGE_MAX_TOKENS = 16000  # C4 rung specs are far larger than sequence
+# diagrams; 6000 (the house judge budget) exhausted on adaptive thinking
+# for 9/15 first-wave judgements (empty/truncated JSON). Run note in the
+# protocol doc; retry-once on a parse failure.
+
+
 def judge_one(client, rung: str, code: str, usage: dict) -> dict:
     prompt = JUDGE_PROMPT.format(spec=rung_spec_text(rung), code=code)
-    resp = _call(
-        client, JUDGE_MODEL, usage, max_tokens=6000,
-        **_thinking(JUDGE_MODEL),
-        output_config={"format": {"type": "json_schema",
-                                  "schema": JUDGE_SCHEMA}},
-        messages=[{"role": "user", "content": prompt}])
-    return json.loads(_text_of(resp))
+    last = None
+    for _ in range(2):
+        resp = _call(
+            client, JUDGE_MODEL, usage, max_tokens=JUDGE_MAX_TOKENS,
+            **_thinking(JUDGE_MODEL),
+            output_config={"format": {"type": "json_schema",
+                                      "schema": JUDGE_SCHEMA}},
+            messages=[{"role": "user", "content": prompt}])
+        try:
+            return json.loads(_text_of(resp))
+        except json.JSONDecodeError as e:
+            last = e
+    raise last
 
 
 def analyze(runs: list[dict]) -> dict:
@@ -628,14 +640,56 @@ def analyze(runs: list[dict]) -> dict:
     return out
 
 
+def rejudge() -> int:
+    """Re-run only the failed judge calls of wave_main on the stored
+    artifacts (generation, conformance and execution rows untouched)."""
+    import anthropic
+    client = anthropic.Anthropic()
+    out_dir = RESULTS_DIR / "wave_main"
+    report = json.loads((out_dir / "report.json").read_text(encoding="utf-8"))
+    usage: dict = report.get("usage", {})
+    todo = [r for r in report["runs"]
+            if r.get("judge") is None and r.get("compiles")]
+    print(f"re-judging {len(todo)} stored artifacts "
+          f"(max_tokens={JUDGE_MAX_TOKENS})")
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futs = {}
+        for r in todo:
+            code = (out_dir / r["code_file"]).read_text(encoding="utf-8")
+            futs[pool.submit(judge_one, client, r["rung"], code, usage)] = r
+        for fut, r in futs.items():
+            try:
+                r["judge"] = fut.result()
+                r.pop("judge_error", None)
+                r["judge_note"] = "re-judged at max_tokens=16000"
+            except Exception as e:  # noqa: BLE001
+                r["judge_error"] = str(e)[:300]
+    report["usage"] = usage
+    report["spend_usd"] = _spend(usage)
+    (out_dir / "report.json").write_text(
+        json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    summary = analyze(report["runs"])
+    (out_dir / "analysis.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(summary, indent=2))
+    print(f"total spend: ${report['spend_usd']}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--calibrate", type=int, metavar="N",
                     help="R4-only calibration: N runs, gen+conformance+"
                          "execution, no judge")
+    ap.add_argument("--rejudge", action="store_true",
+                    help="re-judge stored wave_main artifacts whose judge "
+                         "call failed; no regeneration")
     ap.add_argument("--runs", type=int, default=RUNS_PER_RUNG)
     args = ap.parse_args(argv)
+
+    if args.rejudge:
+        return rejudge()
 
     if not (os.environ.get("ANTHROPIC_API_KEY")
             or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
