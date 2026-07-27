@@ -18,7 +18,11 @@ primary documents read directly from the PDFs: the AI Capabilities Model
 once more (rev. 3, same day) to add four specification-quality sources,
 each verified against its primary: OpenAI's harness-engineering account,
 SWE-bench Verified's annotation data, METR's RCT together with its 2026
-update, and SpecFix (ASE 2025).*
+update, and SpecFix (ASE 2025). A later pass (rev. 4, 2026-07-27)
+re-read the harness-engineering account together with the sources it
+cites and added two caveats to it — one about what a generated linter
+does not come with, one about the artifact class its authors chose. No
+new sources, no changed claims.*
 
 **How to read the claims.** Every load-bearing statement carries a tag,
 in decreasing order of strength:
@@ -296,7 +300,13 @@ does not exist" — knowledge in chat threads, shared documents, or
 someone's head is invisible to the system. One team's self-report, no
 control condition — but the largest published agent-first build to
 date made mechanically-checked in-repo artifacts the control layer.
-[vendor, rev. 3]
+One further detail belongs on the record because it cuts against this
+report's own preference: the system of record described is markdown,
+code and generated schema documentation, and the account names no
+hand-authored models anywhere in the tree. Read honestly, that makes it
+corroboration for the *mechanism* — mechanically-checked in-repo
+artifacts — and a caution about the *artifact class*: at this team's
+scale the designs were written, not drawn. [vendor, rev. 3]
 
 **Spec ambiguity has a measured base rate.** SWE-bench — the standard
 benchmark where an AI must resolve real GitHub issues — was audited by
@@ -596,7 +606,14 @@ literally this category's shipping forms. [research, rev. 2] Rev. 3
 adds the vendor-side existence proof: OpenAI's own agent-first build
 at ~1M-line scale names custom linters and structural tests — not
 documentation, not review — as the load-bearing control layer, and had
-the agents generate those linters themselves. [vendor, rev. 3]
+the agents generate those linters themselves. [vendor, rev. 3] Read
+straight, that existence proof cuts both ways, and this report should
+say so: if agents can generate the rule code, the scarce ingredient in
+this category is not the rules but what makes a check trustworthy —
+calibration against a frozen scale, an evidence base tying the checks
+to outcomes, and scores comparable across teams. None of those come
+free with a generated linter; that reading is this report's inference,
+not OpenAI's claim.
 
 ### Rules for the AI-heavy pipeline
 

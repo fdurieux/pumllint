@@ -186,6 +186,27 @@ Short answer: for this specific job, nothing we could find.
   serve as a pass/fail gate. pumllint's score is deterministic — the same
   diagrams get the same score, every time — which is what makes it usable
   as an enforcement gate and auditable afterwards.
+- **"Couldn't our AI just write us one?"** Increasingly, yes — the
+  largest published AI-first build to date (OpenAI, February 2026,
+  roughly a million lines of code) enforced its own architecture with
+  checkers the AI wrote itself. That works, and nothing here argues
+  against it. The difference is what stands behind the rules. We
+  investigated having an AI write this tool's own checks, and the risk
+  turned out not to be that it invents nonsense — that gets caught
+  immediately — but that it writes a check which satisfies the two or
+  three examples it was shown, quietly gets the general case wrong, and
+  is then reviewed by the same AI that wrote it. Three things keep that
+  in hand here and are simply absent from a checker generated last week:
+  every rule carries written acceptance examples, the scores are frozen
+  by tests so no new rule can shift them silently, and each candidate
+  rule is run across a reference collection to show where it fires
+  before anyone accepts it. Two more are impossible for a
+  single-repository tool by construction: scores that mean the same
+  thing in another team's repository — a Level 3 here is a Level 3
+  there, which is what makes a portfolio view possible — and published
+  evidence that the checks relate to real outcomes. Writing your own
+  checks is not the disagreement; this tool ships a guide for adding
+  rules to it. The apparatus around the rules is the product.
 
 ## Suggested rollout
 
