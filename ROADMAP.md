@@ -400,6 +400,20 @@ actually becomes a recurring pipeline rather than occasional sessions:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
+- **docs/sdlc-tooling-landscape.md is the source of truth, and a second
+  rendering of it exists off-repo and is deliberately out of date.** A
+  separately-authored HTML version (own layout, its own provenance line)
+  was published for a management audience and sits at **rev. 2** — the
+  whole rev. 3 specification-quality stream and the rev. 4 caveats are
+  missing from it. Nothing in it is false; it under-claims. Verified and
+  decided 2026-07-27: **not synced**, because its source file is gone and
+  any redeploy means reconstructing the page from a fetched copy — the
+  inline Wardley SVG and the dark-mode blocks are what break. If it is
+  ever brought current: **graft the missing sections, never regenerate
+  from this markdown** (the two are not the same document), stage to a
+  throwaway target and diff before touching the live one, and leave its
+  audience-specific tag wording alone unless asked. Revise this doc
+  freely in the meantime — the divergence is accepted, not a debt.
 - Recommended next: **Arcs A–D are complete** — including the
   execution-oracle and cross-vendor waves (2026-07-26) and the
   agent-repair wave (2026-07-27) — and the report
