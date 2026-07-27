@@ -768,7 +768,9 @@ primary document.
   downward — METR is an independent nonprofit but the paper is an
   arXiv preprint, not peer-reviewed). The harness-engineering account
   is one team's self-report with no control condition — [vendor]
-  discipline applies however well it fits this report's thesis.
+  discipline applies however well it fits this report's thesis — and
+  it publishes no defect, revert or rework figure at all, which is the
+  quality denominator its throughput numbers would need.
   SWE-bench Verified's 38.3% is OpenAI-published annotation data;
   reading it as a spec-ambiguity base rate is this report's
   interpretation. SpecFix's headline 30.9% is on the 43.58% of
