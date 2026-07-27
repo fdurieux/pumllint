@@ -43,3 +43,15 @@ experiment_results/wave_*/*
 !experiment_results/wave_repair_author/repair_log.json
 !experiment_results/wave_repair_author/repaired/
 !experiment_results/wave_repair_author/repaired/**
+
+# C4 detail-ladder experiment (docs/c4-codegen-detail-experiment.md):
+# keep the reports, not the generated throwaway modules
+c4_experiment_results/*
+!c4_experiment_results/calib/
+c4_experiment_results/calib/*
+!c4_experiment_results/calib/report.json
+!c4_experiment_results/calib/analysis.json
+!c4_experiment_results/wave_main/
+c4_experiment_results/wave_main/*
+!c4_experiment_results/wave_main/report.json
+!c4_experiment_results/wave_main/analysis.json

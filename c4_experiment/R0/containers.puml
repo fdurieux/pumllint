@@ -1,0 +1,22 @@
+@startuml
+!include <C4/C4_Container>
+
+title loan system
+
+Person(applicant, "Applicant")
+
+System_Boundary(los, "Loan System") {
+    Container(origination_api, "API")
+    Container(decision_engine, "Engine")
+    ContainerDb(application_store, "DB")
+}
+
+System_Ext(credit_bureau, "Credit Bureau")
+System_Ext(notification_service, "Notifications")
+
+Rel(applicant, origination_api, "Uses")
+Rel(origination_api, application_store, "Uses")
+Rel(origination_api, decision_engine, "Uses")
+Rel(decision_engine, credit_bureau, "Uses")
+Rel(origination_api, notification_service, "Uses")
+@enduml

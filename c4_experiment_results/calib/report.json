@@ -1,0 +1,296 @@
+{
+  "gen_model": "claude-opus-4-8",
+  "judge_model": "claude-sonnet-5",
+  "runs_per_rung": 2,
+  "calibrating": true,
+  "prompt": "Implement the system specified below as a single self-contained Python module. The specification is a C4 model: one or more PlantUML diagrams using C4 macros (Person / Container / Component / System_Ext / Rel), possibly followed by a companion markdown specification.\n\nRules:\n- One class per Container, ContainerDb and System_Ext element. If component diagrams are provided, additionally one class per Component; a component class implements part of its container's responsibility.\n- Name each class after the element's alias in CamelCase (alias credit_bureau -> class CreditBureau).\n- Relationships (Rel) become method calls from the source element's class to the target element's class. Do not add calls between elements that have no declared relationship.\n- Where the specification describes flows, steps, guards or rules, implement them; failure paths become raised exceptions or error returns.\n- External systems (System_Ext) are outside the system boundary: implement each as a simple class whose methods return plausible values.\n- Where the specification is ambiguous or incomplete, make your best guess and implement something concrete.\n- Output ONLY Python code. No markdown fences, no prose.\n\nAdditionally expose a module-level function:\n\n    def handle(request: dict) -> dict\n\nthat runs one end-to-end flow. `request` carries the scenario input: entity ids and amounts, existence flags (keys like \"<entity>_exists\" / \"<entity>_found\"), and \u2014 where your implementation depends on an external system's outcome \u2014 keys of the form \"<system>_result\" / \"<system>_status\" whose values are short words such as \"approved\", \"declined\", \"active\", \"lapsed\", \"stored\", \"assessed\", \"error\", or a number for scores. Return a dict whose \"status\" key names the outcome (e.g. \"confirmed\", \"rejected\", \"error: <reason>\").\n\nSPECIFICATION:\n\n{spec}\n",
+  "usage": {
+    "claude-opus-4-8": {
+      "in": 12350,
+      "out": 6177
+    }
+  },
+  "spend_usd": 0.22,
+  "pumllint_view": {
+    "R4": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "dynamics.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ]
+  },
+  "runs": [
+    {
+      "rung": "R4",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R4_run1.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "extra_classes": [
+          "Applicant"
+        ],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=declined application_id"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=review application_id=prote"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storageerror: application store unavailable'} | {'status': 'error: storageerror: application store unavailable'} | status=error: storageerror: application store unavailable"
+        }
+      ]
+    },
+    {
+      "rung": "R4",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "code_file": "gen_R4_run2.py",
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [
+          "OriginationApi"
+        ],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 0.75,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 0.5,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "approved_boundary",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=approved application_id"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=declined application_id"
+        },
+        {
+          "scenario": "borderline_review",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | status=review application_id=prote"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storage_unavailable'} | {'status': 'error: storage_unavailable'} | status=error: storage_unavailable"
+        }
+      ]
+    }
+  ]
+}

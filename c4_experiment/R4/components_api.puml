@@ -1,0 +1,24 @@
+@startuml loan_origination_components_api
+!include <C4/C4_Component>
+
+title Component diagram for LoanCheck - Origination API container
+
+Person(applicant, "Loan Applicant", "A retail customer applying for a personal loan")
+
+Container_Boundary(origination_api, "Origination API") {
+    Component(application_service, "Application Service", "Python class", "Orchestrates the credit-check flow: validation, storage, decision, notification")
+    Component(application_validator, "Application Validator", "Python class", "Checks that a submitted application is complete and within product limits")
+}
+
+ContainerDb(application_store, "Application Store", "PostgreSQL 16", "Stores loan applications and their decision status")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library", "Determines the credit decision for a validated application")
+System_Ext(notification_service, "Notification Service", "External messaging provider delivering e-mail and SMS notifications")
+
+Rel(applicant, application_service, "Submits loan application to", "JSON/HTTPS")
+Rel(application_service, application_validator, "Validates the application via", "in-process call")
+Rel(application_service, application_store, "Stores and updates application records in", "SQL/TCP")
+Rel(application_service, decision_engine, "Requests credit decision from", "JSON/HTTPS")
+Rel(application_service, notification_service, "Sends decision notifications via", "REST/HTTPS")
+
+SHOW_LEGEND()
+@enduml

@@ -1,0 +1,24 @@
+{
+  "R4": {
+    "artifacts": 2,
+    "compile_first_try": 2,
+    "executed_pass_rate": 1.0,
+    "semantic_pass_rate": 1.0,
+    "scenario_pass": {
+      "approved_boundary": "2/2",
+      "approved_high": "2/2",
+      "borderline_review": "2/2",
+      "bureau_error": "2/2",
+      "declined_low": "2/2",
+      "invalid_zero": "2/2",
+      "over_cap": "2/2",
+      "storage_error": "2/2"
+    },
+    "group_edge_recall_mean": 0.88,
+    "extra_group_edges_total": 0,
+    "extra_classes_total": 1,
+    "invented_mean": null,
+    "embellish_mean": null,
+    "fidelity_mean": null
+  }
+}
