@@ -418,6 +418,13 @@ actually becomes a recurring pipeline rather than occasional sessions:
   - Re-litigate/build trigger: the pilot census (tools/pilot_census.py
     already counts C4 macro calls) showing material C4 usage on a real
     corpus, or a concrete user asking.
+  - Evidence extension since run (2026-07-27,
+    docs/c4-codegen-detail-experiment.md): a five-rung C4 detail-ladder
+    wave measured which spec ingredients move codegen outcomes —
+    behavioral content +29 pp executed, annotations +8 pp, companion
+    spec cuts judged invention but not executed error on
+    canonical-threshold scenarios. Rule-selection implications recorded
+    there; this adds selection evidence, not a build trigger.
 
 ## Working agreements (read before picking anything up)
 

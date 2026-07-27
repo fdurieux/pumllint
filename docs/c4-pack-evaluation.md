@@ -180,7 +180,12 @@ bar is deliberately higher than parser + rules: corpus mutation ladders
 and clean probes, a deliberate additive golden re-freeze, pilot
 regeneration, and ideally an evidence extension (does C4 completeness
 move codegen outcomes the way sequence maturity measurably does? — an
-Arc D-shaped question, noted, not promised).
+Arc D-shaped question, noted, not promised). *Since run (2026-07-27):
+the detail-ladder experiment
+([c4-codegen-detail-experiment.md](c4-codegen-detail-experiment.md))
+measured it — behavioral content is the big executed lever (+29 pp),
+annotations are modest (+8 pp); rule-selection implications for this
+pack are recorded there. Census gating unchanged.*
 
 ## Decision and triggers
 
