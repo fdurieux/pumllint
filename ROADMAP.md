@@ -108,8 +108,9 @@ grouped into arcs. Keep it updated as items land.
   is done — five diagram types parsed, 42 rules, every type under the
   golden contract — and no further pack is queued. Candidate directions if
   a concrete user pulls: **new type packs** (component and deployment
-  first, the common architecture-documentation forms; object/ER/timing are
-  progressively more niche), **deepening the thinner packs** (CLS 5, STA 3,
+  first, the common architecture-documentation forms — for the C4-PlantUML
+  form of that demand see *Settled questions*: fit verified 2026-07-27,
+  wait for census pull; object/ER/timing are progressively more niche), **deepening the thinner packs** (CLS 5, STA 3,
   UC 3 rules against the sequence family's 11 base + 9 codegen), and
   **growing the XD family** across more entity kinds. The bar is higher
   than "parser + rules": a new pack ships with corpus mutation ladders and
@@ -389,6 +390,34 @@ actually becomes a recurring pipeline rather than occasional sessions:
     (GitLab renders PlantUML fences natively and was outside this
     scan's reach); the global embedded footprint passing the
     pre-registered 10k bar.
+
+- **C4-PlantUML pack (2026-07-27): fit verified, wait for census pull.**
+  A fit evaluation (full record: docs/c4-pack-evaluation.md — external
+  claims verified against primary sources, behavior measured on v0.23.0)
+  confirmed the fit case and bounded the claim:
+  - c4model.com's review checklist supplies an externally-authored rule
+    spec (title/type/scope/legend; element name, description, technology;
+    relationship label, direction, protocol); C4-PlantUML's closed macro
+    surface suits the line-oriented recognizer and ships no validation of
+    its own; no third-party C4-PlantUML linter found.
+  - Measured on v0.23.0: a well-formed container diagram scores
+    **Level 1** (zero-modelled-elements cap) and a raw-arrow C4 file is
+    **mistyped as sequence** (Level 4, SEQ009 false positives) — current
+    output on C4 input is misleading in both directions, not merely
+    absent. (The C4_Sequence-include misfire an earlier draft assumed
+    does not occur: pure-macro files are never typed sequence — raw
+    arrows are the mechanism.)
+  - Claim language stays narrow: Structurizr's inspections already check
+    description/technology completeness on its own workspaces — the open
+    niche is *hand-written C4-PlantUML files* only. Structurizr DSL is
+    out of scope by decision.
+  - Sizing: largest pack since sequence (argument tokenizer, level
+    detection, ~20 rules across base/level-dependent/codegen tiers, plus
+    the full Arc C pack bar: corpus ladders, additive golden re-freeze,
+    pilot regeneration, ideally an evidence extension).
+  - Re-litigate/build trigger: the pilot census (tools/pilot_census.py
+    already counts C4 macro calls) showing material C4 usage on a real
+    corpus, or a concrete user asking.
 
 ## Working agreements (read before picking anything up)
 
