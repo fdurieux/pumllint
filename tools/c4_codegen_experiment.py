@@ -640,18 +640,23 @@ def analyze(runs: list[dict]) -> dict:
     return out
 
 
-def rejudge() -> int:
-    """Re-run only the failed judge calls of wave_main on the stored
-    artifacts (generation, conformance and execution rows untouched)."""
+def rejudge(uniform: bool = False) -> int:
+    """Re-run judge calls of wave_main on the stored artifacts
+    (generation, conformance and execution rows untouched). Default:
+    only failed calls. --rejudge-uniform: also re-judge first-pass
+    judgements that ran at the old 6000 budget, so every judgement in
+    the record shares one configuration; the old result is preserved
+    under "judge_6k"."""
     import anthropic
     client = anthropic.Anthropic()
     out_dir = RESULTS_DIR / "wave_main"
     report = json.loads((out_dir / "report.json").read_text(encoding="utf-8"))
     usage: dict = report.get("usage", {})
-    todo = [r for r in report["runs"]
-            if r.get("judge") is None and r.get("compiles")]
+    todo = [r for r in report["runs"] if r.get("compiles")
+            and (r.get("judge") is None
+                 or (uniform and "judge_note" not in r))]
     print(f"re-judging {len(todo)} stored artifacts "
-          f"(max_tokens={JUDGE_MAX_TOKENS})")
+          f"(max_tokens={JUDGE_MAX_TOKENS}, uniform={uniform})")
     with ThreadPoolExecutor(max_workers=8) as pool:
         futs = {}
         for r in todo:
@@ -659,9 +664,14 @@ def rejudge() -> int:
             futs[pool.submit(judge_one, client, r["rung"], code, usage)] = r
         for fut, r in futs.items():
             try:
-                r["judge"] = fut.result()
+                new = fut.result()
+                if r.get("judge") is not None:
+                    r["judge_6k"] = r["judge"]
+                r["judge"] = new
                 r.pop("judge_error", None)
-                r["judge_note"] = "re-judged at max_tokens=16000"
+                r["judge_note"] = ("uniform re-judge at max_tokens=16000"
+                                   if uniform and "judge_6k" in r
+                                   else "re-judged at max_tokens=16000")
             except Exception as e:  # noqa: BLE001
                 r["judge_error"] = str(e)[:300]
     report["usage"] = usage
@@ -685,11 +695,14 @@ def main(argv=None) -> int:
     ap.add_argument("--rejudge", action="store_true",
                     help="re-judge stored wave_main artifacts whose judge "
                          "call failed; no regeneration")
+    ap.add_argument("--rejudge-uniform", action="store_true",
+                    help="re-judge remaining old-budget judgements so all "
+                         "judgements share max_tokens=16000")
     ap.add_argument("--runs", type=int, default=RUNS_PER_RUNG)
     args = ap.parse_args(argv)
 
-    if args.rejudge:
-        return rejudge()
+    if args.rejudge or args.rejudge_uniform:
+        return rejudge(uniform=args.rejudge_uniform)
 
     if not (os.environ.get("ANTHROPIC_API_KEY")
             or os.environ.get("ANTHROPIC_AUTH_TOKEN")):

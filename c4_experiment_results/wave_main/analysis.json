@@ -17,9 +17,9 @@
     "group_edge_recall_mean": 1.0,
     "extra_group_edges_total": 0,
     "extra_classes_total": 0,
-    "invented_mean": 6.67,
-    "embellish_mean": 5.0,
-    "fidelity_mean": 59.33
+    "invented_mean": 7.0,
+    "embellish_mean": 5.67,
+    "fidelity_mean": 58.0
   },
   "R1": {
     "artifacts": 3,
@@ -41,7 +41,7 @@
     "extra_classes_total": 0,
     "invented_mean": 7.0,
     "embellish_mean": 5.0,
-    "fidelity_mean": 46.33
+    "fidelity_mean": 50.67
   },
   "R2": {
     "artifacts": 3,

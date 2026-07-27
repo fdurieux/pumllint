@@ -253,7 +253,7 @@ moderate rungs, does not restore missing content) is expected to
 transfer, not re-tested here. Cross-vendor and human-authored C4 are
 out of scope.
 
-## Results (2026-07-27, $4.03 total: calibration $0.22 + wave $2.52 + re-judge $1.29)
+## Results (2026-07-27, $4.31 total: calibration $0.22 + wave $2.52 + re-judge $1.29 + uniformity re-judge $0.28)
 
 **Run notes, recorded before the verdicts:** (1) 15/15 generations
 compiled first-try; every failure at every rung was semantic —
@@ -265,7 +265,15 @@ judge budget of 6000 was sized for). Harness repaired
 re-judged against the stored artifacts — no regeneration; generation,
 conformance and execution rows untouched. (3) The `--rejudge` mode and
 the budget constant are post-freeze harness repairs, disclosed here;
-prompts, schema, models and oracles unchanged.
+prompts, schema, models and oracles unchanged. (4) A uniformity pass
+(`--rejudge-uniform`, +$0.28) then re-judged the six R0/R1 artifacts
+whose first-pass judgements had run at the old 6000 budget, so all 15
+judgements in the record share one configuration; the 6000-budget
+values are preserved in the report under `judge_6k` (they differed
+only in decimals: R0 inventions 6.67 → 7.00, embellishments
+5.00 → 5.67, fidelity 59.3 → 58.0; R1 inventions unchanged 7.00,
+fidelity 46.3 → 50.7 — judge-sampling jitter at n = 3, executed and
+mechanical numbers untouched).
 
 **The ladder, all three oracles** (pooled, n = 3 artifacts × 8
 scenarios per rung; judged numbers are judgments, never merged with
@@ -273,8 +281,8 @@ executed):
 
 | Rung | Executed pass-rate | Edge recall (mech.) | Extra edges | Invented/run (judged) | Fidelity (judged) |
 |---|---|---|---|---|---|
-| R0 bare | 0.417 | 1.00 | 0 | 6.67 | 59.3 |
-| R1 checklist | 0.500 | 1.00 | 0 | 7.00 | 46.3 |
+| R0 bare | 0.417 | 1.00 | 0 | 7.00 | 58.0 |
+| R1 checklist | 0.500 | 1.00 | 0 | 7.00 | 50.7 |
 | R2 components | 0.625 | 1.00 | 1 | 6.67 | 57.3 |
 | R3 dynamics | 0.917 | 1.00 | 0 | 6.00 | 62.0 |
 | R4 companion spec | 0.917 | 1.00 | 0 | 4.00 | 66.3 |
@@ -292,11 +300,12 @@ rungs; recorded, not interpreted.)
   structure already secures structural conformance — the ladder's
   executed value is entirely behavioral.
 - **EC2 — failed as located, direction intact.** Invention falls
-  R0→R4 (6.67 → 4.00) but not monotonically (R1 ticks *up* to 7.00),
-  and the largest drop is **R3→R4 (−2.0)**, not the pre-registered
-  R2→R3 (−0.67). Per the matrix: the invention reduction belongs to
-  the **companion spec**, not the dynamic diagrams. The two oracles
-  split cleanly: dynamics fix executed outcomes; the written contract
+  R0→R4 (7.00 → 4.00) but is flat across the annotation rung
+  (R0→R1: 7.00 → 7.00 under the uniform judge budget), and the
+  largest drop is **R3→R4 (−2.0)**, not the pre-registered R2→R3
+  (−0.67). Per the matrix: the invention reduction belongs to the
+  **companion spec**, not the dynamic diagrams. The two oracles split
+  cleanly: dynamics fix executed outcomes; the written contract
   reduces guessing.
 - **EC3 — half confirmed, and the failed half is the headline.**
   Monotone ✓; **R3−R2 = +29.2 pp** ✓ (the largest single step —

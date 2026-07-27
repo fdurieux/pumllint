@@ -10,11 +10,11 @@
       "out": 39943
     },
     "claude-sonnet-5": {
-      "in": 152742,
-      "out": 141795
+      "in": 172736,
+      "out": 156692
     }
   },
-  "spend_usd": 3.81,
+  "spend_usd": 4.09,
   "pumllint_view": {
     "R0": [
       {
@@ -246,6 +246,38 @@
         "technologies_expected": 0,
         "technologies_honored": 0,
         "invented_business_logic": [
+          "Credit score threshold MIN_SCORE=650 for approval decision",
+          "Maximum loan amount threshold MAX_AMOUNT=100000 triggering automatic decline",
+          "Specific decision outcome values ('approved'/'declined') and reason strings ('amount too high','low score') not present in spec",
+          "Simulated credit bureau scoring logic (default 720, 'declined' maps to 500, numeric parsing) invented wholesale",
+          "Applicant existence check (applicant_exists/applicant_found) causing early 'error: applicant not found' response",
+          "Mapping of decision to overall request status ('confirmed'/'rejected') and specific notification message text",
+          "Default values for applicant_id, application_id, amount when missing from request"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping entire handle() function to catch generic exceptions",
+          "ValueError raised for missing applicant_id/application_id",
+          "KeyError raised in update_status when application not found",
+          "RuntimeError simulation for 'error' status in CreditBureau and NotificationService",
+          "Type coercion try/except in get_credit_score",
+          "Constructors (__init__) storing collaborators",
+          "In-memory dict-based ApplicationStore implementation details (save/get/update_status) beyond simple 'persist' semantics"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 6 C4 elements and all 5 specified relationships are structurally present and correctly wired (Applicant->API->DB, API->Engine, Engine->CreditBureau, API->Notifications). No guards, failure paths, or technology annotations were specified in the .puml, so those categories are technically satisfied by omission. However, the code invents a large amount of unspecified domain logic: concrete scoring thresholds, decision rules, specific status strings, an applicant-existence check, and a bureau result simulation scheme. None of this is grounded in the specification, which only shows generic 'Uses' relationships with no business semantics. This invented logic constitutes the majority of the code's actual behavior, so despite perfect structural coverage, fidelity to the spec's actual (minimal) content is moderate-low due to fabricated business rules layered on top."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
           "MIN_SCORE=650 credit score threshold for approval",
           "MAX_AMOUNT=100000 loan amount cap causing automatic decline",
           "Specific credit score values (720 default, 500 for 'declined' result)",
@@ -263,7 +295,8 @@
         ],
         "fidelity_score": 58,
         "notes": "All six C4 elements and five Uses relationships from the container diagram are structurally realized via corresponding classes and method calls, giving strong structural fidelity. However, the specification contains no guards, failure paths, or technology annotations to honor, so those categories are trivially satisfied (all zero/zero). The code substantially invents domain logic absent from the spec: concrete credit score thresholds, loan amount caps, decision/status vocabularies, and notification content, none of which were specified in the bare container diagram. This invented business logic is the main fidelity concern; embellishments like validation and error handling are benign additions."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R0",
@@ -390,6 +423,36 @@
         "technologies_expected": 0,
         "technologies_honored": 0,
         "invented_business_logic": [
+          "APPROVAL_THRESHOLD = 650 credit score cutoff for approval/decline decision",
+          "Specific credit score value mappings (750 for 'approved', 500 for 'declined', 700 default) invented for CreditBureau",
+          "Application status state machine: 'pending' -> 'approved'/'declined' -> 'confirmed'/'rejected' response mapping",
+          "Validation rule requiring amount > 0 and raising ValueError('invalid amount')",
+          "Validation rule requiring applicant_id truthy and raising ValueError('missing applicant')",
+          "Default application_id fallback value 'app-1' when not provided in request",
+          "Notification message content template 'Your application was %s'"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapper in handle() converting exceptions to {'status':'error: ...'} response",
+          "result-parameter hooks (bureau_result, application_store_result, notification_service_result) to simulate failure injection, not present in spec",
+          "isinstance check for numeric credit score override in CreditBureau.get_credit_score",
+          "Docstrings on every class describing C4 role",
+          "ApplicationStore internal dict-based persistence implementation details (get/update_status helper methods) beyond simple 'Uses' relationship"
+        ],
+        "fidelity_score": 58,
+        "notes": "The C4 container diagram itself specifies only 6 elements and 5 generic 'Uses' relationships with no technologies, guards, or failure paths defined \u2014 the code faithfully implements all elements and wires all 5 relationships correctly (Applicant->API->Store, API->Engine, Engine->CreditBureau, API->Notifications). However, since the spec is a bare structural diagram with no behavioral detail, the code necessarily invents nearly all business logic: the approval threshold, credit score semantics, status state transitions, validation rules, and message content are all fabricated with no basis in the specification. This is expected given the sparse spec, but per the rubric such invented domain logic is heavily penalized. Structural fidelity is high (all elements/relationships present) but semantic fidelity is low due to fabricated business rules; no guards, failure paths, or technology annotations existed in the spec to compare against."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
           "APPROVAL_THRESHOLD = 650 credit score cutoff not present in spec",
           "Specific credit score value mappings (750 for approved, 500 for declined, 700 default)",
           "Application status vocabulary ('confirmed'/'rejected') diverging from decision engine's 'approved'/'declined'",
@@ -406,7 +469,8 @@
         ],
         "fidelity_score": 58,
         "notes": "All 6 elements and all 5 relationships from the container diagram are structurally realized with correctly directed calls (Applicant->API->{Store,Engine,Notifications}, Engine->CreditBureau). No guards, failure paths, or technology annotations were specified in the PlantUML (no tech tags, no dynamic diagram conditions), so those expected counts are zero, and none were meaningfully required to be honored. However, the code invents substantial domain semantics beyond the spec's plain structural intent: a hardcoded approval threshold, concrete credit score values, bespoke status vocabulary, and validation/error-handling business rules that were never specified. These are the kind of invented business logic that could mislead a reader into thinking the spec mandated them. Embellishments like try/except and isinstance guards are benign engineering additions. Given perfect structural coverage but heavy unrequested business-rule invention, fidelity is moderate."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R0",
@@ -533,6 +597,36 @@
         "technologies_expected": 0,
         "technologies_honored": 0,
         "invented_business_logic": [
+          "Credit score approval threshold of 650",
+          "Amount-based additional score requirement (amount // 1000 added to threshold)",
+          "Default credit score of 700 when no score/status provided",
+          "Applicant existence check via 'applicant_exists' flag raising 'unknown applicant' error",
+          "Specific status values 'confirmed'/'rejected' and decision reasons 'low score'/'amount too high for score'",
+          "Specific notification message text 'Your loan was approved'/'Your loan was declined'",
+          "Application ID auto-generation scheme 'app-{applicant_id}'"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapper in handle() converting exceptions to error status string",
+          "ValueError guard for missing application_id in ApplicationStore.save",
+          "KeyError guard for missing application in ApplicationStore.update_status",
+          "isinstance/digit-string type coercion logic in CreditBureau.get_score",
+          "Docstrings describing C4 element roles"
+        ],
+        "fidelity_score": 58,
+        "notes": "All 6 C4 elements and all 5 specified relationships are structurally realized with correct call directions (Applicant->API->{DB,Engine,Notifications}, Engine->CreditBureau). The specification itself contains no guards, failure paths, or technology annotations, so those expected counts are zero and trivially satisfied. However, the code invents substantial domain logic not present in the diagram: a specific approval threshold (650), an amount-scaled secondary threshold, default score fallback (700), applicant-existence validation, specific status/reason strings, and notification message content. None of this is contradicted by the spec, but none of it is derivable from it either \u2014 it's the generator's guesswork filling in an intentionally abstract container diagram. Structural fidelity is excellent; behavioral fidelity is compromised by invented business rules that could mislead readers into thinking these are specified requirements."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 0,
+        "technologies_honored": 0,
+        "invented_business_logic": [
           "APPROVAL_THRESHOLD = 650 credit score cutoff",
           "Additional amount-based scoring rule (score < threshold + amount//1000) for declining larger loans",
           "Default credit score of 700 when no score info provided",
@@ -550,7 +644,8 @@
         ],
         "fidelity_score": 62,
         "notes": "All 6 elements and 5 relationships from the container diagram are structurally realized with matching call directions (Applicant->API->Store, API->Engine, Engine->CreditBureau, API->Notifications). No guards, failure paths, or technology annotations were specified in the minimal C4 spec, so those categories are vacuously satisfied. However, the code invents substantial domain logic absent from the spec: a concrete credit score threshold, an amount-based secondary decision rule, default score fallback, applicant-existence validation, and specific status/message semantics. These are plausible but unsanctioned business rules that go well beyond the structural relationships the spec actually defines, which is the main fidelity concern. Defensive coding (error raises, try/except, type checks) is benign and expected engineering elaboration."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R1",
@@ -675,6 +770,35 @@
         "failure_paths_expected": 0,
         "failure_paths_implemented": 0,
         "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "APPROVE_THRESHOLD = 650 hard-coded credit score cutoff for approval, never specified in the diagram",
+          "Detailed validation rules (missing application_id/applicant_id/amount, amount must be positive, invalid amount type) invented for 'validates them' description",
+          "decision_status lifecycle values 'pending' -> 'approved'/'declined' invented as concrete state machine",
+          "Status remapping of decision to 'confirmed'/'rejected' strings in handle() invented as external-facing vocabulary",
+          "Default score fallback of 720 when credit bureau score missing/unparseable, invented business default",
+          "Test-hook override fields (decision_engine_result, credit_bureau_status, notification_service_status) that let callers force decisions/errors, not present in spec",
+          "Default application values (APP-1, CUST-1, amount 5000) invented for missing request fields"
+        ],
+        "defensive_embellishments": [
+          "request = request or {} guards across all classes",
+          "try/except float/int coercion for amount and score",
+          "KeyError guard in ApplicationStore.update_decision for unknown application_id",
+          "Generic __init__ constructors for dependency wiring"
+        ],
+        "fidelity_score": 45,
+        "notes": "All 6 elements and all 5 relationships from the container diagram are structurally represented and wired in the correct direction (Applicant\u2192API\u2192Store/Engine\u2192Bureau, API\u2192Notification). However, the specification's technology annotations (FastAPI, PostgreSQL, rules library, JSON/HTTPS, SQL/TCP, XML/HTTPS, REST/HTTPS) are almost entirely absent from naming, interfaces, or comments \u2014 only the ApplicationStore docstring nods to PostgreSQL. The diagram is a static container diagram with no guards or failure paths specified, yet the code invents a large amount of concrete business logic never described: a 650 credit-score approval threshold, detailed field validation rules, a pending/approved/declined status lifecycle, an external status vocabulary (confirmed/rejected), default score fallbacks, and hidden test-hook override parameters that let callers dictate engine/bureau/notification outcomes. This invented logic materially exceeds the specification's scope even though the topology is faithful."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 8,
         "technologies_honored": 0,
         "invented_business_logic": [
           "Fixed credit-score approval threshold of 650 to decide approved/declined outcome (spec only says decision engine 'determines' decision from score, no threshold given)",
@@ -694,7 +818,8 @@
         ],
         "fidelity_score": 35,
         "notes": "All 6 elements and all 5 relationships from the container diagram are structurally represented and wired in the expected direction (Applicant->API->Store/DecisionEngine->CreditBureau, API->NotificationService), so the topology is faithful. However, the spec is a static container diagram with no guards, thresholds, validation rules, or failure paths specified, yet the code invents a large amount of concrete business logic (650 score threshold, field validation, status renaming, override backdoors, simulated failure injection) that has no basis in the specification. Additionally, none of the 8 technology annotations (FastAPI, rules library, PostgreSQL 16, JSON/HTTPS, SQL/TCP, XML/HTTPS, REST/HTTPS) are reflected in the code \u2014 everything is plain in-memory Python with no framework, DB, or protocol-specific shaping. The combination of unspecified invented domain rules and completely unhonored technology stack significantly lowers fidelity despite correct structural skeleton."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R1",
@@ -819,6 +944,37 @@
         "failure_paths_expected": 0,
         "failure_paths_implemented": 0,
         "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "APPROVE_THRESHOLD = 680 credit score cutoff for approve/decline decision",
+          "Default fallback credit score of 720 when bureau returns non-numeric score",
+          "Specific validation rules for application fields (missing application_id/applicant_id/amount, amount must be positive, must be numeric)",
+          "Mapping of decision outcome to a separate 'status' field ('confirmed'/'rejected') not present in spec",
+          "Credit bureau error triggered by a magic 'credit_bureau_status'/'credit_bureau_result' == 'error' convention",
+          "Specific notification message text format ('Your loan application was {decision}.')",
+          "RecordNotFound / update_status requiring pre-existing record as a business rule"
+        ],
+        "defensive_embellishments": [
+          "Type coercion of score strings to int in CreditBureau",
+          "try/except around float(amount) conversion",
+          "Generic Exception catch-all in handle()",
+          "isinstance checks for score type",
+          "Docstrings restating C4 element roles",
+          "Default dict handling for request parameter"
+        ],
+        "fidelity_score": 52,
+        "notes": "All six C4 elements (Person, two Containers, ContainerDb, two System_Ext) are represented as classes, and all five specified relationships are structurally realized via method calls in the correct direction (applicant->API->store, API->engine, engine->bureau, API->notification). However, the diagram is a static container diagram with no guards or failure paths specified, yet the code invents substantial domain logic: a hard-coded 680 credit score threshold, a 720 fallback score, detailed validation rules, status vocabulary ('confirmed'/'rejected'), and an ad-hoc error-triggering convention via magic dictionary keys \u2014 none of which are grounded in the specification, which only says the containers 'validate' and 'determine credit decision from score' without specifics. Technology annotations (FastAPI, PostgreSQL, rules library, JSON/HTTPS, SQL/TCP, XML/HTTPS, REST/HTTPS) are entirely absent from naming, interfaces, or comments \u2014 the code is generic Python with no technology-reflective hints. Structural fidelity is good, but domain-logic invention and lack of technology grounding meaningfully reduce faithfulness."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 8,
         "technologies_honored": 1,
         "invented_business_logic": [
           "Hard-coded APPROVE_THRESHOLD = 680 credit score cutoff for approve/decline decision, never specified in the diagram",
@@ -837,7 +993,8 @@
         ],
         "fidelity_score": 56,
         "notes": "All 6 elements and all 5 relationships from the container diagram are structurally represented and wired in the correct direction (Applicant\u2192API\u2192Store/Engine\u2192Bureau, API\u2192Notification). However, none of the specified technology annotations (FastAPI, PostgreSQL, SQL/TCP, JSON/HTTPS, XML/HTTPS, REST/HTTPS) are reflected in naming, comments, or interface shape \u2014 the code is generic Python method calls with no protocol/format distinction. Because this is a static container diagram with no dynamic flow, there are no guards or failure paths specified, yet the code invents a substantial amount of concrete business logic (approval threshold, validation rules, default score, status vocabulary, and failure-simulation protocols) that the specification never provided, which is the most significant fidelity concern. Structural/relationship fidelity is high; technology fidelity is very low; invented domain logic is extensive."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R1",
@@ -960,6 +1117,36 @@
         "guards_expected": 0,
         "guards_faithful": 0,
         "failure_paths_expected": 0,
+        "failure_paths_implemented": 0,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Hard-coded MIN_SCORE=650 threshold for credit decisioning, not specified in the spec",
+          "Invented tiered MAX_AMOUNT_FOR_SCORE mapping (800\u2192100000, 750\u219250000, 700\u219230000, 650\u219215000) with no basis in the spec",
+          "Concrete validation rules for application fields (missing applicant_id/application_id/amount, amount<=0) invented beyond the vague 'validates them' in the spec",
+          "Invented 'applicant_exists' check producing an 'applicant not found' error path not present anywhere in the spec",
+          "Invented credit_override mechanism (credit_bureau_status/credit_bureau_result/credit_score) simulating bureau behavior, including a synthetic 'error' override raising RuntimeError",
+          "Default synthetic values for application_id ('APP-1'), applicant_id ('CUST-1'), amount (10000), and default credit score (720) invented for the handle() entrypoint",
+          "Concrete decision reason strings ('score below minimum threshold', 'requested amount exceeds limit for score', 'meets criteria') not specified"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping in handle() for ValueError/KeyError/RuntimeError",
+          "isinstance/type coercion checks in CreditBureau.get_credit_report for override values",
+          "KeyError guard in ApplicationStore.update_application for missing records",
+          "Docstrings describing C4 roles (Person/Container/ContainerDb/System_Ext) on each class",
+          "Simple constructors wiring dependencies (OriginationApi, DecisionEngine, Applicant)"
+        ],
+        "fidelity_score": 55,
+        "notes": "All six C4 elements and all five specified relationships are structurally present and wired in the correct direction with plausible naming (Applicant\u2192OriginationApi\u2192{ApplicationStore, DecisionEngine\u2192CreditBureau}, OriginationApi\u2192NotificationService). However, none of the technology annotations are meaningfully honored: there is no FastAPI, no SQL/PostgreSQL access, no XML/HTTPS or REST/HTTPS calls, no JSON serialization \u2014 interactions are plain in-process Python calls; only a docstring mentions 'PostgreSQL-backed' as a nod to the store's tech. The spec contains no dynamic diagram, so there are no explicit guards or failure paths to satisfy, yet the code invents substantial domain logic (credit score thresholds, tiered loan limits, specific validation rules, a synthetic bureau failure path, and default values) that the specification never stated, which is the most significant fidelity risk. Structural/relationship coverage is strong, but domain-logic invention and technology omission bring the score down to roughly the mid-50s."
+      },
+      "judge_6k": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 0,
+        "guards_faithful": 0,
+        "failure_paths_expected": 0,
         "failure_paths_implemented": 3,
         "technologies_expected": 8,
         "technologies_honored": 1,
@@ -982,7 +1169,8 @@
         ],
         "fidelity_score": 48,
         "notes": "All 6 C4 elements and all 5 specified relationships are structurally present and wired correctly (applicant->API->store/engine->bureau, API->notifier), so the topology is faithful. However the specification is a static container diagram with no guards or failure paths defined, yet the code invents a substantial decision-engine rule set (score thresholds, tiered loan limits, specific decline/validation reasons) that has real domain semantics not present in the spec \u2014 this is the most damaging category of invention. Technology annotations fare worst: none of FastAPI, PostgreSQL, SQL, XML/HTTPS, JSON/HTTPS, or REST/HTTPS are reflected in naming, interfaces, or comments; the code is plain in-memory Python with no protocol or storage cues, so only a loose, generous credit (rules-like conditionals for 'rules library') can be given. Overall the interaction skeleton is faithful but the domain logic and technology fidelity are largely fabricated or absent."
-      }
+      },
+      "judge_note": "uniform re-judge at max_tokens=16000"
     },
     {
       "rung": "R2",
