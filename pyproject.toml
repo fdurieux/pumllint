@@ -7,7 +7,7 @@ name = "pumllint"
 version = "0.23.0"
 description = "Semantic linter and maturity scorer for PlantUML diagrams, with SonarQube export"
 readme = "README.md"
-license = "MIT"
+license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
 authors = [{ name = "fdurieux", email = "fdurieux@i-kei.com" }]

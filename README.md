@@ -1,7 +1,7 @@
 # pumllint
 
 [![PyPI](https://img.shields.io/pypi/v/pumllint)](https://pypi.org/project/pumllint/)
-[![License: MIT](https://img.shields.io/github/license/fdurieux/pumllint)](LICENSE)
+[![License: GPL-3.0-or-later](https://img.shields.io/github/license/fdurieux/pumllint)](LICENSE)
 
 A **semantic linter for PlantUML diagrams**. PlantUML validates syntax but is,
 by its own admission, a drawing tool rather than a modeling tool: it happily
