@@ -1,7 +1,7 @@
 # pumllint documentation
 
-pumllint serves four distinct audiences. Each gets its own guide — pick the
-one that matches why you are here:
+pumllint's documentation is audience-split — pick the guide that matches
+why you are here:
 
 | You are… | You want to know… | Read |
 |----------|-------------------|------|
@@ -63,6 +63,11 @@ but they are a useful cross-check that no audience was forgotten.
   markdown-extraction settlement: the spec-driven ecosystem's public
   footprint, measured under pre-registered decision rules before anything
   was built.
+- [C4-PlantUML pack: fit evaluation](c4-pack-evaluation.md) — dated fit
+  note (2026-07-27) behind the ROADMAP's C4 record: why C4 is unusually
+  lintable, what v0.23.0 does with C4 input today (measured — Level 1 on
+  well-formed C4, sequence mistyping on raw arrows), the candidate rule
+  sketch, and the census trigger that would green-light a build.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
