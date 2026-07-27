@@ -6,7 +6,7 @@ Public API: lint with :class:`Engine` over parsed diagrams, score with
 report shapes are pinned by :mod:`pumllint.schema` (:func:`load_schema`).
 """
 
-__version__ = "0.23.0"
+__version__ = "0.24.0"
 
 from .baseline import (
     BaselineEntry,
