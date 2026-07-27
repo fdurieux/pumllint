@@ -28,6 +28,37 @@ pumllint fix diagrams/                       # auto-fix mechanical findings
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
 
+## Project status and stability
+
+**Beta, and deliberately still `0.x`.** The tool is feature-complete for its
+declared scope, fully tested (a stdlib-only suite, an executable Gherkin spec,
+a pinned-PlantUML syntax gate) and used in its own CI — but it has not
+yet been exercised against a third-party diagram corpus. The remaining roadmap
+items are demand-driven, not missing pieces; see [ROADMAP.md](ROADMAP.md).
+
+*Stable — these are contracts, and breaking one is a deliberate, announced act:*
+
+- CLI commands, flags and exit codes
+- Rule IDs and kebab-case names, and their config keys/options
+- The `-f json` report shapes for `lint` and `score`, pinned by the shipped
+  JSON Schemas (see [Report schemas](#report-schemas))
+
+*May still move within `0.x`:*
+
+- **Score values for a given diagram.** New rules and calibration work can
+  shift a diagram's level. Every shift is a diff-verified re-freeze of the
+  golden corpus, called out in the release notes — the golden test makes
+  silent drift impossible — but it *can* happen on a minor bump. If a build
+  gates on an absolute level, pin an exact version (`pumllint==X.Y.Z`); if you
+  want to track relative movement instead, use
+  [baseline / ratchet mode](#baseline--ratchet-mode), which is designed for it.
+- **`diagramType` values**, an open set that grows as parsers are added.
+
+**What `1.0` waits on:** not more features — evidence that the score contract
+survives contact with a foreign corpus. Run
+[`tools/pilot_census.py`](tools/pilot_census.py) against a real corpus first
+(read-only dialect census); that, plus a pilot, is the gate.
+
 ## Documentation by audience
 
 This README is the reference. [docs/](docs/README.md) has role-specific guides:
