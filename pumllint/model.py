@@ -420,6 +420,20 @@ class Diagram:
         return used
 
 
+def prose_directives(diagram: Diagram) -> list[Directive]:
+    """Directives whose value is free text a governance tag can live in.
+
+    The single definition of where ownership/requirement references are
+    looked for: GEN006/GEN007 match their configured patterns against these
+    texts (plus the diagram name), and ``pumllint trace`` extracts
+    requirement IDs from exactly the same texts — one carrier set, so the
+    rule and the traceability matrix cannot disagree about what counts as
+    a reference.
+    """
+    kinds = ("title", "header", "footer", "caption", "note")
+    return [d for d in diagram.directives if d.kind in kinds]
+
+
 # ---------------------------------------------------------------------------
 # Semantic helpers: call/reply pairing and activation stack
 # ---------------------------------------------------------------------------

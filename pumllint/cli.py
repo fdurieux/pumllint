@@ -1,15 +1,17 @@
 """Command-line interface.
 
-Four commands:
+Five commands:
   pumllint <paths> [options]          lint (default; no subcommand keyword)
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
   pumllint fix <paths> [options]      auto-fix mechanical findings
+  pumllint trace <paths> [options]    requirement-coverage matrix
   pumllint schema <report>            print the JSON Schema for a -f json report
 
 Exit codes: 0 = clean / at-or-above gate, 1 = lint violations at/above
 --fail-on (lint), a diagram below --min-level or a --baseline regression
-(score), or pending fixes under --dry-run (fix), 2 = usage/config error.
-Designed to drop straight into a CI step.
+(score), pending fixes under --dry-run (fix), or a tripped --fail-on-*
+trace gate, 2 = usage/config error. Designed to drop straight into a CI
+step.
 """
 
 from __future__ import annotations
@@ -138,6 +140,58 @@ def build_fix_parser() -> argparse.ArgumentParser:
     return p
 
 
+def build_trace_parser() -> argparse.ArgumentParser:
+    p = argparse.ArgumentParser(
+        prog="pumllint trace",
+        description="Requirement-coverage matrix: which requirement IDs the "
+        "diagrams realize, which IDs no diagram references, which diagrams "
+        "reference nothing — plus references to IDs the inventory does not "
+        "know. References are read from exactly the carriers GEN007 checks: "
+        "the diagram name plus title/header/footer/caption/notes.",
+    )
+    _add_version_argument(p)
+    p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
+    p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
+    p.add_argument(
+        "--pattern",
+        help="Requirement-ID regex (e.g. 'REQ-\\d+|ADR-\\d+'); defaults to the "
+        "configured rules.requirement-link pattern",
+    )
+    p.add_argument(
+        "--requirements",
+        metavar="FILE",
+        help="Inventory list: one ID per line (text), or a JSON/YAML array of "
+        "IDs — strings or objects with an 'id' (extra snapshot columns are "
+        "ignored); may be combined with --requirements-scan",
+    )
+    p.add_argument(
+        "--requirements-scan",
+        metavar="PATH",
+        help="Build the inventory by scanning a docs file or tree "
+        "(*.md/*.txt/*.adoc/*.rst) with the pattern",
+    )
+    p.add_argument(
+        "-f", "--format", default="text", help="Output format: text | json"
+    )
+    p.add_argument("-o", "--output", help="Write report to file instead of stdout")
+    p.add_argument(
+        "--fail-on-uncovered",
+        action="store_true",
+        help="Exit 1 if any inventory ID is referenced by no diagram",
+    )
+    p.add_argument(
+        "--fail-on-unlinked",
+        action="store_true",
+        help="Exit 1 if any diagram references no requirement ID",
+    )
+    p.add_argument(
+        "--fail-on-unknown-ref",
+        action="store_true",
+        help="Exit 1 if any diagram references an ID missing from the inventory",
+    )
+    return p
+
+
 def build_schema_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="pumllint schema",
@@ -149,7 +203,8 @@ def build_schema_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "report",
         choices=list(SCHEMA_NAMES),
-        help="Which report: 'lint' (pumllint -f json) or 'score' (pumllint score -f json)",
+        help="Which report: 'lint' (pumllint -f json), 'score' (pumllint "
+        "score -f json) or 'trace' (pumllint trace -f json)",
     )
     p.add_argument("-o", "--output", help="Write the schema to a file instead of stdout")
     return p
@@ -161,6 +216,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_score(argv[1:])
     if argv and argv[0] == "fix":
         return _run_fix(argv[1:])
+    if argv and argv[0] == "trace":
+        return _run_trace(argv[1:])
     if argv and argv[0] == "schema":
         return _run_schema(argv[1:])
     return _run_lint(argv)
@@ -310,6 +367,66 @@ def _run_fix(argv: list[str]) -> int:
     note = f"; {len(remaining)} finding(s) remain (run pumllint to see them)" if remaining else ""
     print(f"✔ Applied {n} fix(es) in {len(changed)} file(s){note}")
     return 0
+
+
+def _run_trace(argv: list[str]) -> int:
+    args = build_trace_parser().parse_args(argv)
+    if not args.paths:
+        print("error: no paths given", file=sys.stderr)
+        return 2
+    if not args.requirements and not args.requirements_scan:
+        print(
+            "error: no inventory given — pass --requirements FILE and/or "
+            "--requirements-scan PATH",
+            file=sys.stderr,
+        )
+        return 2
+
+    from .parser import parse_file
+    from .trace import (
+        build_matrix,
+        compile_pattern,
+        load_inventory,
+        pattern_from_config,
+        scan_inventory,
+    )
+
+    try:
+        config = load_config(args.config)
+        raw = args.pattern or pattern_from_config(config)
+        if not raw:
+            print(
+                "error: no requirement-ID pattern — pass --pattern "
+                "(e.g. 'REQ-\\d+|ADR-\\d+'), or configure "
+                "rules.requirement-link.pattern",
+                file=sys.stderr,
+            )
+            return 2
+        origin = (
+            "--pattern" if args.pattern else "config rules.requirement-link.pattern"
+        )
+        pattern = compile_pattern(raw, origin)
+        inventory: list[str] = []
+        if args.requirements:
+            inventory.extend(load_inventory(args.requirements))
+        if args.requirements_scan:
+            inventory.extend(scan_inventory(args.requirements_scan, pattern))
+        inventory = list(dict.fromkeys(inventory))  # union, first-seen order
+        diagrams = [d for f in collect_files(args.paths) for d in parse_file(f)]
+        result = build_matrix(diagrams, inventory, pattern)
+        report = get_reporter(args.format).render_trace(result)
+    except (FileNotFoundError, ValueError, NotImplementedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+
+    _emit(report, args.output)
+
+    failed = (
+        (args.fail_on_uncovered and any(not r.covered for r in result.requirements))
+        or (args.fail_on_unlinked and bool(result.unlinked_diagrams))
+        or (args.fail_on_unknown_ref and bool(result.unknown_references))
+    )
+    return 1 if failed else 0
 
 
 def _run_schema(argv: list[str]) -> int:

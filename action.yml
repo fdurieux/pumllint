@@ -9,7 +9,9 @@ branding:
 
 inputs:
   command:
-    description: "'lint', 'score' or 'fix'"
+    description: >-
+      'lint', 'score', 'fix' or 'trace' (trace takes its inventory flags via
+      extra-args, e.g. "--requirements reqs.txt --fail-on-uncovered")
     default: "lint"
   paths:
     description: ".puml files or directories to check (space-separated)"
@@ -68,10 +70,10 @@ runs:
       run: |
         set -euo pipefail
         cmd=(python3 -m pumllint)
-        if [ "${IN_COMMAND}" = "score" ] || [ "${IN_COMMAND}" = "fix" ]; then
+        if [ "${IN_COMMAND}" = "score" ] || [ "${IN_COMMAND}" = "fix" ] || [ "${IN_COMMAND}" = "trace" ]; then
           cmd+=("${IN_COMMAND}")
         elif [ "${IN_COMMAND}" != "lint" ]; then
-          echo "::error::command must be 'lint', 'score' or 'fix', got '${IN_COMMAND}'"
+          echo "::error::command must be 'lint', 'score', 'fix' or 'trace', got '${IN_COMMAND}'"
           exit 2
         fi
         read -r -a path_args <<< "${IN_PATHS}"

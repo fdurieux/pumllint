@@ -145,6 +145,26 @@ def test_schema_rejects_broken_reports():
     assert any("severity" in e for e in validate(bad_enum, load_schema("lint")))
 
 
+def test_trace_schema_has_teeth():
+    from pumllint.trace import build_matrix
+
+    schema = load_schema("trace")
+    pattern = __import__("re").compile(r"REQ-\d+")
+    diagrams = parse_source("@startuml\ntitle REQ-1\nA -> B : x\n@enduml\n", "t.puml")
+    good = json.loads(
+        get_reporter("json").render_trace(build_matrix(diagrams, ["REQ-1"], pattern))
+    )
+    assert validate(good, schema) == []
+
+    extra = json.loads(json.dumps(good))
+    extra["requirements"][0]["component"] = "future column"  # additive-only, not yet
+    assert any("component" in e for e in validate(extra, schema))
+
+    missing = json.loads(json.dumps(good))
+    del missing["summary"]
+    assert any("summary" in e for e in validate(missing, schema))
+
+
 def test_validator_refuses_unsupported_keywords():
     try:
         validate({}, {"format": "uri"})

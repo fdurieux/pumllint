@@ -22,6 +22,7 @@ pumllint diagrams/ -f sonar -o pumllint-sonar.json
 pumllint --profile codegen diagrams/         # + codegen-readiness rules
 pumllint score diagrams/ --min-level 3       # maturity gate (see below)
 pumllint fix diagrams/                       # auto-fix mechanical findings
+pumllint trace diagrams/ --requirements reqs.txt   # requirement-coverage matrix
 ```
 
 (`python -m pumllint` is equivalent wherever the console script is not on PATH.)
@@ -303,6 +304,61 @@ the linter tells you *what*, but will not guess *which*. In GitHub Actions,
 use `command: fix` with `extra-args: --dry-run` as a "fixes pending?" CI
 check.
 
+## Requirement traceability
+
+`pumllint trace` builds the coverage matrix between a requirements
+inventory and the diagrams that reference it — all three directions:
+which requirement IDs are realized by which diagrams, which IDs no
+diagram references, which diagrams reference nothing. It also flags
+**unknown references** (an ID cited by a diagram but absent from the
+inventory — a typo, or a stale inventory):
+
+```text
+Requirement coverage: 2/3 covered — 1 uncovered, 1 unknown reference(s), 1 unlinked diagram(s) — across 4 diagram(s)
+
+REQ-101  ← orders/order_flow.puml [OrderFlow]:2, orders/refund.puml:3
+REQ-103  ✖ uncovered
+
+Unknown references (not in the inventory — a typo, or the inventory is stale):
+  REQ-113  ← payments/charge.puml [Charge]:4
+
+Unlinked diagrams (no requirement reference):
+  sketches/idea.puml (sequence)
+```
+
+References are read from exactly the carriers the GEN007
+(requirement-link) rule checks — the diagram name plus
+title/header/footer/caption/notes — so the rule and the matrix can
+never disagree; one configured convention serves both. The ID regex
+comes from `--pattern`, falling back to the configured
+`rules.requirement-link.pattern`.
+
+The inventory comes from either or both of:
+
+```bash
+pumllint trace diagrams/ --requirements reqs.txt        # explicit ID list
+pumllint trace diagrams/ --requirements-scan docs/specs # scan docs with the pattern
+```
+
+The list file is plain text (one ID per line, `#` comments), or
+JSON/YAML: an array of IDs — strings or objects carrying an `id`, so a
+synchronized snapshot exported from a requirements/process repository
+works unchanged (extra columns are ignored today; the JSON report's
+`id` values are the stable join keys for a wider traceability matrix
+later). `--requirements-scan` walks `*.md/*.txt/*.adoc/*.rst`.
+
+CI gates are opt-in, one per direction — without them the command is
+report-only (exit 0):
+
+```bash
+pumllint trace diagrams/ --requirements reqs.txt \
+  --fail-on-uncovered --fail-on-unlinked --fail-on-unknown-ref
+```
+
+`-f json` emits a machine-readable matrix pinned by a shipped schema
+(`pumllint schema trace`). In GitHub Actions, use `command: trace` with
+the inventory flags in `extra-args`.
+
 ## Report schemas
 
 The machine-readable reports are a public contract, pinned by JSON Schemas
@@ -311,6 +367,7 @@ The machine-readable reports are a public contract, pinned by JSON Schemas
 ```bash
 python -m pumllint schema lint    # the shape of `pumllint -f json`
 python -m pumllint schema score   # the shape of `pumllint score -f json`
+python -m pumllint schema trace   # the shape of `pumllint trace -f json`
 ```
 
 Point any standard validator at them when building tooling on top of the
@@ -416,6 +473,7 @@ pumllint/
 ├── schemas/          # JSON Schemas — the `-f json` output contract
 ├── schema.py         #   loader + minimal validator (drift-guarded in tests)
 ├── engine.py         # config merge → rule instantiation → run
+├── trace.py          # requirement↔diagram coverage matrix (`trace`)
 ├── config.py         # yaml / toml / json loading
 └── cli.py            # argparse CLI, CI-friendly exit codes
 ```
