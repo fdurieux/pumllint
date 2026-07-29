@@ -58,6 +58,10 @@ but they are a useful cross-check that no audience was forgotten.
   checklist, pre-agreed decision gates; with
   [a starter config](pilot-starter-config.toml) and a read-only dialect
   census (`tools/pilot_census.py`) to run before anything gates.
+- [Security & hardening assessment](security-hardening-assessment.md) —
+  dated review (2026-07-29, v0.24.0): threat model, verified strengths,
+  ranked findings, and the hardening measures deliberately *not* taken,
+  with reasons.
 - [Demand scan: PlantUML in markdown specs](demand-scan-embedded-plantuml.md)
   — dated evidence note (2026-07-26) behind the ROADMAP's
   markdown-extraction settlement: the spec-driven ecosystem's public
