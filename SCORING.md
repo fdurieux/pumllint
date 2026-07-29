@@ -200,6 +200,8 @@ pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--upda
   {syntax_gate: true, syntax_command: plantuml}` (`syntax_command` may be a
   string or argv list, e.g. `[java, -jar, plantuml.jar]`). Off by default —
   it needs a PlantUML/Java install the linter itself does not require.
+  Because `syntax_command` is executed, the config file carries code-level
+  trust — see SECURITY.md.
 - Cross-diagram consistency (DIM-CON multi-file checks) activates when more than one
   file is passed; otherwise DIM-CON scores single-file naming rules only.
 

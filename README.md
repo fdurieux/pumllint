@@ -342,6 +342,12 @@ rules:
     pattern: "REQ-\\d+|ADR-\\d+"
 ```
 
+Treat the config file with code-level trust, like a Makefile or a
+pre-commit config: `scoring.syntax_command` names a command pumllint will
+execute for the opt-in syntax gate, so do not run pumllint with an
+auto-detected config inside a checkout you do not trust (see
+[SECURITY.md](SECURITY.md)).
+
 ## Profiles
 
 A profile switches on profile-gated rule packs and may escalate severities of
