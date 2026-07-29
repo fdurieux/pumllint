@@ -542,10 +542,10 @@ list and license posture live in § Settled questions.
   - *License posture recorded*: GPL-3.0-or-later was already chosen
     (v0.24.0) and the run-not-linked analysis fits the CLI/CI usage;
     Apache-2.0 deps stay compatible if the extras door is used.
-    Recommended owner act, not performed by this record: a public
-    non-relicensing commitment ("never source-available") — the
-    SonarQube/Semgrep rug-pull lesson says trust outweighs the license
-    text itself.
+    The public non-relicensing commitment was made 2026-07-29, on the
+    owner's go (README § License): never source-available or
+    proprietary, never AGPL — the SonarQube/Semgrep rug-pull lesson
+    says trust outweighs the license text itself.
   - *Still parked*: a purpose-built EARS-shaped requirements DSL — the
     existing spec/acceptance-criteria-linting settlement stands,
     now enriched by the reassessment's design lessons (EARS's

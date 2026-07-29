@@ -564,3 +564,18 @@ Gherkin block, regenerate:
 ```bash
 python tools/extract_features.py
 ```
+
+## License
+
+GPL-3.0-or-later — see [LICENSE](LICENSE). The tool is *run*, not
+linked: executing pumllint over your diagrams in CI, as a pre-commit
+hook, or from the CLI imposes no license obligations on your diagrams,
+your codebase, or the reports it produces — those are yours.
+
+**Licensing commitment (2026-07-29).** This project will stay under
+GPL-3.0-or-later or, at most, move between OSI-approved open-source
+licenses. It will never be relicensed to a source-available or
+proprietary license, and neither this tool nor any service or MCP
+wrapper published from this repository will adopt AGPL. Decision record
+and rationale: [ROADMAP.md](ROADMAP.md) § Settled questions and the
+[pipeline fit evaluation](docs/prose-pipeline-evaluation.md).
