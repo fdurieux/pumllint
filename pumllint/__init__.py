@@ -7,7 +7,7 @@ requirement-coverage matrix with :mod:`pumllint.trace`. The JSON
 report shapes are pinned by :mod:`pumllint.schema` (:func:`load_schema`).
 """
 
-__version__ = "0.24.0"
+__version__ = "0.25.0"
 
 from .baseline import (
     BaselineEntry,
