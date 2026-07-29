@@ -113,7 +113,7 @@ class SignatureMessages(_CodegenRule):
     )
 
     def check(self, diagram: Diagram):
-        pattern = re.compile(self.options.get("pattern", _SIGNATURE.pattern))
+        pattern = self.pattern_option("pattern", _SIGNATURE.pattern)
         stop_words = self.lexicon("arg_stop_words", self.DEFAULT_ARG_STOP_WORDS)
         max_words = int(self.options.get("max_arg_words", 2))
         for m in diagram.messages:

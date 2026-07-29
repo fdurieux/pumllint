@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from typing import Iterable
 
 from ...model import ClassRelation, Diagram, Violation
@@ -28,23 +27,23 @@ class ClassNaming(Rule):
     DEFAULT_MEMBER_PATTERN = r"^[a-z_][A-Za-z0-9_]*$"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        class_pattern = self.options.get("class_pattern", self.DEFAULT_CLASS_PATTERN)
-        member_pattern = self.options.get("member_pattern", self.DEFAULT_MEMBER_PATTERN)
+        class_pattern = self.pattern_option("class_pattern", self.DEFAULT_CLASS_PATTERN)
+        member_pattern = self.pattern_option("member_pattern", self.DEFAULT_MEMBER_PATTERN)
         for c in diagram.classes.values():
-            if c.declared and not re.match(class_pattern, c.name):
+            if c.declared and not class_pattern.match(c.name):
                 yield self.violation(
                     diagram,
                     c.line,
-                    f"{c.kind.capitalize()} name '{c.name}' does not match pattern {class_pattern!r}",
+                    f"{c.kind.capitalize()} name '{c.name}' does not match pattern {class_pattern.pattern!r}",
                 )
             if c.kind == "enum":
                 continue
             for m in c.members:
-                if not re.match(member_pattern, m.name):
+                if not member_pattern.match(m.name):
                     yield self.violation(
                         diagram,
                         m.line,
-                        f"Member '{m.name}' of '{c.name}' does not match pattern {member_pattern!r}",
+                        f"Member '{m.name}' of '{c.name}' does not match pattern {member_pattern.pattern!r}",
                     )
 
 

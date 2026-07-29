@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import importlib
 import pkgutil
+import re
 import tomllib
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -24,6 +25,22 @@ from typing import Iterable, Sequence, Type
 from ..model import Diagram, Dimension, Severity, Violation
 
 _REGISTRY: dict[str, Type["Rule"]] = {}
+
+
+def compile_option_pattern(rule_id: str, option: str, pattern: str) -> re.Pattern[str]:
+    """Compile a config-supplied regex; malformed = config error, not traceback.
+
+    Raises ``ValueError`` naming the rule and option, which the CLI reports
+    as a usage/config error (exit 2) per its documented contract — a broken
+    config must not surface as a crash that CI reads as lint findings.
+    """
+    try:
+        return re.compile(pattern)
+    except (re.error, TypeError) as e:
+        raise ValueError(
+            f"rule {rule_id}: option '{option}' is not a valid regex "
+            f"({e}): {pattern!r}"
+        ) from e
 
 _CATALOG_PATH = Path(__file__).with_name("catalog.toml")
 
@@ -68,7 +85,16 @@ class Rule(ABC):
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         ...
 
-    # Helper so rules stay terse
+    # Helpers so rules stay terse
+    def pattern_option(
+        self, option: str, default: str | None = None
+    ) -> re.Pattern[str] | None:
+        """Compiled regex from config option *option* (falling back to
+        *default*; None means the option is absent). Malformed patterns
+        raise the clean config error of :func:`compile_option_pattern`."""
+        raw = self.options.get(option, default)
+        return None if raw is None else compile_option_pattern(self.id, option, raw)
+
     def violation(self, diagram: Diagram, line: int, message: str) -> Violation:
         return Violation(
             rule_id=self.id,

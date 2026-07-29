@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import re
 from typing import Iterable
 
 from ...model import Diagram, Violation
@@ -124,13 +123,13 @@ class SwimlaneNaming(Rule):
     DEFAULT_PATTERN = r"^[A-Z][A-Za-z ]+$"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        pattern = self.options.get("pattern", self.DEFAULT_PATTERN)
+        pattern = self.pattern_option("pattern", self.DEFAULT_PATTERN)
         for n in diagram.activity_nodes:
-            if n.kind == "swimlane" and not re.match(pattern, n.label):
+            if n.kind == "swimlane" and not pattern.match(n.label):
                 yield self.violation(
                     diagram,
                     n.line,
-                    f"Swimlane '{n.label}' does not match pattern {pattern!r}",
+                    f"Swimlane '{n.label}' does not match pattern {pattern.pattern!r}",
                 )
 
 
