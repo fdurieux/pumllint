@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import re
 from typing import Iterable
 
 from ...model import Diagram, Violation
-from .. import Rule, register
+from .. import Rule, compile_option_pattern, register
 
 
 @register
@@ -65,17 +64,20 @@ class ParticipantNaming(Rule):
     DEFAULT_PATTERN = r"^[A-Z][A-Za-z0-9]*(\.[A-Z][A-Za-z0-9]*)*$"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        default = self.options.get("pattern", self.DEFAULT_PATTERN)
-        per_kind = self.options.get("per_kind", {})
+        default = self.pattern_option("pattern", self.DEFAULT_PATTERN)
+        per_kind = {
+            kind: compile_option_pattern(self.id, f"per_kind.{kind}", pat)
+            for kind, pat in (self.options.get("per_kind") or {}).items()
+        }
         for p in diagram.participants.values():
             if not p.declared:
                 continue
             pattern = per_kind.get(p.kind, default)
-            if not re.match(pattern, p.name):
+            if not pattern.match(p.name):
                 yield self.violation(
                     diagram,
                     p.line,
-                    f"{p.kind.capitalize()} name '{p.name}' does not match pattern {pattern!r}",
+                    f"{p.kind.capitalize()} name '{p.name}' does not match pattern {pattern.pattern!r}",
                 )
 
 
@@ -115,15 +117,16 @@ class OwnerTag(Rule):
     id = "GEN006"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        pattern = self.options.get("pattern")
-        if not pattern:
+        raw = self.options.get("pattern")
+        if not raw:
             return
-        if any(re.search(pattern, d.value) for d in _prose_directives(diagram)):
+        pattern = compile_option_pattern(self.id, "pattern", raw)
+        if any(pattern.search(d.value) for d in _prose_directives(diagram)):
             return
         yield self.violation(
             diagram,
             diagram.start_line,
-            f"No ownership tag matching {pattern!r} in title/header/footer/caption/notes",
+            f"No ownership tag matching {pattern.pattern!r} in title/header/footer/caption/notes",
         )
 
 
@@ -140,18 +143,19 @@ class RequirementLink(Rule):
     id = "GEN007"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        pattern = self.options.get("pattern")
-        if not pattern:
+        raw = self.options.get("pattern")
+        if not raw:
             return
+        pattern = compile_option_pattern(self.id, "pattern", raw)
         haystacks = [d.value for d in _prose_directives(diagram)]
         if diagram.name:
             haystacks.append(diagram.name)
-        if any(re.search(pattern, h) for h in haystacks):
+        if any(pattern.search(h) for h in haystacks):
             return
         yield self.violation(
             diagram,
             diagram.start_line,
-            f"No requirement/ADR reference matching {pattern!r} in name/title/header/footer/caption/notes",
+            f"No requirement/ADR reference matching {pattern.pattern!r} in name/title/header/footer/caption/notes",
         )
 
 
