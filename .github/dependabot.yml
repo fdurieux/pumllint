@@ -1,0 +1,20 @@
+# Keeps the SHA-pinned actions in .github/workflows/ (and action.yml) fresh:
+# without this, commit pins rot into stale, unpatched action versions —
+# the pins and this config are two halves of one measure (see
+# docs/security-hardening-assessment.md, F2/F5).
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      github-actions:
+        patterns: ["*"]
+
+  # No runtime dependencies exist; this watches the optional extras
+  # (PyYAML, pytest, pytest-bdd) declared in pyproject.toml.
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
