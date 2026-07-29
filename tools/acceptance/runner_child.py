@@ -1,8 +1,14 @@
 """Acceptance-oracle child: execute ONE scenario against ONE generated artifact.
 
-Runs sandboxed (invoked with `python -I`, sockets disabled, stdin closed,
-killed by the parent on timeout). Fully standalone — the scenario spec
-arrives base64-JSON on argv, so no repo imports are needed under -I.
+Runs guarded (invoked with `python -I`, sockets disabled, stdin closed,
+CPU/memory rlimits where the platform has them, killed by the parent on
+timeout). These guards are **best-effort accident prevention for our own
+generated artifacts, not a security boundary**: code that *wants* out can
+still reach `_socket`, `subprocess` or the filesystem — do not point this
+runner at artifacts from sources you would not run directly (see
+docs/security-hardening-assessment.md, F7). Fully standalone — the
+scenario spec arrives base64-JSON on argv, so no repo imports are needed
+under -I.
 
     python -I runner_child.py <artifact.py> <b64(spec)>
 
@@ -165,7 +171,8 @@ def run(artifact_path: str, spec: dict) -> dict:
     }
     calls: list = []
 
-    # 1. sandbox: no network, ever
+    # 1. guards (best-effort, see module docstring): no sockets, and rlimits
+    # so a runaway artifact burns CPU/memory bounded below the parent's kill.
     import socket
 
     def _no_net(*a, **k):  # noqa: ANN001
@@ -174,6 +181,22 @@ def run(artifact_path: str, spec: dict) -> dict:
     socket.socket = _no_net  # type: ignore[assignment]
     if hasattr(socket, "create_connection"):
         socket.create_connection = _no_net  # type: ignore[assignment]
+
+    try:  # POSIX only; on other platforms the parent's timeout still applies
+        import resource
+
+        for limit, value in (
+            # CPU backstop ABOVE the parent's 15s wall kill: the parent keeps
+            # owning the "timeout" classification; this only catches a child
+            # that outlives its parent. Memory is a hard cap — a memory bomb
+            # surfaces as a reported MemoryError instead of starving the host.
+            (resource.RLIMIT_CPU, 30),           # seconds
+            (resource.RLIMIT_AS, 2 * 1024**3),   # bytes (may fail on macOS)
+        ):
+            with contextlib.suppress(ValueError, OSError):
+                resource.setrlimit(limit, (value, value))
+    except ImportError:
+        pass
 
     # 2. import the artifact (its prints and demo output are swallowed)
     import importlib.util
