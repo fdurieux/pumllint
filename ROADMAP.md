@@ -293,11 +293,16 @@ list and license posture live in § Settled questions.
 ## Arc G — Requirements traceability (gated; first build on trigger)
 
 - [ ] **Coverage matrix command** — given the diagrams plus a
-  requirements inventory (a plain ID list, or a file/tree scanned with
-  the project's GEN007 `pattern`), report both directions: which
-  requirement IDs are realized by which diagrams, which IDs no diagram
-  references, which diagrams reference nothing. Text + json (schema
-  contract discipline applies), exit-code gate in the `--min-level`
+  requirements inventory (a plain ID list in text/json/yaml — in
+  practice the synchronized export from a canonical process or
+  requirements repository — or a file/tree scanned with the project's
+  GEN007 `pattern`), report both directions: which requirement IDs are
+  realized by which diagrams, which IDs no diagram references, which
+  diagrams reference nothing. Text + json (schema contract discipline
+  applies; stable IDs first-class, shape designed to extend toward the
+  full requirement → process step → rule → component → contract →
+  verification matrix without breaking v1 — see
+  docs/spec-stack-evaluation.md), exit-code gate in the `--min-level`
   style. Foothold: GEN007 already matches the reference pattern against
   name/title/header/footer/caption/notes; what's missing is only the
   aggregation. Deterministic, zero new dependencies. *Trigger: a
@@ -554,6 +559,32 @@ list and license posture live in § Settled questions.
     hand-parseable first). Re-litigate on: a concrete adopter with a
     requirements corpus, or Arc G/H adoption generating pull for
     structured requirements input.
+
+- **AI-ready specification-stack recommendation (2026-07-29):
+  verified — corroborates the plan; the missing layer is per-artifact
+  verification; one candidate recorded.** An externally authored
+  recommendation on preparing specification artifacts for AI codegen
+  (layered mandatory stack, DSL-per-concern, stable-ID traceability,
+  repo instruction files, tests as the control) was evaluated against
+  this repo's records (docs/spec-stack-evaluation.md). It independently
+  corroborates Arc G's ship-first call, the C4 census posture, the
+  Mermaid sibling-stack record, the parked purpose-built DSL, and the
+  agents.md ask-never-invent covenant — and its sharpest line
+  ("diagrams orient, contracts constrain") is corrected by this repo's
+  own measurements: constraint-grade vs orientation-grade is a maturity
+  level, not an artifact genre (C4 detail ladder +29 pp; the 21.9 pp
+  cliff within one artifact type). Its blind spot sharpens the
+  positioning claim: every artifact is mandatory to *exist*, only code
+  is gated — while the below-Level-2 evidence says ungated upstream
+  artifacts are not just insufficient but harmful. Adopted: Arc G
+  input/schema refinements; the precedence-of-evidence ladder in
+  docs/agents.md. Recorded, not queued: a **sequence ↔ contract
+  cross-check** (message signatures against OpenAPI/AsyncAPI
+  operations — the XD identity discipline extended across artifact
+  classes; the lighter cousin of the diagram↔code conformance item
+  above, since the target is machine-readable data, not an
+  implementation language). Build trigger: a user with both artifact
+  classes in one repo asking to gate drift between them.
 
 ## Working agreements (read before picking anything up)
 
