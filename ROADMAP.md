@@ -274,6 +274,91 @@ actually becomes a recurring pipeline rather than occasional sessions:
   (cycles, reachability, XD majority attribution); pattern-following rules
   can use a cheaper implementer — the harness carries them.
 
+## Requirements-pipeline arcs (G–J — specified 2026-07-29, builds gated)
+
+A verified external reassessment of a prose → model → prose
+requirements-validation pipeline (fit evaluation:
+docs/prose-pipeline-evaluation.md — verdict: sense, with corrections)
+maps onto four new arcs. The pipeline's shape: prose requirements are
+cast into a typed model by an LLM under a human gate (**recipe and lab
+territory — never product**), the model is gated by the shipped
+conformance machinery (lint/score + codegen profile — already built),
+and everything new in the product is deterministic: a traceability
+matrix, a verbalizer (deterministic back leg — the reassessment's crux
+conditional, satisfied here by construction), a k-way model-diff
+divergence meter, and the evidence that measures them. No build starts
+from the specification alone; per-arc triggers below. The never-build
+list and license posture live in § Settled questions.
+
+## Arc G — Requirements traceability (gated; first build on trigger)
+
+- [ ] **Coverage matrix command** — given the diagrams plus a
+  requirements inventory (a plain ID list, or a file/tree scanned with
+  the project's GEN007 `pattern`), report both directions: which
+  requirement IDs are realized by which diagrams, which IDs no diagram
+  references, which diagrams reference nothing. Text + json (schema
+  contract discipline applies), exit-code gate in the `--min-level`
+  style. Foothold: GEN007 already matches the reference pattern against
+  name/title/header/footer/caption/notes; what's missing is only the
+  aggregation. Deterministic, zero new dependencies. *Trigger: a
+  requirement-ID convention actually configured — the pilot's
+  conventions workshop is where one appears — or owner go.*
+
+## Arc H — Verbalizer (gated on Arc G + review-aid pull)
+
+- [ ] **Unmodelled-content tracking** (precondition, small and
+  additive) — the parser skips unknown lines silently today; the model
+  gains a per-diagram count (and line numbers) of skipped non-comment
+  source lines so any rendering of the model can disclose what it does
+  not show. Measured baseline on the bundled corpus: projection is
+  semantically complete (evaluation doc, Probe A); the census bounds
+  the claim on foreign corpora.
+- [ ] **`verbalize` output** — deterministic controlled-English
+  rendering of the parsed model, sequence-first (the richest model:
+  call/reply pairing, blocks, activations). Byte-identical across runs
+  (HTML-report determinism contract); every run prints the
+  unmodelled-content disclosure the way scores print suppression
+  counts — never silently. A review aid shown beside the source prose;
+  **never a similarity score**. Test bar: a mechanical
+  projection-completeness check — every model element renders a
+  sentence (verifiable without parsing English back; a CNL grammar for
+  re-parsing prose is exactly the from-zero territory that stays
+  parked). The SBVR lesson applies: real templates under test, not a
+  style guide. *Trigger: Arc G shipped, plus a pilot/adopter asking
+  for the review aid.*
+
+## Arc I — Divergence meter (gated on a real k-generation workflow)
+
+- [ ] **k-way model diff** — parse k diagrams of the same scenario,
+  match entities XD-style (identity + declaration comparison — the
+  XD001–005 symbol-table walk generalized), similarity-match messages
+  per (source, target) pair, and report divergence *localized to named
+  elements*, with an agreement summary (unanimous / majority /
+  contested). Text + json. Positioning: the empirical complement to
+  static DIM-AMB — where k generations of the same prose disagree is
+  where the prose is ambiguous. Feasibility measured with shipped
+  machinery (evaluation doc, Probe B). k-fold generation itself
+  (grammar-constrained decoding guidance included) stays in
+  tools/ and docs/agents.md — the meter judges outputs, it never
+  generates them. *Trigger: a k-generation workflow actually in use
+  (agents.md loop or lab harness producing candidate models), or
+  owner go.*
+
+## Arc J — Pipeline evidence (bound to H/I; Arc D methodology)
+
+- [ ] **Injected-ambiguity wave** — the mutation-ladder pattern applied
+  to prose: scenario briefs with planted ambiguities, k models
+  generated per brief in the lab, pre-registered expectations, then
+  measure whether the Arc I meter localizes the planted ambiguity
+  (precision/recall of divergence as an ambiguity signal). The
+  reassessment's cited ~50%-precision LLM ambiguity detection is the
+  bar to beat mechanically.
+- [ ] **Foreign-corpus projection measurement** — the census extended
+  to report verbalizer projection completeness (Probe A's number on a
+  real corpus), which is the honest bound on Arc H's claim. *Trigger:
+  Arcs H and I shipped — evidence measures them; costs recorded per
+  wave, Arc D style.*
+
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
 - **Auto-improvement / self-tuning (2026-07-26): measurement yes,
@@ -426,6 +511,50 @@ actually becomes a recurring pipeline rather than occasional sessions:
     canonical-threshold scenarios. Rule-selection implications recorded
     there; this adds selection evidence, not a build trigger.
 
+- **Prose→model→prose requirements pipeline (2026-07-29): sense, with
+  corrections — specified as Arcs G–J, builds gated.** An externally
+  authored reassessment (itself reversing an earlier external "nonsense"
+  verdict on the round-trip idea) was verified element-by-element
+  against this repo (docs/prose-pipeline-evaluation.md). Adopted,
+  corrected, and never-build decisions:
+  - *Adopted*: the round trip is legitimate **iff the back leg is
+    deterministic** (here: parse → verbalize, deterministic by
+    construction); the metamodel-conformance gate is the real prize and
+    is already shipped (lint/score + codegen profile); k-way model
+    diffing is the rigorous ambiguity signal (feasibility measured,
+    evaluation Probe B); LLM legs stay human-gated and out of the
+    primary path — a stance this repo independently measured (X3/XV1:
+    judged-vs-executed r ≈ 0.25 / 0.002).
+  - *Corrected*: the reassessment's "textX/pyecore is licence-necessary"
+    is overstated — what the EPL/GPL incompatibility requires is
+    avoiding the Eclipse MDE stack, and the stdlib satisfies that while
+    keeping the zero-dependency promise; textX/pyecore/Lark are recorded
+    only as a *lab-tooling fallback* (optional extras door) if a
+    purpose-built requirements DSL ever outgrows hand parsing. And the
+    verbalizer's substrate is a *projection* (the parser skips unknown
+    lines), so an unmodelled-content disclosure is a build requirement
+    of Arc H, not a nicety.
+  - *Never build*: a prose-similarity round-trip **score** (the round
+    trip is a review UI, not a metric); an LLM back leg; free-form
+    executable code as the intermediate; AGPL for any service/MCP
+    wrapper derived from this codebase; EPL dependencies anywhere in
+    the repo (one GPL sdist — product and lab alike).
+  - *License posture recorded*: GPL-3.0-or-later was already chosen
+    (v0.24.0) and the run-not-linked analysis fits the CLI/CI usage;
+    Apache-2.0 deps stay compatible if the extras door is used.
+    Recommended owner act, not performed by this record: a public
+    non-relicensing commitment ("never source-available") — the
+    SonarQube/Semgrep rug-pull lesson says trust outweighs the license
+    text itself.
+  - *Still parked*: a purpose-built EARS-shaped requirements DSL — the
+    existing spec/acceptance-criteria-linting settlement stands,
+    now enriched by the reassessment's design lessons (EARS's
+    lightweight patterns succeeded where SBVR's grammar-less style
+    guide failed; any future DSL must be low-overhead and
+    hand-parseable first). Re-litigate on: a concrete adopter with a
+    requirements corpus, or Arc G/H adoption generating pull for
+    structured requirements input.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -436,6 +565,13 @@ actually becomes a recurring pipeline rather than occasional sessions:
   is the correlation and the below-Level-2 cliff.
 - The zero-dependency promise holds: product code and its tests must run
   under `python tests/run_tests.py` with the stdlib only.
+- **The product path is deterministic end-to-end.** No LLM call ever
+  ships inside pumllint itself: the forward leg of the requirements
+  pipeline (prose → model authoring), k-fold generation, and judging
+  live in `tools/` and docs/agents.md. What ships in the product —
+  linting, scoring, fixing, and (when built) tracing, verbalizing,
+  diffing — is deterministic code over the parsed model, byte-stable
+  where output contracts say so.
 - **docs/sdlc-tooling-landscape.md is the source of truth, and a second
   rendering of it exists off-repo and is deliberately out of date.** A
   separately-authored HTML version (own layout, its own provenance line)
@@ -464,4 +600,8 @@ actually becomes a recurring pipeline rather than occasional sessions:
   (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
   build (see *Settled questions*) — as is markdown-embedded PlantUML
   extraction, demand-tested 2026-07-26 and failed
-  (docs/demand-scan-embedded-plantuml.md).
+  (docs/demand-scan-embedded-plantuml.md). The requirements-pipeline
+  arcs (G–J, specified 2026-07-29 from the verified reassessment —
+  docs/prose-pipeline-evaluation.md) are the newest gated thread: Arc G
+  (traceability matrix) is first in line, on a configured
+  requirement-ID convention or owner go.

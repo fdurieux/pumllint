@@ -72,6 +72,14 @@ but they are a useful cross-check that no audience was forgotten.
   lintable, what v0.23.0 does with C4 input today (measured — Level 1 on
   well-formed C4, sequence mistyping on raw arrows), the candidate rule
   sketch, and the census trigger that would green-light a build.
+- [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
+  — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
+  record (Arcs G–J): an external reassessment of the round-trip
+  requirements-validation idea verified element-by-element against this
+  repo — what holds (deterministic back leg, metamodel conformance,
+  k-way model diffing; two claims measured as probes), what was
+  corrected (stdlib over textX, projection disclosure), and the per-arc
+  build triggers.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
