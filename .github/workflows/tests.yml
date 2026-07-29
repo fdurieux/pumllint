@@ -4,14 +4,19 @@ on:
   push:
   pull_request:
 
+# Least-privilege GITHUB_TOKEN regardless of the repository default:
+# every job here only reads the checkout and runs tests.
+permissions:
+  contents: read
+
 jobs:
   # Proves the zero-dependency promise: the core suite runs with nothing but
   # the standard library — no pip install at all.
   zero-dep:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.11"
       - name: Run zero-dependency test runner
@@ -24,8 +29,8 @@ jobs:
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install with test extra
@@ -42,7 +47,7 @@ jobs:
   action-smoke:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
       - name: Lint a clean example via the action
         uses: ./
         with:
@@ -58,8 +63,8 @@ jobs:
   pre-commit-smoke:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Install pre-commit
@@ -93,9 +98,13 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PLANTUML_VERSION: "1.2026.6"
+      # sha256 of the release asset above — release assets are mutable, the
+      # pin is not. Recompute when bumping PLANTUML_VERSION:
+      #   curl -fsSL <url> | sha256sum
+      PLANTUML_SHA256: "89948f14c93756c7a3fb7b69078ff37e8489fd79dd430c582b931e2f65358690"
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-python@v6
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: "3.12"
       - name: Install pumllint
@@ -104,6 +113,7 @@ jobs:
         run: |
           curl -fsSL -o "$RUNNER_TEMP/plantuml.jar" \
             "https://github.com/plantuml/plantuml/releases/download/v${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar"
+          echo "${PLANTUML_SHA256}  $RUNNER_TEMP/plantuml.jar" | sha256sum -c -
           printf '#!/bin/sh\nexec java -jar "%s" "$@"\n' "$RUNNER_TEMP/plantuml.jar" \
             | sudo tee /usr/local/bin/plantuml >/dev/null
           sudo chmod +x /usr/local/bin/plantuml
