@@ -80,6 +80,13 @@ but they are a useful cross-check that no audience was forgotten.
   k-way model diffing; two claims measured as probes), what was
   corrected (stdlib over textX, projection disclosure), and the per-arc
   build triggers.
+- [The AI-ready specification stack, evaluated](spec-stack-evaluation.md)
+  — dated fit note (2026-07-29): an external recommendation on
+  specification artifacts for AI codegen, checked against this repo's
+  evidence — it corroborates the plan at nearly every touch point; its
+  blind spot (artifacts mandated to exist, never gated) is precisely
+  this project's category; records the adopted Arc G refinements, the
+  agents.md precedence ladder, and the sequence↔contract candidate.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).

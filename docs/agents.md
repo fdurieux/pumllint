@@ -124,6 +124,31 @@ leave open. `pumllint --list-rules` enumerates every check. A diagram
 you hand over below the gate is a diagram some other agent will later
 implement wrongly.
 
+## When sources conflict: precedence of evidence
+
+A diagram is rarely the only specification in the repository. When it
+disagrees with another source — an API contract names a different
+operation, the code's types contradict a message signature, a spec
+paragraph contradicts a guard — do not pick a winner silently: that is
+the same invention the repair evidence measured, wearing a different
+hat. Adopted here (2026-07-29, from an externally authored
+recommendation — see
+[the spec-stack evaluation](spec-stack-evaluation.md)) as the default
+ladder, highest authority first:
+
+1. Approved contracts, schemas and acceptance tests
+2. The current feature specification (diagrams included)
+3. ADRs and architecture constraints
+4. Current source code and its unit tests
+5. Process documentation
+6. General descriptive documentation
+
+Projects may declare a different order in their agent configuration —
+what is not optional is the rule that travels with it: **when sources
+conflict, stop and ask**, exactly as step 3 asks for missing decisions.
+A conflict you resolve silently looks specified to everyone
+downstream.
+
 ## Drop-in block for your agent configuration
 
 Paste into AGENTS.md, CLAUDE.md, a Kiro steering file, or your harness
@@ -146,6 +171,9 @@ When PlantUML diagrams are the specification for code you generate:
 5. Re-run the score. Implement only what the repaired diagram
    specifies; where it stays silent, leave the gap visible instead of
    filling it.
+6. If the diagram conflicts with a higher-authority source (approved
+   contract, schema, acceptance test), stop and ask — never reconcile
+   silently.
 ```
 
 ## What is measured, and what is not
