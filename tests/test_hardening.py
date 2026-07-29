@@ -1,8 +1,12 @@
-"""Hardening regressions (docs/security-hardening-assessment.md F4).
+"""Hardening regressions (docs/security-hardening-assessment.md F4 + F6).
 
-A malformed regex in a rule option is a *config* error: ValueError naming
-the rule and option (the CLI maps it to exit 2), never a raw ``re.error``
-traceback that CI would misread as lint findings.
+F4 — a malformed regex in a rule option is a *config* error: ValueError
+naming the rule and option (the CLI maps it to exit 2), never a raw
+``re.error`` traceback that CI would misread as lint findings.
+
+F6 — terminal-bound output neutralizes control characters, so diagram
+content cannot smuggle ANSI/OSC escape sequences or spoofed log lines
+into terminals and CI logs.
 """
 
 import contextlib
@@ -12,7 +16,10 @@ from pathlib import Path
 
 from pumllint.cli import main
 from pumllint.engine import Engine
+from pumllint.model import Dimension, Severity, Violation
 from pumllint.parser import parse_source
+from pumllint.reporters.base import sanitize_terminal
+from pumllint.reporters.builtin import TextReporter
 
 _SEQ = """\
 @startuml demo
@@ -54,6 +61,8 @@ def _expect_config_error(config: dict, source: str, *needles: str) -> None:
         return
     raise AssertionError("expected ValueError for malformed config regex")
 
+
+# --- F4: malformed option regexes across every pattern-taking rule --------
 
 def test_bad_regex_is_a_config_error_not_a_traceback():
     cases = [
@@ -109,3 +118,35 @@ def test_bad_regex_reaches_cli_as_exit_2():
             rc = main([str(puml), "-c", str(cfg)])
         assert rc == 2
         assert "GEN004" in stderr.getvalue()
+
+
+# --- F6: control characters never reach terminal output -------------------
+
+def _violation(message: str) -> Violation:
+    return Violation(
+        rule_id="GEN003",
+        message=message,
+        file_path="evil.puml",
+        line=3,
+        severity=Severity.MAJOR,
+        dimension=Dimension.SEMANTIC,
+    )
+
+
+def test_text_reporter_neutralizes_escape_sequences():
+    out = TextReporter().render([_violation("pre \x1b]0;owned\x07 post")])
+    assert "\x1b" not in out and "\x07" not in out
+    assert "�" in out
+    assert "pre" in out and "post" in out
+
+
+def test_text_reporter_blocks_log_line_spoofing():
+    out = TextReporter().render([_violation("x\n✔ No issues found.")])
+    # The injected newline must not survive as a real line break.
+    assert "✔ No issues found." not in out.splitlines()
+    assert "x�✔" in out
+
+
+def test_sanitize_terminal_keeps_legitimate_text():
+    assert sanitize_terminal("état → done\tok") == "état → done\tok"
+    assert sanitize_terminal("a\rb\x9bc") == "a�b�c"

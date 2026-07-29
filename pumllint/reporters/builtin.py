@@ -11,7 +11,7 @@ from ..baseline import BaselineEntry, compute_deltas, diagram_keys
 from ..model import Diagram, Severity, Violation
 from ..rules import discover
 from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
-from .base import Reporter, reporter
+from .base import Reporter, reporter, sanitize_terminal
 
 _Baseline = Optional[dict[str, BaselineEntry]]
 
@@ -78,7 +78,9 @@ class TextReporter(Reporter):
         if not violations:
             return "✔ No issues found."
         lines = [
-            f"{v.file_path}:{v.line}: [{v.rule_id}/{v.severity.value}] {v.message}"
+            sanitize_terminal(
+                f"{v.file_path}:{v.line}: [{v.rule_id}/{v.severity.value}] {v.message}"
+            )
             for v in violations
         ]
         counts = Counter(v.severity for v in violations)
@@ -112,16 +114,20 @@ class TextReporter(Reporter):
                     header += (
                         f"  (Level {d.baseline_level} → {d.current_level} since last baseline)"
                     )
-            lines = [header]
+            lines = [sanitize_terminal(header)]
             if r.gap_report:
                 target = r.level + 1
                 lines.append(f"  To reach Level {target} ({LEVEL_NAMES[target]}):")
                 for g in r.gap_report:
-                    lines.append(f"    • {g.message}{' — fix:' if g.findings else ''}")
+                    lines.append(
+                        sanitize_terminal(f"    • {g.message}{' — fix:' if g.findings else ''}")
+                    )
                     for f in g.findings:
                         lines.append(
-                            f"        {f.rule_id} {f.severity.value:<6} "
-                            f"{f.file_path}:{f.line}  {f.message}"
+                            sanitize_terminal(
+                                f"        {f.rule_id} {f.severity.value:<6} "
+                                f"{f.file_path}:{f.line}  {f.message}"
+                            )
                         )
             blocks.append("\n".join(lines))
         agg = aggregate_scores(results)

@@ -25,6 +25,7 @@ from .engine import Engine, collect_files
 from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .reporters import get_reporter
+from .reporters.base import sanitize_terminal
 from .rules import discover
 from .schema import SCHEMA_NAMES, load_schema
 from .scoring import score_groups
@@ -300,7 +301,7 @@ def _run_fix(argv: list[str]) -> int:
     for r in changed:
         r.path.write_text(r.fixed, encoding="utf-8")
         for f in r.fixes:
-            print(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}")
+            print(sanitize_terminal(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}"))
     if not changed:
         print("✔ Nothing to fix.")
         return 0
@@ -337,9 +338,13 @@ def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:
         return False
     regressions = find_regressions(baseline_data, results)
     for reg in regressions:
+        # reg.key embeds the diagram name (file content) — sanitize like the
+        # text reporter does.
         print(
-            f"regression: {reg.key}: Level {reg.current_level} "
-            f"(baseline {reg.baseline_level})",
+            sanitize_terminal(
+                f"regression: {reg.key}: Level {reg.current_level} "
+                f"(baseline {reg.baseline_level})"
+            ),
             file=sys.stderr,
         )
     return bool(regressions)
