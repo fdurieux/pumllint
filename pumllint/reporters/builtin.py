@@ -11,9 +11,19 @@ from ..baseline import BaselineEntry, compute_deltas, diagram_keys
 from ..model import Diagram, Severity, Violation
 from ..rules import discover
 from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
+from ..trace import DiagramRef, TraceResult
 from .base import Reporter, reporter, sanitize_terminal
 
 _Baseline = Optional[dict[str, BaselineEntry]]
+
+
+def _site_label(s: DiagramRef) -> str:
+    base = f"{s.file} [{s.name}]" if s.name else s.file
+    return f"{base}:{s.line}"
+
+
+def _site_to_dict(s: DiagramRef) -> dict:
+    return {"file": s.file, "name": s.name, "line": s.line}
 
 
 def _result_keys(results: list[tuple[Diagram, MaturityResult]], baseline: _Baseline) -> list:
@@ -144,6 +154,52 @@ class TextReporter(Reporter):
         blocks.append(set_line)
         return "\n\n".join(blocks)
 
+    def render_trace(self, result: TraceResult) -> str:
+        covered = sum(1 for r in result.requirements if r.covered)
+        total = len(result.requirements)
+        clean = (
+            covered == total
+            and not result.unknown_references
+            and not result.unlinked_diagrams
+        )
+        if clean:
+            summary = (
+                f"✔ Requirement coverage: {covered}/{total} covered "
+                f"across {result.diagram_count} diagram(s)"
+            )
+        else:
+            parts = [f"{total - covered} uncovered"]
+            if result.unknown_references:
+                parts.append(f"{len(result.unknown_references)} unknown reference(s)")
+            if result.unlinked_diagrams:
+                parts.append(f"{len(result.unlinked_diagrams)} unlinked diagram(s)")
+            summary = (
+                f"Requirement coverage: {covered}/{total} covered — "
+                f"{', '.join(parts)} — across {result.diagram_count} diagram(s)"
+            )
+        lines = [sanitize_terminal(summary), ""]
+        for r in result.requirements:
+            if r.covered:
+                sites = ", ".join(_site_label(s) for s in r.covered_by)
+                lines.append(sanitize_terminal(f"{r.id}  ← {sites}"))
+            else:
+                lines.append(sanitize_terminal(f"{r.id}  ✖ uncovered"))
+        if result.unknown_references:
+            lines.append("")
+            lines.append(
+                "Unknown references (not in the inventory — a typo, or the inventory is stale):"
+            )
+            for u in result.unknown_references:
+                sites = ", ".join(_site_label(s) for s in u.cited_by)
+                lines.append(sanitize_terminal(f"  {u.id}  ← {sites}"))
+        if result.unlinked_diagrams:
+            lines.append("")
+            lines.append("Unlinked diagrams (no requirement reference):")
+            for d in result.unlinked_diagrams:
+                label = f"{d.file} [{d.name}]" if d.name else d.file
+                lines.append(sanitize_terminal(f"  {label} ({d.diagram_type})"))
+        return "\n".join(lines)
+
 
 @reporter
 class JsonReporter(Reporter):
@@ -196,6 +252,41 @@ class JsonReporter(Reporter):
                     for (diagram, r), key in zip(results, keys)
                 ],
                 "modelSet": model_set,
+            },
+            indent=2,
+        )
+
+    def render_trace(self, result: TraceResult) -> str:
+        covered = sum(1 for r in result.requirements if r.covered)
+        return json.dumps(
+            {
+                "requirements": [
+                    {
+                        "id": r.id,
+                        "covered": r.covered,
+                        "coveredBy": [_site_to_dict(s) for s in r.covered_by],
+                    }
+                    for r in result.requirements
+                ],
+                "unknownReferences": [
+                    {
+                        "id": u.id,
+                        "citedBy": [_site_to_dict(s) for s in u.cited_by],
+                    }
+                    for u in result.unknown_references
+                ],
+                "unlinkedDiagrams": [
+                    {"file": d.file, "name": d.name, "diagramType": d.diagram_type}
+                    for d in result.unlinked_diagrams
+                ],
+                "summary": {
+                    "requirementCount": len(result.requirements),
+                    "coveredCount": covered,
+                    "uncoveredCount": len(result.requirements) - covered,
+                    "unknownReferenceCount": len(result.unknown_references),
+                    "unlinkedDiagramCount": len(result.unlinked_diagrams),
+                    "diagramCount": result.diagram_count,
+                },
             },
             indent=2,
         )

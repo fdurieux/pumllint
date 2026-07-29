@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from ...model import Diagram, Violation
+from ...model import Diagram, Violation, prose_directives
 from .. import Rule, compile_option_pattern, register
 
 
@@ -98,10 +98,9 @@ class MaxParticipants(Rule):
             )
 
 
-def _prose_directives(diagram: Diagram) -> list:
-    """Directives whose value is free text an owner/requirement tag can live in."""
-    kinds = ("title", "header", "footer", "caption", "note")
-    return [d for d in diagram.directives if d.kind in kinds]
+# The carrier set for owner/requirement tags is shared with `pumllint trace`
+# (one definition in pumllint.model, so rule and matrix agree by construction).
+_prose_directives = prose_directives
 
 
 @register

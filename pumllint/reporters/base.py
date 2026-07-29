@@ -31,6 +31,7 @@ if TYPE_CHECKING:  # annotation-only imports; avoids a runtime reporters->scorin
     from ..baseline import BaselineEntry
     from ..model import Diagram
     from ..scoring import MaturityResult
+    from ..trace import TraceResult
 
 _REPORTERS: dict[str, Type["Reporter"]] = {}
 
@@ -56,6 +57,13 @@ class Reporter(ABC):
         """
         raise NotImplementedError(
             f"Reporter '{self.format_name}' does not support maturity output"
+        )
+
+    def render_trace(self, result: "TraceResult") -> str:
+        """Render a requirement-coverage matrix for the ``trace`` command.
+        Optional, like :meth:`render_maturity` — text and json implement it."""
+        raise NotImplementedError(
+            f"Reporter '{self.format_name}' does not support trace output"
         )
 
 

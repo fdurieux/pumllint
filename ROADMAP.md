@@ -290,9 +290,22 @@ divergence meter, and the evidence that measures them. No build starts
 from the specification alone; per-arc triggers below. The never-build
 list and license posture live in § Settled questions.
 
-## Arc G — Requirements traceability (gated; first build on trigger)
+## Arc G — Requirements traceability (built 2026-07-29; ships with the next release)
 
-- [ ] **Coverage matrix command** — given the diagrams plus a
+- [x] **Coverage matrix command** *(built 2026-07-29 on owner go — the
+  arc's named trigger; implementation plan reviewed before build)* —
+  shipped as `pumllint trace`: all three directions (uncovered
+  requirements, unlinked diagrams, plus **unknown references** — IDs a
+  diagram cites that the inventory lacks, the SEQ001 typo-detector
+  instinct applied to requirement IDs), three opt-in gates
+  (`--fail-on-uncovered/-unlinked/-unknown-ref`), text + json with a
+  shipped schema (`pumllint schema trace`), and the carrier set
+  refactored into `pumllint.model.prose_directives` so GEN007 and the
+  matrix agree by construction. The Action's `command` whitelist gained
+  `trace` (inventory flags via `extra-args`). Original spec follows —
+  delivered as written:
+
+  Given the diagrams plus a
   requirements inventory (a plain ID list in text/json/yaml — in
   practice the synchronized export from a canonical process or
   requirements repository — or a file/tree scanned with the project's
@@ -633,6 +646,7 @@ list and license posture live in § Settled questions.
   extraction, demand-tested 2026-07-26 and failed
   (docs/demand-scan-embedded-plantuml.md). The requirements-pipeline
   arcs (G–J, specified 2026-07-29 from the verified reassessment —
-  docs/prose-pipeline-evaluation.md) are the newest gated thread: Arc G
-  (traceability matrix) is first in line, on a configured
-  requirement-ID convention or owner go.
+  docs/prose-pipeline-evaluation.md) are the newest thread: **Arc G is
+  built** (`pumllint trace`, 2026-07-29, owner go; ships with the next
+  release) — next in line is Arc H (verbalizer), strictly on its
+  trigger: a pilot/adopter asking for the review aid.

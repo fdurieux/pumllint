@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/trace.schema.json",
+  "title": "pumllint requirement-traceability report",
+  "description": "The output of `pumllint trace <paths> -f json`: the coverage matrix between a requirements inventory and the diagrams that reference them, both directions plus unknown references. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Requirement `id` values are stable identifiers: future matrix columns (process step, component, contract, verification) will arrive as additive optional properties on the requirement row, never by reshaping v1.",
+  "type": "object",
+  "required": ["requirements", "unknownReferences", "unlinkedDiagrams", "summary"],
+  "additionalProperties": false,
+  "properties": {
+    "requirements": {
+      "type": "array",
+      "description": "One row per inventory ID, in inventory order.",
+      "items": { "$ref": "#/$defs/requirement" }
+    },
+    "unknownReferences": {
+      "type": "array",
+      "description": "IDs referenced by diagrams but absent from the inventory — a typo, or a stale inventory.",
+      "items": { "$ref": "#/$defs/unknownReference" }
+    },
+    "unlinkedDiagrams": {
+      "type": "array",
+      "description": "Diagrams whose reference carriers (name, title, header, footer, caption, notes) contain no requirement ID.",
+      "items": { "$ref": "#/$defs/unlinkedDiagram" }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["requirementCount", "coveredCount", "uncoveredCount", "unknownReferenceCount", "unlinkedDiagramCount", "diagramCount"],
+      "additionalProperties": false,
+      "properties": {
+        "requirementCount": { "type": "integer", "minimum": 0 },
+        "coveredCount": { "type": "integer", "minimum": 0 },
+        "uncoveredCount": { "type": "integer", "minimum": 0 },
+        "unknownReferenceCount": { "type": "integer", "minimum": 0 },
+        "unlinkedDiagramCount": { "type": "integer", "minimum": 0 },
+        "diagramCount": { "type": "integer", "minimum": 0 }
+      }
+    }
+  },
+  "$defs": {
+    "requirement": {
+      "type": "object",
+      "required": ["id", "covered", "coveredBy"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "The requirement ID exactly as it appears in the inventory — the stable join key for any wider traceability matrix." },
+        "covered": { "type": "boolean" },
+        "coveredBy": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/site" }
+        }
+      }
+    },
+    "unknownReference": {
+      "type": "object",
+      "required": ["id", "citedBy"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "citedBy": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/site" }
+        }
+      }
+    },
+    "site": {
+      "type": "object",
+      "description": "A diagram-side reference site: the diagram, and the line of the first carrier text containing the ID.",
+      "required": ["file", "name", "line"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "name": { "type": ["string", "null"] },
+        "line": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "unlinkedDiagram": {
+      "type": "object",
+      "required": ["file", "name", "diagramType"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "name": { "type": ["string", "null"] },
+        "diagramType": {
+          "type": "string",
+          "description": "An open set (new parsers add values) — consumers must tolerate unknown strings."
+        }
+      }
+    }
+  }
+}

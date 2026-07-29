@@ -1,10 +1,10 @@
 """JSON Schemas for the machine-readable report formats.
 
-The ``-f json`` outputs of the lint and score commands are public contracts
-— CI scripts and integrations parse them — and the schemas under
+The ``-f json`` outputs of the lint, score and trace commands are public
+contracts — CI scripts and integrations parse them — and the schemas under
 ``schemas/`` pin those shapes the way ``tests/golden_scores.json`` pins the
 scores: changes must be deliberate. The files are shipped as package data,
-printed by ``pumllint schema {lint,score}``, and drift-guarded by
+printed by ``pumllint schema {lint,score,trace}``, and drift-guarded by
 tests/test_schema.py, which validates real reporter output against them.
 
 The badge and sonar formats are deliberately not covered: those shapes are
@@ -23,7 +23,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-SCHEMA_NAMES = ("lint", "score")
+SCHEMA_NAMES = ("lint", "score", "trace")
 
 _SCHEMA_DIR = Path(__file__).parent / "schemas"
 
