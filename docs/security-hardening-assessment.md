@@ -1,7 +1,7 @@
 # pumllint — Security & Hardening Assessment
 
 **Repository:** fdurieux/pumllint · **Version assessed:** 0.24.0 (commit `9fd894d`, branch `main`) · **Date:** 2026-07-29
-**Mode:** read-only review — no changes made.
+**Mode:** read-only review; remediation followed on the same branch — see §8.
 
 ---
 
@@ -124,3 +124,21 @@ Reviewed: all of `pumllint/` (CLI, engine, config, parser regexes, rules incl. o
 8. **F7** — rlimits in `runner_child.py` or an honest docstring.
 
 Items 1–6 and 8 are all small, self-contained changes on the order of a few lines each; nothing requires restructuring.
+
+---
+
+## 8. Resolution (2026-07-29, this branch)
+
+| Finding | Status | What was done |
+|---|---|---|
+| F1 | **Fixed** | `permissions: contents: read` at the top of `tests.yml`. |
+| F2 | **Fixed** | All five actions SHA-pinned with version comments (checkout v5.1.0, setup-python v6.3.0, upload-artifact v4.6.2, download-artifact v4.3.0, pypi-publish v1.14.1 — the commit `release/v1` pointed at when pinned, so behavior is unchanged). |
+| F3 | **Fixed** | `PLANTUML_SHA256` pinned next to `PLANTUML_VERSION`; `sha256sum -c` gates execution of the downloaded jar. |
+| F4 | **Fixed** | `compile_option_pattern` / `Rule.pattern_option` in `pumllint/rules/__init__.py`; all six sites converted (GEN004 incl. `per_kind`, GEN006, GEN007, CLS001 ×2, ACT005, SEQ103). Malformed patterns now exit 2 with `error: rule <ID>: option '<name>' is not a valid regex …` (verified). Regression tests in `tests/test_hardening.py`. |
+| F5 | **Fixed** | `.github/dependabot.yml` (github-actions grouped monthly + pip) and `SECURITY.md` (private reporting channel, supported versions, trust-model scope). |
+| F6 | **Fixed** | `sanitize_terminal` in `pumllint/reporters/base.py` (C0 minus tab, DEL, C1 → U+FFFD), applied per logical line in the text reporter and the two CLI prints that embed diagram content (fix descriptions, baseline regressions). Deliberate exception: `pumllint fix --dry-run` diff output stays raw — it is a patch, with the same trust properties as `git diff`. Verified end to end; tests in `tests/test_hardening.py`. |
+| F7 | **Fixed** | `runner_child.py` docstring now states the guard is best-effort accident prevention, not a security boundary; added rlimits — RLIMIT_AS 2 GiB (a memory bomb now surfaces as a reported `MemoryError` instead of starving the host — verified) and RLIMIT_CPU 30 s, deliberately *above* the parent's 15 s wall kill so the parent keeps owning the frozen `timeout` classification. |
+| F8 | **Fixed** | Config-trust note in README (§Configuration), `docs/setup-and-ci.md`, SCORING.md (`--check-syntax` bullet), codified in `SECURITY.md`. |
+| F9 | **Open — repo settings, not code** | To verify in GitHub/PyPI settings: protection rules on the `pypi` environment (required reviewer / deployment tags), tag protection for `v*`, branch protection on `main`, and enabling GitHub private vulnerability reporting (referenced by `SECURITY.md`). |
+
+Both suites pass after remediation: 338/338 (zero-dependency runner) and 447/447 (pytest incl. BDD), plus the workflow/dependabot YAML parse-checked.
