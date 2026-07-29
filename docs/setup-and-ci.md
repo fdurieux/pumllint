@@ -56,6 +56,13 @@ knobs (weights, thresholds, caps) live under a `scoring:` key — see
 [SCORING.md](../SCORING.md); the defaults are calibrated, change them
 deliberately.
 
+One trust note: the config file is code-adjacent, like a Makefile or a
+pre-commit config — `scoring.syntax_command` names a command pumllint will
+execute for the opt-in syntax gate. Review the config as you would any
+other executable pipeline definition, and do not run pumllint with an
+auto-detected config inside a checkout you do not trust (see
+[SECURITY.md](../SECURITY.md)).
+
 ## The recommended pipeline shape
 
 Three steps, cheapest first:
