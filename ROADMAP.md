@@ -290,7 +290,7 @@ divergence meter, and the evidence that measures them. No build starts
 from the specification alone; per-arc triggers below. The never-build
 list and license posture live in § Settled questions.
 
-## Arc G — Requirements traceability (built 2026-07-29; ships with the next release)
+## Arc G — Requirements traceability (shipped in v0.25.0, 2026-07-29)
 
 - [x] **Coverage matrix command** *(built 2026-07-29 on owner go — the
   arc's named trigger; implementation plan reviewed before build)* —
@@ -646,7 +646,7 @@ list and license posture live in § Settled questions.
   extraction, demand-tested 2026-07-26 and failed
   (docs/demand-scan-embedded-plantuml.md). The requirements-pipeline
   arcs (G–J, specified 2026-07-29 from the verified reassessment —
-  docs/prose-pipeline-evaluation.md) are the newest thread: **Arc G is
-  built** (`pumllint trace`, 2026-07-29, owner go; ships with the next
-  release) — next in line is Arc H (verbalizer), strictly on its
-  trigger: a pilot/adopter asking for the review aid.
+  docs/prose-pipeline-evaluation.md) are the newest thread: **Arc G
+  shipped in v0.25.0** (`pumllint trace`, 2026-07-29, owner go) — next
+  in line is Arc H (verbalizer), strictly on its trigger: a
+  pilot/adopter asking for the review aid.
