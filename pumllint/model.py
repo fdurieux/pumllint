@@ -114,8 +114,20 @@ class Message:
     # -- direction / synchrony helpers -----------------------------------
     @property
     def is_reversed(self) -> bool:
-        """True for left-pointing arrows (``A <-- B``: flow is B → A)."""
-        return self.arrow.lstrip("o").startswith("<")
+        """True for left-pointing arrows (``A <-- B``: flow is B → A).
+
+        Direction is decided by which end carries the arrowhead, after
+        discarding the non-directional marks: ``o``/``x`` endpoint
+        decorations and trailing ``+``/``*``/``!`` lifecycle shortcuts.
+        A left head is ``<`` or a leading half-arrow stroke (``\\``/``/``);
+        a right head is ``>`` or a trailing stroke. Heads on both ends
+        (``A <-> B``) keep the written direction, matching PlantUML's
+        rendering.
+        """
+        arrow = self.arrow.rstrip("+*!").strip("ox")
+        left_head = arrow.startswith(("<", "\\", "/"))
+        right_head = arrow.endswith((">", "\\", "/"))
+        return left_head and not right_head
 
     @property
     def is_async(self) -> bool:
