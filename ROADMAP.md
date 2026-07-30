@@ -263,11 +263,17 @@ actually becomes a recurring pipeline rather than occasional sessions:
   RULES.md status flip ⏳→✅. Any change to Gherkin blocks, `tests/bdd/**`,
   or golden files rejects the run (the oracle is read-only for the agent
   that must satisfy it).
-- [ ] **Corpus-firing report** — beyond pass/fail golden scores, run the new
+- [x] **Corpus-firing report** — beyond pass/fail golden scores, run the new
   rule over the calibration corpus (and wild tier) and emit where it fires
   and how often, as a human review artifact. Catches "semantically wrong but
   golden-neutral" rules; this is the analysis that forced GEN006/GEN007's
-  dormancy decision, made routine.
+  dormancy decision, made routine. *(Chassis built 2026-07-30:
+  `tools/corpus_firing.py` — manifest-aware per-unit profiles with
+  golden-pipeline engine parity, wild tier swept separately, `--config`
+  for convention-gated packs, `--rules` for the new-rule zero-firing
+  check. The census keeps its standalone pilot role. First run's yield:
+  SEQ102/SEQ104/SEQ107/SEQ109 fire zero times across all 97 units + wild
+  — the deeper codegen rules have no corpus exercise.)*
 - [ ] **Adversarial verify pass** — an independent agent prompted to refute:
   construct a diagram where the implementation contradicts the RULES.md
   rationale. Concentrate the strongest model here and on algorithmic rules
