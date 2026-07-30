@@ -126,6 +126,24 @@ def test_note_body_mentioning_legend_stays_a_note():
     assert [m.label for m in d.messages] == ["real"]
 
 
+# --- delay-annotated arrows are messages, not dropped lines -----------------
+
+def test_delay_annotated_arrow_parses_as_plain_message():
+    m = _single_message("->(10)")
+    assert (m.source, m.target, m.label) == ("A", "B", "x")
+    assert not m.is_reversed and not m.is_return_arrow
+
+
+def test_delay_annotated_reply_keeps_return_convention():
+    m = _single_message("-->(5)")
+    assert m.is_return_arrow and not m.is_reversed
+
+
+def test_parenthesized_target_is_still_not_a_message():
+    src = "@startuml\nA -> (B) : x\n@enduml\n"
+    assert parse_source(src, "t.puml")[0].messages == []
+
+
 def test_legend_body_mentioning_note_does_not_open_a_note():
     src = (
         "@startuml\n"

@@ -53,6 +53,7 @@ _ARROW = r"(?P<arrow>[<o\\/x]*[-.]{1,2}(?:\[[^\]]*\])?[-.]*[>o\\/x]*[+*!]*)"
 RE_MESSAGE = re.compile(
     r"^(?P<src>\[|" + _IDENT + r")?\s*"
     + _ARROW
+    + r"(?:\(\d+\))?"  # teoz delay annotation, A ->(10) B — accepted, not kept
     + r"\s*(?P<dst>\]|" + _IDENT + r")?\s*"
     r"(?P<mods>(?:\+\+|--|\*\*|!!)\s*)?"
     r"(?::\s*(?P<label>.*))?$"
