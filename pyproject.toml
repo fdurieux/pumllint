@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pumllint"
-version = "0.25.0"
+version = "0.26.0"
 description = "Semantic linter and maturity scorer for PlantUML diagrams, with SonarQube export"
 readme = "README.md"
 license = "GPL-3.0-or-later"
