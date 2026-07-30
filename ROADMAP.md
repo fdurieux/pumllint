@@ -599,6 +599,47 @@ list and license posture live in § Settled questions.
   implementation language). Build trigger: a user with both artifact
   classes in one repo asking to gate drift between them.
 
+- **Obligation & flow checking (2026-07-30): the participant-pair sweep
+  is rejected; three decidable designs are recorded, none queued.** The
+  originating ask — try all combinations of participants, actors and
+  other diagram elements to check completeness of happy vs exception
+  flows and edge cases — was assessed in a design spec (off-repo, rev. 3:
+  written against `9fd894d`, twice adversarially verified against the
+  source, probes executed). Verdict, adopted here:
+  - *Enumerating participant pairs and asking "is an interaction
+    missing?"* is **rejected regardless of implementation effort**:
+    there is no oracle — the complement of a diagram is not a set of
+    omissions, so every absent interaction is equally "missing"
+    (~100% false-positive by construction). Re-litigate only if someone
+    supplies an interaction oracle — which is a declared policy table,
+    i.e. the kept reading below, not inference.
+  - *Declared obligations* (policy completeness: an `[obligations]`
+    table — target selector × failure mode — is the oracle; SEQ110–113
+    plus a reported-only ledger) and *architecture conformance*
+    (ARC001–003 against a declared `[architecture]` layer table) are
+    decidable and specced. **Wait for adopter pull**: a team owning a
+    modelling standard confirms the first table rows. When built, the
+    specs land in RULES.md — the codegen range's first executable specs.
+  - *Structural flow checking* splits in two. **WS3a** — "is any
+    exception trace modelled at all?" (SEQ203) and "does an `alt` state
+    its alternative?" (SEQ201) — needs only a fragment tree, no trace
+    enumeration (proved in the spec), is golden-neutral behind a new
+    `flows` profile, and is recorded as a **maintainer product-direction
+    option**, honestly labelled: self-demand, not adopter pull. **WS3b**
+    — branch-aware call answering (SEQ202) plus the shipped SEQ104's
+    path-insensitive pairing (verified: a reply in a mutually exclusive
+    sibling branch satisfies linear pairing while no execution path is
+    answered) — is **measurement-gated**: prototype branch-aware
+    pairing, count SEQ104 verdict flips over corpus + wild tier;
+    flips > 0 → golden-diffed SEQ104 fix, flips ≈ 0 → record the latent
+    defect in EVIDENCE.md and stay unqueued.
+  - Parser debt surfaced by the same verification is defect-class, not
+    feature work, and ships without pull (v0.26.0): `is_reversed`
+    misdirects half-arrows, `x<-` and `<->` (live in the default
+    profile via SEQ009); `legend` bodies parse as live source (phantom
+    messages and participants); valid `->(10)` delay arrows are dropped
+    entirely.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -644,9 +685,10 @@ list and license posture live in § Settled questions.
   (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
   build (see *Settled questions*) — as is markdown-embedded PlantUML
   extraction, demand-tested 2026-07-26 and failed
-  (docs/demand-scan-embedded-plantuml.md). The requirements-pipeline
-  arcs (G–J, specified 2026-07-29 from the verified reassessment —
-  docs/prose-pipeline-evaluation.md) are the newest thread: **Arc G
-  shipped in v0.25.0** (`pumllint trace`, 2026-07-29, owner go) — next
-  in line is Arc H (verbalizer), strictly on its trigger: a
-  pilot/adopter asking for the review aid.
+  (docs/demand-scan-embedded-plantuml.md), and the obligation/flow-checking
+  designs, recorded gated 2026-07-30 (see *Settled questions*). The
+  requirements-pipeline arcs (G–J, specified 2026-07-29 from the verified
+  reassessment — docs/prose-pipeline-evaluation.md) are the newest
+  thread: **Arc G shipped in v0.25.0** (`pumllint trace`, 2026-07-29,
+  owner go) — next in line is Arc H (verbalizer), strictly on its
+  trigger: a pilot/adopter asking for the review aid.

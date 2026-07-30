@@ -28,11 +28,16 @@ Gherkin block, regenerate with `python tools/extract_features.py`.
 | `minor`   | Violates a recommended convention |
 | `info`    | Advisory; improves maintainability |
 
-**Rule ID scheme:** `<PACK><NNN>` — pack prefix identifies the diagram type scope.
+**Rule ID scheme:** `<PACK><NNN>` — the pack prefix identifies the rule's scope:
+a diagram type (SEQ, ACT, CLS, STA, UC), a cross-cutting concern (GEN governance,
+XD cross-diagram), or a declared convention (`ARC` is reserved for architecture
+conformance against a configured layer policy; no ARC rule is shipped).
 IDs are stable once shipped; the spec follows the code, never the reverse.
 
 **Reserved ranges:** `SEQ100–SEQ199` is reserved for the codegen-readiness profile
-pack (SEQ101–SEQ109, shipped in v0.3.0, documented separately). Base-catalog
+pack (SEQ101–SEQ109, shipped in v0.3.0, documented separately). `SEQ200–SEQ299`
+is reserved for a structural flow pack (design spec on file, unqueued — see
+ROADMAP *Settled questions*, obligation & flow checking). Base-catalog
 sequence rules use `SEQ001–SEQ099`.
 
 **Status legend:**
