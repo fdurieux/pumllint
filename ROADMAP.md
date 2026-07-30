@@ -245,7 +245,12 @@ catches silent over-firing. The residual risk is **not** hallucination (the
 BDD/golden/parity gates fail loudly) but *under-specification*: code that
 passes 2–4 example scenarios yet generalizes wrongly, and an implementer
 editing its own oracle. Build these safeguards only when rule authoring
-actually becomes a recurring pipeline rather than occasional sessions:
+actually becomes a recurring pipeline rather than occasional sessions.
+The concrete form of that trigger (recorded 2026-07-30): a pilot or
+adopter yes that queues a new rule pack — the obligation/flow phases
+are the standing candidate — makes authoring recurring by definition;
+build these safeguards *before* that pack, which would be the first
+one authored under the full harness:
 
 - [ ] **Spec/implementation separation** — two-phase workflow: the RULES.md
   section (rationale, severity, dimension, default-vs-dormant, Gherkin) is
@@ -638,7 +643,14 @@ list and license posture live in § Settled questions.
     answered) — is **measurement-gated**: prototype branch-aware
     pairing, count SEQ104 verdict flips over corpus + wild tier;
     flips > 0 → golden-diffed SEQ104 fix, flips ≈ 0 → record the latent
-    defect in EVIDENCE.md and stay unqueued.
+    defect in EVIDENCE.md and stay unqueued. Instrument note
+    (2026-07-30, from the firing-report chassis): SEQ104 fires zero
+    times across the calibration corpus and wild tier, so the flip
+    measurement needs the pilot's real corpus or dedicated fixtures —
+    corpus replay alone cannot exercise it. Timing note for WS3a: the
+    spec is the pilot-conversation artifact; if the modelling-standard
+    owner bites, the pilot's calibration week (real diagrams on hand)
+    is the natural build window.
   - Parser debt surfaced by the same verification is defect-class, not
     feature work, and ships without pull (v0.26.0): `is_reversed`
     misdirects half-arrows, `x<-` and `<->` (live in the default
@@ -698,3 +710,17 @@ list and license posture live in § Settled questions.
   thread: **Arc G shipped in v0.25.0** (`pumllint trace`, 2026-07-29,
   owner go) — next in line is Arc H (verbalizer), strictly on its
   trigger: a pilot/adopter asking for the review aid.
+- **Next action (2026-07-30): not code but measurement — run the pilot
+  census on the real corpus** (`tools/pilot_census.py`, read-only,
+  standalone-copyable; charter and phased gates in
+  docs/pilot-charter.md; kit verified end-to-end at v0.26.0 against the
+  wild tier). The census output is the demand instrument the gated
+  items wait for: C4 macro counts → the C4 pack; `!include` usage →
+  include resolution; a requirement-ID convention from the conventions
+  workshop → `pumllint trace` adoption (shipped, zero work); a
+  review-aid ask → Arc H; an architect iterating config in the
+  calibration week → `--shadow-config` (the one shelved
+  auto-improvement component whose trigger the pilot can fire); the
+  modelling-standard owner confirming an obligation table →
+  obligation/flow Phases 2–4 — in which case build the remaining Arc F
+  safeguards first (see Arc F's trigger note).
