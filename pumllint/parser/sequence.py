@@ -83,6 +83,8 @@ RE_CAPTION = re.compile(r"^caption\b\s*(?P<v>.*)$", re.IGNORECASE)
 RE_NOTE_START = re.compile(r"^[hr]?note\b(?!.*:\s*\S).*$", re.IGNORECASE)
 RE_NOTE_END = re.compile(r"^end\s*[hr]?note\s*$", re.IGNORECASE)
 RE_NOTE_INLINE = re.compile(r"^[hr]?note\b[^:]*:\s*(?P<v>.+)$", re.IGNORECASE)
+RE_LEGEND_START = re.compile(r"^legend\b.*$", re.IGNORECASE)
+RE_LEGEND_END = re.compile(r"^end\s*legend\s*$", re.IGNORECASE)
 
 # Use-case diagram elements
 RE_USECASE_DECL = re.compile(
@@ -186,6 +188,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
     note_buf: list[str] = []
     note_start = 0
     in_action = False
+    in_legend = False
     suppressions = _collect_suppressions(text)
 
     for lineno, line in _iter_logical_lines(text):
@@ -205,6 +208,7 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             sta_stack = []
             in_note = False
             in_action = False
+            in_legend = False
             continue
         if current is None:
             continue
@@ -229,6 +233,17 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
                 )
             else:
                 note_buf.append(line)
+            continue
+        # Legend blocks are display furniture: swallow until 'endlegend' so
+        # body text can never parse as live messages or participants.
+        # Checked after the note swallow (a note body may mention "legend")
+        # and before the note starts (a legend body may mention "note").
+        if in_legend:
+            if RE_LEGEND_END.match(line):
+                in_legend = False
+            continue
+        if RE_LEGEND_START.match(line):
+            in_legend = True
             continue
         if RE_NOTE_END.match(line):
             continue

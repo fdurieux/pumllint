@@ -71,3 +71,70 @@ def test_leftward_arrows_are_normalized():
 def test_activation_shortcut_survives_direction_check():
     m = _single_message("->+")
     assert m.activates_target and not m.is_reversed
+
+
+# --- legend bodies are not live source --------------------------------------
+
+def test_legend_body_produces_no_messages_or_participants():
+    src = (
+        "@startuml\n"
+        "participant A\n"
+        "legend right\n"
+        "  Foo -> Bar : text\n"
+        "  participant Ghost\n"
+        "endlegend\n"
+        "A -> A : real\n"
+        "@enduml\n"
+    )
+    d = parse_source(src, "t.puml")[0]
+    assert [m.label for m in d.messages] == ["real"]
+    assert set(d.participants) == {"A"}
+
+
+def test_legend_spaced_terminator_and_bare_form():
+    src = (
+        "@startuml\n"
+        "legend\n"
+        "  X -> Y : inside\n"
+        "end legend\n"
+        "A -> B : after\n"
+        "@enduml\n"
+    )
+    d = parse_source(src, "t.puml")[0]
+    assert [m.label for m in d.messages] == ["after"]
+
+
+def test_unterminated_legend_swallows_but_enduml_still_closes():
+    src = "@startuml\nlegend\n  X -> Y : lost\n@enduml\n"
+    d = parse_source(src, "t.puml")[0]
+    assert d.messages == []
+    assert d.end_line == 4
+
+
+def test_note_body_mentioning_legend_stays_a_note():
+    src = (
+        "@startuml\n"
+        "note over A\n"
+        "  legend says retry twice\n"
+        "end note\n"
+        "A -> B : real\n"
+        "@enduml\n"
+    )
+    d = parse_source(src, "t.puml")[0]
+    notes = [x for x in d.directives if x.kind == "note"]
+    assert len(notes) == 1 and "legend says" in notes[0].value
+    assert [m.label for m in d.messages] == ["real"]
+
+
+def test_legend_body_mentioning_note_does_not_open_a_note():
+    src = (
+        "@startuml\n"
+        "legend\n"
+        "  note over A\n"
+        "endlegend\n"
+        "A -> B : real\n"
+        "@enduml\n"
+    )
+    d = parse_source(src, "t.puml")[0]
+    assert [x for x in d.directives if x.kind == "note"] == []
+    assert [m.label for m in d.messages] == ["real"]
