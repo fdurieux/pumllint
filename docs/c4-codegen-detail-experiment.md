@@ -564,3 +564,172 @@ claims rest on the probe SET, per the 2×2 calibration; the R4A
 acceptance criteria enumerate the probes (that is the SDD rung's
 definition, unchanged from R4). Pooled arms carry the claims, never
 single runs.
+
+## Adversarial-threshold replication — results (2026-08-01; executed and mechanical oracles; judged oracle recorded below when run)
+
+**Run notes, recorded before the verdicts:** (1) All six generations
+arrived first-try compiling; wall time ~80–90 s each; generator resolved
+to `claude-opus-5[1m]` (recorded per the instrument disclosure). (2) The
+tool-use audit passed two ways on every run: the task runtime's usage
+metadata reported `tool_uses: 0`, and an independent transcript scan
+counted zero tool-use blocks — no generation had any channel to the
+sealed values beyond its inline specification. (3) The sealed reveal
+verified: all five SHA-256 hashes match the freeze commitment exactly.
+(4) One oracle-conservatism artifact, disclosed: R3 run 1's response
+schema includes a key literally named `notification_error` (value
+`None`); the serialized outcome therefore contains the failure token
+"error" and the frozen lexicon rule (failure beats success) classifies
+its correct `approved_high` outcome as a failure. This costs the R3 arm
+one pass it behaviorally earned (0.708 → 0.750 without it); the rule is
+frozen, vendor- and arm-neutral, and left untouched. (5) The judged
+oracle had been planned on sonnet subagents; vendor API keys were
+approved for the follow-on cross-vendor wave after this wave ran, so the
+judge pass instead runs on the pinned raw-API judge configuration
+byte-identical to the main wave's (`claude-sonnet-5`, schema-enforced,
+`JUDGE_MAX_TOKENS = 16000`, retry-once) via `--adversarial --judge-dir`
+— an instrument upgrade over the plan, disclosed here before the pass
+runs; executed and mechanical rows above it are final and untouched.
+
+**The two arms, executed and mechanical** (pooled, n = 3 × 8):
+
+| Arm | Executed | Edge recall | Extra edges | review_mid (705) | declined_band (630) | over_cap (90 000) |
+|---|---|---|---|---|---|---|
+| R3 diagrams-only | 0.708 | 1.00 | 3 | 0/3 | 0/3 | 3/3 |
+| R4A + adversarial spec | **1.000** | 1.00 | 6 | 3/3 | 3/3 | 3/3 |
+
+**Verdicts against the pre-registered expectations:**
+
+- **EC-A1 — confirmed.** R4A − R3 = **+29.2 pp** (bar ≥ 10); R4A pooled
+  1.000 ≥ 0.80. The sharper sub-bar R3 ≤ 0.70 missed by one scenario
+  (0.708): `over_cap` passed 3/3 by accidental agreement — see EC-A2.
+- **EC-A2 — confirmed.** 6/9 R3 probe executions failed (bar ≥ 6), and
+  all six failures carry the canonical signature (bar ≥ 4): every run
+  approved 705 (approv-token outcomes), every run sent 630 to review
+  (review/unknown outcomes). The third probe is the caveat the
+  pre-registration named: **all three R3 runs invented the same
+  `MAX_AMOUNT = 50 000`** — the exact "product limits" invention the
+  main wave saw once at R2 — and a 50 000 cap happens to reject 90 000
+  just as the true 84 500 rule does. The suite scores agreement at the
+  tested point; the rule is wrong. Confidently, identically wrong,
+  three out of three — the strongest prior-consistency observation in
+  the program so far, and it is invisible to the executed oracle.
+- **EC-A3 — confirmed.** R4A probe executions 9/9; all three artifacts
+  implement 713 / 641 / 500..84 500 / 9..96 as literal constants. When
+  the contract states the numbers, the generator uses the numbers.
+- **EC-A4 — half confirmed, half failed.** Recall 1.00 in both arms ✓;
+  extra cross-group edges **9 total vs the ≤ 1 bar — failed**. Post-hoc
+  mechanism, labeled as such: all nine extras are *reversals of
+  declared edges* (engine→api ×5-of-9, bureau→engine, notifier→api,
+  store→api) — the opus-5 idiom quotes `Rel(...)` lines and peer
+  aliases inside class docstrings, which the textual half of the
+  mechanical scanner reads as reverse mentions. Zero undeclared
+  element pairs appeared. Per the matrix: the extras metric is bound to
+  the generator idiom the scanner was calibrated on (opus-4-8); a
+  docstring-aware scanner revision is future lab machinery, not applied
+  post-freeze.
+- **EC-A5 — the executed half failed upward, as the matrix anticipated:
+  R4A executed 1.000.** An adversarial companion contract saturated
+  every suite-covered behavior, error paths included — the first 1.000
+  in the program. The claim stays exactly as bounded: hallucination-free
+  *for suite-covered behavior*; the R3 arm's invented-cap incident above
+  is the standing proof of why that bound is not removable. The
+  invention half of EC-A5 awaits the pinned judge pass; its numbers
+  will be appended here as judgments when it runs.
+
+**Read for the original question, updated:** the main wave said the
+companion spec "bought no executed points on this suite" — the
+replication shows why that was an artifact of canonical thresholds: with
+rules the generator cannot guess, the written contract is worth
+**+29 pp executed and the difference between 0.708 and saturation**.
+Dynamics buy flow discipline; the contract buys rule identity. And
+detail does not remove invention — it relocates it: at R3 the model
+invents *rules* (the same wrong cap, three times); at R4A, with every
+rule pinned, executed invention vanishes from the suite's view while
+the judged floor remains to be measured.
+
+## Cross-vendor recipe wave — pre-registered expectations (written 2026-08-01, before the wave)
+
+*User-directed follow-up: does the saturation recipe port across
+vendors? Scope chosen from the offered designs: arms R3 vs R4A only
+(the contrast that carries the entire executed effect), C4 family only,
+three vendors, n = 3 per cell — 18 generations. Everything else is
+reused frozen: the LoanCheck system, the sealed adversarial suite
+(2×2-calibrated to discriminate rule identity), the unchanged runner,
+the mechanical conformance scanner, the pinned judge.*
+
+**Design (frozen).** Generators, raw API, one per vendor —
+`anthropic: claude-opus-5` (deliberately the same model family+version
+as the replication's subagent instrument, giving a free
+same-model/two-instruments bridge), `openai: gpt-5.2` (default),
+`google: gemini-3.1-pro-preview` (default) — defaults overridable via
+`XV_*_MODEL` env pins; the exact ids and dates that actually answer are
+recorded at smoke-test time (house precedent: pro-class SKUs churn).
+One generation prompt, verbatim `GEN_PROMPT`, retry-once house rule;
+transport shims: existing Anthropic SDK path, existing Gemini REST shim
+(thinking billed and counted as output), new OpenAI chat-completions
+shim (reasoning tokens counted as output). Thinking configurations
+therefore differ by vendor and are NOT equalized — absolute cross-vendor
+rates are not comparable and are not claimed; **per-vendor R4A−R3 gaps
+carry every claim** (standing house rule: gaps, orderings,
+correlations — never absolutes). Oracles identical for all arms;
+executed + mechanical carry the claims. Judge: `claude-sonnet-5` held
+constant across vendors, with the standing cross-vendor caveat quoted
+up front: judged↔executed agreement on cross-vendor code was measured
+at **r = 0.002** (EVIDENCE.md XV1) — judged numbers here make no
+outcome claims at all; they are the invention taxonomy, quoted strictly
+as judgments. Results: `c4_experiment_results/xv_wave/` (artifacts
+retained, same audit-record rationale). Budget: **ceiling $20**
+(user-approved), estimate ~$6–10; `MAX_CALLS = 60` guard (plan: 18 gen
+×2 worst-case + 18 judge = 54).
+
+**Pre-registered expectations:**
+
+- **XVA1 (headline — the recipe is vendor-robust):** for EVERY keyed
+  vendor, pooled executed R4A − R3 ≥ 10 pp on the adversarial suite.
+- **XVA2 (saturation-or-near):** R4A pooled executed ≥ 0.85 per vendor.
+- **XVA3 (canonical priors are cross-vendor):** per vendor, ≥ 4/9
+  R3-arm probe executions fail, and ≥ half of the failures carry the
+  canonical signature (approv-token at 705; review/unknown at 630;
+  bureau-called or success at 90 000). Either outcome is informative:
+  shared failures say the canonical values are training-corpus-wide
+  priors; divergent inventions say each vendor guesses differently —
+  both strengthen the pin-the-numbers rule, differently.
+- **XVA4 (structural floor):** group-edge recall ≥ 0.85 per vendor
+  under the conforming prompt (the main wave's EC1 bar, not the
+  replication's 1.00 — vendor idioms may differ; the extras metric is
+  recorded but carries no bar after EC-A4's idiom finding).
+- **XVA5 (the floor persists):** R4A pooled judged inventions > 0 for
+  every vendor (judgment-only claim).
+
+**Interpretation matrix (pre-committed):**
+
+- XVA1–A3 hold everywhere → the recipe — behavioral diagrams + written
+  contract with pinned numbers — is vendor-robust, and the pack
+  consequence hardens: presence-of-behavioral-content and the
+  vagueness-lexicon rules (decision words must carry a number or a
+  pointer) are *vendor-independent*, evidence-backed codegen-profile
+  rules. C4-pack building itself stays census-gated; claim language
+  stays input-filter.
+- XVA1 fails for a vendor because its R3 arm PASSES probes → that
+  vendor's priors happen to match the adversarial values or it hedges;
+  inspect its invented constants against `parameters.json`; the
+  canonical-prior claim becomes vendor-scoped.
+- XVA1 fails for a vendor because its R4A arm FAILS probes → a
+  **spec-following ceiling** for that vendor: stated rules did not
+  override priors. The recipe is not vendor-robust; pumllint's claim
+  language must scope input-side sufficiency per generator class.
+- XVA2 fails with error-path failures (probes fine) → the residual is
+  error-path discipline again (main-wave echo), a different, familiar
+  gap — report which paths.
+- XVA4 fails for a vendor → the scaffold-pinned prompt does not secure
+  structure for that vendor; structural rules regain codegen-outcome
+  relevance there.
+
+**Limitations, pre-declared:** one family/system; n = 3/cell; one judge
+(validity caveat above); per-vendor thinking/token configs differ by
+design; preview/flagship SKU churn (exact ids recorded at smoke);
+absolute rates not comparable across vendors; the execution oracle is
+the vendor-neutral leg that carries the claims. Order of operations
+when keys arrive: replication judge pass first (pinned judge, the
+disclosure above), then per-vendor smoke calls (ids recorded here),
+then the wave.
