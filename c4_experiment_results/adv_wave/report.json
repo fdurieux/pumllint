@@ -1,5 +1,5 @@
 {
-  "instrument": "claude-code-subagent/opus (resolved claude-opus-5[1m]); judge: claude-code-subagent/sonnet (claude-sonnet-5)",
+  "instrument": "claude-code-subagent/general-purpose, model override opus -> claude-opus-5[1m]",
   "suite_module": "acceptance.c4_loan_adv_suite",
   "judge_model": "claude-sonnet-5",
   "pumllint_view": {
@@ -272,7 +272,7 @@
           "passed": true,
           "outcome_class": "success",
           "entry": "handle()",
-          "detail": "{'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-ecb8b9e905', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 760, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
+          "detail": "{'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-daa88a6c9b', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 760, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
         },
         {
           "scenario": "review_mid",
@@ -280,7 +280,7 @@
           "passed": false,
           "outcome_class": "success",
           "entry": "handle()",
-          "detail": "review-overlay: {'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-8e50fe0295', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 705, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
+          "detail": "review-overlay: {'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-82a484e5dc', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 705, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
         },
         {
           "scenario": "declined_low",
@@ -288,7 +288,7 @@
           "passed": true,
           "outcome_class": "failure",
           "entry": "handle()",
-          "detail": "{'status': 'declined', 'decision': 'decline', 'application_id': 'app-b2a8b403ca', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 540, 'reason': 'score_too_low', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'declined', 'd"
+          "detail": "{'status': 'declined', 'decision': 'decline', 'application_id': 'app-536765efef', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 540, 'reason': 'score_too_low', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'declined', 'd"
         },
         {
           "scenario": "declined_band",
@@ -296,7 +296,7 @@
           "passed": false,
           "outcome_class": "success",
           "entry": "handle()",
-          "detail": "{'status': 'under_review', 'decision': 'refer', 'application_id': 'app-98ee5489c5', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 630, 'reason': 'score_borderline', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'under_re"
+          "detail": "{'status': 'under_review', 'decision': 'refer', 'application_id': 'app-1236864866', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 630, 'reason': 'score_borderline', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'under_re"
         },
         {
           "scenario": "invalid_zero",
