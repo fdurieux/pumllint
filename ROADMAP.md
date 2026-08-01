@@ -658,6 +658,31 @@ list and license posture live in § Settled questions.
     messages and participants); valid `->(10)` delay arrows are dropped
     entirely.
 
+- **Aschenbrenner capability-horizon mapping (2026-08-01): sense, with
+  corrections — recorded; nothing queued.** An externally authored
+  mapping of *Situational Awareness* (June 2024) onto this project
+  against a four-level capability ladder was verified element-by-element
+  (docs/aschenbrenner-mapping-evaluation.md). Kept: the artifact-side
+  unhobbling frame (whose measured form is the scaffold-resistance
+  result — entry-contract pinning does not rescue below-cliff
+  diagrams), maximum relevance in the current capability band, and the
+  hedge already in these records — declared-policy rules
+  (obligations/ARC) are governance instruments that outlive the
+  ambiguity-service window, whose value is capability-relative in
+  *payoff*, not in decidability. Corrected: two untraceable citations
+  ("Orchid"; an AEI median-1-prompt figure) carry no weight until
+  primaries are supplied; "Phase 2 fitness harness" misnames the Arc D
+  harness (built, not pending); a 2027 trajectory cannot be scored
+  falsified in mid-2026. The falsifiable premise is recorded with its
+  standing instrument: the gate thesis holds while ambiguity degrades
+  generation more than capability compensates — re-measured per model
+  generation with the Arc D harness, whose three generators across two
+  vendors so far show at most marginal narrowing of the executed
+  cliff. Watch trigger: a wave in which the cliff materially narrows
+  is the window-closing signal — the response is a reviewed
+  repositioning toward the governance packs, never an unattended loop
+  (the auto-improvement settlement already covers the actuation side).
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
