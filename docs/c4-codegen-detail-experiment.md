@@ -395,6 +395,172 @@ this experiment adds rule *selection* evidence, not a build trigger:
 judge, one suite, n = 3/rung; suite thresholds are domain-canonical
 (post-hoc identified confound for R4−R3 — an adversarial-threshold
 replication is the obvious follow-up if this ever needs to carry more
-weight); scaffold-pinned prompt (conformance measured under the
+weight; **run 2026-08-01, recorded below in §Adversarial-threshold
+replication**); scaffold-pinned prompt (conformance measured under the
 favorable condition); judged fidelity not comparable across rungs.
 Quote gaps and orderings, never absolutes.
+
+## Adversarial-threshold replication — pre-registered expectations (written 2026-08-01, before the wave)
+
+*The follow-up named in the standing limitations, run on request. The
+main wave's R4−R3 = 0.0 executed was confounded: the suite's thresholds
+(approve ≥ 700, review 620–699, amount cap 100 000) are domain-canonical
+values the generator guessed from priors — `approved_boundary` passed
+3/3 from R0 up, with no spec in sight. This replication moves every
+numeric business rule off its canonical value, so that at the tested
+points the canonical-prior rule set and the true (adversarial) rule set
+disagree. If the companion spec carries real executed value for
+idiosyncratic rules, it must show here; if R4A−R3 ≈ 0 again, the
+companion spec's executed value is refuted even where priors cannot
+rescue the generator.*
+
+**Design (frozen).** Two arms, n = 3 runs each, same scaffold-pinned
+prompt as the main wave, verbatim:
+
+- **R3 arm:** inputs byte-identical to the main ladder's R3 (dynamic
+  diagrams, qualitative guards — "[score sufficient]", no numbers
+  anywhere; re-verified at freeze).
+- **R4A arm:** the same R3 files + a companion `spec.md` that is
+  word-for-word the R4 spec with ONLY the parameter values changed
+  (single-factor manipulation): decision thresholds, validation bounds,
+  and the acceptance-criteria probe values. As in R4, the acceptance
+  criteria enumerate the suite scenarios — that is what the SDD rung
+  means.
+
+Oracles: the frozen runner (`runner_child.py`, unchanged) with an
+adversarial suite (`tools/acceptance/c4_loan_adv_suite.py`) that keeps
+the canonical suite's 8-scenario shape, stub machinery, lexicons and
+review-overlay mechanism, and moves exactly three probes into the
+**disagreement zones** between the canonical and adversarial rule sets;
+the other five scenarios are byte-identical agreement anchors. Scenario
+slots: `approved_high` (760), `review_mid` (probe), `declined_low`
+(540), `declined_band` (probe), `invalid_zero` (0), `over_cap` (probe),
+`bureau_error`, `storage_error`. Mechanical conformance and the judge
+taxonomy are unchanged; the judge scores each arm against its own rung
+spec, as before.
+
+**Sealed-parameters commitment.** The adversarial numbers and probe
+values appear in no repository file at freeze time — a generation run
+that went looking could find only the qualitative design above, not the
+values. They are committed here by SHA-256 and revealed (files added to
+the repo, hashes verifiable) after the last generation completes:
+
+| Sealed file (revealed post-generation) | SHA-256 |
+|---|---|
+| `c4_experiment/R4A/spec.md` | `02ddbc66102164588b65cd77af61e782c32eb8bd1ceb6cca743c5b112082daf5` |
+| `tools/acceptance/c4_loan_adv_suite.py` | `a72d7e60a90722a1d304c9d240dfa1de45cf8d0edecb5c352766ea72ef129cb1` |
+| `c4_experiment_results/adv_wave/sealed/parameters.json` | `de3d4c10198589ddcc15148b25287695c1a6d7c5c1e4576c70279246aa1e718c` |
+| `c4_experiment_results/adv_wave/sealed/ref_canonical.py` | `ad84234651c12221c027472201740eb8c5dda461f6ccaa8388da8274f45f8dcd` |
+| `c4_experiment_results/adv_wave/sealed/ref_adversarial.py` | `7442aefa6a8bdc6bad3f31041fd1645f8c259ad42a9d57cf21e9b8d3ec0507b2` |
+
+**Instrument, disclosed.** This session's environment holds no raw
+Anthropic API credentials (verified: `api.anthropic.com` reachable
+through the egress proxy, authentication rejected with 401 for want of a
+key), so the main wave's `messages.create` path cannot run. The wave
+therefore runs on a **Claude Code subagent instrument**: one subagent
+per generation, prompt = the harness `GEN_PROMPT` byte-identical, plus a
+fixed preamble instructing the agent to use no tools and reply with only
+the module source; model override `opus` (platform-resolved current
+Opus — NOT pinnable to the main wave's `opus-4-8`; the resolved identity
+is recorded at reveal). Judging runs the harness `JUDGE_PROMPT` the same
+way on subagents with model override `sonnet` (same family as the
+pinned judge `claude-sonnet-5`), JSON-only reply validated against the
+harness schema, retry-once on parse failure (house rule). Fences are
+stripped by the harness's `_strip_fences` (house rule). Token spend is
+not meterable for subagents; call counts are reported instead.
+**Audit rule:** the task runtime reports each subagent's tool-use
+count; any generation or judge run with `tool_uses > 0` is discarded
+and regenerated, disclosed. Artifacts are extracted from the task
+transcripts by script and retained in `c4_experiment_results/adv_wave/`
+(gitignore exception — with no API request logs, the artifacts are the
+audit record). The $0 oracles run in the extended harness
+(`--adversarial --score-dir`, pre-freeze extension of
+`tools/c4_codegen_experiment.py`; canonical-path behavior verified
+unchanged). Within-wave contrasts (R4A − R3, same instrument both arms)
+carry the claims; comparisons against the 2026-07-27 ladder are
+indicative only.
+
+**Instrument anchor (calibration, pre-freeze, disclosed).** Two
+generations from the CANONICAL R4 spec through the subagent instrument,
+executed against the canonical suite: **16/16 pooled** — identical to
+the raw-API calibration pair's 16/16 — with group-edge recall 1.0,
+`handle()` present, `tool_uses = 0` on both. One anchor produced two
+extra classes (an `Application` record and a `LoanCheckSystem`
+assembly — same class of extras as the main wave's `Decision` DTO). No
+instrument shift detectable on known ground at n = 2; the anchor
+artifacts are retained alongside the wave's.
+
+**Suite calibration (deterministic, pre-freeze, disclosed).** Two
+hand-written reference implementations — one of the canonical rules, one
+of the adversarial rules (sealed above) — executed against both suites
+through the frozen runner (2×2, no LLM anywhere):
+
+| | canonical suite | adversarial suite |
+|---|---|---|
+| canonical-rules impl | **8/8** | **5/8** — fails exactly the three probes |
+| adversarial-rules impl | 7/8 — fails only `approved_boundary` | **8/8** |
+
+The canonical-rules failures carry the exact predicted signatures
+(review-probe answered with an approv-token; declined-probe answered
+with review; cap-probe proceeded past validation). The suites therefore
+discriminate **rule identity** at the probe points — the thing the main
+wave's suite could not do. An implementation of canonical priors has a
+measured ceiling of 5/8 ≈ 0.625 on the adversarial suite.
+
+**Pre-registered expectations:**
+
+- **EC-A1 (headline — the companion spec carries executed value when
+  rules are idiosyncratic):** pooled executed R4A − R3 ≥ 10 pp on the
+  adversarial suite; sharper, R3 pooled ≤ 0.70 and R4A pooled ≥ 0.80.
+- **EC-A2 (mechanism — canonical priors are what fails):** of the 9
+  R3-arm probe executions (3 runs × 3 probes), ≥ 6 fail, and ≥ 4 of the
+  failures carry the canonical signature (`review_mid` failing on an
+  approv-token outcome; `declined_band` failing on a review/unknown,
+  non-declin outcome; `over_cap` failing with the bureau called or a
+  success outcome).
+- **EC-A3 (the spec overrides the prior when stated):** R4A-arm probe
+  executions pass ≥ 7/9.
+- **EC-A4 (structure stays free):** group-edge recall 1.00 in both
+  arms; extra cross-group edges ≤ 1 in the whole wave.
+- **EC-A5 (no rung is hallucination-free — the standing EC4, re-run):**
+  R4A pooled judged inventions > 0 and pooled executed < 1.0.
+
+**Interpretation matrix (pre-committed):**
+
+- EC-A1–A3 hold → the main wave's R4−R3 = 0.0 is confirmed as the
+  canonical-threshold confound, and the ladder's reading is amended:
+  dynamics buy flow/branch/failure-path discipline (+29 pp there), the
+  written contract buys **rule identity** — invisible when the tested
+  rules are canonical, decisive when they are not. Pack consequence:
+  the vague-decision-language rules (decision words with no number or
+  pointer, in guards AND element descriptions) carry codegen-outcome
+  evidence, not just hygiene claims; presence-of-behavioral-content
+  alone is NOT sufficient where business rules are idiosyncratic.
+- EC-A1 fails low (R3 arm passes probes) → the generator did not
+  default to canonical rules. Calibration proves the suite
+  discriminates, so passing means numeric agreement with the sealed
+  values: audit the runs for leakage (tool-use counts, transcript
+  provenance) before any other reading; absent leakage, report the
+  prior-distribution finding honestly.
+- EC-A3 fails (R4A arm fails probes despite the spec stating the
+  values) → **spec-following failure**: the written contract does not
+  reliably override priors — a stronger hallucination finding than
+  anything in the main wave; the judge rows decide invention vs
+  omission per run.
+- EC-A4 fails → structural realization is instrument-sensitive; bound
+  the conformance claims to the raw-API instrument.
+- EC-A5 fails upward (R4A 24/24 with ~0 inventions) → an adversarial
+  companion contract can saturate suite-covered behavior; the claim
+  stays bounded exactly as the main wave's matrix already words it.
+
+**Limitations, pre-declared:** one family/system; one generator
+instrument per wave (subagent-opus here, raw-API opus-4-8 in the main
+wave — cross-wave gaps are indicative, within-wave gaps carry claims);
+one judge; n = 3/arm; no token/$ metering for subagents (call counts
+and tool-use audits instead); scaffold-pinned prompt (the favorable
+condition, as always); the adversarial values are plausible-range, so
+an individual prior guess can agree with an individual probe — the
+claims rest on the probe SET, per the 2×2 calibration; the R4A
+acceptance criteria enumerate the probes (that is the SDD rung's
+definition, unchanged from R4). Pooled arms carry the claims, never
+single runs.
