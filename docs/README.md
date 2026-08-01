@@ -87,6 +87,14 @@ but they are a useful cross-check that no audience was forgotten.
   blind spot (artifacts mandated to exist, never gated) is precisely
   this project's category; records the adopted Arc G refinements, the
   agents.md precedence ladder, and the sequence↔contract candidate.
+- [*Situational Awareness*, mapped onto pumllint](aschenbrenner-mapping-evaluation.md)
+  — dated evaluation (2026-08-01): an external mapping of
+  Aschenbrenner's capability-forecast essay onto this project's thesis,
+  verified against the repo record — what holds (artifact-side
+  unhobbling, current-band maximum relevance, the governance hedge),
+  what was corrected (two untraceable citations, a misnamed harness, a
+  premature falsification), and the falsifiable window premise with
+  the Arc D harness as its standing instrument.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
