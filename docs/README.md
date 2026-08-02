@@ -95,6 +95,14 @@ but they are a useful cross-check that no audience was forgotten.
   what was corrected (two untraceable citations, a misnamed harness, a
   premature falsification), and the falsifiable window premise with
   the Arc D harness as its standing instrument.
+- [Model verification beyond linting, evaluated](model-verification-evaluation.md)
+  — dated evaluation (2026-08-02): an external note proposing formal
+  ambitions (deadlock proofs, rule-set consistency proofs,
+  well-formedness as a type; TLA+/Alloy; a Lark/ANTLR grammar),
+  verified against the repo — the recommendation largely describes the
+  shipped architecture, the ambitions fail on oracles or invert the
+  linter's job, and the one keeper (a glossary/approved-term rule) is
+  recorded with its adopter trigger.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).

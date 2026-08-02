@@ -683,6 +683,46 @@ list and license posture live in § Settled questions.
   repositioning toward the governance packs, never an unattended loop
   (the auto-improvement settlement already covers the actuation side).
 
+- **Model-verification ambitions (2026-08-02): inverted, with one
+  keeper — recorded; nothing queued.** An externally authored note
+  proposed going "beyond linting into verifying the models themselves"
+  (prove interactions deadlock-free / every message matched by a
+  return; prove the rule set internally consistent; encode
+  well-formedness as a type) with TLA+/Alloy or a rules DSL as
+  alternatives, and recommended a Lark/ANTLR grammar + pluggable
+  visitor rules + glossary-as-one-rule. Verified element-by-element
+  (docs/model-verification-evaluation.md). Verdict, adopted here:
+  - *Matching returns* is shipped linting (SEQ003/009/104/108); the
+    semantic remainder is the already-specced, decidable SEQ202 (WS3b,
+    measurement-gated above). *Deadlock-freedom* is a category error —
+    PlantUML defines no concurrency semantics, so the check would
+    verify its own invention: the no-oracle shape the obligation/flow
+    settlement already rejects. Honest verification is cross-artifact
+    (trace, XD, the recorded seq↔contract item) plus the Arc D
+    measurement — never intra-diagram proofs over imposed semantics.
+  - *Rule-set consistency*: pairwise is the weak property; joint
+    satisfiability is witnessed constructively by the corpus's clean
+    probes under golden enforcement, with no parallel Alloy
+    formalization to drift. Corpus-firing reports cover surprising
+    interactions; Hypothesis-in-tools/ is the extras-door form if
+    adversarial instance-finding is ever wanted.
+  - *Well-formedness as a type* is the anti-goal: representable
+    ill-formedness is the product (findings, levels, ratchet, fix).
+    Parse-don't-validate belongs downstream of the gate, never in it.
+    ARIS's own conventions checking is rules-over-a-model — the
+    ARIS-parity path here is the gated obligations/ARC packs.
+  - *Grammar (Lark/ANTLR)*: re-litigates the settled lab-fallback
+    shelf without new evidence; conflicts with zero-dependency and
+    parse-tolerance requirements; buys only unpulled LSP features.
+    Reopen only for a concrete LSP adopter, and evaluate span-tracking
+    in the existing recognizer first.
+  - *Keeper*: a **glossary/approved-term rule** — declared names
+    resolved against a project term inventory (the trace-inventory
+    pattern applied to names; dormant until configured, GEN006/GEN007
+    style). Trigger: an adopter or the pilot's conventions workshop
+    supplies a real term list — until then, building it would
+    manufacture a convention, not check one.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
