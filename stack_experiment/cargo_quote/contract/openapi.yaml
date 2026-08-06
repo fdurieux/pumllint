@@ -1,0 +1,73 @@
+openapi: "3.0.3"
+info:
+  title: CargoQuote API
+  version: "1.0.0"
+  description: >
+    Instant freight quotation for palletized road cargo. Request/response
+    shapes only; decision semantics are normative in decision_table.md
+    (DT-V validation bounds are mirrored here as schema constraints).
+paths:
+  /quotes:
+    post:
+      operationId: requestQuote
+      summary: Request a freight quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteRequest"
+      responses:
+        "200":
+          description: >
+            Quotation outcome. All outcomes use 200 with a status
+            discriminator; rejection and error statuses are part of the
+            response vocabulary, not HTTP errors.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteResponse"
+components:
+  schemas:
+    QuoteRequest:
+      type: object
+      required: [shipper_id, weight_kg, distance_km, declared_value]
+      additionalProperties: false
+      properties:
+        shipper_id:
+          type: string
+          minLength: 1
+        weight_kg:
+          type: number
+          minimum: 3
+          maximum: 19400
+        distance_km:
+          type: number
+          minimum: 25
+          maximum: 7150
+        declared_value:
+          type: number
+          minimum: 50
+          maximum: 83000
+    QuoteResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum:
+            - "quoted"
+            - "review_hold"
+            - "refused_screening"
+            - "held_unscreened"
+            - "rejected: invalid_request"
+            - "error: store_unavailable"
+        quote_id:
+          type: string
+          description: Present whenever a draft was stored.
+        price:
+          type: number
+          description: Present exactly on the priced rows of DT-S.
+        hold:
+          type: boolean
+          description: "true exactly on held_unscreened."
