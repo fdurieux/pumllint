@@ -65,6 +65,11 @@ variants; the pristine kit contains none.
   {screening_down_hold}, `canonical_accept_threshold_70` → fails
   exactly {review_boundary_42, refuse_boundary_67},
   `inverted_surcharge_order` → fails exactly {price_exact_both}.
+- Syntax gate: all four `.puml` files pass `-checkonly` under the
+  CI-pinned PlantUML 1.2026.6 (sha-verified jar, run 2026-08-06 —
+  including the below-cliff variant: like the shipped bad examples,
+  its damage is semantic, not grammatical). Note the CI syntax-gate
+  job sweeps `examples docs` only; it does not cover this directory.
 - Repo test suite unaffected (`python tests/run_tests.py`).
 
 ## What W0 deliberately does NOT do
@@ -74,9 +79,6 @@ variants; the pristine kit contains none.
   artifacts, à la the LoanCheck 36/36) runs at W1 pre-registration —
   it needs API keys this environment does not hold. No degraded or
   partial condition has been executed.
-- **No PlantUML `-checkonly` gate yet.** The pinned jar is a CI/W1
-  obligation; the diagrams follow the same dialect as the shipped
-  examples, but the syntax gate has not run in this session.
 - **No W1 conditions material.** Rung composition, condition
   directories, and the W2 conflict variants are wave work, assembled
   from these kits under their own pre-registrations.
