@@ -1,0 +1,24 @@
+@startuml cargo_quote_containers
+!include <C4/C4_Container>
+
+title Container diagram for CargoQuote - Instant Freight Quotation System (quotation scope)
+
+Person(shipper, "Shipper", "A logistics customer requesting a price quote for palletized road cargo")
+
+System_Boundary(cq, "CargoQuote Freight Quotation System") {
+    Container(quote_api, "Quote API", "Python 3.12, FastAPI", "Receives quote requests, validates them, orchestrates screening and pricing, and returns the quotation outcome")
+    Container(tariff_engine, "Tariff Engine", "Python 3.12, rules library", "Computes the freight price for a validated request from weight and distance per the published tariff rules")
+    ContainerDb(quote_store, "Quote Store", "PostgreSQL 16", "Stores quote requests and their lifecycle status")
+}
+
+System_Ext(screening_service, "Screening Service", "External denied-party screening provider returning a shipper risk index")
+System_Ext(notification_service, "Notification Service", "External messaging provider delivering quote documents and refusal notices")
+
+Rel(shipper, quote_api, "Requests freight quotes from", "JSON/HTTPS")
+Rel(quote_api, quote_store, "Stores and updates quote records in", "SQL/TCP")
+Rel(quote_api, screening_service, "Requests shipper risk index from", "REST/HTTPS")
+Rel(quote_api, tariff_engine, "Requests price computation from", "JSON/HTTPS")
+Rel(quote_api, notification_service, "Sends quote documents and refusal notices via", "REST/HTTPS")
+
+SHOW_LEGEND()
+@enduml

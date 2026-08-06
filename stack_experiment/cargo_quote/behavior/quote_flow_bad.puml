@@ -1,0 +1,18 @@
+@startuml
+' Deliberately below-cliff: no name, no title, implicit participants,
+' prose messages, vague guard, elision markers, no failure paths,
+' unterminated alt, activation never closed. Same intended system as
+' quote_flow.puml — degradation removes information, it does not change
+' what the system is supposed to do.
+Shipper -> QuoteAPI : ask for a freight quote
+QuoteAPI -> QuoteStore : save it
+activate QuoteAPI
+alt if it seems risky
+  QuoteAPI -> ScreeningService : do the screening stuff
+  ScreeningService --> QuoteAPI : result
+
+QuoteAPI -> TariffEngine : work out the price somehow
+TariffEngine --> QuoteAPI : ok
+QuoteAPI -> Shipper : send back the quote, or hold it, etc.
+note right of QuoteAPI : TODO error handling, review flow, thresholds, ...
+@enduml

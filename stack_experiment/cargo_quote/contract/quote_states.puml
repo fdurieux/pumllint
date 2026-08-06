@@ -1,0 +1,21 @@
+@startuml cargo-quote-states
+title Cargo quote — lifecycle states
+
+state Draft
+state Quoted
+state ReviewHold
+state RefusedScreening
+state HeldUnscreened
+
+[*] --> Draft : requestQuote [request valid per DT-V] / storeDraft
+Draft --> Quoted : screeningResult [riskIndex <= ACCEPT_MAX] / priceAndNotify
+Draft --> ReviewHold : screeningResult [REVIEW_MIN <= riskIndex <= REVIEW_MAX] / holdWithoutPricing
+Draft --> RefusedScreening : screeningResult [riskIndex >= REFUSE_MIN] / notifyRefusal
+Draft --> HeldUnscreened : screeningUnavailable / priceAndHold
+HeldUnscreened --> Quoted : lateScreeningResult [riskIndex <= ACCEPT_MAX] / notifyQuote
+HeldUnscreened --> RefusedScreening : lateScreeningResult [riskIndex >= REFUSE_MIN] / notifyRefusal
+ReviewHold --> Quoted : reviewApproved / priceAndNotify
+ReviewHold --> RefusedScreening : reviewRefused / notifyRefusal
+Quoted --> [*] : validityElapsed
+RefusedScreening --> [*] : closed
+@enduml
