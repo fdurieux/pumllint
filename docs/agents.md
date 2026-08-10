@@ -147,7 +147,12 @@ Projects may declare a different order in their agent configuration —
 what is not optional is the rule that travels with it: **when sources
 conflict, stop and ask**, exactly as step 3 asks for missing decisions.
 A conflict you resolve silently looks specified to everyone
-downstream.
+downstream. *Measured (2026-08-11, lab record
+stack_experiment/W2_PREREGISTRATION.md § Results): across 18
+single-shot generations over deliberately conflicted stacks, no run
+surfaced the conflict — silent resolution was total, even though the
+structured and majority sources won most resolutions. Stop-and-ask is
+harness work; it does not emerge on its own.*
 
 ## Drop-in block for your agent configuration
 

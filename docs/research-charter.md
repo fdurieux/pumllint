@@ -55,7 +55,15 @@ any gate calibrated to it toward rule-count creep — demanding ever more
 detail — against this project's dormant-by-default philosophy.
 Correction: the target is **minimum sufficiency** — the knee of the
 dose–response curve, with the far side measured (W4), never assumed
-monotone.
+monotone. *Measured 2026-08-11: W4 confirmed far-side dilution at
+1.12–1.45× doses (pooled −6.7 / −11.2 / −14.3 pp for redundant /
+irrelevant / enumerated over-specification), borne entirely by the
+weak generator (haiku −26 / −32 pp under irrelevant context and
+ACCURATE exhaustive enumeration while the strong generator held its
+ceiling); W2 measured conflicts resolving silently — 0 of 18 runs
+surfaced an injected contradiction. Records:
+stack_experiment/W2_PREREGISTRATION.md and W4_PREREGISTRATION.md,
+§ Results.*
 
 **E2 — "end-to-end" is not one measurable thing.** Effectiveness is
 measurable per *hop*, and only where an oracle can be constructed. The
@@ -90,7 +98,12 @@ capability-horizon settlement), and the *candidate* durable carrier
 criterion is checkability (§4) — an engineering argument the
 experiments must license before it decides anything: W3's confirmation
 licenses it; a W3 refutation demotes it to one criterion among several
-and reopens the carrier question on outcome evidence.
+and reopens the carrier question on outcome evidence. *W3 ran
+2026-08-11 and refuted equivalence: checkability is demoted as
+pre-committed, and the carrier question is open on outcome evidence —
+PlantUML ≥ code-stub ≈ Mermaid > controlled English > YAML, every
+alternative losing on flow-sensitive scenarios (record:
+stack_experiment/W3_PREREGISTRATION.md § Results).*
 
 **C2 — "effectiveness" must be a vector, not a scalar.** A scalar
 fitness score invites Goodhart — the shape the auto-improvement
@@ -215,7 +228,7 @@ outcomes.
 | Structural diagrams (context/container) | Group-edge recall 1.00 at every rung including bare R0 under a conforming prompt (EC1); annotations +8.3 pp executed (R0→R1), invention-flat | [measured] — orientation and misread-prevention value; a modest outcome effect, not the main lever |
 | Stable-ID traceability | `pumllint trace` shipped (Arc G) | [built] — outcome-side unmeasured |
 | Per-artifact gates as a necessity | Below-cliff artifacts actively degrade generation vs their pristine siblings; all 16 author-less-repaired diagrams passed the gate while the repaired-L1 tier executed 36.6 pp below pristine (repaired-L2: 10.8 pp) — the gate certifies statedness, not correctness | [measured] — the positioning claim, with §4's harm-vs-absence caveat |
-| Carrier/syntax effects | None — no outcome evidence anywhere, including here. Ecosystem only: Mermaid dominates spec directories 76–437× (55× globally in markdown); standalone `.puml` outnumbers embedded PlantUML 16× | [ecosystem] — W3's territory |
+| Carrier/syntax effects | W3 (2026-08-11, one behavior artifact at the A2 rung, fixed information, audited translations): carrier matters — vs the PlantUML baseline, code-stub −6.1 pp, Mermaid −9.1, controlled English −15.2, structured YAML −30.3 pooled; on flow-sensitive scenarios every alternative lost 17–67 pp, and opus generated non-compiling code from YAML 3/3. Ecosystem context retained: Mermaid dominates spec directories 76–437×; standalone `.puml` outnumbers embedded 16× | [measured] — first outcome evidence; equivalence refuted, checkability demoted per C1 |
 
 The standing detail answer, consolidated — three tiers, not two:
 **below Level 2**, the cliff (16–25 pp executed, scaffold-resistant:
@@ -228,7 +241,15 @@ reachable, no elisions, typed participants, guards with semantics,
 failure paths on external calls, signatures not prose — executed
 returns plateau (canonical-threshold-confounded at the measured rung)
 while a written contract keeps cutting invention; a residual floor
-remains at any detail level.
+remains at any detail level. *Dated updates: W1 (2026-08-10) resolved
+the canonical-threshold confound — on adversarial thresholds the
+contract rung is executed-real (+37.9 pp pooled) and the plateau
+begins at the full stack, with knees per-generator (strong at
++contract, weak at +tests). W4 (2026-08-11) measured the far side:
+beyond the full stack more text never helped and diluted the weak
+generator severely — the three-tier answer gains a fourth clause:
+past sufficiency, detail is at best free for strong generators and
+actively harmful for weak ones at ≤ 1.45× doses.*
 
 ## 7. Open questions → waves
 
@@ -282,6 +303,12 @@ W5.
   precedence-of-evidence ladder (adopted 2026-07-29, never tested);
   supplies demand evidence for the recorded sequence↔contract
   cross-check candidate — whose build still follows its own trigger.
+  *Ran 2026-08-11 ($3.58): silent resolution total (0/18 surfaced);
+  the decision table beat stale prose 6/6, the five-source majority
+  beat a stale sentence 5/6 (the miss was a type bug, not stale
+  adoption), the stale worked example was ignored 12/12 slots;
+  conflicts stayed local. Record:
+  stack_experiment/W2_PREREGISTRATION.md § Results.*
 - **W3 — carrier equivalence (~$10).** The same information rendered as
   PlantUML, Mermaid, structured YAML, controlled English
   (verbalizer-shaped), and code-stub skeletons. Pre-registered
@@ -292,11 +319,18 @@ W5.
   brushes a recorded never-build (free-form executable code as the
   pipeline intermediate, prose-pipeline settlement): it is a lab
   measurement only, and a favorable result changes claim language,
-  never that settlement, absent explicit re-litigation.
+  never that settlement, absent explicit re-litigation. *Ran
+  2026-08-11 ($4.21): equivalence REFUTED — see C1's dated demotion
+  note and the §6 carrier row; record:
+  stack_experiment/W3_PREREGISTRATION.md § Results.*
 - **W4 — dose–response, including the far side (~$10).** Ladder from
   minimal past SDD-grade into deliberate over-specification (redundant
   restatement, irrelevant context, exhaustive enumeration); locate the
-  knee; measure dilution. Completes E1's correction with data.
+  knee; measure dilution. Completes E1's correction with data. *Ran
+  2026-08-11 ($3.82): dilution measured (see E1's dated note); knees
+  as pre-registered — pooled at the full stack, strong generator at
+  +contract, weak at +tests. Record:
+  stack_experiment/W4_PREREGISTRATION.md § Results.*
 - **W5 — the agentic condition (~$25–40; needs a new loop driver,
   disclosed harness work).** Re-run the pivotal contrasts (below-cliff
   vs L5 sequence; C4 R0 vs R3/R4) with an agent that can execute a
@@ -337,7 +371,10 @@ Recorded now so failure cannot be reinterpreted later:
    component beneath it.
 2. **Redundancy is harmless or positive (W4).** Then "minimum" loses
    its outcome edge over "more is fine" and retreats to a cost-only
-   argument — the charter must be reworded accordingly.
+   argument — the charter must be reworded accordingly. *Did not
+   fire: W4 (2026-08-11) measured real dilution at ≤ 1.45× doses —
+   "minimum" keeps its outcome edge, dose- and generator-scoped
+   (see E1's dated note).*
 3. **Marginal contributions are unstable across systems and generators
    (W1).** Then no portable minimum exists; every stack claim becomes
    per-context, and the consolidated document must say so instead of

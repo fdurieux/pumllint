@@ -1,0 +1,743 @@
+{
+  "pooled": {
+    "mermaid": {
+      "slots": 66,
+      "executed": 0.3485,
+      "semantic": 0.3485,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          0,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          3,
+          6
+        ],
+        "refuse_boundary_67": [
+          1,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          4,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          6,
+          6
+        ]
+      }
+    },
+    "yaml": {
+      "slots": 66,
+      "executed": 0.1364,
+      "semantic": 0.2727,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          0,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          1,
+          6
+        ],
+        "refuse_boundary_67": [
+          1,
+          6
+        ],
+        "refuse_high_risk": [
+          2,
+          6
+        ],
+        "review_boundary_42": [
+          1,
+          6
+        ],
+        "screening_down_hold": [
+          1,
+          6
+        ],
+        "store_down_error": [
+          3,
+          6
+        ]
+      }
+    },
+    "controlled-english": {
+      "slots": 66,
+      "executed": 0.2879,
+      "semantic": 0.2879,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          1,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          0,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          4,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          4,
+          6
+        ],
+        "screening_down_hold": [
+          2,
+          6
+        ],
+        "store_down_error": [
+          3,
+          6
+        ]
+      }
+    },
+    "code-stub": {
+      "slots": 66,
+      "executed": 0.3788,
+      "semantic": 0.3788,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          2,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          5,
+          6
+        ],
+        "screening_down_hold": [
+          3,
+          6
+        ],
+        "store_down_error": [
+          5,
+          6
+        ]
+      }
+    }
+  },
+  "per_generator": {
+    "opus": {
+      "mermaid": {
+        "slots": 33,
+        "executed": 0.4545,
+        "semantic": 0.4545,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "yaml": {
+        "slots": 33,
+        "executed": 0.0,
+        "semantic": null,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            0,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            0,
+            3
+          ],
+          "review_boundary_42": [
+            0,
+            3
+          ],
+          "screening_down_hold": [
+            0,
+            3
+          ],
+          "store_down_error": [
+            0,
+            3
+          ]
+        }
+      },
+      "controlled-english": {
+        "slots": 33,
+        "executed": 0.3333,
+        "semantic": 0.3333,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "code-stub": {
+        "slots": 33,
+        "executed": 0.4545,
+        "semantic": 0.4545,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      }
+    },
+    "haiku": {
+      "mermaid": {
+        "slots": 33,
+        "executed": 0.2424,
+        "semantic": 0.2424,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            0,
+            3
+          ],
+          "refuse_boundary_67": [
+            1,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "yaml": {
+        "slots": 33,
+        "executed": 0.2727,
+        "semantic": 0.2727,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            1,
+            3
+          ],
+          "refuse_boundary_67": [
+            1,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "controlled-english": {
+        "slots": 33,
+        "executed": 0.2424,
+        "semantic": 0.2424,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            1,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            1,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "code-stub": {
+        "slots": 33,
+        "executed": 0.303,
+        "semantic": 0.303,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            2,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            2,
+            3
+          ],
+          "screening_down_hold": [
+            0,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      }
+    }
+  },
+  "judged_inventions": {
+    "opus": {
+      "mermaid": {
+        "n": 3,
+        "median": 6
+      },
+      "yaml": {
+        "n": 0,
+        "median": null
+      },
+      "controlled-english": {
+        "n": 3,
+        "median": 5
+      },
+      "code-stub": {
+        "n": 3,
+        "median": 5
+      }
+    },
+    "haiku": {
+      "mermaid": {
+        "n": 3,
+        "median": 5
+      },
+      "yaml": {
+        "n": 3,
+        "median": 5
+      },
+      "controlled-english": {
+        "n": 3,
+        "median": 4
+      },
+      "code-stub": {
+        "n": 3,
+        "median": 5
+      }
+    }
+  },
+  "mean_input_tokens": {
+    "opus": {
+      "mermaid": 3158.0,
+      "yaml": 3292.0,
+      "controlled-english": 2930.0,
+      "code-stub": 3156.0
+    },
+    "haiku": {
+      "mermaid": 2185.0,
+      "yaml": 2398.0,
+      "controlled-english": 2073.0,
+      "code-stub": 2277.0
+    }
+  },
+  "expectation_inputs": {
+    "w1_A2_plantuml_pooled": 0.4394,
+    "delta_vs_plantuml_pooled": {
+      "mermaid": -0.0909,
+      "yaml": -0.303,
+      "controlled-english": -0.1515,
+      "code-stub": -0.0606
+    },
+    "delta_vs_plantuml_by_gen": {
+      "opus": {
+        "mermaid": 0.0,
+        "yaml": -0.4545,
+        "controlled-english": -0.1212,
+        "code-stub": 0.0
+      },
+      "haiku": {
+        "mermaid": -0.1818,
+        "yaml": -0.1515,
+        "controlled-english": -0.1818,
+        "code-stub": -0.1212
+      }
+    },
+    "w1_A2_scenarios": {
+      "accept_boundary_41": [
+        0,
+        6
+      ],
+      "invalid_value_over": [
+        0,
+        6
+      ],
+      "invalid_weight_low": [
+        1,
+        6
+      ],
+      "price_exact_both": [
+        0,
+        6
+      ],
+      "price_exact_heavy": [
+        0,
+        6
+      ],
+      "quoted_low_risk": [
+        6,
+        6
+      ],
+      "refuse_boundary_67": [
+        0,
+        6
+      ],
+      "refuse_high_risk": [
+        6,
+        6
+      ],
+      "review_boundary_42": [
+        6,
+        6
+      ],
+      "screening_down_hold": [
+        5,
+        6
+      ],
+      "store_down_error": [
+        5,
+        6
+      ]
+    }
+  }
+}

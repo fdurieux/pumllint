@@ -1,0 +1,3210 @@
+{
+  "phase": "W3/wave_main",
+  "pre_registration": "stack_experiment/W3_PREREGISTRATION.md",
+  "generators": {
+    "opus": "claude-opus-4-8",
+    "haiku": "claude-haiku-4-5-20251001"
+  },
+  "judge_model": "claude-sonnet-5",
+  "runs_per_arm": 3,
+  "kit_hashes": {
+    "cargo_quote/behavior/quote_flow.puml": "e1ded9c7b682e46e3c7127d03b7b6de8e3d9ab4e0d0319c920f282b6c27b52cd",
+    "cargo_quote/brief.md": "3db8eeb9770caad55098686a962df3843e4c7bc187d805a8cbbcc47e42c42555",
+    "cargo_quote/structure/containers.puml": "0d923532cf4d7236acafadd5e19b3e9649e9c47186c46e4a1caa386687f7c2e5",
+    "w3_carriers/quote_flow.md": "4935cb1a2aea856e4f26e6da2a9b81e839c95e017b4ad9eebd6ad15634032aee",
+    "w3_carriers/quote_flow.mmd": "bc6447ec5f002ce2a4598c10e754248f7f744a6a662257338a953f58bccd5ed4",
+    "w3_carriers/quote_flow.yaml": "51c8298acdcf4c532aade124e7336331bad508f46663e0b8f810f4d554a7e5c0",
+    "w3_carriers/quote_flow_stub.py": "5c6b92a9b375c2f93e2b0c3bc76327d3f4c308f011b0b700ef6120161763c621"
+  },
+  "usage": {
+    "claude-haiku-4-5-20251001": {
+      "in": 26799,
+      "out": 29851
+    },
+    "claude-opus-4-8": {
+      "in": 47484,
+      "out": 60099
+    },
+    "claude-sonnet-5": {
+      "in": 141150,
+      "out": 124581
+    }
+  },
+  "spend_usd": 4.2081,
+  "prior_spend_usd": 0.0,
+  "calls_used": 48,
+  "aborted": null,
+  "runs": [
+    {
+      "arm": "mermaid",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2185,
+      "output_tokens": 1883,
+      "code_file": "gen_mermaid_haiku_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | status=quoted quote_id=prote"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1000000.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1000000.0} | status=quoted quote_id=pro"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3750000.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3750000.0} | status=quoted quote_id=pro"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 900.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 900.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | status=quoted quote_id=prote"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | status=hel"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error', 'reason': 'storage unavailable'} | {'status': 'store_unavailable_error', 'reason': 'storage unavailable'} | status=store_unavailable_error reason=storage unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete risk thresholds ACCEPT_MAX=25.0, REVIEW_MIN=25.0, REVIEW_MAX=75.0, REFUSE_MIN=75.0 invented \u2014 spec only references an external decision table DT-S without giving values",
+          "Validation rules in validate_request (positive weight/distance/declared_value, non-empty shipper_id) invented \u2014 DT-V content not provided in spec bundle, so these specific bounds are guessed",
+          "Tariff pricing formula weight_kg * distance_km * 0.5 with base_rate=0.5 invented \u2014 spec only says price is computed 'per the published tariff rules' without giving a formula",
+          "Default ScreeningService.screen() returning 0.0 is an arbitrary placeholder outcome not derivable from spec",
+          "handle() function embeds ad-hoc simulation/test-harness logic (request flags like screening_result='approved'/'review'/'declined'/'error', store_result='error') that monkey-patches service methods based on informal string flags \u2014 this is invented control logic not present in the spec, mixing test scaffolding into the production entry point",
+          "Quote ID format 'Q{:06d}' invented, no spec basis for ID shape"
+        ],
+        "defensive_embellishments": [
+          "QuoteStatus enum for status string values",
+          "created_at timestamp field on stored quote records",
+          "Custom exception classes (ValidationError, StorageError, ScreeningError) as structural sugar",
+          "Defensive existence check in update_quote raising StorageError if quote_id not found",
+          "Type hints and Optional typing throughout"
+        ],
+        "fidelity_score": 42,
+        "notes": "The control-flow skeleton (validate \u2192 store draft \u2192 screen \u2192 branch on risk into quoted/review-hold/refused/held-unscreened, including the storage-failure short-circuit and screening-outage fallback) is faithfully reproduced and all 5 declared relationships and all 3 failure paths from the sequence diagram are present. However, none of the 8 technology annotations from containers.puml are honored: there is no FastAPI, no PostgreSQL, no REST/SQL/JSON-HTTPS semantics anywhere \u2014 QuoteStore is a plain in-memory dict and TariffEngine has no 'rules library' shape. The concrete guard thresholds (25/75), the validation bounds, and the pricing formula are all invented since the referenced decision tables (DT-V, DT-S) were not included in this bundle, meaning the code guessed domain-critical numbers that look authoritative but aren't sourced from the spec. The handle() wrapper additionally invents an informal simulation protocol (string flags like 'screening_result') that has no basis in the spec and conflates test scaffolding with the production quote-handling entry point. Structural fidelity is good; numeric/business fidelity and technology fidelity are weak."
+      }
+    },
+    {
+      "arm": "mermaid",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2185,
+      "output_tokens": 2041,
+      "code_file": "gen_mermaid_haiku_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'email', 'message']; {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 295.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 295.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Screening risk thresholds (ACCEPT_MAX=0.3, REVIEW_MIN=0.3, REVIEW_MAX=0.7, REFUSE_MIN=0.7) are concrete numeric values invented by the code; the spec only names these thresholds via decision table DT-S without giving values",
+          "Validation bounds (weight_kg>10000, distance_km>5000, and positivity checks) are invented; the spec references decision table DT-V but its actual bounds are not given, so these limits are the generator's guess",
+          "Tariff pricing formula (BASE_PRICE=50, PRICE_PER_KG=0.5, PRICE_PER_KM=0.05) is entirely invented; the spec only states pricing follows 'the published tariff rules' without any formula",
+          "ScreeningService.screen() is hard-coded to always return risk index 0.5, giving no real screening semantics",
+          "handle() introduces undocumented request fields 'screening_result' and 'store_result' that let a caller force outcomes \u2014 a test-harness mechanism with no basis in the spec's API contract"
+        ],
+        "defensive_embellishments": [
+          "Quote dataclass adds a created_at timestamp field not mentioned anywhere in the spec",
+          "QuoteStore._is_available() is a stub always returning True",
+          "Custom exception hierarchy (ValidationError, StorageError, ScreeningError) for internal control flow",
+          "Sequential quote_id generation scheme 'QUOTE-000001' not specified by the spec"
+        ],
+        "fidelity_score": 40,
+        "notes": "Structurally the code reproduces the correct set of elements, the 5 declared relationships, and the branching skeleton (valid/invalid, store success/failure, accept/review/refuse/screening-failure) with the right downstream consequences (e.g., no pricing on review-hold, refusal is notified, screening outage still prices and holds). Failure-path handling for invalid request, storage failure, and screening failure is present and matches the note-level behavior (e.g., notification is fire-and-forget and doesn't affect the response). However, the code invents all concrete business thresholds (risk bands, weight/distance limits, pricing formula) since the referenced decision tables (DT-V, DT-S) are not resolved by real values in the given spec \u2014 these are plausible-looking but unverified guesses that materially define business behavior. More critically, essentially none of the mandated technology stack is honored: there is no FastAPI service, no PostgreSQL persistence, no REST/HTTP or SQL calls \u2014 everything is simulated via in-memory Python objects and direct method calls, so the container diagram's technology annotations and integration protocols are entirely absent from the implementation. The handle() function's dependency-injection-via-dict-keys mechanism for forcing screening/store outcomes is also an invented testing artifice with no spec basis. Overall the control-flow logic is faithful in shape, but domain-critical numeric rules are fabricated and the technological architecture is not represented at all."
+      }
+    },
+    {
+      "arm": "mermaid",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2185,
+      "output_tokens": 2349,
+      "code_file": "gen_mermaid_haiku_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | {'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | status=rejected_invalid_request reason=request validation failed"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "valueerror: could not convert string to float: 'ok'"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; valueerror: could not convert string to float: 'error'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error', 'reason': 'storeunavailableerror: quote store unavailable'} | {'status': 'store_unavailable_error', 'reason': 'storeunavailableerror: quote store unavailable'} | status=store_unavailable_error reason=storeunavailableerror: quote store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 5,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Hardcoded validation bounds (weight 0-30000kg, distance 0-3000km, declared value 0-1,000,000) invented since decision table DT-V content is not present in the code and no such limits are given in the spec excerpt",
+          "Hardcoded tariff pricing formula (base_rate=0.50, weight_factor=0.02, distance_factor=0.001) invented; the spec only says 'per the published tariff rules' without giving a formula",
+          "Hardcoded screening thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71 invented as concrete numeric values for decision table DT-S, which is referenced but not supplied",
+          "New generic 'error'/'Pricing failed' outcome invented for a tariff-engine failure after screening succeeds, a path never described in the sequence diagram",
+          "Default screening result of 25.0 hardcoded into ScreeningService.screen, an invented default risk index"
+        ],
+        "defensive_embellishments": [
+          "Per-service 'available' boolean flags added purely for test-harness control, not present in spec",
+          "UUID generation and created_at/updated_at timestamps on the Quote dataclass",
+          "try/except wrapping around tariff pricing calls beyond what diagram specifies",
+          "handle() wiring function with request-driven override toggles for simulating outages"
+        ],
+        "fidelity_score": 55,
+        "notes": "All 6 elements and 5 relationships from the container/sequence diagrams are represented and wired correctly, and the overall control flow (validate -> store -> screen -> branch on risk -> price/notify) matches the sequence diagram's structure, including the three explicit failure paths (invalid request, storage unavailable, screening unavailable) and their DT-S notes (no pricing on review-hold, refusal is notified, screening outage still prices and holds without notifying). However, the code is a pure in-memory simulation with no FastAPI, PostgreSQL, or REST/JSON technology reflected anywhere, so essentially none of the 8 technology annotations are honored. More seriously, the code invents concrete numeric business rules (validation bounds, tariff pricing formula, screening thresholds, default risk score) that the specification explicitly defers to decision tables/tariff rules not included in this bundle, and adds an unspecified generic pricing-failure error outcome. These inventions look intentional but are unverifiable guesses, which is the main fidelity risk despite good structural coverage."
+      }
+    },
+    {
+      "arm": "mermaid",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3158,
+      "output_tokens": 5354,
+      "code_file": "gen_mermaid_opus_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0, 'risk_index': 8} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0, 'risk_index':"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | status=review_hold q"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | {'status': 'rejected', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | status=rejected quote_id=p"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1220.0, 'risk_index': 8} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1220.0, 'risk_index"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid request', 'reason': 'distance out of bounds'} | {'status': 'rejected: invalid request', 'reason': 'distance out of bounds'} | status=rejected: invalid request reason=distance out of bounds"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 21.1, 'risk_index': 8} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 21.1, 'risk_index': 8"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0, 'risk_index': 8} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0, 'risk_index':"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 240.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store unavailable'} | {'status': 'error: store unavailable'} | status=error: store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete risk-index thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=69, REFUSE_MIN=70 \u2014 the DT-S decision table was referenced but never supplied, so these exact cut-offs are the generator's invention",
+          "Concrete validation bounds WEIGHT_MIN/MAX, DISTANCE_MIN/MAX, VALUE_MIN/MAX \u2014 the DT-V decision table was referenced but never supplied, so these limits are invented",
+          "An 'unknown shipper' validation rule (shipper_exists/shipper_found flags) that has no basis in the brief or diagrams",
+          "ScreeningService's string-to-risk-index mapping (approved/clear/active->10, declined/denied/refused->90, review/hold->50) \u2014 an entirely invented interpretation of the external provider's contract",
+          "TariffEngine's concrete pricing formula (BASE_FEE=20, PER_KG=0.10, PER_KG_KM=0.0005) \u2014 the brief only says price is computed 'per the tariff rules', no formula is specified",
+          "QuoteStore's quote-id format 'Q-{shipper}-{seq}' is an invented identifier scheme"
+        ],
+        "defensive_embellishments": [
+          "Generic try/except Exception wrapper in handle() with a synthesized 'error: {}' status not present in the spec",
+          "Defensive float() coercion and non-numeric-input handling in _validate",
+          "Default-argument/dependency-injection pattern (tariff_engine=None or ...) for all constructors",
+          "Docstrings restating container descriptions verbatim",
+          "request=None guarding with request = request or {} throughout multiple methods",
+          "Multiple alias key lookups in handle() (shipperId vs shipper_id, weightKg vs weight_kg, etc.) not specified by any interface contract"
+        ],
+        "fidelity_score": 47,
+        "notes": "Structural coverage is strong: all 6 elements, all 5 relationships, all 6 guard branches, and all 3 failure paths from the sequence diagram are present and wired between the correct classes, and the fire-and-forget/no-notify nuances (DT-S notes 1,2,4,5) are respected. However, the code invents nearly all concrete domain numbers because the referenced decision tables (DT-V, DT-S) are not part of this bundle yet the diagram implies specific bounds/thresholds exist \u2014 the generator fabricated plausible-looking values (risk thresholds, weight/distance/value bounds, a pricing formula, and a string-to-score mapping for screening) that carry real domain meaning but are unverifiable guesses. Additionally, none of the eight technology annotations (FastAPI, PostgreSQL, SQL/TCP, REST/HTTPS, JSON/HTTPS) are reflected in the implementation \u2014 it is plain in-memory Python with no framework, DB, or HTTP client shape resembling the specified stack. These two factors (invented quantitative business logic and complete disregard of technology annotations) substantially lower fidelity despite correct control-flow structure."
+      }
+    },
+    {
+      "arm": "mermaid",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3158,
+      "output_tokens": 6084,
+      "code_file": "gen_mermaid_opus_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | status=review_hold q"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | {'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | status=refused quote_id=prot"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 245.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 245.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 700.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 700.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 133.1, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 133.1, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 153.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store unavailable'} | {'status': 'error: store unavailable'} | status=error: store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 5,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete risk thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=69, REFUSE_MIN=70 assigned to labels the spec left as named constants only, never numerically defined",
+          "Tariff pricing formula (BASE=25.0 + weight*0.05 + distance*0.12) invented wholesale; spec only states price is computed per the published tariff rules with no formula given",
+          "Validation bounds for weight (1-26000kg), distance (1-5000km), and declared value (1-10,000,000) invented outright; the referenced decision table DT-V is not part of the provided spec bundle",
+          "ScreeningService mock maps keyword strings ('approved','review','declined', etc.) to specific risk-index numbers (10/50/90) \u2014 an invented classification scheme with no basis in the spec",
+          "Added an 'unknown shipper'/shipper_exists validation failure reason not mentioned anywhere in the brief or diagrams",
+          "Quote ID format 'Q-{counter}' starting at 1000 is an invented identifier scheme"
+        ],
+        "defensive_embellishments": [
+          "_first() helper providing flexible camelCase/snake_case key aliasing on the incoming request dict",
+          "try/except swallowing all exceptions around notification calls beyond the spec's fire-and-forget note",
+          "isinstance/bool-type guard checks in _validate on top of the numeric bounds check",
+          "Magic-string driven configurable failure injection for ScreeningService/QuoteStore/NotificationService intended for testability, not specified behavior"
+        ],
+        "fidelity_score": 42,
+        "notes": "Control flow, relationship set, and failure-path shape are faithfully reproduced: all 5 container-level relationships and all 3 diagrammed failure branches (invalid request, store unavailable, screening unavailable) are present with matching sequencing (e.g., screening outage still prices and holds the quote unnotified, refusal is notified but never priced, review hold does neither). However none of the eight technology annotations from the container diagram are honored \u2014 there is no FastAPI, no PostgreSQL, no REST/SQL calls; everything is plain in-memory Python with mocked collaborators. More seriously, several numeric business rules the spec deliberately left as named-but-undefined thresholds (ACCEPT_MAX/REVIEW_MIN/REVIEW_MAX/REFUSE_MIN, weight/distance/value bounds, and the entire tariff pricing formula) were invented by the generator with specific concrete values, which is exactly the kind of harmful, undetectable invention the audit flags. The validation guard is structurally present but its meaning is only partially faithful since its thresholds are fabricated. Overall a functionally coherent simulation of the flow but built on invented domain constants and stripped of all specified technology bindings."
+      }
+    },
+    {
+      "arm": "mermaid",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3158,
+      "output_tokens": 5568,
+      "code_file": "gen_mermaid_opus_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | status=review_hold q"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | {'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | status=refused quote_id=prot"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1825.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1825.0, 'risk_index': 8} "
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 4775.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 4775.0, 'risk_index': 8} "
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 746.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 746.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 945.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete weight bounds (0 < weight \u2264 26000 kg) invented \u2014 spec only references an external decision table DT-V without giving numeric limits",
+          "Concrete distance bounds (0 < distance \u2264 5000 km) invented for the same reason",
+          "Concrete declared-value minimum (\u22650) invented",
+          "Concrete screening thresholds ACCEPT_MAX=30, REVIEW_MAX=70, REFUSE_MIN=71 invented \u2014 DT-S table values not present in the given spec",
+          "Screening-status-to-risk-index string mapping (e.g. 'approved'\u219210, 'declined'\u219290) invented; spec only says screening returns a numeric risk index",
+          "Added 'shipper_not_found' validation branch not present anywhere in the spec",
+          "TariffEngine pricing formula (base fee 25 + 0.50/kg + 0.80/km) invented \u2014 spec never states a pricing formula, only that tariff rules exist",
+          "Quote ID generation scheme 'Q-000001' invented as a concrete identifier format"
+        ],
+        "defensive_embellishments": [
+          "Generic try/except catch-all wrapper in handle() producing 'error: {}' strings",
+          "Type coercion (float()) with ValidationError on non-numeric fields",
+          "Constructor flexibility allowing both 'status' and 'result' keyword parameters on ScreeningService/QuoteStore",
+          "Docstrings restating container descriptions from the C4 diagram",
+          "Dictionary-based record storage with default fields not specified (e.g., storing weight/distance/declared_value/price in QuoteStore records)"
+        ],
+        "fidelity_score": 58,
+        "notes": "Container/actor set, all 5 relationships, and the full control-flow skeleton (validation branch, store-failure short-circuit, three screening outcome branches, screening-outage branch) are faithfully reproduced in method-call structure and in the ordering/no-op guarantees called out in the sequence diagram notes (e.g., no further calls after store failure, no notification on review-hold, refusal notified, screening outage still priced+held+unnotified). However, none of the declared technology annotations (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP) are reflected anywhere in the code, which is a set of plain in-memory Python classes without any web framework, database, or HTTP client \u2014 a total technology-fidelity gap. More importantly, because the referenced decision tables (DT-V, DT-S) are not included in the given specification, the code had to invent all concrete numeric thresholds and the entire pricing formula and screening-result mapping; these look intentional and precise but are unverifiable guesses layered on top of an otherwise sound control-flow skeleton, which materially lowers trustworthiness despite structural fidelity."
+      }
+    },
+    {
+      "arm": "yaml",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2398,
+      "output_tokens": 2508,
+      "code_file": "gen_yaml_haiku_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; typeerror: '<=' not supported between instances of 'str' and 'float'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable', 'reason': 'storage unavailable'} | {'status': 'error: store_unavailable', 'reason': 'storage unavailable'} | status=error: store_unavailable reason=storage unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Hard-coded screening thresholds ACCEPT_MAX=20.0, REVIEW_MIN=20.0, REVIEW_MAX=50.0, REFUSE_MIN=50.0 with overlapping boundaries (at exactly 20 and 50 the elif ordering silently routes to the wrong branch) \u2014 DT-S values were never given in this spec bundle so these are guessed, and the overlap breaks the mutually-exclusive partition the spec implies",
+          "Concrete DT-V validation bounds invented: weight_kg in (0,10000], distance_km in (0,5000], declared_value in [0,100000], non-empty shipper_id \u2014 DT-V content is referenced but not supplied, so these limits are fabricated",
+          "Concrete tariff pricing formula (base_rate=10.0, weight_rate=0.5, distance_rate=2.0) invented; spec only says 'per the published tariff rules' with no formula given",
+          "ScreeningService.screen hard-coded to always return 0.5, effectively making the accept path the only reachable branch under default execution and the screening-failure path structurally present but practically unreachable",
+          "Invented quote_id generation scheme 'QUOTE-000006' counter format not specified anywhere"
+        ],
+        "defensive_embellishments": [
+          "Generic try/except around pricing calls producing an unspecified 'error: pricing_failed' response not present in the flow",
+          "Fallback 'error: unexpected_state' branch",
+          "QuoteStatus Enum and Quote dataclass for internal type safety",
+          "handle() harness with request-key overrides (screening_result, pricing_result, store_result) for test injection, not part of the spec",
+          "Docstrings/type hints throughout, shipper_id empty-string guard"
+        ],
+        "fidelity_score": 45,
+        "notes": "All 6 elements and all 5 container-level relationships are structurally represented and called in the right directions, and the major control-flow branches (valid/invalid, store failure short-circuit, accept/review/refuse, screening outage) are all present and mostly match the documented rules (no pricing on review, refusal is notified but not priced, notification is fire-and-forget, storage failure short-circuits everything). However the spec's decision tables (DT-V, DT-S) are referenced but not supplied in this bundle, and the code fills the gap with invented concrete thresholds/bounds/formula that could easily diverge from the real tables, plus an overlapping boundary bug between accept/review and review/refuse. Technology adherence is very weak: FastAPI, PostgreSQL, SQL/TCP, REST/HTTPS and JSON/HTTPS are all named in the diagram but the implementation is pure in-process Python objects with no HTTP layer, no persistence layer, and no network calls \u2014 only one technology (PostgreSQL) is even nominally honored via a docstring comment. Failure paths for validation and storage are faithfully short-circuited; the screening-failure path is coded correctly but never actually triggerable given the hard-coded stub, so it is unverified in practice."
+      }
+    },
+    {
+      "arm": "yaml",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2398,
+      "output_tokens": 3401,
+      "code_file": "gen_yaml_haiku_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 2050.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 2050.0} | status=quoted quot"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_screening'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_scre"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_screening'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_scre"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_screening'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'high_risk_scre"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': 'shipper_risk_too_high'} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'reason': '"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 3050.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 3050.0} | status=quoted quot"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 10800.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 10800.0} | status=quoted qu"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1851.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1851.0} | status=quoted quot"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 2050.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 2050.0} | status=quoted quot"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "overlay-forbid(error|fail|reject|refus|unavailable): {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 2050.0, 'reason': 'screening_unavailable'} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error', 'reason': 'store_unavailable: storeunavailableerror: quote store unavailable'} | {'status': 'error', 'reason': 'store_unavailable: storeunavailableerror: quote store unavailable'} | status=error reason=store_unavailable: storeunavailableerror: quote store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete DT-S risk thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71 invented \u2014 spec only names the variables, never gives numeric bounds",
+          "Concrete DT-V validation bounds (weight 1-10000kg, distance 1-5000km, declared value 100-1,000,000) invented \u2014 spec references an external decision table without values",
+          "Concrete tariff pricing formula (base 50 + 0.5/kg + 2/km) invented \u2014 spec only says price is computed 'per the published tariff rules' with no formula given",
+          "NotificationService inventing a 'notification_pending' status return value on failure that has no basis in the spec (spec only says failure is the provider's retry problem and never surfaces in the response)",
+          "Added a secondary generic 'error' outcome for combined screening+storage failure that is not among the spec's defined outcomes"
+        ],
+        "defensive_embellishments": [
+          "Custom exception classes ValidationError/StorageError/ScreeningError for control flow",
+          "Dataclass Quote model with type hints and Optional fields",
+          "handle() convenience wrapper with configurable availability flags for testing/demo purposes",
+          "__main__ example usage block",
+          "Docstrings throughout classes/methods reiterating spec intent",
+          "Nested try/except defensive guard around the screening-failure pricing/storage path"
+        ],
+        "fidelity_score": 58,
+        "notes": "Structurally the code is a faithful, complete skeleton of the spec: all six elements (Shipper implicit via handle(), QuoteAPI, TariffEngine, ScreeningService, NotificationService, QuoteStore) are present, all five container relationships are exercised, and all three failure paths (invalid request, storage unavailable, screening unavailable) and all eight guard branches (valid/invalid, draft-stored/store-failure, accept/review/refuse/screening-failure) are implemented with the correct control flow and side-effect ordering (e.g. refusal notifies, review doesn't price or notify, screening outage still prices and holds unscreened, notification failures never alter the response). However the specification deliberately withholds concrete numeric values for DT-V and DT-S and gives no pricing formula, and the code invents specific numbers and a formula wholesale, which is exactly the kind of business-logic invention the audit flags even though the branch *structure* is preserved. Technology fidelity is very weak: none of FastAPI, REST/HTTPS, JSON/HTTPS, SQL/TCP, or 'rules library' surface in naming, interface shape, or comments beyond a single passing mention of PostgreSQL in a docstring \u2014 the implementation is plain in-process Python classes with no I/O boundary shaping reflecting the C4 container technology annotations. Overall a logically sound but technologically flat and numerically invented realization of the spec."
+      }
+    },
+    {
+      "arm": "yaml",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2398,
+      "output_tokens": 1923,
+      "code_file": "gen_yaml_haiku_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'email', 'message']; {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 180000.0} | status=hel"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete numeric thresholds (ACCEPT_MAX=0.3, REVIEW_MIN=0.3, REVIEW_MAX=0.7, REFUSE_MIN=0.7) invented in place of the unresolved DT-S decision table values",
+          "Validation rule implemented as simple positivity/truthiness checks, inventing the content of the unresolved DT-V decision table",
+          "A wholly new PricingError failure path and 'error: pricing_failed' response that the specification never describes",
+          "The handle() wrapper's test-hook keys (screening_result, pricing_result, store_exists, shipper_exists) invent a simulated-service control mechanism absent from the spec, including shipper_exists silently turning into a validation failure",
+          "An 'error: unknown' catch-all status for an unreachable risk-index gap that has no basis in the screening decision table"
+        ],
+        "defensive_embellishments": [
+          "Quote dataclass and QuoteStatus enum for internal state representation",
+          "Custom exception classes (StorageError, ScreeningError, PricingError) wrapping calls defensively",
+          "In-memory dict-based QuoteStore with auto-incrementing IDs as an implementation detail",
+          "Type hints and constructor injection across all classes"
+        ],
+        "fidelity_score": 56,
+        "notes": "Container-level elements and relationships are all present and the screening decision routing (accept/review/refuse/outage) faithfully mirrors the DT-S notes, including correct suppression of pricing on review, notification on refuse only, and continued pricing on screening outage. However, all technology annotations (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP) are completely unreflected in a plain-Python, in-memory implementation. The code also invents concrete numeric thresholds and validation bounds where the spec only references external decision tables (DT-V/DT-S) without giving values, and adds an unspecified PricingError failure path plus an elaborate test-hook mechanism in handle() that encodes assumptions about external-service simulation not present in the spec. The fire-and-forget notification rule (DT-S note 4) is only partially honored since notification exceptions are not caught and could alter the response, unlike the spec's guarantee."
+      }
+    },
+    {
+      "arm": "yaml",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "invalid syntax (<generated>, line 1)"
+        },
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "invalid character '\u2014' (U+2014) (<generated>, line 17)"
+        }
+      ],
+      "compiles": false,
+      "input_tokens": 3292,
+      "output_tokens": 4943,
+      "code_file": "gen_yaml_opus_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        }
+      ]
+    },
+    {
+      "arm": "yaml",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "unterminated string literal (detected at line 2) (<generated>, line 2)"
+        },
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "unterminated string literal (detected at line 42) (<generated>, line 42)"
+        }
+      ],
+      "compiles": false,
+      "input_tokens": 3292,
+      "output_tokens": 2989,
+      "code_file": "gen_yaml_opus_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        }
+      ]
+    },
+    {
+      "arm": "yaml",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "invalid syntax. Perhaps you forgot a comma? (<generated>, line 1)"
+        },
+        {
+          "stop_reason": "end_turn",
+          "compiles": false,
+          "error": "invalid character '\u2013' (U+2013) (<generated>, line 8)"
+        }
+      ],
+      "compiles": false,
+      "input_tokens": 3292,
+      "output_tokens": 2767,
+      "code_file": "gen_yaml_opus_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "import_error",
+          "passed": false,
+          "outcome_class": null,
+          "entry": null,
+          "detail": "does not compile"
+        }
+      ]
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2073,
+      "output_tokens": 2519,
+      "code_file": "gen_controlled-english_haiku_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request'} | {'status': 'rejected_invalid_request'} | status=rejected_invalid_request"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete screening risk thresholds (ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71) invented \u2014 DT-S table content was never provided, only referenced",
+          "Concrete validation bounds for weight_kg, distance_km, declared_value (WEIGHT_MIN/MAX, DISTANCE_MIN/MAX, DECLARED_VALUE_MIN/MAX) invented \u2014 DT-V table content was never provided, only referenced",
+          "Tariff pricing formula (base_rate=0.5, weight_factor=weight*0.01, distance_factor=distance*0.15) invented since the tariff rules were never specified beyond 'per the published tariff rules'",
+          "Default screening risk_index of 25 fabricated as a fallback return value with no basis in spec",
+          "Quote ID generation scheme 'QT-{n}' invented as a concrete format",
+          "Generic 'error' / 'error: unknown_screening_outcome' statuses invented as catch-alls not present in the spec's four screening outcomes"
+        ],
+        "defensive_embellishments": [
+          "Enum classes for ValidationResult, StorageResult, ScreeningResult, NotificationResult (not required by spec's plain flow description)",
+          "Nested try/except blocks around update_quote and tariff calls in the accept/review/refuse/unscreened branches that are not distinguished failure paths in the spec",
+          "handle() convenience wrapper with request-key defaults and monkey-patch injection hooks purely for testability",
+          "Type/truthiness check on shipper_id in _validate_request beyond what DT-V would plausibly require",
+          "QuoteStore raising/catching generic Exception rather than a modeled storage error"
+        ],
+        "fidelity_score": 52,
+        "notes": "All 6 spec elements and all 5 container-diagram relationships are structurally represented and wired correctly (Shipper\u2192QuoteAPI is implicit via request_quote(), QuoteAPI\u2192Store/Screening/Tariff/Notification all present). The branch structure (valid/invalid, store ok/unavailable, accept/review/refuse/screening-unavailable) is faithfully preserved, including the fire-and-forget notification semantics and the 'no pricing on review or refuse' / 'no notification on hold or unscreened' rules \u2014 these guard semantics are correct. However, the two decision tables (DT-V, DT-S) that the spec explicitly defers to are not included in this bundle, so every concrete numeric threshold and bound in the code (risk thresholds, weight/distance/value ranges) is the generator's own invention rather than a realization of a given rule \u2014 this is the most consequential fidelity gap since these are the core business rules of the domain. The tariff pricing formula is likewise fabricated whole-cloth. On technology fidelity, the brief's stack (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP) is essentially absent: QuoteStore is an in-memory dict, no HTTP/REST calls exist anywhere, and only a docstring nods at 'PostgreSQL-backed' \u2014 so technology annotations are almost entirely unhonored despite being called out on every container and relationship in the C4 diagram."
+      }
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2073,
+      "output_tokens": 2562,
+      "code_file": "gen_controlled-english_haiku_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening_r"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "overlay-require(held|hold|unscreened): {'status': 'error'} | {'status': 'error'} | status=error"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error'} | {'status': 'store_unavailable_error'} | status=store_unavailable_error"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 5,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 2,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete validation bounds (weight_kg \u2264 50000, distance_km \u2264 5000, declared_value \u2264 1,000,000) invented; DT-V bounds were never specified in the given spec excerpt.",
+          "Concrete screening thresholds ACCEPT_MAX=30.0, REVIEW_MIN=30.1, REVIEW_MAX=70.0, REFUSE_MIN=70.1 invented; spec only names DT-S rows without numeric cutoffs.",
+          "Tariff pricing formula (base_price=50.0, weight_rate=0.5, distance_rate=0.1) invented; spec only says price is computed 'per the published tariff rules' without giving a formula.",
+          "Introduced a generic PricingError/'error' status and pricing-failure branch on the accept and held-unscreened paths that the flow spec never describes (spec never mentions TariffEngine failing)."
+        ],
+        "defensive_embellishments": [
+          "Custom exception hierarchy (ValidationError, StorageError, ScreeningError, PricingError, NotificationError) beyond what spec requires.",
+          "Mock*Service classes with configurable results purely for testing/demo purposes.",
+          "handle() convenience wrapper with hard-coded default request values not present in spec.",
+          "try/except swallowing NotificationError silently (consistent with fire-and-forget intent but implemented as an embellishment)."
+        ],
+        "fidelity_score": 50,
+        "notes": "All 6 elements and 5 relationships from the container/behavior spec are structurally represented and invoked in the right call order, and the four screening branches (accept/review/refuse/unavailable) are each mapped to the correct downstream calls and response labels, matching DT-S notes 1-5 reasonably well. However, the code invents concrete numeric values for both the validation bounds (DT-V) and the screening thresholds (DT-S) that the spec leaves symbolic, and it invents a tariff pricing formula the spec explicitly abstracts behind 'published tariff rules.' The storage-failure guard (step 3, 'storeDraft failed') is coded but unreachable, since QuoteStore.store_draft never raises StorageError, so that failure path is not actually realized. Technology annotations (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP, JSON/HTTPS) are almost entirely absent from the implementation, which uses in-memory dicts and plain Python method calls with no framework or protocol reflected in naming or interfaces. Overall the control flow skeleton is faithful, but several concrete business rules were invented and the technology layer is essentially unaddressed."
+      }
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2073,
+      "output_tokens": 2275,
+      "code_file": "gen_controlled-english_haiku_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "forbidden ['send', 'notify', 'dispatch', 'deliver', 'email', 'message']; {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1210.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1210.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request'} | {'status': 'rejected_invalid_request'} | status=rejected_invalid_request"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 191.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 191.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 390.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error'} | {'status': 'store_unavailable_error'} | status=store_unavailable_error"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete numeric validation bounds (WEIGHT_MIN/MAX, DISTANCE_MIN/MAX, VALUE_MIN/MAX) invented; spec only references an unspecified decision table DT-V",
+          "Concrete risk-band thresholds ACCEPT_MAX=50.0, REVIEW_MIN=50.0/REVIEW_MAX=75.0, REFUSE_MIN=75.0 invented; spec only references DT-S without giving numbers",
+          "Invented 'pricing_error' failure path and PricingError exception for TariffEngine failures \u2014 spec never describes a tariff-engine failure mode",
+          "Invented default risk_index (25.0) and sequential quote_id generation scheme (Q-000001) not specified anywhere"
+        ],
+        "defensive_embellishments": [
+          "isinstance/type checks inside _validate_request beyond described numeric bounds",
+          "Use of dataclasses/Enum wrappers (QuoteDraft, UpdatedQuote, RiskBand) not required by spec",
+          "Catch-all try/except wrapper in handle() converting arbitrary exceptions to an error dict",
+          "Test-harness default field values inside handle() for missing request keys"
+        ],
+        "fidelity_score": 52,
+        "notes": "Structural call graph (Shipper\u2192QuoteAPI\u2192{QuoteStore,ScreeningService,TariffEngine,NotificationService}) and the four screening branches (accept/review/refuse/screening-unavailable) plus the storage-failure short-circuit and fire-and-forget notification behavior are all faithfully reproduced, matching the sequence flow's control logic almost exactly. However, none of the C4 technology annotations are honored at all \u2014 no FastAPI, no PostgreSQL/SQL, no REST/HTTPS framing; the code is a plain in-memory Python simulation with mocked collaborators. The specification withholds the actual DT-V and DT-S numeric values (only naming the tables), yet the code invents concrete thresholds for both validation bounds and risk bands, which is unverifiable and potentially incorrect invented business logic. The code also adds an entirely new failure path (tariff pricing error) that has no basis in the spec. These invented numeric rules and the added failure mode are the main fidelity risks; the rest is close but embellished with harmless scaffolding (dataclasses, enums, catch-all handler)."
+      }
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2930,
+      "output_tokens": 3752,
+      "code_file": "gen_controlled-english_opus_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 205.0, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 205.0, '"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdresponse'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdres"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdresponse'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdres"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdresponse'} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'reviewholdres"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'refusedscreeningresponse'} | {'status': 'rejected', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'outcome': 'refusedscreen"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1025.0, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1025.0,"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3775.0, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3775.0,"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 25.9, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 25.9, 'ou"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 205.0, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 205.0, '"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': \"error: '<=' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '<=' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '<=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'confirmed', 'quote_id': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price': 205.0, 'outcome': 'quotedresponse'} | {'status': 'confirmed', 'quote_id': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price': 205."
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 8,
+        "guards_faithful": 8,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 7,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete validation bounds for weight (1.0-30000.0), distance (1.0-5000.0) and declared value (0.01-10,000,000.0) are invented \u2014 the spec only references an external DT-V table with no given values",
+          "Concrete screening thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71 are invented \u2014 the spec only names these bands via an external DT-S table with no given values",
+          "Tariff pricing formula (BASE_FEE=25.0 plus RATE_PER_KG_KM=0.0005 * weight * distance) is entirely invented; the spec never defines how price is computed",
+          "Handling of 'shipper_exists'/'shipper_found' flags that reject the request as invalid is an invented business rule not present anywhere in the spec",
+          "A fallback 'gap between bands' path that silently treats undefined risk values as review-hold invents behavior for a case the spec never anticipated (assumes contiguous bands)"
+        ],
+        "defensive_embellishments": [
+          "Generic try/except wrapping the whole request_quote call in handle(), returning an 'error: %s' string not specified by the spec",
+          "try/except around float() conversion in _validate for defensive type coercion",
+          "try/except around thread-starting in _fire_and_forget to swallow failures silently",
+          "Extensive docstrings/comments restating container responsibilities",
+          "Status-string remapping dictionary in handle() (confirmed/review_hold/rejected/etc.) that is not required by the spec's response vocabulary"
+        ],
+        "fidelity_score": 45,
+        "notes": "Structurally the code faithfully realizes all 6 elements, all 5 declared relationships, all 3 technical failure paths, and preserves the shape of every branching guard (validation, store outcome, four screening bands) using the same comparison operators and variable names as the spec. However, because the actual decision-table values (DT-V bounds, DT-S thresholds) and the tariff formula are not present in the given specification bundle, the code had to invent concrete numbers and a pricing algorithm \u2014 this is significant invented business logic that could silently diverge from the real tariff/compliance rules. Additionally, none of the specified technologies (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP) are reflected in the implementation, which is a pure in-process Python simulation with an in-memory dict store and no protocol-level code, so technology fidelity is essentially zero. The fire-and-forget notification is a reasonable interpretation of 'asynchronously' via threading. Overall the control flow is faithful but the domain content underneath it is largely invented and the technology stack is not honored, warranting a moderate fidelity score."
+      }
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2930,
+      "output_tokens": 3382,
+      "code_file": "gen_controlled-english_opus_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | status=quotedrespons"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=reviewholdresponse quoteid=proteanobj"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=reviewholdresponse quoteid=proteanobj"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'reviewholdresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=reviewholdresponse quoteid=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refusedscreeningresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refusedscreeningresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refusedscreeningresponse "
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 725.0} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 725.0} | status=quotedrespons"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 2250.0} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 2250.0} | status=quotedrespo"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 385.3} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 385.3} | status=quotedrespons"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | status=quotedrespons"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': \"error: '<=' not supported between instances of 'proteanobj' and 'int'\"} | {'status': \"error: '<=' not supported between instances of 'proteanobj' and 'int'\"} | status=error: '<=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'quotedresponse', 'quoteid': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price': 445.0} | {'status': 'quotedresponse', 'quoteid': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price': 445.0} | status=quotedres"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete validation bounds (WEIGHT_MAX=30000, DISTANCE_MAX=5000, VALUE_MAX=10,000,000, exclusive lower bounds) invented \u2014 the referenced DT-V table content was never supplied",
+          "Concrete screening thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71 invented \u2014 the referenced DT-S table content was never supplied",
+          "TariffEngine pricing formula (BASE_FEE=25.0, PER_KG=0.15, PER_KM=0.40) invented outright; spec only says 'per tariff rules' with no formula given",
+          "ScreeningService's string-to-risk-index mapping (e.g. 'approved'->10, 'review'->50, 'declined'->90) invents a concrete meaning for otherwise unspecified test labels",
+          "handle() invents an entire request-dict contract (shipper_id/shipperId aliasing, screening_result/store_result flags) that has no basis in the specification, effectively fabricating an API surface",
+          "Fallback branch treating a 'gap between bands' as reviewHold invents behavior for a case the spec's decision table never describes as reachable"
+        ],
+        "defensive_embellishments": [
+          "try/except wrapping numeric coercion in _validate",
+          "top-level try/except in handle() catching all exceptions and returning a generic error string",
+          "auto-incrementing quoteId generation format 'Q%04d'",
+          "docstrings on every class restating the container description",
+          "None-safety checks such as 'if not shipper_id'"
+        ],
+        "fidelity_score": 42,
+        "notes": "The orchestration skeleton (validate -> store -> screen -> price/notify) faithfully mirrors the sequence flow: all 5 container relationships are exercised, the 3 failure/short-circuit paths (invalid request, store unavailable, screening unavailable) are correctly implemented with the right side-effects suppressed (e.g. no screening/pricing after store failure, no notification on review, notification on refuse, price-but-hold on screening outage, fire-and-forget notification not affecting response). However, none of the technology annotations are honored \u2014 there is no FastAPI, PostgreSQL, SQL, or REST/HTTPS anywhere; everything is plain in-process Python objects, and the 'Shipper' actor is not modeled as an element, only implicit in handle(). Most damagingly, the code invents the actual domain content missing from the given bundle: the tariff pricing formula, the screening risk thresholds, the validation bounds, and a bespoke request-dict wire format, none of which appear in the supplied spec files (the referenced decision tables DT-V/DT-S were not included). These are plausible-looking but ungrounded business rules that materially affect quote outcomes and pricing, which is the most consequential category of drift even though the control-flow shape itself is accurate."
+      }
+    },
+    {
+      "arm": "controlled-english",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2930,
+      "output_tokens": 3366,
+      "code_file": "gen_controlled-english_opus_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 41} | status=review_hold q"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 42} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 67} | status=review_hold q"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'risk_index': 93} | status=r"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 725.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 725.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(8652\\.4): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 2250.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 2250.0, 'risk_index': 8} "
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 385.3, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 385.3, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0, 'risk_index': 8} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0, 'risk_index': 8} | "
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 445.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable', 'detail': 'storeunavailableerror: quote store unavailable'} | {'status': 'error: store_unavailable', 'detail': 'storeunavailableerror: quote store unavailable'} | status=error: store_unavailable detail=storeunavailableerror: quote store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 8,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete numeric validation bounds (MAX_WEIGHT_KG=30000, MAX_DISTANCE_KM=5000, MAX_DECLARED_VALUE=10,000,000) invented in absence of the referenced DT-V decision table",
+          "Concrete numeric screening thresholds (ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71) invented in absence of the referenced DT-S decision table",
+          "A 'shipper_exists'/'shipper_found' existence check raising ValidationError('unknown shipper') that is never mentioned in the brief or flow spec",
+          "An entire string-to-risk-score mapping scheme for ScreeningService (e.g. 'approved'->10, 'review'->50, 'declined'->90, plus a silent default of 10.0 for unrecognized values) invented wholesale, not present in any spec artifact",
+          "Context-driven simulation hooks (store_status/screening_status keys) that silently alter control flow based on undocumented test-only flags"
+        ],
+        "defensive_embellishments": [
+          "try/except type coercion for weight/distance/declared_value with generic 'non-numeric field' error",
+          "try/except around notification calls to swallow exceptions (implements the fire-and-forget rule but adds broad exception suppression)",
+          "In-memory counter-based QuoteStore implementation with dict records (reasonable stand-in for PostgreSQL, not itself harmful)",
+          "Wrapper handle() function and docstrings not required by spec but add no domain semantics"
+        ],
+        "fidelity_score": 58,
+        "notes": "Control-flow fidelity is strong: all six spec elements are represented, all five container-level relationships are exercised, all four screening branches (accept/review/refuse/outage) and the store-failure short-circuit are implemented with correct sequencing and response shapes matching the spec's named outcomes (rejectedInvalidRequest, storeUnavailableError, quotedResponse, reviewHoldResponse, refusedScreeningResponse, heldUnscreenedResponse), and the fire-and-forget notification rule and 'refusal-but-no-pricing' / 'review-is-not-final' rules are honored. However, the spec deliberately left DT-V and DT-S threshold values external to the provided files, and the code invents specific numbers for both, which is exactly the kind of guessed business logic that looks authoritative but is unverifiable against the spec. It also invents a full screening-label-to-score mapping and a shipper-existence check with no basis in the brief. Technology annotations are almost entirely ignored: no FastAPI, no SQL/PostgreSQL persistence, no REST/HTTPS or JSON/HTTPS boundary modeling \u2014 everything is plain in-process Python calls, so only a docstring mention of PostgreSQL nods at the specified stack. This mix of excellent control-flow/guard fidelity but heavy technology-layer omission and invented numeric/business rules yields a middling-to-moderate fidelity score."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2277,
+      "output_tokens": 2559,
+      "code_file": "gen_code-stub_haiku_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 290.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 290.0} | st"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold_response quote_id=p"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening_r"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1100.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1100.0} | "
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'error': 'request validation failed'} | {'status': 'rejected_invalid_request', 'error': 'request validation failed'} | status=rejected_invalid_request error=request validation failed"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'error': 'request validation failed'} | {'status': 'rejected_invalid_request', 'error': 'request validation failed'} | status=rejected_invalid_request error=request validation failed"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 290.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 290.0} | st"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; typeerror: '<=' not supported between instances of 'proteanobj' and 'int'"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "forbidden_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "forbidden ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'quoted_response', 'quote_id': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price_amount': 290.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='error', error='store_unavailable', success=false, stored=false), 'price_amount': 290.0} "
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 2,
+        "invented_business_logic": [
+          "Concrete validation bounds (MIN_WEIGHT_KG=100, MAX_WEIGHT_KG=25000, MIN/MAX_DISTANCE_KM=1/2000, MIN/MAX_DECLARED_VALUE=100/500000) invented \u2014 decision table DT-V referenced by the spec is not provided/defined anywhere, so these exact numbers are a pure guess",
+          "Concrete screening thresholds (ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71) invented \u2014 DT-S only names these as symbolic thresholds, never gives numeric values",
+          "Tariff pricing formula (0.5 EUR/kg + 0.1 EUR/km) invented \u2014 brief only says price is computed 'against the company tariff' with no formula given",
+          "Default ScreeningService.screen() returning risk index 0 is an arbitrary business default not specified anywhere"
+        ],
+        "defensive_embellishments": [
+          "isinstance/type guards in _validate_request beyond declared bounds checking",
+          "UUID-based quote_id generation detail",
+          "in-memory dict-based QuoteStore with created_at/updated_at timestamps not specified",
+          "Mock/test-double subclasses (_MockScreeningService, _MockTariffEngine, _MockNotificationService) and the request-dict-driven fault injection harness",
+          "Constructors/dependency-injection wiring in QuoteAPI.__init__ not present in the stub's flat procedural description"
+        ],
+        "fidelity_score": 46,
+        "notes": "Structural flow (validate -> store -> screen -> branch on risk -> price/update/notify -> respond) is faithfully reproduced, and all five container relationships and six branch guards are present with correct ordering and side-effect suppression (no pricing on review/refuse, no notification on review, no pricing skipped correctly on refuse, etc.). However: (1) the code silently invents every concrete numeric threshold and the pricing formula, since the actual decision tables DT-V/DT-S content is not given in the supplied spec bundle \u2014 these are confident-looking but unverifiable business rules; (2) the explicit spec requirement that notification failures are fire-and-forget and 'never change the response' is violated in the real QuoteAPI.request_quote \u2014 send_quote_document/send_refusal_notice calls are not wrapped in try/except, so a notification failure would propagate as an unhandled exception rather than being swallowed, contradicting DT-S note 4; (3) technology annotations are almost entirely unhonored \u2014 no FastAPI app/router, no SQL/PostgreSQL persistence (plain in-memory dict, despite a docstring claiming otherwise), no REST/HTTPS client code for screening/notification/tariff, no JSON contract; (4) the Shipper element is not modeled as a distinct participant, only implied by the handle() entry function. These gaps and inventions substantially reduce fidelity despite the correct high-level control flow."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2277,
+      "output_tokens": 3073,
+      "code_file": "gen_code-stub_haiku_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 540.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 540.0} | st"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': none, 'reason': 'quote held for manual compliance review'} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, succes"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': none, 'reason': 'quote held for manual compliance review'} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, succes"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': none, 'reason': 'quote held for manual compliance review'} | {'status': 'review_hold_response', 'quote_id': proteanobj(status='stored', stored=true, succes"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': none, 'reason': 'shipper failed screening'} | {'status': 'refused_screening_response', 'quote_id': proteanobj(status='stored', stored=true, success=t"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 750.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 750.0} | st"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'quote_id': none, 'price_amount': none, 'reason': 'request validation failed'} | {'status': 'rejected_invalid_request', 'quote_id': none, 'price_amount': none, 'reason': 'request validation failed'} | status=rejected_invalid_request quote_id=none price_amount=n"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 500.2} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 500.2} | st"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 540.0} | {'status': 'quoted_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 540.0} | st"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "overlay-forbid(error|fail|reject|refus|unavailable): {'status': 'held_unscreened_response', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 540.0, 'reason': 'screening service unavailable'} | {'status': 'held_unscreened_response', 'quote_id': proteanobj(status='stored', stored=true, success"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error', 'quote_id': none, 'price_amount': none, 'reason': 'storeunavailableerror: quote store unavailable'} | {'status': 'store_unavailable_error', 'quote_id': none, 'price_amount': none, 'reason': 'storeunavailableerror: quote store unavailable'} | status=store_unavail"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 5,
+        "guards_faithful": 4,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete validation bounds (weight \u226430000kg, distance \u22643000km, declared_value \u22641,000,000, non-empty shipper_id) invented \u2014 DT-V table values never specified in the provided spec bundle",
+          "Concrete screening risk thresholds ACCEPT_MAX=25, REVIEW_MIN=26, REVIEW_MAX=75, REFUSE_MIN=76 invented \u2014 DT-S numeric boundaries never given",
+          "Invented tariff pricing formula (base_price=50 + weight*0.1 + distance*0.5 + price_result) where the spec only says 'compute priceAmount' with no formula",
+          "Added a new unspecified 'error' response status for pricing failures inside the accept/screening-unavailable branches, a failure mode never mentioned in the brief or behavior stub",
+          "QuoteStore.update_quote raising StorageError when quote_id not found \u2014 an unspecified failure branch"
+        ],
+        "defensive_embellishments": [
+          "Enum QuoteStatus for lifecycle status labels",
+          "try/except wrapping around already-caught exception types (generic Exception fallbacks) in each screening-decision branch",
+          "Constructor parameters exposing simulated 'ok'/'error' states for test harnessing rather than real integration",
+          "Storing sent_messages list in NotificationService for introspection",
+          "uuid4-based quote_id generation not specified but necessary",
+          "No-op 'if self.notification_status == \"error\": pass' branch that has no effect, vestigial code"
+        ],
+        "fidelity_score": 45,
+        "notes": "Control-flow skeleton (validate \u2192 store draft \u2192 screen \u2192 accept/review/refuse/screening-unavailable, with storage/screening failure short-circuits and fire-and-forget notification) is structurally faithful to the behavior stub and DT-S notes. However, the code invents all concrete numeric business rules (validation bounds, screening thresholds, pricing formula) that the spec bundle never supplies, and adds an unspecified generic 'error' status. All technology annotations from the C4 diagram (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP) are completely ignored \u2014 the implementation is plain in-process Python classes with an in-memory dict store, no HTTP/SQL semantics anywhere. The Shipper actor/Person element is not modeled as a first-class element (only implicit via caller). Relationships and guard structure are otherwise well preserved in meaning (accept/review/refuse ordering, screening-outage-does-not-fail-quote, refusal-is-notified, review-is-not, notification failures don't affect response)."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 2277,
+      "output_tokens": 2758,
+      "code_file": "gen_code-stub_haiku_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | {'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | status=rejected_invalid_request reason=request validation failed"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | {'status': 'rejected_invalid_request', 'reason': 'request validation failed'} | status=rejected_invalid_request reason=request validation failed"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "typeerror: '<=' not supported between instances of 'str' and 'int'"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'held_unscreened_response', 'quote_id': 'q1000', 'price_amount': 85.0, 'note': 'screening service unavailable'} | {'status': 'held_unscreened_response', 'quote_id': 'q1000', 'price_amount': 85.0, 'note': 'screening service unavailable'} | status=held_unscreened_response quote_id=q1000 pri"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'store_unavailable_error', 'reason': 'failed to store quote draft'} | {'status': 'store_unavailable_error', 'reason': 'failed to store quote draft'} | status=store_unavailable_error reason=failed to store quote draft"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 5,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 5,
+        "technologies_honored": 1,
+        "invented_business_logic": [
+          "Concrete numeric validation bounds (WEIGHT_MIN/MAX_KG, DISTANCE_MIN/MAX_KM, DECLARED_VALUE_MIN/MAX) invented \u2014 the spec only references decision table DT-V by name without giving values",
+          "Concrete numeric screening thresholds (ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71) invented \u2014 DT-S referenced but values not supplied in the spec bundle",
+          "Invented concrete pricing formula (10 per 100kg + 5 per 100km) inside the test tariff engine, fabricating a domain rule the spec deliberately left to 'the published tariff rules'",
+          "Introduced an unspecified generic 'error' response/outcome category not present in the spec's defined set of quotation outcomes (rejectedInvalidRequest, storeUnavailableError, quotedResponse, reviewHoldResponse, refusedScreeningResponse, heldUnscreenedResponse)",
+          "Request-driven test-double factories that let arbitrary request flags dictate screening/pricing/storage/notification success or failure, effectively encoding an ad-hoc control surface never described in the spec"
+        ],
+        "defensive_embellishments": [
+          "Extra try/except wrapping of TariffEngine.price and QuoteStore.update_quote calls after the screening decision, not required or described by the flow",
+          "Nested try/except fallback returning a generic error inside the screening-unavailable branch",
+          "Constructor-based dependency injection (QuoteAPI.__init__) not shown in the stub, which used no constructor",
+          "Defensive 'quote not found' exception raised inside the in-memory test QuoteStore",
+          "Arbitrary default risk_index value of 50 supplied by the test screening double when no result is specified"
+        ],
+        "fidelity_score": 58,
+        "notes": "Control-flow skeleton (validation gate, draft storage gating further calls, the four screening-decision branches, and the fire-and-forget notification semantics) is structurally faithful and preserves DT-S notes 1\u20135 well. However, the code has no representation of the Shipper as an explicit element and provides essentially zero technology fidelity: no FastAPI, SQL, or REST/HTTPS traces appear anywhere except a passing PostgreSQL mention in a docstring, despite the container diagram specifying five distinct technology-tagged relationships and three technology-tagged containers. The largest fidelity risk is invented business logic: since the referenced decision tables (DT-V, DT-S) were not included in this spec bundle, the code fabricates specific numeric thresholds and an entirely new pricing formula, and it invents a generic 'error' outcome absent from the specified response vocabulary. Relationships and most guards are realized, but the numeric/domain content backing them is the generator's invention rather than the specification's."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3156,
+      "output_tokens": 4814,
+      "code_file": "gen_code-stub_opus_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 335.0} | {'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'reason': 'reviewholdresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused', 'reason': 'refusedscreeningresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused', 'reason': 'refusedscreeningresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', i"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 605.0} | {'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'rejectedinvalidrequest'} | {'status': 'rejected', 'reason': 'rejectedinvalidrequest'} | status=rejected reason=rejectedinvalidrequest"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 275.3} | {'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 335.0} | {'status': 'confirmed', 'reason': 'quotedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'reason': 'heldunscreenedresponse', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 335.0} | {'status': 'held_unscreened', 'reason': 'heldunscreenedresponse', 'quote_id': proteanobj(status='stored', stored=tr"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storage unavailable', 'reason': 'storeunavailableerror'} | {'status': 'error: storage unavailable', 'reason': 'storeunavailableerror'} | status=error: storage unavailable reason=storeunavailableerror"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 5,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 7,
+        "guards_faithful": 7,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Invented concrete pricing formula (BASE_RATE=5.0, PER_KG=0.15, PER_KM=0.30) \u2014 the spec only says TariffEngine.price computes an amount from weight/distance, no formula given",
+          "Invented specific numeric decision-table values: WEIGHT_MIN/MAX, DISTANCE_MIN/MAX, VALUE_MIN, ACCEPT_MAX=30, REVIEW_MIN=31/REVIEW_MAX=69, REFUSE_MIN=70 \u2014 DT-V and DT-S are referenced in the spec but no numeric bounds are ever given",
+          "Invented mapping of arbitrary string labels ('approved','review','declined', etc.) to numeric risk-index values inside ScreeningService \u2014 no such vocabulary or mapping exists in the spec",
+          "Invented extra request schema/control fields (screening_result, screening_status, store_result, store_status, shipper_exists, shipper_found) consumed by the handle() entry point to steer outcomes \u2014 not part of the documented request shape (shipper_id, weight_kg, distance_km, declared_value)",
+          "Invented quote_id format 'Q%05d' and internal draft/status bookkeeping shape"
+        ],
+        "defensive_embellishments": [
+          "isinstance() type guards on weight_kg/distance_km/declared_value before bounds checks",
+          "Threading-based fire-and-forget implementation with daemon thread and blanket try/except for notifications",
+          "Defensive fallback record creation in QuoteStore.update_quote when quote_id is unknown",
+          "Generic docstrings/comments restating spec notes"
+        ],
+        "fidelity_score": 50,
+        "notes": "Control-flow structure (validation reject, store-unavailable short-circuit, screening-unavailable held-unscreened path, accept/review/refuse routing, fire-and-forget notification, pricing-never-runs-on-refuse/review) is faithfully reproduced and matches DT-S notes 1-5 closely \u2014 this is the code's strongest aspect. However, all technology annotations from the container diagram (FastAPI, rules library, PostgreSQL, JSON/HTTPS, SQL/TCP, REST/HTTPS) are entirely absent: the implementation is plain in-process Python objects/dicts with no HTTP layer, no SQL/Postgres persistence, and no REST client behavior for screening/notification/pricing calls. The Shipper actor is only an implicit caller via a handle() function rather than a modeled relationship. Most significantly, the code invents concrete numeric business rules (validation bounds, risk-index thresholds, pricing coefficients) and an entire secondary request vocabulary (string-label screening outcomes, store-availability flags) that the specification never supplies \u2014 these are exactly the kind of confident-looking but ungrounded domain decisions that inflate apparent completeness while diverging from ground truth, since the actual DT-V/DT-S tables were never provided."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3156,
+      "output_tokens": 5031,
+      "code_file": "gen_code-stub_opus_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused quote_id=proteanobj(status='stored', stored=true,"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1150.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1150.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid request'} | {'status': 'rejected', 'reason': 'invalid request'} | status=rejected reason=invalid request"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 765.3} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 765.3} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | status=quoted quote_id=proteanobj("
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 825.0} | status=held_unsc"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: storage unavailable', 'reason': 'storeunavailableerror: quote store unavailable'} | {'status': 'error: storage unavailable', 'reason': 'storeunavailableerror: quote store unavailable'} | status=error: storage unavailable reason=storeunavailableerror: quote store unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 4,
+        "failure_paths_implemented": 4,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete numeric validation bounds (MIN/MAX weight, distance, declared value) invented \u2014 DT-V table referenced but no values given in spec",
+          "Concrete screening thresholds ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=70, REFUSE_MIN=71 invented \u2014 DT-S table referenced by name only, no values in spec",
+          "Invented tariff pricing formula (BASE_RATE_PER_KG=0.15, BASE_RATE_PER_KM=0.85) \u2014 spec only says price is computed 'per the published tariff rules', no formula given",
+          "Entire request-parsing/mapping subsystem in handle() that translates string labels ('approved','review','declined','error', etc.) and '_status'/'_result' suffix conventions into risk indices and availability flags \u2014 this HTTP-request-shaped contract and its vocabulary is not present anywhere in the given spec bundle",
+          "Invented shipper existence/validity semantics via 'shipper_exists'/'shipper_found' keys nulling out shipper_id, not described in brief or stub"
+        ],
+        "defensive_embellishments": [
+          "isinstance(request, dict) guard in handle()",
+          "try/except wrapping around trivial boolean logic in NotificationService methods",
+          "in-memory _records dict bookkeeping inside QuoteStore beyond what stub specifies",
+          "custom Exception subclasses with docstrings for ScreeningUnavailableError/StoreUnavailableError"
+        ],
+        "fidelity_score": 48,
+        "notes": "Core control flow (validation \u2192 store draft \u2192 screening \u2192 tiered accept/review/refuse/unscreened-hold \u2192 notification) is structurally faithful: all 5 container relationships and all 6 guard branches and all 4 failure paths from the stub/brief are present with correct sequencing, correct fire-and-forget notification semantics (note 4), correct 'no further steps on store failure' (note 3), and correct 'screening outage still prices and holds' (note 5). However, none of the specified technologies (FastAPI, PostgreSQL, REST/HTTPS, SQL/TCP, JSON/HTTPS) are reflected in the implementation \u2014 everything is plain in-process Python method calls with in-memory dict storage, so technology annotations are entirely unhonored. More seriously, the spec never supplies the actual DT-V/DT-S numeric thresholds or a tariff formula (they are referenced by name only), yet the code invents specific values for all of them, and additionally invents a large, unrequested request-normalization layer (handle()) with its own vocabulary of string labels \u2014 this is speculative business logic well beyond 'implement what the stub describes' and is the most concerning fidelity gap."
+      }
+    },
+    {
+      "arm": "code-stub",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 3156,
+      "output_tokens": 5277,
+      "code_file": "gen_code-stub_opus_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | status=confirm"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(quoted): {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused quote_id=proteanobj(status='stored', stored=true,"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "overlay-require(3186): {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1025.0} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 1025.0} | status=confi"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 25.9} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 25.9} | status=confirmed"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | {'status': 'confirmed', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | status=confirm"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price_amount': 205.0} | st"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ],
+      "judge": {
+        "elements_expected": 6,
+        "elements_implemented": 6,
+        "relationships_expected": 5,
+        "relationships_implemented": 5,
+        "guards_expected": 6,
+        "guards_faithful": 6,
+        "failure_paths_expected": 3,
+        "failure_paths_implemented": 3,
+        "technologies_expected": 8,
+        "technologies_honored": 0,
+        "invented_business_logic": [
+          "Concrete tariff formula (BASE_CHARGE=25.0, RATE_PER_KG_KM=0.0005) invented; spec only says 'compute priceAmount', no formula given",
+          "Concrete validation bounds for weight/distance/declared value (DT-V) invented wholesale \u2014 the decision table was referenced but never supplied in the spec bundle",
+          "Concrete risk-index thresholds (ACCEPT_MAX=30, REVIEW_MIN=31, REVIEW_MAX=69, REFUSE_MIN=70) invented \u2014 spec only names the symbolic thresholds without values",
+          "Entirely new ScreeningService input contract (result/status strings mapped to a numeric riskIndex via an invented lookup table of statuses like 'approved','declined','review') that has no basis in the spec's screen(shipper_id)->riskIndex signature",
+          "Extra shipper-existence validation ('shipper_exists'/'shipper_found' keys) added to the handle() entry point, never mentioned in brief or flow",
+          "Added failure handling around update_quote (StoreUnavailableError caught mid-flow after screening) producing a new 'error: store_unavailable' outcome not specified for that stage \u2014 spec's failure note only covers storeDraft"
+        ],
+        "defensive_embellishments": [
+          "Logging calls in NotificationService wrapped in try/except that swallows exceptions",
+          "Type coercion (float()) and try/except ValueError guarding validation inputs",
+          "QuoteStore internal counter (_counter) that is never used for anything",
+          "Default constructor parameters (result=None, status=None, quote_id='Q-1') for test/mock convenience",
+          "logger module-level setup unused elsewhere"
+        ],
+        "fidelity_score": 55,
+        "notes": "Structurally the code is a faithful realization of the control flow: all 5 declared relationships and all 6 elements are present, the branching order (validate -> store -> screen -> price/notify) matches the stub exactly, and all three explicit failure paths (invalid request, store unavailable, screening unavailable) are implemented with correct downstream consequences (no screening/pricing/notification on store failure; pricing+hold-but-no-notify on screening outage; notify-but-no-price on refusal; no price/notify on review). Fire-and-forget notification semantics (DT-S note 4) are preserved. However the code invents a large amount of concrete domain logic that the specification deliberately left abstract or deferred to an unseen decision table: the tariff pricing formula, the DT-V validation bounds, and the DT-S numeric risk thresholds are all fabricated constants with no spec backing. Most seriously, ScreeningService is redefined around an invented string-status-to-riskIndex mapping that has no counterpart anywhere in the spec, and the handle() wrapper adds an invented shipper-existence check and an invented mid-flow store-failure branch on update_quote. Technology annotations (FastAPI, PostgreSQL, SQL/TCP, REST/HTTPS, JSON/HTTPS) are entirely unaddressed \u2014 the code is plain in-memory Python with no framework, HTTP, or persistence trace. These inventions and the complete absence of technology fidelity substantially lower the score despite excellent flow/guard fidelity."
+      }
+    }
+  ]
+}

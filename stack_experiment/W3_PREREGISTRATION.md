@@ -154,7 +154,61 @@ bounded as disclosed; carrier results are capability-relative and
 decay per model generation (charter §2 C1 — re-measure on generation
 change).
 
-## Results ([date], $[cost])
+## Results (2026-08-11, $4.21 of $12)
 
-*Written strictly after the freeze; run notes before verdicts;
-pre-committed interpretations applied, never reinterpreted.*
+**Run notes (before verdicts).** 48 calls; zero retries. **The
+wave's most striking harness fact: opus generated non-compiling
+Python from the YAML carrier in 3 of 3 runs** — the only
+non-compiles in the entire W1–W4 program (66 + 18 + 24 + 18
+artifacts elsewhere: zero). Opus-yaml therefore has no judgeable
+artifacts (judged n = 0, recorded as not evaluable); no other judge
+failures. No aborts, no deviations. Full record:
+results/W3/wave_main/.
+
+**The table** (pooled executed / semantic-only / flow-set, vs
+PlantUML baseline 0.439 pooled and 28/30 = 0.933 flow-set):
+
+| Carrier | Pooled (Δ) | Semantic-only | Flow-set |
+|---|---|---|---|
+| PlantUML (W1 A2) | 0.439 (—) | 0.439 | 0.933 |
+| code-stub | 0.379 (−6.1) | 0.379 | 0.767 |
+| mermaid | 0.348 (−9.1) | 0.348 | 0.733 |
+| controlled-english | 0.288 (−15.2) | 0.288 | 0.600 |
+| yaml | 0.136 (−30.3) | 0.273 | 0.267 |
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **W3-E1 — FAILED.** Two of four carriers fall outside |Δ| ≤ 10 pp
+  pooled: yaml −30.3 pp (≈ 6 SE — not a power artifact) and
+  controlled-english −15.2 pp (≈ 3 SE); mermaid −9.1 and code-stub
+  −6.1 sit inside.
+- **W3-E2 — FAILED, all four carriers.** Flow-set deltas −16.7
+  (code-stub), −20.0 (mermaid), −33.3 (controlled-english), −66.7
+  (yaml): on the five behavior-sensitive scenarios NO alternative
+  carrier matched the PlantUML diagram; the pooled near-misses of
+  mermaid/code-stub are dilution by the six near-zero contract
+  scenarios, exactly what the sensitive lens existed to expose.
+- **W3-E3 — CONFIRMED.** Every per-generator delta is non-positive
+  (zeros within one slot of zero): direction is concordant across
+  the capability tiers; magnitudes are generator-specific (opus
+  yaml −45.5 pp — the non-compiles — vs haiku yaml −15.2; opus
+  mermaid/stub 0.0 vs haiku −18.2/−12.1).
+- **W3-E4 — CONFIRMED where evaluable.** Judged-invention medians
+  within 2 of the W1-A2 baselines for every evaluable cell; opus
+  yaml not evaluable (no compiling artifacts).
+
+**Matrix applied — the refutation headline:** carrier IS an outcome
+variable at fixed information on this system: **PlantUML ≥
+code-stub ≈ Mermaid > controlled English > YAML**, with every
+alternative losing on the flow-sensitive scenarios and YAML losing
+even on semantic-only scoring (0.273, −16.7 pp below baseline).
+Consequences as pre-committed: **checkability is demoted** to one
+carrier criterion among several (charter §2 C1's demotion branch);
+the carrier question reopens on outcome evidence; the pilot
+equivalence sentence is NOT licensed — the honest dated sentence is
+"swapping the PlantUML sequence diagram for Mermaid cost 9 pp pooled
+and 20 pp on flow-sensitive scenarios in this lab's only
+measurement." The code-stub result (best alternative, still −16.7 pp
+flow-set) is quoted lab-only and does not touch the prose-pipeline
+never-build. Per-generator claim language extends to the carrier
+axis (W1-E8a discipline). Product behavior: none.

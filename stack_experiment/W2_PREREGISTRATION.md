@@ -165,7 +165,51 @@ E5 are visible but weakly powered. One injected conflict per arm —
 interactions of multiple conflicts unmeasured. The in-band deference
 cues (Design) bound every authority claim.
 
-## Results ([date], $[cost])
+## Results (2026-08-11, $3.58 of $10)
 
-*Written strictly after the freeze; run notes before verdicts;
-pre-committed interpretations applied, never reinterpreted.*
+**Run notes (before verdicts).** 36 scored calls + 2 re-judge calls;
+zero generation retries; 18/18 artifacts compiled first try; two
+first-pass judge calls failed and were re-judged over the stored
+artifacts per the house pattern (disclosed; post-re-judge record
+complete). No aborts, no protocol deviations. Full record:
+results/W2/wave_main/.
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **W2-E1 — CONFIRMED, emphatically.** 0 of 18 runs surfaced the
+  conflict (marker base rate was 0/72 on W1 artifacts). Silent
+  resolution is total. Matrix applied: agents.md's "stop and ask
+  must be enforced — it is not emergent" gains its first
+  measurement, cited dated.
+- **W2-E2 — CONFIRMED.** C1 review_boundary_42 pooled 6/6: the
+  decision table beat the stale prose threshold everywhere, under
+  in-band deference hints (scope as frozen). Arm pooled 0.970 —
+  above the conflict-free baseline.
+- **W2-E3 — CONFIRMED.** C2 refuse_boundary_67 pooled 5/6 ≥ 4/6: the
+  five-source majority beat the stale sentence. Evidence note,
+  recorded verbatim: the single miss (haiku run 2) failed on a
+  type-handling defect (`'<=' not supported between str and int`),
+  NOT by adopting the stale sentence — no stale-adoption event was
+  observed anywhere in this wave (n = 6 per arm bounds that claim).
+- **W2-E4 — NOT CONFIRMED (formula-wins branch).** 0 of 12 price
+  slots failed: the stale worked example was ignored, the DT formula
+  won. Matrix applied: worked examples are calibration-safe at this
+  dose (one stale example against an authoritative table); no
+  caveat lands on the tests-as-input row.
+- **W2-E5 — CONFIRMED.** Non-discriminator means vs same-set
+  baselines: C1 +2.7 pp, C2 −7.3 pp, C3 −0.7 pp — all within 9 pp;
+  conflict damage stayed local. Reading note: C2's dip is one
+  defective run failing broadly (every scenario 5/6), not
+  distributed conflict damage.
+
+**Judged (secondary, quoted as judgments):** invention medians
+opus 2/4/2, haiku 1/2/2 across C1/C2/C3 — at or below the W1-A4
+baselines (3/1); no conflict arm raised invention.
+
+**What changed where (matrix applied, same commit):** docs/agents.md
+§ precedence-of-evidence gains the dated measured note (silent
+resolution total; structured/majority sources won under in-band
+deference; stop-and-ask remains harness work). Cross-check demand
+evidence, recorded honestly: no silent stale-adoption was observed
+at this n — the recorded trigger evidence is W2-E1's total silence,
+not a wrong-implementation event. Product behavior: none.

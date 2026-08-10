@@ -183,7 +183,48 @@ disclosed ≈ 1.5 SE bar); O2's irrelevance is hand-curated
 doses are conflict-free by construction (staleness lives in W2); E1
 gain detection is ceiling-limited as disclosed.
 
-## Results ([date], $[cost])
+## Results (2026-08-11, $3.82 of $12)
 
-*Written strictly after the freeze; run notes before verdicts;
-pre-committed interpretations applied, never reinterpreted.*
+**Run notes (before verdicts).** 36 calls; zero retries, 18/18
+compiled first try, zero judge failures, no aborts, no deviations.
+Full record: results/W4/wave_main/.
+
+**Pooled deltas vs the A4 baseline (0.945):** O1-redundant −6.7 pp,
+O2-irrelevant −11.2 pp, O3-enumeration −14.3 pp. **Per generator:**
+opus −2.4 / +3.6 / +3.6 (O2 and O3 at 1.000 — the opus ceiling);
+haiku **−10.9 / −26.1 / −32.1**.
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **W4-E1 — CONFIRMED.** No O-arm's pooled rate exceeds A4 (all
+  pooled deltas negative); the plateau holds past A4 at these doses,
+  within the disclosed ceiling limit. (Descriptive: opus recovered
+  to its A3 ceiling of 1.000 on O2/O3 — +3.6 pp over its A4, one
+  slot beyond the per-generator quantum; a per-generator
+  observation, pooled E1 unaffected.)
+- **W4-E2 — CONFIRMED: dilution is measured.** Two arms breach the
+  −9 pp bar pooled (O2 −11.2, O3 −14.3), and the damage is entirely
+  the weak generator's: haiku loses 26.1 pp under irrelevant context
+  and 32.1 pp under accurate exhaustive enumeration while opus is
+  flat-to-perfect. Charter §2 E1's correction is completed with
+  data: the far side is NOT harmless — over-specification is an
+  outcome risk, borne at these doses by the weaker generator.
+  Recorded miss, verbatim: the directional sub-call named O2 the
+  likeliest diluter; O3 — accurate, derived, in-sync enumeration —
+  was worse. Redundancy does not need to be wrong to hurt.
+- **W4-E3 — CONFIRMED.** Knees land exactly as pre-registered:
+  pooled at A4 (last material increment A3→A4 +12.7 pp; every
+  O-increment negative), opus at A3 (O2/O3 return to 1.000 = A3,
+  never beyond), haiku at A4 (all O-arms below). §8.5's abort was
+  not triggered.
+- **W4-E4 — CONFIRMED** (opus-binding as disclosed): opus O-medians
+  3/2/3 vs baseline 3 — no break. Haiku descriptive: 0/1/2 vs
+  baseline 1 (floor-bounded, quoted as judgment only).
+
+**Matrix applied:** the dormant-by-default / rule-count-creep
+argument (charter §2 E1) gains its measured citation; §8.2 did NOT
+fire — "minimum sufficiency" keeps its outcome edge over "more is
+fine," now with the far side measured at 1.12–1.45× doses; the
+per-generator discipline (W1-E8a) extends to dose–response: the
+knee and the dilution cost are generator-specific, and every
+consolidated claim must say so. Product behavior: none.
