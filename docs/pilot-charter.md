@@ -72,6 +72,27 @@ diagrams — that is the check working. Agents in the loop follow
 [the agent recipe](agents.md): repair structure automatically, **ask
 the author** for content (the measured ~27-point rule).
 
+## When the full codegen machinery applies (the phase-4 scope test)
+
+Not every diagram set or task warrants the codegen profile, acceptance
+criteria and generation run records. The machinery exists to move work
+across two measured gaps: the below-Level-2 cliff (16–25 percentage
+points of executed correctness) and the ask-vs-invent gap (≈27
+points). Apply the full treatment only where all three hold:
+
+- **The output is kept.** The diagrams feed AI generation whose result
+  ships or is maintained — not throwaway exploration.
+- **The work recurs.** The set will be regenerated or revised, so
+  gates and run records pay off after the first pass.
+- **Wrong output is expensive.** Errors are costly to detect or rework
+  (reviewer scarcity, audit obligations, downstream dependents).
+
+Everything else gets plain prompting plus normal human review, with no
+ceremony — record nothing, gate nothing. One reminder from the
+evidence applies either way: the gate is an input filter, never a
+content certifier — passing it means the diagram is machine-checkably
+ready to consume, not that its content is right.
+
 ## The change checklist (ADKAR)
 
 - **Awareness** — sponsor sends the "why now" in their own words, tied

@@ -723,6 +723,34 @@ list and license posture live in § Settled questions.
     supplies a real term list — until then, building it would
     manufacture a convention, not check one.
 
+- **SDD + generation-manifest recommendation (2026-08-10): evaluated —
+  direction corroborated, specifics stale; two candidates recorded,
+  nothing queued.** An externally authored recommendation (spec-driven
+  development with PlantUML requirements as first-class inputs; a
+  compose-style manifest + lockfile + per-run records governing the
+  generation toolchain; this tool as input gate and output assertion)
+  was verified element-by-element against the working tree
+  (docs/sdd-manifest-evaluation.md). Its foundation proposals already
+  ship — `pumllint trace` (v0.25.0), config/profiles, schema-pinned
+  JSON + exit codes; its example "novel contractual rules" are shipped
+  rules (UC001, ACT003, SEQ105/107, GEN007) or specced-and-gated packs
+  (obligations, flow); its public-demand premise is contradicted by
+  the embedded-PlantUML demand scan above; its compiler analogy is
+  corrected to **attribution, not reproducibility** (snapshots retire;
+  generation is nondeterministic even pinned). Independent
+  re-derivation of the Arc G–J shape without repository access is
+  recorded as another external convergence (alongside the spec-stack
+  and model-verification evaluations). Recorded, not queued: a **portable run-record/manifest
+  format** (a pilot-repo artifact formalizing what the lab already
+  practices; if a real pilot stabilizes one, it becomes the first
+  observed convention for the prompt/agent-config-linting adjacency
+  above — re-examine that trigger then, build nothing before); a
+  **model→spec change-impact design** (invalidation semantics over
+  `trace`'s link table — write only after a real diagram-edit event
+  has flowed through a pilot pipeline). The scope-threshold rule it
+  asked for is written (pilot charter, the phase-4 scope test).
+  Triggers unchanged; the census remains the next action.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

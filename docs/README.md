@@ -103,6 +103,15 @@ but they are a useful cross-check that no audience was forgotten.
   shipped architecture, the ambitions fail on oracles or invert the
   linter's job, and the one keeper (a glossary/approved-term rule) is
   recorded with its adopter trigger.
+- [The SDD + generation-manifest recommendation, evaluated](sdd-manifest-evaluation.md)
+  — dated fit note (2026-08-10): an external recommendation pairing
+  spec-driven development (PlantUML requirements as inputs) with a
+  compose-style manifest/lockfile/run-record triad for the generation
+  stack, verified element-by-element against the working tree — its
+  foundation items already ship (`trace`, config, schema-pinned JSON),
+  its compiler analogy is corrected to attribution-not-reproducibility,
+  and two candidates are recorded (portable run-record format;
+  model→spec change-impact design), nothing queued.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
