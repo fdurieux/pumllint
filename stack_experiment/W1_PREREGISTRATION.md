@@ -401,9 +401,120 @@ decision values a generator's priors cannot guess?
   capability-relative — results dated, pivotal contrasts re-measured
   per model generation (charter §2 C1).
 
-## Results ([date], $[cost])
+## Results (2026-08-10, wave $12.18; cumulative $13.09 of $30)
 
-*Written strictly after the freeze. Run notes recorded before the
-verdicts (harness incidents, retries, protocol deviations — however
-embarrassing). Then per-expectation verdicts: confirmed / failed, with
-the pre-committed interpretation applied, never reinterpreted.*
+**Run notes (recorded before verdicts).** 132 API calls of the
+MAX_CALLS 250 live budget; zero generation retries; 66/66 artifacts
+compiled on the first attempt; zero judge-call failures (all
+judgements first-pass valid JSON at max_tokens 16000); zero sandbox
+timeouts; no guard aborts. Protocol deviations: none beyond the three
+disclosed pre-freeze amendments above. Full record:
+results/W1/wave_main/ (report.json, analysis.json, all 66 artifacts).
+
+**Pooled executed pass-rates** (suite-relative — quote gaps and
+orderings outward, never these absolutes):
+
+| Arm | Pooled | opus | haiku |
+|---|---|---|---|
+| A0 brief | 0.136 | 0.182 | 0.091 |
+| A1 +structure | 0.121 | 0.212 | 0.030 |
+| A2 +behavior | 0.439 | 0.455 | 0.424 |
+| A3 +contract | 0.818 | 1.000 | 0.636 |
+| A4 +tests (full) | 0.945 | 0.964 | 0.927 |
+| L-structure | 0.894 | 0.970 | 0.818 |
+| L-behavior | 0.827 | 0.909 | 0.745 |
+| L-contract | 0.394 | 0.545 | 0.242 |
+| BC-behavior | 0.827 | 0.927 | 0.727 |
+
+**Marginal executed pp per artifact class** (committed output 1):
+
+| Direction (pooled) | structure | behavior | contract | tests |
+|---|---|---|---|---|
+| Additive increment | −1.5 | +31.8 | +37.9 | +12.7 |
+| Leave-one-out drop | 5.2 | 11.8 | 55.2 | 12.7 |
+
+**Marginal pp per thousand artifact tokens** (committed output 2;
+artifact tokens = arm mean input tokens − A0's, per generator;
+LOO-direction rates in analysis.json):
+
+| Additive | A0→A1 | A1→A2 | A2→A3 | A3→A4 |
+|---|---|---|---|---|
+| opus | +5.0 | +15.1 | +14.7 | −3.8 |
+| haiku | −14.2 | +36.7 | +7.5 | +40.6 |
+
+**Judged inventions, median per run** (opus/haiku; judgment only,
+never merged with executed numbers): A0 6/4, A1 5/5, A2 6/5, A3 3/3,
+A4 3/1, L-structure 3/1, L-behavior 3/2, L-contract 6/5,
+BC-behavior 3/2. The A2→A3 step is the largest drop in both
+generators.
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **E1 — FAILED.** A1→A2 pooled +31.8 pp clears the 9 pp bar, but
+  the largest additive increment is A2→A3 (+37.9 pp; gap 6.1 pp >
+  the 1.5 pp tie quantum). Behavior arrival is material and is NOT
+  the largest lever on this system — the contract is. Matrix
+  applied: the lever is system-relative; charter §6 wording
+  narrowed; W4's ladder design is revisited before it runs.
+- **E2 — CONFIRMED (the headline).** A2→A3 pooled +37.9 pp (opus
+  +54.6, haiku +21.2), net gains concentrated in CONTRACT7
+  (rate-sum +4.67 vs total +4.17 — the non-contract scenarios net
+  negative). On a system whose decision values priors cannot guess,
+  the written contract is executed-real — LoanCheck's 0.0 pp was the
+  canonical-threshold confound (EC3), recorded resolved. Matrix
+  applied: charter §6 contract row → measured; the spec-stack and
+  SDD-manifest evaluations quote the measured result;
+  contract-presence rule wording gains outcome grounding (builds
+  stay demand-gated).
+- **E3 — CONFIRMED.** A3→A4 pooled +12.7 pp ≥ 9 pp; ~98% of net
+  gain in VALUE9; LEAK2 share ≈ nil (+0.03 rate-sum). Charter §6
+  tests-as-input row → measured (this lab, this scale); W5's
+  visible/hidden split informed. Nuance for the record: the strong
+  generator was at ceiling (A3 = 1.000) and moved −3.6 pp; the
+  pooled gain is the weak generator's (+29.1 pp) — see E8.
+- **E4 — FAILED** (conjunction). The largest leave-one-out drop is
+  contract (55.2 pp), not L-behavior (11.8 pp) — the same identity
+  miss as E1, consistently. The concordance half held: top
+  (contract) and bottom (structure) match across directions, and the
+  behavior/tests middle swap sits within the LOO tie quantum
+  (12.7 vs 11.8). Matrix applied as written: portfolio claims are
+  restricted to the additive direction; an interaction follow-up is
+  recorded, not queued.
+- **E5 — NOT RESOLVED (within-quantum null branch).** BC-behavior −
+  L-behavior = 0.0 pp exactly (0.827 both, pooled n = 10 vs 10);
+  FLOWPI6 net losses 0.0. Matrix applied: recorded as an
+  underpowered null — §4 keeps the risk-policy label with "the lab
+  contrast did not resolve it"; no support claimed in either
+  direction. Scoping reminder from Design: prose flow (spec.md) was
+  present in both arms, so this measured artifact-level absence in a
+  redundant stack, not information erasure.
+- **E6 — CONFIRMED.** screening_down_hold: hold-information-carrying
+  conditions 0.773 vs non-carrying 0.000 (+77.3 pp ≥ +33); rider
+  refuse_boundary_67 +59.9 pp, positive. The prior-inverting
+  instrument is validated for W2–W4 reuse.
+- **E7 — CONFIRMED.** Median judged inventions strictly fall A2→A3
+  in both generators (opus 6 → 3, haiku 5 → 3). The
+  invention–contract link replicates on a second system (judged;
+  quoted as judgment).
+- **E8a — FAILED.** The generators disagree on the largest additive
+  increment: opus A2→A3 (+54.6 vs its +24.2 A1→A2), haiku A1→A2
+  (+39.4 vs its +21.2 A2→A3); neither inside its 3.0 pp tie
+  quantum. Matrix applied: §8.3 partially fires on the generator
+  axis — stack claims are quoted per-generator until re-measured;
+  the consolidated document must say so instead of recommending.
+- **E8b — exploratory support (first executed observation, never
+  quoted as replication).** haiku exceeds opus on both declared
+  gaps: A1→A2 +39.4 vs +24.2 (Δ 15.2 > 3.0 quantum) and A4 − BC
+  +20.0 vs +3.6 (Δ 16.4 > 1.8 quantum).
+- **G1 — guard passed.** A0 pooled 0.136 < 0.85: the
+  adversarial-threshold design did its job — priors do not suffice.
+- **G2 — guard passed.** A4 executed 0.964 / 0.927 per generator,
+  both > 0.30.
+
+**What changed where (matrix applied, same commit):** charter §6 —
+contract and tests-as-input rows → measured, dated; behavioral row
+carries the system-relative narrowing. Charter §4 — the
+below-cliff-vs-absent sentence records the unresolved null. Charter
+§8.3 — dated partial-fire note (per-generator claims). Charter §7
+W1 — marked ran, pointing here. Product behavior: none (charter §10 —
+no build queued from results).

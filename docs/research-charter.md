@@ -13,7 +13,10 @@ acceptance (§9 — 17 findings, all adopted in this revision), and no
 wave runs from this charter alone — every wave freezes its own
 pre-registration and interpretation matrix before any scored run.
 Status: verified revision, accepted (owner go on W0); acceptance
-recorded 2026-08-10 — see ROADMAP § Working agreements.*
+recorded 2026-08-10 — see ROADMAP § Working agreements. W1 ran
+2026-08-10 (frozen pre-registration, calibration record and results:
+stack_experiment/W1_PREREGISTRATION.md); §§4, 6, 7 and 8 carry its
+dated updates in place.*
 
 ## 1. The objective as posed
 
@@ -173,7 +176,12 @@ The original three questions map onto the reframed terms:
   pristine; unverified means the tier is unknown). W1 therefore
   carries a below-cliff-vs-absent arm to supply the missing contrast.
   This is the frame's sharpest commitment and a named falsification
-  target (§8.1).
+  target (§8.1). *W1 ran the arm (2026-08-10): an exact null — the
+  below-cliff stack and the artifact-absent stack executed
+  identically (pooled n = 10 vs 10), with prose flow present in both
+  arms per the kit's declared spec.md overlap; the contrast did not
+  resolve the commitment either way, and the risk-policy label
+  stands.*
 
 ## 5. The hop map
 
@@ -200,10 +208,10 @@ outcomes.
 
 | Information / artifact | Evidence | Grade |
 |---|---|---|
-| Behavioral interaction content (flows, branches, failure paths) — its *presence* is the measured lever; method-convention completeness is the sequence-family bar, above C4's qualitative-guard ceiling | +29.2 pp executed when dynamics arrive (C4 R2→R3, qualitative guards only); 16–25 pp executed cliff below Level 2 within the sequence family, scaffold-resistant, three generators, two vendors | [measured] — the single biggest lever |
-| Written decision contract (thresholds, validation, error policy, API) | Judged invention −⅓ at the companion-spec rung (R3→R4: 6.00 → 4.00/run, the ladder's largest drop; full ladder 7.00 → 4.00); 0.0 pp executed on a canonical-threshold suite — but the R2 invented-cap incident (`MAX_AMOUNT = 50000`, plausible, wrong, confidently implemented, invisible to the suite) shows it is the only carrier that pins *idiosyncratic* rules | [measured, confounded] — the canonical-threshold confound is the recorded follow-up, fixed by W0's adversarial-threshold system |
+| Behavioral interaction content (flows, branches, failure paths) — its *presence* is the measured lever; method-convention completeness is the sequence-family bar, above C4's qualitative-guard ceiling | +29.2 pp executed when dynamics arrive (C4 R2→R3, qualitative guards only); 16–25 pp executed cliff below Level 2 within the sequence family, scaffold-resistant, three generators, two vendors; W1 (2026-08-10, adversarial thresholds): behavior arrival +31.8 pp pooled while the written contract led (+37.9) | [measured] — the biggest lever on canonical-threshold systems; system-relative per W1 (E1 failed, published: stack_experiment/W1_PREREGISTRATION.md § Results) |
+| Written decision contract (thresholds, validation, error policy, API) | Judged invention −⅓ at the companion-spec rung (R3→R4: 6.00 → 4.00/run, the ladder's largest drop; full ladder 7.00 → 4.00); 0.0 pp executed on a canonical-threshold suite — but the R2 invented-cap incident (`MAX_AMOUNT = 50000`, plausible, wrong, confidently implemented, invisible to the suite) shows it is the only carrier that pins *idiosyncratic* rules; **W1 (2026-08-10, adversarial thresholds): +37.9 pp pooled executed A2→A3 (opus +54.6, haiku +21.2), net gains concentrated in contract-classed scenarios; the wave's largest leave-one-out drop (−55.2 pp); judged invention medians fell 6→3 / 5→3** | [measured] — the canonical-threshold confound is resolved (EC3 closed by W1): executed-real where priors cannot guess |
 | The decision/Q&A record — authored answers to gap-report questions | Ask-vs-invent: +27.4 pp executed below the cliff vs the author-less arm (0.857 vs 0.583) and +21.5 pp vs untouched (0.642) — the second is the decision-relevant contrast for adding the record; invention halved but not eliminated with an author available (98 → 45); 61% of the asking that drove recovery was exploratory, beyond the gap report | [measured] — the conversation is a load-bearing artifact; no stack row currently captures it |
-| Acceptance tests as generation *input* | +9.15–29.57% correctness in function-level benchmarks (external); in-house, suites have only ever been the oracle, never an input | [external] — untested here; W1 arm |
+| Acceptance tests as generation *input* | +9.15–29.57% correctness in function-level benchmarks (external); in-house, W1 (2026-08-10): +12.7 pp pooled A3→A4, ~98% of net gain in value-bearing scenarios and leakage share ≈ nil under the pre-declared overlap split; generator-split — the strong generator sat at ceiling (−3.6), the weak gained +29.1 | [measured] — this lab, this scale (one system, single-shot); external figures kept for context |
 | Structural diagrams (context/container) | Group-edge recall 1.00 at every rung including bare R0 under a conforming prompt (EC1); annotations +8.3 pp executed (R0→R1), invention-flat | [measured] — orientation and misread-prevention value; a modest outcome effect, not the main lever |
 | Stable-ID traceability | `pumllint trace` shipped (Arc G) | [built] — outcome-side unmeasured |
 | Per-artifact gates as a necessity | Below-cliff artifacts actively degrade generation vs their pristine siblings; all 16 author-less-repaired diagrams passed the gate while the repaired-L1 tier executed 36.6 pp below pristine (repaired-L2: 10.8 pp) — the gate certifies statedness, not correctness | [measured] — the positioning claim, with §4's harm-vs-absence caveat |
@@ -263,6 +271,11 @@ W5.
   Output: marginal pp per artifact and per thousand artifact tokens,
   both directions. Feeds: the spec-stack recommendation becomes
   measured; rule-pack selection; the package-level lint observation.
+  *Ran 2026-08-10 ($12.18 of the $30 ceiling): frozen record,
+  verdicts and marginal tables in
+  stack_experiment/W1_PREREGISTRATION.md § Results — E2/E3/E6/E7
+  confirmed, E1/E4/E8a failed and published, E5 an unresolved null;
+  §6 and §8 carry the dated consequences.*
 - **W2 — redundancy and conflict (~$5–10).** Controlled contradictions
   between artifact pairs and duplicated-but-stale restatements; measure
   silent-resolution vs ask vs error. First measurement of the
@@ -328,7 +341,11 @@ Recorded now so failure cannot be reinterpreted later:
 3. **Marginal contributions are unstable across systems and generators
    (W1).** Then no portable minimum exists; every stack claim becomes
    per-context, and the consolidated document must say so instead of
-   recommending.
+   recommending. *Partially fired in W1 (2026-08-10), generator axis:
+   the two generators disagreed on the largest additive increment
+   (strong: contract; weak: behavior) while agreeing on the
+   leave-one-out top and bottom — stack claims are quoted
+   per-generator until re-measured.*
 4. **The cliff collapses under agency (W5).** Then the gate thesis
    narrows to single-shot workflows — the window-closing signal of the
    capability-horizon settlement arriving via workflow rather than
