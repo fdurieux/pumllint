@@ -209,7 +209,71 @@ asymmetries named under Baseline plumbing; judged medians exclude
 non-compiling finals; single system per substrate;
 capability-relative, dated.
 
-## Results ([date], $[cost])
+## Results (2026-08-11, $7.95 of $40)
 
-*Written strictly after the freeze; run notes before verdicts;
-pre-committed interpretations applied, never reinterpreted.*
+**Run notes (before verdicts).** 86 API calls of 250; zero
+non-compiling finals; zero judge failures; no aborts. The spend
+landed well under the estimate because the high arms barely
+iterated: A3 and R3 passed their visible sets first-shot in 5/6 and
+3/3 runs. Cross-occasion note: the R3 agentic arm — which never
+iterated, so is effectively a single-shot re-sample — landed 12.5 pp
+below its stored single-shot baseline (hidden 0.667 vs 0.867), a
+reminder of n = 3 cross-occasion variance; no expectation is
+affected (E2's gap is computed in-wave). Full record:
+results/W5/wave_main/.
+
+**The table** (full / visible / hidden executed; semantic-only
+equalled executed everywhere except A2-BC's +2 pp):
+
+| Arm | Full | Visible | Hidden |
+|---|---|---|---|
+| A2 agentic | 0.424 | 0.667 | 0.333 |
+| A2-BC agentic | 0.121 | 0.389 | 0.021 |
+| A2-BC single-shot (in-wave) | 0.121 | 0.389 | 0.021 |
+| A3 agentic | 0.879 | 0.889 | 0.875 |
+| R0 agentic (opus) | 0.500 | 1.000 | 0.200 |
+| R3 agentic (opus) | 0.792 | 1.000 | 0.667 |
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **G1 — HELD.** 15 of 24 agentic runs (62.5%) contained a
+  visible-feedback revision (A2 6/6, A2-BC 6/6, R0 2/3; A3 1/6 and
+  R3 0/3 — good specs pass their smoke tests). The condition bit;
+  no joint-cell reading is needed.
+- **W5-E1 — NOT CONFIRMED, either arm.** A2-BC agentic vs its
+  in-wave single-shot: **+0.0 pp** — identical full, visible AND
+  hidden rates; two rounds of test-driven revision repaired nothing,
+  and the visible set itself still failed (0.389) after iteration.
+  R0: +8.3 pp vs stored 0.417 — under the 9 pp bar, and entirely
+  explained by the visible set going to ceiling (see E4). Matrix
+  applied: below-cliff artifacts are not repaired by iteration at
+  k ≤ 2 — the gate-first posture strengthens, recorded.
+- **W5-E2 — CONFIRMED: the cliff survives agency. §8.4 does NOT
+  fire.** Agentic hidden gaps: A2 − A2-BC = **+31.3 pp**;
+  R3 − R0 = **+46.7 pp**. Matrix applied: standing claim language
+  upgrades from "single-shot" to "single-shot and k ≤ 2 agentic",
+  dated.
+- **W5-E3 — CONFIRMED: the contract lever survives agency.**
+  A3 − A2 hidden = **+54.2 pp** (opus 1.000 vs 0.375; haiku 0.750
+  vs 0.292). W1's headline gains the agentic scope.
+- **W5-E4 — CONFIRMED, carried by R0's textbook pattern:** visible
+  improvement +22.2 pp (0.778 → 1.000, the ceiling) with hidden
+  improvement exactly 0.0 (0.200 → 0.200) — compensation is
+  strictly suite-covered. The A2-BC cell is degenerate (0 ≥ 0 with
+  no compensation anywhere) and is reported as such, not as
+  support. With E2 ∧ E4 ∧ G1 all held, the charter's
+  claim-language consequence applies in its honest form: **where
+  iteration can fix anything, it fixes only what the visible tests
+  cover — artifacts remain load-bearing for everything the tests
+  do not state, and a below-cliff artifact is not rescued at all.**
+- **W5-E5 — CONFIRMED (judged, per-generator, inflation bias
+  named):** A2-BC ≥ A2 in both generators (6 ≥ 6, 5 ≥ 4); R0 ≥ R3
+  (8 ≥ 5). Invention on uncovered behavior persists under
+  iteration.
+
+**What changed where (matrix applied, same commit):** charter §5's
+workflow-dimension paragraph and §8.4's falsifier gain their dated
+verdicts (survived; did not fire); §6's gates row gains W5's
+below-cliff-unrepairable citation; §7 W5 marked ran. Standing claim
+language program-wide now reads "single-shot and k ≤ 2 agentic" where
+it read "single-shot". Product behavior: none.

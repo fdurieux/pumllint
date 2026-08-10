@@ -1,0 +1,188 @@
+{
+  "A2": {
+    "substrate": "cargo",
+    "agentic": true,
+    "full": 0.4242,
+    "full_semantic": 0.4242,
+    "visible": 0.6667,
+    "hidden": 0.3333,
+    "hidden_semantic": 0.3333,
+    "visible_feedback_revisions": 6,
+    "per_generator": {
+      "opus": {
+        "full": 0.5152,
+        "visible": 0.8889,
+        "hidden": 0.375
+      },
+      "haiku": {
+        "full": 0.3333,
+        "visible": 0.4444,
+        "hidden": 0.2917
+      }
+    },
+    "model_calls_used": [
+      3,
+      3,
+      3,
+      3,
+      3,
+      2
+    ],
+    "judged_median": {
+      "opus": 6,
+      "haiku": 4
+    }
+  },
+  "A2-BC": {
+    "substrate": "cargo",
+    "agentic": true,
+    "full": 0.1212,
+    "full_semantic": 0.1455,
+    "visible": 0.3889,
+    "hidden": 0.0208,
+    "hidden_semantic": 0.025,
+    "visible_feedback_revisions": 6,
+    "per_generator": {
+      "opus": {
+        "full": 0.1212,
+        "visible": 0.4444,
+        "hidden": 0.0
+      },
+      "haiku": {
+        "full": 0.1212,
+        "visible": 0.3333,
+        "hidden": 0.0417
+      }
+    },
+    "model_calls_used": [
+      2,
+      3,
+      3,
+      3,
+      3,
+      3
+    ],
+    "judged_median": {
+      "opus": 6,
+      "haiku": 5
+    }
+  },
+  "A3": {
+    "substrate": "cargo",
+    "agentic": true,
+    "full": 0.8788,
+    "full_semantic": 0.8788,
+    "visible": 0.8889,
+    "hidden": 0.875,
+    "hidden_semantic": 0.875,
+    "visible_feedback_revisions": 1,
+    "per_generator": {
+      "opus": {
+        "full": 1.0,
+        "visible": 1.0,
+        "hidden": 1.0
+      },
+      "haiku": {
+        "full": 0.7576,
+        "visible": 0.7778,
+        "hidden": 0.75
+      }
+    },
+    "model_calls_used": [
+      3,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "judged_median": {
+      "opus": 2,
+      "haiku": 1
+    }
+  },
+  "A2-BC-single": {
+    "substrate": "cargo",
+    "agentic": false,
+    "full": 0.1212,
+    "full_semantic": 0.1212,
+    "visible": 0.3889,
+    "hidden": 0.0208,
+    "hidden_semantic": 0.0208,
+    "visible_feedback_revisions": 0,
+    "per_generator": {
+      "opus": {
+        "full": 0.1818,
+        "visible": 0.6667,
+        "hidden": 0.0
+      },
+      "haiku": {
+        "full": 0.0606,
+        "visible": 0.1111,
+        "hidden": 0.0417
+      }
+    },
+    "model_calls_used": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "judged_median": {
+      "opus": 5,
+      "haiku": 6
+    }
+  },
+  "R0": {
+    "substrate": "c4",
+    "agentic": true,
+    "full": 0.5,
+    "full_semantic": 0.5,
+    "visible": 1.0,
+    "hidden": 0.2,
+    "hidden_semantic": 0.2,
+    "visible_feedback_revisions": 2,
+    "per_generator": {
+      "opus": {
+        "full": 0.5,
+        "visible": 1.0,
+        "hidden": 0.2
+      }
+    },
+    "model_calls_used": [
+      2,
+      2,
+      1
+    ],
+    "judged_median": {
+      "opus": 8
+    }
+  },
+  "R3": {
+    "substrate": "c4",
+    "agentic": true,
+    "full": 0.7917,
+    "full_semantic": 0.7917,
+    "visible": 1.0,
+    "hidden": 0.6667,
+    "hidden_semantic": 0.6667,
+    "visible_feedback_revisions": 0,
+    "per_generator": {
+      "opus": {
+        "full": 0.7917,
+        "visible": 1.0,
+        "hidden": 0.6667
+      }
+    },
+    "model_calls_used": [
+      1,
+      1,
+      1
+    ],
+    "judged_median": {
+      "opus": 5
+    }
+  }
+}

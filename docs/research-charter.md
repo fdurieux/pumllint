@@ -209,7 +209,15 @@ The original three questions map onto the reframed terms:
 Orthogonal to the hops is the **workflow dimension**: everything
 measured to date is single-shot generation; real AI-assisted delivery
 is agentic (the agent runs tests and iterates). W5 measures whether the
-standing claims survive that transfer.
+standing claims survive that transfer. *W5 ran 2026-08-11: they
+survive. Under k ≤ 2 test-driven iteration the hidden-scenario gaps
+stayed wide open (cliff +31.3 pp, C4 behavior arrival +46.7 pp,
+contract lever +54.2 pp); compensation was strictly visible-subset-
+bounded (R0's smoke set went to ceiling while its hidden set moved
+0.0 pp); and the below-cliff artifact was not repaired at all —
+identical rates to single-shot after two revision rounds, its smoke
+tests still failing. Standing claims now read "single-shot and k ≤ 2
+agentic". Record: stack_experiment/W5_PREREGISTRATION.md § Results.*
 
 ## 6. What is already answered (evidence-graded)
 
@@ -227,7 +235,7 @@ outcomes.
 | Acceptance tests as generation *input* | +9.15–29.57% correctness in function-level benchmarks (external); in-house, W1 (2026-08-10): +12.7 pp pooled A3→A4, ~98% of net gain in value-bearing scenarios and leakage share ≈ nil under the pre-declared overlap split; generator-split — the strong generator sat at ceiling (−3.6), the weak gained +29.1 | [measured] — this lab, this scale (one system, single-shot); external figures kept for context |
 | Structural diagrams (context/container) | Group-edge recall 1.00 at every rung including bare R0 under a conforming prompt (EC1); annotations +8.3 pp executed (R0→R1), invention-flat | [measured] — orientation and misread-prevention value; a modest outcome effect, not the main lever |
 | Stable-ID traceability | `pumllint trace` shipped (Arc G) | [built] — outcome-side unmeasured |
-| Per-artifact gates as a necessity | Below-cliff artifacts actively degrade generation vs their pristine siblings; all 16 author-less-repaired diagrams passed the gate while the repaired-L1 tier executed 36.6 pp below pristine (repaired-L2: 10.8 pp) — the gate certifies statedness, not correctness | [measured] — the positioning claim, with §4's harm-vs-absence caveat |
+| Per-artifact gates as a necessity | Below-cliff artifacts actively degrade generation vs their pristine siblings; all 16 author-less-repaired diagrams passed the gate while the repaired-L1 tier executed 36.6 pp below pristine (repaired-L2: 10.8 pp) — the gate certifies statedness, not correctness; **W5 (2026-08-11): a below-cliff artifact was not repaired by k ≤ 2 test-driven iteration either — identical rates to single-shot, smoke tests still failing — gating inputs beats repairing outputs in the agentic workflow too** | [measured] — the positioning claim, with §4's harm-vs-absence caveat (W1's contrast: an unresolved null) |
 | Carrier/syntax effects | W3 (2026-08-11, one behavior artifact at the A2 rung, fixed information, audited translations): carrier matters — vs the PlantUML baseline, code-stub −6.1 pp, Mermaid −9.1, controlled English −15.2, structured YAML −30.3 pooled; on flow-sensitive scenarios every alternative lost 17–67 pp, and opus generated non-compiling code from YAML 3/3. Ecosystem context retained: Mermaid dominates spec directories 76–437×; standalone `.puml` outnumbers embedded 16× | [measured] — first outcome evidence; equivalence refuted, checkability demoted per C1 |
 
 The standing detail answer, consolidated — three tiers, not two:
@@ -339,7 +347,11 @@ W5.
   behavior; invention on uncovered behavior persists; artifact value
   shifts from generation input toward decision record and review
   oracle. The external-validity keystone: it decides how every standing
-  claim must be worded for the workflows people actually run.
+  claim must be worded for the workflows people actually run. *Ran
+  2026-08-11 ($7.95): every standing claim survived — see §5's dated
+  note and §8.4 (did not fire); compensation visible-subset-bounded;
+  below-cliff unrepairable at k ≤ 2; invention persisted (judged).
+  Record: stack_experiment/W5_PREREGISTRATION.md § Results.*
 - **W6 / W7 — gated, unchanged.** W6 is Arc J (requirements hop),
   whose recorded trigger is **Arcs H and I shipped** — this charter
   does not pre-empt or relax that gate; treating a lab-form Arc I
@@ -387,7 +399,12 @@ Recorded now so failure cannot be reinterpreted later:
    narrows to single-shot workflows — the window-closing signal of the
    capability-horizon settlement arriving via workflow rather than
    capability; the response is that settlement's: a reviewed
-   repositioning, never an unattended one.
+   repositioning, never an unattended one. *Did not fire: W5
+   (2026-08-11) — the cliff survived k ≤ 2 agency on hidden behavior
+   (+31.3 pp), and the below-cliff artifact resisted repair entirely
+   (see §5's dated note). Deeper iteration (k > 2, tool-using
+   harnesses) remains the recorded residual risk, re-measured per the
+   standing instrument.*
 5. **The knee cannot be located at feasible n (W4).** If dose–response
    noise at this budget swamps the materiality threshold, "minimum
    sufficiency" is not operationalizable here; record it and stop —
