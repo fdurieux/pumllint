@@ -368,7 +368,9 @@ pre-registration. Results land as dated research records in docs/
 (EVIDENCE.md discipline), converging on one consolidated document — the
 measured minimum sufficient stack — plus its product consequences (rule
 selection, claim language, agents.md updates), each following existing
-gates.
+gates. *The consolidated document exists:
+[minimum-sufficient-stack.md](minimum-sufficient-stack.md)
+(2026-08-11, adversarially verified — 9 findings adopted).*
 
 ## 8. What would falsify this frame
 

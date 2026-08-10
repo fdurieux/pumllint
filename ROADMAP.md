@@ -751,6 +751,45 @@ list and license posture live in § Settled questions.
   asked for is written (pilot charter, the phase-4 scope test).
   Triggers unchanged; the census remains the next action.
 
+- **Two-stage external project review (2026-08-11): evaluated — the
+  most accurate external assessment this repository has received; both
+  repo-facing defect findings real and previously unrecorded; three
+  doc-hygiene and two wave candidates recorded, nothing queued.** An
+  externally authored two-stage review (chat-authored, live web access
+  to the raw repository files; stage 1 written at the W1-results
+  state, stage 2 after the W2–W4 results and before any W5 run) was
+  verified claim-by-claim against the md record
+  (docs/external-review-evaluation.md). Roughly forty quoted figures
+  across W1–W4, the C4 ladder, the sequence cliff and the
+  judge-validity record all trace — zero misquotes. The two defect
+  findings, both verified: the **Level-5 naming contradiction**
+  (scoring.py and the score-schema enum name the level
+  "Generation-ready" while the settled claim language says
+  "method-convention complete" and agents.md states the level is
+  "deliberately not called 'generation-ready'" — a sentence that is
+  false while the name stands), and **EVIDENCE.md's unstated
+  boundary** (zero stack-programme content, the boundary declared
+  nowhere in the file). The review's capstone "target architecture"
+  and closing-lesson claims are graded in the evaluation: two
+  pipeline boxes gained measured rationales (mechanical conflict
+  surfacing per W2; context minimization per W4), the carrier lineup
+  and two further boxes stay hypothesis, the agentic keystone is
+  untested until W5, and the measured author/decision loop appears in
+  no box. Recorded, not queued: **reconcile the Level-5 name** (a
+  rename is a public-contract change — schema enum, scoring.py,
+  tests, docs sweep, regenerated example report — taking its own
+  deliberate decision; the minimum honest fix is agents.md's
+  sentence); an **EVIDENCE.md scope paragraph** (doubling as the
+  placeholder for the charter §7 consolidated document); **case-for
+  problem-statement tightening**; and wave candidates **W3b**
+  (carrier × prompt-frame factorial) and **A3 decomposition**
+  (contract information classes), each under charter §10 discipline
+  if ever queued. The reviewer's platform items (BPMN/DMN carriers,
+  cross-spec verifier, context compiler, coverage metric, domain
+  benchmark) stay with the adopter programme — not this repository's
+  scope. Priorities convergent: W5 next, as the charter already
+  records.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -121,6 +121,26 @@ but they are a useful cross-check that no audience was forgotten.
   its compiler analogy is corrected to attribution-not-reproducibility,
   and two candidates are recorded (portable run-record format;
   model→spec change-impact design), nothing queued.
+- [The two-stage external project review, evaluated](external-review-evaluation.md)
+  — dated evaluation (2026-08-11): an externally authored two-stage
+  review of the whole repository (stage 1 at the W1-results state,
+  stage 2 after the W2–W4 results landed, before W5), assessed
+  claim-by-claim against the md record on
+  sense/nonsense/fit/gap/priorities — every checked figure traces
+  (zero misquotes), both repo-facing defect findings verified real
+  (the Level-5 naming contradiction; EVIDENCE.md's unstated boundary),
+  the "target architecture" and closing-lesson claims graded, three
+  doc-hygiene and two wave candidates recorded, nothing queued.
+- [The measured minimum sufficient stack](minimum-sufficient-stack.md)
+  — dated consolidation record (2026-08-11, verified): the research
+  charter's convergence document — the measured answer to which
+  artifacts, which detail, which syntax for the model→code hop,
+  consolidated from the five frozen wave records (W1–W5,
+  stack_experiment/, ≈$32.65): the contract-led portfolio, the
+  per-generator knees and the measured far side, the refuted carrier
+  equivalence, silent conflict resolution, and the survives-agency
+  verdict — with the falsifier ledger and every published failure
+  counted next to the confirmations.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).

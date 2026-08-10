@@ -1,7 +1,11 @@
 # The measured minimum sufficient specification stack
 
-*Dated consolidation record, 2026-08-11 — DRAFT pending adversarial
-verification. This is the document the research charter
+*Dated consolidation record, 2026-08-11 — verified revision: draft
+b3bf80c (findings-before-verdicts), independent adversarial pass
+against it — **9 findings: 4 major, 5 minor, all adopted in this
+revision** (the pass recomputed every table from the raw analyses,
+not only from the Results prose). This is the document the research
+charter
 ([research-charter.md](research-charter.md)) converges on: the
 measured answer to "which artifacts, which level of detail, which
 syntax" for the model→code hop, consolidated from the five frozen
@@ -19,8 +23,10 @@ queues no build.*
 
 For the model→code hop, on this lab's systems, with this model
 generation (dated): the minimum sufficient stack is **a task brief,
-one behavior artifact, and a written decision contract** — for a
-strong generator that is the knee of the curve (adding acceptance
+the structure skeleton, one behavior artifact, and a written decision
+contract** — the ladder's +contract rung, structure present at every
+measured rung — for a strong generator that is the knee of the curve
+(adding acceptance
 examples moved it nothing it could not already do), while a weak
 generator additionally needs **acceptance examples as input** to
 reach its plateau and is the only one that pays for excess. Structure
@@ -30,7 +36,7 @@ diagram first — and no amount of prose, enumeration or padding past
 the knee buys anything: for the weak generator it actively destroys
 (−26 to −32 pp). None of this is rescued or invalidated by a
 test-running agentic loop at k ≤ 2: iteration repairs only what
-visible tests state, hidden decision points keep the full gaps, and
+visible tests state, hidden decision points keep material gaps, and
 a below-cliff artifact is not repaired at all. Keep every decision
 stated exactly once, gate the inputs, and stop writing at the knee.
 
@@ -58,7 +64,7 @@ Single-shot executed ladder on the adversarial-threshold system
 - **The behavior artifact is material everywhere but system-relative
   in rank:** +31.8 pp here, +29.2 pp when dynamics arrived in the C4
   ladder, and the 16–25 pp below-cliff penalty within the sequence
-  family (three families, two vendors) — but the pre-registered
+  family (three generators, two vendors) — but the pre-registered
   "single biggest lever" claim FAILED on the adversarial system
   (the contract led), and the two generators disagree about which
   of the two matters more. Portfolio claims are quoted
@@ -75,10 +81,11 @@ Single-shot executed ladder on the adversarial-threshold system
   diagram. It earns its place for misread-prevention and as the
   skeleton the conforming prompt pins classes to — not as an
   executed-correctness lever.
-- **The decision/Q&A record** (pre-charter, ask-vs-invent ≈ +27 pp
-  executed below the cliff with an author available) remains the
-  one artifact class no wave re-measured; its standing evidence is
-  unchanged.
+- **The decision/Q&A record** (pre-charter: ≈ +27 pp executed vs
+  inventing without an author, ≈ +21.5 pp vs the untouched diagram —
+  the latter is the decision-relevant contrast for adding the
+  record) remains the one artifact class no wave re-measured; its
+  standing evidence is unchanged.
 
 ## 2. Which level of detail — the knee, and the far side
 
@@ -91,9 +98,11 @@ Three tiers plus a fourth clause, all measured:
 2. **From arrival to the knee:** behavior and contract arrivals
    carry the curve (+31.8, +37.9 pp).
 3. **The knee:** pooled at the full stack; **per-generator — the
-   strong generator's knee is brief+behavior+contract** (1.000
-   there; acceptance examples added −3.6 pp at its ceiling), **the
-   weak generator's knee includes the examples** (0.636 → 0.927).
+   strong generator's knee is the +contract rung, i.e. brief +
+   structure + behavior + contract** (1.000 there; acceptance
+   examples added −3.6 pp at its ceiling), **the weak generator's
+   knee is the full stack including the examples** (0.636 → 0.927).
+   No structure-less bundle was measured anywhere in the program.
 4. **Past the knee, detail is at best free and at worst toxic**
    (W4): accurate redundant restatement −6.7 pp pooled, irrelevant
    context −11.2, accurate exhaustive enumeration −14.3 — and the
@@ -120,7 +129,9 @@ ways (W3, A2 rung, vs the PlantUML baseline):
 Carrier equivalence was REFUTED: every alternative lost on the
 flow-sensitive scenarios, YAML lost even on semantic-only scoring,
 and the strong generator produced non-compiling code from YAML in
-3 of 3 runs — the program's only non-compiles. Checkability is
+3 of 3 runs — the only non-compiles of the single-shot W1–W4
+program (W5's loop saw one intermediate non-compile, repaired by
+compile feedback; zero non-compiling finals). Checkability is
 therefore demoted to one carrier criterion among several (the
 charter's own pre-commitment); the carrier question is decided on
 outcome evidence, and on the only outcome evidence anywhere, the
@@ -138,13 +149,15 @@ model generation.
   favored the right sources — decision table over stale prose 6/6,
   five-source majority over a stale sentence 5/6, formula over a
   stale worked example 12/12 slots — and damage stayed local.
-- W1's below-cliff-vs-absent arm: an exact null *in a stack whose
-  prose restates the flow* — redundancy buffered the degraded
-  diagram. Combined with W4 (accurate duplication dilutes the weak
-  generator) and the kit's own design rule (numbers live exactly
-  once), the consolidated guidance is: **one authoritative carrier
-  per decision; deliberate redundancy is a cost and, for weak
-  generators, a risk — not a safety net you can bank on.**
+- W1's below-cliff-vs-absent arm: an exact null, unresolved and
+  underpowered — prose flow was present in both arms, so it
+  measured artifact absence within a redundant stack, not
+  information erasure, and **no direction is supported** (the
+  frozen branch's own words). The W4 dilution evidence therefore
+  carries the guidance alone: **one authoritative carrier per
+  decision; deliberate redundancy is a cost and, for weak
+  generators, a measured risk — not a safety net you can bank
+  on.**
 
 ## 5. The workflow transfer — it all survives agency
 
@@ -173,8 +186,8 @@ gated); deployment/operations remain position-paper territory.
 ## 7. Product consequences (wording only; every build stays gated)
 
 - **Claim language** already updated in place, dated: charter §§2,
-  5, 6, 8; agents.md precedence section; "single-shot and k ≤ 2
-  agentic" scope program-wide.
+  4, 5, 6, 7, 8; agents.md precedence section; "single-shot and
+  k ≤ 2 agentic" scope program-wide.
 - **Rule-pack rationale:** contract-presence conventions now have
   outcome grounding; the codegen profile's gate-first posture has
   its strongest citation yet (below-cliff artifacts resist even
@@ -182,7 +195,10 @@ gated); deployment/operations remain position-paper territory.
   unchanged.
 - **Pilot-facing sentences** (for the census conversation, dated
   and suite-relative): the written decision contract is the
-  highest-value artifact to require; PlantUML is defensible on
+  highest-value artifact to require **for a strong generator and in
+  the pooled and leave-one-out views — the weak generator's largest
+  single-shot additive lever was the behavior artifact, so quote
+  per-generator (W1-E8a's standing rule)**; PlantUML is defensible on
   outcome evidence, not just tooling; a stale example or sentence
   will be silently resolved, so gate and deduplicate sources;
   don't mandate detail past the knee — over-specification harms
@@ -192,9 +208,13 @@ gated); deployment/operations remain position-paper territory.
   null); §8.2 did not fire (dilution measured); §8.3 partially
   fired (per-generator claims, generator axis); §8.4 did not fire
   (cliff survives agency); §8.5 not triggered (knees landed as
-  pre-registered). Five pre-registered expectations failed across
-  the program and are published in their wave records with the
-  same prominence as the twelve confirmations.
+  pre-registered). The verdict tally, counted by the records' own
+  labels (guards excluded; W1-E8b exploratory and W1-E5's null as
+  their own categories): **five FAILED** (W1 E1/E4/E8a, W3 E1/E2),
+  **two not-confirmed branches** (W2-E4, W5-E1), **one unresolved
+  null** (W1-E5), and **eighteen CONFIRMED** — every failure
+  published in its wave record with the same prominence as the
+  confirmations.
 
 ## Records
 
