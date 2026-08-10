@@ -1,0 +1,252 @@
+{
+  "pooled": {
+    "A4": {
+      "slots": 66,
+      "executed": 0.9545,
+      "semantic": 0.9545,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          6,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          6,
+          6
+        ],
+        "price_exact_heavy": [
+          6,
+          6
+        ],
+        "quoted_low_risk": [
+          6,
+          6
+        ],
+        "refuse_boundary_67": [
+          6,
+          6
+        ],
+        "refuse_high_risk": [
+          6,
+          6
+        ],
+        "review_boundary_42": [
+          6,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          5,
+          6
+        ]
+      }
+    }
+  },
+  "per_generator": {
+    "opus": {
+      "A4": {
+        "slots": 33,
+        "executed": 1.0,
+        "semantic": 1.0,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      }
+    },
+    "haiku": {
+      "A4": {
+        "slots": 33,
+        "executed": 0.9091,
+        "semantic": 0.9091,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      }
+    }
+  },
+  "tokens": {
+    "opus": {
+      "mean_input_tokens": {
+        "A4": 7943.0
+      },
+      "artifact_tokens": {
+        "A4": null
+      }
+    },
+    "haiku": {
+      "mean_input_tokens": {
+        "A4": 5807.0
+      },
+      "artifact_tokens": {
+        "A4": null
+      }
+    }
+  },
+  "judged_inventions": {
+    "opus": {
+      "A4": {
+        "n": 0,
+        "median": null,
+        "mean": null
+      }
+    },
+    "haiku": {
+      "A4": {
+        "n": 0,
+        "median": null,
+        "mean": null
+      }
+    }
+  },
+  "additive_increments": {
+    "A0->A1": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "A1->A2": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "A2->A3": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "A3->A4": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    }
+  },
+  "loo_drops": {
+    "structure": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "behavior": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "contract": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    },
+    "tests": {
+      "pooled": null,
+      "opus": null,
+      "haiku": null
+    }
+  },
+  "pp_per_kilotoken": {
+    "opus": {
+      "additive_pp_per_ktok": {},
+      "loo_pp_per_ktok": {}
+    },
+    "haiku": {
+      "additive_pp_per_ktok": {},
+      "loo_pp_per_ktok": {}
+    }
+  },
+  "expectation_inputs": {}
+}

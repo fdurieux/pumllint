@@ -1,0 +1,693 @@
+{
+  "phase": "calib",
+  "pre_registration": "stack_experiment/W1_PREREGISTRATION.md",
+  "generators": {
+    "opus": "claude-opus-4-8",
+    "haiku": "claude-haiku-4-5-20251001"
+  },
+  "judge_model": "claude-sonnet-5",
+  "runs_per_arm": {
+    "A0": 3,
+    "A1": 3,
+    "A2": 3,
+    "A3": 3,
+    "A4": 5,
+    "L-structure": 3,
+    "L-behavior": 5,
+    "L-contract": 3,
+    "BC-behavior": 5
+  },
+  "gen_prompt": "Implement the system specified below as a single self-contained Python module. The specification is a bundle of named artifacts \u2014 a project brief plus, depending on the bundle: a PlantUML C4 container diagram, a PlantUML UML sequence diagram, a companion markdown specification, decision tables, an OpenAPI description, a UML state machine, and Gherkin acceptance scenarios. All artifacts describe ONE system.\n\nRules:\n- If a container diagram is provided: one class per Container, ContainerDb and System_Ext element, named after the element's alias in CamelCase (alias tariff_engine -> class TariffEngine). Relationships (Rel) become method calls from the source element's class to the target element's class. Do not add calls between elements that have no declared relationship.\n- If no container diagram is provided, choose a sensible class decomposition; keep the external screening provider, the tariff/pricing computation, the quote store and the notification provider as separate classes so they can be substituted.\n- Where the specification describes flows, steps, guards, rules, tables or acceptance scenarios, implement them; failure paths become raised exceptions or error returns.\n- External systems are outside the system boundary: implement each as a simple class whose methods return plausible values.\n- Where the specification is ambiguous or incomplete, make your best guess and implement something concrete.\n- Output ONLY Python code. No markdown fences, no prose.\n\nAdditionally expose a module-level function:\n\n    def handle(request: dict) -> dict\n\nthat runs one end-to-end flow. `request` carries the scenario input: entity ids and amounts, existence flags (keys like \"<entity>_exists\" / \"<entity>_found\"), and \u2014 where your implementation depends on an external system's outcome \u2014 keys of the form \"<system>_result\" / \"<system>_status\" whose values are short words such as \"approved\", \"declined\", \"active\", \"lapsed\", \"stored\", \"assessed\", \"error\", or a number for scores. Return a dict whose \"status\" key names the outcome (e.g. \"confirmed\", \"rejected\", \"error: <reason>\").\n\nSPECIFICATION:\n\n{spec}\n",
+  "judge_prompt": "You are auditing whether generated code faithfully implements a specification stack: a project brief plus, depending on the bundle, PlantUML diagrams (C4 container, UML sequence, UML state machine), a companion markdown specification, decision tables, an OpenAPI description, and Gherkin acceptance scenarios. The SPECIFICATION is ground truth; the CODE is under audit.\n\nCount in the specification: elements (containers, diagram participants, external systems), relationships (declared interactions between elements; count each distinct pair once, a return edge belongs to its call edge), guards / flow conditions (branch conditions in diagrams, validation and threshold rules in tables or spec text), failure/error paths, and technology annotations (the technology argument on elements and relationships). Then count how many of each the code actually realizes (a relationship is realized if the corresponding interaction happens between the corresponding classes; a guard is faithful if the condition's meaning is preserved; a technology annotation is honored if the code plausibly reflects it in naming, interface shape or comments).\n\nSeparate the code's inventions into two lists:\n- invented_business_logic: behavior with domain meaning that the specification never specified \u2014 invented business rules, thresholds, validation limits, state transitions, endpoints, or a concrete meaning assigned to a vague label. These are harmful: they look intentional but are the generator's guess.\n- defensive_embellishments: benign engineering the specification didn't ask for but that adds no domain semantics \u2014 logging, type checks, constructors, defensive null handling around specified behavior.\n\nfidelity_score: 0-100 overall \u2014 100 means the code is a faithful, complete realization of everything the specification states; deduct for missing elements or interactions, altered guard semantics, and invented business logic (embellishments cost little).\n\nSPECIFICATION:\n{spec}\n\nCODE:\n{code}\n",
+  "kit_hashes": {
+    "behavior/quote_flow.puml": "e1ded9c7b682e46e3c7127d03b7b6de8e3d9ab4e0d0319c920f282b6c27b52cd",
+    "behavior/quote_flow_bad.puml": "d19192eb12e6eeeafc5de2963f02e36ba5a83051db2f651b8bd7249d5bd73e24",
+    "brief.md": "3db8eeb9770caad55098686a962df3843e4c7bc187d805a8cbbcc47e42c42555",
+    "contract/decision_table.md": "27e9fe7ece2670bda247be19ec55d46dee54586e92ad161996954e148d53a43d",
+    "contract/openapi.yaml": "ff7e42b52a11aedc3eb3805343c6d41406d45be09cecac7a458d83a0122a066a",
+    "contract/quote_states.puml": "a52d92bb162c04d6e60d7643966a0e83090580e11fe94601d44f3a8c3875e0b1",
+    "contract/spec.md": "219dd2cc81756d3786f88276d80835489223e12b681edcb648b6380ca1ee8690",
+    "structure/containers.puml": "0d923532cf4d7236acafadd5e19b3e9649e9c47186c46e4a1caa386687f7c2e5",
+    "tests_input/acceptance.feature": "b87970569c778c18cb4780ea114e187b1c06a062159a15c87eadc9f39538e121",
+    "tools/acceptance/cargo_quote_suite.py": "113ab6ac27a1347bcac3dd21c5918cf488a65ace24d2588c9bb38a96a8d9b501",
+    "tools/acceptance/runner_child.py": "f6cc907edda9ba44c15b6ffe4490617597f1a2c2aa8b871bb0acca5972fe7c88"
+  },
+  "usage": {
+    "claude-haiku-4-5-20251001": {
+      "in": 17244,
+      "out": 7910
+    },
+    "claude-opus-4-8": {
+      "in": 23577,
+      "out": 10803
+    }
+  },
+  "spend_usd": 0.4448,
+  "prior_spend_usd": 0.0003,
+  "calls_used": 6,
+  "aborted": null,
+  "runs": [
+    {
+      "arm": "A4",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 5748,
+      "output_tokens": 2878,
+      "code_file": "gen_A4_haiku_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "overlay-require(review|hold): valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        }
+      ]
+    },
+    {
+      "arm": "A4",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 5748,
+      "output_tokens": 2201,
+      "code_file": "gen_A4_haiku_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0, 'h"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49, "
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ]
+    },
+    {
+      "arm": "A4",
+      "generator": "haiku",
+      "model": "claude-haiku-4-5-20251001",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 5748,
+      "output_tokens": 2831,
+      "code_file": "gen_A4_haiku_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "missing_call",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; valueerror: too many values to unpack (expected 2)"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "valueerror: too many values to unpack (expected 2)"
+        }
+      ]
+    },
+    {
+      "arm": "A4",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 1,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 7859,
+      "output_tokens": 4408,
+      "code_file": "gen_A4_opus_run1.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | status=quoted quote_id=protean"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ]
+    },
+    {
+      "arm": "A4",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 2,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 7859,
+      "output_tokens": 2932,
+      "code_file": "gen_A4_opus_run2.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | status=quoted quote_id=protean"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ]
+    },
+    {
+      "arm": "A4",
+      "generator": "opus",
+      "model": "claude-opus-4-8",
+      "run": 3,
+      "attempts": [
+        {
+          "stop_reason": "end_turn",
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "input_tokens": 7859,
+      "output_tokens": 3463,
+      "code_file": "gen_A4_opus_run3.py",
+      "execution": [
+        {
+          "scenario": "quoted_low_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "accept_boundary_41",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "review_boundary_42",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=review_hold quote_id=proteanobj(status='stored', "
+        },
+        {
+          "scenario": "refuse_boundary_67",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "refuse_high_risk",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | status=refused_screening quote_id=proteanobj"
+        },
+        {
+          "scenario": "price_exact_heavy",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | status=quoted quote_id=proteanob"
+        },
+        {
+          "scenario": "price_exact_both",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | status=quoted quote_id=protean"
+        },
+        {
+          "scenario": "invalid_weight_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "invalid_value_over",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+        },
+        {
+          "scenario": "screening_down_hold",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'h"
+        },
+        {
+          "scenario": "store_down_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+        }
+      ]
+    }
+  ]
+}

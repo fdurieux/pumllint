@@ -1,0 +1,39 @@
+{
+  "phase": "probe",
+  "models": {
+    "claude-opus-4-8": {
+      "ok": true,
+      "stop_reason": "end_turn",
+      "thinking_param": true,
+      "text": "ok"
+    },
+    "claude-haiku-4-5-20251001": {
+      "ok": true,
+      "stop_reason": "end_turn",
+      "thinking_param": false,
+      "text": "ok"
+    },
+    "claude-sonnet-5": {
+      "ok": true,
+      "stop_reason": "end_turn",
+      "thinking_param": true,
+      "text": "ok"
+    }
+  },
+  "usage": {
+    "claude-opus-4-8": {
+      "in": 16,
+      "out": 4
+    },
+    "claude-haiku-4-5-20251001": {
+      "in": 12,
+      "out": 4
+    },
+    "claude-sonnet-5": {
+      "in": 16,
+      "out": 4
+    }
+  },
+  "spend_usd": 0.0003,
+  "calls_used": 3
+}

@@ -1,17 +1,19 @@
 # Wave pre-registration — W1: artifact-portfolio ablation
 
-*Verified revision for owner review, 2026-08-10 — NOT yet frozen.
-Draft committed afe12a5 (findings-before-verdicts); independent
-adversarial pass the same day against that commit: **17 findings — 7
-major, 10 minor — all adopted in this revision.** Freeze happens only
-after: (1) owner edits/approval, (2) the driver exists
-(tools/stack_ablation.py, see Design), (3) the generation-calibration
-below has run and its numbers are filled in, (4) this file, the driver
-and the suite hashes are committed together — that commit is the
-freeze. Once a scored (non-calibration) run exists, editing anything
-above the Results section invalidates the wave — re-freeze consciously
-and say so. Template: PREREGISTRATION_TEMPLATE.md (house protocol =
-EVIDENCE.md discipline + research-charter.md §7 standards).*
+*FROZEN 2026-08-10, before any scored run — the freeze is the commit
+titled "Lab: W1 frozen" that introduces this paragraph, carrying this
+file, the driver (tools/stack_ablation.py, sha256 in Calibration §
+Frozen values) and the calibration record together. Provenance: draft
+afe12a5 (findings-before-verdicts); independent adversarial pass the
+same day against that commit — **17 findings, 7 major, 10 minor, all
+adopted** (a43c8bb); three dated pre-freeze amendments after the
+pass, marked inline (rate-based net slot-gains; prompt v1 → v2 seam
+rule; calibration attempt-1 disclosure). **Owner accepted the freeze
+and gave the scored-wave go 2026-08-10.** From here, editing anything
+above the Results section invalidates the wave — re-freeze
+consciously and say so. Template: PREREGISTRATION_TEMPLATE.md (house
+protocol = EVIDENCE.md discipline + research-charter.md §7
+standards).*
 
 ## Question and decision link (mandatory)
 
@@ -111,11 +113,11 @@ decision values a generator's priors cannot guess?
   across conditions is deliberate and disclosed; rate comparisons are
   unaffected, quantums differ as stated.
 
-- **Models, exact IDs (live-probed before freeze — never from
-  memory):** generators `claude-opus-4-8` (adaptive thinking, the
-  stored-wave mainline) and `claude-haiku-4-5` (no adaptive thinking —
-  house shim omits it; generator precedent: the gen-haiku wave,
-  57 runs, $2.41). Judge `claude-sonnet-5`, independent of both
+- **Models, exact IDs (live-probed 2026-08-10):** generators
+  `claude-opus-4-8` (adaptive thinking, the stored-wave mainline) and
+  `claude-haiku-4-5-20251001` (the dated snapshot the stored
+  gen-haiku wave priced; no adaptive thinking — house shim omits it;
+  generator precedent: the gen-haiku wave, 57 runs, $2.41). Judge `claude-sonnet-5`, independent of both
   generators, JSON-schema-constrained, max_tokens 16000 (C4
   uniformity lesson). **Amplification scoping (adversarial finding
   6):** the measured weak-generator amplification is judged-oracle
@@ -131,18 +133,24 @@ decision values a generator's priors cannot guess?
   key (`GEMINI_API_KEY`/`GOOGLE_API_KEY`, charter §10), not a silent
   extension.
 
-- **Prompts:** variant **stack-bundle-v1** — the c4 conforming-prompt
+- **Prompts:** variant **stack-bundle-v2** — the c4 conforming-prompt
   scaffold (tools/c4_codegen_experiment.py GEN_PROMPT rules:
   class-per-element, alias-derived names, declared-relationships-only
   calls, failure paths as exceptions/error returns, best-guess on
   ambiguity, code-only output) generalized to a bundle of named
   artifact sections; the entry contract REQUEST_CONTRACT
   (`def handle(request: dict) -> dict`) stays **byte-identical** to
-  tools/codegen_experiment.py for cross-program comparability
-  (verified byte-identical between the two harness files at draft
-  time). The prompt is identical across arms; only the bundle
-  contents differ. Rules referring to artifact kinds an arm lacks are
-  inert by construction, never edited per arm.
+  tools/codegen_experiment.py for cross-program comparability — by
+  import, not by copy (tools/stack_ablation.py imports the constant).
+  The prompt is identical across arms; only the bundle contents
+  differ. Rules referring to artifact kinds an arm lacks are inert by
+  construction, never edited per arm. *[Amended pre-freeze
+  2026-08-10, v1 → v2: one seam rule added after calibration
+  attempt 1 — "every collaborator method returns a SINGLE value,
+  never a tuple, and callers never tuple-unpack a collaborator's
+  return". Rationale under Calibration; scaffold-pinning in the c4
+  conforming-prompt tradition, uniform across arms, no business
+  content beyond what containers.puml states.]*
 
 - **Driver (freeze prerequisite, disclosed harness work):**
   `tools/stack_ablation.py`, new — assembles arm bundles from
@@ -191,11 +199,11 @@ decision values a generator's priors cannot guess?
   11 scenarios, sensitivity-classed [flow]/[contract]/[prior-inverting]
   (suite header; compound classes exist and every named scenario set
   in this document is enumerated by name, never by class shorthand).
-  Draft-time sha256
-  `113ab6ac27a1347bcac3dd21c5918cf488a65ace24d2588c9bb38a96a8d9b501`;
-  **re-pinned at the freeze commit after generation-calibration** (the
-  suite is authored + smoke-calibrated, deliberately not yet frozen —
-  W0 README). Runner unchanged: tools/acceptance/runner_child.py,
+  sha256
+  `113ab6ac27a1347bcac3dd21c5918cf488a65ace24d2588c9bb38a96a8d9b501`,
+  **re-verified unchanged and FROZEN at the freeze commit**
+  (2026-08-10, after generation-calibration; W0 had left it
+  deliberately unfrozen). Runner unchanged: tools/acceptance/runner_child.py,
   sha256
   `f6cc907edda9ba44c15b6ffe4490617597f1a2c2aa8b871bb0acca5972fe7c88`.
   Overlays: as declared in the suite's OVERLAYS map (require_re /
@@ -235,8 +243,38 @@ decision values a generator's priors cannot guess?
   here, then the suite hash is pinned and the freeze commit lands.
   Falling short of the bar blocks the freeze — fix, disclose,
   re-calibrate.
-- **Placeholders filled at freeze:** calibration counts + cost, final
-  suite hash, driver hash, freeze date + commit.
+- **Calibration attempt 1 (2026-08-10, stack-bundle-v1, $0.44) —
+  disclosed:** opus runs 11/11/11, median 11: PASS. haiku runs 2/6/2,
+  median 2: FAIL — freeze blocked by this section's bar, as designed.
+  Diagnosis from stored artifacts (results/W1/calib_attempt1/): runs
+  1/3 crashed at the first stubbed collaborator call —
+  `risk_index, screening_success = ...screen(...)` — because the
+  runner's ProteanNum stub value legacy-iterates via `__getitem__`
+  (no `__iter__`), so a tuple-unpacking caller dies with
+  "ValueError: too many values to unpack"; every flow scenario failed
+  while pre-screening validations passed. Run 2 additionally
+  misimplemented the flow (every request held as `held_unscreened`,
+  screening not called via any matcher-visible name). Fix applied:
+  the v2 seam rule (see Prompts) — prompt-side and arm-uniform; the
+  frozen runner is untouched. Re-calibration under v2, both
+  generators, follows; if haiku still misses the bar, the generator
+  choice goes back to the owner as a Design decision, not another
+  silent fix.
+- **Calibration attempt 2 (2026-08-10, stack-bundle-v2, $0.46) —
+  PASSED:** opus runs 11/11/11, median 11; haiku runs 10/9/11, median
+  10 (bar ≥ 9/11 per generator); every scenario passed by ≥ 1 of the
+  6 runs (screening_down_hold 4/6 and store_down_error 5/6 — the
+  residual floor sits on the prior-inverting and store-failure paths
+  even at pristine full stack). Pooled pristine-A4 0.954 executed.
+  Records: results/W1/calib/; attempt 1 preserved in
+  results/W1/calib_attempt1/.
+- **Frozen values:** pre-wave spend $0.91 of the $30 ceiling (probe
+  $0.0003 + calibration attempt 1 $0.4448 + attempt 2 $0.4625);
+  suite and runner hashes re-verified unchanged at freeze (as pinned
+  under Oracles); driver tools/stack_ablation.py sha256
+  `5134cddbd0950ed2e21c2c5a1772d68f1b62925b3b82713c567dede0c422b73b`;
+  freeze date 2026-08-10, freeze commit = the commit introducing
+  this bullet.
 
 ## Pre-registered expectations (mandatory)
 
@@ -244,10 +282,16 @@ decision values a generator's priors cannot guess?
 - *Materiality bar:* ≥ 9 pp pooled executed (one
   consistently-flipped scenario), applied wherever "material" or a
   pp bar appears.
-- *Net slot-gains between two arms:* per scenario, (slot-passes in
-  the higher arm) − (slot-passes in the lower arm), summed over a
-  named scenario set; "concentrated in set S" / "majority" means net
-  gains on S > ½ of total net gain, with total net gain > 0.
+- *Net slot-gains between two arms:* per scenario, the pass-rate
+  delta between the two arms' pools, summed over a named scenario set
+  (rate-based, so mixed-n comparisons — an n = 6 pool against an
+  n = 10 pool, as in A3→A4 — stay scale-free; identical to raw
+  slot-count deltas divided by pool size when n is equal);
+  "concentrated in set S" / "majority" means net gains on S > ½ of
+  total net gain, with total net gain > 0. *[Amended pre-freeze
+  2026-08-10: the driver's stopping-rule cross-check caught the
+  original count-based wording breaking on the mixed-n E3
+  comparison.]*
 - *Tie rule:* pooled rates within one slot-quantum of their pool
   count as tied; where a comparison spans pools of different n, the
   larger quantum applies; an identity clause ("largest", "top",
