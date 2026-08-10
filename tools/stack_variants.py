@@ -73,20 +73,32 @@ MAX_CALLS = 120  # live counter per wave process, retries included
 CEILINGS = {"W2": 10.00, "W3": 12.00, "W4": 12.00}
 RUNS_PER_ARM = 3  # per generator, every arm, all three waves
 
+# Bundle entries are (label, path): the label is what the prompt's
+# --- FILE: ... --- header shows and is ALWAYS the W1 kit-relative
+# name (adversarial findings, all three passes: variant paths like
+# w2_variants/C1_spec.md must never leak into the model input, and
+# swapped files keep their pristine labels so the only prompt delta
+# vs the reused W1 baseline is the injected content itself; --dry-run
+# proves that identity mechanically).
 _K = "cargo_quote"
-_A4 = [f"{_K}/brief.md", f"{_K}/structure/containers.puml",
-       f"{_K}/behavior/quote_flow.puml", f"{_K}/contract/spec.md",
-       f"{_K}/contract/decision_table.md", f"{_K}/contract/openapi.yaml",
-       f"{_K}/contract/quote_states.puml",
-       f"{_K}/tests_input/acceptance.feature"]
+_A4 = [("brief.md", f"{_K}/brief.md"),
+       ("structure/containers.puml", f"{_K}/structure/containers.puml"),
+       ("behavior/quote_flow.puml", f"{_K}/behavior/quote_flow.puml"),
+       ("contract/spec.md", f"{_K}/contract/spec.md"),
+       ("contract/decision_table.md", f"{_K}/contract/decision_table.md"),
+       ("contract/openapi.yaml", f"{_K}/contract/openapi.yaml"),
+       ("contract/quote_states.puml", f"{_K}/contract/quote_states.puml"),
+       ("tests_input/acceptance.feature",
+        f"{_K}/tests_input/acceptance.feature")]
 _A2 = _A4[:3]
 
 
-def _swap(base: list[str], old: str, new: str) -> list[str]:
-    return [new if f.endswith(old) else f for f in base]
+def _swap(base, label, new_path, new_label=None):
+    return [(new_label or lbl, new_path) if lbl == label else (lbl, p)
+            for lbl, p in base]
 
 
-ARMS: dict[str, dict[str, list[str]]] = {
+ARMS: dict[str, dict[str, list[tuple[str, str]]]] = {
     "W2": {
         "C1-numeric": _swap(_A4, "contract/spec.md",
                             "w2_variants/C1_spec.md"),
@@ -97,19 +109,25 @@ ARMS: dict[str, dict[str, list[str]]] = {
     },
     "W3": {
         "mermaid": _swap(_A2, "behavior/quote_flow.puml",
-                         "w3_carriers/quote_flow.mmd"),
+                         "w3_carriers/quote_flow.mmd",
+                         "behavior/quote_flow.mmd"),
         "yaml": _swap(_A2, "behavior/quote_flow.puml",
-                      "w3_carriers/quote_flow.yaml"),
+                      "w3_carriers/quote_flow.yaml",
+                      "behavior/quote_flow.yaml"),
         "controlled-english": _swap(_A2, "behavior/quote_flow.puml",
-                                    "w3_carriers/quote_flow.md"),
+                                    "w3_carriers/quote_flow.md",
+                                    "behavior/quote_flow.md"),
         "code-stub": _swap(_A2, "behavior/quote_flow.puml",
-                           "w3_carriers/quote_flow_stub.py"),
+                           "w3_carriers/quote_flow_stub.py",
+                           "behavior/quote_flow_stub.py"),
     },
     "W4": {
         "O1-redundant": _swap(_A4, "contract/spec.md",
                               "w4_farside/O1_spec.md"),
-        "O2-irrelevant": _A4 + ["w4_farside/O2_appendix.md"],
-        "O3-enumeration": _A4 + ["w4_farside/O3_worked_examples.md"],
+        "O2-irrelevant": _A4 + [("operations-appendix.md",
+                                 "w4_farside/O2_appendix.md")],
+        "O3-enumeration": _A4 + [("worked-examples.md",
+                                  "w4_farside/O3_worked_examples.md")],
     },
 }
 
@@ -166,8 +184,8 @@ def _call(client, model: str, usage: dict, ceiling: float, prior: float,
 
 
 def bundle_files(wave: str, arm: str) -> list[tuple[str, str]]:
-    return [(rel, (SE / rel).read_text(encoding="utf-8"))
-            for rel in ARMS[wave][arm]]
+    return [(label, (SE / rel).read_text(encoding="utf-8"))
+            for label, rel in ARMS[wave][arm]]
 
 
 def bundle_text(wave: str, arm: str) -> str:
@@ -176,9 +194,44 @@ def bundle_text(wave: str, arm: str) -> str:
 
 
 def kit_hashes(wave: str) -> dict:
-    files = sorted({rel for arm in ARMS[wave].values() for rel in arm})
+    files = sorted({rel for arm in ARMS[wave].values() for _, rel in arm})
+    if wave == "W3":  # the audit's reference diagram is pinned too
+        files.append(f"{_K}/behavior/quote_flow.puml")
     return {rel: hashlib.sha256((SE / rel).read_bytes()).hexdigest()
-            for rel in files}
+            for rel in sorted(set(files))}
+
+
+def verify_prompt_identity(wave: str) -> list[str]:
+    """Prove each arm's bundle equals the reused W1 baseline bundle
+    with ONLY the declared substitution/addition (pristine labels
+    everywhere). Returns a list of failures; empty = identical."""
+    import stack_ablation as sa
+    base_arm = "A2" if wave == "W3" else "A4"
+    base = sa.bundle_text(base_arm)
+    failures = []
+    for arm, entries in ARMS[wave].items():
+        expected = base
+        for label, rel in entries:
+            pristine = dict((lbl, p) for lbl, p in
+                            (_A2 if wave == "W3" else _A4))
+            if label in pristine and pristine[label] == rel:
+                continue  # unchanged pristine file
+            text = (SE / rel).read_text(encoding="utf-8")
+            if wave == "W3":
+                old = (SE / f"{_K}/behavior/quote_flow.puml").read_text(
+                    encoding="utf-8")
+                expected = expected.replace(
+                    f"--- FILE: behavior/quote_flow.puml ---\n{old}",
+                    f"--- FILE: {label} ---\n{text}")
+            elif label in ("contract/spec.md",
+                           "tests_input/acceptance.feature"):
+                old = (SE / _K / label).read_text(encoding="utf-8")
+                expected = expected.replace(old, text)
+            else:  # W4 additions, appended in bundle order
+                expected = expected + f"\n\n--- FILE: {label} ---\n{text}"
+        if bundle_text(wave, arm) != expected:
+            failures.append(arm)
+    return failures
 
 
 def generate_one(client, wave: str, short: str, arm: str, run_idx: int,
@@ -307,7 +360,11 @@ def analyze(wave: str, runs: list[dict]) -> dict:
             "w1_ladder_pooled": {a: w1_pooled[a]["executed"]
                                  for a in ("A0", "A1", "A2", "A3", "A4")},
             "w1_mean_input_tokens": {s: w1_tokens[s]["mean_input_tokens"]
-                                     for s in GEN_MODELS}}
+                                     for s in GEN_MODELS},
+            "w1_A4_judged_medians": {
+                s: json.loads(W1_ANALYSIS.read_text())
+                ["judged_inventions"][s]["A4"]["median"]
+                for s in GEN_MODELS}}
     return out
 
 
@@ -443,13 +500,17 @@ def main(argv=None) -> int:
           f"{n_gen} judgements; ceiling ${CEILINGS[args.wave]}; "
           f"MAX_CALLS={MAX_CALLS} (live)")
     if args.dry_run:
-        for arm, files in ARMS[args.wave].items():
-            missing = [f for f in files if not (SE / f).exists()]
-            chars = sum(len((SE / f).read_bytes()) for f in files
-                        if (SE / f).exists())
-            print(f"  {arm:20s} files={len(files)} chars={chars}"
+        for arm, entries in ARMS[args.wave].items():
+            missing = [p for _, p in entries if not (SE / p).exists()]
+            chars = sum(len((SE / p).read_bytes()) for _, p in entries
+                        if (SE / p).exists())
+            print(f"  {arm:20s} files={len(entries)} chars={chars}"
                   + (f"  MISSING={missing}" if missing else ""))
-        return 0
+        bad = verify_prompt_identity(args.wave)
+        print("prompt-identity vs reused W1 baseline: "
+              + ("OK — only the declared substitution differs"
+                 if not bad else f"FAILED for {bad}"))
+        return 0 if not bad else 1
     if not (os.environ.get("ANTHROPIC_API_KEY")
             or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
         print("no Anthropic API credentials in the environment")

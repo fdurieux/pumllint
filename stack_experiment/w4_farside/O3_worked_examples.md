@@ -22,7 +22,9 @@ DT-P) and repeats it exactly; the tables remain the authority.
 Reading aids: the heavy surcharge (+316.00 flat) first applies at
 weight 1245 (1244 is surcharge-free); the long-haul multiplier
 (x1.19, applied after the surcharge) first applies at distance
-4912 (4911 is unmultiplied).
+4912 (4911 is unmultiplied). Rounding is DT-P's round(x, 2) with
+float semantics on exact half-cent ties; no graded scenario
+touches a tie cell.
 
 ## Risk-index banding, enumerated (DT-S applied verbatim)
 

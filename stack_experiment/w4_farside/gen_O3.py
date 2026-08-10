@@ -4,8 +4,10 @@ computation, so every enumerated number is correct by construction.
     python stack_experiment/w4_farside/gen_O3.py
 
 Deterministic; overwrites O3_worked_examples.md in place. The three
-asserts at the bottom pin the hand-verifiable anchors (the DT-P
-worked example and the two grading-suite exact prices).
+asserts at the bottom pin the hand-verifiable anchors: the DT-P
+worked example (8652.49), the grading-suite exact price 3186.00, and
+the G1 input-example price 2121.40 (NOT suite-graded — see
+cargo_quote/tests_input/oracle_overlap.md).
 """
 
 from pathlib import Path
@@ -47,7 +49,9 @@ def main() -> None:
         "Reading aids: the heavy surcharge (+316.00 flat) first applies at",
         "weight 1245 (1244 is surcharge-free); the long-haul multiplier",
         "(x1.19, applied after the surcharge) first applies at distance",
-        "4912 (4911 is unmultiplied).",
+        "4912 (4911 is unmultiplied). Rounding is DT-P's round(x, 2) with",
+        "float semantics on exact half-cent ties; no graded scenario",
+        "touches a tie cell.",
         "",
         "## Risk-index banding, enumerated (DT-S applied verbatim)",
         "",

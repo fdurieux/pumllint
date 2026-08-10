@@ -1,8 +1,4 @@
-# Cargo quote — screening and pricing flow (controlled-English rendering)
-
-Same information as the UML sequence diagram, verbalized: flow order,
-all branches and failure paths. Thresholds are symbolic — the numeric
-bounds live only in decision tables DT-V, DT-S and DT-P.
+# Cargo quote — screening and pricing flow
 
 Participants: the Shipper (actor), QuoteAPI (service), TariffEngine
 (engine), ScreeningService (external), NotificationService (external),
@@ -28,7 +24,7 @@ and QuoteStore (database).
    a. If riskIndex <= ACCEPT_MAX (decision table DT-S, row accept):
       QuoteAPI calls TariffEngine.price(weightKg, distanceKm) and
       receives priceAmount; calls QuoteStore.updateQuote(quoteId,
-      statusQuoted, priceAmount); sends
+      statusQuoted, priceAmount) and receives updatedQuote; sends
       NotificationService.sendQuoteDocument(shipperId, quoteId,
       priceAmount) asynchronously; and responds quotedResponse to the
       Shipper.
@@ -37,13 +33,13 @@ and QuoteStore (database).
       (DT-S note 4).
    b. If REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S,
       row review): QuoteAPI calls QuoteStore.updateQuote(quoteId,
-      statusReviewHold) and responds reviewHoldResponse to the
-      Shipper.
+      statusReviewHold), receives updatedQuote, and responds
+      reviewHoldResponse to the Shipper.
       Rule: a review hold is not final — no pricing and no
       notification on this path (DT-S note 1).
    c. If riskIndex >= REFUSE_MIN (decision table DT-S, row refuse):
       QuoteAPI calls QuoteStore.updateQuote(quoteId,
-      statusRefusedScreening); sends
+      statusRefusedScreening) and receives updatedQuote; sends
       NotificationService.sendRefusalNotice(shipperId, quoteId)
       asynchronously; and responds refusedScreeningResponse to the
       Shipper.
@@ -53,7 +49,7 @@ and QuoteStore (database).
       returns screeningUnavailableError; QuoteAPI calls
       TariffEngine.price(weightKg, distanceKm) and receives
       priceAmount; calls QuoteStore.updateQuote(quoteId,
-      statusHeldUnscreened, priceAmount); and responds
-      heldUnscreenedResponse to the Shipper.
+      statusHeldUnscreened, priceAmount) and receives updatedQuote;
+      and responds heldUnscreenedResponse to the Shipper.
       Rule: a screening outage does NOT fail the quote — it is
       priced, stored on hold, and not notified (DT-S note 5).

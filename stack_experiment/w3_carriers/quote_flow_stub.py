@@ -1,23 +1,21 @@
-"""Cargo quote — screening and pricing flow (code-stub rendering).
+"""Cargo quote — screening and pricing flow (code-stub skeleton:
+classes, signatures, and the control flow as comments; bodies are
+`pass`)."""
 
-Same information as the UML sequence diagram, as a skeleton: classes,
-method signatures, and the control flow as comments. NO business logic
-is implemented — bodies are `pass`, and thresholds are symbolic
-(ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, REFUSE_MIN): the numeric bounds
-live only in decision tables DT-V, DT-S and DT-P.
-"""
+# Actor: the Shipper — calls QuoteAPI.request_quote(...); receives
+# every response named below.
 
 
 class TariffEngine:  # engine
     def price(self, weight_kg, distance_km):
-        """Compute priceAmount for a validated request (rules: DT-P)."""
+        """Compute priceAmount for a validated request."""
         pass
 
 
 class ScreeningService:  # external
     def screen(self, shipper_id):
-        """Return riskIndex (integer; higher is worse). May raise
-        ScreeningUnavailableError (service unavailable)."""
+        """Return riskIndex. A screening failure surfaces as
+        screeningUnavailableError (service unavailable)."""
         pass
 
 
@@ -29,59 +27,67 @@ class NotificationService:  # external
         pass
 
     def send_refusal_notice(self, shipper_id, quote_id):
-        """Deliver the refusal notice (refusals ARE notified,
-        DT-S note 2). Fire-and-forget, as above."""
+        """Deliver the refusal notice. Fire-and-forget, as above."""
         pass
 
 
 class QuoteStore:  # database
     def store_draft(self, shipper_id, weight_kg, distance_km,
                     declared_value):
-        """Store the draft; return quoteId. May raise
-        StoreUnavailableError (storage unavailable)."""
+        """Store the draft; return quoteId. A storage failure surfaces
+        as storeUnavailableError (storage unavailable)."""
         pass
 
     def update_quote(self, quote_id, status, price_amount=None):
-        """Update the stored quote's status (and price where priced);
-        return the updated quote."""
+        """Called as updateQuote(quoteId, status) or
+        updateQuote(quoteId, status, priceAmount), exactly as the flow
+        shows; returns updatedQuote."""
         pass
 
 
 class QuoteAPI:  # service — the entry participant
     def request_quote(self, shipper_id, weight_kg, distance_km,
                       declared_value):
-        """Flow, in order (branch conditions symbolic; bounds in DT):
+        """Flow, in order:
 
-        1. Validate the request (bounds: decision table DT-V).
-           If invalid -> respond rejectedInvalidRequest; STOP.
-        2. QuoteStore.store_draft(...) -> quoteId.
-           If storage unavailable -> respond storeUnavailableError;
-           STOP: no screening call, no pricing, no notification
+        1. If the request is valid (bounds: decision table DT-V):
+           QuoteStore.store_draft(...) -> quoteId.
+           Otherwise (validation error, bounds: decision table DT-V)
+           -> respond rejectedInvalidRequest.
+        2. If the draft was stored:
+           ScreeningService.screen(shipper_id) -> riskIndex.
+           On storeDraft failure (storage unavailable) -> respond
+           storeUnavailableError. On storage failure nothing else
+           runs: no screening call, no pricing, no notification
            (DT-S note 3).
-        3. ScreeningService.screen(shipper_id) -> riskIndex.
-           If screening unavailable -> TariffEngine.price(...) ->
-           priceAmount; QuoteStore.update_quote(quoteId,
-           statusHeldUnscreened, priceAmount); respond
-           heldUnscreenedResponse. Screening outage does NOT fail
-           the quote: priced, stored on hold, NOT notified
-           (DT-S note 5).
-        4. Apply the screening decision (decision table DT-S):
+        3. Apply the screening decision (decision table DT-S):
            - riskIndex <= ACCEPT_MAX (row accept):
              TariffEngine.price(weight_kg, distance_km) ->
              priceAmount; QuoteStore.update_quote(quoteId,
-             statusQuoted, priceAmount);
+             statusQuoted, priceAmount) -> updatedQuote;
              NotificationService.send_quote_document(shipper_id,
              quoteId, priceAmount) async; respond quotedResponse.
+             Notification is fire-and-forget: a delivery failure is
+             the provider's retry problem and never changes the
+             response (DT-S note 4).
            - REVIEW_MIN <= riskIndex <= REVIEW_MAX (row review):
-             QuoteStore.update_quote(quoteId, statusReviewHold);
-             respond reviewHoldResponse. Not final: NO pricing, NO
-             notification on this path (DT-S note 1).
+             QuoteStore.update_quote(quoteId, statusReviewHold) ->
+             updatedQuote; respond reviewHoldResponse. Review hold is
+             not final: no pricing and no notification on this path
+             (DT-S note 1).
            - riskIndex >= REFUSE_MIN (row refuse):
              QuoteStore.update_quote(quoteId,
-             statusRefusedScreening);
+             statusRefusedScreening) -> updatedQuote;
              NotificationService.send_refusal_notice(shipper_id,
              quoteId) async; respond refusedScreeningResponse.
              Refusal IS notified; pricing never runs on a refused
              quote (DT-S note 2).
+           - screening failure (service unavailable):
+             TariffEngine.price(weight_kg, distance_km) ->
+             priceAmount; QuoteStore.update_quote(quoteId,
+             statusHeldUnscreened, priceAmount) -> updatedQuote;
+             respond heldUnscreenedResponse. Screening outage does
+             NOT fail the quote: it is priced, stored on hold, and
+             not notified (DT-S note 5).
         """
         pass

@@ -1,24 +1,34 @@
 # Wave pre-registration — W4: dose–response, the far side
 
-*DRAFT for verification, 2026-08-10 — NOT yet frozen. Freeze = the
-commit carrying this file (verified), the driver
-(tools/stack_variants.py) and the far-side file hashes, after the
-adversarial pass is adopted; owner gave the W2–W4 go 2026-08-10.
-Once a scored run exists, editing anything above Results invalidates
-the wave. Template: PREREGISTRATION_TEMPLATE.md.*
+*FROZEN 2026-08-10, before any scored run — the freeze is the commit
+titled "Lab: W2–W4 frozen" carrying this file, the revised driver and
+the revised far-side files. Provenance: draft 2cf7d65
+(findings-before-verdicts); independent adversarial pass against it —
+**11 findings: 3 major, 4 moderate, 3 minor + 1 observation, all
+adopted in this revision** (two of the majors — the O2 dose misstated
+at ~1.7× and the O2 FAQ entries restating notification rules — were
+also self-caught by the author before the pass reported; disclosed
+here). Kit revisions before freeze: the two rule-restating FAQ
+entries replaced with neutral content; gen_O3.py docstring corrected
+and a rounding-tie note added to O3 (regenerated). Owner go for
+W2–W4 given 2026-08-10 (recorded in W2_PREREGISTRATION.md's
+preamble). Editing anything above Results after a scored run
+invalidates the wave. Template: PREREGISTRATION_TEMPLATE.md.*
 
 **Shared frozen base:** as W2's preamble — the W1 models, prompt
 stack-bundle-v2, frozen suite/runner/overlays, shared definitions,
-and W1's carried generation-calibration, by reference to
-W1_PREREGISTRATION.md.
+W1's carried generation-calibration, and the prompt-identity
+mechanism (added files render under neutral kit-plausible labels —
+`operations-appendix.md`, `worked-examples.md` — never experiment
+paths; `--dry-run` proves each arm's prompt equals the reused W1-A4
+prompt plus/with only the declared change — verified OK, all arms).
 
 **Design revisit note (mandated by W1's E1 failure and E8a):** W1
 showed the largest lever on this system is the contract, not
-behavior, and that the two generators disagree on ordering. This W4
-therefore (a) builds every over-specification arm on the FULL A4
-stack — the measured plateau start — rather than on a behavior-max
-rung, (b) locates the knee on the combined W1 + W4 token-indexed
-curve per generator AND pooled, and (c) quotes no
+behavior, and that the generators disagree on ordering. W4 therefore
+(a) builds every over-specification arm on the FULL A4 stack, (b)
+locates knees per generator AND pooled with the per-generator
+readings pre-registered below (finding 5), and (c) quotes no
 single-lever language.
 
 ## Question and decision link (mandatory)
@@ -30,94 +40,148 @@ the dose–response curve?
 
 **Decision links:** completes charter §2 E1's correction with data
 (the far side measured, never assumed monotone); charter §8.2 is the
-named falsifier ("redundancy is harmless or positive" → "minimum"
-retreats to a cost-only argument — pre-committed below); §8.5 is the
-abort criterion (knee not locatable at feasible n); W2-E5's locality
-result is the conflict-side sibling (W4's doses are conflict-free by
-construction — staleness is W2's variable, kept out of W4).
+named falsifier (pre-committed branch below); §8.5 is the abort
+criterion, operationalized below (finding 7); W2-E5's locality
+expectation (scheduled to run before W4 in this program — finding 9)
+is the conflict-side sibling: W4's doses are conflict-free by
+construction.
 
 ## Design (mandatory)
 
-- **Conditions (3; all built on pristine A4):**
+- **Conditions (3; all built on pristine A4; doses re-counted after
+  the FAQ revision — finding 2 corrected):**
 
-  | Arm | Dose | Content |
+  | Arm | Dose (chars vs A4 = 18 052) | Content |
   |---|---|---|
-  | O1-redundant | spec.md → O1_spec.md (~1.12× A4 chars) | every DT number restated accurately in prose, in-sync duplication (the kit's never-restate rule deliberately broken WITHOUT staleness) |
-  | O2-irrelevant | A4 + O2_appendix.md (~1.7× A4 chars) | plausible, on-domain, irrelevant operational material; zero rule collisions (verified: the only numbers belong to a clearly-labeled different product) |
-  | O3-enumeration | A4 + O3_worked_examples.md (~1.16× A4 chars) | exhaustive accurate enumeration derived from DT by script (w4_farside/gen_O3.py — correct by construction, three pinned asserts) |
+  | O1-redundant | 20 281 ≈ **1.12×** | every DT number restated accurately in prose (value-by-value verified by the pass: zero deviations), in-sync duplication without staleness |
+  | O2-irrelevant | 26 159 ≈ **1.45×** | plausible, on-domain, quotation-irrelevant operational material |
+  | O3-enumeration | 21 005 ≈ **1.16×** | exhaustive accurate enumeration derived from DT by script (w4_farside/gen_O3.py; regenerates byte-identically; three pinned asserts; float tie-semantics note in the file header) |
 
-  **Below-knee side: W1 A0..A4, declared reuse** (identical
-  configuration): pooled 0.136 / 0.121 / 0.439 / 0.818 / 0.945.
-  Baseline for all far-side deltas: W1 A4 (pooled 0.945; opus 0.964,
-  haiku 0.927).
+  **O2's verified property (finding 4's correction — the draft's
+  "only numbers belong to the air product" was false as written):**
+  no number or numeric rule in O2 bears on the quotation decision or
+  collides with any DT value (3/19400/25/7150/50/83000/41/42/66/67/
+  0.87/1.13/1244/316/4912/1.19) or any W2 stale value (45, 0.85,
+  1866.00); the only tariff-like rule numbers belong to the
+  explicitly-labeled air product; the remaining figures (fleet
+  counts, SLA classes, retention periods, dock doors) are
+  operational trivia with no quotation-rule content. The two former
+  FAQ entries that accurately restated notification semantics are
+  replaced (finding 3); the one remaining notification mention is
+  brand-template styling, not a decision rule.
+  **Below-knee side: W1 A0..A4, declared reuse:** pooled
+  0.136 / 0.121 / 0.439 / 0.818 / 0.945; per-generator opus A3 1.000
+  → A4 0.964, haiku A3 0.636 → A4 0.927.
 - **Units and n:** 3 arms × 2 generators × 3 runs = 18 scored runs;
-  pooled n = 6 per arm. Driver, storage, guards as W2
-  (results/W4/wave_main/; far-side file sha256 pinned at freeze).
-- **Token axis:** arm mean input tokens (API-reported) minus W1's A0
-  mean, per generator — same accounting as W1, so the combined curve
-  is one axis.
+  pooled n = 6 per arm vs the n = 10 A4 baseline pool — mixed-n
+  comparisons use W1's frozen rate-based definitions; where a tie
+  quantum is needed the larger pool quantum applies (1.5 pp pooled).
+- **Power note (finding 7, disclosed):** with W1's run-level
+  SD ≈ 0.12, a 6-run-pool vs 10-run-pool gap has SE ≈ 6 pp; the 9 pp
+  harm bar is ≈ 1.5 SE — weaker than W1-E5's disclosed 1.7 SE. A
+  within-quantum null is therefore reported as underpowered, never
+  as proof of harmlessness beyond its dose.
+- **Token axis:** arm mean input tokens minus W1's A0 mean, per
+  generator (same accounting as W1; O-bundles are strict supersets
+  of A4, so the axis ordering past A4 is guaranteed).
 
 ## Oracles (mandatory)
 
 As W1 (frozen suite, runner, overlays; judged as judgments;
 gaps/orderings, never absolutes).
+**Oracle-separation declaration (finding 8):** all arms carry the
+pristine acceptance.feature — W1's declared overlap carries
+unchanged. O3 additionally enumerates the DT-V just-invalid values
+(2 / 24 / 49 / 19401 / 7151 / 83001): weight 2 is
+invalid_weight_low's exact probe — that scenario is already
+leakage-exposed (LEAK2, via G2) and its class is unchanged; the other
+bound values are adjacent to (not identical with)
+invalid_value_over's probe (90 000). O3's banding rows and the
+8652.49 cell are already carried by the DT in every arm — no new
+revelation. The VALUE9/LEAK2 partition therefore carries unchanged,
+with O3's enumeration noted as deepening the invalid-bounds
+adjacency.
 
 ## Calibration (mandatory, disclosed)
 
 Inherited from W1 (identical configuration; O-arms enlarge prompts
-~1.1–1.7×, well inside the models' context and the 12000-token
-generation budget). W4-specific $0 checks, already run: O3 derived by
-script with pinned asserts (8652.49 / 3186.00 / 2121.40); O1
-restatement checked value-by-value against DT-V/DT-S/DT-P; O2
-checked for rule collisions (none — the only numeric rules named
-belong to the explicitly-different air product). No scored or
-degraded condition has been executed pre-freeze.
+1.12–1.45×, well inside context and the 12000-token generation
+budget). W4-specific $0 checks, run post-revision: O3 regenerated
+byte-identically by gen_O3.py with the three asserts (8652.49 —
+DT-P's worked example; 3186.00 — suite-graded; 2121.40 — the G1
+input example, NOT suite-graded; finding 10's docstring correction
+applied); O1 verified value-by-value against DT (zero deviations);
+O2 re-hunted for rule collisions after the FAQ revision (none);
+prompt-identity OK for all three arms. No scored or degraded
+condition has been executed pre-freeze.
 
 ## Pre-registered expectations (mandatory)
 
-- **W4-E1 (plateau):** no O-arm exceeds the W1-A4 pooled baseline by
-  ≥ +9 pp.
+- **W4-E1 (plateau; finding 1's re-statement):** no O-arm's pooled
+  rate exceeds the A4 baseline (0.945) by more than one tie quantum
+  (1.5 pp). **Ceiling disclosure:** at this baseline the maximum
+  arithmetically possible exceedance is +5.5 pp pooled (+3.6 opus /
+  +7.3 haiku), so a ≥ 9 pp gain is unreachable — this bar detects
+  ANY gain, and "no more-is-better tail" is claimed only up to the
+  ceiling's limit; gain detection beyond that is out of this wave's
+  reach by construction.
 - **W4-E2 (dilution):** directional: O2 (irrelevant context) is the
   likeliest diluter. Bar: any O-arm ≤ baseline − 9 pp → far-side
   harm measured. If ALL three O-arms sit within ±9 pp →
-  **pre-committed §8.2 branch:** at these doses the far side is
-  outcome-harmless and "minimum sufficiency" retreats to a
+  **pre-committed §8.2 branch:** at these doses (≤ 1.45×) the far
+  side is outcome-harmless and "minimum sufficiency" retreats to a
   cost-only argument — the charter wording is updated accordingly,
-  with the dose limitation (≤ 1.7×) stated.
-- **W4-E3 (knee):** on the combined token-indexed pooled curve
-  (W1 A0→A4 + O-arms), the last increment ≥ 9 pp is A3→A4 — i.e.,
-  **the knee sits at A4** and nothing beyond it is material.
-  Refuted if any O-increment ≥ +9 pp (then W4-E1 also fails) or if
-  A3→A4 no longer stands as material in the combined view.
-- **W4-E4 (judged, exploratory):** no O-arm's judged-invention
-  median per generator is LOWER than A4's by more than 2 (more text
-  is not expected to cut invention; O3's worked examples are the
-  live question — an O3 improvement is a genuine finding for the
-  enumeration idea, quoted as judgment).
+  with the dose limitation stated and the power note carried
+  (underpowered-null wording, not proof of harmlessness).
+- **W4-E3 (knee; finding 5's re-statement — the vacuous clause is
+  dropped):** live content: no O-increment beyond A4 exceeds one
+  tie quantum, AND the per-generator knees land as pre-registered
+  from W1's frozen data — **pooled knee at A4; opus knee at A3**
+  (opus A3 = 1.000, A3→A4 = −3.6 pp); **haiku knee at A4** (haiku
+  A3→A4 = +29.1 pp). Any O-arm materially breaking its generator's
+  pre-registered knee (beyond the quantum) refutes E3 for that
+  generator and the combined-curve reading says so per-generator
+  (W1-E8a discipline).
+- **W4-E4 (judged, exploratory; finding 6's floor disclosure):** no
+  O-arm's judged-invention median per generator is lower than A4's
+  by more than 2. **A4 medians: opus 3, haiku 1 — the bar binds
+  opus only** (a count median cannot go below 0, so haiku cannot
+  fail it; any haiku movement is reported descriptively). An opus
+  O-arm median of 0 breaks it (likeliest O3) → recorded as a
+  judged-only finding for exhaustive enumeration; no executed claim
+  without a dedicated arm.
+- **§8.5 abort, operationalized (finding 7):** the knee claim is
+  aborted — recorded as not-locatable, no hand-wave — iff the two
+  generators' knee identities disagree with their pre-registered
+  values AND the pooled O-arm ordering is not stable under
+  leave-one-run-out re-pooling.
 
 ## Interpretation matrix (mandatory, pre-committed)
 
 | Expectation | Confirmed → | Not confirmed → |
 |---|---|---|
-| W4-E1 | The plateau holds past A4: no more-is-better tail at these doses | An O-arm materially beats the full stack: §8.2-adjacent surprise — the arm named; if O3, the enumeration result feeds the tests-as-input row (dated caveat, no build) |
-| W4-E2 | Dilution measured: E1's correction completed with data — over-specification is a cost AND an outcome risk; the dormant-by-default / rule-count-creep argument (charter §2 E1) gains its measured citation | Far side harmless at these doses: §8.2 branch applied as pre-committed — "minimum" argued on cost alone at ≤1.7× doses, charter reworded, dose limitation stated; higher doses recorded as an open follow-up, not queued |
-| W4-E3 | The knee is at A4 and the W1+W4 curve carries it per generator and pooled — the charter's dose–response answer gains its far side | Knee unstable or displaced: if noise swamps the ±9 pp calls, §8.5's abort criterion applies — record and stop, no hand-wave; if displaced by a material O-gain, the knee moves and the consolidated document says so |
-| W4-E4 | Invention insensitive to dose | An O-arm cuts invention materially (likeliest O3): recorded as a judged-only finding for exhaustive enumeration; no executed claim without a dedicated arm |
+| W4-E1 | The plateau holds past A4 at these doses (up to the disclosed ceiling) | An O-arm shows a detectable gain (> 1 quantum): recorded as a far-side surprise; if O3, it feeds the tests-as-input/enumeration caveat on the charter §6 row (dated; no build) |
+| W4-E2 | Dilution measured: E1's correction completed with data — over-specification is a cost AND an outcome risk; the dormant-by-default / rule-count-creep argument (charter §2 E1) gains its measured citation | Far side harmless at these doses: §8.2 branch applied as pre-committed — cost-only "minimum" at ≤ 1.45× doses, charter reworded with dose + power limitation; higher doses recorded as an open follow-up, not queued |
+| W4-E3 | The knee readings hold per generator and pooled — the charter's dose–response answer gains its far side, quoted per-generator | A generator's knee breaks its pre-registered value: that generator's curve is re-read and reported per-generator; if the §8.5 abort fires, "knee not locatable at feasible n" is recorded and the claim stops there |
+| W4-E4 | Invention insensitive to dose (opus-side claim; haiku descriptive) | An opus O-arm cuts invention to 0 (likeliest O3): judged-only finding for exhaustive enumeration, recorded with the floor disclosure |
 
 ## Budget (mandatory)
 
-Ceiling **$12** (hard, live guard); estimate ≈ $6.5 (18 generations
-at 1.1–1.7× A4 prompt size, of which 9 haiku + 18 judgements at 16k
-over the enlarged specs); MAX_CALLS 120. Costs recorded in Results.
+Ceiling **$12** (hard, live guard); estimate ≈ $4–6.5 (records-based
+actuals scale to ≈ $4 central at 1.12–1.45× input sizes; the $6.5
+figure is kept as the conservative envelope — adversarial finding on
+budget attribution adopted from the W2 pass's sibling). MAX_CALLS 120
+(live). Costs recorded in Results.
 
 ## Carried limitations (mandatory)
 
-As W1, plus: three far-side doses only, all ≤ 1.7× A4 chars —
+As W1, plus: three far-side doses only, all ≤ 1.45× A4 chars —
 industrial-scale over-specification (10×+) is out of this budget's
-reach and any harmless-verdict is dose-bounded; O2's irrelevance is
-hand-curated (adversarially chosen irrelevance is a different, harder
-condition); doses are conflict-free by construction (staleness lives
-in W2).
+reach and any harmless-verdict is dose-bounded AND power-bounded (the
+disclosed ≈ 1.5 SE bar); O2's irrelevance is hand-curated
+(adversarially chosen irrelevance is a different, harder condition);
+doses are conflict-free by construction (staleness lives in W2); E1
+gain detection is ceiling-limited as disclosed.
 
 ## Results ([date], $[cost])
 

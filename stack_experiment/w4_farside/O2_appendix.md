@@ -74,16 +74,17 @@ Template changes go through the quarterly communications review.
 
 ## Frequently asked questions from the quotation desk archive
 
-**Can a held quote be released by phone?** No. A `review_hold`
-outcome is released or refused by the compliance team in the review
-queue; the desk cannot override it.
+**Can the desk expedite a compliance review?** No. Review queue
+priority is set by the compliance team's own triage; the desk can
+add a customer note to the case but cannot reorder the queue.
 
 **Do we quote dangerous goods?** ADR classes are out of scope for
 instant quotation and route to the special-cargo desk.
 
-**Why did a shipper receive no message for a held quote?** By
-design: hold outcomes are not notified. The shipper sees the hold in
-the response; messages go out only for issued quotes and refusals.
+**Why is there no phone number on the quote document?** The
+corporate template routes follow-up through the customer portal so
+that every exchange lands on the quote's case file; the portal
+contact form is the supported channel.
 
 **Is the instant price binding?** Yes, for the validity window
 printed on the quote document; the desk cannot extend the window.
