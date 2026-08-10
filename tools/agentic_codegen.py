@@ -248,19 +248,28 @@ def agentic_one(client, arm: str, short: str, run_idx: int, usage: dict,
                           n=len(vis_rows), failed=len(fails),
                           failures=report)}]
     ok, _err = _compiles(code)
+    # the on-disk artifact is ALWAYS the graded (final) code, even when
+    # a last revision regressed to non-compiling (adversarial finding 6a)
+    art.write_text(code, encoding="utf-8")
     if ok:
-        art.write_text(code, encoding="utf-8")
         execution = run_scenarios(substrate, art, all_scenarios(substrate))
     else:
         execution = [{"scenario": s, "stage": "import_error",
                       "passed": False, "outcome_class": None,
                       "detail": "final artifact does not compile"}
                      for s in all_scenarios(substrate)]
+    # a revision counts as visible-feedback-driven iff some non-final
+    # call had a computed, non-clean visible result (finding 1: compile-
+    # only iterations do NOT count toward G1)
+    def _failed(v):
+        return v is not None and v.split("/")[0] != v.split("/")[1]
+    vis_fb = any(_failed(rec.get("visible")) for rec in iterations[:-1])
     return {"arm": arm, "generator": short, "model": model,
             "run": run_idx, "agentic": agentic, "code": code,
             "code_file": art.name, "compiles": ok,
             "iterations": iterations,
             "model_calls": len(iterations),
+            "visible_feedback_revision": vis_fb,
             "input_tokens_first": in_tok_first,
             "execution": execution}
 
@@ -285,10 +294,12 @@ def judge_one(client, arm: str, code: str, usage: dict,
 
 # ------------------------------------------------------------ analysis
 
-def _subset_rate(runs, arm, names, short=None):
+def _subset_rate(runs, arm, names, short=None, semantic=False):
     rows = [row for r in runs
             if r["arm"] == arm and (short is None or r["generator"] == short)
             for row in r["execution"] if row["scenario"] in names]
+    if semantic:
+        rows = [x for x in rows if x["stage"] not in sa.ADAPTER_STAGES]
     return round(sum(bool(x["passed"]) for x in rows) / len(rows), 4) \
         if rows else None
 
@@ -301,8 +312,15 @@ def analyze(runs: list[dict]) -> dict:
         entry = {
             "substrate": substrate, "agentic": agentic,
             "full": _subset_rate(runs, arm, all_scenarios(substrate)),
+            "full_semantic": _subset_rate(runs, arm,
+                                          all_scenarios(substrate),
+                                          semantic=True),
             "visible": _subset_rate(runs, arm, list(vis)),
             "hidden": _subset_rate(runs, arm, hid),
+            "hidden_semantic": _subset_rate(runs, arm, hid, semantic=True),
+            "visible_feedback_revisions": sum(
+                1 for r in runs if r["arm"] == arm
+                and r.get("visible_feedback_revision")),
             "per_generator": {
                 s: {"full": _subset_rate(runs, arm,
                                          all_scenarios(substrate), s),
@@ -366,6 +384,11 @@ def run_wave(prior: float) -> int:
     hashes = {p: hashlib.sha256((SE / p).read_bytes()).hexdigest()
               for _a, (_s, _g, _ag, src) in ARMS.items()
               if isinstance(src, list) for _lbl, p in src}
+    for rung in ("R0", "R3"):  # anchor the c4 inputs too (finding 8a)
+        for p in sorted((REPO_ROOT / "c4_experiment" / rung).iterdir()):
+            if p.suffix in (".puml", ".md"):
+                hashes[f"c4_experiment/{rung}/{p.name}"] = \
+                    hashlib.sha256(p.read_bytes()).hexdigest()
     report = {
         "phase": "W5/wave_main",
         "pre_registration": "stack_experiment/W5_PREREGISTRATION.md",
@@ -403,7 +426,8 @@ def rejudge(prior: float) -> int:
     report = json.loads((out_dir / "report.json").read_text())
     usage: dict = report.get("usage", {})
     todo = [r for r in report["runs"]
-            if r.get("compiles") and r.get("judge") is None]
+            if r.get("compiles") and r.get("judge") is None
+            and (out_dir / r["code_file"]).exists()]
     print(f"re-judging {len(todo)}")
     with ThreadPoolExecutor(max_workers=6) as pool:
         futs = {pool.submit(
