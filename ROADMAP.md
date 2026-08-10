@@ -817,3 +817,11 @@ list and license posture live in § Settled questions.
   modelling-standard owner confirming an obligation table →
   obligation/flow Phases 2–4 — in which case build the remaining Arc F
   safeguards first (see Arc F's trigger note).
+- **Research track (accepted 2026-08-10): docs/research-charter.md is
+  the source of truth for the measurement-wave program.** W0 shipped
+  with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take
+  their own owner go with a frozen pre-registration and per-wave
+  ceiling; W6/W7 keep their prior triggers above. The charter changes
+  no product behavior and queues no build; it is revised in place,
+  dated, as waves land. Acceptance was de facto at the 2026-08-06
+  merges (PRs #18/#19); recorded here per charter §10.

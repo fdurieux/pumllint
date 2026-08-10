@@ -103,6 +103,15 @@ but they are a useful cross-check that no audience was forgotten.
   shipped architecture, the ambitions fail on oracles or invert the
   linter's job, and the one keeper (a glossary/approved-term rule) is
   recorded with its adopter trigger.
+- [Research charter: the minimum sufficient specification stack](research-charter.md)
+  — dated reframing record (2026-08-06): the research objective
+  ("maximise end-to-end effectiveness") reframed to what can be
+  measured and falsified — minimum sufficient information per
+  lifecycle hop, carriers at fixed information, gates as risk policy —
+  with the wave program (W0–W7), per-wave gates and ceilings, five
+  named falsifiers, and the adversarial verification record (17
+  findings, all adopted). W0's measurement kits shipped with it
+  (`stack_experiment/`).
 - [The SDD + generation-manifest recommendation, evaluated](sdd-manifest-evaluation.md)
   — dated fit note (2026-08-10): an external recommendation pairing
   spec-driven development (PlantUML requirements as inputs) with a

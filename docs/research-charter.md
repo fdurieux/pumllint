@@ -12,8 +12,8 @@ recommendations: it received an adversarial verification pass before
 acceptance (§9 — 17 findings, all adopted in this revision), and no
 wave runs from this charter alone — every wave freezes its own
 pre-registration and interpretation matrix before any scored run.
-Status: verified revision, for owner review on the research-planning
-branch.*
+Status: verified revision, accepted (owner go on W0); acceptance
+recorded 2026-08-10 — see ROADMAP § Working agreements.*
 
 ## 1. The objective as posed
 
