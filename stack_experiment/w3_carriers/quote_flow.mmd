@@ -1,0 +1,61 @@
+sequenceDiagram
+  %% Cargo quote — screening and pricing flow (Mermaid rendering).
+  %% Same information as the UML sequence diagram: flow order, all
+  %% branches and failure paths; thresholds are symbolic — numeric
+  %% bounds live only in decision tables DT-V/DT-S/DT-P.
+  actor Shipper
+  participant QuoteAPI as QuoteAPI «service»
+  participant TariffEngine as TariffEngine «engine»
+  participant ScreeningService as ScreeningService «external»
+  participant NotificationService as NotificationService «external»
+  participant QuoteStore as QuoteStore «database»
+
+  Shipper->>QuoteAPI: requestQuote(shipperId, weightKg, distanceKm, declaredValue)
+  activate QuoteAPI
+
+  alt request valid (bounds: decision table DT-V)
+    QuoteAPI->>QuoteStore: storeDraft(shipperId, weightKg, distanceKm, declaredValue)
+    QuoteStore-->>QuoteAPI: quoteId
+  else request invalid (validation error, bounds: decision table DT-V)
+    QuoteAPI-->>Shipper: rejectedInvalidRequest
+  end
+
+  alt draft stored
+    QuoteAPI->>ScreeningService: screen(shipperId)
+    ScreeningService-->>QuoteAPI: riskIndex
+  else storeDraft failure (storage unavailable)
+    QuoteStore-->>QuoteAPI: storeUnavailableError
+    QuoteAPI-->>Shipper: storeUnavailableError
+    Note right of QuoteAPI: On storage failure nothing else runs:<br/>no screening call, no pricing, no notification (DT-S note 3).
+  end
+
+  alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+    QuoteAPI->>TariffEngine: price(weightKg, distanceKm)
+    TariffEngine-->>QuoteAPI: priceAmount
+    QuoteAPI->>QuoteStore: updateQuote(quoteId, statusQuoted, priceAmount)
+    QuoteStore-->>QuoteAPI: updatedQuote
+    QuoteAPI-)NotificationService: sendQuoteDocument(shipperId, quoteId, priceAmount)
+    QuoteAPI-->>Shipper: quotedResponse
+    Note right of QuoteAPI: Notification is fire-and-forget: a delivery failure is the<br/>provider's retry problem and never changes the response (DT-S note 4).
+  else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+    QuoteAPI->>QuoteStore: updateQuote(quoteId, statusReviewHold)
+    QuoteStore-->>QuoteAPI: updatedQuote
+    QuoteAPI-->>Shipper: reviewHoldResponse
+    Note right of QuoteAPI: Review hold is not final: no pricing and<br/>no notification on this path (DT-S note 1).
+  else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+    QuoteAPI->>QuoteStore: updateQuote(quoteId, statusRefusedScreening)
+    QuoteStore-->>QuoteAPI: updatedQuote
+    QuoteAPI-)NotificationService: sendRefusalNotice(shipperId, quoteId)
+    QuoteAPI-->>Shipper: refusedScreeningResponse
+    Note right of QuoteAPI: Refusal IS notified; pricing never runs<br/>on a refused quote (DT-S note 2).
+  else screening failure (service unavailable)
+    ScreeningService-->>QuoteAPI: screeningUnavailableError
+    QuoteAPI->>TariffEngine: price(weightKg, distanceKm)
+    TariffEngine-->>QuoteAPI: priceAmount
+    QuoteAPI->>QuoteStore: updateQuote(quoteId, statusHeldUnscreened, priceAmount)
+    QuoteStore-->>QuoteAPI: updatedQuote
+    QuoteAPI-->>Shipper: heldUnscreenedResponse
+    Note right of QuoteAPI: Screening outage does NOT fail the quote: it is priced,<br/>stored on hold, and not notified (DT-S note 5).
+  end
+
+  deactivate QuoteAPI

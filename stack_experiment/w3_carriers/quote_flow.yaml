@@ -1,0 +1,88 @@
+# Cargo quote — screening and pricing flow (structured YAML rendering).
+# Same information as the UML sequence diagram: participants, flow
+# order, all branches and failure paths; thresholds are symbolic —
+# numeric bounds live only in decision tables DT-V/DT-S/DT-P.
+flow: cargo-quote-screening-and-pricing
+participants:
+  - {name: Shipper, kind: actor}
+  - {name: QuoteAPI, kind: service}
+  - {name: TariffEngine, kind: engine}
+  - {name: ScreeningService, kind: external}
+  - {name: NotificationService, kind: external}
+  - {name: QuoteStore, kind: database}
+
+entry:
+  from: Shipper
+  to: QuoteAPI
+  call: requestQuote
+  args: [shipperId, weightKg, distanceKm, declaredValue]
+
+steps:
+  - branch: request validation
+    cases:
+      - when: "request valid (bounds: decision table DT-V)"
+        do:
+          - {from: QuoteAPI, to: QuoteStore, call: storeDraft,
+             args: [shipperId, weightKg, distanceKm, declaredValue],
+             returns: quoteId}
+      - when: "request invalid (validation error, bounds: decision table DT-V)"
+        do:
+          - {from: QuoteAPI, to: Shipper, respond: rejectedInvalidRequest,
+             terminal: true}
+
+  - branch: draft storage
+    cases:
+      - when: draft stored
+        do:
+          - {from: QuoteAPI, to: ScreeningService, call: screen,
+             args: [shipperId], returns: riskIndex}
+      - when: storeDraft failure (storage unavailable)
+        rule: "On storage failure nothing else runs: no screening call,
+          no pricing, no notification (DT-S note 3)."
+        do:
+          - {from: QuoteStore, to: QuoteAPI, returns: storeUnavailableError}
+          - {from: QuoteAPI, to: Shipper, respond: storeUnavailableError,
+             terminal: true}
+
+  - branch: "screening decision (decision table DT-S)"
+    cases:
+      - when: "riskIndex <= ACCEPT_MAX (row accept)"
+        do:
+          - {from: QuoteAPI, to: TariffEngine, call: price,
+             args: [weightKg, distanceKm], returns: priceAmount}
+          - {from: QuoteAPI, to: QuoteStore, call: updateQuote,
+             args: [quoteId, statusQuoted, priceAmount], returns: updatedQuote}
+          - {from: QuoteAPI, to: NotificationService, call: sendQuoteDocument,
+             args: [shipperId, quoteId, priceAmount], async: true}
+          - {from: QuoteAPI, to: Shipper, respond: quotedResponse}
+        rule: "Notification is fire-and-forget: a delivery failure is the
+          provider's retry problem and never changes the response
+          (DT-S note 4)."
+      - when: "REVIEW_MIN <= riskIndex <= REVIEW_MAX (row review)"
+        rule: "Review hold is not final: no pricing and no notification on
+          this path (DT-S note 1)."
+        do:
+          - {from: QuoteAPI, to: QuoteStore, call: updateQuote,
+             args: [quoteId, statusReviewHold], returns: updatedQuote}
+          - {from: QuoteAPI, to: Shipper, respond: reviewHoldResponse}
+      - when: "riskIndex >= REFUSE_MIN (row refuse)"
+        rule: "Refusal IS notified; pricing never runs on a refused quote
+          (DT-S note 2)."
+        do:
+          - {from: QuoteAPI, to: QuoteStore, call: updateQuote,
+             args: [quoteId, statusRefusedScreening], returns: updatedQuote}
+          - {from: QuoteAPI, to: NotificationService, call: sendRefusalNotice,
+             args: [shipperId, quoteId], async: true}
+          - {from: QuoteAPI, to: Shipper, respond: refusedScreeningResponse}
+      - when: screening failure (service unavailable)
+        rule: "Screening outage does NOT fail the quote: it is priced,
+          stored on hold, and not notified (DT-S note 5)."
+        do:
+          - {from: ScreeningService, to: QuoteAPI,
+             returns: screeningUnavailableError}
+          - {from: QuoteAPI, to: TariffEngine, call: price,
+             args: [weightKg, distanceKm], returns: priceAmount}
+          - {from: QuoteAPI, to: QuoteStore, call: updateQuote,
+             args: [quoteId, statusHeldUnscreened, priceAmount],
+             returns: updatedQuote}
+          - {from: QuoteAPI, to: Shipper, respond: heldUnscreenedResponse}
