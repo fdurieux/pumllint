@@ -35,6 +35,13 @@ doc-hygiene candidates and two wave candidates are recorded below;
 nothing is queued; no product behavior changes.** Source retained by
 the owner; not linked here.*
 
+*Dated update, 2026-08-11, added at commit: hours after this
+evaluation was written, W5 ran — frozen, adversarially passed,
+results in stack_experiment/W5_PREREGISTRATION.md § Results. The
+stage-2 grading's "untested keystone" statements are historical as
+written; they carry their dated note in place under the §16 grading
+below.*
+
 ## Why this evaluation ran
 
 Same rule as every externally authored assessment in this territory
@@ -335,6 +342,25 @@ row currently captures it"). The pipeline runs fully automated from
 enterprise knowledge to code; its only stop-for-humans path is the
 conflict hard stop (§2) — but the measured recovery mechanism for
 *underspecification* is asking, not verifying, and no box carries it.
+
+*Dated update, 2026-08-11 (same day, added at commit): W5 has now
+run — frozen after its adversarial pass (2 major, 6 minor findings
+adopted), $7.95 of the $40 ceiling; record:
+stack_experiment/W5_PREREGISTRATION.md § Results. The keystone held.
+The cliff survived agency (agentic hidden-subset gaps +31.3 pp
+sequence, +46.7 pp C4 — §8.4 did not fire), the contract lever
+survived (+54.2 pp hidden), compensation was strictly visible-bounded
+(R0: visible +22.2 pp to the ceiling, hidden exactly 0.0), and
+below-cliff artifacts were not repaired by iteration at k ≤ 2
+(+0.0 pp — the gate-first posture strengthens). Standing claim
+language program-wide now reads "single-shot and k ≤ 2 agentic". For
+the table above: the coding-agent row is superseded as written, in
+the direction favorable to the review's architecture — iteration
+fixed only what the visible tests covered, so the upstream artifact
+and gate stages keep the weight the §16 diagram assigns them, now on
+a measured basis rather than ahead of one. The consolidated record
+(docs/minimum-sufficient-stack.md) carries the program-wide
+synthesis.*
 
 **The closing "conceptual lesson", graded.** Stage 2 ends: "The
 problem is not maximizing documentation. It is minimizing the amount

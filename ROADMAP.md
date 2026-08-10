@@ -788,7 +788,11 @@ list and license posture live in § Settled questions.
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already
-  records.
+  records. *Dated update, same day: W5 ran hours later — the cliff
+  survived agency (§8.4 did not fire), compensation was
+  visible-bounded, below-cliff artifacts unrepaired at k ≤ 2; the
+  evaluation's "untested keystone" grading carries its dated note in
+  place (record: stack_experiment/W5_PREREGISTRATION.md § Results).*
 
 ## Working agreements (read before picking anything up)
 
