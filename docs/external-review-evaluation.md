@@ -420,7 +420,9 @@ behavior:**
    the name and fix the sentences that misdescribe it (cheap, but
    preserves the tension the reviewer tripped over). Minimum honest
    fix either way: agents.md's "deliberately not called" sentence must
-   stop being false.
+   stop being false. *Decided 2026-08-11 (owner): Option A, name
+   "Method-complete", at the next release — decision recorded in the
+   ROADMAP § Settled questions entry.*
 2. **State EVIDENCE.md's boundary.** One scope paragraph: EVIDENCE.md
    is the sequence-maturity product-evidence record; the stack
    programme's primary records are the wave pre-registrations'

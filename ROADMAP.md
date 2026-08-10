@@ -793,6 +793,13 @@ list and license posture live in § Settled questions.
   visible-bounded, below-cliff artifacts unrepaired at k ≤ 2; the
   evaluation's "untested keystone" grading carries its dated note in
   place (record: stack_experiment/W5_PREREGISTRATION.md § Results).*
+  *Decision (2026-08-11, owner): Option A — Level 5 renames to
+  "Method-complete" at the next release. An output-contract change,
+  carried with full release-note prominence: schema enum
+  (score.schema.json), scoring.py, tests + BDD feature, docs sweep,
+  regenerated pilot artifacts; the agents.md "deliberately not
+  called" sentence correction folds in. The EVIDENCE-scope and
+  case-for candidates remain recorded, undecided.*
 
 ## Working agreements (read before picking anything up)
 
