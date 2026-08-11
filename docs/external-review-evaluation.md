@@ -440,6 +440,10 @@ behavior:**
    tools; an optional precision ("the quality checks those tools
    themselves provide") would close the reading the reviewer
    demonstrated.
+   *Executed 2026-08-11 (owner ask): both edits are in — the problem
+   statement now reads "no automated check we could find", pointing
+   at the survey section and its honesty note, and the SDD sentence
+   carries the "those tools themselves provide" precision.*
 
 **Wave candidates, recorded under charter discipline (own
 pre-registration, ceiling and go if ever queued):** W3b — carrier ×

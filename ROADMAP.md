@@ -806,6 +806,13 @@ list and license posture live in § Settled questions.
   docs/minimum-sufficient-stack.md (shipped since the candidate was
   recorded, so the note is a pointer, not a placeholder). The
   case-for candidate remains recorded, undecided.*
+  *Executed (2026-08-11, owner ask): the case-for problem statement
+  is tightened — "no automated check we could find", pointing at the
+  survey section and its honesty note; the SDD-checks sentence gains
+  the "those tools themselves provide" precision. With this, all
+  three doc-hygiene candidates from the review are closed or decided
+  (L5 rename: decided, next release; EVIDENCE scope note: in;
+  case-for: tightened).*
 
 ## Working agreements (read before picking anything up)
 

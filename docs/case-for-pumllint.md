@@ -27,7 +27,9 @@ tool: it checks whether a diagram can be *drawn*, not whether it makes
 - the same service called `OrderService` (a service) in one diagram and
   `orderService` (a gateway) in another.
 
-No automated check catches any of these today. Each one costs you later:
+No automated check we could find catches any of these today (the
+survey and its limits: "What else is out there", below). Each one
+costs you later:
 review time spent decoding intent, wrong assumptions propagating into
 implementations, and — if the diagrams feed an AI coding assistant —
 invented behaviour filling the gaps.
@@ -181,7 +183,7 @@ Short answer: for this specific job, nothing we could find.
   2025–26 wave of "spec-driven development" tools (GitHub Spec Kit, AWS
   Kiro and others) is built on the idea that AI implements what a written
   specification says — which makes the quality of the specification the
-  bottleneck. The quality checks those tools offer are themselves
+  bottleneck. The quality checks those tools themselves provide are
   AI-generated opinions: a different answer every run, so they cannot
   serve as a pass/fail gate. pumllint's score is deterministic — the same
   diagrams get the same score, every time — which is what makes it usable
