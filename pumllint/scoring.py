@@ -51,14 +51,14 @@ LEVEL_NAMES: dict[int, str] = {
     2: "Structured",
     3: "Disciplined",
     4: "Precise",
-    5: "Generation-ready",
+    5: "Method-complete",
 }
 
 # Dimensions gated at Level 4 (must each clear ``l4_dim_min``).
 L4_GATED_DIMENSIONS = (Dimension.COMPLETENESS, Dimension.AMBIGUITY)
 
 # Severities that block Level 5 ("zero major" read as "no finding >= major", so
-# CRITICAL — e.g. an unterminated block — also blocks generation-ready).
+# CRITICAL — e.g. an unterminated block — also blocks Method-complete).
 # Derived from the canonical ladder in model.py, never re-encoded.
 _MAJOR_OR_WORSE = SEVERITY_ORDER[SEVERITY_ORDER.index(Severity.MAJOR):]
 

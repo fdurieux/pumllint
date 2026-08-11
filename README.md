@@ -77,7 +77,7 @@ re-score loop for AI agents implementing from diagrams).
 ## Maturity scoring
 
 `pumllint score` aggregates rule findings into a **360° maturity level** per
-diagram — from 1 (*Sketchy*) to 5 (*Generation-ready*) — plus a prescriptive
+diagram — from 1 (*Sketchy*) to 5 (*Method-complete*) — plus a prescriptive
 gap report listing exactly which findings block the next level:
 
 ```text
@@ -166,7 +166,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.26.0
+  uses: fdurieux/pumllint@v0.27.0
   with:
     command: score
     paths: docs/diagrams
@@ -532,11 +532,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.26.0
+  uses: fdurieux/pumllint@v0.27.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.26.0
+  uses: fdurieux/pumllint@v0.27.0
   with:
     command: score
     paths: docs/diagrams
@@ -577,7 +577,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.26.0
+    rev: v0.27.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

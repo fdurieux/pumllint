@@ -74,7 +74,7 @@ Feature: Maturity level assignment
 
   # --- Level 5 ---
 
-  Scenario: Fully disciplined model reaches Generation-ready
+  Scenario: Fully disciplined model reaches Method-complete
     Given a syntactically valid diagram with composite score 91
     And the codegen profile is active
     And every dimension score is at least 80
@@ -83,7 +83,7 @@ Feature: Maturity level assignment
     When the scoring reporter runs
     Then the maturity level is 5
 
-  Scenario: A single major finding blocks Generation-ready
+  Scenario: A single major finding blocks Method-complete
     Given a syntactically valid diagram with composite score 94
     And the codegen profile is active
     And every dimension score is at least 80
@@ -112,7 +112,7 @@ Feature: Maturity level assignment
     Then the maturity level is 3
     And the gap report states Level 4 requires at least 3 elements
 
-  Scenario: Generation-ready requires the codegen profile
+  Scenario: Method-complete requires the codegen profile
     Given a clean sequence diagram scored without the codegen profile
     And the diagram would otherwise reach Level 5
     When the scoring reporter runs

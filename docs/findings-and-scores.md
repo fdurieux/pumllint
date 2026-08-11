@@ -41,7 +41,7 @@ the one-line summary table is in the [README](../README.md#rules).
 | 2 | Structured | Syntactically sound and minimally coherent. A starting point. |
 | 3 | Disciplined | No blockers; house conventions largely followed. Reviewable. |
 | 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). Implementable by a human without guessing. |
-| 5 | Generation-ready | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
+| 5 | Method-complete | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
 
 Behind the composite score are seven dimensions (completeness, ambiguity,
 consistency, traceability, readability, semantic correctness, plus the

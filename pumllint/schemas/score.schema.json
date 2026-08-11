@@ -34,7 +34,7 @@
       "maximum": 5
     },
     "levelName": {
-      "enum": ["Sketchy", "Structured", "Disciplined", "Precise", "Generation-ready"]
+      "enum": ["Sketchy", "Structured", "Disciplined", "Precise", "Method-complete"]
     },
     "score": {
       "type": "number",

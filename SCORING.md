@@ -40,7 +40,7 @@ tail thresholds, so both keep 0.05 composite weight apiece; the difference
 stays with DIM-CMP/DIM-AMB, the dimensions that carry the
 generation-readiness thesis. Note the per-dimension **gates** (Level 4/5
 thresholds, cap C3) apply to low-weight dimensions undiminished — a missing
-title still blocks Generation-ready, and the gap report says exactly that.
+title still blocks Method-complete, and the gap report says exactly that.
 
 DIM-SYN is a **gate**, not a weighted dimension: if syntax fails, the diagram is Level 1
 and no further scoring is reported.
@@ -108,10 +108,10 @@ than a stub; empty diagrams weigh 1 so they still register.
 | 2     | Structured       | Syntax passes and composite ≥ 40                                          |
 | 3     | Disciplined      | Composite ≥ 60 **and** zero blocker findings                              |
 | 4     | Precise          | Composite ≥ 75, zero blockers, DIM-CMP ≥ 70 **and** DIM-AMB ≥ 70          |
-| 5     | Generation-ready | Composite ≥ 90, every dimension ≥ 80, zero blocker **and** zero major     |
+| 5     | Method-complete  | Composite ≥ 90, every dimension ≥ 80, zero blocker **and** zero major     |
 
 "Zero major" is read as **no finding at major severity or worse** (major,
-critical, blocker) — a critical structural error also blocks generation-ready.
+critical, blocker) — a critical structural error also blocks Method-complete.
 
 **Caps (anti-gaming rules):**
 
@@ -125,7 +125,7 @@ critical, blocker) — a critical structural error also blocks generation-ready.
 - C6: Fewer than `l4_min_elements` elements (default **3**) caps the level at
   **3** — "Precise" requires enough content to be precise about.
 - C7: Level **5** requires the profile named by `l5_requires_profile` (default
-  **codegen**) to be active — the generation-ready claim is bound to the rule
+  **codegen**) to be active — the Method-complete claim is bound to the rule
   pack that gives it substance. Set to `null` to disable.
 
 All thresholds, weights, and caps are configurable under the `scoring:` key
@@ -287,7 +287,7 @@ Feature: Maturity level assignment
 
   # --- Level 5 ---
 
-  Scenario: Fully disciplined model reaches Generation-ready
+  Scenario: Fully disciplined model reaches Method-complete
     Given a syntactically valid diagram with composite score 91
     And the codegen profile is active
     And every dimension score is at least 80
@@ -296,7 +296,7 @@ Feature: Maturity level assignment
     When the scoring reporter runs
     Then the maturity level is 5
 
-  Scenario: A single major finding blocks Generation-ready
+  Scenario: A single major finding blocks Method-complete
     Given a syntactically valid diagram with composite score 94
     And the codegen profile is active
     And every dimension score is at least 80
@@ -325,7 +325,7 @@ Feature: Maturity level assignment
     Then the maturity level is 3
     And the gap report states Level 4 requires at least 3 elements
 
-  Scenario: Generation-ready requires the codegen profile
+  Scenario: Method-complete requires the codegen profile
     Given a clean sequence diagram scored without the codegen profile
     And the diagram would otherwise reach Level 5
     When the scoring reporter runs
@@ -425,7 +425,8 @@ composite ~40 and collapses (~49/100, with invented business logic roughly
 doubling) below it; and same-model self-judging inflates fidelity by ~15
 points, so independent judging is mandatory in any rerun.
 
-**Claim language (settled):** Level 5 is described as *"method-convention
+**Claim language (settled):** Level 5 — named **Method-complete** since
+v0.27.0 — is described as *"method-convention
 complete — the diagram-side preconditions for faithful generation"*, not
 "guaranteed generation-ready": even pristine L5 diagrams average ~72/100
 fidelity under a strict independent judge, because a sequence diagram

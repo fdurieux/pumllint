@@ -18,7 +18,7 @@ importantly, increasingly *read by AI*: you hand the diagram to an AI
 coding assistant and it writes the program the diagram describes.
 **pumllint** is a quality checker for those diagrams — like a spelling
 and grammar checker, but for diagrams — and it grades every diagram on a
-maturity scale from Level 1 (*sketchy*) to Level 5 (*generation-ready*).
+maturity scale from Level 1 (*sketchy*) to Level 5 (*method-complete*).
 The product's central claim is: **the better the diagram, the better the
 AI-written code — and below Level 2, code quality falls off a cliff.**
 Release 0.22.0 changed nothing about how the tool works. It is an

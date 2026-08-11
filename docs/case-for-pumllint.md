@@ -47,7 +47,7 @@ diagrams:
   **AI-readiness pack** (is this diagram precise enough to implement
   without guessing?).
 - A **maturity score**: every diagram is graded Level 1 (*Sketchy*) to
-  Level 5 (*Generation-ready*) across seven dimensions (completeness,
+  Level 5 (*Method-complete*) across seven dimensions (completeness,
   ambiguity, consistency, traceability, …), with a gap report that lists
   exactly which findings block the next level. The set of diagrams is
   scored by its **worst** member — a model is only as trustworthy as its

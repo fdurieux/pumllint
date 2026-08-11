@@ -110,8 +110,9 @@ reviewer downstream.
 Level thresholds worth knowing: **Level 2** is the evidence-backed
 floor (the cliff sits below it); **Level 5** means *method-convention
 complete* — the diagram-side preconditions for faithful generation are
-met. It is deliberately not called "generation-ready": a sequence
-diagram underdetermines an implementation even at Level 5.
+met. Since v0.27.0 the level is named **Method-complete** —
+deliberately not "generation-ready": a sequence diagram
+underdetermines an implementation even at Level 5.
 
 ## When you author diagrams
 

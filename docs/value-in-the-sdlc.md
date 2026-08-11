@@ -67,7 +67,7 @@ becomes a second, phantom component), ambiguity (a decision branch
 labelled "sometimes"), and inconsistency (the same service described
 differently in two diagrams). On top of the checks sits the maturity
 score: every diagram graded Level 1 (*Sketchy*) to Level 5
-(*Generation-ready*), with a gap report listing exactly what to fix to
+(*Method-complete*), with a gap report listing exactly what to fix to
 reach the next level. Enforcement fits existing reality: a minimum level
 can be required for new work, while existing diagrams are covered by a
 **ratchet** — today's state is accepted as the baseline, and the

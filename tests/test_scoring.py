@@ -137,7 +137,7 @@ def test_fully_disciplined_model_reaches_generation_ready():
         91, _all(80), has_blocker=False, has_major_or_worse=False,
         syntax_ok=True, cfg=_CFG, active_profile="codegen",
     )
-    assert (level, name) == (5, "Generation-ready")
+    assert (level, name) == (5, "Method-complete")
 
 
 def test_a_single_major_finding_blocks_generation_ready():
