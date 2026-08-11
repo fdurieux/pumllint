@@ -1,0 +1,1929 @@
+{
+  "pooled": {
+    "A2": {
+      "slots": 66,
+      "executed": 0.4091,
+      "semantic": 0.4091,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          1,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          1,
+          6
+        ],
+        "refuse_high_risk": [
+          6,
+          6
+        ],
+        "review_boundary_42": [
+          5,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          5,
+          6
+        ]
+      }
+    },
+    "A3": {
+      "slots": 66,
+      "executed": 0.697,
+      "semantic": 0.697,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          4,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          5,
+          6
+        ],
+        "price_exact_heavy": [
+          5,
+          6
+        ],
+        "quoted_low_risk": [
+          4,
+          6
+        ],
+        "refuse_boundary_67": [
+          4,
+          6
+        ],
+        "refuse_high_risk": [
+          4,
+          6
+        ],
+        "review_boundary_42": [
+          4,
+          6
+        ],
+        "screening_down_hold": [
+          2,
+          6
+        ],
+        "store_down_error": [
+          2,
+          6
+        ]
+      }
+    },
+    "C+spec": {
+      "slots": 66,
+      "executed": 0.3485,
+      "semantic": 0.3485,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          1,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          0,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          4,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          4,
+          6
+        ]
+      }
+    },
+    "C+dt": {
+      "slots": 66,
+      "executed": 0.8182,
+      "semantic": 0.8182,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          5,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          6,
+          6
+        ],
+        "price_exact_heavy": [
+          6,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          5,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          5,
+          6
+        ],
+        "screening_down_hold": [
+          3,
+          6
+        ],
+        "store_down_error": [
+          2,
+          6
+        ]
+      }
+    },
+    "C+api": {
+      "slots": 66,
+      "executed": 0.5758,
+      "semantic": 0.5758,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          6,
+          6
+        ],
+        "review_boundary_42": [
+          6,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          5,
+          6
+        ]
+      }
+    },
+    "C+states": {
+      "slots": 66,
+      "executed": 0.3333,
+      "semantic": 0.3333,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          0,
+          6
+        ],
+        "invalid_weight_low": [
+          0,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          5,
+          6
+        ],
+        "screening_down_hold": [
+          3,
+          6
+        ],
+        "store_down_error": [
+          4,
+          6
+        ]
+      }
+    },
+    "C-spec": {
+      "slots": 66,
+      "executed": 0.803,
+      "semantic": 0.803,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          4,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          5,
+          6
+        ],
+        "price_exact_heavy": [
+          5,
+          6
+        ],
+        "quoted_low_risk": [
+          4,
+          6
+        ],
+        "refuse_boundary_67": [
+          4,
+          6
+        ],
+        "refuse_high_risk": [
+          4,
+          6
+        ],
+        "review_boundary_42": [
+          4,
+          6
+        ],
+        "screening_down_hold": [
+          5,
+          6
+        ],
+        "store_down_error": [
+          6,
+          6
+        ]
+      }
+    },
+    "C-dt": {
+      "slots": 66,
+      "executed": 0.5758,
+      "semantic": 0.5758,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          0,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          0,
+          6
+        ],
+        "price_exact_heavy": [
+          0,
+          6
+        ],
+        "quoted_low_risk": [
+          6,
+          6
+        ],
+        "refuse_boundary_67": [
+          0,
+          6
+        ],
+        "refuse_high_risk": [
+          6,
+          6
+        ],
+        "review_boundary_42": [
+          6,
+          6
+        ],
+        "screening_down_hold": [
+          4,
+          6
+        ],
+        "store_down_error": [
+          4,
+          6
+        ]
+      }
+    },
+    "C-api": {
+      "slots": 66,
+      "executed": 0.8182,
+      "semantic": 0.8182,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          5,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          5,
+          6
+        ],
+        "price_exact_heavy": [
+          5,
+          6
+        ],
+        "quoted_low_risk": [
+          5,
+          6
+        ],
+        "refuse_boundary_67": [
+          5,
+          6
+        ],
+        "refuse_high_risk": [
+          5,
+          6
+        ],
+        "review_boundary_42": [
+          5,
+          6
+        ],
+        "screening_down_hold": [
+          3,
+          6
+        ],
+        "store_down_error": [
+          4,
+          6
+        ]
+      }
+    },
+    "C-states": {
+      "slots": 66,
+      "executed": 0.9091,
+      "semantic": 0.9091,
+      "scenario_pass": {
+        "accept_boundary_41": [
+          6,
+          6
+        ],
+        "invalid_value_over": [
+          6,
+          6
+        ],
+        "invalid_weight_low": [
+          6,
+          6
+        ],
+        "price_exact_both": [
+          6,
+          6
+        ],
+        "price_exact_heavy": [
+          6,
+          6
+        ],
+        "quoted_low_risk": [
+          6,
+          6
+        ],
+        "refuse_boundary_67": [
+          6,
+          6
+        ],
+        "refuse_high_risk": [
+          6,
+          6
+        ],
+        "review_boundary_42": [
+          6,
+          6
+        ],
+        "screening_down_hold": [
+          3,
+          6
+        ],
+        "store_down_error": [
+          3,
+          6
+        ]
+      }
+    }
+  },
+  "per_generator": {
+    "opus": {
+      "A2": {
+        "slots": 33,
+        "executed": 0.4545,
+        "semantic": 0.4545,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "A3": {
+        "slots": 33,
+        "executed": 0.8788,
+        "semantic": 0.8788,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "C+spec": {
+        "slots": 33,
+        "executed": 0.4545,
+        "semantic": 0.4545,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C+dt": {
+        "slots": 33,
+        "executed": 0.7879,
+        "semantic": 0.7879,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            2,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            2,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            2,
+            3
+          ],
+          "screening_down_hold": [
+            2,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "C+api": {
+        "slots": 33,
+        "executed": 0.6364,
+        "semantic": 0.6364,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C+states": {
+        "slots": 33,
+        "executed": 0.3939,
+        "semantic": 0.3939,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            2,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "C-spec": {
+        "slots": 33,
+        "executed": 1.0,
+        "semantic": 1.0,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C-dt": {
+        "slots": 33,
+        "executed": 0.6364,
+        "semantic": 0.6364,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C-api": {
+        "slots": 33,
+        "executed": 1.0,
+        "semantic": 1.0,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            3,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C-states": {
+        "slots": 33,
+        "executed": 0.9394,
+        "semantic": 0.9394,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            2,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      }
+    },
+    "haiku": {
+      "A2": {
+        "slots": 33,
+        "executed": 0.3636,
+        "semantic": 0.3636,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            1,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            1,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            2,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "A3": {
+        "slots": 33,
+        "executed": 0.5152,
+        "semantic": 0.5152,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            1,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            2,
+            3
+          ],
+          "price_exact_heavy": [
+            2,
+            3
+          ],
+          "quoted_low_risk": [
+            1,
+            3
+          ],
+          "refuse_boundary_67": [
+            1,
+            3
+          ],
+          "refuse_high_risk": [
+            1,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "C+spec": {
+        "slots": 33,
+        "executed": 0.2424,
+        "semantic": 0.2424,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            1,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "C+dt": {
+        "slots": 33,
+        "executed": 0.8485,
+        "semantic": 0.8485,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            0,
+            3
+          ]
+        }
+      },
+      "C+api": {
+        "slots": 33,
+        "executed": 0.5152,
+        "semantic": 0.5152,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "C+states": {
+        "slots": 33,
+        "executed": 0.2727,
+        "semantic": 0.2727,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            0,
+            3
+          ],
+          "invalid_weight_low": [
+            0,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            2,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            2,
+            3
+          ]
+        }
+      },
+      "C-spec": {
+        "slots": 33,
+        "executed": 0.6061,
+        "semantic": 0.6061,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            1,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            2,
+            3
+          ],
+          "price_exact_heavy": [
+            2,
+            3
+          ],
+          "quoted_low_risk": [
+            1,
+            3
+          ],
+          "refuse_boundary_67": [
+            1,
+            3
+          ],
+          "refuse_high_risk": [
+            1,
+            3
+          ],
+          "review_boundary_42": [
+            1,
+            3
+          ],
+          "screening_down_hold": [
+            2,
+            3
+          ],
+          "store_down_error": [
+            3,
+            3
+          ]
+        }
+      },
+      "C-dt": {
+        "slots": 33,
+        "executed": 0.5152,
+        "semantic": 0.5152,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            0,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            0,
+            3
+          ],
+          "price_exact_heavy": [
+            0,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            0,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "C-api": {
+        "slots": 33,
+        "executed": 0.6364,
+        "semantic": 0.6364,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            2,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            2,
+            3
+          ],
+          "price_exact_heavy": [
+            2,
+            3
+          ],
+          "quoted_low_risk": [
+            2,
+            3
+          ],
+          "refuse_boundary_67": [
+            2,
+            3
+          ],
+          "refuse_high_risk": [
+            2,
+            3
+          ],
+          "review_boundary_42": [
+            2,
+            3
+          ],
+          "screening_down_hold": [
+            0,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      },
+      "C-states": {
+        "slots": 33,
+        "executed": 0.8788,
+        "semantic": 0.8788,
+        "scenario_pass": {
+          "accept_boundary_41": [
+            3,
+            3
+          ],
+          "invalid_value_over": [
+            3,
+            3
+          ],
+          "invalid_weight_low": [
+            3,
+            3
+          ],
+          "price_exact_both": [
+            3,
+            3
+          ],
+          "price_exact_heavy": [
+            3,
+            3
+          ],
+          "quoted_low_risk": [
+            3,
+            3
+          ],
+          "refuse_boundary_67": [
+            3,
+            3
+          ],
+          "refuse_high_risk": [
+            3,
+            3
+          ],
+          "review_boundary_42": [
+            3,
+            3
+          ],
+          "screening_down_hold": [
+            1,
+            3
+          ],
+          "store_down_error": [
+            1,
+            3
+          ]
+        }
+      }
+    }
+  },
+  "tokens": {
+    "opus": {
+      "mean_input_tokens": {
+        "A2": 3286.0,
+        "A3": 6995.0,
+        "C+spec": 4580.0,
+        "C+dt": 4512.0,
+        "C+api": 3984.0,
+        "C+states": 3777.0,
+        "C-spec": 5701.0,
+        "C-dt": 5769.0,
+        "C-api": 6297.0,
+        "C-states": 6504.0
+      },
+      "artifact_tokens": {
+        "A2": 0.0,
+        "A3": 3709.0,
+        "C+spec": 1294.0,
+        "C+dt": 1226.0,
+        "C+api": 698.0,
+        "C+states": 491.0,
+        "C-spec": 2415.0,
+        "C-dt": 2483.0,
+        "C-api": 3011.0,
+        "C-states": 3218.0
+      }
+    },
+    "haiku": {
+      "mean_input_tokens": {
+        "A2": 2263.0,
+        "A3": 5090.0,
+        "C+spec": 3254.0,
+        "C+dt": 3227.0,
+        "C+api": 2818.0,
+        "C+states": 2580.0,
+        "C-spec": 4099.0,
+        "C-dt": 4126.0,
+        "C-api": 4535.0,
+        "C-states": 4773.0
+      },
+      "artifact_tokens": {
+        "A2": 0.0,
+        "A3": 2827.0,
+        "C+spec": 991.0,
+        "C+dt": 964.0,
+        "C+api": 555.0,
+        "C+states": 317.0,
+        "C-spec": 1836.0,
+        "C-dt": 1863.0,
+        "C-api": 2272.0,
+        "C-states": 2510.0
+      }
+    }
+  },
+  "judged_inventions": {
+    "opus": {
+      "A2": {
+        "n": 3,
+        "median": 5
+      },
+      "A3": {
+        "n": 3,
+        "median": 3
+      },
+      "C+spec": {
+        "n": 3,
+        "median": 5
+      },
+      "C+dt": {
+        "n": 3,
+        "median": 3
+      },
+      "C+api": {
+        "n": 3,
+        "median": 4
+      },
+      "C+states": {
+        "n": 3,
+        "median": 5
+      },
+      "C-spec": {
+        "n": 3,
+        "median": 2
+      },
+      "C-dt": {
+        "n": 3,
+        "median": 5
+      },
+      "C-api": {
+        "n": 3,
+        "median": 3
+      },
+      "C-states": {
+        "n": 3,
+        "median": 2
+      }
+    },
+    "haiku": {
+      "A2": {
+        "n": 3,
+        "median": 4
+      },
+      "A3": {
+        "n": 3,
+        "median": 3
+      },
+      "C+spec": {
+        "n": 3,
+        "median": 4
+      },
+      "C+dt": {
+        "n": 3,
+        "median": 2
+      },
+      "C+api": {
+        "n": 3,
+        "median": 3
+      },
+      "C+states": {
+        "n": 3,
+        "median": 5
+      },
+      "C-spec": {
+        "n": 3,
+        "median": 2
+      },
+      "C-dt": {
+        "n": 3,
+        "median": 4
+      },
+      "C-api": {
+        "n": 3,
+        "median": 3
+      },
+      "C-states": {
+        "n": 3,
+        "median": 2
+      }
+    }
+  },
+  "add_one_increments": {
+    "spec": {
+      "pooled": -0.0606,
+      "opus": 0.0,
+      "haiku": -0.1212
+    },
+    "dt": {
+      "pooled": 0.4091,
+      "opus": 0.3334,
+      "haiku": 0.4849
+    },
+    "api": {
+      "pooled": 0.1667,
+      "opus": 0.1819,
+      "haiku": 0.1516
+    },
+    "states": {
+      "pooled": -0.0758,
+      "opus": -0.0606,
+      "haiku": -0.0909
+    }
+  },
+  "loo_drops": {
+    "spec": {
+      "pooled": -0.106,
+      "opus": -0.1212,
+      "haiku": -0.0909
+    },
+    "dt": {
+      "pooled": 0.1212,
+      "opus": 0.2424,
+      "haiku": 0.0
+    },
+    "api": {
+      "pooled": -0.1212,
+      "opus": -0.1212,
+      "haiku": -0.1212
+    },
+    "states": {
+      "pooled": -0.2121,
+      "opus": -0.0606,
+      "haiku": -0.3636
+    }
+  },
+  "in_wave_jump": {
+    "pooled": 0.2879,
+    "opus": 0.4243,
+    "haiku": 0.1516
+  },
+  "net_gains_vs_A2": {
+    "spec": {
+      "DTNUM5": -0.1667,
+      "VALBOUND2": -0.1667,
+      "REST4": -0.3333,
+      "total": -0.6667
+    },
+    "dt": {
+      "DTNUM5": 3.5,
+      "VALBOUND2": 1.8333,
+      "REST4": -0.8333,
+      "total": 4.5
+    },
+    "api": {
+      "DTNUM5": -0.0,
+      "VALBOUND2": 1.8333,
+      "REST4": 0.0,
+      "total": 1.8333
+    },
+    "states": {
+      "DTNUM5": -0.1667,
+      "VALBOUND2": -0.1667,
+      "REST4": -0.5,
+      "total": -0.8333
+    }
+  },
+  "net_losses_vs_A3": {
+    "spec": {
+      "DTNUM5": 0.0,
+      "VALBOUND2": 0.0,
+      "REST4": -1.1667,
+      "total": -1.1667
+    },
+    "dt": {
+      "DTNUM5": 2.6667,
+      "VALBOUND2": 0.0,
+      "REST4": -1.3333,
+      "total": 1.3333
+    },
+    "api": {
+      "DTNUM5": -0.5,
+      "VALBOUND2": 0.0,
+      "REST4": -0.8333,
+      "total": -1.3333
+    },
+    "states": {
+      "DTNUM5": -1.3333,
+      "VALBOUND2": 0.0,
+      "REST4": -1.0,
+      "total": -2.3333
+    }
+  },
+  "pp_per_kilotoken": {
+    "opus": {
+      "add_one_pp_per_ktok": {
+        "spec": 0.0,
+        "dt": 27.19,
+        "api": 26.06,
+        "states": -12.34
+      },
+      "loo_pp_per_ktok": {
+        "spec": -9.37,
+        "dt": 19.77,
+        "api": -17.36,
+        "states": -12.34
+      }
+    },
+    "haiku": {
+      "add_one_pp_per_ktok": {
+        "spec": -12.23,
+        "dt": 50.3,
+        "api": 27.32,
+        "states": -28.68
+      },
+      "loo_pp_per_ktok": {
+        "spec": -9.17,
+        "dt": 0.0,
+        "api": -21.84,
+        "states": -114.7
+      }
+    }
+  },
+  "expectation_inputs": {
+    "E1a_add_one_pooled": {
+      "spec": -0.0606,
+      "dt": 0.4091,
+      "api": 0.1667,
+      "states": -0.0758
+    },
+    "E1a_largest_pooled": "dt",
+    "E1b_loo_pooled": {
+      "spec": -0.106,
+      "dt": 0.1212,
+      "api": -0.1212,
+      "states": -0.2121
+    },
+    "E1b_largest_pooled": "dt",
+    "E2_net_gains_Cdt": {
+      "DTNUM5": 3.5,
+      "VALBOUND2": 1.8333,
+      "REST4": -0.8333,
+      "total": 4.5
+    },
+    "E3_net_losses_Cdt": {
+      "DTNUM5": 2.6667,
+      "VALBOUND2": 0.0,
+      "REST4": -1.3333,
+      "total": 1.3333
+    },
+    "E4_deltas_pooled": {
+      "spec": -0.106,
+      "api": -0.1212,
+      "states": -0.2121
+    },
+    "E4_deltas_by_gen": {
+      "opus": {
+        "spec": -0.1212,
+        "api": -0.1212,
+        "states": -0.0606
+      },
+      "haiku": {
+        "spec": -0.0909,
+        "api": -0.1212,
+        "states": -0.3636
+      }
+    },
+    "E5": {
+      "pooled": {
+        "sum_add_one": 0.4394,
+        "jump": 0.2879,
+        "residual": 0.1515
+      },
+      "opus": {
+        "sum_add_one": 0.4547,
+        "jump": 0.4243,
+        "residual": 0.0304
+      },
+      "haiku": {
+        "sum_add_one": 0.4244,
+        "jump": 0.1516,
+        "residual": 0.2728
+      }
+    },
+    "E6_judged_drops": {
+      "opus": {
+        "spec": {
+          "drop": 0,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "dt": {
+          "drop": 2,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "api": {
+          "drop": 1,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "states": {
+          "drop": 0,
+          "n_A2": 3,
+          "n_arm": 3
+        }
+      },
+      "haiku": {
+        "spec": {
+          "drop": 0,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "dt": {
+          "drop": 2,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "api": {
+          "drop": 1,
+          "n_A2": 3,
+          "n_arm": 3
+        },
+        "states": {
+          "drop": -1,
+          "n_A2": 3,
+          "n_arm": 3
+        }
+      }
+    },
+    "E7_largest_add_one_by_gen": {
+      "opus": "dt",
+      "haiku": "dt"
+    },
+    "E7_opus_ceiling_arms": 0,
+    "G1_jump_pooled": 0.2879,
+    "G2_A3_by_gen": {
+      "opus": 0.8788,
+      "haiku": 0.5152
+    }
+  }
+}
