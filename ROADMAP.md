@@ -794,7 +794,11 @@ list and license posture live in § Settled questions.
   components measured as in-bundle dilution (removal improved
   results 10.6–21.2 pp). Attribution is suite-relative — scoping in
   the record: stack_experiment/W1B_PREREGISTRATION.md § Results.
-  W3b remains recorded, not queued.* The reviewer's platform items (BPMN/DMN carriers,
+  W3b remains recorded, not queued.* *Staged, same day: W3b's
+  pre-registration was drafted and independently adversarially
+  verified (14 findings adopted: 6 major, 8 minor) — held pre-freeze
+  in stack_experiment/W3B_PREREGISTRATION.md; driver build, freeze
+  and owner go deliberately pending.* The reviewer's platform items (BPMN/DMN carriers,
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already
