@@ -29,6 +29,11 @@ corpus/
 # not the generated throwaway modules
 pilot_results/*
 !pilot_results/report.json
+# First-contact census record (docs/pilot-census-first-contact.md):
+# keep the census aggregates + provenance metadata; the harvested
+# third-party diagrams themselves stay out (mixed licenses)
+!pilot_results/first_contact/
+!pilot_results/first_contact/**
 experiment_results/*
 !experiment_results/report.json
 !experiment_results/analysis.json

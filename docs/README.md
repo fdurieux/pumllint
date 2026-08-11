@@ -62,6 +62,13 @@ but they are a useful cross-check that no audience was forgotten.
   dated review (2026-07-29, v0.24.0): threat model, verified strengths,
   ranked findings, and the hardening measures deliberately *not* taken,
   with reasons.
+- [First contact: the pilot census on a public wild corpus](pilot-census-first-contact.md)
+  — dated evidence note (2026-08-11): the read-only dialect census run
+  end-to-end on 159 real third-party PlantUML files from five public
+  repositories — recognition, maturity and rule-firing numbers, the
+  zero-element cap carrying coverage honesty on C4-macro dialects, and
+  the scoping (not the pilot organisation's corpus; demand gates
+  unchanged).
 - [Demand scan: PlantUML in markdown specs](demand-scan-embedded-plantuml.md)
   — dated evidence note (2026-07-26) behind the ROADMAP's
   markdown-extraction settlement: the spec-driven ecosystem's public

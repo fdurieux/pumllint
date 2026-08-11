@@ -1,0 +1,1019 @@
+{
+  "files": 159,
+  "diagrams": 174,
+  "profile": null,
+  "runtime_s": 0.6,
+  "types": {
+    "sequence": 61,
+    "unknown": 103,
+    "class": 2,
+    "usecase": 2,
+    "state": 5,
+    "activity": 1
+  },
+  "unscored_files": [],
+  "coverage_suspects": [
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml",
+      "diagram": null,
+      "lines": 164,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 164.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestSequenceSkinparams.puml",
+      "diagram": null,
+      "lines": 122,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 122.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_all.puml",
+      "diagram": "Groups",
+      "lines": 117,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 117.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestAllPlantUmlElements.puml",
+      "diagram": null,
+      "lines": 112,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 112.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestEmptyLabel.puml",
+      "diagram": null,
+      "lines": 105,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 105.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestAllElementsWithLegend.puml",
+      "diagram": null,
+      "lines": 83,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 83.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestTagSupportsSpriteTechn.puml",
+      "diagram": null,
+      "lines": 82,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 82.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestTagSupportsSprite.puml",
+      "diagram": null,
+      "lines": 81,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 81.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestRelations.puml",
+      "diagram": null,
+      "lines": 75,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 75.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestAllAddTags.puml",
+      "diagram": null,
+      "lines": 74,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 74.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendSprite.puml",
+      "diagram": null,
+      "lines": 73,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 73.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestRelationsDynamic.puml",
+      "diagram": null,
+      "lines": 72,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 72.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Deployment_Diagram_Sample_-_bigbankplc-details.puml",
+      "diagram": null,
+      "lines": 71,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 71.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_Auto_Scaling.puml",
+      "diagram": "Auto Scaling",
+      "lines": 68,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 68.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow.puml",
+      "diagram": "Amazon S3 Upload Workflow",
+      "lines": 68,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 68.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Deployment_Diagram_Sample_-_bigbankplc-details.puml",
+      "diagram": null,
+      "lines": 68,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 68.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegend.puml",
+      "diagram": null,
+      "lines": 66,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 66.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow_-_C4.puml",
+      "diagram": "C4",
+      "lines": 65,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 65.0
+    },
+    {
+      "file": "plantuml-stdlib__Azure-PlantUML__samples__C4_usage_-_Highly_scalable_web_application.puml",
+      "diagram": null,
+      "lines": 63,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 63.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_CodePipeline.puml",
+      "diagram": "AWS CodePipeline - Human Approval Step",
+      "lines": 61,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 61.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_1.puml",
+      "diagram": "Figure 1",
+      "lines": 59,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 59.0
+    },
+    {
+      "file": "dcasati__kubernetes-PlantUML__samples__aks-aci.puml",
+      "diagram": "kubernetes",
+      "lines": 59,
+      "elements": 1,
+      "type": "unknown",
+      "lines_per_element": 59.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Deployment_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 59,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 59.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__MarketplaceSaaS.puml",
+      "diagram": "AWS Marketplace SaaS",
+      "lines": 57,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 57.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-newStyle.puml",
+      "diagram": null,
+      "lines": 56,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 56.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Deployment_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 56,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 56.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_VPC.puml",
+      "diagram": "VPC",
+      "lines": 55,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 55.0
+    },
+    {
+      "file": "dcasati__kubernetes-PlantUML__samples__kubernetes.puml",
+      "diagram": "kubernetes",
+      "lines": 55,
+      "elements": 1,
+      "type": "unknown",
+      "lines_per_element": 55.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_message_bus.puml",
+      "diagram": "\"messagebus\"",
+      "lines": 55,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 55.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_techtribesjs.puml",
+      "diagram": null,
+      "lines": 54,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 54.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-icons.puml",
+      "diagram": null,
+      "lines": 52,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 52.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestBoundaryTagSupport.puml",
+      "diagram": null,
+      "lines": 52,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 52.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_techtribesjs.puml",
+      "diagram": "\"techtribesjs\"",
+      "lines": 52,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 52.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeWithLay.puml",
+      "diagram": null,
+      "lines": 48,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 48.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeWithLayNoRotate.puml",
+      "diagram": null,
+      "lines": 48,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 48.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-styles.puml",
+      "diagram": null,
+      "lines": 47,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 47.0
+    },
+    {
+      "file": "plantuml-stdlib__Azure-PlantUML__samples__C4_usage_-_IoT_Reference_Architecture_-_Stateful_stream_processing.puml",
+      "diagram": null,
+      "lines": 46,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 46.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_bigbankplc-landscape.puml",
+      "diagram": null,
+      "lines": 46,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 46.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_enterprise.puml",
+      "diagram": "\"enterprise\"",
+      "lines": 46,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 46.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-icons.puml",
+      "diagram": null,
+      "lines": 46,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 46.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestRelationsTags.puml",
+      "diagram": null,
+      "lines": 44,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 44.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Sequence_Diagram_Sample_-_complex.puml",
+      "diagram": null,
+      "lines": 44,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 44.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLabelsWithLineBreak.puml",
+      "diagram": null,
+      "lines": 43,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 43.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_bigbankplc-landscape.puml",
+      "diagram": null,
+      "lines": 43,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 43.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_enterprise.puml",
+      "diagram": "\"enterprise\"",
+      "lines": 43,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 43.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_message_bus.puml",
+      "diagram": "\"messagebus\"",
+      "lines": 42,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 42.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 41,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 41.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__Serverless_API.puml",
+      "diagram": "Serverless API",
+      "lines": 40,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 40.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-styles.puml",
+      "diagram": null,
+      "lines": 39,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 39.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 38,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 38.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestProperty.puml",
+      "diagram": null,
+      "lines": 37,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 37.0
+    },
+    {
+      "file": "dcasati__kubernetes-PlantUML__samples__hello-world.puml",
+      "diagram": "kubernetes",
+      "lines": 36,
+      "elements": 1,
+      "type": "unknown",
+      "lines_per_element": 36.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Component_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 36,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 36.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-themes.puml",
+      "diagram": null,
+      "lines": 36,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 36.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_message_bus_-_old_format.puml",
+      "diagram": null,
+      "lines": 36,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 36.0
+    },
+    {
+      "file": "hyperledger__aries-rfcs__concepts__0420-rich-schemas-common__relationship-diagram.puml",
+      "diagram": null,
+      "lines": 34,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 34.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_message_bus.puml",
+      "diagram": null,
+      "lines": 34,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 34.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLayDirections.puml",
+      "diagram": null,
+      "lines": 33,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 33.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscape.puml",
+      "diagram": null,
+      "lines": 33,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 33.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeDynamic.puml",
+      "diagram": null,
+      "lines": 33,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 33.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Component_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 33,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 33.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestPersonPortrait.puml",
+      "diagram": null,
+      "lines": 32,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 32.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_united.puml",
+      "diagram": null,
+      "lines": 32,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 32.0
+    },
+    {
+      "file": "dcasati__kubernetes-PlantUML__samples__microservices-azure-aks.puml",
+      "diagram": "kubernetes",
+      "lines": 91,
+      "elements": 3,
+      "type": "sequence",
+      "lines_per_element": 30.3
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestShowElementType.puml",
+      "diagram": null,
+      "lines": 30,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 30.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeTemplate.puml",
+      "diagram": null,
+      "lines": 30,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 30.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestSketchStyle.puml",
+      "diagram": "LAYOUT_AS_SKETCH Sample",
+      "lines": 29,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 29.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestPersonOutline.puml",
+      "diagram": null,
+      "lines": 28,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 28.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__network.puml",
+      "diagram": "Network",
+      "lines": 27,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 27.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendHidden.puml",
+      "diagram": null,
+      "lines": 27,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 27.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestSystemPersonSupportType.puml",
+      "diagram": null,
+      "lines": 27,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 27.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsNone.puml",
+      "diagram": null,
+      "lines": 25,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 25.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsNormal.puml",
+      "diagram": null,
+      "lines": 25,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 25.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsSmall.puml",
+      "diagram": null,
+      "lines": 25,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 25.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 24,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 24.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestNewStyle.puml",
+      "diagram": null,
+      "lines": 24,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 24.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestFloatingLegend.puml",
+      "diagram": null,
+      "lines": 23,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 23.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Sequence_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 22,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 22.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendTitle.puml",
+      "diagram": null,
+      "lines": 22,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 22.0
+    },
+    {
+      "file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__colors.puml",
+      "diagram": "Colors",
+      "lines": 21,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 21.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__C4_Dynamic_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 21,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 21.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestVersion.puml",
+      "diagram": null,
+      "lines": 21,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 21.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 21,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 21.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestPropertyMissingColumns.puml",
+      "diagram": null,
+      "lines": 20,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 20.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeSupport.puml",
+      "diagram": null,
+      "lines": 20,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 20.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Sequence_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 18,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 18.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__percy__TestPredefinedSprites.puml",
+      "diagram": null,
+      "lines": 17,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 17.0
+    },
+    {
+      "file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_bigbankplc.puml",
+      "diagram": null,
+      "lines": 16,
+      "elements": 0,
+      "type": "unknown",
+      "lines_per_element": 16.0
+    },
+    {
+      "file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__revoke-edge-agent-success.puml",
+      "diagram": null,
+      "lines": 37,
+      "elements": 3,
+      "type": "sequence",
+      "lines_per_element": 12.3
+    }
+  ],
+  "dialect_markers": {
+    "include directives (!include\u2026)": {
+      "files": 118,
+      "examples": [
+        "awslabs__aws-icons-for-plantuml__examples__Basic_Usage.puml",
+        "awslabs__aws-icons-for-plantuml__examples__Groups_-_Auto_Scaling.puml",
+        "awslabs__aws-icons-for-plantuml__examples__Groups_-_CodePipeline.puml"
+      ]
+    },
+    "C4 macro calls (Person/System/Container/Rel\u2026)": {
+      "files": 73,
+      "examples": [
+        "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow_-_C4.puml",
+        "dcasati__kubernetes-PlantUML__samples__aks-aci.puml",
+        "dcasati__kubernetes-PlantUML__samples__hello-world.puml"
+      ]
+    },
+    "preprocessor (!define/!procedure/!function/!if\u2026)": {
+      "files": 102,
+      "examples": [
+        "awslabs__aws-icons-for-plantuml__examples__Basic_Usage.puml",
+        "awslabs__aws-icons-for-plantuml__examples__Groups_-_Auto_Scaling.puml",
+        "awslabs__aws-icons-for-plantuml__examples__Groups_-_CodePipeline.puml"
+      ]
+    },
+    "non-UML PlantUML forms (@startmindmap/gantt/json/salt/wbs\u2026)": {
+      "files": 0,
+      "examples": []
+    },
+    "multiple diagrams per file": {
+      "files": 1,
+      "examples": [
+        "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml"
+      ]
+    }
+  },
+  "levels": {
+    "3": 35,
+    "1": 100,
+    "2": 8,
+    "4": 31
+  },
+  "model_set": {
+    "level": 1,
+    "levelName": "Sketchy",
+    "score": 82.39,
+    "diagramCount": 174,
+    "elementCount": 950,
+    "suppressedCount": 0,
+    "baseline": null
+  },
+  "suppressed": 0,
+  "rule_firing": {
+    "GEN001": {
+      "count": 134,
+      "files": 119,
+      "severity": "major"
+    },
+    "GEN006": {
+      "count": 174,
+      "files": 159,
+      "severity": "minor"
+    },
+    "GEN007": {
+      "count": 174,
+      "files": 159,
+      "severity": "minor"
+    },
+    "SEQ009": {
+      "count": 61,
+      "files": 22,
+      "severity": "minor"
+    },
+    "GEN003": {
+      "count": 191,
+      "files": 51,
+      "severity": "minor"
+    },
+    "GEN004": {
+      "count": 167,
+      "files": 49,
+      "severity": "minor"
+    },
+    "SEQ001": {
+      "count": 65,
+      "files": 18,
+      "severity": "critical"
+    },
+    "SEQ002": {
+      "count": 33,
+      "files": 15,
+      "severity": "minor"
+    },
+    "SEQ006": {
+      "count": 110,
+      "files": 38,
+      "severity": "minor"
+    },
+    "SEQ003": {
+      "count": 22,
+      "files": 6,
+      "severity": "major"
+    },
+    "XD001": {
+      "count": 4,
+      "files": 4,
+      "severity": "major"
+    },
+    "CLS001": {
+      "count": 6,
+      "files": 1,
+      "severity": "minor"
+    },
+    "STA002": {
+      "count": 8,
+      "files": 3,
+      "severity": "major"
+    },
+    "STA003": {
+      "count": 24,
+      "files": 3,
+      "severity": "minor"
+    },
+    "ACT005": {
+      "count": 4,
+      "files": 1,
+      "severity": "minor"
+    },
+    "GEN002": {
+      "count": 121,
+      "files": 106,
+      "severity": "info"
+    },
+    "SEQ007": {
+      "count": 4,
+      "files": 3,
+      "severity": "minor"
+    },
+    "GEN008": {
+      "count": 3,
+      "files": 3,
+      "severity": "minor"
+    },
+    "STA001": {
+      "count": 2,
+      "files": 2,
+      "severity": "blocker"
+    },
+    "SEQ004": {
+      "count": 3,
+      "files": 2,
+      "severity": "critical"
+    },
+    "XD003": {
+      "count": 16,
+      "files": 6,
+      "severity": "minor"
+    },
+    "GEN005": {
+      "count": 1,
+      "files": 1,
+      "severity": "minor"
+    },
+    "SEQ005": {
+      "count": 2,
+      "files": 1,
+      "severity": "minor"
+    }
+  },
+  "note": "paths normalized to corpus-relative; corpus assembly and provenance in sources.json"
+}

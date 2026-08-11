@@ -879,7 +879,18 @@ list and license posture live in § Settled questions.
   auto-improvement component whose trigger the pilot can fire); the
   modelling-standard owner confirming an obligation table →
   obligation/flow Phases 2–4 — in which case build the remaining Arc F
-  safeguards first (see Arc F's trigger note).
+  safeguards first (see Arc F's trigger note). *Dated note,
+  2026-08-11: the census ran end-to-end on a public wild corpus — 159
+  files / 174 diagrams from five public repositories (record:
+  docs/pilot-census-first-contact.md; data:
+  pilot_results/first_contact/). Instrument verified at scale (0.6 s,
+  zero hard parse failures); the dialect signals are loud on public
+  material (C4 macros in 73/159 files, `!include` in 118/159; 103/174
+  diagrams dialect-invisible, held at Level 1 by the zero-element cap
+  while their composite is vacuously high). This was prevalence
+  measurement, not adopter pull: the phase-0 census on the pilot
+  organisation's real corpus — and every demand gate above — stays
+  open as recorded.*
 - **Research track (accepted 2026-08-10): docs/research-charter.md is
   the source of truth for the measurement-wave program.** W0 shipped
   with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take
