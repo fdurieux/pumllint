@@ -58,6 +58,13 @@ but they are a useful cross-check that no audience was forgotten.
   checklist, pre-agreed decision gates; with
   [a starter config](pilot-starter-config.toml) and a read-only dialect
   census (`tools/pilot_census.py`) to run before anything gates.
+- [Pilot kickoff pack](pilot-kickoff-pack.md) — dated operational
+  companion (2026-08-11) to the charter: the measured case in
+  sponsor-ready sentences (current through W1b and the wild-corpus
+  census, each with record and scoping), the 30-minute census
+  runbook with first-contact calibration references, the short list
+  of organisation-supplied inputs, and the condensed phase/gate
+  table.
 - [Security & hardening assessment](security-hardening-assessment.md) —
   dated review (2026-07-29, v0.24.0): threat model, verified strengths,
   ranked findings, and the hardening measures deliberately *not* taken,
