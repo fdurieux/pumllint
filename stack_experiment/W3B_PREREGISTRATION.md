@@ -1,17 +1,34 @@
 # Wave pre-registration — W3b: carrier × prompt-frame
 
-*VERIFIED REVISION, 2026-08-11, pre-freeze — independent adversarial
-pass complete, all 14 findings adopted (6 major, 8 minor; inline
-"(adversarial finding N)" annotations mark every adopted correction).
-NOT frozen, may not run. Remaining charter §10 sequence: freeze
-commit (pinning the carrier-file, driver and frame-string hashes) →
-owner go → scored run. Lineage: W3's frozen record carries the
-prompt-frame asymmetry as its disclosed limitation (W3's finding 3)
-and its matrix's refutation branch reopened the carrier question on
-outcome evidence; the candidate is recorded in ROADMAP § Settled
-questions and docs/external-review-evaluation.md § wave candidates as
-"carrier × prompt-frame factorial separating intrinsic carrier effect
-from prompt-carrier alignment". Template: PREREGISTRATION_TEMPLATE.md.*
+*FROZEN 2026-08-11, before any scored run — the freeze is the commit
+titled "Lab: W3b frozen" carrying this preamble; nothing above
+Results changed at freeze. Provenance: draft 56fb30e
+(findings-before-verdicts) → independent adversarial pass — **14
+findings: 6 major, 8 minor, all adopted** (inline "(adversarial
+finding N)" annotations) → verified revision 6b8a995 → driver +
+pre-freeze checks f521048 (**68/68 green**; record:
+stack_experiment/results/W3B/prefreeze_checks/report.json). Pins at
+freeze: driver tools/stack_w3b.py sha256
+`c528378079bd938f97099d6fd6574c0a528bb08c294277748048608a37d73ba9`;
+stack_ablation.py byte-identical to W1's pin (`5134cddb…c422b73b`);
+stack_variants.py `4ffefa3d…fc785560`; the four carrier files
+byte-identical to W3's stored kit_hashes (`quote_flow.mmd
+bc6447ec…`, `.yaml 51c8298a…`, `.md 4935cb1a…`, `_stub.py
+5c6b92a9…`); suite `113ab6ac…9b501`, runner `f6cc907e…2fe7c88`; the
+three frame strings frozen in Design and as driver constants.
+**Owner go, verbatim (2026-08-11): "freeze and go, as soon as all 3
+models come back OK." — condition satisfied the same day: the
+key-probe session reported WAVE_API_KEY present and all three wave
+models OK (generators + judge), no key material relayed.** Editing
+anything above Results after a scored run invalidates the wave —
+re-freeze consciously and say so. Lineage: W3's frozen record
+carries the prompt-frame asymmetry as its disclosed limitation
+(W3's finding 3) and its matrix's refutation branch reopened the
+carrier question on outcome evidence; the candidate is recorded in
+ROADMAP § Settled questions and
+docs/external-review-evaluation.md § wave candidates as "carrier ×
+prompt-frame factorial separating intrinsic carrier effect from
+prompt-carrier alignment". Template: PREREGISTRATION_TEMPLATE.md.*
 
 **Shared frozen base (by import, unchanged):** the W1 models
 (`claude-opus-4-8`, `claude-haiku-4-5-20251001`; judge
@@ -350,6 +367,7 @@ per model generation (charter §2 C1).
 
 ## Results
 
-*(Empty by design: verified revision, pre-freeze. Written strictly
-after the freeze and the owner's go, run notes before verdicts, per
-the template.)*
+*(Empty until the scored run completes: frozen, owner go recorded.
+Written strictly after the wave — run notes before verdicts, the
+pre-committed interpretation matrix applied without reinterpretation,
+per the template.)*
