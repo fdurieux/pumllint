@@ -251,7 +251,15 @@ generator?
   reproduces the stored marginals exactly, and an expectation-inputs
   dry-run emits every E1–E7/G1–G2 input (the W1 X-R1
   unreachable-arm lesson, carried forward). Driver sha256 pinned at
-  freeze.
+  freeze. *[Amended pre-freeze 2026-08-11, build record: the W1b code
+  lives in a separate module, tools/stack_w1b.py, which imports the
+  frozen W1 driver and registers the ten arms into its table at
+  import — the frozen stack_ablation.py is untouched on disk, so W1's
+  pinned sha still describes what W1 ran, and the reused assembly/
+  generation/scoring/judge paths are the frozen code itself, not
+  copies; arm keys use ASCII '+'/'-' for filename portability. The
+  freeze pins stack_w1b.py's sha256, with stack_ablation.py's
+  recorded alongside.]*
 
 - **Token accounting (for the per-thousand-tokens committed
   output):** artifact tokens per arm = API-reported input tokens
@@ -315,7 +323,21 @@ generator?
   three equivalence/cross-check obligations under Design. **No
   scored, degraded or partial condition may be executed pre-freeze —
   every contract-subset bundle is a new condition and none has ever
-  been run.**
+  been run.** *[Amended pre-freeze 2026-08-11 — the $0 checks RAN and
+  PASSED, 33/33: obligation (1) every kit hash and the GEN_PROMPT
+  template byte-identical to the stored W1 wave record, A2/A3
+  assembled-bundle shas recorded; obligation (2) all 12 stored A2/A3
+  artifacts replayed bit-for-bit through the imported scoring path,
+  0 mismatches; obligation (3) the W1b analysis reproduced the
+  stored A2→A3 marginals exactly (pooled 0.3788, opus 0.5455, haiku
+  0.2122) and all four judged medians (6→3, 5→3), and the
+  expectation-inputs dry-run emitted all 14 E1–E7/G1–G2 inputs over
+  a disclosed synthetic dataset (stored A2 runs cloned into the
+  component arms — code-path exercise only, no scoring meaning);
+  reference 11/11 through the frozen scoring path; every arm
+  inventory matches the Design tables. Record:
+  stack_experiment/results/W1B/prefreeze_checks/report.json. No
+  generation call was made; spend $0.]*
 
 ## Pre-registered expectations (mandatory)
 

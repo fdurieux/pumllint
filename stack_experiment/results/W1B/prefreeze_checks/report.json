@@ -1,0 +1,170 @@
+{
+  "phase": "prefreeze_checks",
+  "pre_registration": "stack_experiment/W1B_PREREGISTRATION.md",
+  "spend_usd": 0.0,
+  "driver_sha256_at_check": "337e64ceead3e3b9102cfbf75c88125e1bef43387805734a9b6f13bc964af1ad",
+  "stack_ablation_sha256": "5134cddbd0950ed2e21c2c5a1772d68f1b62925b3b82713c567dede0c422b73b",
+  "checks": [
+    {
+      "check": "kit hash unchanged: behavior/quote_flow.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: brief.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: contract/decision_table.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: contract/openapi.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: contract/quote_states.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: contract/spec.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: structure/containers.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: tools/acceptance/cargo_quote_suite.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged: tools/acceptance/runner_child.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "GEN_PROMPT template byte-identical to stored wave",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "bundle_text(A2) assembled and sha-recorded",
+      "ok": true,
+      "detail": "dae13608ad96762a"
+    },
+    {
+      "check": "bundle_text(A3) assembled and sha-recorded",
+      "ok": true,
+      "detail": "9a914e61cc4383f9"
+    },
+    {
+      "check": "replay: 12 stored A2/A3 artifacts re-scored",
+      "ok": true,
+      "detail": "0 mismatching artifacts"
+    },
+    {
+      "check": "A2->A3 pooled reproduced",
+      "ok": true,
+      "detail": "0.3788 vs stored 0.3788"
+    },
+    {
+      "check": "A2->A3 opus reproduced",
+      "ok": true,
+      "detail": "0.5455 vs stored 0.5455"
+    },
+    {
+      "check": "A2->A3 haiku reproduced",
+      "ok": true,
+      "detail": "0.2122 vs stored 0.2122"
+    },
+    {
+      "check": "judged median opus/A2 reproduced",
+      "ok": true,
+      "detail": "6 vs stored 6"
+    },
+    {
+      "check": "judged median opus/A3 reproduced",
+      "ok": true,
+      "detail": "3 vs stored 3"
+    },
+    {
+      "check": "judged median haiku/A2 reproduced",
+      "ok": true,
+      "detail": "5 vs stored 5"
+    },
+    {
+      "check": "judged median haiku/A3 reproduced",
+      "ok": true,
+      "detail": "3 vs stored 3"
+    },
+    {
+      "check": "expectation-inputs dry-run emits every E1-E7/G1-G2 input",
+      "ok": true,
+      "detail": "14 inputs emitted (synthetic data, no meaning)"
+    },
+    {
+      "check": "reference impl 11/11 through the frozen scoring path",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "arm inventory A2: 3 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml"
+    },
+    {
+      "check": "arm inventory A3: 7 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml spec.md decision_table.md openapi.yaml quote_states.puml"
+    },
+    {
+      "check": "arm inventory C+spec: 4 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml spec.md"
+    },
+    {
+      "check": "arm inventory C+dt: 4 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml decision_table.md"
+    },
+    {
+      "check": "arm inventory C+api: 4 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml openapi.yaml"
+    },
+    {
+      "check": "arm inventory C+states: 4 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml quote_states.puml"
+    },
+    {
+      "check": "arm inventory C-spec: 6 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml decision_table.md openapi.yaml quote_states.puml"
+    },
+    {
+      "check": "arm inventory C-dt: 6 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml spec.md openapi.yaml quote_states.puml"
+    },
+    {
+      "check": "arm inventory C-api: 6 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml spec.md decision_table.md quote_states.puml"
+    },
+    {
+      "check": "arm inventory C-states: 6 files",
+      "ok": true,
+      "detail": "brief.md containers.puml quote_flow.puml spec.md decision_table.md openapi.yaml"
+    }
+  ],
+  "all_ok": true
+}
