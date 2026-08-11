@@ -365,9 +365,181 @@ single vendor pair; n = 3 per generator per cell;
 capability-relative, dated — carrier and frame results re-measure
 per model generation (charter §2 C1).
 
-## Results
+## Results (2026-08-11, $13.72)
 
-*(Empty until the scored run completes: frozen, owner go recorded.
-Written strictly after the wave — run notes before verdicts, the
-pre-committed interpretation matrix applied without reinterpretation,
-per the template.)*
+**Run notes (recorded before the verdicts):**
+
+- Clean completion: 84/84 runs, no abort, no judge errors; 170 of
+  MAX_CALLS 250 (84 generations + 14 opus generation retries + 72
+  judgements — every compiling artifact judged); spend $13.7229 of
+  the $30 ceiling. Executed by a dedicated runner session on the
+  frozen branch (freeze f1cdbfd; raw record commit 686fcb0:
+  report.json, analysis.json, all 84 artifacts). The committed
+  outputs (rate matrix, alignment-delta table, compile counts,
+  per-frame orderings, every E/G input, semantic-only rates) are in
+  results/W3B/wave_main/analysis.json.
+- Credential context, one line: the wave ran under the environment's
+  re-enabled key after a three-model live probe; one platform
+  security prompt required a manual owner approval during the probe
+  session; the wave itself ran unattended. No key material anywhere
+  in the record.
+- 12 non-compiling runs, ALL opus, concentrated by frame:
+  yaml-stored 3/3, yaml-native 3/3, yaml-neutral 1/3,
+  code-stub-neutral 3/3, mermaid-native 2/3. Failure mode (artifacts
+  inspected): not truncation (stop_reason end_turn; the one
+  max_tokens attempt was retried) and not refusal — output-contract
+  collapse: bare pricing-formula fragments, echoed bundle-style
+  section headers plus planning prose ("Let me analyze the
+  specification and implement it."), typographic characters (em/en
+  dashes, ≤) inside would-be code. Haiku compiled 42/42.
+- The two "compiling" yaml-neutral opus artifacts are degenerate
+  single-line formula fragments (parse-valid, undefined-name-dead,
+  0/11 executed): compilation without substance. E3's neutral count
+  carries this disclosure wherever quoted.
+- Cross-occasion level shift, disclosed: every in-wave F-stored cell
+  landed above its W3 stored value (pooled: code-stub 0.4242 vs
+  0.3788; mermaid 0.4091 vs 0.3485; controlled-english 0.3788 vs
+  0.2879; yaml 0.2121 vs 0.1364; flow-set same direction) while
+  reproducing W3's stored-frame ORDER exactly. The puml-stored
+  anchor reproduced W1-A2 to the slot: 29/66 = 0.4394, G1 delta
+  0.0000.
+- Judged run note (cross-occasion, never expectation arithmetic):
+  in-wave stored medians sit within 0–2 of the stored records where
+  comparable. The program's first-ever judgeable opus-yaml cells are
+  the two degenerate neutral fragments (n = 2, median 2.0) —
+  descriptive-only under E6's conventions.
+
+**The cell matrix (pooled executed / flow-set; compiles opus+haiku):**
+
+| Carrier | F-stored | F-neutral | F-native |
+|---|---|---|---|
+| PlantUML | .4394 / .9667 (3+3) | .3636 / .8000 (3+3) | ≡ stored |
+| code-stub | .4242 / .9000 (3+3) | .0909 / .1667 (0+3) | .2424 / .5333 (3+3) |
+| Mermaid | .4091 / .8667 (3+3) | .3788 / .8333 (3+3) | .2879 / .5333 (1+3) |
+| controlled-english | .3788 / .7667 (3+3) | .3788 / .7667 (3+3) | .3485 / .7333 (3+3) |
+| YAML | .2121 / .4667 (0+3) | .1818 / .3667 (2+3) | .1061 / .2000 (0+3) |
+
+Per-frame flow-set orderings: F-stored puml > stub > mermaid >
+english > yaml (W3's order, reproduced); F-neutral mermaid ≥ puml >
+english > yaml > stub; F-native english > stub = mermaid > yaml.
+
+**Validity guards:**
+
+- **G1 PASS** — in-wave puml-stored 0.4394 vs W1-A2 stored 0.4394:
+  delta 0.0000 exactly (within ±15 pp; run note above).
+- **G2 PASS** — opus 0.4545, haiku 0.4242, both > 0.15.
+- **G2b PASS** — puml-neutral opus 0.3939, haiku 0.3333, both >
+  0.15; no defect inspection triggered, the frame cells are
+  mechanically sound.
+- **G3** — stored-frame flow deficits vs puml-stored: LICENSED
+  controlled-english (20.00 pp > 10.00) and yaml (50.00 pp); NOT
+  licensed code-stub (6.67 pp) and mermaid (10.00 pp exactly — the
+  inclusive equivalence bar; not reproduced beyond it). Applied
+  below: no W3-record re-scoping for code-stub or mermaid; their
+  headline is the cross-occasion non-reproduction.
+
+**Per-expectation verdicts (pre-committed interpretations applied,
+nothing reinterpreted):**
+
+- **E1 — two of four confirmed; per the power note the four-verdict
+  pattern, not any single verdict, carries the headline.**
+  - **E1-stub CONFIRMED** (deficit 63.33 pp > 10.00) — G3-unlicensed:
+    the cross-occasion anomaly is stub's headline and W3's record is
+    unedited on its account. Mechanism disclosed: the deficit is
+    neutral-frame-induced collapse (opus 0/3 compiling — the
+    output-contract failure above; haiku flow 0.3333), not a
+    reproduced stored-frame deficit (stub-stored sat 6.67 pp from
+    baseline — equivalent).
+  - **E1-mermaid NOT CONFIRMED** (deficit −3.33 pp; mermaid-neutral
+    landed ABOVE the reference) — G3-unlicensed: cross-occasion
+    anomaly headline, W3's mermaid claim unedited. Near-bar
+    low-confidence flag per the power note.
+  - **E1-english NOT CONFIRMED** (deficit 3.33 pp ≤ 10.00) — G3
+    LICENSED: W3's controlled-english claim gains the "under a
+    PlantUML-framed harness" scoping, dated, at full prominence.
+    Mechanism disclosed: english's own cells are frame-flat (flow
+    .7667/.7667/.7333); the closure is baseline-side — PlantUML
+    loses its aligned-frame flow advantage under the neutral frame.
+    Low-confidence flag: 6.67 pp from the bar, inside one flow-set
+    gap-SE.
+  - **E1-yaml CONFIRMED** (deficit 43.33 pp > 10.00) — G3 LICENSED:
+    intrinsic. W3's yaml claim SHEDS the frame caveat, dated: the
+    deficit persists under aligned, format-silent and carrier-native
+    frames alike.
+- **E2a FAILED — the wave's surprise, published at full prominence.**
+  Alignment deltas (native − stored, pooled): code-stub −18.18,
+  mermaid −12.12, yaml −10.61, controlled-english −3.03.
+  Pre-committed tiering applied: three carriers beyond materiality =
+  measured NEGATIVE alignment effects, per-generator — stub: opus
+  −15.15 (3/3 compiling; content-level) and haiku −21.21
+  (content-level); mermaid: opus −30.30 (compile-borne, 1/3
+  compiling) vs haiku +6.06; yaml: opus 0.00 (0/3 compile floor
+  under both frames) and haiku −21.21 (content-level, 3/3
+  compiling). controlled-english −3.03 (2 slots) takes the
+  noise-compatible tier. NO hygiene claim: naming the artifact's
+  actual format in the prompt measurably hurt on this occasion.
+- **E2b FAILED** — the yaml alignment delta is −10.61 pp (the bar
+  wanted ≥ +9; the actual is negative and material). No
+  material-help claim; yaml's W3 deficit is NOT attributed to frame
+  in material part — consistent with E1-yaml's intrinsic verdict.
+- **E3 SPLIT, under the licensed condition** (in-wave F-stored
+  opus-yaml 0/3 — the stored non-compile behavior reproduced
+  cross-occasion). F-native 0/3, F-neutral 2/3: reported per-frame,
+  no single-mechanism claim. The native frame recovered nothing; the
+  neutral frame's two "compiles" are the degenerate one-line
+  fragments (0/11 executed) — parse-validity partially restored,
+  substance not.
+- **E4 CONFIRMED** — |pooled(puml-neutral) − pooled(puml-stored)| =
+  7.58 pp ≤ 9. The baseline is frame-robust on the pre-committed
+  pooled bar. At equal visibility, the run note: the flow-set delta
+  is −16.67 pp (5 of 30 slots, quantum-coarse) and per-generator
+  pooled opus −6.06 / haiku −9.09 — so the shared-reference caveat
+  (power note) stays active in every E1 narration. The dual-reference
+  rule was pre-committed for failure only and is not triggered.
+- **E5 FAILED** — mermaid's alignment deltas are opposite-signed
+  beyond one per-generator slot (opus −30.30 vs haiku +6.06).
+  Consequence applied: per-generator alignment language everywhere
+  (the §8.3 partial fire extends to the frame axis). Disclosed
+  pattern: under the stored frame haiku is near-flat across carriers
+  (0.3939–0.4242 pooled) — the stored-frame carrier ordering is
+  opus-borne.
+- **E6 CONFIRMED** — every evaluable comparison within 2 of the
+  in-wave F-stored median (largest |Δ| = 2: code-stub haiku native,
+  6 vs 4). Descriptive-only cells, named: code-stub-neutral opus (0
+  judgeable), mermaid-native opus (n = 1), yaml opus (no evaluable
+  in-wave stored reference; neutral n = 2, median 2.0, on the
+  degenerate fragments). Judged invention is frame-insensitive at
+  fixed carrier where measurable.
+
+**Consequences (matrix applied):**
+
+1. **W3's standing headline survives only in per-carrier,
+   per-generator form.** YAML's deficit is intrinsic (frame caveat
+   shed — G3-licensed). Controlled-english's deficit is scoped to
+   the PlantUML-framed harness (G3-licensed; baseline-side
+   mechanism). Code-stub and Mermaid carry cross-occasion
+   non-reproduction notes — their W3 stored-frame deficits did not
+   reproduce beyond the equivalence bar on this occasion, and no
+   re-scoping is licensed. The stored-frame ordering reproduced
+   exactly while the neutral-frame ordering collapsed it.
+2. **Alignment is not hygiene.** The measured direction on this
+   occasion is harm (three carriers at materiality; opus collapses
+   into non-code fragments under unfamiliar frames, haiku compiles
+   but executes worse). The E1-failure branch's harness-alignment
+   lever is recorded WITH ITS SIGN: the familiar stored frame
+   outperformed the accurate native frames.
+3. **Charter §2 C1 / checkability: unchanged** (pre-committed — this
+   wave cannot re-promote). Where the outcome evidence points now
+   splits per carrier: at harness-frame alignment for
+   controlled-english (and open for stub/mermaid pending
+   reproduction), at carrier syntax for yaml.
+4. **Downstream edits made under the licenses** (dated, this
+   commit): research-charter §6 carrier row + W3 wave-entry pointer;
+   minimum-sufficient-stack §3; ROADMAP W3b entry ran-note.
+   W3_PREREGISTRATION.md itself untouched — frozen occasion records
+   are never edited (the W1/W1b precedent); scoping lives in the
+   consolidation records.
+5. **Pilot-facing:** the dated Mermaid sentence gains the
+   cross-occasion note (second occasion: stored-frame deficit at the
+   equivalence bar exactly; equivalent-or-better under the neutral
+   frame). No alignment-hygiene recommendation exists anywhere.

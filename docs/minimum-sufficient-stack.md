@@ -159,6 +159,33 @@ ahead of Mermaid by 9 pp pooled / 20 pp flow-sensitive in this
 lab's single measurement. Capability-relative; re-measured per
 model generation.
 
+*Dated decomposition, 2026-08-11 (W3b, carrier × prompt-frame, all
+14 cells in-wave, $13.72 —
+[record](../stack_experiment/W3B_PREREGISTRATION.md)): the table
+above is partly a harness-frame result, per-carrier. Under the
+frozen PlantUML-typed frame the W3 ordering reproduced exactly
+(anchor delta 0.0); under a format-silent frame it collapsed
+(Mermaid ≥ PlantUML ≈ controlled English, code-stub last via a
+generator output-contract failure). Licensed re-scopings: **YAML's
+deficit is intrinsic** — it persists under aligned, silent and
+native frames alike, and opus's 0/3 non-compiles reproduced and
+extend to the yaml-native frame; **controlled English's deficit is
+scoped to the PlantUML-framed harness** — its own cells are
+frame-flat and the gap closes because the baseline loses its
+aligned-frame advantage. Code-stub's and Mermaid's stored-frame
+deficits did not reproduce beyond the equivalence bar on this
+second occasion (no re-scoping licensed; the sentence above now
+carries that non-reproduction note). Two surprises, published at
+full prominence: **prompt-carrier alignment measurably hurt** —
+naming the carrier's actual format cost −10.6 to −18.2 pp pooled on
+three of four carriers (opus collapses into non-code fragments
+under unfamiliar frames; haiku compiles fine but executes worse) —
+so frame wording is a real lever with a treacherous sign, not
+hygiene; and **the stored-frame carrier ordering is opus-borne** —
+haiku is near-flat across carriers under the stored frame
+(0.394–0.424 pooled), so every carrier claim here is per-generator
+(§8.3 discipline extended to the frame axis).*
+
 ## 4. One source per decision — conflicts and redundancy
 
 - W2: injected contradictions were **never surfaced** — 0 of 18

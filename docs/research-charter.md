@@ -236,7 +236,7 @@ outcomes.
 | Structural diagrams (context/container) | Group-edge recall 1.00 at every rung including bare R0 under a conforming prompt (EC1); annotations +8.3 pp executed (R0→R1), invention-flat | [measured] — orientation and misread-prevention value; a modest outcome effect, not the main lever |
 | Stable-ID traceability | `pumllint trace` shipped (Arc G) | [built] — outcome-side unmeasured |
 | Per-artifact gates as a necessity | Below-cliff artifacts actively degrade generation vs their pristine siblings; all 16 author-less-repaired diagrams passed the gate while the repaired-L1 tier executed 36.6 pp below pristine (repaired-L2: 10.8 pp) — the gate certifies statedness, not correctness; **W5 (2026-08-11): a below-cliff artifact was not repaired by k ≤ 2 test-driven iteration either — identical rates to single-shot, smoke tests still failing — gating inputs beats repairing outputs in the agentic workflow too** | [measured] — the positioning claim, with §4's harm-vs-absence caveat (W1's contrast: an unresolved null) |
-| Carrier/syntax effects | W3 (2026-08-11, one behavior artifact at the A2 rung, fixed information, audited translations): carrier matters — vs the PlantUML baseline, code-stub −6.1 pp, Mermaid −9.1, controlled English −15.2, structured YAML −30.3 pooled; on flow-sensitive scenarios every alternative lost 17–67 pp, and opus generated non-compiling code from YAML 3/3. Ecosystem context retained: Mermaid dominates spec directories 76–437×; standalone `.puml` outnumbers embedded 16× | [measured] — first outcome evidence; equivalence refuted, checkability demoted per C1 |
+| Carrier/syntax effects | W3 (2026-08-11, one behavior artifact at the A2 rung, fixed information, audited translations): carrier matters — vs the PlantUML baseline, code-stub −6.1 pp, Mermaid −9.1, controlled English −15.2, structured YAML −30.3 pooled; on flow-sensitive scenarios every alternative lost 17–67 pp, and opus generated non-compiling code from YAML 3/3. W3b (2026-08-11, carrier × prompt-frame factorial, all 14 cells in-wave, $13.72): the refutation is partly frame-carried, per-carrier — YAML's deficit intrinsic (persists under aligned/silent/native frames; the 0/3 non-compiles reproduced and extend to the yaml-native frame), controlled English's scoped to the PlantUML-framed harness (its cells are frame-flat; the baseline loses its aligned-frame advantage), code-stub's and Mermaid's stored-frame deficits unreproduced beyond equivalence on the second occasion (no re-scoping licensed); carrier-native frames measurably HURT (−10.6…−18.2 pp pooled on three carriers) and the stored-frame ordering is opus-borne (haiku near-flat 0.394–0.424) | [measured] — first outcome evidence; equivalence refuted, checkability demoted per C1; W3b frame decomposition recorded, per-carrier per-generator language mandatory |
 
 The standing detail answer, consolidated — three tiers, not two:
 **below Level 2**, the cliff (16–25 pp executed, scaffold-resistant:
@@ -330,7 +330,11 @@ W5.
   never that settlement, absent explicit re-litigation. *Ran
   2026-08-11 ($4.21): equivalence REFUTED — see C1's dated demotion
   note and the §6 carrier row; record:
-  stack_experiment/W3_PREREGISTRATION.md § Results.*
+  stack_experiment/W3_PREREGISTRATION.md § Results.* *W3b, same day
+  ($13.72), decomposed the refutation by prompt frame under charter
+  §10 in full: partly frame-carried, per-carrier — see the §6 row's
+  dated addition; record:
+  stack_experiment/W3B_PREREGISTRATION.md § Results.*
 - **W4 — dose–response, including the far side (~$10).** Ladder from
   minimal past SDD-grade into deliberate over-specification (redundant
   restatement, irrelevant context, exhaustive enumeration); locate the

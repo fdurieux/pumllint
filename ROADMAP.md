@@ -798,7 +798,18 @@ list and license posture live in § Settled questions.
   pre-registration was drafted and independently adversarially
   verified (14 findings adopted: 6 major, 8 minor) — held pre-freeze
   in stack_experiment/W3B_PREREGISTRATION.md; driver build, freeze
-  and owner go deliberately pending.* The reviewer's platform items (BPMN/DMN carriers,
+  and owner go deliberately pending.* *Ran, same day ($13.72,
+  84/84 runs, full §10 cycle): the stored-frame carrier ordering
+  reproduced exactly (anchor delta 0.0) but is partly frame-carried
+  — YAML intrinsic (frame caveat shed), controlled English scoped
+  to the PlantUML-framed harness, code-stub/Mermaid stored-frame
+  deficits unreproduced beyond equivalence (no re-scoping licensed);
+  the surprise at full prominence: carrier-native frames HURT
+  (−10.6…−18.2 pp pooled on three carriers; E2a/E2b/E5 failed,
+  per-generator language mandatory — the stored-frame ordering is
+  opus-borne); E3 split (stored 0/3 reproduced, neutral 2/3 are
+  degenerate fragments, native 0/3); E4/E6 confirmed. Record:
+  stack_experiment/W3B_PREREGISTRATION.md § Results.* The reviewer's platform items (BPMN/DMN carriers,
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already
