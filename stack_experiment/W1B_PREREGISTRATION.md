@@ -1,23 +1,27 @@
 # Wave pre-registration — W1b: the contract-bundle decomposition
 
-*VERIFIED REVISION, 2026-08-11, pre-freeze — NOT frozen, may not run.
-Provenance: draft 4887dec (findings-before-verdicts); independent
-adversarial pass against it — **17 findings: 8 major, 9 minor, all
-adopted in this revision** (the pass additionally verified every
-quoted W1 number, both oracle hashes, the char counts, the quantum
-and budget arithmetic, the DT-V mirror values, and the named-set
-identity DTNUM5 ∪ VALBOUND2 = CONTRACT7 against the working tree).
-Remaining charter §10 sequence: freeze commit (pinning suite, runner
-and revised-driver hashes and the reading rules below) → **owner go —
-pending; no owner decision on this wave is recorded anywhere yet
-(adversarial finding 5)** → scored run. Lineage: W1-E4's fired matrix
-branch ("interaction follow-up recorded, not queued") given its
-concrete shape; recorded as a wave candidate in ROADMAP § Settled
+*FROZEN 2026-08-11, before any scored run — the freeze is the commit
+titled "Lab: W1b frozen" carrying this file with the pins under
+Calibration § Frozen values. Provenance: draft 4887dec
+(findings-before-verdicts); independent adversarial pass against it —
+**17 findings: 8 major, 9 minor, all adopted** (fb8e9ad; the pass
+additionally verified every quoted W1 number, both oracle hashes, the
+char counts, the quantum and budget arithmetic, the DT-V mirror
+values, and the named-set identity DTNUM5 ∪ VALBOUND2 = CONTRACT7
+against the working tree); driver build + $0 pre-freeze checks
+**33/33 PASSED** (c11b672), two dated pre-freeze amendments marked
+inline (driver placement; checks record). **Owner go on the scored
+run given 2026-08-11, in the owner's words: "freeze and go".** From
+here, editing anything above the Results section invalidates the
+wave — re-freeze consciously and say so. Lineage: W1-E4's fired
+matrix branch ("interaction follow-up recorded, not queued") given
+its concrete shape; recorded as a wave candidate in ROADMAP § Settled
 questions and docs/external-review-evaluation.md § wave candidates;
 the before-any-benchmark-freeze sequencing rationale is recorded in
 docs/external-review-comparison.md's commissioned feedback column —
-Claude-authored at the owner's request, **not an owner decision**
-(finding 5). Template: PREREGISTRATION_TEMPLATE.md.*
+Claude-authored at the owner's request, not itself an owner decision
+(adversarial finding 5; the owner decision on THIS wave is the go
+quoted above). Template: PREREGISTRATION_TEMPLATE.md.*
 
 **Shared frozen base (by import from W1, unchanged):** the W1 models
 (`claude-opus-4-8`, `claude-haiku-4-5-20251001`; judge
@@ -338,6 +342,18 @@ generator?
   inventory matches the Design tables. Record:
   stack_experiment/results/W1B/prefreeze_checks/report.json. No
   generation call was made; spend $0.]*
+- **Frozen values:** pre-wave W1B spend $0.00 of the $30 ceiling
+  (prefreeze checks $0; no probe or calibration call made — the W1
+  calibration is inherited as declared above); suite and runner
+  hashes re-verified unchanged at freeze (`113ab6ac…9b501`,
+  `f6cc907e…2fe7c88`, as the Shared frozen base); driver
+  tools/stack_w1b.py sha256
+  `337e64ceead3e3b9102cfbf75c88125e1bef43387805734a9b6f13bc964af1ad`,
+  importing tools/stack_ablation.py sha256
+  `5134cddbd0950ed2e21c2c5a1772d68f1b62925b3b82713c567dede0c422b73b`
+  — byte-identical to W1's frozen pin, confirming the frozen driver
+  file is untouched; freeze date 2026-08-11; freeze commit = the
+  commit introducing this bullet.
 
 ## Pre-registered expectations (mandatory)
 
@@ -457,6 +473,7 @@ generator?
 
 ## Results
 
-*(Empty by design: verified revision, pre-freeze. Written strictly
-after the freeze and the owner's go, run notes before verdicts, per
-the template.)*
+*(Frozen, pre-run. Written strictly after the scored run — run notes
+recorded before the verdicts, then per-expectation verdicts with the
+pre-committed interpretations applied, never reinterpreted — per the
+template.)*
