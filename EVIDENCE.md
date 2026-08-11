@@ -3,6 +3,20 @@
 *No-background-assumed walkthrough of this file's program and findings:
 [docs/evidence-explained.md](docs/evidence-explained.md).*
 
+*Scope note, 2026-08-11: this file is the **sequence-maturity
+product-evidence record** — the measured maturity→codegen relationship
+and the results that bound what the gate may claim (the repair waves,
+the judge-validity record). The specification-stack research programme
+(W0–W5 on the CargoQuote substrate: which artifacts, which detail,
+which carrier, conflicts, context dose, agency) is deliberately not
+recorded here: its primary records are the wave pre-registrations'
+§ Results (`stack_experiment/*_PREREGISTRATION.md`), its synthesis is
+the [research charter](docs/research-charter.md), and its consolidated
+record is [The measured minimum sufficient
+stack](docs/minimum-sufficient-stack.md). This paragraph serves the
+charter §7 commitment that the waves converge on one consolidated
+document — by pointing at it.*
+
 Phase 10e experiment record — 2026-07-22. Raw data: `experiment_results/report.json`
 (75 runs, zero failures, $5.24 API spend). Harness: `tools/codegen_experiment.py`.
 Deepened 2026-07-24 (Arc D, v0.17.0) — see "Deepening" below; analysis:

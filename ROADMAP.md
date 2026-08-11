@@ -800,6 +800,12 @@ list and license posture live in § Settled questions.
   regenerated pilot artifacts; the agents.md "deliberately not
   called" sentence correction folds in. The EVIDENCE-scope and
   case-for candidates remain recorded, undecided.*
+  *Executed (2026-08-11, owner ask): the EVIDENCE.md scope paragraph
+  is in — the boundary now stands at the top of the file, pointing at
+  the wave pre-registrations' § Results, the charter synthesis and
+  docs/minimum-sufficient-stack.md (shipped since the candidate was
+  recorded, so the note is a pointer, not a placeholder). The
+  case-for candidate remains recorded, undecided.*
 
 ## Working agreements (read before picking anything up)
 

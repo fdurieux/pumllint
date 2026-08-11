@@ -429,6 +429,10 @@ behavior:**
    § Results with the charter as synthesis. This also serves the
    charter §7 commitment that the waves converge on one consolidated
    document — the boundary note is that document's placeholder.
+   *Executed 2026-08-11 (owner ask): the scope paragraph stands at
+   the top of EVIDENCE.md; with docs/minimum-sufficient-stack.md
+   since shipped, it points at the consolidated record rather than
+   holding its place.*
 3. **Tighten case-for-pumllint's problem statement.** "No automated
    check catches any of these today" gains the survey scoping the same
    document already uses ("nothing we could find", with the honesty
