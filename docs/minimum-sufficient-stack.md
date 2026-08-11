@@ -60,7 +60,26 @@ Single-shot executed ladder on the adversarial-threshold system
   arrival; the C4 wave's R3→R4 mean 6.00→4.00 agrees). W1 closed
   the C4 wave's canonical-threshold confound: the earlier "0.0 pp
   executed" for companion specs was the generator guessing guessable
-  values, not contract worthlessness.
+  values, not contract worthlessness. *Dated addition, 2026-08-11
+  (W1b, the contract-bundle decomposition):* within the four-file
+  bundle, **the decision tables are the component that carries it**
+  — +40.9 pp pooled added alone over A2 (largest of the four, both
+  generators concordant), the only component whose removal hurt
+  (+12.1 pp), with the gains/losses concentrated in the DT-numeric
+  scenario sets and the judged invention cut localizing to them
+  (5→3 / 4→2). The OpenAPI schema mirror held the validation bounds
+  at exactly 0.0 loss when the tables left (sanctioned redundancy is
+  a real fallback carrier), while removing each OTHER component —
+  companion prose, OpenAPI, state model — IMPROVED pooled results by
+  10.6–21.2 pp on this occasion (states haiku-borne, −36.4 pp;
+  A2+tables alone scored 0.818 pooled, equal to W1's stored full
+  bundle): in-bundle excess carriage, the dilution result's sharpest
+  in-stack form, and the executed citation for one-source-per-
+  decision (E5: component marginals are subadditive — haiku-borne).
+  Scoping that travels with every quote: attribution is
+  suite-relative (the suite's normative source is decision_table.md;
+  5/11 scenarios grade DT-only numerics), single-shot, one system,
+  dated. Record: stack_experiment/W1B_PREREGISTRATION.md § Results.
 - **The behavior artifact is material everywhere but system-relative
   in rank:** +31.8 pp here, +29.2 pp when dynamics arrived in the C4
   ladder, and the 16–25 pp below-cliff penalty within the sequence

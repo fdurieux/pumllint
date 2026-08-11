@@ -784,7 +784,17 @@ list and license posture live in § Settled questions.
   problem-statement tightening**; and wave candidates **W3b**
   (carrier × prompt-frame factorial) and **A3 decomposition**
   (contract information classes), each under charter §10 discipline
-  if ever queued. The reviewer's platform items (BPMN/DMN carriers,
+  if ever queued. *Dated update, 2026-08-11: the A3 decomposition
+  RAN as W1b under full charter discipline (draft → adversarial pass,
+  17 findings all adopted → freeze → owner go "freeze and go" →
+  scored run, $10.89 of $30). Verdict: the decision tables carry the
+  bundle in both directions (+40.9 pp add-one / +12.1 pp LOO,
+  generators concordant, invention cut localized); the OpenAPI
+  mirror held validation bounds at 0.0 loss; the three other
+  components measured as in-bundle dilution (removal improved
+  results 10.6–21.2 pp). Attribution is suite-relative — scoping in
+  the record: stack_experiment/W1B_PREREGISTRATION.md § Results.
+  W3b remains recorded, not queued.* The reviewer's platform items (BPMN/DMN carriers,
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already

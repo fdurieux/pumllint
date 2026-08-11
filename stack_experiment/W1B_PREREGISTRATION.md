@@ -471,9 +471,140 @@ generator?
   dated — pivotal contrasts re-measure per model generation (charter
   §2 C1).
 
-## Results
+## Results (2026-08-11, wave $10.89 of $30; pre-wave probe < $0.01)
 
-*(Frozen, pre-run. Written strictly after the scored run — run notes
-recorded before the verdicts, then per-expectation verdicts with the
-pre-committed interpretations applied, never reinterpreted — per the
-template.)*
+**Run notes (recorded before verdicts).** 120 API calls of the
+MAX_CALLS 250 live budget (60 generations + 60 judgements); zero
+generation retries; 60/60 artifacts compiled on the first attempt;
+zero judge-call failures (all first-pass valid JSON at max_tokens
+16000); no guard aborts; wall time ≈ 13 minutes. Semantic-only rates
+equalled executed on every arm. Provisioning disclosure: the wave ran
+in a fresh cloud session (session_01MpsXYFL2Z2QZ68YzCcX4DX) on freeze
+commit 8309e72; the claude.ai/code platform filters the
+environment-variable name ANTHROPIC_API_KEY out of sessions, so the
+key was delivered as WAVE_API_KEY and mapped in-session; two earlier
+runner sessions launched before the variable landed saw no key and
+stood down without a single API call (both archived). A three-call
+live model probe (one minimal call per frozen model, < $0.01)
+preceded the wave outside the driver and is disclosed here; the
+driver's own spend was $10.89. Cross-occasion note: the in-wave
+anchors landed below W1's stored values (A2 0.409 vs 0.439; A3 0.697
+vs 0.818; jump +28.8 pp vs stored +37.9) — the n = 3-per-generator
+cross-occasion variance W5 already recorded; G1's ≥ 18 pp gate HELD,
+so in-wave attribution is licensed. Ceiling note: no opus add-one arm
+reached 1.000, so ceiling reading rules (a)–(c) never engaged; opus
+C−spec and C−api both hit 1.000, capping opus removal-improvement
+readings at +12.1 pp (named where it matters below). Full record:
+results/W1B/wave_main/ (raw-record commit eb30369).
+
+**The table** (pooled executed; opus / haiku):
+
+| Arm | Pooled | opus | haiku |
+|---|---|---|---|
+| A2 (anchor) | 0.409 | 0.455 | 0.364 |
+| A3 (anchor) | 0.697 | 0.879 | 0.515 |
+| C+spec | 0.348 | 0.455 | 0.242 |
+| C+dt | 0.818 | 0.788 | 0.848 |
+| C+api | 0.576 | 0.636 | 0.515 |
+| C+states | 0.333 | 0.394 | 0.273 |
+| C−spec | 0.803 | 1.000 | 0.606 |
+| C−dt | 0.576 | 0.636 | 0.515 |
+| C−api | 0.818 | 1.000 | 0.636 |
+| C−states | 0.909 | 0.939 | 0.879 |
+
+**Component marginals (committed outputs; signed per the frozen
+conventions — add-one = C+x − A2, LOO drop = A3 − C−x):**
+
+| Direction (pooled pp) | spec | dt | api | states |
+|---|---|---|---|---|
+| Add-one increment | −6.1 | **+40.9** | +16.7 | −7.6 |
+| Leave-one-out drop | −10.6 | **+12.1** | −12.1 | −21.2 |
+
+Per-thousand-artifact-token rates and the full named-set nets are in
+analysis.json; the load-bearing set results: C+dt's net gains
+concentrated in DTNUM5 (+3.50 rate-sum) and VALBOUND2 (+1.83) with
+REST4 negative (−0.83); C+api's entire net gain sits in VALBOUND2
+(+1.83, DTNUM5 exactly 0.0) — the schema mirror carries the bounds
+and nothing else; C−dt's losses concentrated in DTNUM5 (+2.67) with
+VALBOUND2 exactly 0.0; VALBOUND2 loss is 0.0 in every LOO arm.
+
+**Judged inventions, median per run (opus/haiku, n = 3 each; judged
+oracle, never merged):** A2 5/4, A3 3/3, C+spec 5/4, C+dt 3/2,
+C+api 4/3, C+states 5/5, C−spec 2/2, C−dt 5/4, C−api 3/3,
+C−states 2/2.
+
+**Per-expectation verdicts (pre-committed interpretations applied):**
+
+- **G1 — PASSED.** In-wave (A3 − A2) pooled = +28.8 pp ≥ 18 pp.
+  Component attribution licensed.
+- **G2 — PASSED.** Per-generator in-wave A3: opus 0.879, haiku
+  0.515 — both > 0.30.
+- **E1a — CONFIRMED (the headline, add-one direction).** C+dt's
+  pooled add-one increment +40.9 pp is the largest of the four (next:
+  api +16.7; gap 24.2 pp ≫ the 1.5 pp tie quantum) and ≥ +9 pp.
+  Matrix applied: charter §6 contract row gains component
+  attribution, dated — always quoted with the suite-composition
+  scoping (finding 7); minimum-sufficient-stack §1 and the
+  pilot-facing sentence name the decision tables; contract-presence
+  rule wording names them (builds stay demand-gated).
+- **E1b — CONFIRMED (necessity direction).** C−dt's drop +12.1 pp is
+  the only positive LOO drop of the four and ≥ 9 pp. Attribution is
+  quotable in both directions, with the finding-7 scoping.
+- **E2 — CONFIRMED.** C+dt's net gains concentrate in
+  DTNUM5 ∪ VALBOUND2: +5.33 of a +4.50 total (the REST4 flow
+  scenarios net negative), > ½ of total, total > 0. The
+  numbers-only-in-DT design is validated as the value locus.
+- **E3 — CONFIRMED, in its sharpest form.** C−dt's losses
+  concentrate in DTNUM5 (+2.67 of +1.33 total; other sets negative)
+  and VALBOUND2's net loss is exactly 0.0 ≤ 1/6 — the OpenAPI schema
+  mirror held the validation bounds completely when the table left.
+  Corroborating sufficiency-side pattern: C+api's net gain lands
+  entirely in VALBOUND2. Sanctioned redundancy is executed-real as a
+  fallback carrier; one-source-per-decision keeps its cost wording
+  and gains the mirror note.
+- **E4-spec — DILUTION BRANCH (pre-committed).** Removal IMPROVED
+  the pool by 10.6 pp ≥ 9: |Δ| clears the two-sided bar in the
+  improvement direction. Per-generator: opus −12.1 (at its 1.000
+  ceiling — the true improvement may be larger), haiku −9.1.
+- **E4-api — DILUTION BRANCH.** Removal improved the pool by
+  12.1 pp; opus −12.1 (ceiling-capped), haiku −12.1.
+- **E4-states — DILUTION BRANCH, the largest.** Removal improved the
+  pool by 21.2 pp — C−states is the best arm of the wave (0.909
+  pooled, above every other arm including C+dt). Per-generator:
+  haiku −36.4 pp, opus −6.1 (within its 9 pp bar) — haiku-borne, the
+  W4 dilution signature. Honest scoping across the three: W4's
+  measured dilution was weak-generator-borne; here spec and api
+  removal improved BOTH generators (opus ceiling-capped), so
+  in-bundle excess carriage is not exclusively a weak-generator
+  phenomenon on this occasion. All three published with equal
+  prominence: no glue component earned its keep on the executed
+  oracle, and none was a plain redundancy null.
+- **E5 — NOT CONFIRMED → SUBADDITIVE branch (pre-committed).**
+  Pooled Σ(add-one) − jump = +43.9 − 28.8 = +15.2 pp > +9.1:
+  components substitute — redundant carriage of the same decisions.
+  Per-generator (E8a standing rule): opus residual +3.0 pp
+  (additive-compatible), haiku +27.3 pp (strongly subadditive) — the
+  substitution is the weak generator's. Matrix applied: the add-one
+  table is NOT quotable as a decomposition of the bundle jump;
+  attribution claims ride the identity results and the LOO
+  direction; the one-source-per-decision doctrine gains its executed
+  citation.
+- **E6 — CONFIRMED (judged, both generators, judged-n full).** C+dt's
+  median invention drop from A2 is strictly largest and strictly
+  positive in each generator: opus 5→3 (drop 2; api 1, spec 0,
+  states 0), haiku 4→2 (drop 2; api 1, spec 0, states −1). The
+  invention cut localizes to the decision tables. Quoted as
+  judgment.
+- **E7 — CONFIRMED.** Both generators identify dt as the largest
+  add-one component (opus gap to second 15.2 pp, haiku 33.3 pp, both
+  ≫ the 3.0 pp per-generator quantum; ceiling rule (c) not in play).
+  Component identity is portable across capability tiers —
+  "ordering, not magnitude" claim language applies.
+
+**What changed where (matrix applied, same commit):** charter §6
+written-decision-contract row — dated W1b component-attribution note
+(decision tables, both directions, suite-composition scoping);
+docs/minimum-sufficient-stack.md §1 — dated component sentence with
+the in-bundle dilution result and the mirror note; ROADMAP § Settled
+questions wave-candidate entry — dated ran-note pointing here.
+Product behavior: none (charter §10 — no build queued from results).
