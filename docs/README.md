@@ -131,6 +131,14 @@ but they are a useful cross-check that no audience was forgotten.
   (the Level-5 naming contradiction; EVIDENCE.md's unstated boundary),
   the "target architecture" and closing-lesson claims graded, three
   doc-hygiene and two wave candidates recorded, nothing queued.
+- [The two-stage external review, compared run by run](external-review-comparison.md)
+  — dated companion note (2026-08-11): the owner's side-by-side
+  distillation of the review's two runs (topic table, scores,
+  one-line deltas) with a per-row Claude feedback column re-graded
+  against the frozen records, the post-Run-2 repository state (W5
+  ran the same day; the keystone held), and an overall verdict —
+  faithful on facts, errs by attribution and scoping; the ask-loop
+  blind spot flagged in both runs.
 - [The measured minimum sufficient stack](minimum-sufficient-stack.md)
   — dated consolidation record (2026-08-11, verified): the research
   charter's convergence document — the measured answer to which
