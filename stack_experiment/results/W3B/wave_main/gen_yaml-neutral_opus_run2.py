@@ -1,0 +1,1 @@
+price = BASE + PER_KG * weightKg + PER_KM_TONNE * distanceKm * (weightKg / 1000)

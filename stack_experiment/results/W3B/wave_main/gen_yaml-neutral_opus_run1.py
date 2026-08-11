@@ -1,0 +1,1 @@
+price = BASE_FEE + PER_KG * weightKg + PER_KM * distanceKm
