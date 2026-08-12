@@ -809,7 +809,25 @@ list and license posture live in § Settled questions.
   per-generator language mandatory — the stored-frame ordering is
   opus-borne); E3 split (stored 0/3 reproduced, neutral 2/3 are
   degenerate fragments, native 0/3); E4/E6 confirmed. Record:
-  stack_experiment/W3B_PREREGISTRATION.md § Results.* The reviewer's platform items (BPMN/DMN carriers,
+  stack_experiment/W3B_PREREGISTRATION.md § Results.* *Dated
+  addition, 2026-08-12 — two candidates opened by W3b's results,
+  recorded, not queued: a **carrier-deficit reproduction wave**
+  (code-stub's and Mermaid's stored-frame deficits did not reproduce
+  beyond the equivalence bar on the second occasion, so G3 blocked
+  any re-scoping and the cross-occasion instability is now measured
+  once; a third measurement at higher n per generator would resolve
+  it — queue only if a decision comes to hang on those two carriers'
+  standing W3 numbers, which today none does: the pilot mandates
+  PlantUML and the records carry the non-reproduction notes); and a
+  **frame-robustness wave** (W3b measured carrier-native frames
+  HURTING, −10.6…−18.2 pp pooled on one occasion, via two distinct
+  mechanisms — opus output-contract collapse into non-code
+  fragments, haiku compiling-but-worse; candidate design: frame ×
+  phrasing-variant robustness at fixed carrier, to establish whether
+  the harm is phrase-specific or frame-class-general — queue only if
+  any adopter-facing guidance is about to recommend prompt-frame
+  wording; the current records deliberately recommend none). Both
+  under charter §10 discipline in full if ever queued.* The reviewer's platform items (BPMN/DMN carriers,
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already
