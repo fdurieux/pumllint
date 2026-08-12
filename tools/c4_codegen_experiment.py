@@ -31,6 +31,20 @@ Run:
   python tools/c4_codegen_experiment.py --dry-run
   python tools/c4_codegen_experiment.py --calibrate 2   # R4 only, no judge
   python tools/c4_codegen_experiment.py                 # the scored wave
+
+Adversarial-threshold replication (pre-registered in the protocol doc's
+§Adversarial-threshold replication; arms R3 and R4A, suite
+tools/acceptance/c4_loan_adv_suite.py, results c4_experiment_results/
+adv_wave/):
+  python tools/c4_codegen_experiment.py --adversarial            # API wave
+  python tools/c4_codegen_experiment.py --adversarial \
+      --score-dir c4_experiment_results/adv_wave \
+      --instrument-label "<generator label>"
+The --score-dir mode runs the $0 oracles (mechanical conformance +
+execution) over pre-generated gen_<rung>_run<n>.py artifacts — the path
+used when generation happens outside this harness (e.g. the disclosed
+subagent instrument of the 2026-08-01 replication, where the environment
+held no raw API credentials).
 """
 
 from __future__ import annotations
@@ -58,9 +72,46 @@ GEN_MODEL = "claude-opus-4-8"
 JUDGE_MODEL = "claude-sonnet-5"
 PRICES = {  # $/M tokens (input, output)
     "claude-opus-4-8": (5.00, 25.00),
+    "claude-opus-5": (5.00, 25.00),
     "claude-sonnet-5": (3.00, 15.00),
+    # Cross-vendor arms: rates verified against vendor price pages at
+    # smoke-test time and recorded in the wave's doc section; unknown
+    # models fall back to _FALLBACK_PRICE (conservative) for the guard.
+    "gemini-3.1-pro-preview": (2.00, 12.00),
 }
+_FALLBACK_PRICE = (5.00, 25.00)
+
+# --------------------------------------------------- cross-vendor registry
+# The recipe wave (protocol doc §Cross-vendor recipe wave): arms R3 vs R4A
+# per vendor, executed oracle carries the claims. Model ids are pinned by
+# environment override at smoke-test time and recorded in the doc; the
+# defaults below are the freeze-time best-known flagships (house
+# precedent: gemini pro SKUs churn, exact id recorded at run time).
+XV_VENDORS = {
+    "anthropic": {"model_env": "XV_ANTHROPIC_MODEL",
+                  "default_model": "claude-opus-5",
+                  "key_envs": ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN")},
+    "openai": {"model_env": "XV_OPENAI_MODEL",
+               "default_model": "gpt-5.2",
+               "key_envs": ("OPENAI_API_KEY",)},
+    "google": {"model_env": "XV_GOOGLE_MODEL",
+               "default_model": "gemini-3.1-pro-preview",
+               "key_envs": ("GEMINI_API_KEY", "GOOGLE_API_KEY")},
+}
+
+
+def xv_model(vendor: str) -> str:
+    cfg = XV_VENDORS[vendor]
+    return os.environ.get(cfg["model_env"]) or cfg["default_model"]
+
+
+def xv_has_key(vendor: str) -> bool:
+    return any(os.environ.get(k) for k in XV_VENDORS[vendor]["key_envs"])
 RUNGS = ["R0", "R1", "R2", "R3", "R4"]
+# Adversarial-threshold replication arms: R3 (inputs identical to the main
+# ladder's R3 — qualitative guards, no numbers) vs R4A (R3 + companion spec
+# whose business-rule numbers are all moved off their canonical values).
+ADV_RUNGS = ["R3", "R4A"]
 RUNG_ROOT = REPO_ROOT / "c4_experiment"
 RESULTS_DIR = REPO_ROOT / "c4_experiment_results"
 CHILD = Path(__file__).resolve().parent / "acceptance" / "runner_child.py"
@@ -279,9 +330,246 @@ def _compiles(code: str):
 def _spend(usage: dict) -> float:
     total = 0.0
     for model, u in usage.items():
-        pin, pout = PRICES[model]
+        pin, pout = PRICES.get(model, _FALLBACK_PRICE)
         total += u["in"] / 1e6 * pin + u["out"] / 1e6 * pout
     return round(total, 2)
+
+
+def _openai_call(model: str, prompt: str, max_tokens: int,
+                 usage: dict) -> tuple[str, str]:
+    """One chat-completions call via urllib (no SDK). Returns (text,
+    finish_reason). Retries transient throttling/5xx with backoff.
+    Reasoning tokens, where the SKU bills them, arrive inside
+    completion_tokens and are counted as output — same accounting rule as
+    the Gemini shim's thinking tokens."""
+    import time
+    import urllib.error
+    import urllib.request
+
+    key = os.environ.get("OPENAI_API_KEY")
+    body = {
+        "model": model,
+        "messages": [{"role": "user", "content": prompt}],
+        "max_completion_tokens": max_tokens,
+    }
+    req = urllib.request.Request(
+        "https://api.openai.com/v1/chat/completions",
+        data=json.dumps(body).encode(),
+        headers={"Content-Type": "application/json",
+                 "Authorization": f"Bearer {key}"},
+        method="POST",
+    )
+    delay = 15.0
+    resp = None
+    for attempt in range(5):
+        try:
+            with urllib.request.urlopen(req, timeout=300) as r:
+                resp = json.load(r)
+            break
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 500, 502, 503, 529) and attempt < 4:
+                time.sleep(delay)
+                delay *= 2
+                continue
+            raise
+    choice = resp["choices"][0]
+    u = resp.get("usage", {})
+    with _USAGE_LOCK:
+        acc = usage.setdefault(model, {"in": 0, "out": 0})
+        acc["in"] += int(u.get("prompt_tokens", 0))
+        acc["out"] += int(u.get("completion_tokens", 0))
+    return (choice.get("message", {}).get("content") or "",
+            choice.get("finish_reason") or "")
+
+
+def _xv_generate(client, vendor: str, rung: str, run_idx: int,
+                 usage: dict) -> dict:
+    """One cross-vendor generation: identical prompt, per-vendor transport.
+    House retry rule (once, on truncation or non-compiling) applies to
+    every vendor."""
+    model = xv_model(vendor)
+    prompt = GEN_PROMPT.format(spec=rung_spec_text(rung))
+    attempts = []
+    code, ok = "", False
+    for _ in range(2):
+        if vendor == "anthropic":
+            resp = _call(client, model, usage, max_tokens=12000,
+                         **_thinking(model),
+                         messages=[{"role": "user", "content": prompt}])
+            text, stop = _text_of(resp), resp.stop_reason
+        elif vendor == "openai":
+            text, stop = _openai_call(model, prompt, 12000, usage)
+        elif vendor == "google":
+            import codegen_experiment as _ce
+            text, stop = _ce._gemini_call(model, prompt, 12000, usage)
+        else:  # pragma: no cover - registry is closed
+            raise ValueError(vendor)
+        code = _strip_fences(text).strip()
+        ok, err = _compiles(code)
+        attempts.append({"stop_reason": stop, "compiles": ok, "error": err})
+        if ok and stop not in ("max_tokens", "length", "MAX_TOKENS"):
+            break
+    return {"vendor": vendor, "model": model, "rung": rung, "run": run_idx,
+            "code": code, "attempts": attempts, "compiles": ok}
+
+
+def xv_smoke(vendors: list[str]) -> int:
+    """Tiny per-vendor liveness call; verifies the pinned model id exists
+    and records what actually answered. ~<$0.01 total."""
+    usage: dict = {}
+    rc = 0
+    for vendor in vendors:
+        model = xv_model(vendor)
+        if not xv_has_key(vendor):
+            print(f"{vendor}: NO KEY in environment")
+            rc = 2
+            continue
+        try:
+            if vendor == "anthropic":
+                import anthropic
+                client = anthropic.Anthropic()
+                resp = _call(client, model, usage, max_tokens=16,
+                             messages=[{"role": "user",
+                                        "content": "Reply with the single word ok."}])
+                text = _text_of(resp)
+            elif vendor == "openai":
+                text, _ = _openai_call(model, "Reply with the single word ok.",
+                                       16, usage)
+            else:
+                import codegen_experiment as _ce
+                text, _ = _ce._gemini_call(model, "Reply with the single word ok.",
+                                           64, usage)
+            print(f"{vendor}: model={model} reply={text.strip()[:40]!r}")
+        except Exception as e:  # noqa: BLE001 — smoke reports, never raises
+            print(f"{vendor}: model={model} FAILED: {str(e)[:200]}")
+            rc = 2
+    print(f"smoke spend: ${_spend(usage)}")
+    return rc
+
+
+def run_cross_vendor(args, suite_mod) -> int:
+    """The recipe wave: arms R3 vs R4A x every keyed vendor, n runs each.
+    Generation per-vendor transport; oracles identical for all arms
+    (mechanical conformance, adversarial-suite execution, pinned sonnet-5
+    judge — judged numbers quoted as judgments, never merged with
+    executed; the cross-vendor judge-validity caveat is pre-registered)."""
+    import anthropic
+    vendors = [v for v in XV_VENDORS if xv_has_key(v)]
+    missing = [v for v in XV_VENDORS if not xv_has_key(v)]
+    if missing:
+        print(f"vendors without keys, skipped: {missing}")
+    if not vendors:
+        print("no vendor keys in the environment")
+        return 2
+    rungs = ["R3", "R4A"]
+    n_gen = len(vendors) * len(rungs) * args.runs
+    plan_calls = n_gen * 2 + n_gen  # worst-case retries + judges
+    print(f"plan: {n_gen} generations + {n_gen} judgements "
+          f"(<= {plan_calls} calls); vendors {vendors}; "
+          f"models {[xv_model(v) for v in vendors]}")
+    if plan_calls > MAX_CALLS:
+        print(f"aborting: plan exceeds MAX_CALLS={MAX_CALLS}")
+        return 2
+    if args.dry_run:
+        return 0
+
+    client = anthropic.Anthropic()
+    usage: dict = {}
+    out_dir = RESULTS_DIR / "xv_wave"
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    jobs = [(v, rung, i + 1) for v in vendors for rung in rungs
+            for i in range(args.runs)]
+    runs: list[dict] = []
+    with ThreadPoolExecutor(max_workers=6) as pool:
+        futs = {pool.submit(_xv_generate, client, v, rung, idx, usage): None
+                for v, rung, idx in jobs}
+        for fut in futs:
+            runs.append(fut.result())
+    runs.sort(key=lambda r: (r["vendor"], r["rung"], r["run"]))
+
+    for r in runs:
+        art = out_dir / f"gen_{r['vendor']}_{r['rung']}_run{r['run']}.py"
+        art.write_text(r["code"], encoding="utf-8")
+        r["code_file"] = art.name
+        if r["compiles"]:
+            r["conformance"] = conformance(r["code"], r["rung"])
+            r["execution"] = execute_artifact(art, suite_mod)
+        else:
+            r["conformance"] = None
+            r["execution"] = [{"scenario": s, "stage": "import_error",
+                               "passed": False, "outcome_class": None,
+                               "entry": None, "detail": "does not compile"}
+                              for s in suite_mod.SUITE["scenarios"]]
+
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futs = {pool.submit(judge_one, client, r["rung"], r["code"], usage): r
+                for r in runs if r["compiles"]}
+        for fut, r in futs.items():
+            try:
+                r["judge"] = fut.result()
+            except Exception as e:  # noqa: BLE001 — logged, run excluded
+                r["judge"] = None
+                r["judge_error"] = str(e)[:300]
+
+    report = {
+        "vendors": {v: xv_model(v) for v in vendors},
+        "judge_model": JUDGE_MODEL, "runs_per_cell": args.runs,
+        "suite_module": suite_mod.__name__,
+        "prompt": GEN_PROMPT, "usage": usage, "spend_usd": _spend(usage),
+        "runs": [{k: v for k, v in r.items() if k != "code"} for r in runs],
+    }
+    (out_dir / "report.json").write_text(
+        json.dumps(report, indent=2) + "\n", encoding="utf-8")
+    summary = {v: analyze([r for r in runs if r["vendor"] == v])
+               for v in vendors}
+    (out_dir / "analysis.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(summary, indent=2))
+    print(f"spend: ${_spend(usage)}  -> {out_dir}/report.json")
+    return 0
+
+
+def judge_pregenerated(dir_path: Path, suite_mod) -> int:
+    """Raw-API judge pass over a --score-dir report's artifacts: the pinned
+    judge configuration (claude-sonnet-5, schema-enforced, retry-once),
+    byte-identical to the main wave's. Merges judge rows into report.json
+    and re-analyzes."""
+    import anthropic
+    client = anthropic.Anthropic()
+    report_path = dir_path / "report.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    usage: dict = report.get("usage", {})
+    todo = [r for r in report["runs"]
+            if r.get("compiles") and r.get("judge") is None]
+    print(f"judging {len(todo)} stored artifacts "
+          f"(model={JUDGE_MODEL}, max_tokens={JUDGE_MAX_TOKENS})")
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        futs = {}
+        for r in todo:
+            code = (dir_path / r["code_file"]).read_text(encoding="utf-8")
+            futs[pool.submit(judge_one, client, r["rung"], code, usage)] = r
+        for fut, r in futs.items():
+            try:
+                r["judge"] = fut.result()
+                r.pop("judge_error", None)
+            except Exception as e:  # noqa: BLE001
+                r["judge_error"] = str(e)[:300]
+    report["usage"] = usage
+    report["judge_spend_usd"] = _spend(usage)
+    report_path.write_text(json.dumps(report, indent=2) + "\n",
+                           encoding="utf-8")
+    if any("vendor" in r for r in report["runs"]):
+        vendors = sorted({r["vendor"] for r in report["runs"]})
+        summary = {v: analyze([r for r in report["runs"] if r["vendor"] == v])
+                   for v in vendors}
+    else:
+        summary = analyze(report["runs"])
+    (dir_path / "analysis.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(summary, indent=2))
+    print(f"judge spend: ${_spend(usage)}")
+    return 0
 
 
 # ------------------------------------------------------------------- inputs
@@ -501,8 +789,8 @@ def run_child(artifact: Path, spec: dict) -> dict:
                 "detail": ("unparseable: " + lines[-1])[:300]}
 
 
-def build_spec(scenario: str) -> dict:
-    fam = c4_loan_suite.SUITE
+def build_spec(scenario: str, suite=None) -> dict:
+    fam = (suite or c4_loan_suite).SUITE
     sc = fam["scenarios"][scenario]
     return {
         "family": "loan_origination", "scenario": scenario,
@@ -522,15 +810,19 @@ def build_spec(scenario: str) -> dict:
     }
 
 
-def execute_artifact(artifact: Path) -> list[dict]:
+def execute_artifact(artifact: Path, suite=None) -> list[dict]:
+    suite = suite or c4_loan_suite
+    # Pre-registered overlay: the runner has no "review" outcome class. The
+    # canonical suite predates REVIEW_OVERLAY_SCENARIOS, hence the default.
+    overlay = set(getattr(suite, "REVIEW_OVERLAY_SCENARIOS",
+                          ("borderline_review",)))
     rows = []
-    for scen in c4_loan_suite.SUITE["scenarios"]:
-        res = run_child(artifact, build_spec(scen))
-        # Pre-registered overlay: the runner has no "review" outcome class.
-        if scen == "borderline_review" and res.get("passed"):
+    for scen in suite.SUITE["scenarios"]:
+        res = run_child(artifact, build_spec(scen, suite))
+        if scen in overlay and res.get("passed"):
             d = (res.get("detail") or "").lower()
-            if not (re.search(c4_loan_suite.REVIEW_RE, d)
-                    and not re.search(c4_loan_suite.DECIDED_RE, d)):
+            if not (re.search(suite.REVIEW_RE, d)
+                    and not re.search(suite.DECIDED_RE, d)):
                 res["passed"] = False
                 res["stage"] = "wrong_outcome"
                 res["detail"] = "review-overlay: " + (res.get("detail") or "")
@@ -616,7 +908,7 @@ def analyze(runs: list[dict]) -> dict:
             agg["fidelity"].append(j["fidelity_score"])
 
     out = {}
-    for rung in RUNGS:
+    for rung in RUNGS + [r for r in ADV_RUNGS if r not in RUNGS]:
         a = per_rung.get(rung)
         if not a:
             continue
@@ -638,6 +930,65 @@ def analyze(runs: list[dict]) -> dict:
             "fidelity_mean": mean(a["fidelity"]),
         }
     return out
+
+
+def score_pregenerated(dir_path: Path, suite, rungs: list[str],
+                       instrument: str) -> int:
+    """$0 oracles over pre-generated artifacts: mechanical conformance +
+    execution against `suite` for every gen_<rung>_run<n>.py in dir_path.
+    Preserves judge rows already present in an existing report.json (so a
+    judge pass merged into the report survives re-scoring). Generation
+    metadata beyond compile status is not reconstructable here — the
+    instrument label in the report says where the artifacts came from."""
+    prior: dict = {}
+    report_path = dir_path / "report.json"
+    if report_path.exists():
+        old = json.loads(report_path.read_text(encoding="utf-8"))
+        prior = {(r["rung"], r["run"]): r for r in old.get("runs", [])}
+    runs = []
+    for p in sorted(dir_path.glob("gen_*_run*.py")):
+        m = re.match(r"gen_(.+)_run(\d+)\.py$", p.name)
+        if not m:
+            continue
+        rung, idx = m.group(1), int(m.group(2))
+        code = p.read_text(encoding="utf-8")
+        ok, err = _compiles(code)
+        r = {"rung": rung, "run": idx, "code_file": p.name,
+             "attempts": [{"stop_reason": None, "compiles": ok,
+                           "error": err}],
+             "compiles": ok}
+        for k in ("judge", "judge_error", "judge_note", "gen_tool_uses",
+                  "judge_tool_uses"):
+            if k in prior.get((rung, idx), {}):
+                r[k] = prior[(rung, idx)][k]
+        if ok:
+            r["conformance"] = conformance(code, rung)
+            r["execution"] = execute_artifact(p, suite)
+        else:
+            r["conformance"] = None
+            r["execution"] = [{"scenario": s, "stage": "import_error",
+                               "passed": False, "outcome_class": None,
+                               "entry": None, "detail": "does not compile"}
+                              for s in suite.SUITE["scenarios"]]
+        runs.append(r)
+    if not runs:
+        print(f"no gen_*_run*.py artifacts in {dir_path}")
+        return 2
+    report = {
+        "instrument": instrument, "suite_module": suite.__name__,
+        "judge_model": JUDGE_MODEL,
+        "pumllint_view": {rung: pumllint_view(rung) for rung in rungs
+                          if (RUNG_ROOT / rung).is_dir()},
+        "runs": runs,
+    }
+    report_path.write_text(json.dumps(report, indent=2) + "\n",
+                           encoding="utf-8")
+    summary = analyze(runs)
+    (dir_path / "analysis.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps(summary, indent=2))
+    print(f"scored {len(runs)} artifacts -> {report_path}")
+    return 0
 
 
 def rejudge(uniform: bool = False) -> int:
@@ -699,18 +1050,58 @@ def main(argv=None) -> int:
                     help="re-judge remaining old-budget judgements so all "
                          "judgements share max_tokens=16000")
     ap.add_argument("--runs", type=int, default=RUNS_PER_RUNG)
+    ap.add_argument("--adversarial", action="store_true",
+                    help="adversarial-threshold replication: arms R3+R4A, "
+                         "suite acceptance.c4_loan_adv_suite, results in "
+                         "c4_experiment_results/adv_wave/")
+    ap.add_argument("--score-dir", metavar="DIR",
+                    help="run the $0 oracles over pre-generated "
+                         "gen_<rung>_run<n>.py artifacts in DIR; no API")
+    ap.add_argument("--instrument-label", default="pregenerated",
+                    help="generator label recorded in a --score-dir report")
+    ap.add_argument("--judge-dir", metavar="DIR",
+                    help="raw-API pinned-judge pass over a scored report's "
+                         "artifacts in DIR; merges judge rows, re-analyzes")
+    ap.add_argument("--cross-vendor", action="store_true",
+                    help="recipe wave: R3 vs R4A x every keyed vendor "
+                         "(anthropic/openai/google), adversarial suite, "
+                         "results in c4_experiment_results/xv_wave/")
+    ap.add_argument("--xv-smoke", action="store_true",
+                    help="tiny per-vendor liveness calls; verifies keys and "
+                         "pinned model ids, records what answered")
     args = ap.parse_args(argv)
 
     if args.rejudge or args.rejudge_uniform:
         return rejudge(uniform=args.rejudge_uniform)
+
+    suite_mod = c4_loan_suite
+    rung_list = RUNGS
+    if args.adversarial:
+        from acceptance import c4_loan_adv_suite
+        suite_mod = c4_loan_adv_suite
+        rung_list = ADV_RUNGS
+
+    if args.score_dir:
+        return score_pregenerated(Path(args.score_dir), suite_mod, rung_list,
+                                  args.instrument_label)
+
+    if args.xv_smoke:
+        return xv_smoke(list(XV_VENDORS))
 
     if not (os.environ.get("ANTHROPIC_API_KEY")
             or os.environ.get("ANTHROPIC_AUTH_TOKEN")):
         print("no Anthropic API credentials in the environment")
         return 2
 
+    if args.judge_dir:
+        return judge_pregenerated(Path(args.judge_dir), suite_mod)
+
+    if args.cross_vendor:
+        from acceptance import c4_loan_adv_suite
+        return run_cross_vendor(args, c4_loan_adv_suite)
+
     calibrating = args.calibrate is not None
-    rungs = ["R4"] if calibrating else RUNGS
+    rungs = ["R4"] if calibrating else rung_list
     n_runs = args.calibrate if calibrating else args.runs
     n_gen = len(rungs) * n_runs
     n_judge = 0 if calibrating else n_gen
@@ -720,7 +1111,8 @@ def main(argv=None) -> int:
     print(f"plan: {n_gen} generations + {n_judge} judgements "
           f"(<= {plan_calls} calls, est ~${est}); "
           f"{len(rungs)} rungs x {n_runs} runs; "
-          f"{len(c4_loan_suite.SUITE['scenarios'])} scenarios/artifact")
+          f"{len(suite_mod.SUITE['scenarios'])} scenarios/artifact"
+          + (" [adversarial]" if args.adversarial else ""))
     if plan_calls > MAX_CALLS:
         print(f"aborting: plan exceeds MAX_CALLS={MAX_CALLS}")
         return 2
@@ -732,7 +1124,9 @@ def main(argv=None) -> int:
     import anthropic
     client = anthropic.Anthropic()
     usage: dict = {}
-    out_dir = RESULTS_DIR / ("calib" if calibrating else "wave_main")
+    out_dir = RESULTS_DIR / ("calib" if calibrating
+                             else "adv_wave" if args.adversarial
+                             else "wave_main")
     out_dir.mkdir(parents=True, exist_ok=True)
 
     jobs = [(rung, i + 1) for rung in rungs for i in range(n_runs)]
@@ -750,13 +1144,13 @@ def main(argv=None) -> int:
         r["code_file"] = art.name
         if r["compiles"]:
             r["conformance"] = conformance(r["code"], r["rung"])
-            r["execution"] = execute_artifact(art)
+            r["execution"] = execute_artifact(art, suite_mod)
         else:
             r["conformance"] = None
             r["execution"] = [{"scenario": s, "stage": "import_error",
                                "passed": False, "outcome_class": None,
                                "entry": None, "detail": "does not compile"}
-                              for s in c4_loan_suite.SUITE["scenarios"]]
+                              for s in suite_mod.SUITE["scenarios"]]
 
     if not calibrating:
         with ThreadPoolExecutor(max_workers=8) as pool:

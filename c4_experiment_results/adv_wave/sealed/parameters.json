@@ -1,0 +1,30 @@
+{
+  "system": "LoanCheck (adversarial parameter set, R4A)",
+  "decision_policy": {
+    "approve_min_score": 713,
+    "review_min_score": 641,
+    "review_max_score": 712,
+    "decline_below": 641
+  },
+  "validation": {
+    "amount_min": 500,
+    "amount_max": 84500,
+    "term_months_min": 9,
+    "term_months_max": 96
+  },
+  "canonical_counterparts": {
+    "approve_min_score": 700,
+    "review_min_score": 620,
+    "review_max_score": 699,
+    "amount_min": 1,
+    "amount_max": 100000,
+    "term_months_min": 6,
+    "term_months_max": 120
+  },
+  "probes_in_disagreement_zones": {
+    "review_mid": {"score": 705, "canonical_rule_says": "approved", "adversarial_rule_says": "review"},
+    "declined_band": {"score": 630, "canonical_rule_says": "review", "adversarial_rule_says": "declined"},
+    "over_cap": {"amount": 90000, "canonical_rule_says": "valid", "adversarial_rule_says": "rejected: invalid_application"}
+  },
+  "agreement_anchors": ["approved_high (760)", "declined_low (540)", "invalid_zero (0)", "bureau_error", "storage_error"]
+}

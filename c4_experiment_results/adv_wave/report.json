@@ -1,0 +1,874 @@
+{
+  "instrument": "claude-code-subagent/general-purpose, model override opus -> claude-opus-5[1m]",
+  "suite_module": "acceptance.c4_loan_adv_suite",
+  "judge_model": "claude-sonnet-5",
+  "pumllint_view": {
+    "R3": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "dynamics.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ],
+    "R4A": [
+      {
+        "file": "components_api.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "components_engine.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "containers.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      },
+      {
+        "file": "dynamics.puml",
+        "level": 1,
+        "composite": 100.0,
+        "element_count": 0,
+        "findings": []
+      }
+    ]
+  },
+  "runs": [
+    {
+      "rung": "R3",
+      "run": 1,
+      "code_file": "gen_R3_run1.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'amount': 25000.0, 'term_months': 60, 'decision': 'approve', 'score': 760, 'application_status': 'approved', 'notified': true, 'notification_id': none, 'notification_error': none, 'stored': true, 'credit_report_pulled': true"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'approved', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'amount': 25000.0, 'term_months': 60, 'decision': 'approve', 'score': 705, 'application_status': 'approved', 'notified': true, 'notification_id': none, 'notification_error': none, 'stored': true, 'credit_report_pulled': true"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'amount': 25000.0, 'term_months': 60, 'decision': 'decline', 'score': 540, 'application_status': 'declined', 'notified': true, 'notification_id': none, 'notification_error': none, 'stored': true, 'credit_report_pulled': true"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'under_review', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'amount': 25000.0, 'term_months': 60, 'decision': 'refer', 'score': 630, 'application_status': 'under_manual_review', 'notified': true, 'notification_id': none, 'notification_error': none, 'stored': true, 'credit_report_"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount must be positive'], 'message': 'amount must be positive', 'applicant_id': 'cust-1', 'application_id': none, 'stored': false, 'credit_report_pulled': false, 'notified': false} | {'status': 'rejected', 'reason': 'invalid_applic"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount above product maximum of 50000.0'], 'message': 'amount above product maximum of 50000.0', 'applicant_id': 'cust-1', 'application_id': none, 'stored': false, 'credit_report_pulled': false, 'notified': false} | {'status': 'reje"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'message': 'bureauunavailableerror: credit bureau timeout', 'applicant_id': 'cust-1', 'application_id': none, 'stored': true, 'application_status': 'pending', 'decision': none, 'credit_report_pulled': false, 'notified': false} |"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'message': 'storageerror: application store unavailable', 'applicant_id': 'cust-1', 'application_id': none, 'stored': true, 'application_status': 'pending', 'decision': none, 'credit_report_pulled': false, 'notified': false} | {"
+        }
+      ]
+    },
+    {
+      "rung": "R3",
+      "run": 2,
+      "code_file": "gen_R3_run2.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [
+          [
+            "credit_bureau",
+            "decision_engine"
+          ],
+          [
+            "decision_engine",
+            "origination_api"
+          ],
+          [
+            "notification_service",
+            "origination_api"
+          ]
+        ],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-037d1fa7c4', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 760, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'decision': 'approve', 'application_id': 'app-fea44b6e0a', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 705, 'reason': 'score_sufficient', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'confirmed"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'decision': 'decline', 'application_id': 'app-fd29866a2e', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 540, 'reason': 'score_too_low', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'declined', 'd"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'under_review', 'decision': 'refer', 'application_id': 'app-3d5b8727bd', 'applicant_id': 'cust-1', 'application_status': 'stored', 'credit_score': 630, 'reason': 'score_borderline', 'application_stored': true, 'credit_report_pulled': true, 'notification_sent': true} | {'status': 'under_re"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount_not_positive'], 'application_stored': false, 'credit_report_pulled': false, 'notification_sent': false} | {'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount_not_positive'], 'application_stored': false,"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount_above_product_maximum'], 'application_stored': false, 'credit_report_pulled': false, 'notification_sent': false} | {'status': 'rejected', 'reason': 'invalid_application', 'errors': ['amount_above_product_maximum'], 'applicati"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'detail': 'bureauunavailableerror: credit bureau timeout', 'application_status': 'pending', 'application_stored': true, 'credit_report_pulled': false, 'notification_sent': false} | {'status': 'error: bureau_unavailable', 'reason"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'detail': 'storageerror: application store unavailable', 'application_status': 'pending', 'application_stored': true, 'credit_report_pulled': false, 'notification_sent': false} | {'status': 'error: bureau_unavailable', 'reason':"
+        }
+      ]
+    },
+    {
+      "rung": "R3",
+      "run": 3,
+      "code_file": "gen_R3_run3.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'confirmed', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'application_status': 'approved', 'decision': 'approve', 'score': 760, 'band': 760, 'reason': 'score sufficient', 'notified': false, 'notification_id': none, 'bureau_calls': 0} | {'status': 'confirmed', 'application_id': 'a"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "review-overlay: {'status': 'confirmed', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'application_status': 'approved', 'decision': 'approve', 'score': 705, 'band': 705, 'reason': 'score sufficient', 'notified': false, 'notification_id': none, 'bureau_calls': 0} | {'status': 'confirmed', 'application_id': 'a"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'application_status': 'declined', 'decision': 'decline', 'score': 540, 'band': 540, 'reason': 'score too low', 'notified': false, 'notification_id': none, 'bureau_calls': 0} | {'status': 'declined', 'application_id': 'app-1'"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "wrong_outcome",
+          "passed": false,
+          "outcome_class": "unknown",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': 'app-1', 'applicant_id': 'cust-1', 'application_status': 'manual_review', 'decision': 'refer', 'score': 630, 'band': 630, 'reason': 'score borderline', 'notified': false, 'notification_id': none, 'bureau_calls': 0} | {'status': 'review', 'application_id': 'app-"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'detail': 'amount must be positive', 'field': 'amount', 'application_id': none, 'decision': none, 'score': none, 'notified': false, 'bureau_calls': 0} | {'status': 'rejected', 'reason': 'invalid_application', 'detail': 'amount must be positive'"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected', 'reason': 'invalid_application', 'detail': 'amount 90000.00 above product maximum 50000.00', 'field': 'amount', 'application_id': none, 'decision': none, 'score': none, 'notified': false, 'bureau_calls': 0} | {'status': 'rejected', 'reason': 'invalid_application', 'detail': 'a"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'detail': 'bureauunavailableerror: credit bureau timeout', 'application_id': none, 'application_status': none, 'decision': none, 'score': none, 'notified': false, 'bureau_calls': 0} | {'status': 'error: bureau_unavailable', 'rea"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureau_unavailable', 'detail': 'storageerror: application store unavailable', 'application_id': none, 'application_status': none, 'decision': none, 'score': none, 'notified': false, 'bureau_calls': 0} | {'status': 'error: bureau_unavailable', 'reaso"
+        }
+      ]
+    },
+    {
+      "rung": "R4A",
+      "run": 1,
+      "code_file": "gen_R4A_run1.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [
+          "Application",
+          "Decision"
+        ],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [
+          [
+            "application_store",
+            "origination_api"
+          ],
+          [
+            "credit_bureau",
+            "decision_engine"
+          ],
+          [
+            "decision_engine",
+            "origination_api"
+          ],
+          [
+            "notification_service",
+            "origination_api"
+          ]
+        ],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'approved', 'score': 760, 'reason': 'score sufficient', 'notification_sent': true} | {'status': 'approved', 'application_id': proteanobj(status='"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'review', 'score': 705, 'reason': 'score borderline', 'notification_sent': true} | {'status': 'review', 'application_id': proteanobj(status='stored"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'declined', 'score': 540, 'reason': 'score too low', 'notification_sent': true} | {'status': 'declined', 'application_id': proteanobj(status='sto"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'declined', 'score': 630, 'reason': 'score too low', 'notification_sent': true} | {'status': 'declined', 'application_id': proteanobj(status='sto"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application', 'reason': 'amount out of product limits'} | {'status': 'rejected: invalid_application', 'reason': 'amount out of product limits'} | status=rejected: invalid_application reason=amount out of product limits"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application', 'reason': 'amount out of product limits'} | {'status': 'rejected: invalid_application', 'reason': 'amount out of product limits'} | status=rejected: invalid_application reason=amount out of product limits"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'pending', 'reason': 'bureauunavailableerror: credit bureau timeout'} | {'status': 'error: bureau_unavailable', 'application_id'"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'storageerror: application store unavailable'} | {'status': 'error: bureau_unavailable', 'reason': 'storageerror: application store unavailable'} | status=error: bureau_unavailable reason=storageerror: application store unavailable"
+        }
+      ]
+    },
+    {
+      "rung": "R4A",
+      "run": 2,
+      "code_file": "gen_R4A_run2.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [
+          [
+            "decision_engine",
+            "origination_api"
+          ]
+        ],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 760, 'notified': true, 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 705, 'notified': true, 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=tru"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 540, 'notified': true, 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'score': 630, 'notified': true, 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application', 'reason': 'amount out of product limits', 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'rejected: invalid_application', 'reason': 'amount out of product limits', 'bureau_calls': 0, 'notifications_sent': 0} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application', 'reason': 'amount out of product limits', 'bureau_calls': 0, 'notifications_sent': 0} | {'status': 'rejected: invalid_application', 'reason': 'amount out of product limits', 'bureau_calls': 0, 'notifications_sent': 0} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'bureauunavailableerror: credit bureau timeout', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'application_status': 'pending', 'bureau_calls': 0, 'notifications_sent': 0} | {'status': '"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'reason': 'storageerror: application store unavailable'} | {'status': 'error: bureau_unavailable', 'reason': 'storageerror: application store unavailable'} | status=error: bureau_unavailable reason=storageerror: application store unavailable"
+        }
+      ]
+    },
+    {
+      "rung": "R4A",
+      "run": 3,
+      "code_file": "gen_R4A_run3.py",
+      "attempts": [
+        {
+          "stop_reason": null,
+          "compiles": true,
+          "error": null
+        }
+      ],
+      "compiles": true,
+      "conformance": {
+        "classes_present": [
+          "ApplicationService",
+          "ApplicationStore",
+          "ApplicationValidator",
+          "BureauGateway",
+          "CreditBureau",
+          "DecisionEngine",
+          "NotificationService",
+          "OriginationApi",
+          "ScoringPolicy"
+        ],
+        "classes_missing": [],
+        "groups_missing": [],
+        "extra_classes": [],
+        "group_edges_realized": [
+          [
+            "decision_engine",
+            "credit_bureau"
+          ],
+          [
+            "origination_api",
+            "application_store"
+          ],
+          [
+            "origination_api",
+            "decision_engine"
+          ],
+          [
+            "origination_api",
+            "notification_service"
+          ]
+        ],
+        "group_edge_recall": 1.0,
+        "extra_group_edges": [
+          [
+            "decision_engine",
+            "origination_api"
+          ]
+        ],
+        "component_edges_realized": [
+          [
+            "applicationservice",
+            "applicationvalidator"
+          ],
+          [
+            "scoringpolicy",
+            "bureaugateway"
+          ]
+        ],
+        "component_edge_recall": 1.0,
+        "handle_present": true
+      },
+      "execution": [
+        {
+          "scenario": "approved_high",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'approved', 'score': 760, 'notification_sent': true} | {'status': 'approved', 'application_id': proteanobj(status='stored', stored=true, success=true, appl"
+        },
+        {
+          "scenario": "review_mid",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "success",
+          "entry": "handle()",
+          "detail": "{'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'review', 'score': 705, 'notification_sent': true} | {'status': 'review', 'application_id': proteanobj(status='stored', stored=true, success=true, applicatio"
+        },
+        {
+          "scenario": "declined_low",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'declined', 'score': 540, 'notification_sent': true} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, appl"
+        },
+        {
+          "scenario": "declined_band",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1'), 'decision': 'declined', 'score': 630, 'notification_sent': true} | {'status': 'declined', 'application_id': proteanobj(status='stored', stored=true, success=true, appl"
+        },
+        {
+          "scenario": "invalid_zero",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "over_cap",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'rejected: invalid_application'} | {'status': 'rejected: invalid_application'} | status=rejected: invalid_application"
+        },
+        {
+          "scenario": "bureau_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')} | {'status': 'error: bureau_unavailable', 'application_id': proteanobj(status='stored', stored=true, success=true, application_id='app-1', id='app-1')"
+        },
+        {
+          "scenario": "storage_error",
+          "stage": "pass",
+          "passed": true,
+          "outcome_class": "failure",
+          "entry": "handle()",
+          "detail": "{'status': 'error: bureau_unavailable'} | {'status': 'error: bureau_unavailable'} | status=error: bureau_unavailable"
+        }
+      ]
+    }
+  ]
+}

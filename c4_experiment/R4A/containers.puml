@@ -1,0 +1,24 @@
+@startuml loan_origination_containers
+!include <C4/C4_Container>
+
+title Container diagram for LoanCheck - Personal Loan Origination System (credit-check scope)
+
+Person(applicant, "Loan Applicant", "A retail customer applying for a personal loan")
+
+System_Boundary(los, "LoanCheck Loan Origination System") {
+    Container(origination_api, "Origination API", "Python 3.12, FastAPI", "Receives loan applications, validates them, orchestrates the credit decision, and notifies the applicant of the outcome")
+    Container(decision_engine, "Decision Engine", "Python 3.12, rules library", "Determines the credit decision for a validated application from the applicant's credit score")
+    ContainerDb(application_store, "Application Store", "PostgreSQL 16", "Stores loan applications and their decision status")
+}
+
+System_Ext(credit_bureau, "Credit Bureau", "External credit reference agency providing consumer credit reports and scores")
+System_Ext(notification_service, "Notification Service", "External messaging provider delivering e-mail and SMS notifications")
+
+Rel(applicant, origination_api, "Submits loan application to", "JSON/HTTPS")
+Rel(origination_api, application_store, "Stores and updates application records in", "SQL/TCP")
+Rel(origination_api, decision_engine, "Requests credit decision from", "JSON/HTTPS")
+Rel(decision_engine, credit_bureau, "Pulls credit report and score from", "XML/HTTPS")
+Rel(origination_api, notification_service, "Sends decision notifications via", "REST/HTTPS")
+
+SHOW_LEGEND()
+@enduml

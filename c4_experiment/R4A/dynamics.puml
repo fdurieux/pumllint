@@ -1,0 +1,119 @@
+@startuml loan_origination_dynamics_approved
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, approved path
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+ContainerDb(application_store, "Application Store", "PostgreSQL 16")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library")
+System_Ext(credit_bureau, "Credit Bureau")
+System_Ext(notification_service, "Notification Service")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, application_store, "2: [application valid] Stores application as pending", "SQL/TCP")
+Rel(origination_api, decision_engine, "3: Requests credit decision", "JSON/HTTPS")
+Rel(decision_engine, credit_bureau, "4: Pulls credit report and score", "XML/HTTPS")
+Rel(credit_bureau, decision_engine, "5: Returns credit score", "XML/HTTPS")
+Rel(decision_engine, origination_api, "6: [score sufficient] Returns approve decision", "JSON/HTTPS")
+Rel(origination_api, application_store, "7: Updates application as approved", "SQL/TCP")
+Rel(origination_api, notification_service, "8: Sends approval notification", "REST/HTTPS")
+Rel(origination_api, applicant, "9: Returns approved response", "JSON/HTTPS")
+@enduml
+
+@startuml loan_origination_dynamics_declined
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, declined path
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+ContainerDb(application_store, "Application Store", "PostgreSQL 16")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library")
+System_Ext(credit_bureau, "Credit Bureau")
+System_Ext(notification_service, "Notification Service")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, application_store, "2: [application valid] Stores application as pending", "SQL/TCP")
+Rel(origination_api, decision_engine, "3: Requests credit decision", "JSON/HTTPS")
+Rel(decision_engine, credit_bureau, "4: Pulls credit report and score", "XML/HTTPS")
+Rel(credit_bureau, decision_engine, "5: Returns credit score", "XML/HTTPS")
+Rel(decision_engine, origination_api, "6: [score too low] Returns decline decision", "JSON/HTTPS")
+Rel(origination_api, application_store, "7: Updates application as declined", "SQL/TCP")
+Rel(origination_api, notification_service, "8: Sends decline notification", "REST/HTTPS")
+Rel(origination_api, applicant, "9: Returns declined response", "JSON/HTTPS")
+@enduml
+
+@startuml loan_origination_dynamics_review
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, manual-review path
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+ContainerDb(application_store, "Application Store", "PostgreSQL 16")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library")
+System_Ext(credit_bureau, "Credit Bureau")
+System_Ext(notification_service, "Notification Service")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, application_store, "2: [application valid] Stores application as pending", "SQL/TCP")
+Rel(origination_api, decision_engine, "3: Requests credit decision", "JSON/HTTPS")
+Rel(decision_engine, credit_bureau, "4: Pulls credit report and score", "XML/HTTPS")
+Rel(credit_bureau, decision_engine, "5: Returns credit score", "XML/HTTPS")
+Rel(decision_engine, origination_api, "6: [score borderline] Returns refer-to-manual-review decision", "JSON/HTTPS")
+Rel(origination_api, application_store, "7: Updates application as under manual review", "SQL/TCP")
+Rel(origination_api, notification_service, "8: Sends under-review notification", "REST/HTTPS")
+Rel(origination_api, applicant, "9: Returns review response", "JSON/HTTPS")
+@enduml
+
+@startuml loan_origination_dynamics_invalid
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, invalid application
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library")
+System_Ext(credit_bureau, "Credit Bureau")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, applicant, "2: [application invalid] Returns rejected response - no credit report is pulled", "JSON/HTTPS")
+@enduml
+
+@startuml loan_origination_dynamics_bureau_unavailable
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, credit bureau unavailable
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+ContainerDb(application_store, "Application Store", "PostgreSQL 16")
+Container(decision_engine, "Decision Engine", "Python 3.12, rules library")
+System_Ext(credit_bureau, "Credit Bureau")
+System_Ext(notification_service, "Notification Service")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, application_store, "2: [application valid] Stores application as pending", "SQL/TCP")
+Rel(origination_api, decision_engine, "3: Requests credit decision", "JSON/HTTPS")
+Rel(decision_engine, credit_bureau, "4: Pulls credit report and score", "XML/HTTPS")
+Rel(credit_bureau, decision_engine, "5: [bureau unavailable] Fails to return a report", "XML/HTTPS")
+Rel(decision_engine, origination_api, "6: Reports bureau failure - no decision made", "JSON/HTTPS")
+Rel(origination_api, applicant, "7: Returns error response - application stays pending, no decision notification is sent", "JSON/HTTPS")
+@enduml
+
+@startuml loan_origination_dynamics_storage_failure
+!include <C4/C4_Sequence>
+
+title Dynamic diagram for LoanCheck - credit check, application store unavailable
+
+Person(applicant, "Loan Applicant")
+Container(origination_api, "Origination API", "Python 3.12, FastAPI")
+ContainerDb(application_store, "Application Store", "PostgreSQL 16")
+System_Ext(credit_bureau, "Credit Bureau")
+
+Rel(applicant, origination_api, "1: Submits loan application", "JSON/HTTPS")
+Rel(origination_api, application_store, "2: [application valid] Attempts to store application", "SQL/TCP")
+Rel(application_store, origination_api, "3: [store unavailable] Reports storage failure", "SQL/TCP")
+Rel(origination_api, applicant, "4: Returns storage-error response - no credit report is pulled, no decision notification is sent", "JSON/HTTPS")
+@enduml

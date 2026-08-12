@@ -1,0 +1,20 @@
+@startuml loan_origination_components_engine
+!include <C4/C4_Component>
+
+title Component diagram for LoanCheck - Decision Engine container
+
+Container(origination_api, "Origination API", "Python 3.12, FastAPI", "Orchestrates the credit-check flow")
+
+Container_Boundary(decision_engine, "Decision Engine") {
+    Component(scoring_policy, "Scoring Policy", "Python class", "Maps the applicant's credit score to a credit decision for the application")
+    Component(bureau_gateway, "Bureau Gateway", "Python class", "Encapsulates the credit bureau integration and its failure modes")
+}
+
+System_Ext(credit_bureau, "Credit Bureau", "External credit reference agency providing consumer credit reports and scores")
+
+Rel(origination_api, scoring_policy, "Requests credit decision from", "JSON/HTTPS")
+Rel(scoring_policy, bureau_gateway, "Obtains the applicant's credit score via", "in-process call")
+Rel(bureau_gateway, credit_bureau, "Pulls credit report and score from", "XML/HTTPS")
+
+SHOW_LEGEND()
+@enduml

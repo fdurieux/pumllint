@@ -60,3 +60,16 @@ c4_experiment_results/calib/*
 c4_experiment_results/wave_main/*
 !c4_experiment_results/wave_main/report.json
 !c4_experiment_results/wave_main/analysis.json
+# Adversarial-threshold replication (same doc, §Adversarial-threshold
+# replication): reports kept as usual; the generated artifacts and the
+# sealed calibration files are ALSO kept, as an exception — this wave ran
+# on the disclosed subagent instrument (no raw-API request logs exist), so
+# the artifacts themselves are the audit record, like the repaired
+# diagrams of the agent-repair waves.
+!c4_experiment_results/adv_wave/
+c4_experiment_results/adv_wave/*
+!c4_experiment_results/adv_wave/report.json
+!c4_experiment_results/adv_wave/analysis.json
+!c4_experiment_results/adv_wave/gen_*.py
+!c4_experiment_results/adv_wave/sealed/
+!c4_experiment_results/adv_wave/sealed/**
