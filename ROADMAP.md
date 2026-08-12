@@ -784,7 +784,32 @@ list and license posture live in § Settled questions.
   problem-statement tightening**; and wave candidates **W3b**
   (carrier × prompt-frame factorial) and **A3 decomposition**
   (contract information classes), each under charter §10 discipline
-  if ever queued. The reviewer's platform items (BPMN/DMN carriers,
+  if ever queued. *Dated update, 2026-08-11: the A3 decomposition
+  RAN as W1b under full charter discipline (draft → adversarial pass,
+  17 findings all adopted → freeze → owner go "freeze and go" →
+  scored run, $10.89 of $30). Verdict: the decision tables carry the
+  bundle in both directions (+40.9 pp add-one / +12.1 pp LOO,
+  generators concordant, invention cut localized); the OpenAPI
+  mirror held validation bounds at 0.0 loss; the three other
+  components measured as in-bundle dilution (removal improved
+  results 10.6–21.2 pp). Attribution is suite-relative — scoping in
+  the record: stack_experiment/W1B_PREREGISTRATION.md § Results.
+  W3b remains recorded, not queued.* *Staged, same day: W3b's
+  pre-registration was drafted and independently adversarially
+  verified (14 findings adopted: 6 major, 8 minor) — held pre-freeze
+  in stack_experiment/W3B_PREREGISTRATION.md; driver build, freeze
+  and owner go deliberately pending.* *Ran, same day ($13.72,
+  84/84 runs, full §10 cycle): the stored-frame carrier ordering
+  reproduced exactly (anchor delta 0.0) but is partly frame-carried
+  — YAML intrinsic (frame caveat shed), controlled English scoped
+  to the PlantUML-framed harness, code-stub/Mermaid stored-frame
+  deficits unreproduced beyond equivalence (no re-scoping licensed);
+  the surprise at full prominence: carrier-native frames HURT
+  (−10.6…−18.2 pp pooled on three carriers; E2a/E2b/E5 failed,
+  per-generator language mandatory — the stored-frame ordering is
+  opus-borne); E3 split (stored 0/3 reproduced, neutral 2/3 are
+  degenerate fragments, native 0/3); E4/E6 confirmed. Record:
+  stack_experiment/W3B_PREREGISTRATION.md § Results.* The reviewer's platform items (BPMN/DMN carriers,
   cross-spec verifier, context compiler, coverage metric, domain
   benchmark) stay with the adopter programme — not this repository's
   scope. Priorities convergent: W5 next, as the charter already
@@ -879,7 +904,18 @@ list and license posture live in § Settled questions.
   auto-improvement component whose trigger the pilot can fire); the
   modelling-standard owner confirming an obligation table →
   obligation/flow Phases 2–4 — in which case build the remaining Arc F
-  safeguards first (see Arc F's trigger note).
+  safeguards first (see Arc F's trigger note). *Dated note,
+  2026-08-11: the census ran end-to-end on a public wild corpus — 159
+  files / 174 diagrams from five public repositories (record:
+  docs/pilot-census-first-contact.md; data:
+  pilot_results/first_contact/). Instrument verified at scale (0.6 s,
+  zero hard parse failures); the dialect signals are loud on public
+  material (C4 macros in 73/159 files, `!include` in 118/159; 103/174
+  diagrams dialect-invisible, held at Level 1 by the zero-element cap
+  while their composite is vacuously high). This was prevalence
+  measurement, not adopter pull: the phase-0 census on the pilot
+  organisation's real corpus — and every demand gate above — stays
+  open as recorded.*
 - **Research track (accepted 2026-08-10): docs/research-charter.md is
   the source of truth for the measurement-wave program.** W0 shipped
   with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take

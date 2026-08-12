@@ -1,0 +1,361 @@
+{
+  "phase": "prefreeze_checks",
+  "pre_registration": "stack_experiment/W3B_PREREGISTRATION.md",
+  "spend_usd": 0.0,
+  "driver_sha256_at_check": "c528378079bd938f97099d6fd6574c0a528bb08c294277748048608a37d73ba9",
+  "stack_ablation_sha256": "5134cddbd0950ed2e21c2c5a1772d68f1b62925b3b82713c567dede0c422b73b",
+  "stack_variants_sha256": "4ffefa3d3c3ba528a8a0c7ead3b98cdbd958c3451be8a701c39a8be6fc785560",
+  "frame_phrases": {
+    "stored": "a PlantUML UML sequence diagram",
+    "neutral": "a behavior interaction specification",
+    "native": {
+      "mermaid": "a Mermaid sequence diagram",
+      "yaml": "a structured YAML behavior specification",
+      "controlled-english": "a controlled-English behavior specification",
+      "code-stub": "a Python skeleton of the behavior (function stubs with docstrings)"
+    }
+  },
+  "checks": [
+    {
+      "check": "frame phrase occurs exactly once in GEN_PROMPT template",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "replacement phrase absent from template (neutral)",
+      "ok": true,
+      "detail": "a behavior interaction specification"
+    },
+    {
+      "check": "replacement phrase absent from template (native:mermaid)",
+      "ok": true,
+      "detail": "a Mermaid sequence diagram"
+    },
+    {
+      "check": "replacement phrase absent from template (native:yaml)",
+      "ok": true,
+      "detail": "a structured YAML behavior specification"
+    },
+    {
+      "check": "replacement phrase absent from template (native:controlled-english)",
+      "ok": true,
+      "detail": "a controlled-English behavior specification"
+    },
+    {
+      "check": "replacement phrase absent from template (native:code-stub)",
+      "ok": true,
+      "detail": "a Python skeleton of the behavior (function stubs with docstrings)"
+    },
+    {
+      "check": "cell plan: 14 cells = 5x2 + 4x1",
+      "ok": true,
+      "detail": "puml-stored code-stub-stored mermaid-stored controlled-english-stored yaml-stored puml-neutral code-stub-neutral mermaid-neutral controlled-english-neutral yaml-neutral code-stub-native mermaid-native controlled-english-native yaml-native"
+    },
+    {
+      "check": "job plan: 84 scored generations",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "GEN_PROMPT byte-identical to W1 stored gen_prompt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "JUDGE_PROMPT byte-identical to W1 stored judge_prompt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged vs W1 pin: brief.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged vs W1 pin: structure/containers.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "kit hash unchanged vs W1 pin: behavior/quote_flow.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W1 pin: tools/acceptance/cargo_quote_suite.py",
+      "ok": true,
+      "detail": "113ab6ac27a1347b"
+    },
+    {
+      "check": "hash unchanged vs W1 pin: tools/acceptance/runner_child.py",
+      "ok": true,
+      "detail": "f6cc907edda9ba44"
+    },
+    {
+      "check": "hash unchanged vs W3 pin: cargo_quote/behavior/quote_flow.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: cargo_quote/brief.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: cargo_quote/structure/containers.puml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: w3_carriers/quote_flow.md",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: w3_carriers/quote_flow.mmd",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: w3_carriers/quote_flow.yaml",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "hash unchanged vs W3 pin: w3_carriers/quote_flow_stub.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "stack_ablation.py byte-identical to W1b-recorded pin",
+      "ok": true,
+      "detail": "5134cddbd0950ed2"
+    },
+    {
+      "check": "puml-stored prompt byte-identical to W1-A2's (stored template + pinned kit)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "F-stored prompt reconstruction-identical (code-stub)",
+      "ok": true,
+      "detail": "rule: A2 bundle, behavior section swapped for the frozen carrier file under its kit-style label 'behavior/quote_flow_stub.py', stored template"
+    },
+    {
+      "check": "F-stored prompt reconstruction-identical (mermaid)",
+      "ok": true,
+      "detail": "rule: A2 bundle, behavior section swapped for the frozen carrier file under its kit-style label 'behavior/quote_flow.mmd', stored template"
+    },
+    {
+      "check": "F-stored prompt reconstruction-identical (controlled-english)",
+      "ok": true,
+      "detail": "rule: A2 bundle, behavior section swapped for the frozen carrier file under its kit-style label 'behavior/quote_flow.md', stored template"
+    },
+    {
+      "check": "F-stored prompt reconstruction-identical (yaml)",
+      "ok": true,
+      "detail": "rule: A2 bundle, behavior section swapped for the frozen carrier file under its kit-style label 'behavior/quote_flow.yaml', stored template"
+    },
+    {
+      "check": "stack_variants verify_prompt_identity('W3') clean",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "single-phrase diff: puml-neutral",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a behavior interaction specification'"
+    },
+    {
+      "check": "single-phrase diff: code-stub-neutral",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a behavior interaction specification'"
+    },
+    {
+      "check": "single-phrase diff: mermaid-neutral",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a behavior interaction specification'"
+    },
+    {
+      "check": "single-phrase diff: controlled-english-neutral",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a behavior interaction specification'"
+    },
+    {
+      "check": "single-phrase diff: yaml-neutral",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a behavior interaction specification'"
+    },
+    {
+      "check": "single-phrase diff: code-stub-native",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a Python skeleton of the behavior (function stubs with docstrings)'"
+    },
+    {
+      "check": "single-phrase diff: mermaid-native",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a Mermaid sequence diagram'"
+    },
+    {
+      "check": "single-phrase diff: controlled-english-native",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a controlled-English behavior specification'"
+    },
+    {
+      "check": "single-phrase diff: yaml-native",
+      "ok": true,
+      "detail": "stored phrase occurs 1x in assembled prompt; 'a PlantUML UML sequence diagram' -> 'a structured YAML behavior specification'"
+    },
+    {
+      "check": "replay: stored W1-A2 + W3 artifacts re-scored bit-for-bit",
+      "ok": true,
+      "detail": "27 artifacts (6 W1-A2 + 21 W3 compiling), 0 mismatching"
+    },
+    {
+      "check": "W3 pooled reproduced: code-stub",
+      "ok": true,
+      "detail": "0.3788 (pin 0.3788)"
+    },
+    {
+      "check": "W3 flow-set reproduced: code-stub",
+      "ok": true,
+      "detail": "0.7667 (pin 0.7667)"
+    },
+    {
+      "check": "W3 pooled reproduced: mermaid",
+      "ok": true,
+      "detail": "0.3485 (pin 0.3485)"
+    },
+    {
+      "check": "W3 flow-set reproduced: mermaid",
+      "ok": true,
+      "detail": "0.7333 (pin 0.7333)"
+    },
+    {
+      "check": "W3 pooled reproduced: controlled-english",
+      "ok": true,
+      "detail": "0.2879 (pin 0.2879)"
+    },
+    {
+      "check": "W3 flow-set reproduced: controlled-english",
+      "ok": true,
+      "detail": "0.6 (pin 0.6)"
+    },
+    {
+      "check": "W3 pooled reproduced: yaml",
+      "ok": true,
+      "detail": "0.1364 (pin 0.1364)"
+    },
+    {
+      "check": "W3 flow-set reproduced: yaml",
+      "ok": true,
+      "detail": "0.2667 (pin 0.2667)"
+    },
+    {
+      "check": "W1-A2 pooled reproduced",
+      "ok": true,
+      "detail": "0.4394 (pin 0.4394)"
+    },
+    {
+      "check": "W1-A2 flow-set reproduced",
+      "ok": true,
+      "detail": "0.9333 (pin 0.9333)"
+    },
+    {
+      "check": "W1-A2 opus reproduced",
+      "ok": true,
+      "detail": "0.4545 (pin 0.4545)"
+    },
+    {
+      "check": "W1-A2 haiku reproduced",
+      "ok": true,
+      "detail": "0.4242 (pin 0.4242)"
+    },
+    {
+      "check": "W3 opus-yaml stored compile count 0/3",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "expectation-inputs dry-run emits every E1-E6/G1-G3 input",
+      "ok": true,
+      "detail": "12 inputs emitted (synthetic data, no meaning)"
+    },
+    {
+      "check": "reference impl 11/11 through the frozen scoring path",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "cell inventory puml-stored",
+      "ok": true,
+      "detail": "prompt sha 19299e56260ac6ed chars 8306"
+    },
+    {
+      "check": "cell inventory code-stub-stored",
+      "ok": true,
+      "detail": "prompt sha f1302546ae7a37a8 chars 8933"
+    },
+    {
+      "check": "cell inventory mermaid-stored",
+      "ok": true,
+      "detail": "prompt sha 2816504414040cd3 chars 7961"
+    },
+    {
+      "check": "cell inventory controlled-english-stored",
+      "ok": true,
+      "detail": "prompt sha 1f955f3de19b0072 chars 7875"
+    },
+    {
+      "check": "cell inventory yaml-stored",
+      "ok": true,
+      "detail": "prompt sha b022ec189a9fadec chars 8797"
+    },
+    {
+      "check": "cell inventory puml-neutral",
+      "ok": true,
+      "detail": "prompt sha ad9be67e44fd0426 chars 8311"
+    },
+    {
+      "check": "cell inventory code-stub-neutral",
+      "ok": true,
+      "detail": "prompt sha a607dedc8c308b31 chars 8938"
+    },
+    {
+      "check": "cell inventory mermaid-neutral",
+      "ok": true,
+      "detail": "prompt sha 960cbf693f1fd9f0 chars 7966"
+    },
+    {
+      "check": "cell inventory controlled-english-neutral",
+      "ok": true,
+      "detail": "prompt sha 6d64ed1b2caa9458 chars 7880"
+    },
+    {
+      "check": "cell inventory yaml-neutral",
+      "ok": true,
+      "detail": "prompt sha d7423f3278dd83f1 chars 8802"
+    },
+    {
+      "check": "cell inventory code-stub-native",
+      "ok": true,
+      "detail": "prompt sha 203cf786d02db133 chars 8968"
+    },
+    {
+      "check": "cell inventory mermaid-native",
+      "ok": true,
+      "detail": "prompt sha b7bf8ccc0a787c06 chars 7956"
+    },
+    {
+      "check": "cell inventory controlled-english-native",
+      "ok": true,
+      "detail": "prompt sha 32559fd5107d01ce chars 7887"
+    },
+    {
+      "check": "cell inventory yaml-native",
+      "ok": true,
+      "detail": "prompt sha 4a69011185e514a7 chars 8806"
+    }
+  ],
+  "all_ok": true
+}

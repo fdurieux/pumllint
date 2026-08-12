@@ -1,0 +1,1285 @@
+{
+  "harvested": "2026-08-11",
+  "method": "anonymous read-only git clones of public repos (depth 1); diagram trees included, sprite/icon library and macro/theme definition trees excluded (counts below); assembled for the pilot dialect census, files not redistributed",
+  "excluded_library_files": {
+    "hyperledger/aries-rfcs": 0,
+    "plantuml-stdlib/C4-PlantUML": 32,
+    "awslabs/aws-icons-for-plantuml": 861,
+    "plantuml-stdlib/Azure-PlantUML": 294,
+    "dcasati/kubernetes-PlantUML": 44
+  },
+  "files": [
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0050-wallets/wallet-encryption.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0050-wallets/wallet-encryption.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0050-wallets__wallet-encryption.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/01-edge-agent-start.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/01-edge-agent-start.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__01-edge-agent-start.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/02-provision-new-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/02-provision-new-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__02-provision-new-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/03-first-edge-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/03-first-edge-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__03-first-edge-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/04-update-agent-policy-registry.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/04-update-agent-policy-registry.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__04-update-agent-policy-registry.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/05-add-cloud-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/05-add-cloud-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__05-add-cloud-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/06-add-new-edge-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/06-add-new-edge-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__06-add-new-edge-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/07-add-connection-public-did.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/07-add-connection-public-did.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__07-add-connection-public-did.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/08-add-connection-private-did-provisioned.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/08-add-connection-private-did-provisioned.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__08-add-connection-private-did-provisioned.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/09-add-connection-private-did-unprovisioned.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/09-add-connection-private-did-unprovisioned.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__09-add-connection-private-did-unprovisioned.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/10-rotate-did-key.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/10-rotate-did-key.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__10-rotate-did-key.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/11-revoke-did.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/11-revoke-did.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__11-revoke-did.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/12-revoke-edge-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/12-revoke-edge-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__12-revoke-edge-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/13-recovery-setup.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/13-recovery-setup.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__13-recovery-setup.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/14-add-recovery-trustee.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/14-add-recovery-trustee.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__14-add-recovery-trustee.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/15-recovery-update.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/15-recovery-update.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__15-recovery-update.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/16-offline-recovery.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/16-offline-recovery.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__16-offline-recovery.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/17-social-recovery.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/17-social-recovery.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__17-social-recovery.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/agency-migration.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/agency-migration.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__agency-migration.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/burn-identity-with-agents.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/burn-identity-with-agents.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__burn-identity-with-agents.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/failure-modes.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/failure-modes.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__failure-modes.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/overview.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/overview.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__overview.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/recover-agent-policy-registry.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/recover-agent-policy-registry.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__recover-agent-policy-registry.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/recover-connection.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/recover-connection.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__recover-connection.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/revoke-edge-agent-success.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/revoke-edge-agent-success.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__revoke-edge-agent-success.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0051-dkms/puml/revoke-rogue-edge-agent.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0051-dkms/puml/revoke-rogue-edge-agent.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0051-dkms__puml__revoke-rogue-edge-agent.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0420-rich-schemas-common/relationship-diagram.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0420-rich-schemas-common/relationship-diagram.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0420-rich-schemas-common__relationship-diagram.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0478-coprotocols/as_coprotocol.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0478-coprotocols/as_coprotocol.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0478-coprotocols__as_coprotocol.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "concepts/0478-coprotocols/payment-protocol.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/concepts/0478-coprotocols/payment-protocol.puml",
+      "corpus_file": "hyperledger__aries-rfcs__concepts__0478-coprotocols__payment-protocol.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0042-lox/keyring.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0042-lox/keyring.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0042-lox__keyring.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0075-payment-decorators/payment-request-api-flow.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0075-payment-decorators/payment-request-api-flow.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0075-payment-decorators__payment-request-api-flow.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0116-evidence-exchange/img/src/digital_identity_lifecycle.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0116-evidence-exchange/img/src/digital_identity_lifecycle.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0116-evidence-exchange__img__src__digital_identity_lifecycle.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0116-evidence-exchange/img/src/examine_flow.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0116-evidence-exchange/img/src/examine_flow.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0116-evidence-exchange__img__src__examine_flow.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0116-evidence-exchange/img/src/issue_cred_flow.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0116-evidence-exchange/img/src/issue_cred_flow.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0116-evidence-exchange__img__src__issue_cred_flow.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0116-evidence-exchange/img/src/verify_cred_flow.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0116-evidence-exchange/img/src/verify_cred_flow.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0116-evidence-exchange__img__src__verify_cred_flow.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0428-prepare-issue-rich-credential/rich_credential_prereqs.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0428-prepare-issue-rich-credential/rich_credential_prereqs.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0428-prepare-issue-rich-credential__rich_credential_prereqs.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0429-prepare-req-rich-pres/rich_presentation_prereqs.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0429-prepare-req-rich-pres/rich_presentation_prereqs.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0429-prepare-req-rich-pres__rich_presentation_prereqs.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0557-discover-features-v2/requester.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0557-discover-features-v2/requester.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0557-discover-features-v2__requester.puml"
+    },
+    {
+      "repo": "hyperledger/aries-rfcs",
+      "path": "features/0557-discover-features-v2/responder.puml",
+      "commit": "e34eec9e23628091b66d8fa5e86840a36d163d2e",
+      "license": "Apache-2.0",
+      "url": "https://github.com/hyperledger/aries-rfcs/blob/e34eec9e23628091b66d8fa5e86840a36d163d2e/features/0557-discover-features-v2/responder.puml",
+      "corpus_file": "hyperledger__aries-rfcs__features__0557-discover-features-v2__responder.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Component Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Component Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Component_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - bigbankplc-icons.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - bigbankplc-icons.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-icons.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - bigbankplc-newStyle.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - bigbankplc-newStyle.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-newStyle.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - bigbankplc-styles.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - bigbankplc-styles.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc-styles.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - message bus.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - message bus.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_message_bus.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Container Diagram Sample - techtribesjs.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Container Diagram Sample - techtribesjs.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Container_Diagram_Sample_-_techtribesjs.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Context Diagram Sample - bigbankplc-landscape.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Context Diagram Sample - bigbankplc-landscape.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_bigbankplc-landscape.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Context Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Context Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Context Diagram Sample - enterprise.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Context Diagram Sample - enterprise.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Context_Diagram_Sample_-_enterprise.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Deployment Diagram Sample - bigbankplc-details.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Deployment Diagram Sample - bigbankplc-details.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Deployment_Diagram_Sample_-_bigbankplc-details.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Deployment Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Deployment Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Deployment_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Dynamic Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Dynamic Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Dynamic_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/C4_Sequence Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/C4_Sequence Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__C4_Sequence_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestAllAddTags.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestAllAddTags.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestAllAddTags.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestAllElementsWithLegend.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestAllElementsWithLegend.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestAllElementsWithLegend.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestAllPlantUmlElements.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestAllPlantUmlElements.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestAllPlantUmlElements.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestBoundaryTagSupport.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestBoundaryTagSupport.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestBoundaryTagSupport.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestEmptyLabel.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestEmptyLabel.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestEmptyLabel.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestFloatingLegend.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestFloatingLegend.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestFloatingLegend.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLabelsWithLineBreak.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLabelsWithLineBreak.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLabelsWithLineBreak.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLayDirections.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLayDirections.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLayDirections.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLayoutLandscape.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLayoutLandscape.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscape.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLayoutLandscapeDynamic.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLayoutLandscapeDynamic.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeDynamic.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLayoutLandscapeWithLay.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLayoutLandscapeWithLay.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeWithLay.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLayoutLandscapeWithLayNoRotate.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLayoutLandscapeWithLayNoRotate.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLayoutLandscapeWithLayNoRotate.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegend.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegend.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegend.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendDetailsNone.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendDetailsNone.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsNone.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendDetailsNormal.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendDetailsNormal.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsNormal.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendDetailsSmall.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendDetailsSmall.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendDetailsSmall.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendHidden.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendHidden.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendHidden.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendSprite.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendSprite.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendSprite.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestLegendTitle.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestLegendTitle.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestLegendTitle.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestNewStyle.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestNewStyle.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestNewStyle.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestPersonOutline.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestPersonOutline.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestPersonOutline.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestPersonPortrait.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestPersonPortrait.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestPersonPortrait.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestPredefinedSprites.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestPredefinedSprites.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestPredefinedSprites.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestProperty.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestProperty.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestProperty.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestPropertyMissingColumns.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestPropertyMissingColumns.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestPropertyMissingColumns.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestRelations.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestRelations.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestRelations.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestRelationsDynamic.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestRelationsDynamic.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestRelationsDynamic.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestRelationsTags.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestRelationsTags.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestRelationsTags.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestSequenceSkinparams.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestSequenceSkinparams.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestSequenceSkinparams.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestShowElementType.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestShowElementType.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestShowElementType.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestSketchStyle.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestSketchStyle.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestSketchStyle.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestSystemPersonSupportType.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestSystemPersonSupportType.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestSystemPersonSupportType.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestTagSupportsSprite.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestTagSupportsSprite.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestTagSupportsSprite.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestTagSupportsSpriteTechn.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestTagSupportsSpriteTechn.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestTagSupportsSpriteTechn.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestThemeC4_All.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestThemeC4_All.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_All.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestThemeC4_FirstTest.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestThemeC4_FirstTest.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_FirstTest.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestThemeC4_united.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestThemeC4_united.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeC4_united.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestThemeSupport.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestThemeSupport.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeSupport.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestThemeTemplate.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestThemeTemplate.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestThemeTemplate.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "percy/TestVersion.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/percy/TestVersion.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__percy__TestVersion.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Component Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Component Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Component_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - bigbankplc-icons.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - bigbankplc-icons.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-icons.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - bigbankplc-styles.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - bigbankplc-styles.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-styles.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - bigbankplc-themes.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - bigbankplc-themes.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc-themes.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - message bus.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - message bus.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_message_bus.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Container Diagram Sample - techtribesjs.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Container Diagram Sample - techtribesjs.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Container_Diagram_Sample_-_techtribesjs.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Context Diagram Sample - bigbankplc-landscape.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Context Diagram Sample - bigbankplc-landscape.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_bigbankplc-landscape.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Context Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Context Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Context Diagram Sample - enterprise.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Context Diagram Sample - enterprise.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Context_Diagram_Sample_-_enterprise.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Deployment Diagram Sample - bigbankplc-details.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Deployment Diagram Sample - bigbankplc-details.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Deployment_Diagram_Sample_-_bigbankplc-details.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Deployment Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Deployment Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Deployment_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Dynamic Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Dynamic Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Dynamic Diagram Sample - message bus - old format.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Dynamic Diagram Sample - message bus - old format.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_message_bus_-_old_format.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Dynamic Diagram Sample - message bus.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Dynamic Diagram Sample - message bus.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Dynamic_Diagram_Sample_-_message_bus.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Sequence Diagram Sample - bigbankplc.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Sequence Diagram Sample - bigbankplc.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Sequence_Diagram_Sample_-_bigbankplc.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/C4-PlantUML",
+      "path": "samples/C4_Sequence Diagram Sample - complex.puml",
+      "commit": "1edfb8a878baaa821e54cf423a070c792e8677c6",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/C4-PlantUML/blob/1edfb8a878baaa821e54cf423a070c792e8677c6/samples/C4_Sequence Diagram Sample - complex.puml",
+      "corpus_file": "plantuml-stdlib__C4-PlantUML__samples__C4_Sequence_Diagram_Sample_-_complex.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Basic Usage.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Basic Usage.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Basic_Usage.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Groups - Auto Scaling.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Groups - Auto Scaling.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_Auto_Scaling.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Groups - CodePipeline.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Groups - CodePipeline.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_CodePipeline.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Groups - VPC.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Groups - VPC.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_VPC.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Groups - all.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Groups - all.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Groups_-_all.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/HelloWorld.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/HelloWorld.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__HelloWorld.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/MarketplaceSaaS.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/MarketplaceSaaS.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__MarketplaceSaaS.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Raw Image Usage.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Raw Image Usage.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Raw_Image_Usage.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Raw Sprite Usage.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Raw Sprite Usage.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Raw_Sprite_Usage.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Sequence - Images.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Sequence - Images.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Sequence_-_Images.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Sequence - Simplified.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Sequence - Simplified.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Sequence_-_Simplified.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Sequence - Sprites.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Sequence - Sprites.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Sequence_-_Sprites.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Sequence - Technical.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Sequence - Technical.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Sequence_-_Technical.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Serverless API.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Serverless API.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Serverless_API.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Two Modes - Simple View.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Two Modes - Simple View.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Two_Modes_-_Simple_View.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/Two Modes - Technical View.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/Two Modes - Technical View.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__Two_Modes_-_Technical_View.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 1.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 1.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_1.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 2.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 2.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_2.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 3.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 3.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_3.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 4.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 4.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_4.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 5(updated).puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 5(updated).puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_5_updated_.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/architecture-blog/Figure 5.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/architecture-blog/Figure 5.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__architecture-blog__Figure_5.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/cognito-scenario/1-basic-diagram.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/cognito-scenario/1-basic-diagram.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__cognito-scenario__1-basic-diagram.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/cognito-scenario/2-visual-updates.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/cognito-scenario/2-visual-updates.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__cognito-scenario__2-visual-updates.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/cognito-scenario/3-aws-icons-and-colors.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/cognito-scenario/3-aws-icons-and-colors.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__cognito-scenario__3-aws-icons-and-colors.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/s3-upload-workflow/S3 Upload Workflow - C4.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/s3-upload-workflow/S3 Upload Workflow - C4.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow_-_C4.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/s3-upload-workflow/S3 Upload Workflow - sequence.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/s3-upload-workflow/S3 Upload Workflow - sequence.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow_-_sequence.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/s3-upload-workflow/S3 Upload Workflow.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/s3-upload-workflow/S3 Upload Workflow.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__s3-upload-workflow__S3_Upload_Workflow.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/activity.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/activity.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__activity.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/class.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/class.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__class.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/colors.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/colors.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__colors.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/deployment.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/deployment.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__deployment.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/network.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/network.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__network.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/port.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/port.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__port.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/state.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/state.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__state.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/swimlane.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/swimlane.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__swimlane.puml"
+    },
+    {
+      "repo": "awslabs/aws-icons-for-plantuml",
+      "path": "examples/theme-testing/usecase.puml",
+      "commit": "1540f226ffdd2ea0e188173c51b2c0392340dace",
+      "license": "CC-BY-ND-2.0 (icons) / MIT-0 (code)",
+      "url": "https://github.com/awslabs/aws-icons-for-plantuml/blob/1540f226ffdd2ea0e188173c51b2c0392340dace/examples/theme-testing/usecase.puml",
+      "corpus_file": "awslabs__aws-icons-for-plantuml__examples__theme-testing__usecase.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/Basic usage - Stream processing with Azure Stream Analytics.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/Basic usage - Stream processing with Azure Stream Analytics.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__Basic_usage_-_Stream_processing_with_Azure_Stream_Analytics.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/C4 tags sample.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/C4 tags sample.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__C4_tags_sample.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/C4 usage - Highly scalable web application.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/C4 usage - Highly scalable web application.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__C4_usage_-_Highly_scalable_web_application.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/C4 usage - IoT Reference Architecture - Stateful stream processing.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/C4 usage - IoT Reference Architecture - Stateful stream processing.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__C4_usage_-_IoT_Reference_Architecture_-_Stateful_stream_processing.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/Hello World.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/Hello World.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__Hello_World.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/Raw usage - Sprites.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/Raw usage - Sprites.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__Raw_usage_-_Sprites.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/Two Mode Sample - Normal.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/Two Mode Sample - Normal.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__Two_Mode_Sample_-_Normal.puml"
+    },
+    {
+      "repo": "plantuml-stdlib/Azure-PlantUML",
+      "path": "samples/Two Mode Sample - Simplified.puml",
+      "commit": "f360835f8794e18bed6520bb2eea56b482816d95",
+      "license": "MIT",
+      "url": "https://github.com/plantuml-stdlib/Azure-PlantUML/blob/f360835f8794e18bed6520bb2eea56b482816d95/samples/Two Mode Sample - Simplified.puml",
+      "corpus_file": "plantuml-stdlib__Azure-PlantUML__samples__Two_Mode_Sample_-_Simplified.puml"
+    },
+    {
+      "repo": "dcasati/kubernetes-PlantUML",
+      "path": "samples/aks-aci.puml",
+      "commit": "dee6e17448ddc348a8e5a739419e5b1946f8db53",
+      "license": "MIT",
+      "url": "https://github.com/dcasati/kubernetes-PlantUML/blob/dee6e17448ddc348a8e5a739419e5b1946f8db53/samples/aks-aci.puml",
+      "corpus_file": "dcasati__kubernetes-PlantUML__samples__aks-aci.puml"
+    },
+    {
+      "repo": "dcasati/kubernetes-PlantUML",
+      "path": "samples/hello-world.puml",
+      "commit": "dee6e17448ddc348a8e5a739419e5b1946f8db53",
+      "license": "MIT",
+      "url": "https://github.com/dcasati/kubernetes-PlantUML/blob/dee6e17448ddc348a8e5a739419e5b1946f8db53/samples/hello-world.puml",
+      "corpus_file": "dcasati__kubernetes-PlantUML__samples__hello-world.puml"
+    },
+    {
+      "repo": "dcasati/kubernetes-PlantUML",
+      "path": "samples/kubernetes.puml",
+      "commit": "dee6e17448ddc348a8e5a739419e5b1946f8db53",
+      "license": "MIT",
+      "url": "https://github.com/dcasati/kubernetes-PlantUML/blob/dee6e17448ddc348a8e5a739419e5b1946f8db53/samples/kubernetes.puml",
+      "corpus_file": "dcasati__kubernetes-PlantUML__samples__kubernetes.puml"
+    },
+    {
+      "repo": "dcasati/kubernetes-PlantUML",
+      "path": "samples/microservices-azure-aks.puml",
+      "commit": "dee6e17448ddc348a8e5a739419e5b1946f8db53",
+      "license": "MIT",
+      "url": "https://github.com/dcasati/kubernetes-PlantUML/blob/dee6e17448ddc348a8e5a739419e5b1946f8db53/samples/microservices-azure-aks.puml",
+      "corpus_file": "dcasati__kubernetes-PlantUML__samples__microservices-azure-aks.puml"
+    }
+  ]
+}
