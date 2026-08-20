@@ -300,7 +300,9 @@ def _parse_input_files(files: list[Path]):
     # .iuml is the include-fragment extension: having no @startuml of its own
     # is what such a file is for, so it is not worth a warning.
     empty = [
-        f for f in files if str(f) not in parsed and f.suffix.lower() != ".iuml"
+        f
+        for f in files
+        if f.as_posix() not in parsed and f.suffix.lower() != ".iuml"
     ]
     if empty:
         shown = ", ".join(str(f) for f in empty[:5])

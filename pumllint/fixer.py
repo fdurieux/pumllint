@@ -193,7 +193,7 @@ def fix_paths(paths: Iterable[str | Path], config: dict | None = None) -> list[F
     results: list[FileFixResult] = []
     for path in collect_files(paths):
         text, encoding = read_text_and_encoding(path, kind="diagram")
-        diagrams = parse_source(text, file_path=str(path))
+        diagrams = parse_source(text, file_path=path.as_posix())
         violations = engine.lint_diagrams(diagrams)
         fixes = compute_fixes(text, diagrams, violations, stem=path.stem)
         results.append(

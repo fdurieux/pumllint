@@ -493,5 +493,11 @@ def read_source(path: str | Path) -> str:
 
 
 def parse_file(path: str | Path) -> list[Diagram]:
+    """Diagrams in *path*, tagged with a forward-slash file path.
+
+    Reports carry this string, and a Windows-produced report has to match a
+    POSIX-produced one byte for byte: a SonarQube ingest, a committed
+    example, a baseline key and a CI artefact diff all break on ``\``.
+    """
     p = Path(path)
-    return parse_source(read_source(p), file_path=str(p))
+    return parse_source(read_source(p), file_path=p.as_posix())

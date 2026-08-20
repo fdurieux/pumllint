@@ -47,4 +47,8 @@ def check_files(
     # works the way it reads; pass a list to control argv exactly.
     cmd = shlex.split(command) if isinstance(command, str) else list(command)
     run = runner or _default_runner(timeout)
-    return {str(f): run(cmd + ["-checkonly", str(f)]) == 0 for f in files}
+    # Keyed the way diagrams are tagged (forward slashes), so the score
+    # gate still finds its verdict on Windows.
+    return {
+        Path(f).as_posix(): run(cmd + ["-checkonly", str(f)]) == 0 for f in files
+    }

@@ -202,3 +202,41 @@ def test_cli_exits_two_on_an_unresolvable_argument():
                 rc = main(argv)
             assert rc == 2, (argv, rc)
             assert "error:" in err.getvalue(), (argv, err.getvalue())
+
+
+def test_expansion_globs_only_from_the_first_wildcard_component():
+    # The literal prefix of a pattern must be used as a directory, never
+    # matched component by component: on Windows a path may name a directory
+    # by its 8.3 short form (RUNNER~1) that no directory listing contains, so
+    # globbing the literal part finds nothing. Absolute patterns failed
+    # exactly this way on the windows-latest runner.
+    calls = []
+    real_glob = Path.glob
+
+    def spy(self, pattern, *a, **kw):
+        calls.append((str(self), pattern))
+        return real_glob(self, pattern, *a, **kw)
+
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "a.puml", "sub/b.puml")
+        Path.glob = spy
+        try:
+            got = [Path(f).name for f in collect_files([str(Path(tmp) / "*.puml")])]
+        finally:
+            Path.glob = real_glob
+
+    assert got == ["a.puml"], got
+    assert calls == [(tmp, "*.puml")], calls
+
+
+def test_reported_paths_use_forward_slashes():
+    # Reports, baseline keys and the syntax gate all key off this string; a
+    # Windows-produced report must match a POSIX-produced one byte for byte.
+    from pumllint.parser import parse_file
+
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "sub/a.puml")
+        target = Path(tmp) / "sub" / "a.puml"
+        (diagram,) = parse_file(target)
+        assert diagram.file_path == target.as_posix(), diagram.file_path
+        assert "\\" not in diagram.file_path, diagram.file_path

@@ -186,16 +186,22 @@ def _is_pattern(text: str) -> bool:
 def _expand(pattern: Path) -> list[Path]:
     """Filesystem matches for a glob argument, in stable order.
 
-    Split on the anchor so absolute and drive-qualified patterns work:
-    ``Path.glob`` rejects a pattern that starts with a separator or a drive.
+    Only the part of the pattern from its first wildcard component onward is
+    globbed; everything before it is used as a literal base directory.
+    ``Path.glob`` rejects an absolute pattern outright, and matching literal
+    components through it is both slower and wrong on Windows, where a path
+    may name a directory by its 8.3 short form (``RUNNER~1``) that no
+    directory listing contains.
     """
-    if pattern.anchor:
-        base, rel = Path(pattern.anchor), pattern.relative_to(pattern.anchor)
-    else:
-        base, rel = Path(), pattern
+    parts = pattern.parts
+    first = next((i for i, part in enumerate(parts) if _is_pattern(part)), None)
+    if first is None:  # the glob character was in a component we cannot glob
+        return []
+    base = Path(*parts[:first]) if first else Path()
+    rel = Path(*parts[first:])
     try:
         return sorted(base.glob(rel.as_posix()))
-    except (ValueError, OSError):  # malformed pattern, unreadable base
+    except (ValueError, OSError, NotImplementedError):  # malformed, unreadable
         return []
 
 
