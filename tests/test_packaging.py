@@ -60,13 +60,31 @@ def test_version_flag_reports_the_package_version():
 
 
 def _cli_options() -> set:
-    from pumllint.cli import build_parser, build_score_parser
+    from pumllint import cli
 
     known = set()
-    for parser in (build_parser(), build_score_parser()):
-        for action in parser._actions:
+    for factory in (
+        cli.build_parser,
+        cli.build_score_parser,
+        cli.build_fix_parser,
+        cli.build_trace_parser,
+        cli.build_schema_parser,
+    ):
+        for action in factory()._actions:
             known.update(action.option_strings)
     return known
+
+
+def test_top_level_help_lists_all_commands():
+    """`pumllint --help` is the only discovery surface for the subcommands —
+    main() dispatches on argv[0] before argparse runs, so the epilog must
+    name every command and the exit-code contract."""
+    from pumllint.cli import build_parser
+
+    text = build_parser().format_help()
+    for cmd in ("pumllint score", "pumllint fix", "pumllint trace", "pumllint schema"):
+        assert cmd in text, f"--help no longer mentions '{cmd}'"
+    assert "Exit codes:" in text, "--help lost the exit-code contract"
 
 
 def test_action_forwards_only_real_cli_flags():
@@ -78,6 +96,13 @@ def test_action_forwards_only_real_cli_flags():
     assert forwarded <= known
     for flag in forwarded:
         assert flag in _ACTION, f"action.yml no longer forwards {flag}"
+
+
+def test_action_dispatches_every_cli_command():
+    """The action mirrors the CLI: every subcommand must appear in the
+    bash dispatch (schema was missing until 0.27.x)."""
+    for cmd in ("score", "fix", "trace", "schema"):
+        assert f'"{cmd}"' in _ACTION, f"action.yml does not dispatch '{cmd}'"
 
 
 def test_action_is_composite_and_installs_itself():
@@ -114,7 +139,8 @@ def test_yaml_files_parse_when_yaml_is_available():
     assert action["runs"]["using"] == "composite"
     assert set(action["inputs"]) >= {
         "command", "paths", "config", "profile", "format", "output",
-        "fail-on", "min-level", "baseline", "update-baseline", "extra-args",
+        "fail-on", "min-level", "baseline", "update-baseline", "report",
+        "extra-args",
     }
     hooks = yaml.safe_load(_HOOKS)
     assert [h["id"] for h in hooks] == ["pumllint", "pumllint-score"]

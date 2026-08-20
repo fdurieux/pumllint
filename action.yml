@@ -10,8 +10,9 @@ branding:
 inputs:
   command:
     description: >-
-      'lint', 'score', 'fix' or 'trace' (trace takes its inventory flags via
-      extra-args, e.g. "--requirements reqs.txt --fail-on-uncovered")
+      'lint', 'score', 'fix', 'trace' or 'schema' (trace takes its inventory
+      flags via extra-args, e.g. "--requirements reqs.txt --fail-on-uncovered";
+      schema ignores paths and prints the report schema named by 'report')
     default: "lint"
   paths:
     description: ".puml files or directories to check (space-separated)"
@@ -40,6 +41,9 @@ inputs:
   update-baseline:
     description: "score: rewrite the baseline with current levels (true/false)"
     default: "false"
+  report:
+    description: "schema: which report schema to print — lint | score | trace"
+    default: "lint"
   extra-args:
     description: "Extra CLI arguments appended verbatim (space-separated)"
     default: ""
@@ -66,22 +70,30 @@ runs:
         IN_MIN_LEVEL: ${{ inputs.min-level }}
         IN_BASELINE: ${{ inputs.baseline }}
         IN_UPDATE_BASELINE: ${{ inputs.update-baseline }}
+        IN_REPORT: ${{ inputs.report }}
         IN_EXTRA_ARGS: ${{ inputs.extra-args }}
       run: |
         set -euo pipefail
         cmd=(python3 -m pumllint)
-        if [ "${IN_COMMAND}" = "score" ] || [ "${IN_COMMAND}" = "fix" ] || [ "${IN_COMMAND}" = "trace" ]; then
+        if [ "${IN_COMMAND}" = "schema" ]; then
+          # schema takes no paths/config/profile/format — just the report name
+          cmd+=(schema "${IN_REPORT}")
+        elif [ "${IN_COMMAND}" = "score" ] || [ "${IN_COMMAND}" = "fix" ] || [ "${IN_COMMAND}" = "trace" ]; then
           cmd+=("${IN_COMMAND}")
         elif [ "${IN_COMMAND}" != "lint" ]; then
-          echo "::error::command must be 'lint', 'score', 'fix' or 'trace', got '${IN_COMMAND}'"
+          echo "::error::command must be 'lint', 'score', 'fix', 'trace' or 'schema', got '${IN_COMMAND}'"
           exit 2
         fi
-        read -r -a path_args <<< "${IN_PATHS}"
-        cmd+=("${path_args[@]}")
-        if [ -n "${IN_CONFIG}" ]; then cmd+=(-c "${IN_CONFIG}"); fi
-        if [ -n "${IN_PROFILE}" ]; then cmd+=(--profile "${IN_PROFILE}"); fi
+        if [ "${IN_COMMAND}" != "schema" ]; then
+          read -r -a path_args <<< "${IN_PATHS}"
+          cmd+=("${path_args[@]}")
+          if [ -n "${IN_CONFIG}" ]; then cmd+=(-c "${IN_CONFIG}"); fi
+          if [ -n "${IN_PROFILE}" ]; then cmd+=(--profile "${IN_PROFILE}"); fi
+          if [ "${IN_COMMAND}" != "fix" ] && [ -n "${IN_FORMAT}" ]; then
+            cmd+=(-f "${IN_FORMAT}")
+          fi
+        fi
         if [ "${IN_COMMAND}" != "fix" ]; then
-          if [ -n "${IN_FORMAT}" ]; then cmd+=(-f "${IN_FORMAT}"); fi
           if [ -n "${IN_OUTPUT}" ]; then cmd+=(-o "${IN_OUTPUT}"); fi
         fi
         if [ "${IN_COMMAND}" = "score" ]; then
