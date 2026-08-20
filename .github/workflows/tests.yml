@@ -83,9 +83,13 @@ jobs:
       - name: A wildcard matching nothing is an error, never a silent pass
         shell: pwsh
         run: |
-          $out = pumllint *.nosuchext 2>&1
+          # stderr to a file, not 2>&1: merging a native command's stderr into
+          # the pipeline can raise under the runner's $ErrorActionPreference.
+          pumllint *.nosuchext 2> nomatch.txt
           if ($LASTEXITCODE -ne 2) { throw "expected exit 2, got $LASTEXITCODE" }
-          if ("$out" -notmatch 'no files match pattern') { throw "unexpected message: $out" }
+          if (-not (Select-String -Path nomatch.txt -Pattern 'no files match pattern' -Quiet)) {
+            throw "unexpected message: $(Get-Content nomatch.txt -Raw)"
+          }
           $global:LASTEXITCODE = 0
       # Redirecting switches stdout off the console codec and onto the ANSI
       # code page, where the report's glyphs used to raise UnicodeEncodeError.
@@ -107,9 +111,11 @@ jobs:
           pumllint tmp\utf16.puml
           if ($LASTEXITCODE -ne 0) { throw "UTF-16 diagram did not lint: $LASTEXITCODE" }
           [IO.File]::WriteAllText("$PWD\tmp\ansi.puml", "@startuml`nAlice -> B" + [char]0xF8 + "b : hi`n@enduml`n", [Text.Encoding]::GetEncoding(1252))
-          $err = pumllint tmp\ansi.puml 2>&1
+          pumllint tmp\ansi.puml 2> ansi-err.txt
           if ($LASTEXITCODE -ne 2) { throw "ANSI diagram should fail with 2, got $LASTEXITCODE" }
-          if ("$err" -notmatch 'ansi\.puml') { throw "error did not name the file: $err" }
+          if (-not (Select-String -Path ansi-err.txt -Pattern 'ansi\.puml' -Quiet)) {
+            throw "error did not name the file: $(Get-Content ansi-err.txt -Raw)"
+          }
           $global:LASTEXITCODE = 0
       # apply_fixes joins with the file's own newline; the write must not
       # re-translate it. Line endings are authored here rather than taken

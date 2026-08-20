@@ -69,7 +69,9 @@ def test_lint_paths_grouped_over_a_file():
         p.write_text(_TWO_DIAGRAMS, encoding="utf-8")
         groups = Engine({}).lint_paths_grouped([p])
     assert len(groups) == 2
-    assert all(v.file_path == str(p) for _, vs in groups for v in vs)
+    # Reported paths are forward-slashed so a report is identical on
+    # every platform; str(p) is backslashed on Windows.
+    assert all(v.file_path == p.as_posix() for _, vs in groups for v in vs)
 
 
 # --- suppressed-findings accounting (0.19.0) --------------------------------
