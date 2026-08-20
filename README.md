@@ -45,6 +45,11 @@ When output is redirected or piped, Windows drops stdout to the console code
 page, which cannot render `✔`/`✖`. pumllint substitutes `OK`/`FAIL` rather than
 failing; set `$env:PYTHONUTF8 = "1"` to keep the glyphs.
 
+The opt-in syntax gate takes Windows paths as written —
+`syntax_command = 'java -jar C:\tools\plantuml.jar'` is split without POSIX
+escaping, so the backslashes survive — and finds a `plantuml.bat` or `.cmd`
+wrapper on PATH, which `subprocess` alone would not.
+
 ## Project status and stability
 
 **Beta, and deliberately still `0.x`.** The tool is feature-complete for its

@@ -83,3 +83,78 @@ def test_syntax_results_gate_diagrams_per_file():
 
     absent = score_groups(groups, syntax_results={"other.puml": False})
     assert absent[0][1].level > 1  # unlisted files fall back to syntax_ok=True
+
+
+def test_windows_string_command_keeps_backslash_paths():
+    # POSIX splitting would eat the separators: `C:\tools\plantuml.jar` ->
+    # `C:toolsplantuml.jar`, so the gate failed naming a path nobody typed.
+    # `java -jar <path>` is the normal Windows PlantUML install.
+    from pumllint.syntax import _split_command
+
+    got = _split_command(r"java -jar C:\tools\plantuml.jar", windows=True)
+    assert got == ["java", "-jar", r"C:\tools\plantuml.jar"], got
+
+
+def test_windows_string_command_unquotes_a_quoted_path():
+    from pumllint.syntax import _split_command
+
+    got = _split_command(r'"C:\Program Files\pl\plantuml.bat" --verbose', windows=True)
+    assert got == [r"C:\Program Files\pl\plantuml.bat", "--verbose"], got
+
+
+def test_posix_string_command_splitting_is_unchanged():
+    from pumllint.syntax import _split_command
+
+    assert _split_command("java -jar plantuml.jar", windows=False) == [
+        "java", "-jar", "plantuml.jar",
+    ]
+    assert _split_command("'/opt/my tools/plantuml' -x", windows=False) == [
+        "/opt/my tools/plantuml", "-x",
+    ]
+
+
+def test_command_is_resolved_through_which():
+    # subprocess resolves a bare name through CreateProcess on Windows, which
+    # appends .exe and never consults PATHEXT — so a plantuml.bat on PATH is
+    # invisible. shutil.which does apply PATHEXT; run what it hands back.
+    import pumllint.syntax as syntax
+
+    seen = []
+
+    class _Completed:
+        returncode = 0
+
+    real_which, real_run = syntax.shutil.which, syntax.subprocess.run
+    syntax.shutil.which = lambda program: f"C:\\tools\\{program}.bat"
+    syntax.subprocess.run = lambda argv, **kw: (seen.append(argv), _Completed())[1]
+    try:
+        check_files(["d.puml"], command="plantuml")
+    finally:
+        syntax.shutil.which, syntax.subprocess.run = real_which, real_run
+
+    assert seen == [["C:\\tools\\plantuml.bat", "-checkonly", "d.puml"]], seen
+
+
+def test_missing_command_says_it_is_not_on_path():
+    import pumllint.syntax as syntax
+
+    real_which = syntax.shutil.which
+    syntax.shutil.which = lambda program: None
+    try:
+        check_files(["d.puml"], command="nosuchplantuml")
+    except FileNotFoundError as e:
+        assert "nosuchplantuml" in str(e), e
+        assert "not found on PATH" in str(e), e
+    else:
+        raise AssertionError("a missing syntax-gate command must raise")
+    finally:
+        syntax.shutil.which = real_which
+
+
+def test_empty_command_is_a_config_error():
+    try:
+        check_files(["d.puml"], command="   ")
+    except ValueError as e:
+        assert "empty" in str(e), e
+    else:
+        raise AssertionError("an empty syntax_command must raise")
