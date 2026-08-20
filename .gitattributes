@@ -1,0 +1,8 @@
+# This repository is LF everywhere, and must stay LF in a Windows checkout.
+#
+# docs/example-maturity-report.html and docs/example-badge.json are published
+# artefacts that tests/test_pilot_example.py compares byte for byte against a
+# fresh `pumllint score` run. Git for Windows checks text files out as CRLF by
+# default, so without this the committed copies and the freshly generated ones
+# differ on every line — a failure with nothing to do with the tool.
+* text=auto eol=lf

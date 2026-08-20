@@ -29,6 +29,22 @@ pumllint trace diagrams/ --requirements reqs.txt   # requirement-coverage matrix
 
 Exit codes: `0` clean, `1` findings at/above `--fail-on` (default `major`), `2` usage error — drop it straight into CI.
 
+### Windows and PowerShell
+
+PowerShell and `cmd.exe` do not expand wildcards for native programs, so
+pumllint expands them itself — `pumllint *.puml` and `pumllint "diagrams/**/*.puml"`
+both work (quote patterns containing `**` so PowerShell leaves them alone). A
+pattern that matches nothing is an error, never a silent pass.
+
+Save diagrams as UTF-8. PowerShell 5.1's `>` and `Out-File` write UTF-16 and
+`Set-Content` writes the ANSI code page; pumllint reads UTF-8, and UTF-16/UTF-32
+when the file carries a byte-order mark, but rejects ANSI-encoded files by name.
+In PowerShell 7: `... | Out-File -Encoding utf8NoBOM diagram.puml`.
+
+When output is redirected or piped, Windows drops stdout to the console code
+page, which cannot render `✔`/`✖`. pumllint substitutes `OK`/`FAIL` rather than
+failing; set `$env:PYTHONUTF8 = "1"` to keep the glyphs.
+
 ## Project status and stability
 
 **Beta, and deliberately still `0.x`.** The tool is feature-complete for its

@@ -28,6 +28,7 @@ from ..model import (
     Suppression,
     UseCaseLink,
 )
+from ..textio import read_text_file
 from . import activity, class_, state
 
 # ---------------------------------------------------------------------------
@@ -486,6 +487,17 @@ def _uc_kind(raw: str) -> str:
     return "implicit"
 
 
+def read_source(path: str | Path) -> str:
+    """Diagram source as text (BOM-aware), naming the file if it cannot decode."""
+    return read_text_file(path, kind="diagram")
+
+
 def parse_file(path: str | Path) -> list[Diagram]:
+    """Diagrams in *path*, tagged with a forward-slash file path.
+
+    Reports carry this string, and a Windows-produced report has to match a
+    POSIX-produced one byte for byte: a SonarQube ingest, a committed
+    example, a baseline key and a CI artefact diff all break on ``\``.
+    """
     p = Path(path)
-    return parse_source(p.read_text(encoding="utf-8"), file_path=str(p))
+    return parse_source(read_source(p), file_path=p.as_posix())

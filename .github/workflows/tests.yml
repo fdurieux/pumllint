@@ -43,6 +43,104 @@ jobs:
       - name: Run full test suite
         run: python -m pytest
 
+  # Windows is where the shell stops expanding wildcards and stdout stops
+  # being UTF-8 — neither reproduces on Ubuntu, and both reached a user.
+  # The Linux suite simulates them (literal argv, PYTHONIOENCODING=cp1252);
+  # only this job proves PowerShell itself.
+  #
+  # Every pwsh step ends with `$global:LASTEXITCODE = 0`: the runner appends
+  # `if (Test-Path variable:\LASTEXITCODE) { exit $LASTEXITCODE }` to the
+  # script, so a step whose last native call deliberately exited non-zero
+  # would fail even after its assertions passed.
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Run the zero-dependency suite on Windows paths
+        run: python tests/run_tests.py
+      - name: Install pumllint
+        run: pip install -e .
+      # PowerShell hands native programs the literal '*.puml'; pumllint has
+      # to expand it itself or a directory full of diagrams looks empty.
+      # Asserted in both directions against purpose-built fixtures, so the
+      # step cannot pass by matching nothing.
+      - name: Unexpanded wildcard resolves
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path wild | Out-Null
+          Set-Content -Encoding utf8 wild\clean.puml "@startuml Ok`ntitle Ok`nAlice -> Bob : hi`n@enduml"
+          Set-Content -Encoding utf8 wild\broken.puml "@startuml`nalt maybe`nAlice -> Bob : hi`n@enduml"
+          Set-Location wild
+          $clean = pumllint clean.puml
+          if ($LASTEXITCODE -ne 0) { throw "control: a clean diagram should exit 0, got $LASTEXITCODE" }
+          $wild = pumllint *.puml
+          if ($LASTEXITCODE -ne 1) { throw "wildcard should have found broken.puml and exited 1, got $LASTEXITCODE ($wild)" }
+          if ("$wild" -notmatch 'broken\.puml') { throw "wildcard did not reach broken.puml: $wild" }
+          $global:LASTEXITCODE = 0
+      - name: A wildcard matching nothing is an error, never a silent pass
+        shell: pwsh
+        run: |
+          # stderr to a file, not 2>&1: merging a native command's stderr into
+          # the pipeline can raise under the runner's $ErrorActionPreference.
+          pumllint *.nosuchext 2> nomatch.txt
+          if ($LASTEXITCODE -ne 2) { throw "expected exit 2, got $LASTEXITCODE" }
+          if (-not (Select-String -Path nomatch.txt -Pattern 'no files match pattern' -Quiet)) {
+            throw "unexpected message: $(Get-Content nomatch.txt -Raw)"
+          }
+          $global:LASTEXITCODE = 0
+      # Redirecting switches stdout off the console codec and onto the ANSI
+      # code page, where the report's glyphs used to raise UnicodeEncodeError.
+      - name: Redirected output survives the ANSI code page
+        shell: pwsh
+        run: |
+          pumllint examples\credit_intake_good.puml > report.txt
+          if ($LASTEXITCODE -ne 0) { throw "redirect run exited $LASTEXITCODE" }
+          if ((Get-Item report.txt).Length -eq 0) { throw "redirected report is empty" }
+          if (Select-String -Path report.txt -Pattern 'Traceback' -Quiet) { throw "traceback in report" }
+          $global:LASTEXITCODE = 0
+      # PowerShell 5.1's Out-File writes UTF-16; Set-Content writes ANSI.
+      - name: UTF-16 diagrams lint, ANSI diagrams fail by name
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path tmp | Out-Null
+          $src = "@startuml Order`ntitle Order intake`nAlice -> Bob : hi`n@enduml"
+          $src | Out-File -Encoding unicode tmp\utf16.puml
+          pumllint tmp\utf16.puml
+          if ($LASTEXITCODE -ne 0) { throw "UTF-16 diagram did not lint: $LASTEXITCODE" }
+          [IO.File]::WriteAllText("$PWD\tmp\ansi.puml", "@startuml`nAlice -> B" + [char]0xF8 + "b : hi`n@enduml`n", [Text.Encoding]::GetEncoding(1252))
+          pumllint tmp\ansi.puml 2> ansi-err.txt
+          if ($LASTEXITCODE -ne 2) { throw "ANSI diagram should fail with 2, got $LASTEXITCODE" }
+          if (-not (Select-String -Path ansi-err.txt -Pattern 'ansi\.puml' -Quiet)) {
+            throw "error did not name the file: $(Get-Content ansi-err.txt -Raw)"
+          }
+          $global:LASTEXITCODE = 0
+      # apply_fixes joins with the file's own newline; the write must not
+      # re-translate it. Line endings are authored here rather than taken
+      # from the checkout, whose .puml endings depend on git config.
+      - name: fix rewrites files without changing their line endings
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path tmp | Out-Null
+          $body = "@startuml`r`nparticipant Customer`r`nCustomer -> engine : go`r`n@enduml`r`n"
+          [IO.File]::WriteAllText("$PWD\tmp\crlf.puml", $body, (New-Object Text.UTF8Encoding $false))
+          $before = [IO.File]::ReadAllBytes("$PWD\tmp\crlf.puml")
+          $beforeLf = ($before | Where-Object { $_ -eq 10 }).Count
+          pumllint fix tmp\crlf.puml > fix.log
+          if ($LASTEXITCODE -ne 0) { throw "fix exited $LASTEXITCODE" }
+          $after = [IO.File]::ReadAllBytes("$PWD\tmp\crlf.puml")
+          if ($after.Length -le $before.Length) { throw "fix did not add the expected lines" }
+          $cr = ($after | Where-Object { $_ -eq 13 }).Count
+          $lf = ($after | Where-Object { $_ -eq 10 }).Count
+          if ($cr -ne $lf) { throw "CRLF file no longer has one CR per LF: CR=$cr LF=$lf" }
+          if ($lf -le $beforeLf) { throw "line count did not grow: before=$beforeLf after=$lf" }
+          for ($i = 0; $i -lt $after.Length - 1; $i++) {
+            if ($after[$i] -eq 13 -and $after[$i + 1] -eq 13) { throw "fix produced a doubled CR" }
+          }
+          $global:LASTEXITCODE = 0
+
   # Dogfood the composite action (action.yml) against the bundled examples.
   action-smoke:
     runs-on: ubuntu-latest

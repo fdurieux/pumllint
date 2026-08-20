@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from .textio import read_text_file
+
 DEFAULT_NAMES = ("pumllint.yaml", "pumllint.yml", "pumllint.toml", "pumllint.json")
 
 
@@ -18,7 +20,7 @@ def load_config(path: str | Path | None = None, cwd: str | Path = ".") -> dict:
         else:
             return {}
     p = Path(path)
-    text = p.read_text(encoding="utf-8")
+    text = read_text_file(p, kind="config file")
     suffix = p.suffix.lower()
     if suffix in (".yaml", ".yml"):
         try:

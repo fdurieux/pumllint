@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Iterable
 
@@ -173,16 +174,145 @@ class Engine:
         return diagrams
 
 
-def collect_files(paths: Iterable[str | Path], exts=(".puml", ".plantuml", ".iuml", ".wsd")) -> list[Path]:
+PUML_EXTENSIONS = (".puml", ".plantuml", ".iuml", ".wsd")
+
+_GLOB_CHARS = "*?["
+
+
+def _is_pattern(text: str) -> bool:
+    return any(ch in text for ch in _GLOB_CHARS)
+
+
+def _expand(pattern: Path) -> list[Path]:
+    """Filesystem matches for a glob argument, in stable order.
+
+    Only the part of the pattern from its first wildcard component onward is
+    globbed; everything before it is used as a literal base directory.
+    ``Path.glob`` rejects an absolute pattern outright, and matching literal
+    components through it is both slower and wrong on Windows, where a path
+    may name a directory by its 8.3 short form (``RUNNER~1``) that no
+    directory listing contains.
+    """
+    parts = pattern.parts
+    first = next((i for i, part in enumerate(parts) if _is_pattern(part)), None)
+    if first is None:  # the glob character was in a component we cannot glob
+        return []
+    base = Path(*parts[:first]) if first else Path()
+    rel = Path(*parts[first:])
+    try:
+        return sorted(base.glob(rel.as_posix()))
+    except (ValueError, OSError, NotImplementedError):  # malformed, unreadable
+        return []
+
+
+def _shape_hint(p: Path) -> str:
+    """A hint about how the *argument* is malformed, if it obviously is.
+
+    Shared by both error builders: a mistyped argument is just as likely to
+    carry a wildcard as not, and the hint is what makes the error useful.
+    """
+    text = str(p)
+    if text.startswith("~"):
+        return (
+            " — '~' is expanded by the shell, not by pumllint; pass the full "
+            "path (or drop the quotes so the shell expands it)"
+        )
+    if text.endswith('"'):
+        return (
+            " — the trailing quote suggests a PowerShell path ending in a "
+            'backslash ("C:\\dir\\" swallows the closing quote); drop the '
+            "trailing backslash"
+        )
+    return ""
+
+
+def _missing_path_error(p: Path) -> str:
+    """Why one bad argument is bad, in a sentence — not just the path echoed back."""
+    return f"no such file or directory: {p}{_shape_hint(p)}"
+
+
+def _no_match_error(p: Path, filtered: int, suffixes: set[str]) -> str:
+    """Why a pattern that expanded found nothing usable."""
+    if filtered:
+        return (
+            f"no diagram files match pattern '{p}': {filtered} path(s) matched "
+            f"but none had a diagram extension ({', '.join(sorted(suffixes))})"
+        )
+    note = _shape_hint(p)
+    if not note and os.name == "nt":
+        note = (
+            " — PowerShell and cmd.exe do not expand wildcards for native "
+            "programs, so pumllint expanded it itself and found nothing; "
+            "`pumllint .` lints the whole directory"
+        )
+    return f"no files match pattern '{p}'{note}"
+
+
+def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Path]:
+    """Every diagram file under *paths*, de-duplicated, in stable order.
+
+    Each argument resolves in this order, so nothing that already works
+    changes meaning:
+
+    1. A directory is recursed for *exts*, matched case-insensitively — a
+       hand-named ``Diagram.PUML`` is not silently skipped on a case-sensitive
+       filesystem.
+    2. An existing path is taken as-is, whatever its extension: naming a file
+       explicitly is an explicit choice.
+    3. Only when neither holds and the argument contains a glob character is
+       it expanded as a pattern. POSIX shells expand globs before pumllint
+       sees them, so this branch is dead there; PowerShell and ``cmd.exe`` do
+       not expand for native programs, and without it ``pumllint *.puml``
+       fails on Windows in a directory full of diagrams. Pattern matches are
+       filtered by extension — a pattern is a bulk selector like a directory,
+       so ``pumllint *`` must not feed ``README.md`` to the parser.
+
+    Every argument is checked before anything is reported, so one typo lists
+    all the bad arguments at once rather than only the first.
+    """
+    suffixes = {str(e).lower() for e in exts}
     files: list[Path] = []
+    seen: set[Path] = set()
+    problems: list[str] = []
+
+    def _add(f: Path) -> None:
+        if f not in seen:
+            seen.add(f)
+            files.append(f)
+
+    def _recurse(d: Path) -> list[Path]:
+        # Suffix first: a string test rejects almost everything for free, and
+        # is_file() is a stat syscall per surviving entry.
+        return sorted(
+            f for f in d.rglob("*") if f.suffix.lower() in suffixes and f.is_file()
+        )
+
     for p in map(Path, paths):
         if p.is_dir():
-            for ext in exts:
-                files.extend(sorted(p.rglob(f"*{ext}")))
+            for f in _recurse(p):
+                _add(f)
         elif p.exists():
-            files.append(p)
+            _add(p)
+        elif _is_pattern(str(p)):
+            matches = _expand(p)
+            kept = 0
+            for m in matches:
+                if m.is_dir():
+                    for f in _recurse(m):
+                        _add(f)
+                    kept += 1
+                elif m.suffix.lower() in suffixes:
+                    _add(m)
+                    kept += 1
+            if not kept:
+                problems.append(_no_match_error(p, len(matches), suffixes))
         else:
-            raise FileNotFoundError(p)
+            problems.append(_missing_path_error(p))
+
+    if problems:
+        # Never a partial report: a report that looks complete beside exit 2
+        # is worse than no report, so one bad argument fails the whole run.
+        raise FileNotFoundError("; ".join(problems))
     return files
 
 

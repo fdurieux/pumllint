@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .model import Diagram
+from .textio import read_text_file
 from .scoring import MaturityResult
 
 BASELINE_VERSION = 1
@@ -68,7 +69,7 @@ def diagram_keys(diagrams: Iterable[Diagram]) -> list[str]:
 
 def load_baseline(path: str | Path) -> dict[str, BaselineEntry]:
     try:
-        raw = json.loads(Path(path).read_text(encoding="utf-8"))
+        raw = json.loads(read_text_file(path, kind="baseline file"))
     except json.JSONDecodeError as e:
         raise ValueError(f"baseline file {path} is not valid JSON: {e}") from e
     if not isinstance(raw, dict) or "diagrams" not in raw:
@@ -97,7 +98,11 @@ def write_baseline(
             for key, (_, r) in zip(diagram_keys(d for d, _ in results), results)
         },
     }
-    Path(path).write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+    # newline="": a baseline is committed and diffed across machines, so it
+    # must not gain CRLF just because it was written on Windows.
+    Path(path).write_text(
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline=""
+    )
 
 
 def find_regressions(
