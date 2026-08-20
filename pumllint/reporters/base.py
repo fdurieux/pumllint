@@ -27,6 +27,34 @@ def sanitize_terminal(text: str) -> str:
     """
     return _CONTROL_CHARS.sub("�", text)
 
+
+# Decorative glyphs the text reports use, and their ASCII stand-ins. Applied
+# only when the destination stream cannot encode them (see cli._encode_safely)
+# — a Windows console redirected to a file runs in the ANSI code page, where
+# printing U+2714 raises UnicodeEncodeError and destroys the whole report.
+_ASCII_GLYPHS = {
+    "\u2714": "OK",    # heavy check mark
+    "\u2716": "FAIL",  # heavy multiplication x
+    "\u2192": "->",
+    "\u2190": "<-",
+    "\u2022": "*",
+    "\u2014": "--",
+    "\u2013": "-",
+    "\u2026": "...",
+    "\u2018": "'",
+    "\u2019": "'",
+    "\u201c": '"',
+    "\u201d": '"',
+    "\ufffd": "?",
+}
+
+
+def ascii_glyphs(text: str) -> str:
+    """Replace pumllint's own decorative glyphs with ASCII equivalents."""
+    for glyph, plain in _ASCII_GLYPHS.items():
+        text = text.replace(glyph, plain)
+    return text
+
 if TYPE_CHECKING:  # annotation-only imports; avoids a runtime reporters->scoring edge
     from ..baseline import BaselineEntry
     from ..model import Diagram

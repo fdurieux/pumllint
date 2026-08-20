@@ -23,11 +23,12 @@ from pathlib import Path
 
 from . import __version__
 from .config import load_config
-from .engine import Engine, collect_files
+from .engine import PUML_EXTENSIONS, Engine, collect_files
 from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
+from .parser import parse_file
 from .reporters import get_reporter
-from .reporters.base import sanitize_terminal
+from .reporters.base import ascii_glyphs, sanitize_terminal
 from .rules import discover
 from .schema import SCHEMA_NAMES, load_schema
 from .scoring import score_groups
@@ -223,6 +224,76 @@ def main(argv: list[str] | None = None) -> int:
     return _run_lint(argv)
 
 
+def _encode_safely(text: str, stream) -> str:
+    """*text* rendered so writing it to *stream* cannot raise.
+
+    Windows attaches the console's UTF-8 codec only to a real console: the
+    moment output is redirected, piped or captured, ``sys.stdout`` switches to
+    the ANSI code page (cp1252 and friends), where the report's ✔/✖ raise
+    UnicodeEncodeError — losing the entire report and inverting the exit code.
+
+    Reconfiguring the stream to UTF-8 would be the obvious fix and is the
+    wrong one: PowerShell 5.1 re-decodes a native program's bytes with
+    ``[Console]::OutputEncoding`` (cp850/437 by default), so it trades a
+    crash for mojibake. Downgrading only what the destination genuinely
+    cannot encode leaves POSIX output byte-identical.
+    """
+    encoding = getattr(stream, "encoding", None)
+    if not encoding:  # StringIO under test: assume it takes anything
+        return text
+    try:
+        text.encode(encoding)
+        return text
+    except (UnicodeEncodeError, LookupError):
+        pass
+    text = ascii_glyphs(text)  # our own decorations -> ASCII
+    # Diagram content (a CJK participant name, say) has no ASCII equivalent:
+    # show it escaped rather than losing the report over it.
+    return text.encode(encoding, "backslashreplace").decode(encoding)
+
+
+def _out(text: str = "") -> None:
+    print(_encode_safely(text, sys.stdout))
+
+
+def _err(text: str) -> None:
+    print(_encode_safely(text, sys.stderr), file=sys.stderr)
+
+
+def _collect_input_files(paths: list[str]) -> list[Path]:
+    """Diagram files under *paths*, warning when the search comes up empty.
+
+    A linter that silently reports "no issues" because it looked at nothing
+    is worse than one that fails: say so on stderr, so a mistyped path or a
+    directory holding no diagram sources is visible in the CI log.
+    """
+    files = collect_files(paths)
+    if not files:
+        where = ", ".join(str(p) for p in paths)
+        _err(
+            f"warning: no PlantUML files found in {where} "
+            f"(looked for {', '.join(PUML_EXTENSIONS)}) — nothing was checked"
+        )
+    return files
+
+
+def _parse_input_files(files: list[Path]):
+    """Parse *files*, warning about any that yielded no diagram."""
+    diagrams = [d for f in files for d in parse_file(f)]
+    parsed = {d.file_path for d in diagrams}
+    empty = [f for f in files if str(f) not in parsed]
+    if empty:
+        shown = ", ".join(str(f) for f in empty[:5])
+        more = f" (+{len(empty) - 5} more)" if len(empty) > 5 else ""
+        _err(
+            f"warning: {len(empty)} file(s) contained no @startuml block and "
+            f"were not checked: {shown}{more} — pumllint lints "
+            "@startuml…@enduml sources; @startmindmap / @startjson / "
+            "@startsalt / @startgantt blocks are not linted"
+        )
+    return diagrams
+
+
 def _run_lint(argv: list[str]) -> int:
     args = build_parser().parse_args(argv)
 
@@ -230,20 +301,20 @@ def _run_lint(argv: list[str]) -> int:
         for rid, cls in sorted(discover().items()):
             scope = ",".join(cls.applies_to)
             prof = f" {{profile: {','.join(cls.profiles)}}}" if cls.profiles else ""
-            print(f"{rid}  {cls.name:<30} [{cls.default_severity.value:<8}] {cls.dimension.value} ({scope}){prof} {cls.description}")
+            _out(f"{rid}  {cls.name:<30} [{cls.default_severity.value:<8}] {cls.dimension.value} ({scope}){prof} {cls.description}")
         return 0
 
     if not args.paths:
-        print("error: no paths given (or use --list-rules)", file=sys.stderr)
+        _err("error: no paths given (or use --list-rules)")
         return 2
 
     try:
         config = _apply_cli_overrides(load_config(args.config), args)
         engine = Engine(config)
-        violations = engine.lint_paths(args.paths)
+        violations = engine.lint_diagrams(_parse_input_files(_collect_input_files(args.paths)))
         report = get_reporter(args.format).render(violations)
     except (FileNotFoundError, ValueError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        _err(f"error: {e}")
         return 2
 
     _emit(report, args.output)
@@ -257,10 +328,10 @@ def _run_score(argv: list[str]) -> int:
     args = build_score_parser().parse_args(argv)
 
     if not args.paths:
-        print("error: no paths given", file=sys.stderr)
+        _err("error: no paths given")
         return 2
     if args.update_baseline and not args.baseline:
-        print("error: --update-baseline requires --baseline FILE", file=sys.stderr)
+        _err("error: --update-baseline requires --baseline FILE")
         return 2
 
     # The old baseline is loaded up front: the reporters annotate the report
@@ -272,18 +343,19 @@ def _run_score(argv: list[str]) -> int:
 
             baseline_data = load_baseline(args.baseline)
         except (OSError, ValueError) as e:
-            print(f"error: {e}", file=sys.stderr)
+            _err(f"error: {e}")
             return 2
 
     try:
         config = _apply_cli_overrides(load_config(args.config), args)
         scoring_cfg = config.get("scoring") or {}
         engine = Engine(config)
-        groups = engine.lint_paths_grouped(args.paths)
+        files = _collect_input_files(args.paths)
+        groups = engine.lint_diagrams_grouped(_parse_input_files(files))
         syntax_results = None
         if args.check_syntax or scoring_cfg.get("syntax_gate"):
             syntax_results = check_files(
-                collect_files(args.paths),
+                files,
                 command=scoring_cfg.get("syntax_command", "plantuml"),
             )
         results = score_groups(
@@ -294,17 +366,16 @@ def _run_score(argv: list[str]) -> int:
         )
         report = get_reporter(args.format).render_maturity(results, baseline=baseline_data)
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        _err(f"error: {e}")
         return 2
 
     _emit(report, args.output)
 
     gated = args.min_level is not None or args.baseline
     if gated and not results:
-        print(
+        _err(
             "error: a gate was requested but no diagrams were scored "
-            "(no parseable @startuml blocks under the given paths)",
-            file=sys.stderr,
+            "(no parseable @startuml blocks under the given paths)"
         )
         return 2
 
@@ -313,7 +384,7 @@ def _run_score(argv: list[str]) -> int:
         try:
             failed |= _apply_baseline(args, results, baseline_data)
         except OSError as e:
-            print(f"error: {e}", file=sys.stderr)
+            _err(f"error: {e}")
             return 2
     if args.min_level is not None:
         failed |= any(r.level < args.min_level for _, r in results)
@@ -323,16 +394,16 @@ def _run_score(argv: list[str]) -> int:
 def _run_fix(argv: list[str]) -> int:
     args = build_fix_parser().parse_args(argv)
     if not args.paths:
-        print("error: no paths given", file=sys.stderr)
+        _err("error: no paths given")
         return 2
 
     try:
         config = _apply_cli_overrides(load_config(args.config), args)
         from .fixer import fix_paths
 
-        results = fix_paths(args.paths, config)
+        results = fix_paths(_collect_input_files(args.paths), config)
     except (FileNotFoundError, ValueError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        _err(f"error: {e}")
         return 2
 
     changed = [r for r in results if r.changed]
@@ -348,7 +419,7 @@ def _run_fix(argv: list[str]) -> int:
             )
             sys.stdout.write("".join(diff))
         n = sum(len(r.fixes) for r in changed)
-        print(
+        _out(
             f"would apply {n} fix(es) in {len(changed)} file(s)"
             if changed
             else "✔ Nothing to fix."
@@ -356,29 +427,31 @@ def _run_fix(argv: list[str]) -> int:
         return 1 if changed else 0
 
     for r in changed:
-        r.path.write_text(r.fixed, encoding="utf-8")
+        # newline="" or Windows text mode re-translates every "\n", turning the
+        # CRLF apply_fixes deliberately produced into "\r\r\n" and rewriting
+        # every line of an LF file.
+        r.path.write_text(r.fixed, encoding="utf-8", newline="")
         for f in r.fixes:
-            print(sanitize_terminal(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}"))
+            _out(sanitize_terminal(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}"))
     if not changed:
-        print("✔ Nothing to fix.")
+        _out("✔ Nothing to fix.")
         return 0
     n = sum(len(r.fixes) for r in changed)
     remaining = Engine(config).lint_paths([r.path for r in changed])
     note = f"; {len(remaining)} finding(s) remain (run pumllint to see them)" if remaining else ""
-    print(f"✔ Applied {n} fix(es) in {len(changed)} file(s){note}")
+    _out(f"✔ Applied {n} fix(es) in {len(changed)} file(s){note}")
     return 0
 
 
 def _run_trace(argv: list[str]) -> int:
     args = build_trace_parser().parse_args(argv)
     if not args.paths:
-        print("error: no paths given", file=sys.stderr)
+        _err("error: no paths given")
         return 2
     if not args.requirements and not args.requirements_scan:
-        print(
+        _err(
             "error: no inventory given — pass --requirements FILE and/or "
-            "--requirements-scan PATH",
-            file=sys.stderr,
+            "--requirements-scan PATH"
         )
         return 2
 
@@ -395,11 +468,10 @@ def _run_trace(argv: list[str]) -> int:
         config = load_config(args.config)
         raw = args.pattern or pattern_from_config(config)
         if not raw:
-            print(
+            _err(
                 "error: no requirement-ID pattern — pass --pattern "
                 "(e.g. 'REQ-\\d+|ADR-\\d+'), or configure "
-                "rules.requirement-link.pattern",
-                file=sys.stderr,
+                "rules.requirement-link.pattern"
             )
             return 2
         origin = (
@@ -412,11 +484,11 @@ def _run_trace(argv: list[str]) -> int:
         if args.requirements_scan:
             inventory.extend(scan_inventory(args.requirements_scan, pattern))
         inventory = list(dict.fromkeys(inventory))  # union, first-seen order
-        diagrams = [d for f in collect_files(args.paths) for d in parse_file(f)]
+        diagrams = _parse_input_files(_collect_input_files(args.paths))
         result = build_matrix(diagrams, inventory, pattern)
         report = get_reporter(args.format).render_trace(result)
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
-        print(f"error: {e}", file=sys.stderr)
+        _err(f"error: {e}")
         return 2
 
     _emit(report, args.output)
@@ -448,30 +520,26 @@ def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:
     if args.update_baseline or baseline_data is None:
         write_baseline(path, results)
         verb = "updated" if args.update_baseline else "recorded"
-        print(
-            f"baseline: {verb} {len(results)} diagram level(s) in {path}",
-            file=sys.stderr,
-        )
+        _err(f"baseline: {verb} {len(results)} diagram level(s) in {path}")
         return False
     regressions = find_regressions(baseline_data, results)
     for reg in regressions:
         # reg.key embeds the diagram name (file content) — sanitize like the
         # text reporter does.
-        print(
+        _err(
             sanitize_terminal(
                 f"regression: {reg.key}: Level {reg.current_level} "
                 f"(baseline {reg.baseline_level})"
-            ),
-            file=sys.stderr,
+            )
         )
     return bool(regressions)
 
 
 def _emit(report: str, output: str | None) -> None:
     if output:
-        Path(output).write_text(report + "\n", encoding="utf-8")
+        Path(output).write_text(report + "\n", encoding="utf-8", newline="")
     else:
-        print(report)
+        _out(report)
 
 
 if __name__ == "__main__":

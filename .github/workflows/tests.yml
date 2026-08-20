@@ -43,6 +43,70 @@ jobs:
       - name: Run full test suite
         run: python -m pytest
 
+  # Windows is where the shell stops expanding wildcards and stdout stops
+  # being UTF-8 — neither reproduces on Ubuntu, and both reached a user.
+  # The Linux suite simulates them (literal argv, PYTHONIOENCODING=cp1252);
+  # only this job proves PowerShell itself.
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+      - name: Run the zero-dependency suite on Windows paths
+        run: python tests/run_tests.py
+      - name: Install pumllint
+        run: pip install -e .
+      # PowerShell hands native programs the literal '*.puml'; pumllint has
+      # to expand it itself or a directory full of diagrams looks empty.
+      - name: Unexpanded wildcard resolves
+        shell: pwsh
+        run: |
+          Set-Location examples
+          # *_good.puml: clean at the default --fail-on, so exit 0 proves the
+          # pattern resolved rather than that the diagrams happen to pass.
+          $out = pumllint *_good.puml
+          if ($LASTEXITCODE -ne 0) { throw "wildcard lint failed: $LASTEXITCODE" }
+          if ("$out" -notmatch 'credit_intake_good') { throw "wildcard matched nothing: $out" }
+      - name: A wildcard matching nothing is an error, never a silent pass
+        shell: pwsh
+        run: |
+          pumllint *.nosuchext 2>&1 | Out-Null
+          if ($LASTEXITCODE -ne 2) { throw "expected exit 2, got $LASTEXITCODE" }
+      # Redirecting switches stdout off the console codec and onto the ANSI
+      # code page, where the report's glyphs used to raise UnicodeEncodeError.
+      - name: Redirected output survives the ANSI code page
+        shell: pwsh
+        run: |
+          pumllint examples\credit_intake_good.puml > report.txt
+          if ($LASTEXITCODE -ne 0) { throw "redirect run exited $LASTEXITCODE" }
+          if ((Get-Item report.txt).Length -eq 0) { throw "redirected report is empty" }
+          if (Select-String -Path report.txt -Pattern 'Traceback' -Quiet) { throw "traceback in report" }
+      # PowerShell 5.1's Out-File writes UTF-16; Set-Content writes ANSI.
+      - name: UTF-16 diagrams lint, ANSI diagrams fail by name
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path tmp | Out-Null
+          $src = "@startuml Order`ntitle Order intake`nAlice -> Bob : hi`n@enduml"
+          $src | Out-File -Encoding unicode tmp\utf16.puml
+          pumllint tmp\utf16.puml
+          if ($LASTEXITCODE -ne 0) { throw "UTF-16 diagram did not lint: $LASTEXITCODE" }
+          [IO.File]::WriteAllText("$PWD\tmp\ansi.puml", "@startuml`nAlice -> B" + [char]0xF8 + "b : hi`n@enduml`n", [Text.Encoding]::GetEncoding(1252))
+          $err = pumllint tmp\ansi.puml 2>&1
+          if ($LASTEXITCODE -ne 2) { throw "ANSI diagram should fail with 2, got $LASTEXITCODE" }
+          if ("$err" -notmatch 'ansi\.puml') { throw "error did not name the file: $err" }
+      - name: fix rewrites files without doubling line endings
+        shell: pwsh
+        run: |
+          Copy-Item examples\credit_intake_bad.puml tmp\fixme.puml
+          pumllint fix tmp\fixme.puml > fix.log
+          if ($LASTEXITCODE -ne 0) { throw "fix exited $LASTEXITCODE" }
+          $bytes = [IO.File]::ReadAllBytes("$PWD\tmp\fixme.puml")
+          for ($i = 0; $i -lt $bytes.Length - 1; $i++) {
+            if ($bytes[$i] -eq 13 -and $bytes[$i + 1] -eq 13) { throw "fix produced a doubled CR" }
+          }
+
   # Dogfood the composite action (action.yml) against the bundled examples.
   action-smoke:
     runs-on: ubuntu-latest

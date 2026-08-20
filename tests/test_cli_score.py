@@ -375,3 +375,48 @@ def test_no_suppressions_surfaces_the_finding_instead_of_the_count():
                      "-f", "json", "-o", str(js)]) == 0
         data = json.loads(js.read_text(encoding="utf-8"))
         assert data["diagrams"][0]["maturity"]["suppressedCount"] == 0
+
+
+def _stderr_of(argv: list[str], tmp: str) -> tuple[int, str]:
+    """Exit code and stderr of a CLI run, stdout parked in a file."""
+    import contextlib
+    import io
+
+    buf = io.StringIO()
+    with contextlib.redirect_stderr(buf):
+        rc = main(argv + ["-o", str(Path(tmp) / "report.txt")])
+    return rc, buf.getvalue()
+
+
+def test_zero_files_warns_on_stderr_and_still_exits_zero():
+    # A linter that says "no issues" because it looked at nothing is worse
+    # than one that fails — but the 0/1/2 exit contract stays put.
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        (Path(tmp) / "notes.md").write_text("# not a diagram\n", encoding="utf-8")
+        rc, err = _stderr_of([tmp, "-c", str(Path(tmp) / "cfg.json")], tmp)
+        assert rc == 0, rc
+        assert "no PlantUML files found" in err, err
+        assert "nothing was checked" in err, err
+
+
+def test_file_without_a_startuml_block_warns_but_does_not_fail():
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        mind = Path(tmp) / "mind.puml"
+        mind.write_text("@startmindmap\n* root\n@endmindmap\n", encoding="utf-8")
+        rc, err = _stderr_of([str(mind), "-c", str(Path(tmp) / "cfg.json")], tmp)
+        assert rc == 0, rc
+        assert "no @startuml block" in err, err
+        assert "mind.puml" in err, err
+
+
+def test_iuml_include_fragment_warns_rather_than_erroring():
+    # .iuml fragments legitimately have no @startuml of their own.
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        frag = Path(tmp) / "shared.iuml"
+        frag.write_text("participant Alice\n", encoding="utf-8")
+        rc, err = _stderr_of([str(frag), "-c", str(Path(tmp) / "cfg.json")], tmp)
+        assert rc == 0, rc
+        assert "no @startuml block" in err, err

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 from typing import Iterable
 
@@ -173,16 +174,129 @@ class Engine:
         return diagrams
 
 
-def collect_files(paths: Iterable[str | Path], exts=(".puml", ".plantuml", ".iuml", ".wsd")) -> list[Path]:
+PUML_EXTENSIONS = (".puml", ".plantuml", ".iuml", ".wsd")
+
+_GLOB_CHARS = "*?["
+
+
+def _is_pattern(text: str) -> bool:
+    return any(ch in text for ch in _GLOB_CHARS)
+
+
+def _expand(pattern: Path) -> list[Path]:
+    """Filesystem matches for a glob argument, in stable order.
+
+    Split on the anchor so absolute and drive-qualified patterns work:
+    ``Path.glob`` rejects a pattern that starts with a separator or a drive.
+    """
+    if pattern.anchor:
+        base, rel = Path(pattern.anchor), pattern.relative_to(pattern.anchor)
+    else:
+        base, rel = Path(), pattern
+    try:
+        return sorted(base.glob(rel.as_posix()))
+    except (ValueError, OSError):  # malformed pattern, unreadable base
+        return []
+
+
+def _missing_path_error(p: Path) -> str:
+    """Why one bad argument is bad, in a sentence — not just the path echoed back."""
+    text = str(p)
+    if text.startswith("~"):
+        return (
+            f"no such file or directory: {p} — '~' is expanded by the shell, not "
+            f"by pumllint; pass the full path (or drop the quotes so the shell "
+            f"expands it)"
+        )
+    if text.endswith('"'):
+        return (
+            f"no such file or directory: {p} — the trailing quote suggests a "
+            f'PowerShell path ending in a backslash ("C:\\dir\\" swallows the '
+            f"closing quote); drop the trailing backslash"
+        )
+    return f"no such file or directory: {p}"
+
+
+def _no_match_error(p: Path, filtered: int, suffixes: set[str]) -> str:
+    """Why a pattern that expanded found nothing usable."""
+    if filtered:
+        return (
+            f"no diagram files match pattern '{p}': {filtered} path(s) matched "
+            f"but none had a diagram extension ({', '.join(sorted(suffixes))})"
+        )
+    shell_note = (
+        " — PowerShell and cmd.exe do not expand wildcards for native programs, "
+        "so pumllint expanded it itself and found nothing; `pumllint .` lints the "
+        "whole directory"
+        if os.name == "nt"
+        else ""
+    )
+    return f"no files match pattern '{p}'{shell_note}"
+
+
+def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Path]:
+    """Every diagram file under *paths*, de-duplicated, in stable order.
+
+    Each argument resolves in this order, so nothing that already works
+    changes meaning:
+
+    1. A directory is recursed for *exts*, matched case-insensitively — a
+       hand-named ``Diagram.PUML`` is not silently skipped on a case-sensitive
+       filesystem.
+    2. An existing path is taken as-is, whatever its extension: naming a file
+       explicitly is an explicit choice.
+    3. Only when neither holds and the argument contains a glob character is
+       it expanded as a pattern. POSIX shells expand globs before pumllint
+       sees them, so this branch is dead there; PowerShell and ``cmd.exe`` do
+       not expand for native programs, and without it ``pumllint *.puml``
+       fails on Windows in a directory full of diagrams. Pattern matches are
+       filtered by extension — a pattern is a bulk selector like a directory,
+       so ``pumllint *`` must not feed ``README.md`` to the parser.
+
+    Every argument is checked before anything is reported, so one typo lists
+    all the bad arguments at once rather than only the first.
+    """
+    suffixes = {str(e).lower() for e in exts}
     files: list[Path] = []
+    seen: set[Path] = set()
+    problems: list[str] = []
+
+    def _add(f: Path) -> None:
+        if f not in seen:
+            seen.add(f)
+            files.append(f)
+
+    def _recurse(d: Path) -> list[Path]:
+        return sorted(
+            f for f in d.rglob("*") if f.is_file() and f.suffix.lower() in suffixes
+        )
+
     for p in map(Path, paths):
         if p.is_dir():
-            for ext in exts:
-                files.extend(sorted(p.rglob(f"*{ext}")))
+            for f in _recurse(p):
+                _add(f)
         elif p.exists():
-            files.append(p)
+            _add(p)
+        elif _is_pattern(str(p)):
+            matches = _expand(p)
+            kept = 0
+            for m in matches:
+                if m.is_dir():
+                    for f in _recurse(m):
+                        _add(f)
+                    kept += 1
+                elif m.suffix.lower() in suffixes:
+                    _add(m)
+                    kept += 1
+            if not kept:
+                problems.append(_no_match_error(p, len(matches), suffixes))
         else:
-            raise FileNotFoundError(p)
+            problems.append(_missing_path_error(p))
+
+    if problems:
+        # Never a partial report: a report that looks complete beside exit 2
+        # is worse than no report, so one bad argument fails the whole run.
+        raise FileNotFoundError("; ".join(problems))
     return files
 
 

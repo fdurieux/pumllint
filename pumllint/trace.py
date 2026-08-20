@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Iterable
 
 from .model import Diagram, prose_directives
+from .textio import read_text_file
 
 # Suffixes scanned when --requirements-scan points at a directory.
 SCAN_SUFFIXES = (".md", ".txt", ".adoc", ".rst")
@@ -121,7 +122,7 @@ def load_inventory(path: str | Path) -> list[str]:
     p = Path(path)
     if not p.exists():
         raise FileNotFoundError(p)
-    text = p.read_text(encoding="utf-8")
+    text = read_text_file(p, kind="requirements inventory")
     suffix = p.suffix.lower()
     if suffix == ".json":
         return _ids_from_data(json.loads(text), p)

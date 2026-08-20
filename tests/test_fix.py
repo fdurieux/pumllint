@@ -3,6 +3,8 @@ zero-dependency runner exercises them too. All file operations happen in
 temp dirs — the repo's own examples must never be "fixed".
 """
 
+import contextlib
+import io
 import tempfile
 from pathlib import Path
 
@@ -85,6 +87,33 @@ def test_fix_preserves_crlf_line_endings():
     out = _fixed(src)
     assert "\r\n" in out
     assert "\n" not in out.replace("\r\n", "")
+
+
+def _fix_on_disk(src: str) -> bytes:
+    """Bytes on disk after a real `pumllint fix` run — file layer included."""
+    with tempfile.TemporaryDirectory() as tmp:
+        puml = Path(tmp) / "credit_check.puml"
+        puml.write_bytes(src.encode("utf-8"))
+        cfg = Path(tmp) / "cfg.json"
+        cfg.write_text("{}", encoding="utf-8")
+        with io.StringIO() as quiet, contextlib.redirect_stdout(quiet):
+            main(["fix", str(puml), "-c", str(cfg)])
+        return puml.read_bytes()
+
+
+def test_fix_writes_crlf_files_back_without_doubling_the_returns():
+    # apply_fixes joins with \r\n, but Windows text mode re-translates every
+    # \n on the way out, producing \r\r\n. Only a real write catches that,
+    # which is why the assertion above (string level) stayed green while the
+    # bug shipped.
+    written = _fix_on_disk(_MESSY.replace("\n", "\r\n"))
+    assert b"\r\r\n" not in written
+    assert written.count(b"\r\n") == written.count(b"\n")
+
+
+def test_fix_writes_lf_files_back_as_lf():
+    written = _fix_on_disk(_MESSY)
+    assert b"\r" not in written
 
 
 def test_exotic_participant_names_are_quoted():
