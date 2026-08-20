@@ -41,16 +41,26 @@ def read_text_file(path: str | Path, *, kind: str = "file") -> str:
     ``kind`` names the subsystem in the error message ("diagram", "config
     file", ...) so a bad config never reads like a bad diagram.
     """
+    return read_text_and_encoding(path, kind=kind)[0]
+
+
+def read_text_and_encoding(path: str | Path, *, kind: str = "file") -> tuple[str, str]:
+    """``(text, encoding)`` — the codec name is what a rewrite must use.
+
+    ``pumllint fix`` writes files back: without the encoding it would
+    silently transcode a Windows-authored UTF-16 diagram to UTF-8, changing
+    every byte of a file the user only asked to fix two lines of.
+    """
     p = Path(path)
     data = p.read_bytes()
     for bom, encoding in _BOMS:
         if data.startswith(bom):
             try:
-                return data.decode(encoding)
+                return data.decode(encoding), encoding
             except UnicodeDecodeError as e:
                 raise _decode_error(p, kind, e, encoding) from None
     try:
-        return data.decode("utf-8")
+        return data.decode("utf-8"), "utf-8"
     except UnicodeDecodeError as e:
         raise _decode_error(p, kind, e, "utf-8") from None
 

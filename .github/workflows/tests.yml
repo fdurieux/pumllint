@@ -47,6 +47,11 @@ jobs:
   # being UTF-8 — neither reproduces on Ubuntu, and both reached a user.
   # The Linux suite simulates them (literal argv, PYTHONIOENCODING=cp1252);
   # only this job proves PowerShell itself.
+  #
+  # Every pwsh step ends with `$global:LASTEXITCODE = 0`: the runner appends
+  # `if (Test-Path variable:\LASTEXITCODE) { exit $LASTEXITCODE }` to the
+  # script, so a step whose last native call deliberately exited non-zero
+  # would fail even after its assertions passed.
   windows:
     runs-on: windows-latest
     steps:
@@ -60,20 +65,28 @@ jobs:
         run: pip install -e .
       # PowerShell hands native programs the literal '*.puml'; pumllint has
       # to expand it itself or a directory full of diagrams looks empty.
+      # Asserted in both directions against purpose-built fixtures, so the
+      # step cannot pass by matching nothing.
       - name: Unexpanded wildcard resolves
         shell: pwsh
         run: |
-          Set-Location examples
-          # *_good.puml: clean at the default --fail-on, so exit 0 proves the
-          # pattern resolved rather than that the diagrams happen to pass.
-          $out = pumllint *_good.puml
-          if ($LASTEXITCODE -ne 0) { throw "wildcard lint failed: $LASTEXITCODE" }
-          if ("$out" -notmatch 'credit_intake_good') { throw "wildcard matched nothing: $out" }
+          New-Item -ItemType Directory -Force -Path wild | Out-Null
+          Set-Content -Encoding utf8 wild\clean.puml "@startuml Ok`ntitle Ok`nAlice -> Bob : hi`n@enduml"
+          Set-Content -Encoding utf8 wild\broken.puml "@startuml`nalt maybe`nAlice -> Bob : hi`n@enduml"
+          Set-Location wild
+          $clean = pumllint clean.puml
+          if ($LASTEXITCODE -ne 0) { throw "control: a clean diagram should exit 0, got $LASTEXITCODE" }
+          $wild = pumllint *.puml
+          if ($LASTEXITCODE -ne 1) { throw "wildcard should have found broken.puml and exited 1, got $LASTEXITCODE ($wild)" }
+          if ("$wild" -notmatch 'broken\.puml') { throw "wildcard did not reach broken.puml: $wild" }
+          $global:LASTEXITCODE = 0
       - name: A wildcard matching nothing is an error, never a silent pass
         shell: pwsh
         run: |
-          pumllint *.nosuchext 2>&1 | Out-Null
+          $out = pumllint *.nosuchext 2>&1
           if ($LASTEXITCODE -ne 2) { throw "expected exit 2, got $LASTEXITCODE" }
+          if ("$out" -notmatch 'no files match pattern') { throw "unexpected message: $out" }
+          $global:LASTEXITCODE = 0
       # Redirecting switches stdout off the console codec and onto the ANSI
       # code page, where the report's glyphs used to raise UnicodeEncodeError.
       - name: Redirected output survives the ANSI code page
@@ -83,6 +96,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw "redirect run exited $LASTEXITCODE" }
           if ((Get-Item report.txt).Length -eq 0) { throw "redirected report is empty" }
           if (Select-String -Path report.txt -Pattern 'Traceback' -Quiet) { throw "traceback in report" }
+          $global:LASTEXITCODE = 0
       # PowerShell 5.1's Out-File writes UTF-16; Set-Content writes ANSI.
       - name: UTF-16 diagrams lint, ANSI diagrams fail by name
         shell: pwsh
@@ -96,16 +110,30 @@ jobs:
           $err = pumllint tmp\ansi.puml 2>&1
           if ($LASTEXITCODE -ne 2) { throw "ANSI diagram should fail with 2, got $LASTEXITCODE" }
           if ("$err" -notmatch 'ansi\.puml') { throw "error did not name the file: $err" }
-      - name: fix rewrites files without doubling line endings
+          $global:LASTEXITCODE = 0
+      # apply_fixes joins with the file's own newline; the write must not
+      # re-translate it. Line endings are authored here rather than taken
+      # from the checkout, whose .puml endings depend on git config.
+      - name: fix rewrites files without changing their line endings
         shell: pwsh
         run: |
-          Copy-Item examples\credit_intake_bad.puml tmp\fixme.puml
-          pumllint fix tmp\fixme.puml > fix.log
+          New-Item -ItemType Directory -Force -Path tmp | Out-Null
+          $body = "@startuml`r`nparticipant Customer`r`nCustomer -> engine : go`r`n@enduml`r`n"
+          [IO.File]::WriteAllText("$PWD\tmp\crlf.puml", $body, (New-Object Text.UTF8Encoding $false))
+          $before = [IO.File]::ReadAllBytes("$PWD\tmp\crlf.puml")
+          $beforeLf = ($before | Where-Object { $_ -eq 10 }).Count
+          pumllint fix tmp\crlf.puml > fix.log
           if ($LASTEXITCODE -ne 0) { throw "fix exited $LASTEXITCODE" }
-          $bytes = [IO.File]::ReadAllBytes("$PWD\tmp\fixme.puml")
-          for ($i = 0; $i -lt $bytes.Length - 1; $i++) {
-            if ($bytes[$i] -eq 13 -and $bytes[$i + 1] -eq 13) { throw "fix produced a doubled CR" }
+          $after = [IO.File]::ReadAllBytes("$PWD\tmp\crlf.puml")
+          if ($after.Length -le $before.Length) { throw "fix did not add the expected lines" }
+          $cr = ($after | Where-Object { $_ -eq 13 }).Count
+          $lf = ($after | Where-Object { $_ -eq 10 }).Count
+          if ($cr -ne $lf) { throw "CRLF file no longer has one CR per LF: CR=$cr LF=$lf" }
+          if ($lf -le $beforeLf) { throw "line count did not grow: before=$beforeLf after=$lf" }
+          for ($i = 0; $i -lt $after.Length - 1; $i++) {
+            if ($after[$i] -eq 13 -and $after[$i + 1] -eq 13) { throw "fix produced a doubled CR" }
           }
+          $global:LASTEXITCODE = 0
 
   # Dogfood the composite action (action.yml) against the bundled examples.
   action-smoke:

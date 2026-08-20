@@ -7,6 +7,8 @@ the unexpanded string on Linux reproduces exactly what a Windows shell hands
 over. Plain assert functions for the zero-dependency runner.
 """
 
+import contextlib
+import io
 import os
 import tempfile
 from pathlib import Path
@@ -48,9 +50,17 @@ def test_glob_matches_are_filtered_by_extension():
 
 
 def test_recursive_glob_crosses_directories():
+    # Compare whole relative paths, not basenames: a collector that flattened
+    # the tree would otherwise look correct.
     with tempfile.TemporaryDirectory() as tmp:
         _tree(tmp, "a.puml", "sub/b.puml", "sub/deep/c.puml")
-        assert _in(tmp, ["**/*.puml"]) == ["a.puml", "b.puml", "c.puml"]
+        old = os.getcwd()
+        os.chdir(tmp)
+        try:
+            got = sorted(Path(f).as_posix() for f in collect_files(["**/*.puml"]))
+        finally:
+            os.chdir(old)
+        assert got == ["a.puml", "sub/b.puml", "sub/deep/c.puml"], got
 
 
 def test_glob_matching_nothing_raises_rather_than_reporting_success():
@@ -99,9 +109,11 @@ def test_an_explicitly_named_file_keeps_any_extension():
 
 
 def test_directory_extension_match_is_case_insensitive():
+    # Sorted-order comparison would be flavour-dependent: PurePath comparison
+    # is case-folded on Windows and not on POSIX, so compare as a set.
     with tempfile.TemporaryDirectory() as tmp:
         _tree(tmp, "Order.PUML", "b.puml")
-        assert _in(tmp, ["."]) == ["Order.PUML", "b.puml"]
+        assert set(_in(tmp, ["."])) == {"Order.PUML", "b.puml"}
 
 
 def test_duplicate_arguments_are_collected_once():
@@ -148,3 +160,45 @@ def test_every_bad_argument_is_reported_not_just_the_first():
             assert "nope.puml" in str(e) and "also-missing.puml" in str(e), e
         else:
             raise AssertionError("bad arguments must fail the run")
+
+
+def test_an_absolute_pattern_is_expanded_from_its_anchor():
+    # Path.glob rejects a rooted pattern, so collect_files splits the anchor
+    # off — the branch that carries drive-qualified Windows patterns.
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "a.puml", "b.puml")
+        pattern = str(Path(tmp) / "*.puml")
+        got = [Path(f).name for f in collect_files([pattern])]
+        assert got == ["a.puml", "b.puml"], got
+
+
+def test_a_pattern_hint_survives_the_wildcard_branch():
+    # A malformed argument is as likely to carry a wildcard as not; the hint
+    # is what makes the message useful either way.
+    try:
+        collect_files(["~/diagrams/*.puml"])
+    except FileNotFoundError as e:
+        assert "'~' is expanded by the shell" in str(e), e
+    else:
+        raise AssertionError("an unexpanded ~ pattern must raise")
+
+
+def test_cli_exits_two_on_an_unresolvable_argument():
+    # The four CLI entry points collect separately from Engine.lint_paths;
+    # pin that a bad argument still reaches exit 2 through the CLI.
+    from pumllint.cli import main
+
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        cfg = ["-c", str(Path(tmp) / "cfg.json")]
+        for argv in (
+            [str(Path(tmp) / "nope.puml"), *cfg],
+            [str(Path(tmp) / "*.nothing"), *cfg],
+            ["score", str(Path(tmp) / "nope.puml"), *cfg],
+            ["fix", str(Path(tmp) / "nope.puml"), *cfg],
+        ):
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err), contextlib.redirect_stdout(io.StringIO()):
+                rc = main(argv)
+            assert rc == 2, (argv, rc)
+            assert "error:" in err.getvalue(), (argv, err.getvalue())

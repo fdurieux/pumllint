@@ -103,10 +103,55 @@ def test_fix_under_a_legacy_codepage_redirect_reports_success():
 
 
 def test_score_under_a_legacy_codepage_redirect():
+    # A CJK title is unencodable in cp1252, unlike the score report's own
+    # — and • (both of which cp1252 happens to carry) — so this fails if the
+    # chokepoint is removed.
     with tempfile.TemporaryDirectory() as tmp:
-        (Path(tmp) / "d.puml").write_text(_CLEAN, encoding="utf-8")
+        (Path(tmp) / "d.puml").write_text(
+            "@startuml Order\ntitle 注文の受付\nAlice -> Bob : hi\n@enduml\n",
+            encoding="utf-8",
+        )
         (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
         rc, out, err = _run(["score", "d.puml", "-c", "cfg.json"], tmp)
         assert rc == 0, (rc, err)
         assert out.strip(), "the score report must survive the redirect"
+        assert "Traceback" not in err, err
+
+
+def test_lint_of_unencodable_content_survives_and_escapes_it():
+    # The report names the participant; cp1252 cannot encode it. Without the
+    # chokepoint this is a UnicodeEncodeError and an empty report.
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "d.puml").write_text(
+            "@startuml x\ntitle T\nparticipant Alice\nAlice -> 参加者 : hi\n@enduml\n",
+            encoding="utf-8",
+        )
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        rc, out, err = _run(["d.puml", "-c", "cfg.json", "--fail-on", "critical"], tmp)
+        assert b"Traceback" not in out and "Traceback" not in err, err
+        assert b"\\u53c2" in out, out  # escaped, not lost
+
+
+def test_encodable_content_is_never_rewritten():
+    # cp1252 carries é and the em dash: only genuinely unencodable characters
+    # may be substituted, or the downgrade corrupts ordinary diagram content.
+    got = _encode_safely("✔ Café — naïve", _Stream("cp1252"))
+    assert got == "OK Café — naïve", got
+
+
+def test_machine_formats_are_not_downgraded_on_stdout():
+    # json/sonar/badge/html are consumed by another program: they go out as
+    # UTF-8 bytes rather than through the console codec.
+    import json as _json
+
+    with tempfile.TemporaryDirectory() as tmp:
+        (Path(tmp) / "d.puml").write_text(
+            "@startuml x\nparticipant Alice\nAlice -> 参加者 : hi\n@enduml\n",
+            encoding="utf-8",
+        )
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        rc, out, err = _run(["d.puml", "-c", "cfg.json", "-f", "json"], tmp)
+        payload = _json.loads(out.decode("utf-8"))
+        violations = payload["violations"] if isinstance(payload, dict) else payload
+        assert violations, out
         assert "Traceback" not in err, err

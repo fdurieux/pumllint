@@ -199,22 +199,30 @@ def _expand(pattern: Path) -> list[Path]:
         return []
 
 
-def _missing_path_error(p: Path) -> str:
-    """Why one bad argument is bad, in a sentence — not just the path echoed back."""
+def _shape_hint(p: Path) -> str:
+    """A hint about how the *argument* is malformed, if it obviously is.
+
+    Shared by both error builders: a mistyped argument is just as likely to
+    carry a wildcard as not, and the hint is what makes the error useful.
+    """
     text = str(p)
     if text.startswith("~"):
         return (
-            f"no such file or directory: {p} — '~' is expanded by the shell, not "
-            f"by pumllint; pass the full path (or drop the quotes so the shell "
-            f"expands it)"
+            " — '~' is expanded by the shell, not by pumllint; pass the full "
+            "path (or drop the quotes so the shell expands it)"
         )
     if text.endswith('"'):
         return (
-            f"no such file or directory: {p} — the trailing quote suggests a "
-            f'PowerShell path ending in a backslash ("C:\\dir\\" swallows the '
-            f"closing quote); drop the trailing backslash"
+            " — the trailing quote suggests a PowerShell path ending in a "
+            'backslash ("C:\\dir\\" swallows the closing quote); drop the '
+            "trailing backslash"
         )
-    return f"no such file or directory: {p}"
+    return ""
+
+
+def _missing_path_error(p: Path) -> str:
+    """Why one bad argument is bad, in a sentence — not just the path echoed back."""
+    return f"no such file or directory: {p}{_shape_hint(p)}"
 
 
 def _no_match_error(p: Path, filtered: int, suffixes: set[str]) -> str:
@@ -224,14 +232,14 @@ def _no_match_error(p: Path, filtered: int, suffixes: set[str]) -> str:
             f"no diagram files match pattern '{p}': {filtered} path(s) matched "
             f"but none had a diagram extension ({', '.join(sorted(suffixes))})"
         )
-    shell_note = (
-        " — PowerShell and cmd.exe do not expand wildcards for native programs, "
-        "so pumllint expanded it itself and found nothing; `pumllint .` lints the "
-        "whole directory"
-        if os.name == "nt"
-        else ""
-    )
-    return f"no files match pattern '{p}'{shell_note}"
+    note = _shape_hint(p)
+    if not note and os.name == "nt":
+        note = (
+            " — PowerShell and cmd.exe do not expand wildcards for native "
+            "programs, so pumllint expanded it itself and found nothing; "
+            "`pumllint .` lints the whole directory"
+        )
+    return f"no files match pattern '{p}'{note}"
 
 
 def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Path]:
@@ -267,8 +275,10 @@ def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Pat
             files.append(f)
 
     def _recurse(d: Path) -> list[Path]:
+        # Suffix first: a string test rejects almost everything for free, and
+        # is_file() is a stat syscall per surviving entry.
         return sorted(
-            f for f in d.rglob("*") if f.is_file() and f.suffix.lower() in suffixes
+            f for f in d.rglob("*") if f.suffix.lower() in suffixes and f.is_file()
         )
 
     for p in map(Path, paths):

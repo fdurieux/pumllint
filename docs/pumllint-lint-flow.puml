@@ -35,17 +35,25 @@ Engine -> Engine : instantiate rules\n(profile gating, disables, severity escala
 Engine --> CLI : engine (rules wired)
 deactivate Engine
 
-CLI -> Engine : lint_paths(paths)
+CLI -> Engine : collect_files(paths)
 activate Engine
-' pumllint: disable=SEQ006
-Engine -> Engine : collect_files(paths, recursing directories)
+note right of Engine
+  Each argument resolves as directory, then existing
+  path, then glob pattern — PowerShell and cmd.exe
+  do not expand wildcards for native programs.
+end note
+Engine --> CLI : diagram files
+deactivate Engine
 
 loop each collected diagram file
-    Engine -> Parser : parse_file(file)
+    CLI -> Parser : parse_file(file)
     activate Parser
-    Parser --> Engine : diagrams (one per startuml block)
+    Parser --> CLI : diagrams (one per startuml block)
     deactivate Parser
 end
+
+CLI -> Engine : lint_diagrams(diagrams)
+activate Engine
 
 loop each diagram, each applicable rule
     Engine -> Rule : check(diagram)

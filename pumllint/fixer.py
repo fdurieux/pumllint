@@ -31,7 +31,8 @@ from typing import Iterable, Sequence
 
 from .engine import Engine, collect_files
 from .model import Diagram, Violation
-from .parser import parse_source, read_source
+from .parser import parse_source
+from .textio import read_text_and_encoding
 
 FIXABLE_RULES = ("GEN001", "GEN002", "SEQ001", "SEQ101")
 
@@ -55,6 +56,9 @@ class FileFixResult:
     original: str
     fixed: str
     fixes: list[Fix] = field(default_factory=list)
+    # The codec the source was read with: a rewrite has to use it, or a
+    # Windows-authored UTF-16 diagram silently becomes UTF-8.
+    encoding: str = "utf-8"
 
     @property
     def changed(self) -> bool:
@@ -188,7 +192,7 @@ def fix_paths(paths: Iterable[str | Path], config: dict | None = None) -> list[F
     engine = Engine(config or {})
     results: list[FileFixResult] = []
     for path in collect_files(paths):
-        text = read_source(path)
+        text, encoding = read_text_and_encoding(path, kind="diagram")
         diagrams = parse_source(text, file_path=str(path))
         violations = engine.lint_diagrams(diagrams)
         fixes = compute_fixes(text, diagrams, violations, stem=path.stem)
@@ -198,6 +202,7 @@ def fix_paths(paths: Iterable[str | Path], config: dict | None = None) -> list[F
                 original=text,
                 fixed=apply_fixes(text, fixes),
                 fixes=fixes,
+                encoding=encoding,
             )
         )
     return results

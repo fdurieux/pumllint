@@ -411,12 +411,14 @@ def test_file_without_a_startuml_block_warns_but_does_not_fail():
         assert "mind.puml" in err, err
 
 
-def test_iuml_include_fragment_warns_rather_than_erroring():
-    # .iuml fragments legitimately have no @startuml of their own.
+def test_iuml_include_fragment_is_not_warned_about():
+    # .iuml is the include-fragment extension: having no @startuml of its own
+    # is the point of such a file, so warning about it would be noise on
+    # every run of a repo that uses includes.
     with tempfile.TemporaryDirectory() as tmp:
         (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
         frag = Path(tmp) / "shared.iuml"
         frag.write_text("participant Alice\n", encoding="utf-8")
         rc, err = _stderr_of([str(frag), "-c", str(Path(tmp) / "cfg.json")], tmp)
         assert rc == 0, rc
-        assert "no @startuml block" in err, err
+        assert "no @startuml block" not in err, err

@@ -28,7 +28,7 @@ from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .parser import parse_file
 from .reporters import get_reporter
-from .reporters.base import ascii_glyphs, sanitize_terminal
+from .reporters.base import ASCII_GLYPHS, sanitize_terminal
 from .rules import discover
 from .schema import SCHEMA_NAMES, load_schema
 from .scoring import score_groups
@@ -243,13 +243,29 @@ def _encode_safely(text: str, stream) -> str:
         return text
     try:
         text.encode(encoding)
-        return text
-    except (UnicodeEncodeError, LookupError):
+        return text  # the common case, POSIX included: byte-identical
+    except UnicodeEncodeError:
         pass
-    text = ascii_glyphs(text)  # our own decorations -> ASCII
-    # Diagram content (a CJK participant name, say) has no ASCII equivalent:
-    # show it escaped rather than losing the report over it.
-    return text.encode(encoding, "backslashreplace").decode(encoding)
+    except LookupError:  # the stream names a codec Python does not have
+        encoding = "ascii"
+
+    # Substitute per character, not per report: an é or an em dash the code
+    # page renders perfectly must survive untouched — only the characters it
+    # genuinely cannot encode are replaced, decorations by their ASCII
+    # equivalent and everything else (a CJK participant name, say) by a
+    # visible escape.
+    out = []
+    for ch in text:
+        try:
+            ch.encode(encoding)
+        except UnicodeEncodeError:
+            out.append(
+                ASCII_GLYPHS.get(ch)
+                or ch.encode(encoding, "backslashreplace").decode(encoding)
+            )
+        else:
+            out.append(ch)
+    return "".join(out)
 
 
 def _out(text: str = "") -> None:
@@ -281,7 +297,11 @@ def _parse_input_files(files: list[Path]):
     """Parse *files*, warning about any that yielded no diagram."""
     diagrams = [d for f in files for d in parse_file(f)]
     parsed = {d.file_path for d in diagrams}
-    empty = [f for f in files if str(f) not in parsed]
+    # .iuml is the include-fragment extension: having no @startuml of its own
+    # is what such a file is for, so it is not worth a warning.
+    empty = [
+        f for f in files if str(f) not in parsed and f.suffix.lower() != ".iuml"
+    ]
     if empty:
         shown = ", ".join(str(f) for f in empty[:5])
         more = f" (+{len(empty) - 5} more)" if len(empty) > 5 else ""
@@ -317,7 +337,7 @@ def _run_lint(argv: list[str]) -> int:
         _err(f"error: {e}")
         return 2
 
-    _emit(report, args.output)
+    _emit(report, args.output, args.format)
 
     threshold = _SEV_ORDER.index(Severity(args.fail_on))
     failing = [v for v in violations if _SEV_ORDER.index(v.severity) >= threshold]
@@ -369,7 +389,7 @@ def _run_score(argv: list[str]) -> int:
         _err(f"error: {e}")
         return 2
 
-    _emit(report, args.output)
+    _emit(report, args.output, args.format)
 
     gated = args.min_level is not None or args.baseline
     if gated and not results:
@@ -417,7 +437,7 @@ def _run_fix(argv: list[str]) -> int:
                 fromfile=str(r.path),
                 tofile=f"{r.path} (fixed)",
             )
-            sys.stdout.write("".join(diff))
+            sys.stdout.write(_encode_safely("".join(diff), sys.stdout))
         n = sum(len(r.fixes) for r in changed)
         _out(
             f"would apply {n} fix(es) in {len(changed)} file(s)"
@@ -430,7 +450,7 @@ def _run_fix(argv: list[str]) -> int:
         # newline="" or Windows text mode re-translates every "\n", turning the
         # CRLF apply_fixes deliberately produced into "\r\r\n" and rewriting
         # every line of an LF file.
-        r.path.write_text(r.fixed, encoding="utf-8", newline="")
+        r.path.write_text(r.fixed, encoding=r.encoding, newline="")
         for f in r.fixes:
             _out(sanitize_terminal(f"{r.path}:{f.line}: [{f.rule_id}] {f.description}"))
     if not changed:
@@ -491,7 +511,7 @@ def _run_trace(argv: list[str]) -> int:
         _err(f"error: {e}")
         return 2
 
-    _emit(report, args.output)
+    _emit(report, args.output, args.format)
 
     failed = (
         (args.fail_on_uncovered and any(not r.covered for r in result.requirements))
@@ -503,7 +523,7 @@ def _run_trace(argv: list[str]) -> int:
 
 def _run_schema(argv: list[str]) -> int:
     args = build_schema_parser().parse_args(argv)
-    _emit(json.dumps(load_schema(args.report), indent=2), args.output)
+    _emit(json.dumps(load_schema(args.report), indent=2), args.output, "json")
     return 0
 
 
@@ -535,11 +555,25 @@ def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:
     return bool(regressions)
 
 
-def _emit(report: str, output: str | None) -> None:
+def _emit(report: str, output: str | None, fmt: str = "text") -> None:
+    """Write *report* to a file or stdout.
+
+    A machine format goes to stdout as UTF-8 bytes rather than through the
+    text layer: json/sonar/badge/html are consumed by another program, and a
+    console code page must not get the chance to substitute characters inside
+    them. Only the human-readable text report is downgraded when the
+    destination cannot render it.
+    """
     if output:
         Path(output).write_text(report + "\n", encoding="utf-8", newline="")
-    else:
-        _out(report)
+        return
+    buffer = getattr(sys.stdout, "buffer", None)
+    if fmt != "text" and buffer is not None:
+        sys.stdout.flush()
+        buffer.write((report + "\n").encode("utf-8"))
+        buffer.flush()
+        return
+    _out(report)
 
 
 if __name__ == "__main__":

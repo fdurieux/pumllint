@@ -148,25 +148,29 @@ with line breaks are ordinary content the parser must handle.
 ## The lint pipeline (lines 38–57)
 
 ```plantuml
-CLI -> Engine : lint_paths(paths)
+CLI -> Engine : collect_files(paths)
 activate Engine
-' pumllint: disable=SEQ006
-Engine -> Engine : collect_files(paths, recursing directories)
+note right of Engine
+  Each argument resolves as directory, then existing
+  path, then glob pattern — PowerShell and cmd.exe
+  do not expand wildcards for native programs.
+end note
+Engine --> CLI : diagram files
 ```
 
-`lint_paths` (`engine.py:160`) is the pipeline entry;
-`collect_files` (`engine.py:176`) expands directories into diagram
-files (`.puml`, `.plantuml`, `.iuml`, `.wsd`). Second suppressed
-self-message, same justification: file collection is internal
-mechanics. The argument text `recursing directories` is two plain
-words — under the since-tightened SEQ103 signature heuristic it still
-passes, deliberately: precision-first, no function word, within the
-width cap (the tightening story is told in
-[dogfooding.md](dogfooding.md), "What to watch").
+`collect_files` (`engine.py`) turns arguments into diagram files
+(`.puml`, `.plantuml`, `.iuml`, `.wsd`): a directory recurses, an
+existing path is taken as-is, and only a leftover argument holding a
+glob character is expanded as a pattern — the branch that keeps
+`pumllint *.puml` working where the shell does not expand it. The CLI
+drives collection itself rather than delegating to `lint_paths`,
+because it also reports what the search did *not* find: a warning when
+nothing was collected, and one naming files that held no `@startuml`
+block. The note is ordinary diagram furniture the parser must handle.
 
 ```plantuml
 loop each collected diagram file
-    Engine -> Parser : parse_file(file)
+    CLI -> Parser : parse_file(file)
     ...
 end
 
