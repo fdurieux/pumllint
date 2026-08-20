@@ -118,9 +118,14 @@ def test_min_level_with_no_diagrams_exits_2():
         assert rc == 2
 
 
-def test_reporter_without_maturity_support_exits_2():
-    # Regression: NotImplementedError from render_maturity must map to a clean
-    # config error, not a traceback.
+def test_reporter_without_maturity_support_is_rejected_at_parse_time():
+    # A custom @reporter that only implements render() must be selectable for
+    # lint but rejected by score's -f choices — argparse now refuses the
+    # format up front instead of failing at render_maturity time.
+    import contextlib
+    import io
+
+    from pumllint.cli import build_parser, build_score_parser
     from pumllint.reporters import Reporter, reporter
 
     @reporter
@@ -130,11 +135,23 @@ def test_reporter_without_maturity_support_exits_2():
         def render(self, violations):
             return ""
 
+    def _format_choices(parser):
+        return next(a.choices for a in parser._actions if "-f" in a.option_strings)
+
+    assert "nomat-test" in _format_choices(build_parser())
+    assert "nomat-test" not in _format_choices(build_score_parser())
+
     with tempfile.TemporaryDirectory() as tmp:
         puml, cfg = _fixture(tmp)
-        out = Path(tmp) / "r.txt"
-        rc = main(["score", str(puml), "-c", str(cfg), "-f", "nomat-test", "-o", str(out)])
-        assert rc == 2
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            try:
+                main(["score", str(puml), "-c", str(cfg), "-f", "nomat-test"])
+            except SystemExit as e:
+                assert e.code == 2
+            else:
+                raise AssertionError("score accepted a format without maturity support")
+        assert "invalid choice: 'nomat-test'" in err.getvalue()
 
 
 def test_default_command_still_lints():
@@ -327,12 +344,23 @@ def test_badge_format_writes_shields_endpoint_json():
 
 
 def test_badge_format_is_rejected_for_lint():
+    # badge has no lint render(), so -f badge fails at parse time now —
+    # before any file is read — instead of at render time.
+    import contextlib
+    import io
+
     with tempfile.TemporaryDirectory() as tmp:
         puml, cfg = _fixture(tmp)
         out = Path(tmp) / "badge.json"
-        rc, err = _main_quiet([str(puml), "-c", str(cfg), "-f", "badge", "-o", str(out)])
-        assert rc == 2
-        assert "score command" in err
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            try:
+                main([str(puml), "-c", str(cfg), "-f", "badge", "-o", str(out)])
+            except SystemExit as e:
+                assert e.code == 2
+            else:
+                raise AssertionError("lint accepted -f badge")
+        assert "invalid choice: 'badge'" in err.getvalue()
 
 
 # --- suppressed-findings disclosure (0.19.0) --------------------------------

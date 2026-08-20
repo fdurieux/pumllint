@@ -392,6 +392,9 @@ against these schemas — like the golden scores, the shape cannot drift
 silently. The badge and sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
+In GitHub Actions, use `command: schema` with `report: lint | score | trace`
+(paths and format inputs are ignored; `output:` writes the schema to a file).
+
 ## Configuration
 
 `pumllint.yaml` (or `.toml` / `.json`) is auto-detected in the working

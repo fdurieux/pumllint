@@ -7,6 +7,8 @@ Five commands:
   pumllint trace <paths> [options]    requirement-coverage matrix
   pumllint schema <report>            print the JSON Schema for a -f json report
 
+Each command has its own --help (e.g. `pumllint score --help`).
+
 Exit codes: 0 = clean / at-or-above gate, 1 = lint violations at/above
 --fail-on (lint), a diagram below --min-level or a --baseline regression
 (score), pending fixes under --dry-run (fix), or a tripped --fail-on-*
@@ -28,11 +30,17 @@ from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .parser import parse_file
 from .reporters import get_reporter
-from .reporters.base import ASCII_GLYPHS, sanitize_terminal
+from .reporters.base import ASCII_GLYPHS, formats_supporting, sanitize_terminal
 from .rules import discover
 from .schema import SCHEMA_NAMES, load_schema
 from .scoring import score_groups
 from .syntax import check_files
+
+
+# The commands/exit-codes overview from the module docstring, shown as the
+# epilog of `pumllint --help` — the only place a user can discover the
+# subcommands, since dispatch happens before argparse (see main()).
+_COMMANDS_EPILOG = (__doc__ or "").partition("\n\n")[2]
 
 
 def _add_version_argument(p: argparse.ArgumentParser) -> None:
@@ -41,8 +49,9 @@ def _add_version_argument(p: argparse.ArgumentParser) -> None:
     )
 
 
-def _add_common_arguments(p: argparse.ArgumentParser) -> None:
-    """Arguments shared by the lint and score commands."""
+def _add_common_arguments(p: argparse.ArgumentParser, *, formats: list[str]) -> None:
+    """Arguments shared by the lint and score commands. ``formats`` is the
+    set the command's reporters actually support — enforced via choices."""
     _add_version_argument(p)
     p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
     p.add_argument("-c", "--config", help="Config file (yaml/toml/json); auto-detected otherwise")
@@ -51,8 +60,8 @@ def _add_common_arguments(p: argparse.ArgumentParser) -> None:
         help="Activate a rule profile (e.g. codegen); overrides `profile:` in the config",
     )
     p.add_argument(
-        "-f", "--format", default="text",
-        help="Output format: text | json | sonar | badge | html (badge/html: score only)",
+        "-f", "--format", default="text", choices=formats,
+        help="Output format (default: text)",
     )
     p.add_argument("-o", "--output", help="Write report to file instead of stdout")
     p.add_argument(
@@ -63,8 +72,13 @@ def _add_common_arguments(p: argparse.ArgumentParser) -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="pumllint", description="Semantic linter for PlantUML diagrams")
-    _add_common_arguments(p)
+    p = argparse.ArgumentParser(
+        prog="pumllint",
+        description="Semantic linter for PlantUML diagrams",
+        epilog=_COMMANDS_EPILOG,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    _add_common_arguments(p, formats=formats_supporting("render"))
     p.add_argument(
         "--fail-on",
         default="major",
@@ -79,7 +93,7 @@ def build_score_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="pumllint score", description="Maturity scoring for PlantUML diagrams"
     )
-    _add_common_arguments(p)
+    _add_common_arguments(p, formats=formats_supporting("render_maturity"))
     p.add_argument(
         "--min-level",
         type=int,
@@ -172,7 +186,8 @@ def build_trace_parser() -> argparse.ArgumentParser:
         "(*.md/*.txt/*.adoc/*.rst) with the pattern",
     )
     p.add_argument(
-        "-f", "--format", default="text", help="Output format: text | json"
+        "-f", "--format", default="text", choices=formats_supporting("render_trace"),
+        help="Output format (default: text)",
     )
     p.add_argument("-o", "--output", help="Write report to file instead of stdout")
     p.add_argument(

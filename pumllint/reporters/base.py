@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from abc import ABC, abstractmethod
+from abc import ABC
 from typing import TYPE_CHECKING, Iterable, Type
 
 from ..model import Violation
@@ -68,9 +68,14 @@ _REPORTERS: dict[str, Type["Reporter"]] = {}
 class Reporter(ABC):
     format_name: str = ""
 
-    @abstractmethod
     def render(self, violations: Iterable[Violation]) -> str:
-        ...
+        """Render lint findings. Optional, like the two methods below: a
+        score-only reporter (badge, html) simply doesn't override it. Which
+        methods a class overrides is what `formats_supporting` — and thus
+        each command's `-f` choices — is derived from."""
+        raise NotImplementedError(
+            f"Reporter '{self.format_name}' does not support lint output"
+        )
 
     def render_maturity(
         self,
@@ -106,3 +111,15 @@ def get_reporter(name: str) -> Reporter:
         return _REPORTERS[name]()
     except KeyError:
         raise ValueError(f"Unknown format '{name}'. Available: {', '.join(sorted(_REPORTERS))}")
+
+
+def formats_supporting(method: str) -> list[str]:
+    """Registered format names whose reporter implements ``method`` —
+    'render' (lint), 'render_maturity' (score) or 'render_trace' (trace).
+    Drives each CLI command's `-f` choices, so custom @reporter
+    registrations become selectable exactly where they add support."""
+    return sorted(
+        name
+        for name, cls in _REPORTERS.items()
+        if getattr(cls, method) is not getattr(Reporter, method)
+    )

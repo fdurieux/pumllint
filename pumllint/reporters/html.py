@@ -110,9 +110,6 @@ def _gap_section(r: MaturityResult) -> str:
 class HtmlReporter(Reporter):
     format_name = "html"
 
-    def render(self, violations: Iterable[Violation]) -> str:
-        raise ValueError("format 'html' supports only the score command")
-
     def render_maturity(
         self,
         results: Iterable[tuple[Diagram, MaturityResult]],

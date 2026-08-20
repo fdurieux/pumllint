@@ -252,12 +252,15 @@ def test_badge_reporter_handles_an_empty_set():
 
 
 def test_badge_reporter_rejects_lint_output():
+    # Same convention as render_maturity/render_trace on the base class: a
+    # reporter that doesn't override render() raises NotImplementedError —
+    # and is thereby excluded from lint's -f choices.
     try:
         get_reporter("badge").render([])
-    except ValueError as e:
-        assert "score" in str(e)
+    except NotImplementedError as e:
+        assert "does not support lint output" in str(e)
     else:
-        assert False, "expected ValueError for badge lint rendering"
+        assert False, "expected NotImplementedError for badge lint rendering"
 
 
 # --- html (0.15.0) ----------------------------------------------------------
@@ -329,7 +332,7 @@ def test_html_reporter_handles_an_empty_set():
 def test_html_reporter_rejects_lint_output():
     try:
         get_reporter("html").render([])
-    except ValueError as e:
-        assert "score" in str(e)
+    except NotImplementedError as e:
+        assert "does not support lint output" in str(e)
     else:
-        assert False, "expected ValueError for html lint rendering"
+        assert False, "expected NotImplementedError for html lint rendering"
