@@ -315,18 +315,27 @@ def test_cli_trace_scan_and_list_union():
 
 
 def test_unsupported_format_is_a_clean_error():
+    # badge has no render_trace(), so -f badge is rejected by argparse's
+    # choices at parse time instead of failing at render time.
     with tempfile.TemporaryDirectory() as td:
         td = Path(td)
         reqs = _workspace(td)
-        code, _, err = _run(
-            [
-                "trace", str(td),
-                "--requirements", str(reqs),
-                "--pattern", r"REQ-\d+",
-                "-f", "badge",
-            ]
-        )
-        assert code == 2 and "does not support trace output" in err
+        err = io.StringIO()
+        with contextlib.redirect_stderr(err):
+            try:
+                main(
+                    [
+                        "trace", str(td),
+                        "--requirements", str(reqs),
+                        "--pattern", r"REQ-\d+",
+                        "-f", "badge",
+                    ]
+                )
+            except SystemExit as e:
+                assert e.code == 2
+            else:
+                raise AssertionError("trace accepted -f badge")
+        assert "invalid choice: 'badge'" in err.getvalue()
 
 
 def test_render_trace_empty_inventory_and_no_diagrams():

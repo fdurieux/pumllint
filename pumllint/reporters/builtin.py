@@ -417,9 +417,6 @@ class BadgeReporter(Reporter):
 
     format_name = "badge"
 
-    def render(self, violations: Iterable[Violation]) -> str:
-        raise ValueError("format 'badge' supports only the score command")
-
     def render_maturity(
         self,
         results: Iterable[tuple[Diagram, MaturityResult]],
