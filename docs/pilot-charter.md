@@ -141,8 +141,10 @@ zombie mandate.
 
 Single self-contained program, Python ≥ 3.11 standard library only — no
 third-party components to audit. **No network access, ever**: nothing
-leaves the machine; reports are deterministic offline files. MIT
-licence; installable from the internal artifact proxy as one wheel.
+leaves the machine; reports are deterministic offline files.
+GPL-3.0-or-later licence (copyleft duties attach on redistribution,
+not internal use); installable from the internal artifact proxy as
+one wheel.
 CI-agnostic: any runner that can execute a CLI and read an exit code
 works (the published GitHub Action is a convenience, not a dependency).
 
