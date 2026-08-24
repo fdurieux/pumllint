@@ -463,6 +463,26 @@ def test_verb_object_usecase_is_clean_for_uc002():
     assert "UC002" not in rule_ids(src, cfg)
 
 
+def test_aliased_usecase_is_judged_by_its_label_not_the_alias():
+    src = (
+        "@startuml uc\ntitle Use cases\nactor Customer\n"
+        "usecase (Order placement) as UC1\nCustomer --> UC1 : does\n@enduml\n"
+    )
+    cfg = {"rules": {"UC002": {"verbs": ["Place", "Manage"]}}}
+    findings = [v for v in lint(src, cfg) if v.rule_id == "UC002"]
+    assert len(findings) == 1
+    assert "'Order placement'" in findings[0].message
+
+
+def test_aliased_usecase_with_verb_first_label_is_clean_for_uc002():
+    src = (
+        "@startuml uc\ntitle Use cases\nactor Customer\n"
+        "usecase (Place order) as UC1\nCustomer --> UC1 : does\n@enduml\n"
+    )
+    cfg = {"rules": {"UC002": {"verbs": ["Place"]}}}
+    assert "UC002" not in rule_ids(src, cfg)
+
+
 # --- UC003 include/extend direction ------------------------------------------
 
 UC_BASE = "@startuml uc\ntitle Checkout\nusecase (Checkout)\n:Customer: --> (Checkout)\n"

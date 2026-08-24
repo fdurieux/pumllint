@@ -312,15 +312,18 @@ class UseCaseActorNaming(Rule):
         if not verbs:
             return
         for p in diagram.participants.values():
-            if p.kind != "usecase" or not p.declared or not p.name:
+            if p.kind != "usecase" or not p.declared:
                 continue
-            parts = p.name.split()
+            label = p.display_name or p.name
+            if not label:
+                continue
+            parts = label.split()
             if not parts:
                 continue  # whitespace-only name: UC001/GEN004 territory, not a verb question
             if parts[0].lower() not in verbs:
                 yield self.violation(
                     diagram,
                     p.line,
-                    f"Use case '{p.name}' is not verb-first — name it "
+                    f"Use case '{label}' is not verb-first — name it "
                     '"verb + object" (e.g. "Place order")',
                 )
