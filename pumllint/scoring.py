@@ -91,6 +91,10 @@ class ScoringConfig:
     # rule that applies to the diagram's type, or the Level-5 claim is vacuous
     # (an active profile whose rules never examined the diagram proves nothing).
     c7_requires_applicable_rules: bool = False
+    # Opt-in: when a codegen-profile rule and its base twin fire on the same
+    # statement, count the defect once (the profile finding wins). Scoring
+    # only — lint output always shows both findings.
+    deduplicate_findings: bool = False
 
     @classmethod
     def from_dict(cls, cfg: Optional[Mapping] = None) -> "ScoringConfig":
@@ -117,6 +121,8 @@ class ScoringConfig:
             out.l5_requires_profile = str(raw) if raw else None
         if "c7_requires_applicable_rules" in cfg:
             out.c7_requires_applicable_rules = bool(cfg["c7_requires_applicable_rules"])
+        if "deduplicate_findings" in cfg:
+            out.deduplicate_findings = bool(cfg["deduplicate_findings"])
         # A weight typo must be a loud error, not a silently distorted verdict:
         # the composite is a weighted mean, so weights must sum to 1.0.
         total = sum(out.dimension_weights.values())
@@ -171,6 +177,9 @@ class MaturityResult:
     # Findings hidden by inline suppressions — excluded from every number
     # above, carried so reports can disclose the exclusion (SCORING.md §3).
     suppressed_count: int = 0
+    # Base findings dropped by scoring.deduplicate_findings because their
+    # profile twin fired on the same statement — same disclosure duty.
+    deduplicated_count: int = 0
 
 
 def _clamp(x: float, lo: float, hi: float) -> float:
@@ -185,6 +194,34 @@ def format_score(value: float) -> str:
     "100"). Reports that need machine precision use the JSON reporter's
     2-decimal values, not this."""
     return str(int(value)) if value == int(value) else f"{value:.1f}"
+
+
+# One defect, one penalty: each codegen-profile rule that restates a base
+# rule's finding at blocker grade, keyed base -> profile. Used only by the
+# opt-in scoring.deduplicate_findings flag; the pairs are the measured
+# same-statement co-firings (issue #39). SEQ104 shares SEQ005's line but
+# reports a different defect and is deliberately NOT in the map.
+_SUPERSEDED_BY = {
+    "SEQ001": "SEQ101",
+    "SEQ003": "SEQ108",
+    "SEQ005": "SEQ103",
+    "SEQ007": "SEQ105",
+}
+
+
+def deduplicate_findings(violations: list[Violation]) -> tuple[list[Violation], int]:
+    """Drop base findings whose profile twin fired at the same file:line.
+
+    Returns ``(kept, dropped_count)``. The profile finding is the stricter
+    statement of the same defect, so it carries the penalty.
+    """
+    present = {(v.rule_id, v.file_path, v.line) for v in violations}
+    kept = [
+        v
+        for v in violations
+        if (_SUPERSEDED_BY.get(v.rule_id), v.file_path, v.line) not in present
+    ]
+    return kept, len(violations) - len(kept)
 
 
 def compute_dimension_scores(
@@ -494,6 +531,9 @@ def score(
     """
     cfg = ScoringConfig.from_dict(config)
     violations = list(violations)
+    deduplicated = 0
+    if cfg.deduplicate_findings:
+        violations, deduplicated = deduplicate_findings(violations)
     element_count = diagram.element_count
     dim_scores = compute_dimension_scores(violations, element_count, cfg)
     composite = composite_score(dim_scores, cfg)
@@ -528,6 +568,7 @@ def score(
         dimensions=dim_scores,
         gap_report=gap_report,
         suppressed_count=suppressed_count,
+        deduplicated_count=deduplicated,
     )
 
 
@@ -550,6 +591,7 @@ class ModelSetResult:
     diagram_count: int
     element_count: int
     suppressed_count: int = 0
+    deduplicated_count: int = 0
 
 
 def aggregate_scores(
@@ -575,6 +617,7 @@ def aggregate_scores(
         diagram_count=len(results),
         element_count=sum(r.element_count for _, r in results),
         suppressed_count=sum(r.suppressed_count for _, r in results),
+        deduplicated_count=sum(r.deduplicated_count for _, r in results),
     )
 
 

@@ -217,7 +217,10 @@ faithful generation, bound to the `codegen` profile so it cannot be claimed
 without those rules running.
 
 Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
-All knobs are configurable under the `scoring` key (see `pumllint.toml`).
+All knobs are configurable under the `scoring` key (see `pumllint.toml`),
+including two opt-in flags: `c7_requires_applicable_rules` (Level 5 needs a
+profile rule that applies to the diagram's type) and `deduplicate_findings`
+(a base finding restated by its codegen twin on the same line counts once).
 
 ## Rules
 
