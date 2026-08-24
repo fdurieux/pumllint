@@ -294,8 +294,9 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 | SEQ108 | codegen-activation-lifecycle | major | `activate`/`deactivate` not pairing as a well-formed per-lifeline stack — call nesting ambiguous. |
 | SEQ109 | codegen-uninformative-reply | minor | Return drawn with a solid arrow, or a reply labelled `ok`/`done`/`result` instead of naming the returned value — breaks data-dependency inference. |
 
-The vagueness / elision / non-informative lexicons are configurable per rule
-(`vague_terms`, `tokens`, `failure_keywords`, `non_informative`).
+The lexicons and shape options are configurable per rule (`vague_terms`,
+`tokens`, `failure_keywords`, `non_informative`; SEQ103 also takes `pattern`,
+`arg_stop_words` and `max_arg_words`).
 
 ## Auto-fix
 
