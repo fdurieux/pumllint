@@ -367,6 +367,58 @@ def test_seq107_calls_to_internal_services_are_not_flagged():
     assert "SEQ107" not in rule_ids(src)
 
 
+def test_seq107_error_group_elsewhere_does_not_exempt_a_call_outside_it():
+    # The group must CONTAIN the call — a later error fragment used to
+    # exempt every call above it (issue #29).
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "OrderService -> OrderDB : findOrderById(orderId)\n"
+        "OrderDB --> OrderService : order\n"
+        "group storage error handling\n"
+        "OrderService -> OrderService : rollback()\n"
+        "end"
+    )
+    assert violations_for(src, "SEQ107")
+
+
+def test_seq107_error_group_containing_the_call_exempts_it():
+    src = puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "group storage error handling\n"
+        "OrderService -> OrderDB : findOrderById(orderId)\n"
+        "OrderDB --> OrderService : order\n"
+        "end"
+    )
+    assert "SEQ107" not in rule_ids(src)
+
+
+def test_seq107_empty_failure_branch_does_not_count():
+    # 'else charge error' with nothing inside declares a failure path
+    # without modelling it (issue #29).
+    src = puml(
+        "participant OrderService <<service>>\nparticipant PaymentGateway <<external>>\n"
+        "alt charge accepted\n"
+        "OrderService -> PaymentGateway : charge(orderId, amount)\n"
+        "PaymentGateway --> OrderService : receipt\n"
+        "else charge error\n"
+        "end"
+    )
+    assert violations_for(src, "SEQ107")
+
+
+def test_seq107_failure_branch_with_only_a_return_still_counts():
+    src = puml(
+        "participant OrderService <<service>>\nparticipant PaymentGateway <<external>>\n"
+        "alt charge accepted\n"
+        "OrderService -> PaymentGateway : charge(orderId, amount)\n"
+        "PaymentGateway --> OrderService : receipt\n"
+        "else charge error\n"
+        "return chargeFailed\n"
+        "end"
+    )
+    assert "SEQ107" not in rule_ids(src)
+
+
 # --- SEQ108 activation lifecycle ---------------------------------------------
 
 def test_seq108_dangling_activation_is_reported_as_major():

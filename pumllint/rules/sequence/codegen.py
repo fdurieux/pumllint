@@ -248,6 +248,14 @@ class NoElisionMarkers(_CodegenRule):
                 )
 
 
+def _branch_spans(block) -> list[tuple[str, int, float]]:
+    """(label, lo, hi) per branch of a fragment; content lines satisfy lo < line < hi."""
+    end: float = block.end_line if block.end_line is not None else float("inf")
+    edges: list[float] = [block.start_line, *(br.line for br in block.else_branches), end]
+    labels = [block.label, *(br.label for br in block.else_branches)]
+    return [(labels[i], int(edges[i]), edges[i + 1]) for i in range(len(labels))]
+
+
 @register
 class ExternalCallsFailurePath(_CodegenRule):
     id = "SEQ107"
@@ -262,10 +270,16 @@ class ExternalCallsFailurePath(_CodegenRule):
             low = label.lower()
             return any(k in low for k in failure_kw) or bool(self._NEGATED.search(label))
 
+        content_lines = [m.line for m in diagram.messages]
+        content_lines += [a.line for a in diagram.activations if a.kind == "return"]
+
         def has_failure_branch(b) -> bool:
-            if is_failure_label(b.label):
-                return True
-            return any(is_failure_label(br.label) for br in b.else_branches)
+            # A declared-but-empty failure branch models nothing: the branch
+            # must carry at least one message (or a return) to count.
+            return any(
+                is_failure_label(label) and any(lo < ln < hi for ln in content_lines)
+                for label, lo, hi in _branch_spans(b)
+            )
 
         fragile = {
             p.name
@@ -286,7 +300,7 @@ class ExternalCallsFailurePath(_CodegenRule):
             guarded = guarded or any(
                 b.kind == "break" and b.contains_line(m.line) for b in diagram.blocks
             )
-            guarded = guarded or any(g.start_line > m.line for g in error_groups)
+            guarded = guarded or any(g.contains_line(m.line) for g in error_groups)
             if not guarded:
                 shown = m.label.strip() or "<unlabelled>"
                 yield self.violation(
