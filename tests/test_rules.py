@@ -816,3 +816,16 @@ def test_sonar_reporter_emits_valid_generic_issue_format():
     assert all(i["primaryLocation"]["textRange"]["startLine"] >= 1 for i in payload["issues"])
     rule_ids_used = {i["ruleId"] for i in payload["issues"]}
     assert rule_ids_used <= {r["id"] for r in payload["rules"]}
+
+
+def test_whitespace_only_usecase_name_does_not_crash_armed_uc002():
+    # Regression for the IndexError at p.name.split()[0]: a whitespace-only
+    # name passes the `not p.name` truthiness guard, and .split() is empty.
+    # The run must complete; the element itself is UC001/GEN004 territory.
+    src = (
+        "@startuml uc\ntitle Use cases\nactor Customer\n"
+        'usecase "   "\nusecase (Place order)\n'
+        "Customer --> (Place order) : does\n@enduml\n"
+    )
+    cfg = {"rules": {"UC002": {"verbs": ["Place"]}}}
+    assert "UC002" not in rule_ids(src, cfg)

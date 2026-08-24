@@ -401,7 +401,11 @@ def _run_score(argv: list[str]) -> int:
             syntax_results=syntax_results,
             engine=engine,
         )
-        report = get_reporter(args.format).render_maturity(results, baseline=baseline_data)
+        report = get_reporter(args.format).render_maturity(
+            results,
+            baseline=baseline_data,
+            syntax_gate_ran=syntax_results is not None,
+        )
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
         _err(f"error: {e}")
         return 2
@@ -517,7 +521,12 @@ def _run_trace(argv: list[str]) -> int:
         pattern = compile_pattern(raw, origin)
         inventory: list[str] = []
         if args.requirements:
-            inventory.extend(load_inventory(args.requirements))
+            inventory.extend(
+                load_inventory(
+                    args.requirements,
+                    on_warning=lambda m: _err(f"warning: {m}"),
+                )
+            )
         if args.requirements_scan:
             inventory.extend(scan_inventory(args.requirements_scan, pattern))
         inventory = list(dict.fromkeys(inventory))  # union, first-seen order

@@ -314,7 +314,10 @@ class UseCaseActorNaming(Rule):
         for p in diagram.participants.values():
             if p.kind != "usecase" or not p.declared or not p.name:
                 continue
-            if p.name.split()[0].lower() not in verbs:
+            parts = p.name.split()
+            if not parts:
+                continue  # whitespace-only name: UC001/GEN004 territory, not a verb question
+            if parts[0].lower() not in verbs:
                 yield self.violation(
                     diagram,
                     p.line,

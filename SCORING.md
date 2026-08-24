@@ -42,7 +42,7 @@ generation-readiness thesis. Note the per-dimension **gates** (Level 4/5
 thresholds, cap C3) bind hardest on small diagrams: the penalty is
 density-normalised, so on an element-rich diagram a single missing-title
 finding leaves DIM-TRC above the thresholds and Method-complete intact (a
-titleless 20-element diagram still scores Level 5 at 99/100). The gap
+titleless 20-element diagram still scores Level 5 at 99.4/100). The gap
 report lists blocking findings only below the target level; at or above
 it, it is empty.
 

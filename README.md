@@ -110,6 +110,10 @@ order.puml [Order]: Level 3 (Disciplined) — 68/100
 Model set: Level 3 (Disciplined) — 68/100 weighted across 1 diagram(s)
 ```
 
+When no syntax check ran (no `--check-syntax`, no `scoring.syntax_gate`),
+the text report says so — `Syntax gate: not run — DIM-SYN unchecked …` —
+because the Level verdict otherwise silently assumes valid syntax.
+
 Every report ends with a **model-set summary**: the worst per-diagram level
 (the set is only as trustworthy as its weakest diagram) plus an
 element-weighted composite across all scored diagrams. `--min-level` gates on
@@ -362,9 +366,11 @@ pumllint trace diagrams/ --requirements reqs.txt        # explicit ID list
 pumllint trace diagrams/ --requirements-scan docs/specs # scan docs with the pattern
 ```
 
-The list file is plain text — one ID per line, with **full-line** `#`
-comments only: an inline `# …` after an ID becomes part of the ID, so
-keep annotations on their own lines (#44 tracks inline-comment support).
+The list file is plain text — one ID per line; blank lines, full-line
+`#` comments and inline ` # …` comments are ignored (a `#` with no
+whitespace before it stays part of the ID, so `REQ#5` survives). An ID
+containing whitespace draws a stderr warning — it can never match a
+reference pattern — without changing the exit code.
 Or JSON/YAML: an array of IDs — strings or objects carrying an `id`, so a
 synchronized snapshot exported from a requirements/process repository
 works unchanged (extra columns are ignored today; the JSON report's

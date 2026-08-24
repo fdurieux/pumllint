@@ -23,6 +23,7 @@ from ..model import Diagram, Violation
 from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
 from .base import Reporter, reporter
 from .builtin import _Baseline, _diagram_label, _result_keys
+from .base import format_score
 
 # shields.io level palette (matches the badge reporter's color names).
 _LEVEL_HEX = {1: "#e05d44", 2: "#fe7d37", 3: "#dfb317", 4: "#a4a61d", 5: "#4c1"}
@@ -115,6 +116,7 @@ class HtmlReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         results = list(results)
         keys = _result_keys(results, baseline)
@@ -138,7 +140,7 @@ class HtmlReporter(Reporter):
             )
             summary = (
                 f"<p>{_pill(agg.level, agg.level_name)} "
-                f"<strong>{agg.composite:.0f}/100</strong> weighted across "
+                f"<strong>{format_score(agg.composite)}/100</strong> weighted across "
                 f"{agg.diagram_count} diagram(s), {agg.element_count} "
                 f"element(s){set_suppressed}.{set_trend}</p>"
             )
@@ -169,7 +171,7 @@ class HtmlReporter(Reporter):
                 '<section class="card"><header>'
                 f"<h2>{escape(_diagram_label(diagram))}</h2>"
                 f"{_pill(r.level, r.level_name)}</header>"
-                f'<p class="meta">{r.composite:.0f}/100 · '
+                f'<p class="meta">{format_score(r.composite)}/100 · '
                 f"{escape(diagram.diagram_type)} diagram · "
                 f"{r.element_count} element(s){suppressed} {trend}</p>"
                 f"{_dim_rows(r)}{_gap_section(r)}</section>"
