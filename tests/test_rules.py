@@ -384,6 +384,21 @@ def test_shallow_nesting_is_clean_for_seq008():
     assert "SEQ008" not in rule_ids(src, cfg)
 
 
+def test_seq008_accepts_max_as_an_alias():
+    # The cap-family convention (issue #38): both spellings bind.
+    body = "alt a\nopt b\nloop c\nCustomer -> FrontOffice : x\nend\nend\nend"
+    src = CLEAN.replace("@enduml", body + "\n@enduml")
+    assert "SEQ008" in rule_ids(src, {"rules": {"SEQ008": {"max": 2}}})
+    assert "SEQ008" in rule_ids(src, {"rules": {"SEQ008": {"max_nesting_depth": 2}}})
+
+
+def test_seq008_historical_key_wins_over_the_alias():
+    body = "alt a\nopt b\nloop c\nCustomer -> FrontOffice : x\nend\nend\nend"
+    src = CLEAN.replace("@enduml", body + "\n@enduml")
+    cfg = {"rules": {"SEQ008": {"max_nesting_depth": 3, "max": 2}}}
+    assert "SEQ008" not in rule_ids(src, cfg)
+
+
 # --- SEQ009 returns pair with a call -----------------------------------------
 
 def test_given_orphaned_return_then_seq009_fires():
@@ -818,6 +833,20 @@ def test_given_note_heavy_diagram_then_gen008_fires():
 def test_few_notes_are_clean_for_gen008():
     src = CLEAN.replace("@enduml", "note over Customer : blah\n" * 3 + "@enduml")
     assert "GEN008" not in rule_ids(src)
+
+
+def test_gen008_length_cap_catches_prose_heavy_notes_when_configured():
+    prose = "note over Customer : " + "narrated protocol prose " * 8
+    src = CLEAN.replace("@enduml", prose + "\n@enduml")
+    assert "GEN008" not in rule_ids(src)  # count path alone stays quiet
+    cfg = {"rules": {"GEN008": {"max_chars_per_element": 10}}}
+    assert "GEN008" in rule_ids(src, cfg)
+
+
+def test_gen008_length_cap_passes_short_notes():
+    src = CLEAN.replace("@enduml", "note over Customer : ok\n@enduml")
+    cfg = {"rules": {"GEN008": {"max_chars_per_element": 10}}}
+    assert "GEN008" not in rule_ids(src, cfg)
 
 
 def test_given_oversized_diagram_then_gen009_fires():

@@ -420,7 +420,11 @@ Feature: GEN007 requirement link
 **Rationale:** Notes annotate; they should not carry the model. A diagram whose
 structure is narrated in prose defeats both readers and downstream generators.
 Options: `min_notes` (default 4 — smaller counts never fire) and `max_ratio`
-(default 0.5 notes per semantic element).
+(default 0.5 notes per semantic element). A third, opt-in length test —
+`max_chars_per_element`, no default — fires when the total characters of note
+prose exceed the cap × element count whatever the note count; it exists for
+sets whose few notes carry the model in prose. Configuring it is a deliberate
+scoring decision.
 
 ```gherkin
 Feature: GEN008 note density
@@ -456,6 +460,25 @@ Feature: GEN008 note density
       """
     When the linter runs
     Then no "GEN008" issue is reported
+
+  Scenario: prose-heavy notes are reported when the length cap is configured
+    Given the configuration:
+      """
+      [rules.GEN008]
+      max_chars_per_element = 10
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      note over A : this single note narrates the whole protocol in long prose
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN008" issue with severity "minor" is reported on line 6
 ```
 
 ### GEN009 — Element count limit
@@ -501,6 +524,23 @@ Feature: GEN009 element count limit
     When the linter runs
     Then no "GEN009" issue is reported
 ```
+
+The five size caps form one family and share an option convention — a new cap
+rule takes `max`:
+
+| Rule | Caps | Option | Default |
+|---|---|---|---|
+| GEN005 max-participants | participants | `max` | 9 |
+| GEN009 max-elements | semantic elements | `max` | 60 |
+| SEQ008 fragment-nesting-depth | fragment nesting depth | `max_nesting_depth` (alias `max`) | 3 |
+| SEQ011 max-messages | messages | `max` | 30 |
+| CLS005 max-members-per-class | members per class | `max` | 15 |
+
+On ordinary sequence diagrams GEN009 is dominated by SEQ011: `element_count`
+is participants + messages, so with ≤30 participants any diagram past 60
+elements already has more than 30 messages, and both findings are
+minor/DIM-RDB — the second carries no information the first did not. (The
+dominance is conditional: 61 participants and no messages fires GEN009 alone.)
 
 ---
 
@@ -816,7 +856,9 @@ Feature: SEQ007 unlabelled block condition
 
 **Rationale:** Deeply nested fragments (alt inside loop inside par …) are a
 readability cliff; beyond a configurable depth the interaction should be extracted
-into a referenced sub-diagram.
+into a referenced sub-diagram. Option `max_nesting_depth` (default 3); `max` is
+accepted as an alias per the cap-family convention, and `max_nesting_depth`
+wins when both are set.
 
 ```gherkin
 Feature: SEQ008 fragment nesting depth
@@ -960,7 +1002,9 @@ Feature: SEQ010 explicit participant ordering
 
 **Rationale:** Too many messages means the scenario is doing too much on one page —
 the message-count twin of GEN005's participant limit. The finding is anchored on
-the first message past the limit. Option `max` (default 30).
+the first message past the limit. Option `max` (default 30). On ordinary
+sequence diagrams this rule dominates GEN009's element cap — see the
+cap-family table under GEN009.
 
 ```gherkin
 Feature: SEQ011 message count limit
