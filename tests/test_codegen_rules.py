@@ -323,6 +323,31 @@ def test_seq106_word_tokens_do_not_match_inside_identifiers():
     assert "SEQ106" not in rule_ids(src)
 
 
+def test_seq106_kinds_option_limits_the_scanned_sources():
+    src = puml(
+        "participant A <<service>>\nparticipant B <<service>>\n"
+        "A -> B : process(order) ...\nB --> A : outcome\n"
+        "note right : retry policy TBD"
+    )
+    cfg = {"rules": {"SEQ106": {"kinds": ["note"]}}}
+    v = violations_for(src, "SEQ106", cfg)
+    assert len(v) == 1 and "note" in v[0].message
+
+
+def test_seq106_symbol_tokens_match_case_insensitively():
+    # Config tokens are lowercased at load; 'N/A' is a symbol token (no
+    # word form), and the case-sensitive substring match could never fire
+    # on its own configured casing (issue #48).
+    src = puml(
+        "participant A <<service>>\nparticipant B <<service>>\n"
+        "A -> B : process(order)\nB --> A : outcome\n"
+        "note right : latency budget N/A"
+    )
+    cfg = {"rules": {"SEQ106": {"tokens": ["...", "N/A"]}}}
+    v = violations_for(src, "SEQ106", cfg)
+    assert v and "'N/A'" in v[0].message
+
+
 # --- SEQ107 external/persistent calls must model a failure path --------------
 
 def test_seq107_unguarded_external_call_is_reported_as_major():

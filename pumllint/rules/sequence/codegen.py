@@ -210,8 +210,11 @@ class NoElisionMarkers(_CodegenRule):
 
     DEFAULT_TOKENS = ("...", "…", "TBD", "TODO", "etc", "???", "and so on")
 
+    DEFAULT_KINDS = ("message", "guard", "note")
+
     def check(self, diagram: Diagram):
         tokens = self.lexicon("tokens", self.DEFAULT_TOKENS)
+        kinds = {str(k).lower() for k in self.options.get("kinds", self.DEFAULT_KINDS)}
         word_tokens = [t for t in tokens if re.fullmatch(r"[\w ]+", t)]
         symbol_tokens = [t for t in tokens if t not in word_tokens]
         word_re = (
@@ -221,22 +224,28 @@ class NoElisionMarkers(_CodegenRule):
         )
 
         def offending(text: str) -> str | None:
+            low = text.lower()
             for t in symbol_tokens:
-                if t in text:
-                    return t
+                i = low.find(t)
+                if i != -1:
+                    return text[i : i + len(t)]
             if word_re:
                 m = word_re.search(text)
                 if m:
                     return m.group(0)
             return None
 
-        sources = [(m.line, "message", m.label) for m in diagram.messages]
-        for b in diagram.blocks:
-            sources.append((b.start_line, "guard", b.label))
-            sources.extend((br.line, "guard", br.label) for br in b.else_branches)
-        sources.extend(
-            (d.line, "note", d.value) for d in diagram.directives if d.kind == "note"
-        )
+        sources: list[tuple[int, str, str]] = []
+        if "message" in kinds:
+            sources.extend((m.line, "message", m.label) for m in diagram.messages)
+        if "guard" in kinds:
+            for b in diagram.blocks:
+                sources.append((b.start_line, "guard", b.label))
+                sources.extend((br.line, "guard", br.label) for br in b.else_branches)
+        if "note" in kinds:
+            sources.extend(
+                (d.line, "note", d.value) for d in diagram.directives if d.kind == "note"
+            )
         for line, where, text in sorted(sources):
             tok = offending(text)
             if tok:

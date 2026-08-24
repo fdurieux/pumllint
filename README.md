@@ -300,7 +300,8 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 
 The lexicons and shape options are configurable per rule (`vague_terms`,
 `tokens`, `failure_keywords`, `non_informative`; SEQ103 also takes `pattern`,
-`arg_stop_words` and `max_arg_words`).
+`arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
+`message`, `guard`, `note` to scan, default all three).
 
 ## Auto-fix
 
