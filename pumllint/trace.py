@@ -110,14 +110,20 @@ def pattern_from_config(config: dict) -> str | None:
 # -- inventory loading ------------------------------------------------------
 
 
-def load_inventory(path: str | Path) -> list[str]:
+def load_inventory(
+    path: str | Path, *, on_warning: "callable | None" = None
+) -> list[str]:
     """Requirement IDs from an explicit list file, order preserved, deduped.
 
     ``.json`` / ``.yaml`` / ``.yml``: an array whose items are ID strings or
     objects with an ``id`` key, or an object whose ``requirements`` key
     holds such an array (richer snapshot columns ride along untouched).
-    Anything else is read as text: one ID per line, ``#`` comments and
-    blank lines ignored.
+    Anything else is read as text: one ID per line; blank lines, full-line
+    ``#`` comments and inline ``<whitespace>#`` comments are ignored (a
+    ``#`` with no whitespace before it stays part of the ID). An ID that
+    still contains whitespace after stripping is kept verbatim and
+    reported through *on_warning* — it can never match a sane reference
+    pattern, so silence would present it as merely uncovered.
     """
     p = Path(path)
     if not p.exists():
@@ -136,11 +142,31 @@ def load_inventory(path: str | Path) -> list[str]:
                 f".json/plain-text inventory"
             ) from None
         return _ids_from_data(yaml.safe_load(text), p)
+    return _ids_from_text(text, p, on_warning)
+
+
+def _ids_from_text(text: str, path: Path, on_warning=None) -> list[str]:
+    """IDs from the plain-text inventory form, one per line.
+
+    A ``#`` preceded by whitespace starts an inline comment; a ``#``
+    embedded in the ID (``REQ#5``) is kept. Whitespace inside a stripped
+    ID is unmatchable by construction, so it is surfaced via
+    *on_warning* rather than silently reported as uncovered later.
+    """
     ids = []
-    for line in text.splitlines():
+    for lineno, line in enumerate(text.splitlines(), start=1):
         s = line.strip()
-        if s and not s.startswith("#"):
-            ids.append(s)
+        if not s or s.startswith("#"):
+            continue
+        s = re.split(r"\s#", s, maxsplit=1)[0].strip()
+        if not s:
+            continue
+        if on_warning is not None and re.search(r"\s", s):
+            on_warning(
+                f"{path}:{lineno}: requirement ID {s!r} contains whitespace "
+                "and can never match a reference pattern"
+            )
+        ids.append(s)
     return _dedupe(ids)
 
 

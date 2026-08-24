@@ -345,3 +345,53 @@ def test_render_trace_empty_inventory_and_no_diagrams():
     payload = json.loads(get_reporter("json").render_trace(result))
     assert validate(payload, load_schema("trace")) == []
     assert payload["summary"]["diagramCount"] == 0
+
+
+def test_text_inventory_strips_inline_comments():
+    with tempfile.TemporaryDirectory() as td:
+        f = Path(td) / "reqs.txt"
+        f.write_text("ARC-D7  # the data layer\nARC-D8\n", encoding="utf-8")
+        assert load_inventory(f) == ["ARC-D7", "ARC-D8"]
+
+
+def test_text_inventory_keeps_hash_embedded_in_an_id():
+    with tempfile.TemporaryDirectory() as td:
+        f = Path(td) / "reqs.txt"
+        f.write_text("REQ#5\nREQ-6 # note\n", encoding="utf-8")
+        assert load_inventory(f) == ["REQ#5", "REQ-6"]
+
+
+def test_text_inventory_warns_once_per_whitespace_id():
+    with tempfile.TemporaryDirectory() as td:
+        f = Path(td) / "reqs.txt"
+        f.write_text("ARC D7\nARC-D8\n", encoding="utf-8")
+        warnings = []
+        ids = load_inventory(f, on_warning=warnings.append)
+        assert ids == ["ARC D7", "ARC-D8"]  # kept verbatim, not dropped
+        assert len(warnings) == 1 and "ARC D7" in warnings[0]
+        assert load_inventory(f) == ids  # silent without the callback
+
+
+def test_cli_trace_whitespace_id_warns_on_stderr_without_changing_exit():
+    with tempfile.TemporaryDirectory() as td:
+        reqs = Path(td) / "reqs.txt"
+        reqs.write_text("REQ 1\nREQ-2\n", encoding="utf-8")
+        puml = Path(td) / "d.puml"
+        puml.write_text(
+            "@startuml d\ntitle Covers REQ-2\nA -> B : go()\n@enduml\n",
+            encoding="utf-8",
+        )
+        err = io.StringIO()
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+            code = main(
+                [
+                    "trace",
+                    str(puml),
+                    "--requirements",
+                    str(reqs),
+                    "--pattern",
+                    r"REQ-\d+",
+                ]
+            )
+        assert code == 0
+        assert "warning:" in err.getvalue() and "REQ 1" in err.getvalue()

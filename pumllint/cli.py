@@ -517,7 +517,12 @@ def _run_trace(argv: list[str]) -> int:
         pattern = compile_pattern(raw, origin)
         inventory: list[str] = []
         if args.requirements:
-            inventory.extend(load_inventory(args.requirements))
+            inventory.extend(
+                load_inventory(
+                    args.requirements,
+                    on_warning=lambda m: _err(f"warning: {m}"),
+                )
+            )
         if args.requirements_scan:
             inventory.extend(scan_inventory(args.requirements_scan, pattern))
         inventory = list(dict.fromkeys(inventory))  # union, first-seen order
