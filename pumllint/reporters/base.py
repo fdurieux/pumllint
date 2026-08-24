@@ -7,6 +7,7 @@ from abc import ABC
 from typing import TYPE_CHECKING, Iterable, Type
 
 from ..model import Violation
+from ..scoring import format_score  # noqa: F401  (re-export for reporters)
 
 # C0 controls (except tab), DEL, and C1 controls — everything a terminal or
 # CI log viewer might interpret (ESC/CSI/OSC sequences, line-spoofing CR/LF).

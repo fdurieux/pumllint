@@ -171,6 +171,16 @@ def _clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
 
+def format_score(value: float) -> str:
+    """Render a score for humans: one decimal, stripped only when the value
+    is exactly integral. 99.91 -> "99.9", 76.04 -> "76.0", 100.0 -> "100" —
+    a not-quite-perfect score can never round up to a perfect-looking one
+    (a near-100 non-integral value renders "100.0", distinct from an exact
+    "100"). Reports that need machine precision use the JSON reporter's
+    2-decimal values, not this."""
+    return str(int(value)) if value == int(value) else f"{value:.1f}"
+
+
 def compute_dimension_scores(
     violations: Iterable[Violation], element_count: int, cfg: ScoringConfig
 ) -> dict[Dimension, DimensionScore]:
@@ -423,7 +433,7 @@ def build_gap_report(
             items.append(
                 GapItem(
                     "dimension",
-                    f"{dim.value} is {current:.0f}, needs >= {required:.0f}",
+                    f"{dim.value} is {format_score(current)}, needs >= {required:g}",
                     dimension=dim,
                     current=current,
                     required=required,
@@ -436,7 +446,7 @@ def build_gap_report(
         items.append(
             GapItem(
                 "composite",
-                f"composite is {composite:.0f}, needs >= {req.composite_floor:.0f}",
+                f"composite is {format_score(composite)}, needs >= {req.composite_floor:g}",
                 current=composite,
                 required=req.composite_floor,
                 findings=_composite_findings(dim_scores, element_count, req.composite_floor, cfg),

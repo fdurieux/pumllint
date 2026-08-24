@@ -12,7 +12,7 @@ from ..model import Diagram, Severity, Violation
 from ..rules import discover
 from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
 from ..trace import DiagramRef, TraceResult
-from .base import Reporter, reporter, sanitize_terminal
+from .base import Reporter, format_score, reporter, sanitize_terminal
 
 _Baseline = Optional[dict[str, BaselineEntry]]
 
@@ -113,7 +113,7 @@ class TextReporter(Reporter):
         blocks = []
         for (diagram, r), key in zip(results, keys):
             header = (
-                f"{_diagram_label(diagram)}: Level {r.level} ({r.level_name}) — {r.composite:.0f}/100"
+                f"{_diagram_label(diagram)}: Level {r.level} ({r.level_name}) — {format_score(r.composite)}/100"
             )
             if r.suppressed_count:  # a suppressed-clean run must say so
                 header += f" ({r.suppressed_count} suppressed)"
@@ -144,8 +144,14 @@ class TextReporter(Reporter):
         agg = aggregate_scores(results)
         set_line = (
             f"Model set: Level {agg.level} ({agg.level_name}) — "
-            f"{agg.composite:.0f}/100 weighted across {agg.diagram_count} diagram(s)"
+            f"{format_score(agg.composite)}/100 weighted across {agg.diagram_count} diagram(s)"
         )
+        if agg.diagram_count > 1 and len({r.level for _, r in results}) > 1:
+            worst_diagram, worst = min(
+                results,
+                key=lambda dr: (dr[1].level, dr[1].composite, _diagram_label(dr[0])),
+            )
+            set_line += f" — worst: {_diagram_label(worst_diagram)} (Level {worst.level})"
         if agg.suppressed_count:
             set_line += f" ({agg.suppressed_count} finding(s) suppressed)"
         if baseline is not None:
@@ -390,7 +396,7 @@ class SonarReporter(Reporter):
                     "primaryLocation": {
                         "message": (
                             f"Level {r.level} ({r.level_name}) — "
-                            f"composite {r.composite:.0f}/100{obstacles}{suppressed}"
+                            f"composite {format_score(r.composite)}/100{obstacles}{suppressed}"
                         ),
                         "filePath": diagram.file_path,
                         "textRange": {"startLine": max(1, diagram.start_line)},

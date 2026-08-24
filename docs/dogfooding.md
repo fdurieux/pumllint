@@ -40,10 +40,10 @@ two) with the repository's own config
 | `pumllint docs/pumllint-lint-flow.puml` | ✔ No issues found, exit 0 |
 | `pumllint --no-suppressions docs/pumllint-lint-flow.puml` | 2 × SEQ006 (self-message, minor), exit 0 |
 | `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100 (2 suppressed); Level 5 refused without the codegen profile |
-| `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98/100 |
+| `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98.4/100 |
 | `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 12 findings (5 blocker, 7 major), exit 1 |
 | `pumllint --profile codegen --no-suppressions …` | 14 findings (the 2 SEQ006 return — a rule-scoped suppression holds across profiles) |
-| `pumllint score --profile codegen docs/pumllint-lint-flow.puml` | Level 2 (Structured) — 63/100 (2 suppressed); the 5 SEQ103 blockers cap the level — the generation contract correctly refuses a diagram drawn for human readers |
+| `pumllint score --profile codegen docs/pumllint-lint-flow.puml` | Level 2 (Structured) — 62.9/100 (2 suppressed); the 5 SEQ103 blockers cap the level — the generation contract correctly refuses a diagram drawn for human readers |
 | `pumllint fix --dry-run docs/pumllint-lint-flow.puml` | "Nothing to fix", exit 0 |
 
 ## Re-running the checks
@@ -135,7 +135,7 @@ shipping.
   and this diagram carries both in its `footer`. The bundled examples
   deliberately do not: they model a fictional domain and feed the frozen
   calibration corpus, so the published pilot report now honestly shows
-  the TRC gap on them (aggregate 88 → 87/100; no level changed anywhere,
+  the TRC gap on them (aggregate 88 → 87.2/100; no level changed anywhere,
   measured before enabling).
 - **DIM-SYN was not exercised** *(since closed in CI — the third finding
   to become a change)*. The local run environment had no `plantuml`

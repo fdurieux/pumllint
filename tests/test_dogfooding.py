@@ -72,14 +72,14 @@ def test_dogfooding_codegen_finding_count_matches_the_doc():
 def test_dogfooding_scores_match_the_doc():
     doc = _doc("dogfooding.md")
     codegen = _run("score", "--profile", "codegen", _DIAGRAM)
-    m = re.search(r"— (\d+)/100", codegen)
+    m = re.search(r"— (\d+(?:\.\d+)?)/100", codegen)
     assert m, f"codegen score output carries no composite: {codegen!r}"
     assert f"{m.group(1)}/100" in doc, (
         f"codegen score is {m.group(1)}/100 but docs/dogfooding.md does not "
         "carry it — update the record"
     )
     unsuppressed = _run("score", "--no-suppressions", _DIAGRAM)
-    m = re.search(r"— (\d+)/100", unsuppressed)
+    m = re.search(r"— (\d+(?:\.\d+)?)/100", unsuppressed)
     assert m, f"unsuppressed score output carries no composite: {unsuppressed!r}"
     assert f"{m.group(1)}/100" in doc, (
         f"unsuppressed score is {m.group(1)}/100 but docs/dogfooding.md does "
