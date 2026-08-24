@@ -17,7 +17,8 @@ Feature: XD005 cross-type stereotype conflict
       @enduml
       """
     When the linter runs
-    Then a "XD005" issue with severity "minor" is reported on line 9
+    Then a "XD005" issue with severity "minor" is reported on line 3
+    And a "XD005" issue with severity "minor" is reported on line 9
 
   Scenario: agreeing stereotypes pass
     Given the diagram:

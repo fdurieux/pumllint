@@ -1934,7 +1934,13 @@ later case-variants of the first-seen spelling.
 **Rationale:** The same entity declared as `participant` in one diagram and
 `database` (or `actor`, `queue`, …) in another has no single identity; readers
 and code generators cannot tell which role is authoritative. Implicit
-lifelines are ignored — they have no authored kind to conflict.
+lifelines are ignored — they have no authored kind to conflict. A conflict is
+symmetric evidence: every conflicted site is reported, each message listing
+all variants with counts, and no side is elected — a majority vote indicts
+the conforming sites once a drift has spread. The per-entity `authoritative`
+option (`authoritative = {OrderSvc = "database"}`) pins the intended value:
+with it set, only non-conforming sites are reported. The pin resolves
+conflicts only — an entity whose sites all agree is never compared against it.
 
 ```gherkin
 Feature: XD001 conflicting participant kind
@@ -1954,7 +1960,31 @@ Feature: XD001 conflicting participant kind
       @enduml
       """
     When the linter runs
-    Then a "XD001" issue with severity "major" is reported on line 8
+    Then a "XD001" issue with severity "major" is reported on line 3
+    And a "XD001" issue with severity "major" is reported on line 8
+
+  Scenario: an authoritative kind reports only the non-conforming site
+    Given the configuration:
+      """
+      [rules.XD001]
+      authoritative = {OrderSvc = "database"}
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      database OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD001" issue is reported on line 3
+    And no "XD001" issue is reported on line 8
 
   Scenario: consistent kinds across diagrams pass
     Given the diagram:
@@ -1980,7 +2010,11 @@ Feature: XD001 conflicting participant kind
 **Rationale:** Stereotypes carry semantic weight (SEQ107 keys failure-path
 requirements off `<<external>>`); the same entity stereotyped `<<service>>`
 here and `<<external>>` there splits its identity. A missing stereotype is not
-a conflict — that is SEQ102's concern under the codegen profile.
+a conflict — that is SEQ102's concern under the codegen profile. As in XD001,
+every conflicted site is reported symmetrically (all variants with counts, no
+side elected), and the per-entity `authoritative` option
+(`authoritative = {Payments = "service"}`) pins the intended stereotype so
+only non-conforming sites are reported. The pin resolves conflicts only.
 
 ```gherkin
 Feature: XD002 conflicting participant stereotype
@@ -2000,7 +2034,31 @@ Feature: XD002 conflicting participant stereotype
       @enduml
       """
     When the linter runs
-    Then a "XD002" issue with severity "minor" is reported on line 7
+    Then a "XD002" issue with severity "minor" is reported on line 2
+    And a "XD002" issue with severity "minor" is reported on line 7
+
+  Scenario: an authoritative stereotype reports only the non-conforming site
+    Given the configuration:
+      """
+      [rules.XD002]
+      authoritative = {Payments = "service"}
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD002" issue is reported on line 7
+    And no "XD002" issue is reported on line 2
 
   Scenario: consistent stereotypes across diagrams pass
     Given the diagram:
@@ -2121,7 +2179,9 @@ Feature: XD004 cross-type name collision
 
 **Rationale:** `class OrderService <<service>>` versus `participant OrderService
 <<gateway>>` is one entity with two contracts; downstream generators cannot tell
-which is authoritative. Majority wins (ties to first-seen); conflicts confined
+which is authoritative. Every conflicted site is reported symmetrically (all
+variants with counts, no side elected), and the per-entity `authoritative`
+option pins the intended stereotype, as in XD001/XD002; conflicts confined
 to sequence diagrams are XD002's territory and skipped here.
 
 ```gherkin
@@ -2144,7 +2204,8 @@ Feature: XD005 cross-type stereotype conflict
       @enduml
       """
     When the linter runs
-    Then a "XD005" issue with severity "minor" is reported on line 9
+    Then a "XD005" issue with severity "minor" is reported on line 3
+    And a "XD005" issue with severity "minor" is reported on line 9
 
   Scenario: agreeing stereotypes pass
     Given the diagram:

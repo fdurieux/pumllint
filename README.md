@@ -272,7 +272,7 @@ are one entity drifting apart, and the linter says so.
 
 | ID | Name | Default | What it catches |
 |----|------|---------|-----------------|
-| XD001 | conflicting-participant-kind | major | Same participant declared `participant` here, `database` there — majority declaration wins, minority sites are flagged. |
+| XD001 | conflicting-participant-kind | major | Same participant declared `participant` here, `database` there — every conflicted site is flagged with the full variant set; the per-entity `authoritative` option pins the intended value (also on XD002/XD005). |
 | XD002 | conflicting-participant-stereotype | minor | Same participant with disagreeing stereotypes across sequence diagrams. |
 | XD003 | participant-name-case-collision | minor | Participant spellings differing only by case across sequence diagrams. |
 | XD004 | cross-type-name-collision | minor | Entity spellings differing only by case across diagram *types* (participants, classifiers, swimlanes). |
