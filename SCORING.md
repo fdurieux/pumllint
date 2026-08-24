@@ -130,7 +130,14 @@ critical, blocker) — a critical structural error also blocks Method-complete.
   **3** — "Precise" requires enough content to be precise about.
 - C7: Level **5** requires the profile named by `l5_requires_profile` (default
   **codegen**) to be active — the Method-complete claim is bound to the rule
-  pack that gives it substance. Set to `null` to disable.
+  pack that gives it substance. Set to `null` to disable. The opt-in
+  `c7_requires_applicable_rules` flag (default **false**) tightens the cap:
+  the required profile must also carry at least one rule that *applies to the
+  diagram's type*, or the Level-5 claim is vacuous — an active profile whose
+  rules never examined the diagram proves nothing. Consequence worth knowing
+  before enabling it: with the default codegen profile every SEQ10x rule is
+  sequence-only, so under the flag no non-sequence diagram can reach Level 5
+  until the profile grows rules for its type.
 
 All thresholds, weights, and caps are configurable under the `scoring:` key
 (YAML/TOML/JSON, same precedence as rule config).

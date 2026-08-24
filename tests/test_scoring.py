@@ -411,6 +411,36 @@ def test_profile_binding_is_configurable():
     assert renamed.level == 5
 
 
+def test_c7_can_require_an_applicable_rule():
+    # Issue #35: with the codegen profile active, a diagram type the profile
+    # has no rules for (all SEQ10x are sequence-only) reached Level 5 with a
+    # vacuous certification. The opt-in flag caps it at 4.
+    from pumllint.engine import Engine
+    from pumllint.parser import parse_source
+    from pumllint.scoring import score_groups
+
+    engine = Engine({"profile": "codegen"})
+    src = (
+        "@startuml uc\ntitle Use cases\nactor Customer\n"
+        "usecase (Place order)\nusecase (Track order)\n"
+        "Customer --> (Place order) : does\nCustomer --> (Track order) : does\n@enduml\n"
+    )
+    groups = engine.lint_diagrams_grouped(parse_source(src, "t.puml"))
+    cfg = {"c7_requires_applicable_rules": True}
+
+    default = score_groups(groups, engine=engine)
+    assert default[0][1].level == 5  # flag off: today's behaviour
+
+    capped = score_groups(groups, config=cfg, engine=engine)
+    assert capped[0][1].level == 4
+    gap = capped[0][1].gap_report
+    assert any(g.kind == "profile" and "vacuous" in g.message for g in gap)
+
+    # A sequence diagram under the same flag still certifies: SEQ10x apply.
+    seq = _seq_diagram(3, 3)
+    assert score_groups([(seq, [])], config=cfg, engine=engine)[0][1].level == 5
+
+
 # --- model-set aggregation (0.6.0) -----------------------------------------
 
 def test_aggregate_of_nothing_is_none():
