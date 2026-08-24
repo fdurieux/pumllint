@@ -89,12 +89,19 @@ class MaxParticipants(Rule):
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         limit = int(self.options.get("max", 9))
-        count = len(diagram.participants)
+        if diagram.diagram_type == "usecase":
+            # Link endpoints materialize as declared=False participants;
+            # only the declared actors and use cases count against the budget.
+            count = sum(1 for p in diagram.participants.values() if p.declared)
+            advice = "consider splitting per actor goal or into packages"
+        else:
+            count = len(diagram.participants)
+            advice = "consider splitting per phase or using 'ref over'"
         if count > limit:
             yield self.violation(
                 diagram,
                 diagram.start_line,
-                f"Diagram has {count} participants (max {limit}) — consider splitting per phase or using 'ref over'",
+                f"Diagram has {count} participants (max {limit}) — {advice}",
             )
 
 

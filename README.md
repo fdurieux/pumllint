@@ -232,7 +232,7 @@ All knobs are configurable under the `scoring` key (see `pumllint.toml`).
 | GEN002 | unnamed-diagram | info | `@startuml` without a name. |
 | GEN003 | inline-skinparam | minor | Per-diagram styling instead of a central theme include. |
 | GEN004 | participant-naming | minor | Names violating a configurable regex (per-kind overrides supported). |
-| GEN005 | max-participants | minor | More lifelines than the configured max. |
+| GEN005 | max-participants | minor | More lifelines than the configured max (sequence; use-case diagrams count declared actors and use cases). |
 | GEN006 | owner-tag | minor | No ownership tag in title/header/footer/caption/notes. Needs a `pattern`; dormant otherwise. |
 | GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
 | GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |

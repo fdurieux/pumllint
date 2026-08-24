@@ -474,6 +474,20 @@ def test_aliased_usecase_is_judged_by_its_label_not_the_alias():
     assert "'Order placement'" in findings[0].message
 
 
+def test_gen005_counts_declared_usecase_elements():
+    decls = "".join(f"usecase (Case {i})\n" for i in range(9))
+    src = f"@startuml uc\ntitle Use cases\nactor Customer\n{decls}Customer --> (Case 0) : does\n@enduml\n"
+    findings = [v for v in lint(src) if v.rule_id == "GEN005"]
+    assert len(findings) == 1
+    assert "10 participants" in findings[0].message
+
+
+def test_gen005_implicit_usecase_endpoints_do_not_count():
+    decls = "".join(f"usecase (Case {i})\n" for i in range(8))
+    src = f"@startuml uc\ntitle Use cases\nactor Customer\n{decls}Customer --> (Undeclared goal) : asks\n@enduml\n"
+    assert "GEN005" not in rule_ids(src)
+
+
 def test_aliased_usecase_with_verb_first_label_is_clean_for_uc002():
     src = (
         "@startuml uc\ntitle Use cases\nactor Customer\n"

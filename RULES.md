@@ -54,7 +54,8 @@ hint) and skips rules whose scope does not match.
 ## GEN — Governance rules
 
 Cross-cutting governance checks. GEN001–GEN003 apply to every diagram type
-(`applies_to: *`); GEN004–GEN005 are sequence-scoped (they reason about lifelines).
+(`applies_to: *`); GEN004 is sequence-scoped (it reasons about lifelines), and
+GEN005 covers sequence and use-case diagrams.
 
 ### GEN001 — Diagram must have a title
 **Severity:** minor · **Status:** ✅ Implemented (v0.1.0)
@@ -215,7 +216,10 @@ Feature: GEN004 participant naming convention
 
 **Rationale:** A sequence diagram with too many lifelines is doing too much and becomes
 unreadable; it should be split per phase or use `ref over`. Option `max` (default 9)
-sets the threshold.
+sets the threshold. Use-case diagrams share the budget: too many actors and use
+cases on one canvas is the same defect, split per actor goal or into packages.
+There, only *declared* elements count — link endpoints materialize implicitly,
+and punishing an undeclared endpoint is UC-territory, not a size question.
 
 ```gherkin
 Feature: GEN005 participant count limit
@@ -254,6 +258,45 @@ Feature: GEN005 participant count limit
       participant P4
       participant P5
       P0 -> P1 : hi
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN005" issue is reported
+
+  Scenario: use-case diagram exceeding the participant limit is reported
+    Given the configuration:
+      """
+      [rules.GEN005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN005" issue with severity "minor" is reported on line 1
+
+  Scenario: implicit link endpoints do not count against the use-case limit
+    Given the configuration:
+      """
+      [rules.GEN005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      Customer --> (Refund order) : asks
       @enduml
       """
     When the linter runs
@@ -2087,7 +2130,7 @@ Feature: XD005 cross-type stereotype conflict
 | GEN002 | info | * | Diagram name on @startuml | ✅ v0.1.0 |
 | GEN003 | minor | * | No inline skinparam | ✅ v0.1.0 |
 | GEN004 | minor | sequence | Participant naming convention | ✅ v0.1.0 |
-| GEN005 | minor | sequence | Participant count limit | ✅ v0.1.0 |
+| GEN005 | minor | sequence, usecase | Participant count limit | ✅ v0.1.0 |
 | GEN006 | minor | * | Ownership tag (pattern-gated) | ✅ v0.12.0 |
 | GEN007 | minor | * | Requirement/ADR link (pattern-gated) | ✅ v0.12.0 |
 | GEN008 | minor | * | Note density | ✅ v0.12.0 |
