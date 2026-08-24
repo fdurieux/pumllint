@@ -127,8 +127,9 @@ every scoping: [minimum-sufficient-stack.md](minimum-sufficient-stack.md).
 
 Single self-contained program, Python ≥ 3.11 standard library only —
 no third-party components to audit. No network access, ever; reports
-are deterministic offline files. MIT licence; installable from the
-internal artifact proxy as one wheel. CI-agnostic (any runner that
+are deterministic offline files. GPL-3.0-or-later licence (copyleft
+duties attach on redistribution, not internal use); installable from
+the internal artifact proxy as one wheel. CI-agnostic (any runner that
 executes a CLI and reads an exit code). Scoring calibration and claim
 language are a frozen public contract; no AI opinion ever becomes a
 gate.

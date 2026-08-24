@@ -34,8 +34,8 @@ class MissingStart(Rule):
 class MissingStop(Rule):
     """Activity diagram whose flow never reaches an explicit terminal.
 
-    Option ``accept_detach`` (default True): ``kill``/``detach`` count as
-    terminals too.
+    ``kill``/``detach`` count as terminals (the parser folds them into
+    ``stop``/``end``).
     """
 
     id = "ACT002"

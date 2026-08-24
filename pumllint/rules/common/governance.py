@@ -209,7 +209,12 @@ class MaxElements(Rule):
 
 @register
 class OrphanUseCaseActor(Rule):
-    """Use-case diagram: actor linked to zero use cases, or vice versa."""
+    """Actor or use case participating in no relationship.
+
+    Membership, not reachability: any link counts (a use case connected only
+    to another use case is linked), and a diagram with no links at all is
+    not examined.
+    """
 
     id = "UC001"
 
@@ -293,9 +298,9 @@ class IncludeExtendDirection(Rule):
 
 @register
 class UseCaseActorNaming(Rule):
-    """Use cases as verb–object phrases ("Place order"), actors as nouns.
+    """Use cases as verb–object phrases ("Place order").
 
-    Mixing forms confuses reading. Option ``verbs`` supplies the accepted leading
+    Actor naming is not checked. Option ``verbs`` supplies the accepted leading
     verbs for use-case names; with no whitelist the rule is dormant (there is no
     language-agnostic verb oracle).
     """

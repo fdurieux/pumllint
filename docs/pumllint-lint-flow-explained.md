@@ -17,7 +17,7 @@ downward, arrows for calls and replies. This one draws what happens
 when a developer runs the default lint command, `pumllint <paths>` —
 the exact flow implemented by `_run_lint` (`pumllint/cli.py:168`). The
 same file is both documentation and test surface: pumllint lints it in
-CI, it scores Level 4 (Precise) 100/100 with three disclosed
+CI, it scores Level 4 (Precise) 100/100 with two disclosed
 suppressions, and the [dogfooding page](dogfooding.md) records what
 that run taught.
 
@@ -188,7 +188,7 @@ The first loop: `parse_file` returns *a list* of diagrams, one per
 `@startuml` block, which is why the reply says "one per startuml
 block". The second loop runs every applicable rule's `check` per
 diagram, then filters findings through the inline-suppression
-mechanism — the third suppressed self-message, and the most pointed
+mechanism — the second suppressed self-message, and the most pointed
 one: **the arrow documents the exact mechanism that is cleaning the
 diagram it appears in.** Every fragment is properly closed with `end`
 (SEQ004, unterminated-block — the rule PlantUML's own grammar does not
@@ -253,7 +253,7 @@ contract.
 ## Why it scores the way it does
 
 Everything above compounds into the recorded result — Level 4
-(Precise), 100/100, three suppressed findings:
+(Precise), 100/100, two suppressed findings:
 
 - **Satisfied by construction:** named diagram (GEN002), title
   (GEN001), governance footer (GEN006/GEN007 under this repository's
@@ -262,10 +262,10 @@ Everything above compounds into the recorded result — Level 4
   (SEQ005), every block labelled (SEQ007) and terminated (SEQ004),
   activations balanced (SEQ003), notes sparse and referential
   (GEN008), well under the size guards (GEN005/GEN009/SEQ011).
-- **Deliberately kept, then governed:** three `Engine -> Engine`
+- **Deliberately kept, then governed:** two `Engine -> Engine`
   self-messages (SEQ006) — drawn because the architecture is really
   like that, suppressed with reviewable inline comments, disclosed in
-  every score report as `(3 suppressed)`, and resurfaced in full by
+  every score report as `(2 suppressed)`, and resurfaced in full by
   `--no-suppressions`.
 - **Deliberately not claimed:** Level 5. The codegen profile would
   demand typed participants (SEQ102) and signature-shaped labels

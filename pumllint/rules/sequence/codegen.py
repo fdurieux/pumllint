@@ -125,8 +125,8 @@ class SignatureMessages(_CodegenRule):
                 yield self.violation(
                     diagram,
                     m.line,
-                    f"Message '{shown}' is not an operation signature; "
-                    "use name(params) so the operation is compilable",
+                    f"Message '{shown}' is not signature-shaped; use "
+                    "name(params) (the accepted shape is the 'pattern' option)",
                 )
                 continue
             reason = _prose_argument(label, stop_words, max_words)
@@ -135,8 +135,8 @@ class SignatureMessages(_CodegenRule):
                     diagram,
                     m.line,
                     f"Message '{shown}' hides prose in its arguments "
-                    f"({reason}); use identifier parameters so the "
-                    "signature is compilable",
+                    f"({reason}); use identifier parameters "
+                    "('arg_stop_words' / 'max_arg_words' options)",
                 )
 
 
@@ -178,8 +178,8 @@ class MachineEvaluableGuards(_CodegenRule):
                 yield self.violation(
                     diagram,
                     b.start_line,
-                    f"Guard '{guard}' is not machine-evaluable; "
-                    "reference modelled values in a boolean expression",
+                    f"Guard '{guard}' is a known vague phrase "
+                    "('vague_terms' option); write a boolean expression instead",
                 )
             for br in b.else_branches:
                 guard = br.label.strip().strip("[]").strip()
@@ -199,8 +199,8 @@ class MachineEvaluableGuards(_CodegenRule):
                     yield self.violation(
                         diagram,
                         br.line,
-                        f"Guard '{guard}' is not machine-evaluable; "
-                        "reference modelled values in a boolean expression",
+                        f"Guard '{guard}' is a known vague phrase "
+                        "('vague_terms' option); write a boolean expression instead",
                     )
 
 
@@ -292,8 +292,9 @@ class ExternalCallsFailurePath(_CodegenRule):
                 yield self.violation(
                     diagram,
                     m.line,
-                    f"Call '{shown}' to '{m.effective_target}' has no modelled failure "
-                    "path; wrap it in an alt with an error branch, a break, or a group error fragment",
+                    f"Call '{shown}' to '{m.effective_target}' has no enclosing alt "
+                    "error branch, break, or group error fragment; add one (failure "
+                    "vocabulary: 'failure_keywords' option, or a negated guard)",
                 )
 
 
@@ -337,8 +338,8 @@ class InformativeReplies(_CodegenRule):
                 yield self.violation(
                     diagram,
                     m.line,
-                    f"Reply '{shown}' does not name the returned value; "
-                    "name it (e.g. 'order', 'receipt') so data dependencies can be inferred",
+                    f"Reply '{shown}' is empty or a generic label "
+                    "('non_informative' option); name the returned value (e.g. 'order: Order')",
                 )
 
         # (a) returns drawn with a solid arrow toward the caller of an open call

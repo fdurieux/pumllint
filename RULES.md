@@ -1012,8 +1012,9 @@ Feature: ACT001 start node present
 **Severity:** major · **Status:** ✅ Implemented (v0.2.0)
 
 **Rationale:** An activity flow that never reaches `stop`/`end` models a process that
-never finishes — almost always an authoring omission. Option `accept_detach` (default
-true) treats `kill`/`detach` as terminals too.
+never finishes — almost always an authoring omission. `kill`/`detach` count as
+terminals (the parser folds them into `stop`/`end`); there is no option to
+change that.
 
 ```gherkin
 Feature: ACT002 flow terminates
@@ -1330,6 +1331,8 @@ Feature: CLS001 naming conventions
 constraint — often the most important design decision the diagram exists to record.
 Applies to associations, aggregations and compositions; both ends must carry a
 quoted multiplicity. Generalization/realization/dependency edges are exempt.
+Presence only: the multiplicity *value* is not validated — any quoted string
+satisfies the rule.
 
 ```gherkin
 Feature: CLS002 association multiplicities
@@ -1562,12 +1565,14 @@ Feature: STA001 exactly one initial state
     Then no "STA001" issue is reported
 ```
 
-### STA002 — No unreachable states
+### STA002 — No states without an incoming transition
 **Severity:** major · **Status:** ✅ Implemented (v0.10.0)
 
 **Rationale:** A state with no incoming transition (and not the initial state) is
 dead model content — typically a leftover from refactoring. Self-transitions do
-not count as incoming: a state only reachable from itself is still unreachable.
+not count as incoming: a state only reachable from itself is still dead. The
+test is in-degree, not reachability from `[*]`: a group of states disconnected
+from the initial state but pointing at each other is not reported.
 
 ```gherkin
 Feature: STA002 unreachable states
@@ -1641,11 +1646,14 @@ Feature: STA003 labelled transitions
 
 ## UC — Use case diagram rules (applies_to: usecase)
 
-### UC001 — Every use case connected to an actor
+### UC001 — No orphan actors or use cases
 **Severity:** major · **Status:** ✅ Implemented (v0.1.0)
 
-**Rationale:** A use case that no actor (directly or transitively via
-include/extend) can reach delivers value to nobody — it should not exist.
+**Rationale:** An actor or use case participating in no relationship delivers
+value to nobody — it should not exist. The check is membership, not
+reachability: any link counts, so a use case connected only to another use
+case (e.g. via include/extend) is linked even with no actor path to it, and
+a diagram with no links at all is not examined.
 
 ```gherkin
 Feature: UC001 use cases connected to actors
@@ -1681,8 +1689,10 @@ Feature: UC001 use cases connected to actors
 ### UC002 — Use case and actor naming
 **Severity:** minor · **Status:** ✅ Implemented (v0.4.0)
 
-**Rationale:** Use cases as verb–object phrases ("Place order") and actors as
-nouns ("Customer") is the standard method convention; mixing forms confuses reading.
+**Rationale:** Use cases as verb–object phrases ("Place order") is the standard
+method convention; mixing forms confuses reading. Only use-case names are
+checked — actor naming is a convention the rule does not enforce — and the
+rule is dormant until a `verbs` whitelist is configured.
 
 ```gherkin
 Feature: UC002 use case and actor naming
@@ -1733,7 +1743,10 @@ error. Both relate use cases only — an actor endpoint is always wrong. Directi
 is judged against actor connectivity (the base case is the one an actor reaches
 through a plain association) and only when that evidence is unambiguous: exactly
 one endpoint actor-connected. Arrows written right-to-left (`A <.. B`) are
-normalized before judging.
+normalized before judging. The evidence recognizes only declared actors — the
+`:Name:` form or an `actor` declaration; an endpoint written as a bare
+identifier is not typed as an actor, and the rule stays silent for want of
+evidence.
 
 ```gherkin
 Feature: UC003 include and extend direction
