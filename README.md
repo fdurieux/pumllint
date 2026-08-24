@@ -110,6 +110,10 @@ order.puml [Order]: Level 3 (Disciplined) — 68/100
 Model set: Level 3 (Disciplined) — 68/100 weighted across 1 diagram(s)
 ```
 
+When no syntax check ran (no `--check-syntax`, no `scoring.syntax_gate`),
+the text report says so — `Syntax gate: not run — DIM-SYN unchecked …` —
+because the Level verdict otherwise silently assumes valid syntax.
+
 Every report ends with a **model-set summary**: the worst per-diagram level
 (the set is only as trustworthy as its weakest diagram) plus an
 element-weighted composite across all scored diagrams. `--min-level` gates on

@@ -450,3 +450,36 @@ def test_iuml_include_fragment_is_not_warned_about():
         rc, err = _stderr_of([str(frag), "-c", str(Path(tmp) / "cfg.json")], tmp)
         assert rc == 0, rc
         assert "no @startuml block" not in err, err
+
+
+def test_score_without_syntax_gate_discloses_it():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, _ = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        main(["score", str(puml), "-o", str(out)])
+        text = out.read_text(encoding="utf-8")
+        assert "Syntax gate: not run" in text
+        assert "DIM-SYN unchecked" in text
+
+
+def test_score_with_syntax_gate_run_omits_the_disclosure():
+    import sys
+
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, _ = _fixture(tmp)
+        cfg = Path(tmp) / "gate.json"
+        cfg.write_text(json.dumps({
+            "scoring": {"syntax_command": [sys.executable, "-c", "import sys; sys.exit(0)"]}
+        }), encoding="utf-8")
+        out = Path(tmp) / "r.txt"
+        main(["score", str(puml), "-c", str(cfg), "--check-syntax", "-o", str(out)])
+        assert "Syntax gate: not run" not in out.read_text(encoding="utf-8")
+
+
+def test_json_score_report_is_unchanged_by_the_disclosure():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, _ = _fixture(tmp)
+        out = Path(tmp) / "r.json"
+        main(["score", str(puml), "-f", "json", "-o", str(out)])
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert "syntaxGateRan" not in json.dumps(data)  # schema untouched

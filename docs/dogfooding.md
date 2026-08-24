@@ -61,6 +61,8 @@ pumllint docs/pumllint-lint-flow.puml
 pumllint score docs/pumllint-lint-flow.puml
 # expected: Level 4 (Precise) — 100/100 (2 suppressed);
 #           Level 5 refused without the codegen profile
+#           (plus the trailing "Syntax gate: not run" disclosure —
+#           these runs skip the external gate)
 
 pumllint --no-suppressions docs/pumllint-lint-flow.puml
 # expected: exactly 2 × SEQ006 (minor) — the Engine self-messages

@@ -115,6 +115,7 @@ class HtmlReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         results = list(results)
         keys = _result_keys(results, baseline)

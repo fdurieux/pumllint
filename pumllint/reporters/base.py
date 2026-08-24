@@ -82,6 +82,7 @@ class Reporter(ABC):
         results: Iterable[tuple["Diagram", "MaturityResult"]],
         *,
         baseline: "dict[str, BaselineEntry] | None" = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         """Render maturity scores for the ``score`` command. Optional: reporters
         that don't support it (default) raise a clear error.

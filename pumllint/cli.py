@@ -401,7 +401,11 @@ def _run_score(argv: list[str]) -> int:
             syntax_results=syntax_results,
             engine=engine,
         )
-        report = get_reporter(args.format).render_maturity(results, baseline=baseline_data)
+        report = get_reporter(args.format).render_maturity(
+            results,
+            baseline=baseline_data,
+            syntax_gate_ran=syntax_results is not None,
+        )
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
         _err(f"error: {e}")
         return 2

@@ -103,6 +103,7 @@ class TextReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         results = list(results)
         if not results:
@@ -152,6 +153,12 @@ class TextReporter(Reporter):
             if base_levels and min(base_levels) != agg.level:
                 set_line += f"  (Level {min(base_levels)} → {agg.level} since last baseline)"
         blocks.append(set_line)
+        if not syntax_gate_ran:
+            blocks.append(
+                "Syntax gate: not run — DIM-SYN unchecked; Level verdicts "
+                "assume valid syntax (enable with --check-syntax or "
+                "scoring.syntax_gate)."
+            )
         return "\n\n".join(blocks)
 
     def render_trace(self, result: TraceResult) -> str:
@@ -213,6 +220,7 @@ class JsonReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         results = list(results)
         keys = _result_keys(results, baseline)
@@ -357,6 +365,7 @@ class SonarReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         """The Generic Issue format carries issues, not measures, so maturity is
         surfaced as one synthetic ``info`` issue per diagram (SCORING.md §5).
@@ -422,6 +431,7 @@ class BadgeReporter(Reporter):
         results: Iterable[tuple[Diagram, MaturityResult]],
         *,
         baseline: _Baseline = None,
+        syntax_gate_ran: bool = False,
     ) -> str:
         agg = aggregate_scores(list(results))
         if agg is None:
