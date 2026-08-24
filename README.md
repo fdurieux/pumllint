@@ -362,12 +362,17 @@ pumllint trace diagrams/ --requirements reqs.txt        # explicit ID list
 pumllint trace diagrams/ --requirements-scan docs/specs # scan docs with the pattern
 ```
 
-The list file is plain text (one ID per line, `#` comments), or
-JSON/YAML: an array of IDs — strings or objects carrying an `id`, so a
+The list file is plain text — one ID per line, with **full-line** `#`
+comments only: an inline `# …` after an ID becomes part of the ID, so
+keep annotations on their own lines (#44 tracks inline-comment support).
+Or JSON/YAML: an array of IDs — strings or objects carrying an `id`, so a
 synchronized snapshot exported from a requirements/process repository
 works unchanged (extra columns are ignored today; the JSON report's
 `id` values are the stable join keys for a wider traceability matrix
-later). `--requirements-scan` walks `*.md/*.txt/*.adoc/*.rst`.
+later). `--requirements-scan` walks `*.md/*.txt/*.adoc/*.rst` and
+extracts IDs by regex — so the two inventory sources parse differently:
+a doc line yields the matched ID alone, while the same line moved into
+a dedicated list file is taken verbatim as one ID.
 
 CI gates are opt-in, one per direction — without them the command is
 report-only (exit 0):
