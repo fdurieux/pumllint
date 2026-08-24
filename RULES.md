@@ -1331,6 +1331,8 @@ Feature: CLS001 naming conventions
 constraint — often the most important design decision the diagram exists to record.
 Applies to associations, aggregations and compositions; both ends must carry a
 quoted multiplicity. Generalization/realization/dependency edges are exempt.
+Presence only: the multiplicity *value* is not validated — any quoted string
+satisfies the rule.
 
 ```gherkin
 Feature: CLS002 association multiplicities
@@ -1563,12 +1565,14 @@ Feature: STA001 exactly one initial state
     Then no "STA001" issue is reported
 ```
 
-### STA002 — No unreachable states
+### STA002 — No states without an incoming transition
 **Severity:** major · **Status:** ✅ Implemented (v0.10.0)
 
 **Rationale:** A state with no incoming transition (and not the initial state) is
 dead model content — typically a leftover from refactoring. Self-transitions do
-not count as incoming: a state only reachable from itself is still unreachable.
+not count as incoming: a state only reachable from itself is still dead. The
+test is in-degree, not reachability from `[*]`: a group of states disconnected
+from the initial state but pointing at each other is not reported.
 
 ```gherkin
 Feature: STA002 unreachable states
@@ -1739,7 +1743,10 @@ error. Both relate use cases only — an actor endpoint is always wrong. Directi
 is judged against actor connectivity (the base case is the one an actor reaches
 through a plain association) and only when that evidence is unambiguous: exactly
 one endpoint actor-connected. Arrows written right-to-left (`A <.. B`) are
-normalized before judging.
+normalized before judging. The evidence recognizes only declared actors — the
+`:Name:` form or an `actor` declaration; an endpoint written as a bare
+identifier is not typed as an actor, and the rule stays silent for want of
+evidence.
 
 ```gherkin
 Feature: UC003 include and extend direction

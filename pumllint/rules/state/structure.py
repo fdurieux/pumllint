@@ -43,7 +43,8 @@ class UnreachableState(Rule):
     """State with no incoming transition — dead model content.
 
     Typically a leftover from refactoring. Self-transitions do not count as
-    incoming (a state only reachable from itself is still unreachable).
+    incoming. In-degree only: a cycle disconnected from ``[*]`` is not
+    reported (there is no reachability traversal).
     """
 
     id = "STA002"
@@ -57,7 +58,7 @@ class UnreachableState(Rule):
                 yield self.violation(
                     diagram,
                     s.line,
-                    f"State '{s.name}' has no incoming transition — unreachable",
+                    f"State '{s.name}' has no incoming transition",
                 )
 
 
