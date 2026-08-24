@@ -17,7 +17,7 @@ code it maps to — is in
 
 The diagram was authored in house style (named diagram, title, declared
 PascalCase participants, labelled messages and blocks, balanced
-activations) but *not* contorted to dodge every rule: three
+activations) but *not* contorted to dodge every rule: two
 `Engine -> Engine` self-messages were kept, because that is how an engineer
 naturally draws internal steps. They are the honest test surface. The
 checked-in file resolves them the way SEQ006's own rationale sanctions —
@@ -28,7 +28,9 @@ mechanism that *cleans* it.
 All results below are from the tool as built from this repository (first run
 on **0.18.1**; the score rows were re-run after the suppressed-count
 annotation and the codegen rows after the SEQ103 tightening — both changes
-this run motivated, see "What to watch") with the repository's own config
+this run motivated, see "What to watch" — and the counts re-verified on
+0.28.0 after `2eca8ae` removed one self-message: three suppressions became
+two) with the repository's own config
 (`pumllint.toml`), run from the repository root.
 
 ## The runs
@@ -36,12 +38,12 @@ this run motivated, see "What to watch") with the repository's own config
 | Command | Result |
 |---------|--------|
 | `pumllint docs/pumllint-lint-flow.puml` | ✔ No issues found, exit 0 |
-| `pumllint --no-suppressions docs/pumllint-lint-flow.puml` | 3 × SEQ006 (self-message, minor), exit 0 |
-| `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100 (3 suppressed); Level 5 refused without the codegen profile |
+| `pumllint --no-suppressions docs/pumllint-lint-flow.puml` | 2 × SEQ006 (self-message, minor), exit 0 |
+| `pumllint score docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 100/100 (2 suppressed); Level 5 refused without the codegen profile |
 | `pumllint score --no-suppressions docs/pumllint-lint-flow.puml` | Level 4 (Precise) — 98/100 |
 | `pumllint --profile codegen docs/pumllint-lint-flow.puml` | 12 findings (5 blocker, 7 major), exit 1 |
-| `pumllint --profile codegen --no-suppressions …` | 15 findings (the 3 SEQ006 return — a rule-scoped suppression holds across profiles) |
-| `pumllint score --profile codegen docs/pumllint-lint-flow.puml` | Level 2 (Structured) — 62/100 (3 suppressed); the 5 SEQ103 blockers cap the level — the generation contract correctly refuses a diagram drawn for human readers |
+| `pumllint --profile codegen --no-suppressions …` | 14 findings (the 2 SEQ006 return — a rule-scoped suppression holds across profiles) |
+| `pumllint score --profile codegen docs/pumllint-lint-flow.puml` | Level 2 (Structured) — 63/100 (2 suppressed); the 5 SEQ103 blockers cap the level — the generation contract correctly refuses a diagram drawn for human readers |
 | `pumllint fix --dry-run docs/pumllint-lint-flow.puml` | "Nothing to fix", exit 0 |
 
 ## Re-running the checks
@@ -57,23 +59,23 @@ pumllint docs/pumllint-lint-flow.puml
 # expected: ✔ No issues found — exit 0
 
 pumllint score docs/pumllint-lint-flow.puml
-# expected: Level 4 (Precise) — 100/100 (3 suppressed);
+# expected: Level 4 (Precise) — 100/100 (2 suppressed);
 #           Level 5 refused without the codegen profile
 
 pumllint --no-suppressions docs/pumllint-lint-flow.puml
-# expected: exactly 3 × SEQ006 (minor) — the Engine self-messages
+# expected: exactly 2 × SEQ006 (minor) — the Engine self-messages
 #           documented above, and nothing else
 ```
 
 Any other output means something changed — a new finding, a shifted
-score, or a suppression hiding more than the three documented
+score, or a suppression hiding more than the two documented
 exceptions. Treat it like a golden-test failure: investigate before
 shipping.
 
 ## What held up
 
 - **Finding precision.** On the default profile, the only findings were the
-  three self-messages deliberately left in — correct rule, correct
+  two self-messages deliberately left in — correct rule, correct
   severity, exact line numbers. Nothing else was flagged across ~24
   messages, three block kinds, a multiline label, a title containing
   `<paths>`, and a note whose text names `pumllint.yaml`. Zero false
@@ -84,7 +86,7 @@ shipping.
   without a broken build.
 - **The escape hatch works as specified.** Inline
   `' pumllint: disable=SEQ006` silences exactly the annotated lines;
-  `--no-suppressions` resurfaces all three for audit.
+  `--no-suppressions` resurfaces both for audit.
 - **The codegen profile discriminates.** SEQ102 flagged all seven bare
   `participant` declarations but not `actor Developer` — the typed keyword
   carries the mapping signal the rule asks for. The prose-message blockers
@@ -115,11 +117,11 @@ shipping.
   against the code it describes; this is why the maturity levels claim
   "Precise", not "correct", and why that claim language should not drift.
 - **Suppressed findings left no trace in reports** *(since fixed — this
-  run's finding became the change)*. Adding three disable comments moved
+  run's finding became the change)*. Adding the disable comments moved
   the score from 98 to 100 with nothing in the output saying so, so a team
   could have inflated its level by suppress-spamming. Score reports now
   disclose the exclusion on every run: the affected diagram reads
-  `100/100 (3 suppressed)`, the model-set line carries the total, and the
+  `100/100 (2 suppressed)`, the model-set line carries the total, and the
   JSON report records `suppressedCount` per diagram and for the set.
   `--no-suppressions` remains the full audit.
 - **Dormant governance rules stay dormant at home** *(since closed — the
