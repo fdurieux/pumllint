@@ -1012,8 +1012,9 @@ Feature: ACT001 start node present
 **Severity:** major · **Status:** ✅ Implemented (v0.2.0)
 
 **Rationale:** An activity flow that never reaches `stop`/`end` models a process that
-never finishes — almost always an authoring omission. Option `accept_detach` (default
-true) treats `kill`/`detach` as terminals too.
+never finishes — almost always an authoring omission. `kill`/`detach` count as
+terminals (the parser folds them into `stop`/`end`); there is no option to
+change that.
 
 ```gherkin
 Feature: ACT002 flow terminates
@@ -1641,11 +1642,14 @@ Feature: STA003 labelled transitions
 
 ## UC — Use case diagram rules (applies_to: usecase)
 
-### UC001 — Every use case connected to an actor
+### UC001 — No orphan actors or use cases
 **Severity:** major · **Status:** ✅ Implemented (v0.1.0)
 
-**Rationale:** A use case that no actor (directly or transitively via
-include/extend) can reach delivers value to nobody — it should not exist.
+**Rationale:** An actor or use case participating in no relationship delivers
+value to nobody — it should not exist. The check is membership, not
+reachability: any link counts, so a use case connected only to another use
+case (e.g. via include/extend) is linked even with no actor path to it, and
+a diagram with no links at all is not examined.
 
 ```gherkin
 Feature: UC001 use cases connected to actors
@@ -1681,8 +1685,10 @@ Feature: UC001 use cases connected to actors
 ### UC002 — Use case and actor naming
 **Severity:** minor · **Status:** ✅ Implemented (v0.4.0)
 
-**Rationale:** Use cases as verb–object phrases ("Place order") and actors as
-nouns ("Customer") is the standard method convention; mixing forms confuses reading.
+**Rationale:** Use cases as verb–object phrases ("Place order") is the standard
+method convention; mixing forms confuses reading. Only use-case names are
+checked — actor naming is a convention the rule does not enforce — and the
+rule is dormant until a `verbs` whitelist is configured.
 
 ```gherkin
 Feature: UC002 use case and actor naming
