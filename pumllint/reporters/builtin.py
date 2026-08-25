@@ -117,6 +117,8 @@ class TextReporter(Reporter):
             )
             if r.suppressed_count:  # a suppressed-clean run must say so
                 header += f" ({r.suppressed_count} suppressed)"
+            if r.deduplicated_count:  # merged base/profile twins, same duty
+                header += f" ({r.deduplicated_count} duplicate(s) merged)"
             if baseline is not None:
                 d = deltas.get(key)
                 if d is None:
@@ -154,6 +156,8 @@ class TextReporter(Reporter):
             set_line += f" — worst: {_diagram_label(worst_diagram)} (Level {worst.level})"
         if agg.suppressed_count:
             set_line += f" ({agg.suppressed_count} finding(s) suppressed)"
+        if agg.deduplicated_count:
+            set_line += f" ({agg.deduplicated_count} duplicate finding(s) merged)"
         if baseline is not None:
             base_levels = [baseline[k].level for k in keys if k in baseline]
             if base_levels and min(base_levels) != agg.level:

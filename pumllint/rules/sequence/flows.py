@@ -160,7 +160,8 @@ class FragmentNestingDepth(Rule):
     id = "SEQ008"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        limit = int(self.options.get("max_nesting_depth", 3))
+        # `max` is the cap-family convention; the historical key wins when both are set.
+        limit = int(self.options.get("max_nesting_depth", self.options.get("max", 3)))
         fragments = [b for b in diagram.blocks if b.kind in GROUP_KEYWORDS]
         for b in fragments:
             depth = 1 + sum(1 for a in fragments if a.contains_line(b.start_line))

@@ -87,6 +87,14 @@ class ScoringConfig:
     # profile whose rules give it substance.
     l4_min_elements: int = 3  # C6: fewer elements caps the level at 3
     l5_requires_profile: Optional[str] = "codegen"  # C7: None disables
+    # C7, opt-in tightening: the required profile must also carry at least one
+    # rule that applies to the diagram's type, or the Level-5 claim is vacuous
+    # (an active profile whose rules never examined the diagram proves nothing).
+    c7_requires_applicable_rules: bool = False
+    # Opt-in: when a codegen-profile rule and its base twin fire on the same
+    # statement, count the defect once (the profile finding wins). Scoring
+    # only — lint output always shows both findings.
+    deduplicate_findings: bool = False
 
     @classmethod
     def from_dict(cls, cfg: Optional[Mapping] = None) -> "ScoringConfig":
@@ -111,6 +119,10 @@ class ScoringConfig:
         if "l5_requires_profile" in cfg:
             raw = cfg["l5_requires_profile"]
             out.l5_requires_profile = str(raw) if raw else None
+        if "c7_requires_applicable_rules" in cfg:
+            out.c7_requires_applicable_rules = bool(cfg["c7_requires_applicable_rules"])
+        if "deduplicate_findings" in cfg:
+            out.deduplicate_findings = bool(cfg["deduplicate_findings"])
         # A weight typo must be a loud error, not a silently distorted verdict:
         # the composite is a weighted mean, so weights must sum to 1.0.
         total = sum(out.dimension_weights.values())
@@ -165,6 +177,9 @@ class MaturityResult:
     # Findings hidden by inline suppressions — excluded from every number
     # above, carried so reports can disclose the exclusion (SCORING.md §3).
     suppressed_count: int = 0
+    # Base findings dropped by scoring.deduplicate_findings because their
+    # profile twin fired on the same statement — same disclosure duty.
+    deduplicated_count: int = 0
 
 
 def _clamp(x: float, lo: float, hi: float) -> float:
@@ -179,6 +194,34 @@ def format_score(value: float) -> str:
     "100"). Reports that need machine precision use the JSON reporter's
     2-decimal values, not this."""
     return str(int(value)) if value == int(value) else f"{value:.1f}"
+
+
+# One defect, one penalty: each codegen-profile rule that restates a base
+# rule's finding at blocker grade, keyed base -> profile. Used only by the
+# opt-in scoring.deduplicate_findings flag; the pairs are the measured
+# same-statement co-firings (issue #39). SEQ104 shares SEQ005's line but
+# reports a different defect and is deliberately NOT in the map.
+_SUPERSEDED_BY = {
+    "SEQ001": "SEQ101",
+    "SEQ003": "SEQ108",
+    "SEQ005": "SEQ103",
+    "SEQ007": "SEQ105",
+}
+
+
+def deduplicate_findings(violations: list[Violation]) -> tuple[list[Violation], int]:
+    """Drop base findings whose profile twin fired at the same file:line.
+
+    Returns ``(kept, dropped_count)``. The profile finding is the stricter
+    statement of the same defect, so it carries the penalty.
+    """
+    present = {(v.rule_id, v.file_path, v.line) for v in violations}
+    kept = [
+        v
+        for v in violations
+        if (_SUPERSEDED_BY.get(v.rule_id), v.file_path, v.line) not in present
+    ]
+    return kept, len(violations) - len(kept)
 
 
 def compute_dimension_scores(
@@ -223,6 +266,7 @@ def assign_level(
     element_count: Optional[int] = None,
     diagram_type: Optional[str] = None,
     active_profile: Optional[str] = None,
+    profile_applies: Optional[bool] = None,
 ) -> tuple[int, str]:
     """Map a composite + per-dimension scores onto a maturity level (§4).
 
@@ -231,6 +275,9 @@ def assign_level(
     caps C1–C7 then lower it. ``element_count``/``diagram_type`` default to
     ``None`` (skip the vacuity caps) so pure boundary tests stay independent of
     diagram construction; :func:`score` always passes real values.
+    ``profile_applies`` says whether the required profile carries a rule that
+    applies to this diagram's type — only ``False`` (never ``None``, the
+    unknown default) triggers the opt-in ``c7_requires_applicable_rules`` cap.
     """
     if not syntax_ok:  # C2: syntax gate failure forces Level 1
         return 1, LEVEL_NAMES[1]
@@ -263,8 +310,10 @@ def assign_level(
             level = min(level, 3)
     if diagram_type == "unknown":  # C5: unrecognized model type
         level = min(level, 2)
-    if cfg.l5_requires_profile and active_profile != cfg.l5_requires_profile:
-        level = min(level, 4)  # C7: the L5 claim is bound to its rule pack
+    if cfg.l5_requires_profile:  # C7: the L5 claim is bound to its rule pack
+        vacuous = cfg.c7_requires_applicable_rules and profile_applies is False
+        if active_profile != cfg.l5_requires_profile or vacuous:
+            level = min(level, 4)
     return level, LEVEL_NAMES[level]
 
 
@@ -359,6 +408,7 @@ def build_gap_report(
     cfg: ScoringConfig,
     diagram_type: Optional[str] = None,
     active_profile: Optional[str] = None,
+    profile_applies: Optional[bool] = None,
 ) -> list[GapItem]:
     """The minimal blocking set to reach ``level + 1`` (§5): caps, then
     dimension thresholds, then composite shortfall. Empty at Level 5."""
@@ -393,18 +443,23 @@ def build_gap_report(
                 required=float(cfg.l4_min_elements),
             )
         )
-    if (
-        target == 5
-        and cfg.l5_requires_profile
-        and active_profile != cfg.l5_requires_profile
-    ):  # C7
-        items.append(
-            GapItem(
-                "profile",
-                f"Level 5 requires the '{cfg.l5_requires_profile}' profile active "
-                f"(run with --profile {cfg.l5_requires_profile})",
+    if target == 5 and cfg.l5_requires_profile:  # C7
+        if active_profile != cfg.l5_requires_profile:
+            items.append(
+                GapItem(
+                    "profile",
+                    f"Level 5 requires the '{cfg.l5_requires_profile}' profile active "
+                    f"(run with --profile {cfg.l5_requires_profile})",
+                )
             )
-        )
+        elif cfg.c7_requires_applicable_rules and profile_applies is False:
+            items.append(
+                GapItem(
+                    "profile",
+                    f"no '{cfg.l5_requires_profile}' rule applies to this diagram "
+                    "type — its Level 5 claim would be vacuous",
+                )
+            )
     blockers = [v for v in all_viols if v.severity is Severity.BLOCKER]
     if req.zero_blocker and blockers:
         items.append(
@@ -462,6 +517,7 @@ def score(
     syntax_ok: bool = True,
     config: Optional[Mapping] = None,
     active_profile: Optional[str] = None,
+    profile_applies: Optional[bool] = None,
     suppressed_count: int = 0,
 ) -> MaturityResult:
     """Aggregate one diagram's violations into a :class:`MaturityResult`.
@@ -475,6 +531,9 @@ def score(
     """
     cfg = ScoringConfig.from_dict(config)
     violations = list(violations)
+    deduplicated = 0
+    if cfg.deduplicate_findings:
+        violations, deduplicated = deduplicate_findings(violations)
     element_count = diagram.element_count
     dim_scores = compute_dimension_scores(violations, element_count, cfg)
     composite = composite_score(dim_scores, cfg)
@@ -493,10 +552,12 @@ def score(
         element_count=element_count,
         diagram_type=diagram.diagram_type,
         active_profile=active_profile,
+        profile_applies=profile_applies,
     )
     gap_report = build_gap_report(
         level, composite, dim_scores, element_count, syntax_ok, cfg,
         diagram_type=diagram.diagram_type, active_profile=active_profile,
+        profile_applies=profile_applies,
     )
     return MaturityResult(
         level=level,
@@ -507,6 +568,7 @@ def score(
         dimensions=dim_scores,
         gap_report=gap_report,
         suppressed_count=suppressed_count,
+        deduplicated_count=deduplicated,
     )
 
 
@@ -529,6 +591,7 @@ class ModelSetResult:
     diagram_count: int
     element_count: int
     suppressed_count: int = 0
+    deduplicated_count: int = 0
 
 
 def aggregate_scores(
@@ -554,6 +617,7 @@ def aggregate_scores(
         diagram_count=len(results),
         element_count=sum(r.element_count for _, r in results),
         suppressed_count=sum(r.suppressed_count for _, r in results),
+        deduplicated_count=sum(r.deduplicated_count for _, r in results),
     )
 
 
@@ -581,13 +645,30 @@ def score_groups(
     produced ``groups``, or the certification lies.
     """
     suppressed_of = None
+    rules_pool = None
     if engine is not None:
         active_profile = getattr(engine, "profile", None)
         suppressed_of = getattr(engine, "suppressed_count", None)
+        rules_pool = [
+            *getattr(engine, "rules", ()), *getattr(engine, "cross_rules", ())
+        ]
+    wanted = ScoringConfig.from_dict(config).l5_requires_profile
+
     def _ok(d: Diagram) -> bool:
         if syntax_results is None:
             return syntax_ok
         return syntax_results.get(d.file_path, syntax_ok)
+
+    def _applies(d: Diagram) -> Optional[bool]:
+        # Does any armed rule from the C7-required profile apply to this
+        # diagram's type? None (unknown) when there is no engine to ask.
+        if rules_pool is None or not wanted:
+            return None
+        return any(
+            wanted in r.profiles
+            and ("*" in r.applies_to or d.diagram_type in r.applies_to)
+            for r in rules_pool
+        )
 
     return [
         (
@@ -595,6 +676,7 @@ def score_groups(
             score(
                 violations, diagram,
                 syntax_ok=_ok(diagram), config=config, active_profile=active_profile,
+                profile_applies=_applies(diagram),
                 suppressed_count=suppressed_of(diagram) if suppressed_of else 0,
             ),
         )

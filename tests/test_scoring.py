@@ -411,6 +411,80 @@ def test_profile_binding_is_configurable():
     assert renamed.level == 5
 
 
+def test_c7_can_require_an_applicable_rule():
+    # Issue #35: with the codegen profile active, a diagram type the profile
+    # has no rules for (all SEQ10x are sequence-only) reached Level 5 with a
+    # vacuous certification. The opt-in flag caps it at 4.
+    from pumllint.engine import Engine
+    from pumllint.parser import parse_source
+    from pumllint.scoring import score_groups
+
+    engine = Engine({"profile": "codegen"})
+    src = (
+        "@startuml uc\ntitle Use cases\nactor Customer\n"
+        "usecase (Place order)\nusecase (Track order)\n"
+        "Customer --> (Place order) : does\nCustomer --> (Track order) : does\n@enduml\n"
+    )
+    groups = engine.lint_diagrams_grouped(parse_source(src, "t.puml"))
+    cfg = {"c7_requires_applicable_rules": True}
+
+    default = score_groups(groups, engine=engine)
+    assert default[0][1].level == 5  # flag off: today's behaviour
+
+    capped = score_groups(groups, config=cfg, engine=engine)
+    assert capped[0][1].level == 4
+    gap = capped[0][1].gap_report
+    assert any(g.kind == "profile" and "vacuous" in g.message for g in gap)
+
+    # A sequence diagram under the same flag still certifies: SEQ10x apply.
+    seq = _seq_diagram(3, 3)
+    assert score_groups([(seq, [])], config=cfg, engine=engine)[0][1].level == 5
+
+
+def test_deduplicate_findings_counts_a_profile_twin_pair_once():
+    # Issue #39: SEQ005 (minor/DIM-AMB) and SEQ103 (blocker/DIM-AMB) restate
+    # the same defect on the same line under the codegen profile.
+    diagram = _seq_diagram(3, 3)
+    pair = [
+        _viol(Severity.MINOR, Dimension.AMBIGUITY, rule_id="SEQ005", line=4),
+        _viol(Severity.BLOCKER, Dimension.AMBIGUITY, rule_id="SEQ103", line=4),
+    ]
+    both = score(pair, diagram, active_profile="codegen")
+    merged = score(
+        pair, diagram, config={"deduplicate_findings": True}, active_profile="codegen"
+    )
+    assert both.deduplicated_count == 0
+    assert merged.deduplicated_count == 1
+    # The blocker twin still carries the penalty; only the base one is dropped.
+    assert merged.composite > both.composite
+    assert len(merged.dimensions[Dimension.AMBIGUITY].violations) == 1
+    assert merged.dimensions[Dimension.AMBIGUITY].violations[0].rule_id == "SEQ103"
+
+
+def test_deduplicate_findings_requires_the_same_line():
+    diagram = _seq_diagram(3, 3)
+    apart = [
+        _viol(Severity.MINOR, Dimension.AMBIGUITY, rule_id="SEQ005", line=4),
+        _viol(Severity.BLOCKER, Dimension.AMBIGUITY, rule_id="SEQ103", line=9),
+    ]
+    r = score(apart, diagram, config={"deduplicate_findings": True})
+    assert r.deduplicated_count == 0
+
+
+def test_seq104_is_not_merged_even_on_a_shared_line():
+    # SEQ104 can land on SEQ005's line but reports a different defect.
+    diagram = _seq_diagram(3, 3)
+    trio = [
+        _viol(Severity.MINOR, Dimension.AMBIGUITY, rule_id="SEQ005", line=4),
+        _viol(Severity.BLOCKER, Dimension.AMBIGUITY, rule_id="SEQ103", line=4),
+        _viol(Severity.BLOCKER, Dimension.AMBIGUITY, rule_id="SEQ104", line=4),
+    ]
+    r = score(trio, diagram, config={"deduplicate_findings": True})
+    assert r.deduplicated_count == 1  # only the SEQ005/SEQ103 pair merges
+    kept = {v.rule_id for v in r.dimensions[Dimension.AMBIGUITY].violations}
+    assert kept == {"SEQ103", "SEQ104"}
+
+
 # --- model-set aggregation (0.6.0) -----------------------------------------
 
 def test_aggregate_of_nothing_is_none():

@@ -85,6 +85,20 @@ diagram carries a **suppressed-findings count** that every report surfaces
 suppress-spamming cannot quietly inflate a level. `--no-suppressions`
 re-scores with the comments ignored for a full audit.
 
+**Profile-twin deduplication (opt-in).** Four codegen-profile rules restate a
+base rule's finding at blocker grade on the same statement: SEQ101 restates
+SEQ001, SEQ103 restates SEQ005, SEQ105 restates SEQ007, and SEQ108 restates
+SEQ003. Under the codegen profile one defect therefore draws two penalties.
+The `deduplicate_findings` flag (`[scoring]`, default **false**) counts each
+such defect once: when both twins fire at the same file:line, the base
+finding is dropped from the penalty math and the profile finding — the
+stricter statement of the same defect — carries it. Scoring only: lint
+output always shows both findings. Like suppressions, the exclusion is
+disclosed — the text report annotates `(N duplicate(s) merged)`. SEQ104 can
+share SEQ005's line but reports a different defect and is never merged.
+Turning the flag on moves scores wherever twins co-fire: re-freeze the golden
+contract deliberately if you flip it in a pinned setup.
+
 Composite:
 
 ```
@@ -130,7 +144,14 @@ critical, blocker) — a critical structural error also blocks Method-complete.
   **3** — "Precise" requires enough content to be precise about.
 - C7: Level **5** requires the profile named by `l5_requires_profile` (default
   **codegen**) to be active — the Method-complete claim is bound to the rule
-  pack that gives it substance. Set to `null` to disable.
+  pack that gives it substance. Set to `null` to disable. The opt-in
+  `c7_requires_applicable_rules` flag (default **false**) tightens the cap:
+  the required profile must also carry at least one rule that *applies to the
+  diagram's type*, or the Level-5 claim is vacuous — an active profile whose
+  rules never examined the diagram proves nothing. Consequence worth knowing
+  before enabling it: with the default codegen profile every SEQ10x rule is
+  sequence-only, so under the flag no non-sequence diagram can reach Level 5
+  until the profile grows rules for its type.
 
 All thresholds, weights, and caps are configurable under the `scoring:` key
 (YAML/TOML/JSON, same precedence as rule config).

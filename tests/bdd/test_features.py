@@ -76,6 +76,13 @@ def then_no_rule_issue(context, rule_id):
     assert not _matching(context, rule_id), _matching(context, rule_id)
 
 
+@then(parsers.re(rf'no "{_ID}" issue is reported on line {_LINE}$'))
+def then_no_rule_issue_on_line(context, rule_id, line):
+    line = int(line)
+    hits = [v for v in _matching(context, rule_id) if v.line == line]
+    assert not hits, f"expected no {rule_id} issue on line {line}; got {hits}"
+
+
 @then(parsers.re(rf'an? "{_ID}" issue is reported$'))
 def then_rule_issue(context, rule_id):
     assert _matching(context, rule_id), f"expected a {rule_id} issue; got {context['violations']}"

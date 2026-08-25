@@ -8,6 +8,12 @@ class classifiers, activity swimlanes — state names are excluded on purpose:
 states are modes of an entity, not entities). Active only when more than one
 diagram is linted (see Engine); single-diagram runs score DIM-CON from
 naming rules alone (SCORING.md §6).
+
+Value conflicts (XD001/XD002/XD005) are reported symmetrically at every
+conflicted site — the tool cannot know which side is right, and electing a
+majority indicts the conforming sites once a drift has spread (issue #36).
+The per-entity ``authoritative`` option pins the intended value; with it set,
+only non-conforming sites are reported.
 """
 
 from __future__ import annotations
@@ -19,20 +25,34 @@ from ...model import Diagram, Participant, Violation
 from .. import CrossDiagramRule, register
 
 
-def _majority(values: list[str]) -> str:
-    """The most frequent value; ties resolve to the first-seen value so the
-    earliest declaration stays authoritative."""
-    return max(set(values), key=lambda v: (values.count(v), -values.index(v)))
+def _variant_summary(values: list[str], fmt) -> str:
+    """Every distinct value with its occurrence count, most frequent first,
+    count ties broken alphabetically — never by batch order, so the message
+    reads the same whichever file sorts first: ``<<sink>> ×3, <<store>> ×2``."""
+    ranked = sorted(set(values), key=lambda v: (-values.count(v), v))
+    return ", ".join(f"{fmt(v)} ×{values.count(v)}" for v in ranked)
 
 
-def _conflicts(diagrams, value_of):
+def _authoritative(options) -> dict[str, str]:
+    """The per-entity ``authoritative`` pick: {entity name -> pinned value}.
+
+    A conflict-resolution pin, not a vocabulary check: an entity whose sites
+    all agree is never compared against it.
+    """
+    raw = options.get("authoritative", {})
+    if not isinstance(raw, dict):
+        return {}
+    return {str(k): str(v) for k, v in raw.items()}
+
+
+def _conflict_sets(diagrams, value_of):
     """The shared symbol-table walk behind XD001/XD002.
 
     Groups declared participants by name via ``value_of`` (returning None to
     skip an occurrence), and for every name whose values disagree yields
-    ``(name, majority_value, (ref_diagram, ref_participant), minority_sites)``
-    — majority wins, ties resolve to the first-seen value, and the reference
-    site is the first majority occurrence.
+    ``(name, sites)`` with every occurrence in batch order. No side is
+    elected: a conflict is symmetric evidence, and which value is *correct*
+    is the ``authoritative`` option's call, never a vote's (issue #36).
     """
     occurrences: dict[str, list[tuple[Diagram, Participant]]] = {}
     for d in diagrams:
@@ -43,10 +63,7 @@ def _conflicts(diagrams, value_of):
         values = [value_of(p) for _, p in occs]
         if len(set(values)) < 2:
             continue
-        majority = _majority(values)
-        ref = next((d, p) for d, p in occs if value_of(p) == majority)
-        minority = [(d, p) for d, p in occs if value_of(p) != majority]
-        yield name, majority, ref, minority
+        yield name, occs
 
 
 @register
@@ -56,12 +73,24 @@ class ConflictingParticipantKind(CrossDiagramRule):
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
         # implicit lifelines have no authored kind
         value_of = lambda p: p.kind if p.declared else None  # noqa: E731
-        for name, majority, (ref_d, ref_p), minority in _conflicts(diagrams, value_of):
-            for d, p in minority:
+        authoritative = _authoritative(self.options)
+        for name, occs in _conflict_sets(diagrams, value_of):
+            auth = authoritative.get(name)
+            if auth is not None:
+                for d, p in occs:
+                    if p.kind != auth:
+                        yield self.violation(
+                            d, p.line,
+                            f"Participant '{name}' is declared '{p.kind}' here but "
+                            f"'{auth}' is the configured kind for this entity",
+                        )
+                continue
+            summary = _variant_summary([p.kind for _, p in occs], lambda v: f"'{v}'")
+            for d, p in occs:
                 yield self.violation(
                     d, p.line,
-                    f"Participant '{name}' is declared as '{p.kind}' here but as "
-                    f"'{majority}' at {ref_d.file_path}:{ref_p.line} — one entity, one kind",
+                    f"Participant '{name}' is declared '{p.kind}' here and the set "
+                    f"disagrees ({summary}) — one entity, one kind",
                 )
 
 
@@ -72,12 +101,27 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
         # absent stereotypes are SEQ102's concern, not a conflict
         value_of = lambda p: (p.stereotype or None) if p.declared else None  # noqa: E731
-        for name, majority, (ref_d, ref_p), minority in _conflicts(diagrams, value_of):
-            for d, p in minority:
+        authoritative = _authoritative(self.options)
+        for name, occs in _conflict_sets(diagrams, value_of):
+            auth = authoritative.get(name)
+            if auth is not None:
+                for d, p in occs:
+                    if p.stereotype != auth:
+                        yield self.violation(
+                            d, p.line,
+                            f"Participant '{name}' is stereotyped <<{p.stereotype}>> "
+                            f"here but <<{auth}>> is the configured stereotype for "
+                            "this entity",
+                        )
+                continue
+            summary = _variant_summary(
+                [p.stereotype for _, p in occs], lambda v: f"<<{v}>>"
+            )
+            for d, p in occs:
                 yield self.violation(
                     d, p.line,
-                    f"Participant '{name}' is stereotyped <<{p.stereotype}>> here but "
-                    f"<<{majority}>> at {ref_d.file_path}:{ref_p.line}",
+                    f"Participant '{name}' is stereotyped <<{p.stereotype}>> here "
+                    f"and the set disagrees ({summary}) — one entity, one stereotype",
                 )
 
 
@@ -168,9 +212,10 @@ class CrossTypeStereotypeConflict(CrossDiagramRule):
     interaction models.
 
     ``class OrderService <<service>>`` versus ``participant OrderService
-    <<gateway>>`` is one entity with two contracts. Majority wins (ties to
-    first-seen, as in XD002); conflicts confined to sequence diagrams are
-    XD002's territory and skipped here.
+    <<gateway>>`` is one entity with two contracts. Every conflicted site is
+    reported symmetrically (no vote — the ``authoritative`` option pins the
+    intended value, as in XD001/XD002); conflicts confined to sequence
+    diagrams are XD002's territory and skipped here.
     """
 
     id = "XD005"
@@ -180,20 +225,29 @@ class CrossTypeStereotypeConflict(CrossDiagramRule):
         for site in _entity_sites(diagrams):
             if site.declared and site.stereotype:
                 occurrences.setdefault(site.name, []).append(site)
+        authoritative = _authoritative(self.options)
         for name, sites in occurrences.items():
             values = [s.stereotype for s in sites]
             if len(set(values)) < 2:
                 continue
             if all(s.diagram.diagram_type == "sequence" for s in sites):
                 continue  # XD002 reports sequence-internal conflicts
-            majority = _majority(values)
-            ref = next(s for s in sites if s.stereotype == majority)
+            auth = authoritative.get(name)
+            if auth is not None:
+                for s in sites:
+                    if s.stereotype != auth:
+                        yield self.violation(
+                            s.diagram, s.line,
+                            f"{s.role.capitalize()} '{name}' is stereotyped "
+                            f"<<{s.stereotype}>> here but <<{auth}>> is the "
+                            "configured stereotype for this entity",
+                        )
+                continue
+            summary = _variant_summary(values, lambda v: f"<<{v}>>")
             for s in sites:
-                if s.stereotype == majority:
-                    continue
                 yield self.violation(
                     s.diagram, s.line,
-                    f"{s.role.capitalize()} '{name}' is stereotyped <<{s.stereotype}>> "
-                    f"here but <<{majority}>> as {ref.role} at "
-                    f"{ref.diagram.file_path}:{ref.line}",
+                    f"{s.role.capitalize()} '{name}' is stereotyped "
+                    f"<<{s.stereotype}>> here and the set disagrees across "
+                    f"diagram types ({summary}) — one entity, one stereotype",
                 )

@@ -210,8 +210,11 @@ class NoElisionMarkers(_CodegenRule):
 
     DEFAULT_TOKENS = ("...", "…", "TBD", "TODO", "etc", "???", "and so on")
 
+    DEFAULT_KINDS = ("message", "guard", "note")
+
     def check(self, diagram: Diagram):
         tokens = self.lexicon("tokens", self.DEFAULT_TOKENS)
+        kinds = {str(k).lower() for k in self.options.get("kinds", self.DEFAULT_KINDS)}
         word_tokens = [t for t in tokens if re.fullmatch(r"[\w ]+", t)]
         symbol_tokens = [t for t in tokens if t not in word_tokens]
         word_re = (
@@ -221,22 +224,28 @@ class NoElisionMarkers(_CodegenRule):
         )
 
         def offending(text: str) -> str | None:
+            low = text.lower()
             for t in symbol_tokens:
-                if t in text:
-                    return t
+                i = low.find(t)
+                if i != -1:
+                    return text[i : i + len(t)]
             if word_re:
                 m = word_re.search(text)
                 if m:
                     return m.group(0)
             return None
 
-        sources = [(m.line, "message", m.label) for m in diagram.messages]
-        for b in diagram.blocks:
-            sources.append((b.start_line, "guard", b.label))
-            sources.extend((br.line, "guard", br.label) for br in b.else_branches)
-        sources.extend(
-            (d.line, "note", d.value) for d in diagram.directives if d.kind == "note"
-        )
+        sources: list[tuple[int, str, str]] = []
+        if "message" in kinds:
+            sources.extend((m.line, "message", m.label) for m in diagram.messages)
+        if "guard" in kinds:
+            for b in diagram.blocks:
+                sources.append((b.start_line, "guard", b.label))
+                sources.extend((br.line, "guard", br.label) for br in b.else_branches)
+        if "note" in kinds:
+            sources.extend(
+                (d.line, "note", d.value) for d in diagram.directives if d.kind == "note"
+            )
         for line, where, text in sorted(sources):
             tok = offending(text)
             if tok:
@@ -246,6 +255,14 @@ class NoElisionMarkers(_CodegenRule):
                     f"Elision marker '{tok}' in {where} signals omitted behaviour; "
                     "model it or the generator will invent it",
                 )
+
+
+def _branch_spans(block) -> list[tuple[str, int, float]]:
+    """(label, lo, hi) per branch of a fragment; content lines satisfy lo < line < hi."""
+    end: float = block.end_line if block.end_line is not None else float("inf")
+    edges: list[float] = [block.start_line, *(br.line for br in block.else_branches), end]
+    labels = [block.label, *(br.label for br in block.else_branches)]
+    return [(labels[i], int(edges[i]), edges[i + 1]) for i in range(len(labels))]
 
 
 @register
@@ -262,10 +279,16 @@ class ExternalCallsFailurePath(_CodegenRule):
             low = label.lower()
             return any(k in low for k in failure_kw) or bool(self._NEGATED.search(label))
 
+        content_lines = [m.line for m in diagram.messages]
+        content_lines += [a.line for a in diagram.activations if a.kind == "return"]
+
         def has_failure_branch(b) -> bool:
-            if is_failure_label(b.label):
-                return True
-            return any(is_failure_label(br.label) for br in b.else_branches)
+            # A declared-but-empty failure branch models nothing: the branch
+            # must carry at least one message (or a return) to count.
+            return any(
+                is_failure_label(label) and any(lo < ln < hi for ln in content_lines)
+                for label, lo, hi in _branch_spans(b)
+            )
 
         fragile = {
             p.name
@@ -286,7 +309,7 @@ class ExternalCallsFailurePath(_CodegenRule):
             guarded = guarded or any(
                 b.kind == "break" and b.contains_line(m.line) for b in diagram.blocks
             )
-            guarded = guarded or any(g.start_line > m.line for g in error_groups)
+            guarded = guarded or any(g.contains_line(m.line) for g in error_groups)
             if not guarded:
                 shown = m.label.strip() or "<unlabelled>"
                 yield self.violation(

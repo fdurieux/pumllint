@@ -89,12 +89,19 @@ class MaxParticipants(Rule):
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         limit = int(self.options.get("max", 9))
-        count = len(diagram.participants)
+        if diagram.diagram_type == "usecase":
+            # Link endpoints materialize as declared=False participants;
+            # only the declared actors and use cases count against the budget.
+            count = sum(1 for p in diagram.participants.values() if p.declared)
+            advice = "consider splitting per actor goal or into packages"
+        else:
+            count = len(diagram.participants)
+            advice = "consider splitting per phase or using 'ref over'"
         if count > limit:
             yield self.violation(
                 diagram,
                 diagram.start_line,
-                f"Diagram has {count} participants (max {limit}) — consider splitting per phase or using 'ref over'",
+                f"Diagram has {count} participants (max {limit}) — {advice}",
             )
 
 
@@ -171,17 +178,32 @@ class NoteDensity(Rule):
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         notes = [d for d in diagram.directives if d.kind == "note"]
+        if not notes:
+            return
         min_notes = int(self.options.get("min_notes", 4))
         max_ratio = float(self.options.get("max_ratio", 0.5))
-        if len(notes) < min_notes:
-            return
         elements = max(1, diagram.element_count)
-        if len(notes) > max_ratio * elements:
+        if len(notes) >= min_notes and len(notes) > max_ratio * elements:
             yield self.violation(
                 diagram,
                 notes[0].line,
                 f"{len(notes)} notes on {elements} element(s) — model the structure "
                 "instead of narrating it in notes",
+            )
+            return
+        # Opt-in length test: a couple of notes can still carry the model in
+        # prose. No default — configuring it is a deliberate scoring decision.
+        max_chars = self.options.get("max_chars_per_element")
+        if max_chars is None:
+            return
+        chars = sum(len(d.value) for d in notes)
+        if chars > float(max_chars) * elements:
+            yield self.violation(
+                diagram,
+                notes[0].line,
+                f"{chars} characters of notes on {elements} element(s) "
+                f"(max {max_chars} per element) — model the structure instead "
+                "of narrating it in notes",
             )
 
 
@@ -312,15 +334,18 @@ class UseCaseActorNaming(Rule):
         if not verbs:
             return
         for p in diagram.participants.values():
-            if p.kind != "usecase" or not p.declared or not p.name:
+            if p.kind != "usecase" or not p.declared:
                 continue
-            parts = p.name.split()
+            label = p.display_name or p.name
+            if not label:
+                continue
+            parts = label.split()
             if not parts:
                 continue  # whitespace-only name: UC001/GEN004 territory, not a verb question
             if parts[0].lower() not in verbs:
                 yield self.violation(
                     diagram,
                     p.line,
-                    f"Use case '{p.name}' is not verb-first — name it "
+                    f"Use case '{label}' is not verb-first — name it "
                     '"verb + object" (e.g. "Place order")',
                 )

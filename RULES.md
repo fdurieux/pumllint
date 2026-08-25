@@ -54,7 +54,8 @@ hint) and skips rules whose scope does not match.
 ## GEN — Governance rules
 
 Cross-cutting governance checks. GEN001–GEN003 apply to every diagram type
-(`applies_to: *`); GEN004–GEN005 are sequence-scoped (they reason about lifelines).
+(`applies_to: *`); GEN004 is sequence-scoped (it reasons about lifelines), and
+GEN005 covers sequence and use-case diagrams.
 
 ### GEN001 — Diagram must have a title
 **Severity:** minor · **Status:** ✅ Implemented (v0.1.0)
@@ -215,7 +216,10 @@ Feature: GEN004 participant naming convention
 
 **Rationale:** A sequence diagram with too many lifelines is doing too much and becomes
 unreadable; it should be split per phase or use `ref over`. Option `max` (default 9)
-sets the threshold.
+sets the threshold. Use-case diagrams share the budget: too many actors and use
+cases on one canvas is the same defect, split per actor goal or into packages.
+There, only *declared* elements count — link endpoints materialize implicitly,
+and punishing an undeclared endpoint is UC-territory, not a size question.
 
 ```gherkin
 Feature: GEN005 participant count limit
@@ -254,6 +258,45 @@ Feature: GEN005 participant count limit
       participant P4
       participant P5
       P0 -> P1 : hi
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN005" issue is reported
+
+  Scenario: use-case diagram exceeding the participant limit is reported
+    Given the configuration:
+      """
+      [rules.GEN005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN005" issue with severity "minor" is reported on line 1
+
+  Scenario: implicit link endpoints do not count against the use-case limit
+    Given the configuration:
+      """
+      [rules.GEN005]
+      max = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      Customer --> (Refund order) : asks
       @enduml
       """
     When the linter runs
@@ -377,7 +420,11 @@ Feature: GEN007 requirement link
 **Rationale:** Notes annotate; they should not carry the model. A diagram whose
 structure is narrated in prose defeats both readers and downstream generators.
 Options: `min_notes` (default 4 — smaller counts never fire) and `max_ratio`
-(default 0.5 notes per semantic element).
+(default 0.5 notes per semantic element). A third, opt-in length test —
+`max_chars_per_element`, no default — fires when the total characters of note
+prose exceed the cap × element count whatever the note count; it exists for
+sets whose few notes carry the model in prose. Configuring it is a deliberate
+scoring decision.
 
 ```gherkin
 Feature: GEN008 note density
@@ -413,6 +460,25 @@ Feature: GEN008 note density
       """
     When the linter runs
     Then no "GEN008" issue is reported
+
+  Scenario: prose-heavy notes are reported when the length cap is configured
+    Given the configuration:
+      """
+      [rules.GEN008]
+      max_chars_per_element = 10
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      note over A : this single note narrates the whole protocol in long prose
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN008" issue with severity "minor" is reported on line 6
 ```
 
 ### GEN009 — Element count limit
@@ -458,6 +524,23 @@ Feature: GEN009 element count limit
     When the linter runs
     Then no "GEN009" issue is reported
 ```
+
+The five size caps form one family and share an option convention — a new cap
+rule takes `max`:
+
+| Rule | Caps | Option | Default |
+|---|---|---|---|
+| GEN005 max-participants | participants | `max` | 9 |
+| GEN009 max-elements | semantic elements | `max` | 60 |
+| SEQ008 fragment-nesting-depth | fragment nesting depth | `max_nesting_depth` (alias `max`) | 3 |
+| SEQ011 max-messages | messages | `max` | 30 |
+| CLS005 max-members-per-class | members per class | `max` | 15 |
+
+On ordinary sequence diagrams GEN009 is dominated by SEQ011: `element_count`
+is participants + messages, so with ≤30 participants any diagram past 60
+elements already has more than 30 messages, and both findings are
+minor/DIM-RDB — the second carries no information the first did not. (The
+dominance is conditional: 61 participants and no messages fires GEN009 alone.)
 
 ---
 
@@ -773,7 +856,9 @@ Feature: SEQ007 unlabelled block condition
 
 **Rationale:** Deeply nested fragments (alt inside loop inside par …) are a
 readability cliff; beyond a configurable depth the interaction should be extracted
-into a referenced sub-diagram.
+into a referenced sub-diagram. Option `max_nesting_depth` (default 3); `max` is
+accepted as an alias per the cap-family convention, and `max_nesting_depth`
+wins when both are set.
 
 ```gherkin
 Feature: SEQ008 fragment nesting depth
@@ -917,7 +1002,9 @@ Feature: SEQ010 explicit participant ordering
 
 **Rationale:** Too many messages means the scenario is doing too much on one page —
 the message-count twin of GEN005's participant limit. The finding is anchored on
-the first message past the limit. Option `max` (default 30).
+the first message past the limit. Option `max` (default 30). On ordinary
+sequence diagrams this rule dominates GEN009's element cap — see the
+cap-family table under GEN009.
 
 ```gherkin
 Feature: SEQ011 message count limit
@@ -1692,7 +1779,9 @@ Feature: UC001 use cases connected to actors
 **Rationale:** Use cases as verb–object phrases ("Place order") is the standard
 method convention; mixing forms confuses reading. Only use-case names are
 checked — actor naming is a convention the rule does not enforce — and the
-rule is dormant until a `verbs` whitelist is configured.
+rule is dormant until a `verbs` whitelist is configured. A use case declared
+with an alias (`usecase (Place order) as UC1`) is judged by its display
+label, never by the alias.
 
 ```gherkin
 Feature: UC002 use case and actor naming
@@ -1732,6 +1821,24 @@ Feature: UC002 use case and actor naming
       """
     When the linter runs
     Then no "UC002" issue is reported
+
+  Scenario: an aliased use case is judged by its label, not the alias
+    Given the configuration:
+      """
+      [rules.UC002]
+      verbs = ["Place", "Manage"]
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Order placement) as UC1
+      Customer --> UC1 : does
+      @enduml
+      """
+    When the linter runs
+    Then a "UC002" issue with severity "minor" is reported on line 4
 ```
 
 ### UC003 — Correct include/extend direction
@@ -1827,7 +1934,13 @@ later case-variants of the first-seen spelling.
 **Rationale:** The same entity declared as `participant` in one diagram and
 `database` (or `actor`, `queue`, …) in another has no single identity; readers
 and code generators cannot tell which role is authoritative. Implicit
-lifelines are ignored — they have no authored kind to conflict.
+lifelines are ignored — they have no authored kind to conflict. A conflict is
+symmetric evidence: every conflicted site is reported, each message listing
+all variants with counts, and no side is elected — a majority vote indicts
+the conforming sites once a drift has spread. The per-entity `authoritative`
+option (`authoritative = {OrderSvc = "database"}`) pins the intended value:
+with it set, only non-conforming sites are reported. The pin resolves
+conflicts only — an entity whose sites all agree is never compared against it.
 
 ```gherkin
 Feature: XD001 conflicting participant kind
@@ -1847,7 +1960,31 @@ Feature: XD001 conflicting participant kind
       @enduml
       """
     When the linter runs
-    Then a "XD001" issue with severity "major" is reported on line 8
+    Then a "XD001" issue with severity "major" is reported on line 3
+    And a "XD001" issue with severity "major" is reported on line 8
+
+  Scenario: an authoritative kind reports only the non-conforming site
+    Given the configuration:
+      """
+      [rules.XD001]
+      authoritative = {OrderSvc = "database"}
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      database OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD001" issue is reported on line 3
+    And no "XD001" issue is reported on line 8
 
   Scenario: consistent kinds across diagrams pass
     Given the diagram:
@@ -1873,7 +2010,11 @@ Feature: XD001 conflicting participant kind
 **Rationale:** Stereotypes carry semantic weight (SEQ107 keys failure-path
 requirements off `<<external>>`); the same entity stereotyped `<<service>>`
 here and `<<external>>` there splits its identity. A missing stereotype is not
-a conflict — that is SEQ102's concern under the codegen profile.
+a conflict — that is SEQ102's concern under the codegen profile. As in XD001,
+every conflicted site is reported symmetrically (all variants with counts, no
+side elected), and the per-entity `authoritative` option
+(`authoritative = {Payments = "service"}`) pins the intended stereotype so
+only non-conforming sites are reported. The pin resolves conflicts only.
 
 ```gherkin
 Feature: XD002 conflicting participant stereotype
@@ -1893,7 +2034,31 @@ Feature: XD002 conflicting participant stereotype
       @enduml
       """
     When the linter runs
-    Then a "XD002" issue with severity "minor" is reported on line 7
+    Then a "XD002" issue with severity "minor" is reported on line 2
+    And a "XD002" issue with severity "minor" is reported on line 7
+
+  Scenario: an authoritative stereotype reports only the non-conforming site
+    Given the configuration:
+      """
+      [rules.XD002]
+      authoritative = {Payments = "service"}
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD002" issue is reported on line 7
+    And no "XD002" issue is reported on line 2
 
   Scenario: consistent stereotypes across diagrams pass
     Given the diagram:
@@ -2014,7 +2179,9 @@ Feature: XD004 cross-type name collision
 
 **Rationale:** `class OrderService <<service>>` versus `participant OrderService
 <<gateway>>` is one entity with two contracts; downstream generators cannot tell
-which is authoritative. Majority wins (ties to first-seen); conflicts confined
+which is authoritative. Every conflicted site is reported symmetrically (all
+variants with counts, no side elected), and the per-entity `authoritative`
+option pins the intended stereotype, as in XD001/XD002; conflicts confined
 to sequence diagrams are XD002's territory and skipped here.
 
 ```gherkin
@@ -2037,7 +2204,8 @@ Feature: XD005 cross-type stereotype conflict
       @enduml
       """
     When the linter runs
-    Then a "XD005" issue with severity "minor" is reported on line 9
+    Then a "XD005" issue with severity "minor" is reported on line 3
+    And a "XD005" issue with severity "minor" is reported on line 9
 
   Scenario: agreeing stereotypes pass
     Given the diagram:
@@ -2067,7 +2235,7 @@ Feature: XD005 cross-type stereotype conflict
 | GEN002 | info | * | Diagram name on @startuml | ✅ v0.1.0 |
 | GEN003 | minor | * | No inline skinparam | ✅ v0.1.0 |
 | GEN004 | minor | sequence | Participant naming convention | ✅ v0.1.0 |
-| GEN005 | minor | sequence | Participant count limit | ✅ v0.1.0 |
+| GEN005 | minor | sequence, usecase | Participant count limit | ✅ v0.1.0 |
 | GEN006 | minor | * | Ownership tag (pattern-gated) | ✅ v0.12.0 |
 | GEN007 | minor | * | Requirement/ADR link (pattern-gated) | ✅ v0.12.0 |
 | GEN008 | minor | * | Note density | ✅ v0.12.0 |

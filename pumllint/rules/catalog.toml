@@ -53,7 +53,7 @@ name = "max-participants"
 description = "Diagram has more participants than the configured maximum"
 severity = "minor"
 dimension = "DIM-RDB"
-applies_to = ["sequence"]
+applies_to = ["sequence", "usecase"]
 profiles = []
 
 [GEN006]

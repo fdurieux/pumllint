@@ -313,19 +313,37 @@ def _parse_statement(
 
     m = RE_USECASE_DECL.match(line)
     if m:
-        first = _strip_ident(m.group("alias") or m.group("first"))
-        name = first.strip("()") if first else first
+        alias = _strip_ident(m.group("alias"))
+        label = _strip_ident(m.group("first"))
+        raw = alias or label
+        name = raw.strip("()") if raw else raw
         d.participants.setdefault(
-            name, Participant(name=name, kind="usecase", line=lineno, declared=True)
+            name,
+            Participant(
+                name=name,
+                kind="usecase",
+                line=lineno,
+                declared=True,
+                display_name=label.strip("()") if alias and label else None,
+            ),
         )
         d.diagram_type = "usecase"
         return
 
     m = RE_UC_ACTOR_INLINE.match(line)
     if m:
-        name = _strip_ident(m.group("alias")) or m.group("name").strip()
+        alias = _strip_ident(m.group("alias"))
+        label = m.group("name").strip()
+        name = alias or label
         d.participants.setdefault(
-            name, Participant(name=name, kind="actor", line=lineno, declared=True)
+            name,
+            Participant(
+                name=name,
+                kind="actor",
+                line=lineno,
+                declared=True,
+                display_name=label if alias else None,
+            ),
         )
         d.diagram_type = "usecase"
         return

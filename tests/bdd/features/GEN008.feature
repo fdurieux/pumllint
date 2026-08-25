@@ -31,3 +31,22 @@ Feature: GEN008 note density
       """
     When the linter runs
     Then no "GEN008" issue is reported
+
+  Scenario: prose-heavy notes are reported when the length cap is configured
+    Given the configuration:
+      """
+      [rules.GEN008]
+      max_chars_per_element = 10
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      note over A : this single note narrates the whole protocol in long prose
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN008" issue with severity "minor" is reported on line 6

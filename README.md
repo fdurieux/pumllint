@@ -217,7 +217,10 @@ faithful generation, bound to the `codegen` profile so it cannot be claimed
 without those rules running.
 
 Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
-All knobs are configurable under the `scoring` key (see `pumllint.toml`).
+All knobs are configurable under the `scoring` key (see `pumllint.toml`),
+including two opt-in flags: `c7_requires_applicable_rules` (Level 5 needs a
+profile rule that applies to the diagram's type) and `deduplicate_findings`
+(a base finding restated by its codegen twin on the same line counts once).
 
 ## Rules
 
@@ -232,7 +235,7 @@ All knobs are configurable under the `scoring` key (see `pumllint.toml`).
 | GEN002 | unnamed-diagram | info | `@startuml` without a name. |
 | GEN003 | inline-skinparam | minor | Per-diagram styling instead of a central theme include. |
 | GEN004 | participant-naming | minor | Names violating a configurable regex (per-kind overrides supported). |
-| GEN005 | max-participants | minor | More lifelines than the configured max. |
+| GEN005 | max-participants | minor | More lifelines than the configured max (sequence; use-case diagrams count declared actors and use cases). |
 | GEN006 | owner-tag | minor | No ownership tag in title/header/footer/caption/notes. Needs a `pattern`; dormant otherwise. |
 | GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
 | GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |
@@ -272,7 +275,7 @@ are one entity drifting apart, and the linter says so.
 
 | ID | Name | Default | What it catches |
 |----|------|---------|-----------------|
-| XD001 | conflicting-participant-kind | major | Same participant declared `participant` here, `database` there — majority declaration wins, minority sites are flagged. |
+| XD001 | conflicting-participant-kind | major | Same participant declared `participant` here, `database` there — every conflicted site is flagged with the full variant set; the per-entity `authoritative` option pins the intended value (also on XD002/XD005). |
 | XD002 | conflicting-participant-stereotype | minor | Same participant with disagreeing stereotypes across sequence diagrams. |
 | XD003 | participant-name-case-collision | minor | Participant spellings differing only by case across sequence diagrams. |
 | XD004 | cross-type-name-collision | minor | Entity spellings differing only by case across diagram *types* (participants, classifiers, swimlanes). |
@@ -300,7 +303,8 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 
 The lexicons and shape options are configurable per rule (`vague_terms`,
 `tokens`, `failure_keywords`, `non_informative`; SEQ103 also takes `pattern`,
-`arg_stop_words` and `max_arg_words`).
+`arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
+`message`, `guard`, `note` to scan, default all three).
 
 ## Auto-fix
 
