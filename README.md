@@ -306,6 +306,15 @@ The lexicons and shape options are configurable per rule (`vague_terms`,
 `arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
 `message`, `guard`, `note` to scan, default all three).
 
+SEQ107 recognises a failure branch three ways, so the rule constrains modelling
+rather than phrasing: the `failure_keywords` lexicon (`error`, `failure`,
+`timeout`, `exception`, plus the absence family `absent`, `missing`, `empty`,
+`unavailable`), a negated guard (`not`, `!=`, a leading `!`), or absence
+phrasing (`none`/`null`/`nil`, or `no <noun>` as in `[order has no stored
+rows]`). Setting `failure_keywords` replaces the lexicon; the negation and
+absence forms always apply. A branch must still carry at least one message or
+return — a declared-but-empty failure branch models nothing.
+
 ## Auto-fix
 
 `pumllint fix` applies the mechanical fixes — the ones that are

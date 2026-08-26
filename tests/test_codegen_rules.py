@@ -444,6 +444,70 @@ def test_seq107_failure_branch_with_only_a_return_still_counts():
     assert "SEQ107" not in rule_ids(src)
 
 
+def _db_call_with_else_guard(guard: str, branch_body: str = "OrderDB --> OrderService : none\n"):
+    return puml(
+        "participant OrderService <<service>>\ndatabase OrderDB\n"
+        "alt [order found]\n"
+        "OrderService -> OrderDB : findOrderById(orderId)\n"
+        "OrderDB --> OrderService : order\n"
+        f"else [{guard}]\n"
+        f"{branch_body}"
+        "end"
+    )
+
+
+def test_seq107_absence_phrasing_counts_as_a_failure_branch():
+    # The rule must constrain modelling, not phrasing: "has no stored rows"
+    # and "order not found" model the same failure, so they must score the
+    # same. Found against the J-F corpus, whose authors had to rewrite true
+    # guards to contain the word "not" to satisfy the old lexicon.
+    for guard in (
+        "order has no stored rows",
+        "order is missing",
+        "result set is empty",
+        "OrderDB unavailable",
+        "order record absent",
+        "findOrderById returned None",
+    ):
+        src = _db_call_with_else_guard(guard)
+        assert "SEQ107" not in rule_ids(src), f"absence guard rejected: {guard!r}"
+
+
+def test_seq107_bracketed_negation_counts_as_a_failure_branch():
+    # Guards keep their brackets, so a leading '!' sits at index 1 — the
+    # '^\s*!' alternative used to be unreachable for the bracketed form.
+    for guard in ("!order_found", "order_count != 0"):
+        src = _db_call_with_else_guard(guard)
+        assert "SEQ107" not in rule_ids(src), f"negated guard rejected: {guard!r}"
+
+
+def test_seq107_bracketed_guards_do_not_blanket_pass():
+    # Stripping brackets widened the vocabulary, not the gate: a bracketed
+    # guard that models business logic rather than failure still reports.
+    src = _db_call_with_else_guard("premium customer")
+    assert violations_for(src, "SEQ107")
+
+
+def test_seq107_absence_word_inside_a_longer_word_does_not_count():
+    # 'none' must not match inside 'nonexistent' — the boundary is the point.
+    src = _db_call_with_else_guard("nonexistent handling lives elsewhere")
+    assert violations_for(src, "SEQ107")
+
+
+def test_seq107_empty_absence_branch_still_does_not_count():
+    # The issue-#29 semantics survive the wider vocabulary: a declared-but-
+    # empty branch models nothing, whatever its guard says.
+    src = _db_call_with_else_guard("order has no stored rows", branch_body="")
+    assert violations_for(src, "SEQ107")
+
+
+def test_seq107_failure_keywords_option_still_overrides_the_defaults():
+    src = _db_call_with_else_guard("order is missing")
+    cfg = {"rules": {"SEQ107": {"failure_keywords": ["kaputt"]}}}
+    assert violations_for(src, "SEQ107", cfg)
+    assert "SEQ107" not in rule_ids(_db_call_with_else_guard("order ist kaputt"), cfg)
+
+
 # --- SEQ108 activation lifecycle ---------------------------------------------
 
 def test_seq108_dangling_activation_is_reported_as_major():

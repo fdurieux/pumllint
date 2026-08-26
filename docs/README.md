@@ -165,6 +165,17 @@ but they are a useful cross-check that no audience was forgotten.
   repository link-integrity check — plus a rule-coverage finding the
   lens produced without a graph (DIM-AMB is unreachable for activity
   and use-case diagrams).
+- [A foreign corpus reads back — the J-F audit](foreign-corpus-audit.md)
+  — dated evidence note (2026-08-26): the first time a corpus this
+  repository did not author was read for *semantics* rather than
+  dialect — a project that adopted the codegen profile, reached Level 5
+  100/100, and used it long enough to develop workarounds. Two real
+  defects returned, both in SEQ107 and both fixed: a failure-branch
+  lexicon that constrained phrasing rather than modelling (the absence
+  vocabulary failed it), and a negation form that was unreachable for
+  bracketed guards. Scores, pilot artefacts and the dogfooding record
+  are byte-identical across the fix; three further recommendations are
+  recorded as gated (Arcs C and D), none queued.
 - [The measured minimum sufficient stack](minimum-sufficient-stack.md)
   — dated consolidation record (2026-08-11, verified): the research
   charter's convergence document — the measured answer to which
