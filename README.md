@@ -235,7 +235,7 @@ profile rule that applies to the diagram's type) and `deduplicate_findings`
 | GEN002 | unnamed-diagram | info | `@startuml` without a name. |
 | GEN003 | inline-skinparam | minor | Per-diagram styling instead of a central theme include. |
 | GEN004 | participant-naming | minor | Names violating a configurable regex (per-kind overrides supported). |
-| GEN005 | max-participants | minor | More lifelines than the configured max (sequence; use-case diagrams count declared actors and use cases). |
+| GEN005 | max-participants | minor | More elements than the type's budget — lifelines in a sequence diagram (default 9), declared actors plus use cases in a use-case diagram (default 15). `max` sets one budget for every type; `per_type` overrides it per diagram type. |
 | GEN006 | owner-tag | minor | No ownership tag in title/header/footer/caption/notes. Needs a `pattern`; dormant otherwise. |
 | GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
 | GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |

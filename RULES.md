@@ -214,12 +214,21 @@ Feature: GEN004 participant naming convention
 ### GEN005 — Participant count limit
 **Severity:** minor · **Status:** ✅ Implemented (v0.1.0)
 
-**Rationale:** A sequence diagram with too many lifelines is doing too much and becomes
-unreadable; it should be split per phase or use `ref over`. Option `max` (default 9)
-sets the threshold. Use-case diagrams share the budget: too many actors and use
-cases on one canvas is the same defect, split per actor goal or into packages.
-There, only *declared* elements count — link endpoints materialize implicitly,
-and punishing an undeclared endpoint is UC-territory, not a size question.
+**Rationale:** A diagram with too many elements on one canvas is doing too much and
+becomes unreadable. The threshold is **per diagram type**, because the elements
+being counted are not comparable: a sequence diagram counts *lifelines*
+(default 9, split per phase or use `ref over`), while a use-case diagram counts
+actors *plus* goals (default 15, split per actor goal or into packages). The two
+shared a budget until a third-party corpus met it on first contact — three
+actors with seven goals is a textbook-sized diagram, and 3 + 7 > 9 reported it.
+Option `max` sets one threshold for every type; `per_type` (a map of diagram
+type to limit) overrides it for one type and is the narrower of the two.
+`per_type` is keyed by *diagram* type — GEN004's `per_kind` is keyed by
+*participant* kind.
+
+In use-case diagrams only *declared* elements count — link endpoints materialize
+implicitly, and punishing an undeclared endpoint is UC-territory, not a size
+question.
 
 ```gherkin
 Feature: GEN005 participant count limit
@@ -301,6 +310,47 @@ Feature: GEN005 participant count limit
       """
     When the linter runs
     Then no "GEN005" issue is reported
+
+  Scenario: a textbook use-case diagram passes on the use-case budget
+    Given the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      actor Support
+      actor Auditor
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      usecase (Refund order)
+      usecase (Review order)
+      usecase (Export orders)
+      usecase (Audit orders)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN005" issue is reported
+
+  Scenario: per_type overrides the budget for one diagram type
+    Given the configuration:
+      """
+      [rules.GEN005.per_type]
+      usecase = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN005" issue with severity "minor" is reported on line 1
 ```
 
 ### GEN006 — Ownership tag
