@@ -235,7 +235,7 @@ profile rule that applies to the diagram's type) and `deduplicate_findings`
 | GEN002 | unnamed-diagram | info | `@startuml` without a name. |
 | GEN003 | inline-skinparam | minor | Per-diagram styling instead of a central theme include. |
 | GEN004 | participant-naming | minor | Names violating a configurable regex (per-kind overrides supported). |
-| GEN005 | max-participants | minor | More lifelines than the configured max (sequence; use-case diagrams count declared actors and use cases). |
+| GEN005 | max-participants | minor | More elements than the type's budget — lifelines in a sequence diagram (default 9), declared actors plus use cases in a use-case diagram (default 15). `max` sets one budget for every type; `per_type` overrides it per diagram type. |
 | GEN006 | owner-tag | minor | No ownership tag in title/header/footer/caption/notes. Needs a `pattern`; dormant otherwise. |
 | GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
 | GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |
@@ -305,6 +305,12 @@ The lexicons and shape options are configurable per rule (`vague_terms`,
 `tokens`, `failure_keywords`, `non_informative`; SEQ103 also takes `pattern`,
 `arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
 `message`, `guard`, `note` to scan, default all three).
+
+Every lexicon takes two levers. Setting the key itself (`failure_keywords = [...]`)
+**replaces** the shipped list, which is how you narrow one; setting
+`extra_<key>` (`extra_failure_keywords = [...]`) **adds** to whatever is in
+force, so opting into one more term does not cost you the defaults you did not
+restate.
 
 SEQ107 recognises a failure branch three ways, so the rule constrains modelling
 rather than phrasing: the `failure_keywords` lexicon (`error`, `failure`,

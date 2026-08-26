@@ -77,3 +77,44 @@ Feature: GEN005 participant count limit
       """
     When the linter runs
     Then no "GEN005" issue is reported
+
+  Scenario: a textbook use-case diagram passes on the use-case budget
+    Given the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      actor Support
+      actor Auditor
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      usecase (Refund order)
+      usecase (Review order)
+      usecase (Export orders)
+      usecase (Audit orders)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN005" issue is reported
+
+  Scenario: per_type overrides the budget for one diagram type
+    Given the configuration:
+      """
+      [rules.GEN005.per_type]
+      usecase = 3
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Place order)
+      usecase (Cancel order)
+      usecase (Track order)
+      Customer --> (Place order) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN005" issue with severity "minor" is reported on line 1

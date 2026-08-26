@@ -489,12 +489,69 @@ def test_aliased_usecase_is_judged_by_its_label_not_the_alias():
     assert "'Order placement'" in findings[0].message
 
 
+def _usecase(actors: int, cases: int) -> str:
+    a = "".join(f"actor A{i}\n" for i in range(actors))
+    c = "".join(f"usecase (Case {i})\n" for i in range(cases))
+    return f"@startuml uc\ntitle Use cases\n{a}{c}A0 --> (Case 0) : does\n@enduml\n"
+
+
+def _sequence(n: int) -> str:
+    p = "".join(f"participant P{i}\n" for i in range(n))
+    return f"@startuml s\ntitle Seq\n{p}P0 -> P1 : hi\n@enduml\n"
+
+
 def test_gen005_counts_declared_usecase_elements():
+    # Counting behaviour, pinned against an explicit budget so it stays a test
+    # of *what counts* rather than of the default.
     decls = "".join(f"usecase (Case {i})\n" for i in range(9))
     src = f"@startuml uc\ntitle Use cases\nactor Customer\n{decls}Customer --> (Case 0) : does\n@enduml\n"
-    findings = [v for v in lint(src) if v.rule_id == "GEN005"]
+    cfg = {"rules": {"GEN005": {"max": 9}}}
+    findings = [v for v in lint(src, cfg) if v.rule_id == "GEN005"]
     assert len(findings) == 1
     assert "10 participants" in findings[0].message
+
+
+def test_gen005_textbook_usecase_diagram_passes_by_default():
+    # 3 actors + 7 goals = 10 declared. Under the sequence budget of 9 this
+    # reported a minor, which is what a third-party corpus met on first
+    # contact: the sequence number counts lifelines, not actors plus goals.
+    assert "GEN005" not in rule_ids(_usecase(3, 7))
+
+
+def test_gen005_oversized_usecase_diagram_is_still_reported():
+    findings = [v for v in lint(_usecase(3, 13)) if v.rule_id == "GEN005"]
+    assert len(findings) == 1
+    assert "16 participants (max 15)" in findings[0].message
+
+
+def test_gen005_sequence_budget_is_unchanged():
+    assert "GEN005" not in rule_ids(_sequence(9))
+    findings = [v for v in lint(_sequence(10)) if v.rule_id == "GEN005"]
+    assert len(findings) == 1
+    assert "10 participants (max 9)" in findings[0].message
+
+
+def test_gen005_per_type_overrides_the_default_for_that_type_only():
+    cfg = {"rules": {"GEN005": {"per_type": {"usecase": 8}}}}
+    assert "GEN005" in rule_ids(_usecase(3, 7), cfg)      # 10 > 8
+    assert "GEN005" not in rule_ids(_sequence(9), cfg)    # sequence untouched
+    cfg = {"rules": {"GEN005": {"per_type": {"sequence": 3}}}}
+    assert "GEN005" in rule_ids(_sequence(4), cfg)
+    assert "GEN005" not in rule_ids(_usecase(3, 7), cfg)  # usecase untouched
+
+
+def test_gen005_explicit_max_still_applies_to_every_type():
+    # Compatibility pin: a project-wide max keeps its old meaning, so configs
+    # written against the shared budget behave exactly as they did.
+    cfg = {"rules": {"GEN005": {"max": 9}}}
+    assert "GEN005" in rule_ids(_usecase(3, 7), cfg)
+    assert "GEN005" in rule_ids(_sequence(10), cfg)
+
+
+def test_gen005_per_type_beats_an_explicit_max():
+    cfg = {"rules": {"GEN005": {"max": 9, "per_type": {"usecase": 20}}}}
+    assert "GEN005" not in rule_ids(_usecase(3, 7), cfg)
+    assert "GEN005" in rule_ids(_sequence(10), cfg)
 
 
 def test_gen005_implicit_usecase_endpoints_do_not_count():

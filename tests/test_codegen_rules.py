@@ -597,3 +597,38 @@ def test_full_profile_config_shape_from_the_spec():
     found = engine.lint_diagrams(parse_source(src, "t.puml"))
     ids = {v.rule_id for v in found}
     assert {"SEQ101", "SEQ102", "SEQ103"} <= ids
+
+
+# --- the shared lexicon helper: replace vs extend -----------------------------
+
+def test_extra_key_extends_a_lexicon_instead_of_replacing_it():
+    # Opting into one more term must not cost you the defaults you did not
+    # restate — the escape hatch was itself a trap while the only lever
+    # replaced the whole list.
+    src = _db_call_with_else_guard("order ist kaputt")
+    cfg = {"rules": {"SEQ107": {"extra_failure_keywords": ["kaputt"]}}}
+    assert "SEQ107" not in rule_ids(src, cfg)
+    # ...and the shipped vocabulary is still in force alongside it.
+    assert "SEQ107" not in rule_ids(_db_call_with_else_guard("order is missing"), cfg)
+    assert "SEQ107" not in rule_ids(_db_call_with_else_guard("charge error"), cfg)
+
+
+def test_plain_key_still_replaces_so_a_lexicon_can_be_narrowed():
+    cfg = {"rules": {"SEQ107": {"failure_keywords": ["kaputt"]}}}
+    assert "SEQ107" not in rule_ids(_db_call_with_else_guard("order ist kaputt"), cfg)
+    assert "SEQ107" in rule_ids(_db_call_with_else_guard("order is missing"), cfg)
+
+
+def test_extra_key_works_on_every_lexicon_not_just_seq107():
+    src = puml(
+        "participant A <<service>>\nparticipant B <<service>>\n"
+        "alt when the stars align\nA -> B : f(x)\nend"
+    )
+    cfg = {"rules": {"SEQ105": {"extra_vague_terms": ["when the stars align"]}}}
+    assert "SEQ105" in rule_ids(src, cfg)
+    # The default vocabulary survives the addition.
+    other = puml(
+        "participant A <<service>>\nparticipant B <<service>>\n"
+        "alt maybe\nA -> B : f(x)\nend"
+    )
+    assert "SEQ105" in rule_ids(other, cfg)

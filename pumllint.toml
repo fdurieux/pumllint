@@ -21,6 +21,9 @@ missing-title = { severity = "major" }
 unnamed-diagram = true
 inline-skinparam = { allowed = [] }                # e.g. ["responseMessageBelowArrow"]
 participant-naming = { pattern = "^[A-Z][A-Za-z0-9]*$" }
+# One budget for every diagram type. The per-type defaults (sequence 9,
+# usecase 15) apply when `max` is absent; `per_type` overrides either:
+#   max-participants = { per_type = { usecase = 20 } }
 max-participants = { max = 9 }
 orphan-actor-or-usecase = true
 no-self-message = { allowed = [] }                 # participants for which self-messages are OK
@@ -38,11 +41,13 @@ unterminated-construct = true
 owner-tag = { pattern = '(?i)owner\s*:' }
 requirement-link = { pattern = '(ROADMAP|RULES|SCORING|EVIDENCE|README)\.md|ADR-\d+|REQ-\d+' }
 
-# Lexicons are configurable per rule above, e.g.
+# Lexicons are configurable per rule above. Setting the key REPLACES the shipped
+# list (that is how you narrow one); `extra_<key>` ADDS to it, so opting into one
+# more term does not cost you the defaults you did not restate.
 #   SEQ103 = { arg_stop_words = ["of", "the", "or"], max_arg_words = 2 }
 #   SEQ105 = { vague_terms = ["otherwise", "sometimes", "if needed", "maybe", "as required"] }
 #   SEQ106 = { tokens = ["...", "…", "TBD", "TODO", "etc", "???", "and so on"] }
-#   SEQ107 = { failure_keywords = ["error", "failure", "timeout", "exception"] }
+#   SEQ107 = { extra_failure_keywords = ["kaputt"] }   # keeps error/absence defaults
 #   SEQ109 = { non_informative = ["ok", "done", "success", "response", "result"] }
 
 # Maturity scoring (pumllint score) — defaults shown, calibrated in SCORING.md §9.

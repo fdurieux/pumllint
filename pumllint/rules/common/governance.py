@@ -83,12 +83,31 @@ class ParticipantNaming(Rule):
 
 @register
 class MaxParticipants(Rule):
-    """Too many lifelines = diagram doing too much. Option: ``max`` (default 9)."""
+    """Too many elements on one canvas = diagram doing too much.
+
+    The budget is per diagram type, because the elements are not comparable: a
+    sequence budget counts *lifelines*, a use-case budget counts actors *plus*
+    goals, so a textbook three-actor/seven-goal diagram would trip the sequence
+    number. Options: ``max`` (applies to every type) and ``per_type`` (dict of
+    diagram type -> limit, the narrower override). ``per_type`` is keyed by
+    diagram type; GEN004's ``per_kind`` is keyed by participant kind.
+    """
 
     id = "GEN005"
 
+    DEFAULT_MAX = 9
+
+    DEFAULT_MAX_BY_TYPE = {"usecase": 15}
+
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        limit = int(self.options.get("max", 9))
+        per_type = self.options.get("per_type") or {}
+        if diagram.diagram_type in per_type:
+            limit = int(per_type[diagram.diagram_type])
+        elif "max" in self.options:
+            # An explicit project-wide max stays authoritative for every type.
+            limit = int(self.options["max"])
+        else:
+            limit = self.DEFAULT_MAX_BY_TYPE.get(diagram.diagram_type, self.DEFAULT_MAX)
         if diagram.diagram_type == "usecase":
             # Link endpoints materialize as declared=False participants;
             # only the declared actors and use cases count against the budget.
