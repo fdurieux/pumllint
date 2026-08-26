@@ -54,9 +54,15 @@ wrapper on PATH, which `subprocess` alone would not.
 
 **Beta, and deliberately still `0.x`.** The tool is feature-complete for its
 declared scope, fully tested (a stdlib-only suite, an executable Gherkin spec,
-a pinned-PlantUML syntax gate) and used in its own CI — but it has not
-yet been exercised against a third-party diagram corpus. The remaining roadmap
-items are demand-driven, not missing pieces; see [ROADMAP.md](ROADMAP.md).
+a pinned-PlantUML syntax gate) and used in its own CI. It has now met
+third-party diagrams twice — a read-only dialect census over 159 files from
+five public repositories
+([record](docs/pilot-census-first-contact.md), 2026-08-11) and a semantic audit
+against a 24-diagram corpus that returned four real defects, all fixed in
+v0.29.0 ([record](docs/foreign-corpus-audit.md)) — but neither is a *standing*
+fixture: no foreign corpus is yet under continuous regression here, and that
+adoption is gated (see [ROADMAP.md](ROADMAP.md), Arc D). The remaining roadmap
+items are demand-driven, not missing pieces.
 
 *Stable — these are contracts, and breaking one is a deliberate, announced act:*
 
@@ -191,7 +197,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.28.0
+  uses: fdurieux/pumllint@v0.29.0
   with:
     command: score
     paths: docs/diagrams
@@ -587,11 +593,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.28.0
+  uses: fdurieux/pumllint@v0.29.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.28.0
+  uses: fdurieux/pumllint@v0.29.0
   with:
     command: score
     paths: docs/diagrams
@@ -632,7 +638,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.28.0
+    rev: v0.29.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score

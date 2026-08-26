@@ -14,12 +14,15 @@ queued.*
 
 ## Why this matters
 
-README's beta caveat says the tool "has not yet been exercised against a
-third-party diagram corpus". The 2026-08-11 pilot census made first contact
-with foreign *dialect* — 159 files, parsed, counted, nothing judged. This is
-the first time a foreign corpus has been read for **semantics**: a corpus
-whose authors adopted the codegen profile, drove it to Level 5 100/100, and
-kept using it long enough to develop workarounds.
+Until v0.29.0 README's beta caveat said the tool "has not yet been exercised
+against a third-party diagram corpus" — this audit is what made that sentence
+false, and it was rewritten in the release that carries these fixes. The
+2026-08-11 pilot census made first contact with foreign *dialect* — 159 files,
+parsed, counted, nothing judged. This is the first time a foreign corpus has
+been read for **semantics**: a corpus whose authors adopted the codegen
+profile, drove it to Level 5 100/100, and kept using it long enough to develop
+workarounds. What is still missing, and still gated, is a *standing* fixture:
+being read once is not being under continuous regression.
 
 Workarounds are the interesting part. A rule that a competent author has to
 work *around* is a rule that is measuring the wrong thing, and you cannot
