@@ -857,6 +857,74 @@ list and license posture live in § Settled questions.
   (L5 rename: decided, next release; EVIDENCE scope note: in;
   case-for: tightened).*
 
+- **Knowledge graph / graph engineering (2026-08-26): no — the graph
+  already exists and externalizing it fails on scale; two keepers
+  recorded, nothing queued.** The question (define a knowledge graph
+  for pumllint in the graph-engineering sense; assess
+  sense/nonsense/fit/gap/SWOT for AI-assisted development and rule-set
+  extension/validation) was run through the house triage against
+  `3cb39ff` (full record: docs/knowledge-graph-evaluation.md; repo
+  claims executed, library licences verified against PyPI, external
+  literature characterized and non-load-bearing). Verdict:
+  - *The premise is already satisfied.* `pumllint/model.py` is a
+    labelled property graph; **14 of 51 rules are graph queries** — 9
+    intra-diagram algorithms (CLS004 DFS cycle search, STA002
+    in-degree, UC001 degree-zero, UC003 one-hop neighbourhood, SEQ002
+    set difference over edge endpoints, SEQ009 reverse-edge existence,
+    SEQ104/108 matching and stack replay, SEQ107 containment) and the
+    5 XD rules, a
+    global entity-resolution join with a `authoritative` golden-record
+    pin. `pumllint trace` is a bipartite requirement↔diagram graph
+    reporting all three directions.
+  - *Scale refuses the infrastructure.* The 174-diagram wild corpus is
+    **950 nodes+edges** (census 0.6 s); a 15-diagram codegen lint
+    *including* the cross-diagram join is 3.0 ms. Graph engines exist
+    for 10⁶–10⁹. The zero-dependency agreement closes the product path
+    regardless; licensing does **not** bind here (rdflib BSD-3-Clause,
+    pyshacl Apache-2.0, networkx BSD-3-Clause, neo4j driver
+    Apache-2.0, kuzu MIT — verified), unlike the EPL case.
+  - *Never build*: a graph store/triple store on the product path; any
+    LLM-driven graph extraction anywhere on it (deterministic-path
+    agreement + the measured invention failure); OWL/SHACL as the rule
+    engine (the well-formedness-as-a-type anti-goal, plus closed-world
+    validation over a tolerant projection); missing-edge inference (the
+    participant-pair sweep's no-oracle shape with a query language);
+    graph-derived metrics in the score without a charter §10 wave.
+  - *Rule-set validation splits three ways and the graph loses all
+    three*: catalog integrity is already enforced (`@register`,
+    test_catalog.py, test_schema.py); rule interaction is
+    data-dependent and `tools/corpus_firing.py` already answers it in a
+    way no ontology could (SEQ102/104/107/109 fire zero times); and
+    coverage occupancy is a pivot table. Rule *extension* is bottlenecked
+    on under-specification (Arc F), which a graph does not touch.
+  - *Recorded, not queued*: (1) a **repository link-integrity check**
+    (`tools/link_check.py`, stdlib, lab machinery) — the `trace` pattern
+    over the repo's own prose: dangling doc links, cross-file citations,
+    rule IDs named in prose, level/dimension names. Honestly labelled
+    **maintainer self-demand, not adopter pull** (WS3a's label), with
+    one demonstrated failure behind it: the Level-5 naming contradiction
+    a human reviewer found on 2026-08-11. (2) A **rule-coverage
+    occupancy table** (documentation candidate). (3) The **DIM-AMB
+    coverage residual** — DIM-AMB carries no rule for activity or
+    use-case diagrams, so a 0.25-weight dimension scores a vacuous 100
+    and the Level-4 ambiguity gate passes for free; measured, the same
+    vague content (`do stuff`/`TBD`/`...`) is Level 2 / DIM-AMB 0 as a
+    sequence diagram and Level 5 / DIM-AMB 100 as an activity diagram.
+    Issue #35 / `feb8789` already caps the *level* half via the opt-in
+    `c7_requires_applicable_rules` (→ Level 4); the *dimension* half is
+    the residual. Same family as the C6 zero-element cap and the
+    syntax-gate disclosure; any fix is a scoring change and takes its own
+    decision and golden re-freeze. (4) **"Cross-artifact identity"** as
+    the arc name for the three already-recorded items (sequence↔contract,
+    glossary/approved-term rule, model→spec change-impact) — naming and
+    sequencing only; each keeps its own trigger.
+  - Re-litigate on: an adopter model set too large for one in-memory
+    batch (10⁵–10⁶ elements, against 950 measured today); a concrete
+    cross-repository identity ask the recorded sequence↔contract and
+    `trace` items cannot serve; a pilot census showing a materially
+    denser entity graph; or outcome-grade evidence that graph retrieval
+    beats a maintained index for this class of governance record.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -153,6 +153,18 @@ but they are a useful cross-check that no audience was forgotten.
   ran the same day; the keystone held), and an overall verdict —
   faithful on facts, errs by attribution and scoping; the ask-loop
   blind spot flagged in both runs.
+- [A knowledge graph for pumllint, evaluated](knowledge-graph-evaluation.md)
+  — dated evaluation (2026-08-26): the graph-engineering question run
+  through the house triage — sense/nonsense/fit/gap/SWOT for a
+  knowledge graph over the diagram model, the rule set, and the
+  repository itself. Verdict: the graph already exists (14 of 51 rules
+  are graph queries; `trace` is a bipartite graph) and externalizing it
+  fails on measured scale (950 elements across the 174-diagram wild
+  corpus) and the zero-dependency agreement. Two keepers: the
+  cross-artifact-identity arc as a naming device, and a deterministic
+  repository link-integrity check — plus a rule-coverage finding the
+  lens produced without a graph (DIM-AMB is unreachable for activity
+  and use-case diagrams).
 - [The measured minimum sufficient stack](minimum-sufficient-stack.md)
   — dated consolidation record (2026-08-11, verified): the research
   charter's convergence document — the measured answer to which
