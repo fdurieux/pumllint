@@ -826,3 +826,13 @@ an implementation, and the generator fills the gap by design. Level 5 should
 continue to be described as **"method-convention complete — the diagram-side
 preconditions for faithful generation"**, with the cliff finding as the
 quantified payoff.
+
+*(2026-08-26, field observation)* — the lab result now has an outside
+corroboration. A third-party project running the codegen profile in its own
+CI at Level 5 100/100 kept a ledger of defects its diagrams carried anyway:
+15 of them, none of which any rule in this catalog can see, because they are
+claims about the *world* the diagram describes rather than about the diagram
+(docs/foreign-corpus-audit.md). This is the same boundary the lab measured,
+observed in production by someone with no stake in the result — and it is
+**their ledger, read but not re-derived here**. It changes no claim; it is
+the reason the claim is worded the way it is.

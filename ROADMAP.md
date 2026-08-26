@@ -119,6 +119,19 @@ grouped into arcs. Keep it updated as items land.
   Implementation recipe: the new-parser pattern and registry discipline in
   RULES.md's implementation notes (type markers no other form uses; never
   re-type; blocked rules stay unregistered until their parser exists).
+- [ ] **XD member and relationship coherence** — the concrete form the
+  "growing the XD family" direction above took when a third-party corpus was
+  finally read (2026-08-26, docs/foreign-corpus-audit.md). The XD pack already
+  builds the corpus-wide symbol table for participant *identity*; extending it
+  to **declared members** and **relationship direction** would have caught two
+  defects that were text-visible and survived a Level 5 100/100 gate — an
+  asymmetric dividend/sink pair, and a `..>` dependency pointing the wrong way.
+  Scope carefully: this sits close to relationship *legality*, and the same
+  corpus measured ~73% false positives on its own code-aware checks — the
+  cautionary number, not the encouraging one. Arc C's bar applies in full
+  (mutation ladders, clean probes, deliberate additive golden re-freeze, pilot
+  regeneration). *Trigger: a second corpus or an adopter showing the same
+  defect class — one corpus is an anecdote.*
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
@@ -194,6 +207,17 @@ three items — full write-up in EVIDENCE.md §Deepening:
   confirmed**: judges agree with each other on ranking (r = 0.682,
   ~19-pt leniency offset) — better than either agrees with execution;
   reliability is not validity. Full record: EVIDENCE.md §Cross-vendor.
+- [ ] **Adopt a foreign corpus as a regression fixture** — the 2026-08-26
+  J-F audit (docs/foreign-corpus-audit.md) was the first time a corpus this
+  repository did not author was read for *semantics* rather than dialect, and
+  it returned two real defects (SEQ107 F1/F2, both fixed). That corpus offers
+  what README's beta caveat actually asks for: 24 diagrams across five types,
+  a clean baseline, a documented mutation battery with expected findings, and
+  a defect ledger. Adoption is not a code decision — it is licence and
+  attribution, vendor-vs-submodule, and a conscious additive golden re-freeze;
+  the wild tier and the pilot census both settled on metadata-only, and this
+  would be the first departure from that. Retiring the caveat needs the
+  fixture, not the audit. *Trigger: owner go on vendoring.*
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
