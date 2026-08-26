@@ -28,6 +28,15 @@ _PERSISTENT_KINDS = ("database", "queue")
 _SIGNATURE = re.compile(r"[A-Za-z_][\w.]*\s*\(.*\)")
 
 
+def _guard_text(label: str) -> str:
+    """A guard label without its PlantUML brackets: ``'[!ok]'`` -> ``'!ok'``.
+
+    The parser keeps guards verbatim so reports quote what the author wrote;
+    rules that read a guard's *content* (SEQ105, SEQ107) normalise it here.
+    """
+    return label.strip().strip("[]").strip()
+
+
 class _CodegenRule(Rule):
     """Shared plumbing for codegen rules.
 
@@ -169,7 +178,7 @@ class MachineEvaluableGuards(_CodegenRule):
         for b in diagram.blocks:
             if b.kind not in kinds:
                 continue
-            guard = b.label.strip().strip("[]").strip()
+            guard = _guard_text(b.label)
             if not guard:
                 yield self.violation(
                     diagram, b.start_line, f"'{b.kind}' fragment has no guard condition"
@@ -182,7 +191,7 @@ class MachineEvaluableGuards(_CodegenRule):
                     "('vague_terms' option); write a boolean expression instead",
                 )
             for br in b.else_branches:
-                guard = br.label.strip().strip("[]").strip()
+                guard = _guard_text(br.label)
                 if not guard:
                     yield self.violation(
                         diagram, br.line, "'else' branch has no guard condition"
@@ -269,15 +278,30 @@ def _branch_spans(block) -> list[tuple[str, int, float]]:
 class ExternalCallsFailurePath(_CodegenRule):
     id = "SEQ107"
 
-    DEFAULT_FAILURE = ("error", "failure", "timeout", "exception")
+    DEFAULT_FAILURE = (
+        "error", "failure", "timeout", "exception",
+        # The absence family: a branch that says the thing is not there models
+        # the same failure as one that says "error".
+        "absent", "missing", "empty", "unavailable",
+    )
     _NEGATED = re.compile(r"(?:\bnot\b|!=|^\s*!)", re.IGNORECASE)
+    # Absence forms that are unsafe as bare substrings: 'none' must not match
+    # inside 'nonexistent', and 'no' only counts when it qualifies a noun.
+    _ABSENT = re.compile(r"\b(?:none|null|nil)\b|\bno\s+\w", re.IGNORECASE)
 
     def check(self, diagram: Diagram):
         failure_kw = self.lexicon("failure_keywords", self.DEFAULT_FAILURE)
 
         def is_failure_label(label: str) -> bool:
-            low = label.lower()
-            return any(k in low for k in failure_kw) or bool(self._NEGATED.search(label))
+            # Guards keep their brackets, so match the content: '[!ok]' is a
+            # negated guard even though its '!' is not at index 0.
+            guard = _guard_text(label)
+            low = guard.lower()
+            return (
+                any(k in low for k in failure_kw)
+                or bool(self._NEGATED.search(guard))
+                or bool(self._ABSENT.search(guard))
+            )
 
         content_lines = [m.line for m in diagram.messages]
         content_lines += [a.line for a in diagram.activations if a.kind == "return"]
@@ -317,7 +341,7 @@ class ExternalCallsFailurePath(_CodegenRule):
                     m.line,
                     f"Call '{shown}' to '{m.effective_target}' has no enclosing alt "
                     "error branch, break, or group error fragment; add one (failure "
-                    "vocabulary: 'failure_keywords' option, or a negated guard)",
+                    "vocabulary: 'failure_keywords' option, or a negated/absence guard)",
                 )
 
 
