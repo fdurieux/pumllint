@@ -45,9 +45,15 @@ class _CodegenRule(Rule):
     """
 
     def lexicon(self, key: str, defaults: tuple[str, ...]) -> tuple[str, ...]:
-        """A configurable lowercase word list, overridable per project."""
+        """A configurable lowercase word list, overridable per project.
+
+        ``<key>`` *replaces* the defaults, so a project can narrow a lexicon;
+        ``extra_<key>`` *adds* to whatever is in force, so opting into one more
+        term does not cost you the defaults you did not restate.
+        """
         raw = self.options.get(key, defaults)
-        return tuple(str(t).lower() for t in raw)
+        extra = self.options.get(f"extra_{key}") or ()
+        return tuple(str(t).lower() for t in (*raw, *extra))
 
 
 @register

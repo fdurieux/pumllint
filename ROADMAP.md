@@ -210,7 +210,8 @@ three items — full write-up in EVIDENCE.md §Deepening:
 - [ ] **Adopt a foreign corpus as a regression fixture** — the 2026-08-26
   J-F audit (docs/foreign-corpus-audit.md) was the first time a corpus this
   repository did not author was read for *semantics* rather than dialect, and
-  it returned two real defects (SEQ107 F1/F2, both fixed). That corpus offers
+  it returned four real defects (SEQ107 F1/F2, GEN005's use-case budget, and
+  the replacing `lexicon()` helper — all fixed). That corpus offers
   what README's beta caveat actually asks for: 24 diagrams across five types,
   a clean baseline, a documented mutation battery with expected findings, and
   a defect ledger. Adoption is not a code decision — it is licence and

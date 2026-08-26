@@ -306,6 +306,12 @@ The lexicons and shape options are configurable per rule (`vague_terms`,
 `arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
 `message`, `guard`, `note` to scan, default all three).
 
+Every lexicon takes two levers. Setting the key itself (`failure_keywords = [...]`)
+**replaces** the shipped list, which is how you narrow one; setting
+`extra_<key>` (`extra_failure_keywords = [...]`) **adds** to whatever is in
+force, so opting into one more term does not cost you the defaults you did not
+restate.
+
 SEQ107 recognises a failure branch three ways, so the rule constrains modelling
 rather than phrasing: the `failure_keywords` lexicon (`error`, `failure`,
 `timeout`, `exception`, plus the absence family `absent`, `missing`, `empty`,
