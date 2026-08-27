@@ -86,6 +86,19 @@ but they are a useful cross-check that no audience was forgotten.
   lintable, what v0.23.0 does with C4 input today (measured — Level 1 on
   well-formed C4, sequence mistyping on raw arrows), the candidate rule
   sketch, and the census trigger that would green-light a build.
+- [The C4 model ecosystem, re-examined](c4-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27) sitting on top of the C4 fit note: the
+  whole ecosystem (Structurizr, LikeC4, IcePanel, Mermaid C4, jQAssistant,
+  the AI/MCP layer) graded for boundaries, overlap, fit, gap, sense and
+  nonsense. The settlement stands; the dated behavioural claims were
+  re-run at v0.29.0 and reproduce to the decimal. Motivation up — under
+  the codegen profile a well-formed C4 diagram is silent at 100.0 on all
+  six dimensions while its arrow-mixed sibling hard-fails with four
+  invented blockers. Demand evidence down — the census's 46% C4-macro
+  figure and its 45%-of-corpus-is-the-notation's-own-gallery figure are
+  nearly the same files, so the trigger gains an exclusion rule. Three
+  claim-language corrections, and the position confirmed from a third
+  direction: three C4-capable validators, none of them grades.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip

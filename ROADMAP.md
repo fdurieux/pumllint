@@ -564,6 +564,70 @@ list and license posture live in § Settled questions.
     spec cuts judged invention but not executed error on
     canonical-threshold scenarios. Rule-selection implications recorded
     there; this adds selection evidence, not a build trigger.
+  - *Ecosystem re-examination (2026-08-27, docs/c4-ecosystem-evaluation.md):
+    settlement stands; three claim-language corrections and one trigger
+    guard.* The whole ecosystem was assessed rather than the one notation,
+    and the dated behavioural claims were re-run at `8fa5339` — samples
+    A/B/C reproduce to the decimal (Level 1 98.75 / Level 1 98.75 /
+    Level 4 88.96, model set Level 1), so six minor versions of parser and
+    typing changes left C4 behaviour untouched and the record is current.
+    **Motivation up:** the 2026-07-27 measurement ran the default profile
+    only; under the **codegen** profile — the one docs/agents.md tells
+    agents to run — a well-formed named C4 container diagram is *silent*
+    and scores **100.0 on all six dimensions**, held at Level 1 only by
+    cap C4, while the arrow-mixed sibling emits **8 findings, 4 of them
+    blockers, and exits 1**, seven of the eight false in C4 semantics.
+    The honest description is not "C4 input is uncovered" but "C4 input is
+    actively mishandled, and worst under the recommended profile".
+    **Demand evidence down:** the census's "C4 macros in 46% of files" and
+    its own composition table's "71 of 159 files come from
+    plantuml-stdlib/C4-PlantUML's `samples/`+`percy/` gallery" are very
+    nearly the same files (recomputed from sources.json; the marker's
+    example list names ≥3 files from other repos, so the notation's own
+    examples account for at most 70 of the 73). Both numbers are disclosed
+    in docs/pilot-census-first-contact.md, in different sections; the join
+    is not drawn, and the one sentence reading a build signal off the 46%
+    is where it matters. **Trigger guard, the one operational change:**
+    before a census dialect marker is read as demand, exclude the
+    notation's own repository and vendor sample galleries — the same
+    discipline sources.json already applies one level shallower (32
+    theme/macro files excluded from that repo as "library code by
+    content"). Trigger wording otherwise unchanged.
+    *Corrections:* (C1) "nothing checks hand-written C4-PlantUML" narrows
+    again — `jqassistant-c4-plugin` parses these files with a custom ANTLR
+    grammar for as-is-vs-to-be architecture conformance, so the surviving
+    form is "no tool checks C4-PlantUML *modelling quality*" (maintenance
+    status unverified; it also gives the 2026-07-26 diagram↔code
+    adjacency a named incumbent, corroborating "watch, don't build").
+    (C2) "the defect list is externally authored" covers **tier 1 only and
+    ~40% of the checklist** — 8 of 21 items are cleanly mechanizable from
+    source, 3 partially, and 10 are about rendered colours, shapes, icons,
+    arrowheads, border styles and element sizes; tiers 2–3 are this
+    project's own design and carry no external authorship. (C3) the market
+    boundary moved on the AI axis: Structurizr ships an MCP server
+    providing DSL validation, parsing and inspection to agents, and LikeC4
+    ships agent skills plus an MCP server — so "nothing gates C4 before an
+    agent generates from it" is false for Structurizr DSL as of
+    2026-08-27, and still true for C4-PlantUML. That is corroboration of
+    the agents.md loop from a vendor roadmap, and a reason N1 (no
+    Structurizr/LikeC4 support) is now firmer than in July, not weaker.
+    *Position confirmed from a third direction:* Structurizr inspections
+    configure severity across four levels and report per finding, LikeC4
+    hands semantic rules to Vitest, and Linked.Archi's SHACL conformance
+    is binary — three independently built C4-capable validators, three
+    stacks, and **none of them grades**. No level, gap report, ratchet or
+    aggregate score anywhere in the ecosystem.
+    *Recorded, not queued:* re-run the census C4 marker with the
+    notation's own source excluded (sources.json carries repo/path/commit
+    for all 159 files — converts the bounded statement into a number;
+    maintainer self-demand); the second wild sweep weighted toward working
+    project corpora the census note already names; the Mermaid-C4
+    recognizer note (Mermaid's C4 plugin is deliberately syntax-compatible
+    with C4-PlantUML, so a C4 recognizer would largely transfer — the one
+    place the Mermaid sibling-stack cost estimate over-states the case,
+    though the fence/discovery objection and the failed demand scan stand);
+    and the codegen-profile amplification as the sharpened motivation for
+    whenever the trigger fires.
 
 - **Prose→model→prose requirements pipeline (2026-07-29): sense, with
   corrections — specified as Arcs G–J, builds gated.** An externally

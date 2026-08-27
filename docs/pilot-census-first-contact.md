@@ -124,3 +124,14 @@ nothing here moves scores, rules, or claim language). The corpus skews
 toward sample galleries — aries-rfcs is the only source that is a real
 team's working diagrams; a second wild sweep weighted toward working
 project corpora is the natural extension if one is ever needed.
+
+*Dated addition, 2026-08-27: read the 46% C4-macro figure together
+with the corpus-composition table above — `plantuml-stdlib/C4-PlantUML`
+contributed 71 of the 159 files (its `samples/` and `percy/` trees), so
+the marker set and the notation's own sample gallery are very nearly the
+same files. Both numbers are this note's; their near identity is drawn in
+[The C4 model ecosystem, re-examined](c4-ecosystem-evaluation.md) § 8.4,
+which records the resulting trigger guard: exclude the notation's own
+repository and vendor sample galleries before reading a dialect marker as
+demand. The 46% stands as prevalence on this corpus; it is not a demand
+signal on its own.*
