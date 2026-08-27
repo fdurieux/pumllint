@@ -1084,7 +1084,10 @@ list and license posture live in § Settled questions.
     the syntax-gate disclosure and the DIM-AMB residual; any fix is a
     scoring change with its own decision and re-freeze. Trigger: the
     Arc C component pack being built, or a corpus showing the pattern is
-    common. (3) An **RDF/Turtle reporter** — feasible and stdlib-shaped,
+    common. *Superseded 2026-08-27 by the ArchiMate entry's
+    candidate 1: the same honesty-cap escape, characterized by token
+    across three notations and two mechanisms, and generalized out of any
+    one notation.* (3) An **RDF/Turtle reporter** — feasible and stdlib-shaped,
     refused today because `-f json` plus the shipped schema already
     serves an RDF-native consumer without importing another project's
     versioning; trigger is an adopter who tried that route and can say
@@ -1107,6 +1110,96 @@ list and license posture live in § Settled questions.
     source named); the converter gaining severity-graded or
     coverage-aware validation; or a census meeting a corpus where
     component diagrams are material.
+
+- **ArchiMate ecosystem (2026-08-27): no — no pack, no reader, and not
+  wait-for-pull; one general defect-class candidate recorded, which is not
+  an ArchiMate item.** Third in the week's ecosystem series (full record:
+  docs/archimate-ecosystem-evaluation.md; repo claims executed at
+  `e1d5862`, external claims read from published documentation, no
+  ArchiMate tool executed, no GitHub repository read). Verdict:
+  - *Refused on the artefact, not on demand — the distinction that
+    separates this from the C4 settlement.* ArchiMate models live in
+    Archi's `.archimate` files or the Open Group Model Exchange XML; the
+    `.puml` is a **rendering exported from a view** (the circulated jArchi
+    `PlantUML-V2G`/`V2NG` scripts emit one file per view, and MCP servers
+    now generate the same class of file from agent prompts). A finding in
+    a regenerated artefact cannot be durably acted on, so an adopter would
+    not flip this the way one flips the C4 gate.
+  - *Refused a second time on the rule spec.* ArchiMate's
+    externally-authored spec is a **legality metamodel** — the normative
+    Appendix B relationship tables, "mainly intended for tool
+    implementation", plus derivation rules DR1–DR8/PDR1–PDR12. That is the
+    well-formedness-as-a-type anti-goal (2026-08-02) seen from the far
+    side: every modelling tool and every ArchiMate MCP server enforces it
+    at authoring time, making it unrepresentable rather than checkable —
+    which for a formal legality metamodel is the *right* design. It is also
+    the relationship-legality boundary the Arc C XD item already flagged.
+  - *Never build*: an ArchiMate rule pack over `.puml`; relationship-legality
+    or derivation rules from the ArchiMate tables; a reader for `.archimate`
+    or Model Exchange XML (refused on identity — the stdlib has an XML
+    parser, so dependencies are not the objection; a second artefact class
+    is a second product with its own corpus, calibration and golden
+    contract).
+  - *The measurement is the yield, and it generalises past ArchiMate.*
+    PlantUML's native `archimate` keyword is **not a type marker** and its
+    relationships are arrows. Measured: a 5-element/4-relationship model is
+    read as **2 implicit lifelines and 1 message**, typed `sequence`, scored
+    **Level 4 (Precise) — 93.33/100** with a false SEQ009; under the codegen
+    profile **4 findings, 2 blockers, exit 1**, both blockers telling the
+    author to declare participants that *are* declared. Characterized by
+    token: a file with **no recognized type marker** is typed `sequence` by a
+    single **undecorated** arrow — `->`, `-->`, `..>`, `--` (the latter two
+    being ArchiMate realization and association) — whose two endpoints plus
+    one message make exactly the 3 elements needed to escape cap C6 and clear
+    the Level-4 floor. Direction-hinted (`-up->`, `-down->>`) and
+    both-ends-decorated (`*-down-`) arrows are not read, so those files stay
+    honest at Level 1. A `class` keyword types correctly, because it *is* a
+    marker. The Archimate-PlantUML stdlib macro dialect is honest
+    (`unknown`/0 elements/Level 1), like C4's macro form.
+  - *This closes a defect class across three notes.* C4 sample C (raw
+    arrows → `sequence`, Level 4, 88.96), the Linked.Archi component probe
+    (one `database` keyword → `sequence`, Level 3, 100), and this
+    (one undecorated arrow → `sequence`, Level 4, 93.33): three notations,
+    two escape mechanisms, one honesty cap. No rule misbehaves — every rule
+    does what its catalog row says and the sequence recognizer is doing its
+    documented job on a file nothing else claimed. It is a
+    **typing-confidence** gap, belonging beside C6, C7 and the syntax-gate
+    disclosure.
+  - *Recorded, not queued*: (1) **typing-confidence disclosure or
+    type-marker widening** — the one real candidate and notation-general;
+    two shapes, both scoring changes needing their own decision and a
+    deliberate golden re-freeze: widen the type-marker set so declaration
+    keywords like `archimate` type a file `unknown`, or make cap C6
+    sensitive to fallback typing (all participants implicit, no declaration
+    line) and disclose it as the syntax gate does. **Maintainer self-demand
+    with a measured defect behind it** (the WS3a / link-integrity label).
+    **Supersedes the Linked.Archi entry's component-diagram residual** —
+    same class, different mechanism. No trigger: it awaits a decision, not
+    demand. (2) The **generated-`.puml` hazard** — exported ArchiMate views
+    score Level 4 today, so a pipeline gating an agent loop on pumllint gets
+    a passing verdict on a diagram the tool did not read; the consequence a
+    user would actually meet, and candidate 1's motivation. (3) **Archi's
+    missing CI validation gate** — its Model Validator is a workbench
+    feature and command-line validation appears to be a standing feature
+    request, with users asking for a pipeline gate; recorded explicitly as
+    **not this project's** (the ecosystem's path is jArchi + ACLI) so a
+    later reader does not mistake it for an opening. Status unverified.
+  - *Position, fourth ecosystem running*: nothing in ArchiMate produces a
+    maturity level, gap report or ratchet — as with Structurizr, LikeC4 and
+    Linked.Archi. But here it is also **unreachable**, because the
+    ambiguity dimension needs the model and the `.puml` is a picture of it.
+    The agent-strategy triple completes usefully: LikeC4 prevents by
+    instruction, Structurizr verifies (the agents.md shape), ArchiMate
+    prevents by construction. Prevention beats verification wherever the
+    constraint is formal enough to encode in an API — which is exactly true
+    of relationship legality and exactly false of what DIM-AMB measures.
+    That line is the sharpest scope statement the three evaluations produced.
+  - Re-litigate on: evidence that *hand-authored* (not exported) ArchiMate
+    PlantUML is a real population — the only load-bearing premise, and the
+    2026-08-27 census exclusion rule applies in full (a sample gallery is
+    not a population); PlantUML gaining first-class ArchiMate model
+    semantics that make the `.puml` an artefact of record; or an adopter
+    whose ArchiMate models live in PlantUML only, with no upstream tool.
 
 ## Working agreements (read before picking anything up)
 
