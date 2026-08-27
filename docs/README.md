@@ -125,6 +125,20 @@ but they are a useful cross-check that no audience was forgotten.
   `no-implicit-*` = SEQ001/SEQ010/SEQ101 — and, fifth ecosystem running,
   still does not grade. Completes the agent-strategy quadruple: prevention
   by instruction, verification, prevention by construction, containment.
+- [The UML ecosystem, evaluated](uml-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), fifth and last in the series and the only
+  one pointing inward: UML is the ecosystem this artefact belongs to by name
+  and not by substance. Three layers, one shared — UML defines a metamodel
+  (449 metaclass invariants, 425 with OCL); PlantUML borrows the notation and
+  implements none of it (607-page reference guide: metamodel 0, semantic 0,
+  well-formed 0, OCL 0, XMI 0); pumllint builds its own typed model behind it.
+  The claim language audits clean on every axis. The catalog is **86.3%
+  not-UML** — 3 rules of 51 restate an OCL invariant. Two inward candidates:
+  a `CLS006` needing zero parser work (one UML invariant is a blocker while a
+  comparable one draws no finding at all), and the type-fallback class in its
+  widest form — nine uncovered diagram types, a two-line file scoring Level 4
+  Precise 100/100. Produced by a 14-agent fan-out; all five adversarial
+  verifiers returned "refuted", and their corrections are what the note carries.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
