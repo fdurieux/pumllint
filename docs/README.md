@@ -113,6 +113,18 @@ but they are a useful cross-check that no audience was forgotten.
   with no type marker is typed `sequence` by one undecorated arrow, which
   makes exactly the 3 elements needed to escape the zero-element honesty
   cap.
+- [The BPMN ecosystem, evaluated](bpmn-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), fourth in the series and the most
+  emphatic no: no artefact (PlantUML has no BPMN modelled form), no gap
+  (`bpmnlint` is architecturally the same product), **no generation step
+  to gate** (a `.bpmn` file *is* the implementation, executed by an
+  engine), and the repo's own W3 carrier evidence pointing against the one
+  remaining fit. The yield is not a market judgment but convergent
+  validation nobody solicited: `bpmnlint` independently arrived at the
+  same architecture and the same rules — `start-event-required` = ACT001,
+  `no-implicit-*` = SEQ001/SEQ010/SEQ101 — and, fifth ecosystem running,
+  still does not grade. Completes the agent-strategy quadruple: prevention
+  by instruction, verification, prevention by construction, containment.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
