@@ -950,6 +950,100 @@ list and license posture live in § Settled questions.
     denser entity graph; or outcome-grade evidence that graph retrieval
     beats a maintained index for this class of governance record.
 
+- **Linked.Archi ecosystem (2026-08-27): adjacent and complementary — no
+  build, no dependency; the one fit worth having already ships. Two
+  candidates recorded, nothing queued.** The question (investigate
+  `meta.linked.archi` — RDF/OWL semantic layer linking architecture
+  artefacts — and its ecosystem, then grade the boundaries / overlap /
+  fit / gap / sense / nonsense against this roadmap) was run through the
+  house triage against `3d64176` (full record:
+  docs/linked-archi-evaluation.md; repo claims executed, Linked.Archi
+  claims read from its published documentation with page URLs, its
+  tooling **not** executed — the converters' source project answered 404
+  on the documented GitLab path and 403 on the project page from the
+  evaluation environment). Verdict:
+  - *The categories do not compete, and both projects say so.*
+    Linked.Archi is an integration layer — six Java converters lift
+    ArchiMate, BPMN, PlantUML, Structurizr/C4, Backstage and LeanIX into
+    one RDF graph, SHACL validates it, `rdf2docs`/SPARQL consume it — and
+    its declared non-goal is "not a replacement for your existing tools",
+    naming PlantUML. pumllint gates the source artefact before
+    conversion. **The one fit worth having (pumllint in a producer repo,
+    before `plantuml2linkedarchi convert`) needs no code on either side:
+    it is the shipped Action, hooks, exit codes and `--min-level`.**
+  - *The complementarity is structural.* SHACL conformance is binary by
+    the spec and by RDF4J (their validation page says so), so vague
+    labels, elided guards, prose-where-a-signature-belongs and unowned
+    diagrams convert cleanly and pass. And their converter is a tolerant
+    projection too — gates and exogenous messages "absent from the
+    graph" — so the closed-world-over-a-projection hazard the
+    knowledge-graph settlement predicted is now **observed in a second,
+    independently built pipeline**. That strengthens the 2026-08-26
+    never-build list rather than disturbing it; none of its four
+    re-litigation triggers fires, because all four are about an adopter.
+  - *One attractive claim withdrawn, and it is the decision-relevant
+    one*: pumllint's SEQ102 role-type discipline does **not** protect the
+    converter's typing. Its page states every sequence participant
+    becomes `uml:Lifeline` "whichever keyword asked for it", the keyword
+    republished as `schema:keywords` — "a plain label, not a type claim"
+    — and a user-written `<<stereotype>>` "is not read by this
+    converter". The two notions of *type* are not commensurable on the
+    corpus's dominant diagram type (61 of 174 wild diagrams); any
+    "align the vocabularies" proposal starts from there. (The
+    type-mapping page reads differently on this point; flagged, not
+    resolved — the source was unreachable.)
+  - *Never build*: SHACL/OWL as the rule engine over converted RDF (N1/N2
+    — binary conformance deletes the graded product); a vendored or
+    bundled ontology on the product path; findings or scores emitted as
+    graph properties *for querying quality* (the graph-derived-metrics
+    refusal with a different transport); any alignment of participant
+    kinds to `uml:Lifeline`.
+  - *Recorded, not queued*: (1) **`'!la-` extension data as a governance
+    carrier** — measured false negative: a file carrying
+    `'!la-link OrderService am:realizes kg:REQ-4711` and
+    `'!la-data OrderService arch:conceptOwner kg:TeamPayments` is
+    reported by GEN006 as having no ownership tag, by GEN007 as having no
+    requirement reference, and by `pumllint trace` as an *unlinked*
+    diagram against an *uncovered* requirement, because
+    `prose_directives()` carries title/header/footer/caption/note and
+    PlantUML comments are not directives. One seam, one config key, a
+    deliberate golden re-freeze (annotated files stop losing DIM-TRC).
+    Honestly labelled *externally-authored convention, zero observed
+    users here* — the C4 argument, not the glossary argument. Trigger: an
+    adopter or pilot corpus using the annotations, or a second consumer
+    of the same convention. (2) The **component-diagram typing
+    residual** — measured A/B on the same architecture: a plain component
+    diagram is `unknown`/0 elements/**Level 1** (C6 cap holds, honest),
+    and adding one `database "…" as DB` line types it *sequence*, counts
+    1 element, escapes the cap and reports **Level 3 (Disciplined)** with
+    no component, package or relationship read. Same family as C6, C7,
+    the syntax-gate disclosure and the DIM-AMB residual; any fix is a
+    scoring change with its own decision and re-freeze. Trigger: the
+    Arc C component pack being built, or a corpus showing the pattern is
+    common. (3) An **RDF/Turtle reporter** — feasible and stdlib-shaped,
+    refused today because `-f json` plus the shipped schema already
+    serves an RDF-native consumer without importing another project's
+    versioning; trigger is an adopter who tried that route and can say
+    why it was insufficient. (4) The one-sentence positioning answer
+    ("Linked.Archi converts and conforms; it does not lint"),
+    documentation candidate only.
+  - *Supply-chain read, recorded because any dependency would need it*:
+    documentation public, extensive and per-asset versioned; **no overall
+    licence statement found** for the ontologies or the tools (EDGY
+    content is CC BY-SA 4.0); no named maintainer or organisation on the
+    pages read; source repositories unreachable from the evaluation
+    environment. Fine to read and reason about — not yet a thing to
+    depend on. Irrelevant while nothing is vendored; a precondition, not
+    a trigger.
+  - Re-litigate on: an adopter or pilot organisation running an
+    RDF/SHACL EA pipeline with PlantUML producers (fires candidate 1, and
+    probably 3, with observed friction instead of assessed fit); a
+    concrete cross-repository identity ask arriving through such a
+    pipeline (the standing 2026-08-26 trigger, now with a plausible
+    source named); the converter gaining severity-graded or
+    coverage-aware validation; or a census meeting a corpus where
+    component diagrams are material.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

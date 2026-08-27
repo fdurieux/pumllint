@@ -165,6 +165,20 @@ but they are a useful cross-check that no audience was forgotten.
   repository link-integrity check — plus a rule-coverage finding the
   lens produced without a graph (DIM-AMB is unreachable for activity
   and use-case diagrams).
+- [Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md)
+  — dated evaluation (2026-08-27): a shipping external ecosystem —
+  OWL ontologies, SHACL shapes and six converters (PlantUML among them)
+  lifting architecture sources into one RDF knowledge graph — assessed
+  for boundaries, overlap, fit, gap, sense and nonsense against this
+  roadmap. Verdict: adjacent and complementary, no build and no
+  dependency — the one fit worth having (pumllint in a producer repo,
+  before the converter) already ships, and SHACL's binary conformance
+  over a tolerant projection cannot reach the defect class this catalog
+  exists for. Two measured findings: the ecosystem's own `'!la-`
+  annotations are invisible to GEN006, GEN007 and `trace`, and a
+  component diagram's zero-element honesty cap turns on a single
+  participant keyword. One attractive claim withdrawn — the two
+  products' notions of *type* are not commensurable.
 - [A foreign corpus reads back — the J-F audit](foreign-corpus-audit.md)
   — dated evidence note (2026-08-26): the first time a corpus this
   repository did not author was read for *semantics* rather than
