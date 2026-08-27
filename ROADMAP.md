@@ -1201,6 +1201,100 @@ list and license posture live in § Settled questions.
     semantics that make the `.puml` an artefact of record; or an adopter
     whose ArchiMate models live in PlantUML only, with no upstream tool.
 
+- **BPMN ecosystem (2026-08-27): no, on four independent grounds — and
+  the most useful of the four ecosystem evaluations, because what it
+  returns is convergent validation of the rule catalog rather than a
+  market judgment.** Fourth in the week's series (full record:
+  docs/bpmn-ecosystem-evaluation.md; repo claims executed at `eee24ac`,
+  external claims from package registries and vendor docs, no BPMN tool
+  executed, no GitHub repository read). Two prior records stand unchanged
+  and this note answers the question they left open — the 2026-08-11
+  review's BPMN/DMN carrier proposal (graded *hypothesis*) and its
+  platform items (recorded *adopter programme, not this repository's
+  scope*): they fail on merit as well as on ownership. Verdict:
+  - *(1) No artefact.* PlantUML has no BPMN diagram type with BPMN
+    semantics — the stdlib carries BPMN icons and sprites, and native
+    support appears to be a long-standing open request (characterized,
+    not verified). `.bpmn` is OMG XML, never discovered, correctly warned
+    about, exit code unmoved.
+  - *(2) No gap.* **`bpmnlint` already exists and is architecturally the
+    same product**: `.bpmnlintrc` with `extends`/`rules`, three named
+    presets (`all`/`recommended`/`correctness`), `off`/`warn`/`error`
+    severities, a `bpmnlint-plugin-{NAME}` surface, a CLI reporting
+    `✖ 6 problems (6 errors, 0 warnings)`, and live feedback in the
+    modeler via `bpmn-js-bpmnlint`. 27 rule files, two of them
+    infrastructure — ~25 rules against this project's 51.
+  - *(3) No generation step to gate — the structural ground, and the one
+    an adopter cannot dissolve.* C4/ArchiMate/UML diagrams describe
+    something a human or agent then implements; a `.bpmn` file **is** the
+    implementation, deployed to Zeebe/Flowable and validated by the engine
+    at deploy time. EVIDENCE.md's measured claim is *about a generation
+    step*; BPMN has none. A defective BPMN file yields a deploy failure or
+    a stuck token, not bad generated code.
+  - *(4) Measured evidence against the remaining fit.* W3 measured the
+    nearest analog to an enterprise machine format — structured YAML at
+    fixed information — at **−30.3 pp pooled / −66.7 pp flow-sensitive**,
+    with the strong generator non-compiling 3/3, the only non-compiles of
+    the single-shot W1–W4 programme. docs/external-review-comparison.md
+    already called that "a warning shot for feeding raw enterprise machine
+    formats (BPMN XML et al.) to generators".
+  - *Never build*: a BPMN rule pack in any form, over `.bpmn` or over
+    PlantUML (a pack over PlantUML would have to invent the notation it
+    checks — convention-manufacturing in its purest form); a BPMN XML
+    carrier arm added without a pre-registered wave under charter §10.
+  - *The yield: convergent validation nobody solicited.* `bpmnlint` was
+    built for a different notation on a different runtime by people with
+    no contact with this project, and converged on the same architecture
+    **and the same rules**. `start-event-required` = ACT001,
+    `end-event-required` = ACT002, `conditional-flows` = ACT003/SEQ007,
+    `label-required` = SEQ005/STA003/CLS003, `no-disconnected` =
+    UC001/SEQ002/STA002, and — the striking one — the
+    `no-implicit-start`/`-end`/`-split` family is SEQ001/SEQ010/SEQ101's
+    principle under another name: relying on the tool's implicit behaviour
+    is an ambiguity hazard, so declare it. Measured, not just name-read: a
+    PlantUML activity diagram carrying `bpmnlint`'s three foundational
+    defects returns ACT001 + ACT003 ×2 + ACT002, exit 1; the clean version
+    scores Level 4 / 100. Divergences are explained by the artefact, not
+    taste — `bpmnlint` has layout rules because BPMN carries geometry,
+    pumllint has an ambiguity dimension because its artefact feeds a
+    generator. **Caveat recorded in the note: the mapping is read from
+    rule names, rationales and this catalog, not from paired runs; a
+    paired run would need a Node toolchain and a matched corpus that does
+    not exist.**
+  - *Fifth ecosystem running with no grader.* `bpmnlint` reports raw
+    problem counts with severity breakdowns and stops — no level, no
+    dimension weighting, no gap report, no ratchet, no aggregate.
+  - *The agent-strategy quadruple completes, and BPMN supplies its most
+    distant corner*: LikeC4 prevents by instruction, Structurizr verifies
+    (the agents.md shape), ArchiMate prevents by construction, **BPMN
+    contains** — Camunda's Processes MCP Server exposes deployed processes
+    as tools an agent calls, so the model orchestrates the agent rather
+    than being consumed by one. Which of the four an ecosystem has chosen
+    predicts the fit better than anything else these evaluations measured,
+    and is far cheaper to ask.
+  - *Recorded, not queued*: (1) **the ACT-pack positioning note** — the
+    ACT pack already implements what `bpmnlint` treats as foundational,
+    for teams who sketch processes in PlantUML rather than adopt a BPMN
+    toolchain. **Claim language, not a feature, and gated on a correctness
+    precondition**: the 2026-08-26 DIM-AMB coverage residual (activity
+    diagrams carry no ambiguity rule, so a vague process scores a vacuous
+    100 on a 0.25-weight dimension) must be addressed first, or the claim
+    overstates; any wording must say "activity diagrams, not BPMN" in the
+    same breath. This is the first ecosystem where the positioning risk
+    exceeds the build risk. (2) The **convergence record** itself, worth
+    citing when the catalog's design is questioned. (3) A **fourth
+    instance** of the type-fallback defect class — a BPMN-ish sprite
+    sketch (`rectangle` + `-->`) types `sequence` at Level 4, 91.0; no new
+    candidate, the ArchiMate entry's candidate 1 covers it, recorded so the
+    instance count is not re-derived.
+  - Re-litigate on: PlantUML gaining a BPMN diagram type with real BPMN
+    semantics (the only thing that creates an artefact); a measured wave
+    establishing that a machine interchange format beats a diagram carrier
+    for the model→code hop (W3 points the other way and W3b showed carrier
+    intuitions travel badly); or an adopter running PlantUML activity
+    diagrams as process documentation of record and asking for flow rules
+    beyond ACT001–006 — which would also make the DIM-AMB residual urgent.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
