@@ -99,6 +99,20 @@ but they are a useful cross-check that no audience was forgotten.
   nearly the same files, so the trigger gains an exclusion rule. Three
   claim-language corrections, and the position confirmed from a third
   direction: three C4-capable validators, none of them grades.
+- [The ArchiMate ecosystem, evaluated](archimate-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), third in the ecosystem series. Verdict:
+  no pack, no reader, and — unlike C4 — not wait-for-pull but a principled
+  no, on two grounds either sufficient: the `.puml` is a *rendering
+  exported from a model held elsewhere*, so findings cannot be durably
+  acted on; and ArchiMate's rule spec is a legality metamodel every tool
+  enforces at authoring time, which is the well-formedness-as-a-type
+  anti-goal seen from the far side. The yield is the measurement: native
+  ArchiMate is read as 2 lifelines and 1 message out of 9 modelled things,
+  typed `sequence`, and scored **Level 4 (Precise) — 93.33/100**.
+  Characterizing that closed a defect class across all three notes — a file
+  with no type marker is typed `sequence` by one undecorated arrow, which
+  makes exactly the 3 elements needed to escape the zero-element honesty
+  cap.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
