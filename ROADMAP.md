@@ -1295,6 +1295,132 @@ list and license posture live in § Settled questions.
     diagrams as process documentation of record and asking for flow rules
     beyond ACT001–006 — which would also make the DIM-AMB residual urgent.
 
+- **UML ecosystem (2026-08-27): no — no conformance mode, no XMI reader, no
+  repositioning; two inward-facing candidates recorded, neither queued.**
+  Fifth and last of the week's series, and the only one whose yield points
+  inward: UML is the ecosystem this artefact belongs to by name and not by
+  substance (full record: docs/uml-ecosystem-evaluation.md; produced by a
+  14-agent fan-out — five research dimensions each followed by an adversarial
+  verifier, three repo probes, a completeness critic; 677 tool calls.
+  **All five verifiers returned "refuted"** and every correction they forced
+  is carried in the note rather than the original wording. No ArchiMate/UML
+  tool executed; no GitHub repository read, which cost real coverage). Verdict:
+  - *Three layers, one shared.* UML defines a metamodel — 242 metaclasses,
+    449 metaclass-owned invariants (425 with OCL bodies), and Clause 2 makes
+    validating them a conformance requirement. PlantUML borrows the
+    **notation** and implements none of it: its 607-page Language Reference
+    Guide has 0 occurrences of "metamodel", "semantic", "well-formed", "OCL"
+    and "XMI", and 1 of "conform" (arrowhead shape). pumllint builds its own
+    typed model behind that notation. Only the notation is common.
+  - *Measured, not asserted.* Against the official server and
+    `plantuml-1.2026.7.jar`, PlantUML renders — and `--check-syntax` exits 0
+    on — mutual inheritance, a 3-way generalization cycle, self-generalization,
+    two transitions out of the initial pseudostate, and an actor—actor
+    association: violations of `no_cycles_in_generalization` (§9.9.4.8),
+    `initial_vertex` (§14.5.6) and `Actor::associations` (§18.2.1.4). Its FAQ
+    concedes it: "it does not restrict the creation of inconsistent diagrams —
+    such as mutual inheritance between two classes. Consequently, it functions
+    more as a drawing tool rather than a modeling tool." That sentence names
+    **exactly the defect CLS004 detects** — a better warrant for the rule than
+    the OMG spec.
+  - *Claim language audited clean, which is itself the finding.* 59 bare-"UML"
+    tokens repo-wide; only 3 in product-facing surfaces and all 3 are the same
+    CLS004 claim (README.md:267, RULES.md:1545,
+    pumllint/rules/class_/structure.py:105); a regex for
+    lint/check/validat/verif/enforc/conform/comply within 25 chars of a bare
+    "UML" returns **nothing** repo-wide (re-run and confirmed empty); no OMG /
+    ISO 19505 / "UML 2.5.1" in README, RULES, SCORING, EVIDENCE, action.yml or
+    the package source; no UML claim reaches users at runtime; 1 of 42
+    rationales appeals to UML. Nothing to correct. Related: the prose-pipeline
+    settlement's "metamodel-conformance gate" means pumllint's own typed
+    dataclasses, as that same note states — not the OMG metamodel.
+  - *The catalog is 86.3% not-UML.* Rule-by-rule: **7 of 51** are UML
+    well-formedness in disguise and only **3** correspond to an actual OCL
+    invariant (CLS004; STA001 in half — UML allows *at most* one initial
+    Pseudostate, pumllint requires exactly one; UC003). 27 are hygiene /
+    convention, 11 ambiguity / prose quality, 6 readability budgets. The other
+    four A-rules (SEQ003, SEQ004, SEQ108, ACT004) **could not** be OCL
+    invariants — an unclosed `alt` or an unpaired `activate` is unrepresentable
+    in UML's abstract syntax; they are concrete-syntax repairs, re-establishing
+    at text level what a metamodel gets structurally.
+  - *Legality picture, corrected by the adversarial pass.* UML has no
+    consolidated relationship-legality matrix, but it is **not** true that it
+    enumerates nothing: 17 of the 25 Relationship metaclasses have ends typed
+    narrower than NamedElement (Include UseCase→UseCase, Generalization
+    Classifier→Classifier, …); only Dependency and its subtypes Abstraction /
+    Realization / Usage have unrestricted ends. The nearest ArchiMate-table
+    analogue is `InformationFlow::sources_and_targets_kind` (13 permitted
+    metaclasses per end). So the difference from ArchiMate is one of *form* —
+    typing the metamodel vs enumerating a matrix. Also corrected: UML's
+    constraint density tracks **execution semantics**, not architecture
+    (Actions 155, Activities 50, Interactions 49, StateMachines 47 vs
+    Deployments 4, UseCases 8; StandardProfile's 33 stereotypes carry 0), so
+    UML is thinnest exactly where this tool's users work. And "the formal layer
+    is unvalidated" narrows to the two defects OMG issue OCL25-217 names, both
+    reproduced in the omg.org file — a balance scan found 0 of 650 OCL bodies
+    unbalanced, which is evidence *for* partial validity.
+  - *Never build*: UML OCL invariants as a rule pack (the
+    well-formedness-as-a-type anti-goal at scale, over a denominator mostly
+    unexpressible in PlantUML); an XMI or `.uml` reader (second artefact class,
+    refused on identity — and PlantUML's own FAQ says of XMI "Work is in
+    progress"); any repositioning toward "UML linter" or UML-conformance claims
+    (86.3% of the catalog is not UML; the audit shows the repo has avoided this
+    for its whole life).
+  - *Sixth ecosystem, still no grader — narrowest margin yet.* SDMetrics is the
+    closest architectural analogue to pumllint found in any of the six:
+    design-rule checking plus OO metrics over XMI from any UML tool, rules and
+    metrics in a user-extensible XML config, a CLI for automated runs,
+    HTML/XML reports, commercial since ~2002. Its 226-page manual contains no
+    quality model, index, score, rating or maturity concept; output is metric
+    tables plus severity-ranked violations. Karasneh et al. (CEUR-WS Vol-1555)
+    from the inside: "Current CASE tools do not give any hints to improve
+    models, except some layout algorithms and syntax."
+  - *Recorded, not queued*: (1) **`CLS006 type-mismatched-generalization`** —
+    verified at `08efeda`: a Class specializing an Interface *and* an
+    Enumeration scores **Level 4 (Precise) 99.0 with zero structural findings**
+    (only GEN001), and an Actor specializing a UseCase likewise, while the
+    comparable `Pseudostate::initial_vertex` violation is an **STA001 blocker,
+    exit 1**. `model.py:258` already carries the classifier `kind`
+    (class|abstract|interface|enum|implicit) and the relation its own `kind`,
+    so **no parser work**. Must be justified as CLS004 is — uncompilable in the
+    target language, plus PlantUML's own admission — **never** by appeal to the
+    OMG spec, which would break the claim-language discipline just verified.
+    Scoring change: own decision, own golden re-freeze. Maintainer self-demand.
+    (2) The **type-fallback defect class, fifth instance** — no new candidate,
+    the ArchiMate entry's candidate 1 covers it; recorded for the mechanism at
+    line precision. pumllint parses **5 of UML's 14 diagram types**; of the
+    nine uncovered, component/deployment in bracketed style and timing fail
+    **honestly** (the `[...]` and `@`-timecode tokens break `_IDENT` in
+    `RE_MESSAGE`, nothing parses, C6 holds at Level 1), while object, package,
+    composite structure, communication, alias-style component,
+    bracketless deployment and timing-plus-one-arrow reach **Level 4 "Precise",
+    often 100.0 with zero findings**. `A --> B` = 2 implicit participants + 1
+    message = elementCount 3 = exactly `l4_min_elements` (scoring.py:88), so C6
+    does not fire. **Arrow shape decides the margin**: dashed/dotted set
+    `is_return_arrow` (sequence.py:472) → SEQ009 in DIM-SEM (w 0.20) → Level 4;
+    a solid `->` trips SEQ005 in DIM-AMB (w 0.25) → 66.67 < the 70.0 L4 gate →
+    Level 3. Sharpest case: `api -[#red]-> ledger : postEntry` — label kills
+    SEQ005, solid arrow avoids SEQ009 — **Level 4, 100.0, zero findings** on
+    two lines. And `--min-level` inverts: a timing diagram *with* one arrow
+    passes `--min-level 4`; the same diagram minus it fails `--min-level 3`.
+    Worse in one case: deployment using `database "orders" as ordersdb` types
+    the file sequence and reports **critical** findings, failing CI at exit 1.
+    (3) **Cite the PlantUML attribution** — README.md:6-8 says "by its own
+    admission" with no URL; both the current and historic FAQ wordings are
+    verbatim-quotable. Documentation candidate. (4) **The
+    expressible-invariants numerator** — the analogue of the C4 note's
+    "40% mechanizable" table; would convert "3 of 51 overlap" from a
+    classification into a measurement. Lab work, no behaviour change.
+  - Re-litigate on: an adopter feeding pumllint output to a real UML toolchain
+    (which PlantUML's "XMI work is in progress" makes impossible today);
+    **SysML v2 / KerML** acquiring a PlantUML-renderable textual form with users
+    — OMG adopted SysML v2.0 + KerML 1.0 in July 2025, built on KerML rather
+    than as a UML profile and shipping a textual notation with a published BNF,
+    which is the one development that speaks directly to the premise that text
+    notations need an external semantic gate (characterized; the pilot
+    implementation is on GitHub, outside scope); or evidence that a UML tool has
+    begun producing a graded verdict, ending the six-ecosystem streak.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
