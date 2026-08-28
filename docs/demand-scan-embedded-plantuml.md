@@ -189,3 +189,14 @@ gh api -X GET search/code -f q="startuml repo:R" --jq .total_count
 
 Counts are index-dependent and will drift; the pre-registered rules above
 are the fixed part.
+
+*Dated addition, 2026-08-27: this note's conclusion — embedded **PlantUML**
+has no demand — stands. Its own numbers also support a stronger sentence it
+does not draw: the embedded niche is large and PlantUML does not own it.
+Mermaid outnumbered PlantUML 76× and 437× in the two directories sampled
+here, and as of 2026 a third-party Mermaid linter ships exactly the
+Markdown-fence linting this note declined to build — for the notation that
+owns the niche. Drawn out in
+[The Mermaid ecosystem, evaluated](mermaid-ecosystem-evaluation.md) § 5/S3,
+whose verdict on a Mermaid sibling stack is nonetheless **no**, on an
+occupied niche.*
