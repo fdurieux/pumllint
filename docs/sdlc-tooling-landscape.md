@@ -571,6 +571,19 @@ context provider for AI agents." It is drawn filled: a platform's
 guardrails are exactly the automated, nonoptional gates DORA
 prescribes. [research, rev. 2] [practitioner]
 
+The genesis node has its own close-up. The category this map leaves at
+genesis — deterministic checking of architecture models — is drawn tool
+by tool on a Gartner-style quadrant in
+[Positioning pumllint](positioning-quadrant.md): competition inside the
+category, where this map shows its evolution. Its finding restates the
+third glance above from the inside: the Leaders quadrant is empty — the
+checkers with an installed base stop at syntax or findings, and the
+ones with semantic depth have not yet earned adoption.
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders quadrant
+is empty; pumllint sits deep in Visionaries; the incumbents cluster in
+Challengers](positioning-quadrant.svg)
+
 ## Part 5 — Strategic read
 
 **Commodity — adopt, never build, measure the discipline.** Version

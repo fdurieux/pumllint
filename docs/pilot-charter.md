@@ -23,6 +23,17 @@ is that measurement. Charter it to produce a number either way — not to
 confirm a foregone conclusion. That framing is also what makes the
 result defensible to any internal validation or governance function.
 
+The market context for the sponsor's "why now" message, scored against
+the published rubric in
+[Positioning pumllint](positioning-quadrant.md) — with this charter's
+own honesty: the empty Leaders quadrant says no tool of this kind has an
+installed base yet, and pumllint's unproven-adoption scores are exactly
+what this pilot produces evidence about:
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders quadrant
+is empty; pumllint sits deep in Visionaries; the incumbents cluster in
+Challengers](positioning-quadrant.svg)
+
 ## Roles
 
 | Role | Who | Responsibility |
