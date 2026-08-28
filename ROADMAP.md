@@ -2234,6 +2234,114 @@ list and license posture live in § Settled questions.
     describe how to organize descriptions, not how to check files, and
     have had decades.
 
+- **TOGAF / ADM ecosystem (2026-08-28): no on every fit — and the note
+  exists for the correction, not the verdict.** Fourteenth (full record:
+  docs/togaf-adm-ecosystem-evaluation.md; pumllint claims executed at
+  `0aa0305`, default config, neutral cwd). **Bounds first: the TOGAF
+  Standard is free but registration-gated and could not be read** — every
+  `pubs.opengroup.org` URL tried (10th edition, 9.2, 9.1, 8.1.1) returns
+  a 302 to an OAuth endpoint this session cannot complete, so **every
+  normative claim below is from secondary sources**, none quoted from the
+  standard. Worth recording the inversion: the *paywalled* ISO 42010
+  published a preview from which Clause 4 was quoted verbatim; the *free*
+  TOGAF yielded no primary text at all. Free ≠ readable.
+  - **CORRECTION TO THE RECORD — "Nth ecosystem, no grader" is imprecise
+    as published, in thirteen entries.** TOGAF ships **two** ordinal
+    grading schemes. **Architecture Compliance**: six levels (Irrelevant,
+    Consistent, Compliant, Conformant, Fully Conformant, Non-Conformant),
+    grading an *implementation against a specification*. **ACMM** (US DoC,
+    carried in TOGAF's capability framework): six maturity levels across
+    nine architecture elements, with a rating computed by **two
+    complementary methods — a weighted mean maturity level, and the
+    percentage achieved at each level** — grading an *organization's EA
+    capability*. A weighted mean over weighted elements yielding an
+    ordinal level plus percentages **is `scoring.py`'s composite,
+    structurally**. The criterion the series was actually applying is
+    narrower and is now stated: **nothing found in fourteen ecosystems
+    grades the artefact class pumllint grades — a description.** Adjacent
+    objects have been graded routinely for decades. Use the qualified
+    form from here; read the past thirteen with this attached. *The
+    structural-similarity half rests on a single secondary source —
+    anyone with a TOGAF login should verify ACMM's calculation
+    description before citing it further; the correction's direction is
+    safe regardless, since TOGAF plainly grades.*
+  - **This sharpens the ISO 42010 entry rather than softening it.** That
+    entry (same day) found ISO/IEC/IEEE 42030 declining to define an
+    aggregate verdict and read it as the field's considered abstention.
+    Incomplete. **The same field has aggregated enthusiastically since the
+    1990s — over organizations (ACMM) and implementations (Compliance) —
+    and has declined to aggregate over descriptions.** Not shyness about
+    aggregation: a consistent choice about which object gets a number.
+    Both readings stay open and neither note settles them — (a) the niche
+    is empty because grading a description is a different and harder
+    problem nobody attempted while the artefacts were not in version
+    control; (b) the niche is empty because the field considered it and
+    put the number elsewhere. **(b) is better supported than it was this
+    morning; (a) is not refuted.** Cite the streak with both.
+  - **The measurement is the best in the series and a genuine surprise:
+    three of four TOGAF diagram artifacts land in the *correct* parsed
+    type with no false findings.** Business Use-Case Diagram →
+    **`usecase`, Level 4, 99.31**; Conceptual Data Diagram → **`class`,
+    Level 4, 98.75**; Data Lifecycle Diagram → **`state`, Level 4,
+    99.48** — each with only GEN001 (no title) and GEN002 (no name),
+    both true of the samples. Three artifact classes, **three different
+    packs**, all correct. Capella's Exchange Scenario was one artefact;
+    this is three, and it is the `usecase`/`class`/`state` packs — the
+    three least discussed in the series — that earned it.
+  - *Coverage across the published catalogue* (32 diagrams, 14 catalogs,
+    10 matrices): my classification of artifact **names**, not TOGAF's,
+    since the standard prescribes no notation — `usecase` 2
+    (Business/Application Use-Case), `class` 2 (Conceptual/Logical Data),
+    `state` 2 (Product/Data Lifecycle), `activity` 1 (Process Flow),
+    **`sequence` 0**. **Seven of thirty-two**, spread over four packs.
+  - **And the sequence pack maps to nothing, which inverts the series.**
+    pumllint's deepest pack (11 base + 9 codegen, four rules about
+    activation) has **no counterpart in TOGAF's 32 diagrams** — the
+    catalogue has no sequence diagram. In eleven prior evaluations that
+    pack was the one that *fired*, usually wrongly. TOGAF's nearest
+    artefact, the Application Communication Diagram, mis-types to
+    `sequence` with **3 false SEQ009s at Level 4, 6 elements, 88.96** —
+    the standing type-fallback class (ArchiMate, C4, Mermaid, UML,
+    Capella), **no candidate and no amendment**. One precise note: this
+    output is **identical in type, level, score, element count and
+    finding set to the Capella LAB** measured the same day — two
+    unrelated frameworks, one shape (three components, three dashed
+    labelled arrows), one result. C4 sample C reaches the same composite
+    by a different finding set.
+  - *The Open Group loop closes usefully*: ArchiMate (third in the
+    series) is the notation, TOGAF the method it serves. The ArchiMate
+    note found the **vocabulary** invisible to pumllint; this finds the
+    **model kinds** mapping cleanly. Consistent, and jointly informative.
+  - *Never build*: a TOGAF artifact recognizer or rule pack (no notation
+    is prescribed, so the convention would have to be invented first);
+    **any mapping of pumllint's levels onto ACMM's or the compliance
+    levels** — three ordinal ladders over three different objects
+    (organization, implementation, description), and unlike the Arcadia
+    trap both TOGAF ladders *are* quality ladders, so the side-by-side
+    table would look defensible and be false; any claim that pumllint
+    supports, enables or accelerates the ADM (it is not a phase, produces
+    no named deliverable, discharges no compliance review); a
+    TOGAF-specific phase-tagging config key (GEN006/GEN007 already carry
+    arbitrary prose tags); and **reading ACMM's existence as validation
+    of the scoring model** — familiar shape, different object, and the
+    object is the open question.
+  - *Recorded, not queued*: (1) **the corrected streak criterion**
+    (above) — the substantive output of this evaluation; (2) **the
+    sharpened 42010 reading** (above); (3) **three TOGAF artifact kinds
+    already parse and score correctly with no work** — a fact about the
+    tool, second instance after Capella's Exchange Scenario and the first
+    covering multiple packs; worth citing when the question is what
+    pumllint is *for*.
+  - Re-litigate on: **evidence that practitioners draw TOGAF artifacts in
+    PlantUML** — the only trigger a user can fire, and the one that turns
+    the measurement into an audience; **a TOGAF login becoming
+    available**, which is the only way to put the correction on
+    primary-source footing; a tool appearing that grades *description*
+    artefacts — the streak trigger in its qualified form, now the only
+    form in which it is a meaningful signal. **Not** on TOGAF adoption,
+    which has been large for twenty years without producing a description
+    linter.
+
 - **Cross-diagram relationships (2026-08-28): the XD pack joins entity
   *nodes*, never *edges* — no declared diagram→diagram relation exists
   anywhere in the product, the RDF qualified-relationship shape stays

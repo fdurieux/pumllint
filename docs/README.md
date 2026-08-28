@@ -254,6 +254,23 @@ but they are a useful cross-check that no audience was forgotten.
   may be a considered position rather than an empty niche. Also the first
   ecosystem whose normative text could not be read: paywalled, which is
   an argument against conformance claims users could not audit either.
+- [The TOGAF / ADM ecosystem, evaluated](togaf-adm-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), fourteenth in the series, and the one
+  that **corrects the record**. The line "Nth ecosystem, no grader",
+  carried in thirteen entries, is imprecise as published: TOGAF ships two
+  ordinal grading schemes, and **ACMM computes a maturity rating as a
+  weighted mean over nine weighted elements plus per-level percentages** —
+  which is `scoring.py`'s composite, structurally. The criterion the
+  series was really applying is narrower and is now stated: *nothing in
+  fourteen ecosystems grades the artefact class pumllint grades — a
+  description*; adjacent objects have been graded for decades. That also
+  sharpens the ISO 42010 note: the field aggregates over organizations and
+  implementations and declines to over descriptions. Separately, the best
+  measurement in the series — **three of four TOGAF diagram artifacts land
+  in the correct parsed type with no false findings** (use-case → Level 4
+  99.31, conceptual data → 98.75, data lifecycle → 99.48), across three
+  different packs — while the deepest pack, `sequence`, maps to **none**
+  of TOGAF's 32 diagrams.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
