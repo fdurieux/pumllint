@@ -1864,6 +1864,137 @@ list and license posture live in § Settled questions.
     niche question the other way and still not make DOT a diagram
     notation.
 
+- **SysML ecosystem (2026-08-28): still no — and the first entry in the
+  series that answers a trigger this record already set.** Eleventh
+  (full record: docs/sysml-ecosystem-evaluation.md; pumllint claims
+  executed at `59f4470`, default config, neutral cwd — GEN006/GEN007
+  verified dormant; **no SysML tool executed** — not Cameo, not SysON,
+  not the pilot implementation, so all tool behaviour is characterized
+  from vendor docs, package listings and release notes; per session
+  scope **no GitHub repository was read**, which leaves the pilot's
+  PlantUML generator uninspected and its licence unresolved).
+  - **The trigger fired, and its wording pointed the wrong way.** The
+    UML entry watched for *"SysML v2 / KerML acquiring a
+    PlantUML-renderable textual form with users"* and listed SysML v2 as
+    the single item in its SWOT **threat** column. It already had such a
+    form, and had for years: the OMG **pilot implementation renders
+    through PlantUML** (`org.omg.sysml.plantuml`; `%viz` in its Jupyter
+    kernel, characterized as a *highly adapted* PlantUML whose output is
+    not entirely spec-conformant). SysML v2 does not compete with
+    PlantUML — **it emits PlantUML**. *Correction to the record*: the
+    UML note's threat entry is reclassified as a **producer of the
+    artefact pumllint gates**, the Structurizr classification, alongside
+    `structurizr-cli export` and the C4 exporters. The conclusion the
+    threat entry supported is unchanged; only the classification was
+    wrong.
+  - *Two languages under one name, and conflating them defeats every fit
+    question.* **SysML v1** (v1.7, June 2024, not deprecated) is a **UML
+    profile** — nine diagram types, XMI interchange, no textual notation.
+    **SysML v2** (final adoption 21 July 2025; spec Sep 2025, editorially
+    updated March 2026 for ISO) is **not** a UML profile: built on KerML
+    1.0, with a normative textual notation. No backward compatibility;
+    migration tooling covers roughly a fifth of the metamodel. Both live
+    for years.
+  - **SysML v2 is the first notation in eleven that cannot be misread,
+    and structurally.** Wrapped in `@startuml` it is `unknown`, 0
+    elements, **Level 1 (Sketchy) 95.0** — because its relationships are
+    spelled with **keywords, not symbols**: `connect a to b`,
+    `flow x to y`, `succession a then b`, `satisfy R by p`, `:>`. The one
+    arrow-shaped token, `->`, is an expression operator
+    (`parts->size()`) and produced no message when present. Contrast
+    D2 (symbol collision, Level 4 99.17) and DOT (saved by semicolons the
+    language does not require). This is the one honest result in the
+    series that survives editing the file.
+  - **SysML v1 bdd is the first foreign notation to land in a fully
+    correct parse — and the findings are the wrong dialect.** A bdd in
+    community PlantUML class syntax types **`class`**, 8 elements,
+    **Level 3, 69.22**, exit 1, with **CLS002 firing four times**
+    demanding both-end multiplicity. Not a fallback and not a
+    coincidence: SysML v1 *is* a UML profile and a bdd *is* a class
+    diagram. But SysML **specifies defaults for both ends** of a
+    composite association (composite 0..1, part 1), so omitting them is
+    reliance on the spec, not omission. CLS002 is **right about the
+    PlantUML text and misleading about the SysML model** — a positioning
+    hazard, not a defect, and the third instance of the
+    true-and-unownable pattern (ArchiMate, Structurizr, this), the first
+    where the truth is in a *different language* from the reader's.
+  - *The ibd is not a new instance.* `component` + a bare `--` types
+    `sequence`, recovers exactly 3 elements (the `l4_min_elements = 3`
+    floor, `scoring.py:88`) and scores **Level 4 (Precise) 91.25** — the
+    standing type-fallback class in the alias-style-component form the
+    **UML entry already recorded**. Eleventh notation, same mechanism, no
+    new candidate and no amendment.
+  - **The yield is the `trace` measurement, and it is not about SysML.**
+    Same IDs, same diagram, varying only *where* the ID is written:
+    inside a `<<requirement>>` block body — **where SysML puts it** —
+    gives **0/2 covered, "1 unlinked diagram(s)"**; in a class name, a
+    stereotype, or a relation label, also 0; in a **note or title**,
+    2/2. The tool does not decline to judge — it confidently reports the
+    requirements uncovered and the diagram unlinked, on the one diagram
+    shape that exists to record that link. **And this is deliberate**:
+    `trace.py:233-234` — *"Message labels and other model content are
+    deliberately not carriers — same as the rule"* — so that rule and
+    matrix cannot disagree about what counts as a reference. Not a
+    defect, not a fix. What is new is that the invariant's **cost is now
+    measured**, and that it is a pumllint property, not a SysML one: a
+    plain class diagram with `+REQ-001` as a member behaves identically.
+  - **Eleventh ecosystem, no grader — the strongest entry in the
+    streak.** SAIC's **free** Digital Engineering Validation Tool ships
+    **251 validation rules covering language *and* style** for
+    MagicDraw/Cameo, reported with severities (fatal/error/warning/
+    debug/info); Cameo adds SysML, KerML and vendor validation suites.
+    That is the closest analogue to this catalogue found in eleven
+    ecosystems. It reports violations, and produces no score, level,
+    grade or aggregate. (Characterized from the product page; the rule
+    set was not downloaded.)
+  - **Licence: the Graphviz finding generalizes from a library to an
+    ecosystem.** **Eclipse SysON is EPL-2.0** (verified from its Eclipse
+    project proposal), and by that proposal it is *the core SysMLv2
+    editing capability for Papyrus*, integrating with Capella — both
+    Eclipse projects. The open SysML v2 tool ecosystem is an Eclipse
+    ecosystem, so the categorical EPL never-build closes it whole,
+    product *and* `tools/`. Second consecutive licence-binding
+    evaluation, first that closes an ecosystem. **The pilot
+    implementation's own licence is unresolved** — sources disagree
+    (LGPL, with `LICENSE`/`LICENSE-GPL` files, vs a relicensing to EPL;
+    the adjacent API-Services and Release repos are reported EPL-2.0) —
+    and settling it needs the repository, outside scope. It does not
+    need settling: SysON alone establishes the point and nothing
+    proposes depending on any of it.
+  - *Never build*: a SysML v2 reader or rule pack (wrong artefact, and
+    pointed *upstream* of what this tool gates); **a SysML v1 profile
+    mode** or `<<block>>`/`<<requirement>>`-aware rules — the one fit in
+    eleven that would partly work mechanically, refused on the
+    claim-language discipline, since it would assert pumllint checks
+    SysML models while actually checking one community rendering of one
+    of nine diagram types; **a stereotype-conditional CLS002 exemption**
+    (the same move in miniature — the rule is correct about the artefact
+    it examines); any Eclipse/EPL SysML tooling, product or `tools/`;
+    **widening `trace`'s carriers without widening GEN007's** (the
+    agreement invariant is worth more than the coverage); and reading
+    "SysML v2 has formal semantics" as an argument against this project
+    (KerML gives SysML v2 semantics inside SysML v2 and says nothing
+    about whether a PlantUML file means anything).
+  - *Recorded, not queued*: (1) **the `trace` carrier cost, measured** —
+    not a fix proposal; the number, the confident-false-negative shape,
+    the fact that it belongs to pumllint rather than SysML, and the
+    constraint that any future widening moves GEN007 and `trace`
+    together. A documentation note ("put the ID in a note or the title,
+    and why") is the small end and is not queued either. (2) **The
+    right-rule-wrong-dialect observation**, stated once so a fourth
+    instance does not re-derive it.
+  - Re-litigate on: **an adopter running pumllint over PlantUML
+    generated by the pilot implementation** — the concrete form of the
+    producer question, the only trigger here a user can fire, and
+    precisely what this note could not measure (the generator was not
+    inspected, so the shape of its `.puml` is unknown — the largest hole
+    in the record); SysML v2 tooling producing a graded verdict (the
+    standing streak trigger, and SAIC's 251 rules are already most of a
+    catalogue); the pilot's licence resolving to EPL (confirms, changes
+    nothing). **Not** on SysML v1's PlantUML rendering growing in
+    volume — the profile mode is refused on what it would claim, and
+    volume does not move that.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -203,6 +203,24 @@ but they are a useful cross-check that no audience was forgotten.
   DOT lands honestly at **Level 1**, but only because of **semicolons**,
   which DOT permits and does not require — drop them and the same graph
   types `sequence` at Level 3, or Level 4 in its undirected form.
+- [The SysML ecosystem, evaluated](sysml-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), eleventh in the series and the first
+  that **answers a trigger this record already set**: the UML note
+  watched for SysML v2 "acquiring a PlantUML-renderable textual form with
+  users" and listed it as its only SWOT threat. It had one all along —
+  the OMG **pilot implementation renders through PlantUML** — so the
+  threat entry is reclassified as a **producer**, and the answer stays
+  no. Three measurements: SysML **v2** is the **first notation in the
+  series that cannot be misread**, structurally, because its
+  relationships are keywords (`connect … to`, `satisfy … by`, `:>`) with
+  no relational symbol to fall through on; a SysML **v1 bdd** is the
+  first foreign notation to land in a **fully correct parse**, where
+  CLS002's four findings are right about the PlantUML and the wrong
+  dialect for the model; and the yield — **`pumllint trace` reads
+  requirement IDs from notes and titles but not from where SysML puts
+  them**, reporting `0/2 covered` and "unlinked" on a diagram that exists
+  to record that link. Deliberate and documented, so not a defect — but
+  the invariant's cost had never been measured.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
