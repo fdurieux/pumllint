@@ -2834,15 +2834,29 @@ list and license posture live in § Settled questions.
     requirement the ecosystem declined to make**.
   - **(2) The ecosystem already drew the line, and it is our line.**
     Archi offers the 25 viewpoints as a per-view setting (default *None*)
-    and **does not enforce them** — out-of-viewpoint elements are ghosted
-    and greyed, never blocked. Its Validator checks viewpoint conformance
-    as **one of eight opt-in checkers, a WarningType, elements only**. By
+    and applies **three mechanisms of increasing weakness**: it **filters
+    the palette** (its help: *"only the elements permitted for the current
+    Viewpoint are available in the Palette, whilst the others are not
+    available"* — a hard input restriction), **ghosts** what arrives by
+    drag-and-drop anyway, and reports *"Invalid elements in viewpoints"*
+    as **one of eight opt-in Validator checkers, a WarningType, elements
+    only**. What it declines to do is **block** the drag-and-drop. By
     contrast Archi **hard-blocks illegal relationships at authoring
-    time**. Two constraints from one spec, deliberately given different
-    enforcement strengths. **That is the ArchiMate note's N2 extending to
-    viewpoints** ("legality is the settled anti-goal, and this ecosystem
-    enforces it upstream by construction") — refused under the existing
-    never-build, not a new one.
+    time**. **That is the ArchiMate note's N2 extending to viewpoints**
+    ("legality is the settled anti-goal, and this ecosystem enforces it
+    upstream by construction") — refused under the existing never-build,
+    not a new one. *(A draft of this entry said Archi "does not enforce"
+    and "never blocks"; the workflow's adversarial pass refuted it from
+    Archi's own shipped help. The corrected picture is stronger: the
+    ecosystem has not ignored viewpoint conformance, it has calibrated
+    it.)* **Two spec details defeat naive containment checking anyway**:
+    *"the grouping element, junction, and or junction can be used in every
+    viewpoint"*, and Layered permits *"all **core** elements"* — core
+    excluding Motivation, Strategy and Implementation & Migration — so
+    **no 3.1 viewpoint permits everything**, while Archi implements
+    Layered as literally-everything-allowed. **Tool and specification
+    disagree**, a further reason no third party should adjudicate
+    membership.
   - **(3) A controlled experiment — the series' cleanest measurement.**
     Two ArchiMate views **identical in structure, glyphs and element
     count**, differing only in element type and layer: one conformant to

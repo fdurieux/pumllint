@@ -30,15 +30,20 @@ a requirement.** And the 25 example viewpoints are explicitly
 **informative**: conformance requires supporting the viewpoint
 *mechanism*; supporting the example viewpoints is a **MAY**. §5.1.
 
-**(2) The ecosystem already handles it, upstream, and has decided how
-much to care.** Archi offers the 25 viewpoints as a per-view setting
-(default *None*) and **does not enforce them**: out-of-viewpoint elements
-are *ghosted and greyed*, never blocked. Its Validator does check
-viewpoint conformance — as **one of eight opt-in checkers, raised as a
-WarningType**, and testing **elements only, not relationships**. By
-contrast Archi **hard-enforces relationship legality at authoring
-time**: you cannot draw a disallowed relationship at all. **The ecosystem
-treats legality as a constraint and viewpoint membership as advice.**
+**(2) The ecosystem already handles it, upstream, with a graded
+response.** Archi offers the 25 viewpoints as a per-view setting (default
+*None*) and applies **three mechanisms of increasing weakness**: it
+**filters the palette** — its help says *"only the elements permitted for
+the current Viewpoint are available in the Palette, whilst the others are
+not available"*, a hard input restriction — it **ghosts** elements that
+arrive anyway by drag-and-drop, and its Validator reports *"Invalid
+elements in viewpoints"* as one of eight **opt-in** checkers, a
+WarningType, testing **elements only**. What it declines to do is
+**block** a drag-and-drop. By contrast Archi **hard-blocks relationship
+legality at authoring time**: a disallowed relationship cannot be drawn
+at all. **The ecosystem treats legality as a hard constraint and
+viewpoint membership as a graded discouragement** — and it has clearly
+thought about where on that scale each belongs.
 §5.2 — and this is the third note's **N2** ("relationship-legality rules
 … legality is the settled anti-goal, and this ecosystem enforces it
 upstream by construction") extending cleanly to viewpoints, not a new
@@ -79,8 +84,9 @@ Edition and text-extracted, so **every verbatim quotation below is 3.1**,
 and whether 3.2 renumbered or changed any viewpoint's element list is
 **not established**. Section numbers, viewpoint counts and the four
 basic-viewpoint categories are 3.1 figures. **No ArchiMate tool was
-executed**; Archi's behaviour is characterized from its 5.9.0 user guide
-and source, read by a research agent, not run. Per session scope **no
+executed**; Archi's behaviour is characterized from its shipped help,
+5.9.0 user guide and source, read by research agents, not run — and one
+claim about it was corrected by the adversarial pass (§5.2). Per session scope **no
 GitHub repository was read by me**; research agents fetched public files.
 All pumllint claims were executed by me at `51bc97d` (v0.30.0) with
 default config from a neutral working directory, except where
@@ -194,7 +200,7 @@ third one.
 | Concern | pumllint | ArchiMate viewpoints | Reading |
 |---|---|---|---|
 | Viewpoint as a declared subset | no concept | the mechanism, normatively required to be *supported* | **Disjoint — §1.1** |
-| View-to-viewpoint conformance | invisible (§8.3) | **not a requirement**; Archi warns, opt-in | Owned upstream, advisory |
+| View-to-viewpoint conformance | invisible (§8.3) | **not a requirement**; Archi filters, ghosts, then warns | Owned upstream, graded |
 | Relationship legality | anti-goal (3rd note, N2) | **hard-enforced by Archi at authoring time** | Owned upstream, by construction |
 | Element vocabulary | none — and **PlantUML has none either** (§2) | 60+ typed elements across layers | Nothing to read |
 | Behavioural/interaction shape | `sequence` — the deepest pack | **no sequence-shaped viewpoint in the catalogue** | Near-empty intersection — §5.4 |
@@ -208,8 +214,8 @@ third one.
    (§1.2).
 3. **PlantUML carries no element types**, so the property is absent from
    the artefact, not merely unread (§2).
-4. **The ecosystem's own tool already decided how much to care** — warn,
-   don't block (§5.2).
+4. **The ecosystem's own tool already calibrated it** — filter, ghost,
+   warn; don't block (§5.2).
 
 ## 5. Sense — five true things
 
@@ -228,14 +234,33 @@ negative; this one came back refuted from the primary source).
 ### 5.2 Archi has already drawn the line, and it is the third note's line
 
 The most instructive fact found: **Archi hard-blocks illegal
-relationships and merely ghosts out-of-viewpoint elements.** Two
-constraints from the same specification, deliberately given different
-enforcement strengths by the reference implementation.
+relationships, and applies to viewpoints a graded response that stops
+short of blocking** — palette filtering, then ghosting, then an opt-in
+validation warning. Two constraints from the same specification,
+deliberately given different enforcement strengths by the ecosystem's
+dominant open-source tool.
+
+*(An earlier draft of this note said Archi "does not enforce" viewpoints
+and "never blocks". That was wrong and the adversarial pass caught it:
+palette filtering is a real input restriction. The corrected picture is
+more useful anyway — the ecosystem has not ignored viewpoint conformance,
+it has calibrated it.)*
+
+Two details make naive containment checking wrong even where a subset
+exists, and both are the spec's own words: *"In addition to the specified
+elements, the grouping element, junction, and or junction can be used in
+every viewpoint"*; and the Layered viewpoint's row reads *"All **core**
+elements and all relationships are permitted"* — core excludes Motivation,
+Strategy and Implementation & Migration elements, so **no viewpoint in the
+3.1 catalogue permits everything**, while Archi implements Layered as
+literally-everything-allowed. **The tool and the specification disagree**,
+which is a further reason no third party should be adjudicating
+membership.
 
 That is the third note's **N2** confirmed from a new direction. N2
 refused relationship-legality rules on the ground that "this ecosystem
 enforces it upstream by construction" — and the same sentence now covers
-viewpoints, with the weaker enforcement the ecosystem itself chose.
+viewpoints, with the graded enforcement the ecosystem itself chose.
 **Viewpoint-conformance rules are refused under the existing never-build,
 not a new one.**
 

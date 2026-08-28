@@ -351,9 +351,10 @@ but they are a useful cross-check that no audience was forgotten.
   note was opened to test whether viewpoint conformance is mechanically
   checkable, and **its own research refuted the hypothesis**: no normative
   rule makes a view's conformance to its viewpoint a requirement, the 25
-  example viewpoints are informative, and Archi itself only *ghosts*
-  out-of-viewpoint elements while **hard-blocking illegal
-  relationships** — the ecosystem's own line, and the third note's N2.
+  example viewpoints are informative, and Archi itself applies a
+  **graded response** — palette filtering, ghosting, an opt-in validation
+  warning — while **hard-blocking illegal relationships**: the ecosystem's
+  own calibration, and the third note's N2.
   Measured with the series' first **controlled experiment**: two views
   identical but for element type — one conformant, one violating — give
   **byte-identical output**, under both profiles, and with a fictitious
