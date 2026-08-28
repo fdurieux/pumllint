@@ -485,3 +485,19 @@ but they are a useful cross-check that no audience was forgotten.
   ([docs/xd-demo/](xd-demo/)): the runnable companion to the
   cross-diagram relationships evaluation's G3/G4 findings, transcripts
   drift-guarded (`tests/test_xd_demo.py`).
+- [Positioning pumllint — the quadrant and the wheel](positioning-quadrant.md)
+  — dated positioning note (2026-08-28): two hand-authored figures with
+  every placement derived from a published rule. A Gartner-style quadrant
+  of the diagram-as-code checking field
+  ([the figure](positioning-quadrant.svg)): eight tools, an
+  eight-criterion rubric, and an **empty Leaders quadrant** — the
+  incumbents execute and stop at findings, the visionaries carry the
+  semantic layer without the adoption, and pumllint holds the vision edge
+  alone from below the execution midline, scored with the same candour
+  the ecosystem series applies to everyone else. And the SAFe DevOps
+  wheel ([the figure](safe-devops-wheel.svg)): the Continuous Delivery
+  Pipeline's four aspects with the SDLC assessment's sixteen claim marks
+  reproduced exactly, and the validator field placed upstream and
+  downstream — the gating pattern the pipeline already trusts for code,
+  containers and infrastructure, argued back to the design artefact they
+  all descend from.
