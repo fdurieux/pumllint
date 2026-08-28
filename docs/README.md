@@ -319,6 +319,23 @@ but they are a useful cross-check that no audience was forgotten.
   rules**. The first quantitative statement of what pumllint's rules are
   *about* — worth consulting before describing the tool as broad
   enterprise-diagram hygiene.
+- [The FEAF / Gartner EA ecosystem, evaluated](feaf-gartner-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), eighteenth in the series and the first
+  whose two halves are **opposites**. **FEAF** confirms a mapping the
+  series had only inferred: its artifact table publishes each artifact's
+  DoDAF equivalent, so **D-8 Event Sequence Diagram *is* DoDAF SvcV-10c**
+  by FEAF's own account — the framework-to-framework half of the
+  TOGAF/DoDAF/NAF mapping method, externally corroborated. D-8, D-7 and
+  D-1 all score **Level 4, 100.00, zero findings** — and the note is
+  explicit that this is inflated by naming the samples, so it is *not*
+  comparable with DoDAF's 99.75–99.92. **Gartner** is the first
+  *commercial advisory practice* in the series and supplies **the first
+  genuine market headwind in eighteen notes**: its published position is
+  that architecture documentation fails on **relevance, not
+  incoherence** — and pumllint measures incoherence. Both readings are
+  recorded and neither adopted; the threats column stays open. Also: the
+  graded-object tally reaches four (organization, implementation,
+  business service, vendor) and **none of them is a description**.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
