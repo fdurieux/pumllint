@@ -287,6 +287,15 @@ are one entity drifting apart, and the linter says so.
 | XD004 | cross-type-name-collision | minor | Entity spellings differing only by case across diagram *types* (participants, classifiers, swimlanes). |
 | XD005 | cross-type-stereotype-conflict | minor | Entity stereotyped differently in the class model than in the interaction models. |
 
+Two escape hatches, both per-entity: `authoritative` pins the intended value
+on a real conflict, and `distinct` (its negative form, on every XD rule)
+declares that two same-named entities are deliberately different things —
+bounded contexts sharing a word — so no cross-diagram comparison applies.
+One disclosure: pumllint never expands the preprocessor, so a diagram whose
+declarations live behind `!include` parses with only implicit entities and
+the XD pack goes quiet on it; the CLI then warns on stderr (exit codes and
+scores untouched) that declarations may be hidden.
+
 ### Codegen-readiness pack (profile: `codegen`)
 
 Rules `SEQ101–SEQ109` validate whether a sequence diagram is precise and

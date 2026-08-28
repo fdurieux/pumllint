@@ -140,6 +140,26 @@ grouped into arcs. Keep it updated as items land.
   boundary: within-notation edge coherence, never the RDF
   qualified-relationship shape. The trigger is unchanged — a probe is not
   a second corpus.*
+- [ ] **XD display-name identity (G2)** — the cross-diagram join is keyed on
+  the `as` alias, so `participant "Order Service" as OS` and `database
+  "Order Service" as OrderService` — one entity by every human reading, with
+  a conflicting kind and stereotype — are never compared (measured:
+  docs/cross-diagram-relationships-evaluation.md, G2/M2), and an alias
+  rename silences any XD finding. Candidate: an evidence-shaped rule
+  (XD003/XD004 family, minor) flagging the same display name under
+  different aliases as "likely one entity", honouring `distinct`. Moderate
+  false-positive risk on generic display names; Arc C bar in full.
+  *Trigger: an adopter corpus using `as` aliases inconsistently.*
+- [ ] **`ref over` capture + declared diagram→diagram links (G6/O4)** — the
+  notation's one cross-diagram construct (recommended by SEQ006's own
+  message) is dropped whole by the parser, and the nearest declared-link
+  mechanism, `trace`, is untyped and undirected (same note, G6/§2.3).
+  Candidate, built together if built: parse `ref over` into the model, and
+  a link-integrity check (dangling target, orphan diagram) with
+  `trace`-style gates; any carrier widening moves GEN007 and `trace`
+  together (the SysML invariant). Same shape as the Linked.Archi `'!la-`
+  candidate — if either is built, build both. *Trigger: an adopter running
+  `trace` who asks for diagram→diagram links in the same table.*
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
@@ -2519,7 +2539,15 @@ list and license posture live in § Settled questions.
   - Re-litigate on: the recorded triggers above, or the Arc C trigger —
     **not** on the existence of Linked.Archi, RDF 1.2 reification, or
     any ecosystem's relationship model (settled 2026-08-26 and
-    2026-08-27).
+    2026-08-27). *Amended 2026-08-28, same day: the maintainer picked up
+    candidate (1) and the G4 residual directly — the `!include`
+    hidden-declarations disclosure shipped (stderr warning in the CLI
+    parse funnel, exit codes and scores untouched; the parser now records
+    the `!include` family as directives, still never expanding them), and
+    every XD rule gained the `distinct` option, the negative form of
+    `authoritative`, closing G4's bounded-context false positive.
+    Candidate (2) and the G2 alias gap moved to Arc C checkboxes with
+    their triggers intact.*
 
 ## Working agreements (read before picking anything up)
 
