@@ -1180,7 +1180,14 @@ list and license posture live in § Settled questions.
     file reaches Level 4 (Precise) 99.17 with only GEN001, because SEQ001's
     `only_if_any_declared` default (correct, and not a defect) withdraws the
     last objection. Any fix must be validated against that case or it
-    repairs the loud instances and leaves the quietest one.* (2) The **generated-`.puml` hazard** — exported ArchiMate views
+    repairs the loud instances and leaves the quietest one.* *Amended again 2026-08-27 by
+    the Ilograph entry: the class has a **second degradation mode**. Foreign
+    *diagram* syntax is dropped by the parser; foreign *data* syntax is
+    **manufactured into content** — YAML's list dash is read as a PlantUML
+    arrow, keys become participants, values become labels — and the
+    composite **rises with volume** (99.44 → 99.82 across 3→40 resources,
+    Level 4 throughout). Any fix must be validated against a YAML-shaped
+    file as well as a foreign-diagram-shaped one.* (2) The **generated-`.puml` hazard** — exported ArchiMate views
     score Level 4 today, so a pipeline gating an agent loop on pumllint gets
     a passing verdict on a diagram the tool did not read; the consequence a
     user would actually meet, and candidate 1's motivation. (3) **Archi's
@@ -1680,6 +1687,83 @@ list and license posture live in § Settled questions.
     streak trigger); or evidence that exported sequence diagrams are a
     common input, which would make the GEN004 pattern a common experience
     rather than a latent one.
+
+- **Ilograph ecosystem (2026-08-27): no, on the cleanest grounds in the
+  series — and the yield is not about Ilograph.** Ninth of the series
+  (full record: docs/ilograph-ecosystem-evaluation.md; repo claims
+  executed at `7043819`; **no Ilograph tool executed** — closed commercial
+  software, not licensed or installed; the sample model is reconstructed
+  from the published spec, whose page does **not** state the
+  serialization, so "it is YAML" is characterized from Structurizr's
+  exporter docs; no GitHub repository read). Verdict:
+  - *Three structural refusals, each sufficient, none demand-gated.*
+    **(1) Not a diagram notation** — a *model plus perspectives* format
+    for an interactive viewer (`resources` tree, `perspectives` of
+    relation or sequence type, `contexts`, `imports`), where a
+    perspective is a traversal rather than a picture, so the unit
+    pumllint reasons about does not exist. Sequence perspectives are the
+    only partial map, and even they have no activation concept, where
+    four of the eleven base sequence rules live. **(2) The first fully
+    commercial, fully closed ecosystem in the series** — Free/Pro/Team/
+    Team+ SaaS plus a paid Desktop app, no open-source component at all
+    (every predecessor had an open core). No source to validate a
+    recognizer against, no grammar-stability guarantee, and the licence
+    posture question has **no answer available**. **(3) It is YAML**, and
+    W3 ranked structured YAML last of five carriers (−30.3 pp pooled,
+    −66.7 pp flow-sensitive, the only non-compiles in the single-shot
+    programme).
+  - *The finding, generalized past its occasion.* Wrapping the model in
+    `@startuml…@enduml` is typed `sequence` and scored **Level 4
+    (Precise) 99.62, one cosmetic finding, exit 0**. Verified in the
+    parse: **the YAML list dash `-` is read as a PlantUML arrow**, the
+    YAML *key* becomes the target participant and the *value* becomes the
+    message label — `- id: Checkout UI` → a message to a participant named
+    `id` labelled `Checkout UI`. The four recovered "participants" were
+    `id`, `name`, `from`, `to`: the vocabulary of the file format, not
+    entities.
+  - *And it improves with size, which is the part that matters.* Measured
+    across four model sizes (n resources + n−1 relations): **99.44 (9
+    elements) → 99.78 (23) → 99.81 (53) → 99.82 (83)**, Level 4 and exit 0
+    throughout. The extra findings at 53 and 83 are GEN009 (83 elements >
+    60) and SEQ011 (80 messages > 30), both `minor`, moving the composite
+    by fractions and the level not at all. **A bigger foreign file scores
+    better.** Cap C6 stops a diagram with nothing *modelled* from claiming
+    a level; nothing stops a diagram with nothing *understood* from
+    claiming a good score.
+  - *This is the sixth instance of the type-fallback class and differs in
+    kind from the five before it.* Those **dropped** lines they could not
+    read; this one **manufactures** content from structural punctuation.
+    The ArchiMate entry's candidate 1 is amended a second time
+    accordingly (see that entry).
+  - *Never build*: an Ilograph reader or rule pack; **a YAML front-end of
+    any kind** — §8 makes it look needed and the opposite follows, the fix
+    is to stop scoring the unrecognized rather than to recognize more;
+    anything premised on the Structurizr→Ilograph export being a pipeline
+    into pumllint (Structurizr writes Ilograph YAML and `.puml` as
+    *alternative* outputs; the branches never meet).
+  - *Validation layer*: Ilograph documents **no** validation, linting or
+    semantic checking of its own. The only tooling found is an
+    **unofficial community MCP server** offering "real-time validation
+    with detailed error analysis", whose own description says it is "not
+    affiliated with or endorsed by Ilograph LLC".
+  - *No-grader streak — first caveated entry.* Nothing here grades, but
+    Ilograph ships no validator, so its non-grading is near-vacuous. The
+    streak holds at **nine with that caveat attached**, and should not be
+    cited without it.
+  - *Small corroboration for the XD pack, from an unexpected direction*:
+    Ilograph's `id`/`instanceOf`/`abstract` exist because a resource
+    referenced from many perspectives must be *one* resource — XD001–005's
+    one-entity-one-identity thesis, solved structurally by a tool that has
+    a model, where pumllint must enforce it by inspection.
+  - *Recorded, not queued*: (1) the second amendment to the type-fallback
+    candidate (above); (2) **the next probe if it is picked up** — JSON,
+    TOML and Markdown wrapped in `@startuml`, unmeasured, and the
+    mechanism suggests they may degrade differently again.
+  - Re-litigate on: **nothing an adopter can bring.** All three grounds
+    are structural; only Ilograph open-sourcing a core or shipping a text
+    notation with diagram semantics would move them, neither plausible.
+    The YAML candidate is not demand-gated at all — it awaits the
+    type-fallback decision, already recorded as maintainer self-demand.
 
 ## Working agreements (read before picking anything up)
 
