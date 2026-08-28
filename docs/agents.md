@@ -27,6 +27,22 @@ The gate is an evidence-backed **risk filter**: its demonstrated value
 is keeping low-maturity diagrams out of generation. It is not a
 guarantee of faithful output (see the honesty section at the end).
 
+Where you stand on the pipeline, in one picture:
+
+![The SAFe Continuous Delivery Pipeline as a four-segment wheel: the
+pumllint gate acts where diagrams are authored and where they are
+checked in CI, with the pipeline's other artefact validators — ESLint,
+commitlint, hadolint, actionlint and the rest — placed downstream in
+integration, deployment and release](safe-devops-wheel.svg)
+
+You work at the seam between the wheel's first two segments: the
+diagram you implement from is gated where it is authored (Architect —
+that gate is this page's loop), and the code you produce is gated by
+the integration segment's own validators — the checks your output must
+already pass. The same pattern holds on both sides of you: one
+deterministic check per artefact class. The full mapping is in
+[Positioning pumllint](positioning-quadrant.md).
+
 ## The loop
 
 pumllint is a zero-dependency CLI (`pip install pumllint`, Python
