@@ -309,3 +309,87 @@ def test_state_names_are_not_entities_for_xd004():
         "@startuml seq\ntitle Flow\nparticipant Open\nparticipant C\nC -> Open : go()\n@enduml\n"
     )
     assert not [v for v in _lint(src) if v.rule_id == "XD004"]
+
+
+# -- the `distinct` option: deliberately different entities -------------------
+
+_STEREO_CONFLICT = """\
+@startuml one
+participant Svc <<x>>
+participant Peer
+Svc -> Peer : go()
+@enduml
+@startuml two
+queue Svc <<y>>
+participant Peer
+Svc -> Peer : go()
+@enduml
+"""
+
+_CROSS_TYPE_STEREO = """\
+@startuml sales
+class Order <<aggregate>>
+@enduml
+@startuml checkout
+participant Order <<work-order>>
+participant Peer
+Order -> Peer : place()
+@enduml
+"""
+
+
+def test_distinct_silences_xd001_for_the_named_entity_only():
+    cfg = {"rules": {"XD001": {"distinct": ["Svc"]}}}
+    assert not [v for v in _lint(_STEREO_CONFLICT, cfg) if v.rule_id == "XD001"]
+    other = {"rules": {"XD001": {"distinct": ["SomethingElse"]}}}
+    assert len([v for v in _lint(_STEREO_CONFLICT, other) if v.rule_id == "XD001"]) == 2
+
+
+def test_distinct_silences_xd002():
+    cfg = {"rules": {"XD002": {"distinct": ["Svc"]}}}
+    assert not [v for v in _lint(_STEREO_CONFLICT, cfg) if v.rule_id == "XD002"]
+
+
+def test_distinct_matches_case_insensitively_for_xd003():
+    src = (
+        "@startuml one\nparticipant Ledger\nLedger -> Ledger : s()\n@enduml\n"
+        "@startuml two\nparticipant ledger\nledger -> ledger : s()\n@enduml\n"
+    )
+    assert [v.rule_id for v in _xd(_lint(src))] == ["XD003"]
+    cfg = {"rules": {"XD003": {"distinct": ["LEDGER"]}}}
+    assert not [v for v in _lint(src, cfg) if v.rule_id == "XD003"]
+
+
+def test_distinct_matches_case_insensitively_for_xd004():
+    src = (
+        "@startuml cls\nclass OrderService\n@enduml\n"
+        "@startuml seq\nparticipant orderService\nparticipant B\n"
+        "orderService -> B : x()\n@enduml\n"
+    )
+    assert [v.rule_id for v in _xd(_lint(src)) if v.rule_id == "XD004"] == ["XD004"]
+    cfg = {"rules": {"XD004": {"distinct": ["orderservice"]}}}
+    assert not [v for v in _lint(src, cfg) if v.rule_id == "XD004"]
+
+
+def test_distinct_silences_xd005_bounded_context_homonyms():
+    assert len([v for v in _lint(_CROSS_TYPE_STEREO) if v.rule_id == "XD005"]) == 2
+    cfg = {"rules": {"XD005": {"distinct": ["Order"]}}}
+    assert not [v for v in _lint(_CROSS_TYPE_STEREO, cfg) if v.rule_id == "XD005"]
+
+
+def test_distinct_and_authoritative_compose():
+    # distinct removes one entity from the join; authoritative still pins another
+    src = (
+        "@startuml one\nparticipant Svc <<x>>\nparticipant Gate <<a>>\n"
+        "Svc -> Gate : go()\n@enduml\n"
+        "@startuml two\nparticipant Svc <<y>>\nparticipant Gate <<b>>\n"
+        "Svc -> Gate : go()\n@enduml\n"
+    )
+    cfg = {"rules": {"XD002": {"distinct": ["Svc"], "authoritative": {"Gate": "a"}}}}
+    hits = [v for v in _lint(src, cfg) if v.rule_id == "XD002"]
+    assert len(hits) == 1 and "Gate" in hits[0].message and "<<a>>" in hits[0].message
+
+
+def test_distinct_tolerates_a_malformed_value():
+    cfg = {"rules": {"XD001": {"distinct": "Svc"}}}  # not a list: ignored
+    assert len([v for v in _lint(_STEREO_CONFLICT, cfg) if v.rule_id == "XD001"]) == 2

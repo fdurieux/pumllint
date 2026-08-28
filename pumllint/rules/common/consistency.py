@@ -13,7 +13,9 @@ Value conflicts (XD001/XD002/XD005) are reported symmetrically at every
 conflicted site — the tool cannot know which side is right, and electing a
 majority indicts the conforming sites once a drift has spread (issue #36).
 The per-entity ``authoritative`` option pins the intended value; with it set,
-only non-conforming sites are reported.
+only non-conforming sites are reported. The ``distinct`` option is its
+negative form: names listed there are deliberately different entities that
+happen to share a spelling (bounded contexts), so no XD rule joins them.
 """
 
 from __future__ import annotations
@@ -45,7 +47,25 @@ def _authoritative(options) -> dict[str, str]:
     return {str(k): str(v) for k, v in raw.items()}
 
 
-def _conflict_sets(diagrams, value_of):
+def _distinct(options) -> set[str]:
+    """The ``distinct`` name list: entities that are deliberately *different*
+    things despite sharing a spelling (a bounded-context ``Order`` here, a
+    work-order ``Order`` there).
+
+    The negative form of ``authoritative``: where that option resolves a
+    conflict to one intended value, this one declares the premise of every
+    XD join false for the name — same spelling is not the same entity, so no
+    cross-diagram comparison applies. XD001/XD002/XD005 match the name
+    exactly; XD003/XD004 join case-insensitively, so they match a distinct
+    name case-insensitively too.
+    """
+    raw = options.get("distinct", [])
+    if not isinstance(raw, (list, tuple)):
+        return set()
+    return {str(v) for v in raw}
+
+
+def _conflict_sets(diagrams, value_of, skip: set[str] = frozenset()):
     """The shared symbol-table walk behind XD001/XD002.
 
     Groups declared participants by name via ``value_of`` (returning None to
@@ -53,10 +73,13 @@ def _conflict_sets(diagrams, value_of):
     ``(name, sites)`` with every occurrence in batch order. No side is
     elected: a conflict is symmetric evidence, and which value is *correct*
     is the ``authoritative`` option's call, never a vote's (issue #36).
+    Names in ``skip`` (the ``distinct`` option) are never grouped at all.
     """
     occurrences: dict[str, list[tuple[Diagram, Participant]]] = {}
     for d in diagrams:
         for name, p in d.participants.items():
+            if name in skip:
+                continue
             if value_of(p) is not None:
                 occurrences.setdefault(name, []).append((d, p))
     for name, occs in occurrences.items():
@@ -74,7 +97,7 @@ class ConflictingParticipantKind(CrossDiagramRule):
         # implicit lifelines have no authored kind
         value_of = lambda p: p.kind if p.declared else None  # noqa: E731
         authoritative = _authoritative(self.options)
-        for name, occs in _conflict_sets(diagrams, value_of):
+        for name, occs in _conflict_sets(diagrams, value_of, _distinct(self.options)):
             auth = authoritative.get(name)
             if auth is not None:
                 for d, p in occs:
@@ -102,7 +125,7 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
         # absent stereotypes are SEQ102's concern, not a conflict
         value_of = lambda p: (p.stereotype or None) if p.declared else None  # noqa: E731
         authoritative = _authoritative(self.options)
-        for name, occs in _conflict_sets(diagrams, value_of):
+        for name, occs in _conflict_sets(diagrams, value_of, _distinct(self.options)):
             auth = authoritative.get(name)
             if auth is not None:
                 for d, p in occs:
@@ -131,10 +154,13 @@ class ParticipantNameCaseCollision(CrossDiagramRule):
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
         # Implicit participants included: spelling drift usually enters via arrows.
+        distinct = {v.lower() for v in _distinct(self.options)}
         first: dict[str, tuple[str, Diagram, Participant]] = {}
         for d in diagrams:
             for name, p in d.participants.items():
                 key = name.lower()
+                if key in distinct:
+                    continue
                 if key not in first:
                     first[key] = (name, d, p)
                     continue
@@ -190,9 +216,12 @@ class CrossTypeNameCollision(CrossDiagramRule):
     id = "XD004"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
+        distinct = {v.lower() for v in _distinct(self.options)}
         first: dict[str, _Site] = {}
         for site in _entity_sites(diagrams):
             key = site.name.lower()
+            if key in distinct:
+                continue
             ref = first.setdefault(key, site)
             if site is ref or site.name == ref.name:
                 continue
@@ -221,8 +250,11 @@ class CrossTypeStereotypeConflict(CrossDiagramRule):
     id = "XD005"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
+        distinct = _distinct(self.options)
         occurrences: dict[str, list[_Site]] = {}
         for site in _entity_sites(diagrams):
+            if site.name in distinct:
+                continue
             if site.declared and site.stereotype:
                 occurrences.setdefault(site.name, []).append(site)
         authoritative = _authoritative(self.options)

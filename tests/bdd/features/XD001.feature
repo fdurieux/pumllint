@@ -57,3 +57,25 @@ Feature: XD001 conflicting participant kind
       """
     When the linter runs
     Then no "XD001" issue is reported
+
+  Scenario: a distinct entity is never compared
+    Given the configuration:
+      """
+      [rules.XD001]
+      distinct = ["OrderSvc"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      database OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD001" issue is reported

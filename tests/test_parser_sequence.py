@@ -156,3 +156,41 @@ def test_legend_body_mentioning_note_does_not_open_a_note():
     d = parse_source(src, "t.puml")[0]
     assert [x for x in d.directives if x.kind == "note"] == []
     assert [m.label for m in d.messages] == ["real"]
+
+
+def test_include_directives_are_recorded_not_expanded():
+    src = (
+        "@startuml a\n"
+        "!include _shared.iuml\n"
+        "!includesub parts.iuml!SUB\n"
+        "!includeurl https://example.test/theme.iuml\n"
+        "!define FOO bar\n"
+        "!theme plain\n"
+        "A -> B : go\n"
+        "@enduml\n"
+    )
+    d = parse_source(src)[0]
+    includes = [x for x in d.directives if x.kind == "include"]
+    assert [x.value for x in includes] == [
+        "_shared.iuml",
+        "parts.iuml!SUB",
+        "https://example.test/theme.iuml",
+    ]
+    assert [x.line for x in includes] == [2, 3, 4]
+    # other preprocessor lines stay skipped, and nothing became a participant
+    assert sorted(d.participants) == ["A", "B"]
+
+
+def test_include_inside_a_note_body_stays_note_text():
+    src = (
+        "@startuml a\n"
+        "note over A\n"
+        "  !include not-an-include\n"
+        "end note\n"
+        "A -> B : go\n"
+        "@enduml\n"
+    )
+    d = parse_source(src)[0]
+    assert not [x for x in d.directives if x.kind == "include"]
+    note = next(x for x in d.directives if x.kind == "note")
+    assert "!include not-an-include" in note.value

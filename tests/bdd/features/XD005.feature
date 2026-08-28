@@ -38,3 +38,23 @@ Feature: XD005 cross-type stereotype conflict
       """
     When the linter runs
     Then no "XD005" issue is reported
+
+  Scenario: bounded-context homonyms declared distinct are never compared
+    Given the configuration:
+      """
+      [rules.XD005]
+      distinct = ["Order"]
+      """
+    And the diagram:
+      """
+      @startuml sales
+      class Order <<aggregate>>
+      @enduml
+      @startuml checkout
+      participant Order <<work-order>>
+      participant Client
+      Client -> Order : place()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD005" issue is reported

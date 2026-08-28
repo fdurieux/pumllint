@@ -37,3 +37,23 @@ Feature: XD004 cross-type name collision
       """
     When the linter runs
     Then no "XD004" issue is reported
+
+  Scenario: a distinct name is exempt from cross-type collision, case-insensitively
+    Given the configuration:
+      """
+      [rules.XD004]
+      distinct = ["orderservice"]
+      """
+    And the diagram:
+      """
+      @startuml classes
+      class OrderService
+      @enduml
+      @startuml seq
+      participant orderService
+      participant Client
+      Client -> orderService : run()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD004" issue is reported
