@@ -1,0 +1,10 @@
+@startuml manufacturing
+title Manufacturing context — work orders (REQ-202)
+footer owner: pumllint docs
+class Order <<work-order>> {
+  +machine: MachineId
+  +schedule(): Slot
+}
+class Machine
+Order "0..*" --> "1" Machine : runs_on
+@enduml

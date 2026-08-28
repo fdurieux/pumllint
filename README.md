@@ -197,7 +197,7 @@ CI artifact, attach it to a review, or drop it in a wiki. In GitHub Actions:
 
 ```yaml
 - name: Maturity report
-  uses: fdurieux/pumllint@v0.29.0
+  uses: fdurieux/pumllint@v0.30.0
   with:
     command: score
     paths: docs/diagrams
@@ -294,7 +294,10 @@ bounded contexts sharing a word — so no cross-diagram comparison applies.
 One disclosure: pumllint never expands the preprocessor, so a diagram whose
 declarations live behind `!include` parses with only implicit entities and
 the XD pack goes quiet on it; the CLI then warns on stderr (exit codes and
-scores untouched) that declarations may be hidden.
+scores untouched) that declarations may be hidden. Both mechanisms are
+demonstrated on committed files in
+[a worked example](docs/xd-identity-demo.md) (`docs/xd-demo/`), drift-guarded
+by `tests/test_xd_demo.py`.
 
 ### Codegen-readiness pack (profile: `codegen`)
 
@@ -602,11 +605,11 @@ you pin and runs it:
 ```yaml
 - uses: actions/checkout@v4
 - name: Lint PlantUML diagrams
-  uses: fdurieux/pumllint@v0.29.0
+  uses: fdurieux/pumllint@v0.30.0
   with:
     paths: docs/diagrams
 - name: Maturity ratchet + floor
-  uses: fdurieux/pumllint@v0.29.0
+  uses: fdurieux/pumllint@v0.30.0
   with:
     command: score
     paths: docs/diagrams
@@ -647,7 +650,7 @@ syntax, then `pumllint` for semantics.
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.29.0
+    rev: v0.30.0
     hooks:
       - id: pumllint                 # lint staged diagrams
       - id: pumllint-score
