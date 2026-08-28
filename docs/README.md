@@ -164,6 +164,19 @@ but they are a useful cross-check that no audience was forgotten.
   silence is a *designed* behaviour (SEQ001's `only_if_any_declared`), not
   a defect — which gives the type-fallback class a second silencing
   mechanism any fix must be validated against. Eighth ecosystem, no grader.
+- [The Structurizr DSL ecosystem, re-examined](structurizr-dsl-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), eighth in the series. The twice-settled
+  "no" stands and its *reason* is corrected: Structurizr is not a support
+  candidate but a **producer of the artefact pumllint gates** —
+  `structurizr-cli export` writes PlantUML in two dialects. Measured on all
+  three export shapes: the C4 export lands honestly at Level 1 (confirming
+  the C4 note's dated prediction from a new producer); the static export is
+  mistyped at Level 3; and the sequence export is typed, parsed and scored
+  **correctly at Level 4 — while tripping GEN004 on every participant**,
+  because the exporter emits numeric identifiers. The sharpest form of the
+  generated-artefact problem in the series: nothing malfunctions, the
+  findings are *true*, and their only fix is upstream where Structurizr's
+  own `inspect` already runs.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
