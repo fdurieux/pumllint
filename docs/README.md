@@ -221,6 +221,21 @@ but they are a useful cross-check that no audience was forgotten.
   them**, reporting `0/2 covered` and "unlinked" on a diagram that exists
   to record that link. Deliberate and documented, so not a defect — but
   the invariant's cost had never been measured.
+- [The Capella / Arcadia ecosystem, evaluated](capella-arcadia-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), twelfth in the series and the first
+  refusal argued **against a fit that works**. An Arcadia **Exchange
+  Scenario** hand-drawn in PlantUML is typed `sequence`, parsed
+  correctly, and scores **Level 4 (Precise) 99.38, exit 0** with only
+  cosmetic findings — the eleven-rule sequence pack applying as designed,
+  and **SEQ009, false in five previous evaluations, correct here**. The
+  first foreign artefact in twelve that pumllint handles well. And it is
+  unreachable: **Capella has no PlantUML export**, so the sample had to
+  be hand-written. Also: not a producer (recorded as a finding, breaking
+  a two-evaluation run); a **third consecutive EPL collision**, restated
+  once as a standing structural exclusion from the Eclipse-shaped MBSE
+  tool space rather than a third coincidence; and the closest taxonomic
+  convergence yet — two of Capella's four validation-rule categories are
+  pumllint's dimension names verbatim.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip

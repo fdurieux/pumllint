@@ -1995,6 +1995,123 @@ list and license posture live in § Settled questions.
     volume — the profile mode is refused on what it would claim, and
     volume does not move that.
 
+- **Capella / Arcadia ecosystem (2026-08-28): no — and the first refusal
+  in the series argued *against a fit that works*.** Twelfth (full
+  record: docs/capella-arcadia-ecosystem-evaluation.md; pumllint claims
+  executed at `e989da8`, default config, neutral cwd — GEN006/GEN007
+  verified dormant; **no Capella installed or run**, so its validation
+  behaviour, rule categories and add-on catalogue are characterized from
+  mbse-capella.org and the Eclipse project page; per session scope **no
+  GitHub repository was read**, so Python4Capella and the
+  Capella-Extensions collection were not inspected and "no PlantUML
+  exporter" is a statement about the official catalogue plus search, not
+  a proof of absence; the Arcadia samples are hand-written, since Capella
+  cannot emit PlantUML).
+  - **The central measurement is a *positive* result, the first in
+    twelve.** An Arcadia **Exchange Scenario** (lifelines = components
+    and actors, messages = exchanges) hand-drawn in PlantUML is typed
+    `sequence`, parsed correctly, and scores **Level 4 (Precise) 99.38,
+    exit 0**, with two cosmetic findings (GEN001, GEN002) and nothing
+    else. Everything worked for the right reason: participants declared
+    so SEQ001/SEQ002 are satisfied rather than dormant; activations
+    balanced so SEQ003 is quiet on evidence; **SEQ009 — false in five
+    previous evaluations — is correct here**, because the dashed arrows
+    are genuine returns paired with genuine calls. An Exchange Scenario
+    *is* a sequence diagram, so the deep pack applies as designed. **This
+    is the first artefact from a foreign ecosystem that pumllint handles
+    well.**
+  - *And it is unreachable, which is the honest other half.* **Capella
+    has no PlantUML export** — the official add-on catalogue exports to
+    HTML, MS-Word (M2Doc), Simulink, ASN.1/AADL, SCADE, SysML (Obeo's
+    commercial bridge) and Reqtify, plus Python4Capella scripting; no
+    PlantUML anywhere, and no community converter surfaced in search. The
+    §8.3 file had to be written by hand. A fit reachable only by users
+    who have stopped using the ecosystem's own tool is not a fit with the
+    ecosystem.
+  - **Not a producer — recorded as a finding, not an absence.** Unlike
+    Structurizr and the SysML v2 pilot, nothing here writes `.puml`. Two
+    consecutive evaluations turned on producer relationships; checking
+    and finding none stops "MBSE tools emit PlantUML" hardening into a
+    generalization on two data points.
+  - *Three further grounds, none needing the first*: Capella is an
+    Eclipse/Sirius **graphical** tool over XML (`.capella`, `.aird`) with
+    no text notation to lint; **Arcadia is a method before it is a
+    language** (five perspectives — Operational Analysis, System
+    Analysis, Logical, Physical, Component Contracts; an **AFNOR standard
+    Z67-140 since 2018**, the first national-standard ecosystem in the
+    series); and the licence, below.
+  - **Licence — third consecutive EPL collision, and the repetition is
+    itself the finding.** Capella is **EPL-2.0** (verified, Eclipse
+    project page; Mature, 7.1.0, 2026-07-10). Graphviz collided as a
+    *library*, SysML v2 as an open *tool ecosystem*, Capella as *the tool
+    and its whole add-on platform*. **This is one condition, not three
+    coincidences**: the MBSE and modelling-tool world is Eclipse-shaped
+    (EMF, Sirius, Papyrus, Capella, SysON), so a GPL project forbidding
+    EPL is **structurally excluded from the MBSE tool space**. Stated
+    once here as a standing condition — a fourth evaluation should cite
+    it, not rediscover it, and must not present it as news. The exclusion
+    binds *linking*, not *reading*: nothing stops pumllint linting a
+    `.puml` a Capella user wrote by hand.
+  - **Twelfth ecosystem, no grader — and the closest taxonomic
+    convergence found so far.** Capella *"organizes model validation
+    rules in several categories: **Integrity, design, completeness,
+    traceability**, etc."* with **validation profiles**. Two of those
+    four are pumllint's dimension names verbatim (DIM-CMP completeness,
+    DIM-TRC traceability), and "validation profiles" is what this
+    repository calls rule profiles — arrived at independently. Second
+    convergence data point after bpmnlint, and the first on the
+    *taxonomy* rather than on individual rules. Capella reports
+    violations with severities; no score, level, grade or aggregate in
+    its documentation, and no metrics add-on in its catalogue.
+  - *The other three shapes fall through, and none of it is new.* LAB
+    (components + exchanges) and SDFB (functions + functional exchanges)
+    both type `sequence` at Level 4 with **false SEQ009s** — in Arcadia a
+    `-->` is a *functional exchange*, a directed dependency, while
+    `is_return_arrow` (`parser/sequence.py:472`) reads any `--`/`..` as a
+    return. The ArchiMate note named this explicitly and C4, Mermaid and
+    UML each recorded the mechanism; the standing type-fallback class
+    covers it, **no candidate and no amendment**. One coincidence, stated
+    carefully: the LAB lands on **the same composite as C4 sample C**
+    (Level 4, 6 elements, 88.96) with a *different finding set* — three
+    false SEQ009s here, two plus a SEQ006 there. Not a reproduction; two
+    foreign notations reaching an identical score through different
+    penalties, which says something about how coarse the composite is at
+    that end and nothing about Arcadia.
+  - *A precision point recorded so it is not assumed*: an Arcadia
+    data-flow blank is **not** a flowchart — it shows information
+    dependency between functions, not control flow — so "Arcadia has
+    dataflow, pumllint has an activity pack" is **not** a mapping. A
+    PlantUML activity diagram scores well (`activity`, Level 4, 99.31)
+    and is not an Arcadia rendering.
+  - *Never build*: a Capella/Arcadia reader or rule pack; **any mapping
+    of pumllint's maturity levels onto Arcadia's five perspectives** —
+    both are five-step ladders and both get called "levels", and the
+    alignment is entirely spurious: Arcadia's is *abstraction* (every
+    perspective present in a finished model) and pumllint's is *grade*
+    (exactly one applies at a time), so a model can be at Physical
+    Architecture and score Sketchy; **a Capella→PlantUML exporter in this
+    repository** — building the producer to create demand for your own
+    consumer is manufacturing the pipeline rather than finding it, and if
+    it should exist it is a Python4Capella script in a Capella user's
+    repo; any Capella or Eclipse-platform dependency, product or
+    `tools/`; and an integration justified by the shared category
+    vocabulary (convergence is evidence the decomposition is natural, not
+    that the tools should meet).
+  - *Recorded, not queued*: (1) **the Exchange Scenario as the series'
+    positive control** — twelve evaluations of negative results and one
+    artefact class that lands right; worth citing when the question is
+    what pumllint is *for*, and worth citing with the unreachability
+    attached, since the population that would benefit is unverified.
+    (2) **The EPL/MBSE structural exclusion, stated once** (above).
+  - Re-litigate on: **somebody publishing a Capella→PlantUML exporter
+    with users** — the only trigger here a user can fire, and the one
+    that moves the fit from unreachable to reachable without this project
+    building anything (refusing to *build* it is not refusing to *benefit*
+    from it); Capella gaining an aggregate verdict (the standing streak
+    trigger, and a plausible source given the taxonomy). **Not** on
+    Arcadia adoption growing — Capella users use Capella, and volume
+    creates no PlantUML artefact to lint.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
