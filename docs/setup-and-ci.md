@@ -74,6 +74,24 @@ Three steps, cheapest first:
 3. **Score gate** — `pumllint score` with a **baseline ratchet** plus a
    **minimum-level floor**.
 
+Where those steps sit in the wider pipeline — and which of your other
+artefact gates they run alongside — in one picture:
+
+![The SAFe Continuous Delivery Pipeline as a four-segment wheel: the
+pumllint gate runs at Develop (pre-commit) and Build (Action, ratchet,
+Sonar export), alongside the pipeline's other artefact linters — ESLint,
+commitlint, hadolint, actionlint downstream in integration; tflint,
+kubeconform, conftest in deployment; REUSE and SBOM checks at
+release](safe-devops-wheel.svg)
+
+The wheel is the same picture your pipeline already implements for code,
+containers and infrastructure: one deterministic gate per artefact class,
+run where the artefact is produced. The pre-commit hooks and the Action
+below are pumllint's two seats on it — Develop and Build — and the badge
+(§[Maturity badge](#maturity-badge)) is its release-evidence seat. The
+per-segment mapping is in
+[Positioning pumllint](positioning-quadrant.md).
+
 ### GitHub Actions (composite action)
 
 The repo ships an action; pin the ref, inputs mirror the CLI:

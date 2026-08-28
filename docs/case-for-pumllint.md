@@ -210,6 +210,23 @@ Short answer: for this specific job, nothing we could find.
   checks is not the disagreement; this tool ships a guide for adding
   rules to it. The apparatus around the rules is the product.
 
+This finding is drawn. The chart below places pumllint among the
+checking tools of neighbouring diagram notations — one dot per tool, each
+checking its own notation — on a Gartner-style quadrant whose positions
+are computed from a published scoring rubric, not judged:
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders quadrant
+is empty; pumllint sits deep in Visionaries; the incumbents cluster in
+Challengers](positioning-quadrant.svg)
+
+Read candidly, the top-right is empty: the tools with an installed base
+stop at syntax or findings, and the tools with the semantic depth —
+pumllint furthest among them — have not yet earned the adoption. That
+empty quadrant is this section's "nothing we could find", extended across
+the neighbouring notations and scored. The rubric, the per-tool scores,
+and what would move each dot are in
+[Positioning pumllint](positioning-quadrant.md).
+
 ## Suggested rollout
 
 1. **Week 1:** run the scorer read-only on one existing repository and

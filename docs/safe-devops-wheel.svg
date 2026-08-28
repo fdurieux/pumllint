@@ -1,0 +1,142 @@
+<svg viewBox="0 0 960 780" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The SAFe Continuous Delivery Pipeline drawn as a wheel with four segments — Continuous Exploration, Continuous Integration, Continuous Deployment, Release on Demand — flowing clockwise. pumllint's per-activity claims are marked on each of the sixteen practice domains (direct at Architect, Develop and Build; supporting and inherited elsewhere; no claim in most of Continuous Deployment). Around the wheel, the neighbouring field of standards validators is placed by segment: vale, Spectral, bpmnlint and Structurizr upstream and beside pumllint in exploration; ESLint, commitlint, hadolint and actionlint downstream in integration; tflint, kubeconform and OPA conftest in deployment; REUSE and SBOM checkers in release.">
+  <!-- Hand-authored figure for positioning-quadrant.md. Light palette baked in
+       (no CSS variables) so the file renders standalone, including inside GitHub's
+       dark theme, on its own paper background. The sixteen practice-domain claim
+       marks reproduce the appendix table of value-in-the-sdlc.md exactly. -->
+  <rect x="0" y="0" width="960" height="780" fill="#F7F8FA"/>
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#7E2608"/>
+    </marker>
+    <g id="dm-direct"><circle r="4.5" fill="#14636B"/></g>
+    <g id="dm-supp"><circle r="4.5" fill="none" stroke="#14636B" stroke-width="1.2"/><path d="M 0 -4.5 A 4.5 4.5 0 0 0 0 4.5 Z" fill="#14636B"/></g>
+    <g id="dm-inh"><circle r="4.5" fill="none" stroke="#14636B" stroke-width="1.2"/></g>
+    <g id="dm-none"><line x1="-4.5" y1="0" x2="4.5" y2="0" stroke="#6E7883" stroke-width="1.5"/></g>
+  </defs>
+
+  <!-- wheel: four aspect segments, clockwise from 12 o'clock = pipeline flow -->
+  <path d="M 480 337 L 480 190 A 205 205 0 0 1 685 395 L 538 395 A 58 58 0 0 0 480 337 Z" fill="#14636B" fill-opacity="0.08"/>
+  <path d="M 538 395 L 685 395 A 205 205 0 0 1 480 600 L 480 453 A 58 58 0 0 0 538 395 Z" fill="#14636B" fill-opacity="0.045"/>
+  <path d="M 480 453 L 480 600 A 205 205 0 0 1 275 395 L 422 395 A 58 58 0 0 0 480 453 Z" fill="#14636B" fill-opacity="0.02"/>
+  <path d="M 422 395 L 275 395 A 205 205 0 0 1 480 190 L 480 337 A 58 58 0 0 0 422 395 Z" fill="#14636B" fill-opacity="0.045"/>
+  <circle cx="480" cy="395" r="205" fill="none" stroke="#6E7883" stroke-width="1"/>
+  <circle cx="480" cy="395" r="58" fill="none" stroke="#6E7883" stroke-width="1"/>
+  <g stroke="#6E7883" stroke-width="1" opacity="0.35">
+    <line x1="480" y1="190" x2="480" y2="337"/>
+    <line x1="685" y1="395" x2="538" y2="395"/>
+    <line x1="480" y1="600" x2="480" y2="453"/>
+    <line x1="275" y1="395" x2="422" y2="395"/>
+  </g>
+
+  <!-- hub -->
+  <g font-family="Helvetica, Arial, sans-serif" text-anchor="middle" fill="#6E7883">
+    <text x="480" y="374" font-size="9" letter-spacing="1.5">SAFe&#174;</text>
+    <text x="480" y="390" font-size="10.5" fill="#1A2430">Continuous</text>
+    <text x="480" y="404" font-size="10.5" fill="#1A2430">Delivery</text>
+    <text x="480" y="418" font-size="10.5" fill="#1A2430">Pipeline</text>
+  </g>
+
+  <!-- Continuous Exploration (top-right) — pumllint's seat -->
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="506" y="268" font-size="12.5" font-weight="600" fill="#1A2430">Continuous Exploration</text>
+    <use href="#dm-none" x="512" y="282.5"/><text x="522" y="286" font-size="10.5" fill="#1A2430">Hypothesize</text>
+    <use href="#dm-supp" x="512" y="298.5"/><text x="522" y="302" font-size="10.5" fill="#1A2430">Collaborate &amp; Research</text>
+    <use href="#dm-direct" x="512" y="314.5"/><text x="522" y="318" font-size="10.5" font-weight="600" fill="#14636B">Architect &#8212; pumllint acts here</text>
+    <use href="#dm-supp" x="512" y="330.5"/><text x="522" y="334" font-size="10.5" fill="#1A2430">Synthesize</text>
+  </g>
+
+  <!-- Continuous Integration (bottom-right) -->
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="506" y="478" font-size="12.5" font-weight="600" fill="#1A2430">Continuous Integration</text>
+    <use href="#dm-direct" x="512" y="492.5"/><text x="522" y="496" font-size="10.5" font-weight="600" fill="#14636B">Develop &#8212; pumllint runs here</text>
+    <use href="#dm-direct" x="512" y="508.5"/><text x="522" y="512" font-size="10.5" font-weight="600" fill="#14636B">Build &#8212; and gates here</text>
+    <use href="#dm-inh" x="512" y="524.5"/><text x="522" y="528" font-size="10.5" fill="#1A2430">Test End-to-End</text>
+    <use href="#dm-none" x="512" y="540.5"/><text x="522" y="544" font-size="10.5" fill="#1A2430">Stage</text>
+  </g>
+
+  <!-- Continuous Deployment (bottom-left) -->
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="340" y="478" font-size="12.5" font-weight="600" fill="#1A2430">Continuous Deployment</text>
+    <use href="#dm-none" x="346" y="492.5"/><text x="356" y="496" font-size="10.5" fill="#1A2430">Deploy</text>
+    <use href="#dm-none" x="346" y="508.5"/><text x="356" y="512" font-size="10.5" fill="#1A2430">Verify</text>
+    <use href="#dm-none" x="346" y="524.5"/><text x="356" y="528" font-size="10.5" fill="#1A2430">Monitor</text>
+    <use href="#dm-inh" x="346" y="540.5"/><text x="356" y="544" font-size="10.5" fill="#1A2430">Respond</text>
+  </g>
+
+  <!-- Release on Demand (top-left) -->
+  <g font-family="Helvetica, Arial, sans-serif">
+    <text x="340" y="268" font-size="12.5" font-weight="600" fill="#1A2430">Release on Demand</text>
+    <use href="#dm-inh" x="346" y="282.5"/><text x="356" y="286" font-size="10.5" fill="#1A2430">Release</text>
+    <use href="#dm-inh" x="346" y="298.5"/><text x="356" y="302" font-size="10.5" fill="#1A2430">Stabilize</text>
+    <use href="#dm-supp" x="346" y="314.5"/><text x="356" y="318" font-size="10.5" fill="#1A2430">Measure</text>
+    <use href="#dm-supp" x="346" y="330.5"/><text x="356" y="334" font-size="10.5" fill="#1A2430">Learn</text>
+  </g>
+
+  <!-- pipeline flow, clockwise -->
+  <g stroke="#7E2608" stroke-width="2" fill="none">
+    <path d="M 672 293 A 218 218 0 0 1 697 380" marker-end="url(#arr)"/>
+    <path d="M 582 588 A 218 218 0 0 1 495 612" marker-end="url(#arr)"/>
+    <path d="M 288 497 A 218 218 0 0 1 262 410" marker-end="url(#arr)"/>
+    <path d="M 378 203 A 218 218 0 0 1 465 178" marker-end="url(#arr)"/>
+  </g>
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#7E2608">
+    <text x="710" y="316">flow: upstream</text>
+    <text x="710" y="330">&#8594; downstream</text>
+  </g>
+
+  <!-- leader lines from the validator field to its segments -->
+  <g stroke="#6E7883" stroke-width="1" opacity="0.4">
+    <line x1="700" y1="196" x2="628" y2="247"/>
+    <line x1="245" y1="166" x2="332" y2="247"/>
+    <line x1="700" y1="628" x2="628" y2="545"/>
+    <line x1="245" y1="630" x2="332" y2="545"/>
+  </g>
+
+  <!-- CE field: solution-intent artefacts and their checkers -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5">
+    <text x="694" y="100" font-size="11.5" font-weight="600" fill="#1A2430">Solution intent &#8212; checked in CE</text>
+    <text x="694" y="118"><tspan fill="#6E7883">requirements &amp; prose &#8594; </tspan><tspan fill="#1A2430">vale &#183; markdownlint</tspan><tspan fill="#6E7883" font-size="9"> (upstream)</tspan></text>
+    <text x="694" y="134"><tspan fill="#6E7883">architecture diagrams (.puml) &#8594; </tspan><tspan fill="#14636B" font-weight="600">pumllint</tspan></text>
+    <text x="694" y="150"><tspan fill="#6E7883">API contracts &#8594; </tspan><tspan fill="#1A2430">Spectral</tspan><tspan fill="#6E7883" font-size="9"> (peer)</tspan></text>
+    <text x="694" y="166"><tspan fill="#6E7883">process models &#8594; </tspan><tspan fill="#1A2430">bpmnlint</tspan><tspan fill="#6E7883" font-size="9"> (peer)</tspan></text>
+    <text x="694" y="182"><tspan fill="#6E7883">C4 models &#8594; </tspan><tspan fill="#1A2430">Structurizr DSL &#183; LikeC4</tspan><tspan fill="#6E7883" font-size="9"> (peer)</tspan></text>
+  </g>
+
+  <!-- RoD field -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5">
+    <text x="12" y="100" font-size="11.5" font-weight="600" fill="#1A2430">Release evidence &#8212; checked in RoD</text>
+    <text x="12" y="118"><tspan fill="#6E7883">licence compliance &#8594; </tspan><tspan fill="#1A2430">REUSE lint</tspan></text>
+    <text x="12" y="134"><tspan fill="#6E7883">SBOMs &#8594; </tspan><tspan fill="#1A2430">NTIA conformance checker</tspan></text>
+    <text x="12" y="150"><tspan fill="#6E7883">design governance &#8594; </tspan><tspan fill="#14636B" font-weight="600">pumllint badge &#183; report</tspan></text>
+  </g>
+
+  <!-- CI field -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5">
+    <text x="684" y="636" font-size="11.5" font-weight="600" fill="#1A2430">Implementation &#8212; checked in CI <tspan fill="#6E7883" font-weight="400">(downstream)</tspan></text>
+    <text x="684" y="654"><tspan fill="#6E7883">source code &#8594; </tspan><tspan fill="#1A2430">ESLint &#183; ruff &#183; SonarQube</tspan></text>
+    <text x="684" y="670"><tspan fill="#6E7883">commit messages &#8594; </tspan><tspan fill="#1A2430">commitlint</tspan></text>
+    <text x="684" y="686"><tspan fill="#6E7883">Dockerfiles &#8594; </tspan><tspan fill="#1A2430">hadolint</tspan></text>
+    <text x="684" y="702"><tspan fill="#6E7883">CI workflows &#8594; </tspan><tspan fill="#1A2430">actionlint</tspan></text>
+    <text x="684" y="718"><tspan fill="#6E7883">diagrams, again &#8594; </tspan><tspan fill="#14636B" font-weight="600">pumllint gate</tspan><tspan fill="#6E7883" font-size="9"> (Action &#183; Sonar)</tspan></text>
+  </g>
+
+  <!-- CD field -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10.5">
+    <text x="12" y="636" font-size="11.5" font-weight="600" fill="#1A2430">Operations &#8212; checked in CD <tspan fill="#6E7883" font-weight="400">(downstream)</tspan></text>
+    <text x="12" y="654"><tspan fill="#6E7883">IaC &#8594; </tspan><tspan fill="#1A2430">tflint &#183; checkov</tspan></text>
+    <text x="12" y="670"><tspan fill="#6E7883">Kubernetes manifests &#8594; </tspan><tspan fill="#1A2430">kubeconform</tspan></text>
+    <text x="12" y="686"><tspan fill="#6E7883">policy as code &#8594; </tspan><tspan fill="#1A2430">OPA conftest</tspan></text>
+    <text x="12" y="702" font-size="9.5" font-style="italic" fill="#6E7883">pumllint: no claim in CD &#8212; inherited value only</text>
+  </g>
+
+  <!-- legend and footnotes -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="9.5" fill="#6E7883">
+    <use href="#dm-direct" x="17" y="738.5"/><text x="27" y="742">direct &#8212; pumllint executes or acts here</text>
+    <use href="#dm-supp" x="245" y="738.5"/><text x="255" y="742">supporting &#8212; its outputs are used here</text>
+    <use href="#dm-inh" x="475" y="738.5"/><text x="485" y="742">inherited &#8212; trustworthy upstream artefacts</text>
+    <use href="#dm-none" x="715" y="738.5"/><text x="725" y="742">no claim (5 of 16 domains)</text>
+    <text x="12" y="758">Aspects and practice domains: the SAFe&#174; Continuous Delivery Pipeline (Scaled Agile, Inc.) &#8212; nomenclature only, no endorsement implied. Claim marks mirror value-in-the-sdlc.md.</text>
+    <text x="12" y="772">Grey tools: deterministic validators of neighbouring standards-bearing artefact classes, placed where their artefact is checked. Hand-authored for positioning-quadrant.md, 2026-08-28, v0.30.0.</text>
+  </g>
+</svg>

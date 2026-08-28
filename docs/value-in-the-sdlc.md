@@ -465,3 +465,19 @@ cheapest to remove. An assessment that scored well everywhere should worry
 you. Concentration plus stated limits is what a real instrument looks
 like; it is also, not coincidentally, how this project treats its own
 evidence.
+
+This table is also drawn:
+
+![The SAFe Continuous Delivery Pipeline as a four-segment wheel, with
+pumllint's sixteen practice-domain claim marks reproduced from the table
+above and the neighbouring artefact validators placed upstream and
+downstream](safe-devops-wheel.svg)
+
+What the figure adds beyond the table is the company: the deterministic
+validators of the neighbouring artefact classes — vale and Spectral
+upstream and beside pumllint in Continuous Exploration, ESLint through
+actionlint downstream in Continuous Integration, tflint through conftest
+in Continuous Deployment, REUSE and the SBOM checker in Release on
+Demand — the same gating pattern, applied per artefact, around the whole
+wheel. The placement argument is in
+[Positioning pumllint](positioning-quadrant.md).

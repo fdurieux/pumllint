@@ -1,0 +1,84 @@
+<svg viewBox="0 0 960 740" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gartner-style positioning quadrant of diagram-as-code checkers: pumllint sits deep in the Visionaries quadrant with the highest completeness of vision and modest ability to execute; PlantUML -checkonly, Structurizr DSL, D2 and bpmnlint sit in Challengers; @mermaid-lint/cli sits just inside Visionaries; @probelabs/maid and LikeC4 sit in Niche Players; the Leaders quadrant is empty.">
+  <!-- Hand-authored figure for positioning-quadrant.md. Light palette baked in
+       (no CSS variables) so the file renders standalone, including inside GitHub's
+       dark theme, on its own paper background. Dot positions are computed from the
+       scoring rubric published in the companion document: x = 200 + vision*28,
+       y = 640 - execute*28, both axes summing four 0-5 criteria to 0-20. -->
+  <rect x="0" y="0" width="960" height="740" fill="#F7F8FA"/>
+
+  <!-- quadrant tints -->
+  <rect x="480" y="80" width="280" height="280" fill="#14636B" fill-opacity="0.03"/>
+  <rect x="480" y="360" width="280" height="280" fill="#14636B" fill-opacity="0.05"/>
+
+  <!-- plot border and midlines -->
+  <rect x="200" y="80" width="560" height="560" fill="none" stroke="#6E7883" stroke-width="1"/>
+  <line x1="480" y1="80" x2="480" y2="640" stroke="#D8DEE4"/>
+  <line x1="200" y1="360" x2="760" y2="360" stroke="#D8DEE4"/>
+
+  <!-- quadrant names -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="11.5" fill="#6E7883" letter-spacing="1.5">
+    <text x="216" y="102">CHALLENGERS</text>
+    <text x="744" y="102" text-anchor="end">LEADERS</text>
+    <text x="216" y="628">NICHE PLAYERS</text>
+    <text x="744" y="628" text-anchor="end">VISIONARIES</text>
+  </g>
+
+  <!-- axis labels -->
+  <g font-family="Helvetica, Arial, sans-serif" fill="#6E7883">
+    <text x="480" y="668" text-anchor="middle" font-size="11.5" letter-spacing="1">Completeness of vision &#8594;</text>
+    <text x="480" y="686" text-anchor="middle" font-size="10">syntax validity &#183; style &amp; hygiene rules &#183; semantic consistency &#183; governance &amp; measurement</text>
+    <text transform="translate(166 360) rotate(-90)" text-anchor="middle" font-size="11.5" letter-spacing="1">Ability to execute &#8594;</text>
+    <text transform="translate(184 360) rotate(-90)" text-anchor="middle" font-size="10">maturity &#183; adoption &#183; integrations &#183; backing</text>
+  </g>
+
+  <!-- the empty Leaders quadrant, annotated -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="11" font-style="italic" fill="#6E7883" text-anchor="middle">
+    <text x="622" y="256">Empty. Across seventeen evaluated</text>
+    <text x="622" y="272">ecosystems, no tool in this field yet</text>
+    <text x="622" y="288">pairs a graded verdict with an installed base.</text>
+  </g>
+
+  <!-- dots: one per tool, each gating its own notation -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="11.5">
+    <!-- PlantUML -checkonly (vision 5, execute 18) -->
+    <circle cx="340" cy="136" r="6" fill="#1A2430"/>
+    <text x="352" y="140" fill="#1A2430">PlantUML -checkonly</text>
+
+    <!-- Structurizr DSL (9, 16) — producer of the artefact class, dagger footnote -->
+    <circle cx="452" cy="192" r="6" fill="#1A2430"/>
+    <text x="440" y="180" text-anchor="end" fill="#1A2430">Structurizr DSL &#8224;</text>
+
+    <!-- bpmnlint (10, 16) — on the Leaders boundary -->
+    <circle cx="480" cy="192" r="6" fill="#1A2430"/>
+    <text x="492" y="205" fill="#1A2430">bpmnlint</text>
+
+    <!-- D2 compile + fmt (6, 15) -->
+    <circle cx="368" cy="220" r="6" fill="#1A2430"/>
+    <text x="356" y="224" text-anchor="end" fill="#1A2430">D2 compile + fmt</text>
+
+    <!-- LikeC4 (7, 10) — on the Challengers boundary -->
+    <circle cx="396" cy="360" r="6" fill="#1A2430"/>
+    <text x="384" y="364" text-anchor="end" fill="#1A2430">LikeC4</text>
+
+    <!-- @mermaid-lint/cli (11, 9) -->
+    <circle cx="508" cy="388" r="6" fill="#1A2430"/>
+    <text x="520" y="392" fill="#1A2430">@mermaid-lint/cli</text>
+
+    <!-- @probelabs/maid (6, 7) -->
+    <circle cx="368" cy="444" r="6" fill="#1A2430"/>
+    <text x="380" y="448" fill="#1A2430">@probelabs/maid</text>
+    <text x="380" y="461" fill="#6E7883" font-size="9.5">(Mermaid)</text>
+
+    <!-- pumllint (19, 9) — the subject -->
+    <circle cx="732" cy="388" r="8.5" fill="#14636B"/>
+    <text x="732" y="410" text-anchor="middle" fill="#14636B" font-weight="600">pumllint</text>
+    <text x="732" y="423" text-anchor="middle" fill="#6E7883" font-size="9.5">(PlantUML)</text>
+  </g>
+
+  <!-- footnotes -->
+  <g font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#6E7883">
+    <text x="200" y="712">Placement = two 0&#8211;20 axis sums from the eight-criterion rubric published in positioning-quadrant.md; quadrant boundaries sit at the 10-point midlines.</text>
+    <text x="200" y="726">One dot per tool, each checking its own notation. &#8224; a producer of the artefact class, scored on its checking layer only.</text>
+  </g>
+  <text x="760" y="80" font-family="Helvetica, Arial, sans-serif" font-size="10" fill="#6E7883" text-anchor="end" dy="-8">Self-assessment in the form of a Gartner-style quadrant &#8212; not a Gartner, Inc. publication. Dated 2026-08-28, v0.30.0.</text>
+</svg>
