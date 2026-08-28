@@ -2631,6 +2631,91 @@ list and license posture live in § Settled questions.
     emphatically not on MODAF: one has a conformance criterion pumllint
     structurally cannot meet, the other is withdrawn.
 
+- **Zachman ecosystem (2026-08-28): no — the purest "nothing to lint" case
+  of the seventeen, and the note is not about the refusal.** Seventeenth
+  and the oldest subject in the series (1987); full record:
+  docs/zachman-ecosystem-evaluation.md; pumllint claims executed at
+  `51c9eea`, default config, neutral cwd. **Bounds: zachman.com returned
+  503 and was not read**, so every quotation is from secondary sources;
+  row-perspective naming varies across versions and is not asserted; **the
+  Zachman Framework for Enterprise Architecture™ is a trademark of John A.
+  Zachman** and the graphic's reproduction terms could not be established,
+  so none is reproduced.
+  - **Zachman supplies the vocabulary this project lacked for its own
+    unit of analysis.** The framework is an **ontology, not a
+    methodology**, and draws the distinction in exactly the terms that
+    matter: it *"classifies the total set of present 'primitive'
+    (elemental) components"*, against a methodology *"which produces
+    'composite' (compound) implementations of the primitives"* —
+    *"primitives are timeless, whereas composites are temporal"*. **A
+    PlantUML sequence diagram is a composite in that exact sense**: it
+    mixes **Who** (participants), **When** (ordering, activation) and
+    **What** (payloads). The 36 cells hold primitives. **pumllint lints
+    composites and has no concept of a primitive** — measured: a
+    primitive-like pure-**What** class diagram scores **Level 4 (Precise)
+    97.92** and a three-interrogative composite **Level 4 (Precise)
+    99.11**, on the same scale, with nothing in the parsed model, the JSON
+    report or the schema recording how many interrogatives a diagram
+    mixes. **Not a defect** — PlantUML diagram types are composites by
+    construction — but a precise account of the altitude, in words the
+    project did not have before.
+  - **THE MEASUREMENT, and it is the contribution: the interrogative
+    profile of the rule catalogue.** All 51 rules in
+    `pumllint/rules/catalog.toml` classified by which Zachman
+    interrogative they examine — **What 5, How 8, Where 0, Who 13, When
+    15, Why 1**, plus **9 artefact-level** rules (about the diagram as a
+    document, not the enterprise). **Who + When carry 28 of the 42
+    enterprise-facing rules — 67%** — which is precisely the composite a
+    sequence diagram is, and matches from the opposite direction what the
+    DoDAF and TOGAF entries reached by counting framework artifacts.
+    **First quantitative statement in the series of what pumllint's rules
+    are *about*.** Reproducible from `catalog.toml`; the classification is
+    a judgement and SEQ103/SEQ107/SEQ109 are the contestable cases, but
+    moving all three puts no rule in Where, adds none to Why, and keeps
+    Who+When above 60%. **Consult this before describing pumllint as broad
+    enterprise-diagram hygiene.**
+  - *Two numbers to state plainly rather than defend*: **Where = 0** —
+    deployment and location are outside the parsed set by the scope
+    decision recorded in the UML entry, so Zachman names the absence
+    without giving a reason to change it; and **Why = 1** — GEN007, dormant
+    until a pattern is configured, in the column Zachman practitioners
+    most often say is neglected.
+  - *Seventeenth ecosystem, no grader* (corrected form). Zachman defines
+    completeness as **all 36 cells** — a checklist, not a score: no
+    rating, no aggregate, no level. Third-party Zachman-based maturity
+    assessments exist and none was examined.
+  - *Access, fifth category — **trademarked***, after paid-and-partly-read
+    (42010), gated-and-unread (TOGAF), open-and-read (DoDAF), and
+    free-but-unread (NAF).
+  - *Addition to the record, not a correction*: **ISO/IEC/IEEE 42010:2022
+    itself cites Zachman** — 3.18 gives as its example that *"the labels
+    given to the middle three rows (i.e. owner, designer and builder) of
+    the Zachman framework correspond to stakeholder perspectives"*. Quoted
+    from the standard's preview read during that evaluation; **the 42010
+    note does not contain it**.
+  - *Never build*: a Zachman cell recognizer, "36-cell mode" or coverage
+    report (the framework prescribes no notation, so cell assignment would
+    restate the diagram type under another name); **a primitive/composite
+    distinction in the model** — the tempting one, and refused as a
+    metamodel concept with the no-oracle shape (nothing says which
+    interrogatives a diagram *ought* to mix, and every PlantUML type is a
+    composite by construction, so the finding fires everywhere and means
+    nothing); any Zachman coverage/alignment/completeness claim; rules to
+    fill **Where** (settled scope decision); rules to fill **Why**
+    (motivation lives in prose and requirement systems where `trace` and
+    GEN007 already meet it — judging rationale is the
+    well-formedness-as-a-type anti-goal in a new suit).
+  - *Recorded, not queued*: (1) **the interrogative profile** (above) —
+    the thing to update and check when a rule pack is proposed, not to
+    re-derive; (2) **"composite" as the right word for pumllint's unit**.
+  - Re-litigate on: **nothing an adopter can bring** — Zachman prescribes
+    no artefact, so no user can arrive with a Zachman file, export or
+    conformance requirement that touches a PlantUML linter. A rule-pack
+    proposal that would change the profile's shape is the only event that
+    makes this entry live again. **Not** on Zachman adoption in either
+    direction: thirty-nine years without producing an artefact a linter
+    could read.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
