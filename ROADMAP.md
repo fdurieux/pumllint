@@ -1605,6 +1605,82 @@ list and license posture live in § Settled questions.
     that `shape: sequence_diagram` dominates real D2 usage, which would
     raise the type-transfer floor and is currently unmeasured.
 
+- **Structurizr DSL ecosystem (2026-08-27): no — the twice-settled
+  decision stands and its *reason* is corrected. One documentation
+  candidate; nothing queued.** Eighth of the series (full record:
+  docs/structurizr-dsl-ecosystem-evaluation.md; repo claims executed at
+  `2bac87e`; **export samples reconstructed**, not captured from a real
+  `structurizr-cli` run — the CLI was not installed and the docs print no
+  verbatim output, so the mechanisms below are measured and their fidelity
+  to real exporter output is characterized; no GitHub repository read).
+  Verdict:
+  - *The framing in both prior records was wrong, and that is this note's
+    contribution.* 2026-07-27 ruled Structurizr DSL "out of scope … a
+    different language with its own toolchain"; 2026-08-27 reaffirmed it
+    ("nonsense; stronger than in July"). Both treated Structurizr as
+    something pumllint might **support**. It is not a support candidate —
+    it is a **producer of the artefact pumllint already gates**.
+    `structurizr-cli export` emits PlantUML in two dialects
+    (`plantuml/structurizr`, `plantuml/c4plantuml`) plus Mermaid, D2, DOT,
+    Ilograph and WebSequenceDiagrams. The relationship is
+    producer→consumer, which none of the seven predecessors had.
+  - *Measured on all three export shapes.* **(1) C4-PlantUML export** →
+    `unknown`, 0 elements, **Level 1 (Sketchy) 98.75** — cap C6 holds,
+    honest, and a clean cross-check: the C4 evaluation's dated Level-1
+    measurement predicts a producer it never examined. **(2) Static-view
+    export** → typed `sequence`, **Level 3 (Disciplined) 85.0**, three
+    GEN003 inline-skinparam findings — true, and about styling the
+    exporter regenerates on every run. Type-fallback class, sixth
+    notation. **(3) Dynamic view with `plantuml.sequenceDiagram=true`** →
+    a *genuine* PlantUML sequence diagram: typed correctly, parsed
+    correctly, **Level 4 (Precise) 93.57** — and its three findings are
+    GEN004 naming violations on participants named `1`, `2`, `3`.
+  - *The finding: **every Structurizr sequence export trips GEN004 on
+    every participant**, deterministically.* Verified: the exporter emits
+    numeric identifiers and puts the real name in the display slot
+    (identifier `'1'`, display_name `'Single-Page App'`), and GEN004 tests
+    the identifier. **No change to GEN004 is proposed** — the rule does
+    exactly what its catalog row says and the finding is *true*. What is
+    absent is an actor who can act on it.
+  - *That is the sharpest form of the generated-artefact problem in the
+    series.* The ArchiMate note reached it by showing findings would be
+    overwritten on the next export. This reaches it where **nothing
+    malfunctions**: right type, right parse, true findings, and the only
+    correct fix upstream in the DSL — where Structurizr's own `inspect`
+    already runs. **A true finding with no actionable owner is worse than
+    a false one, because it survives review.**
+  - *Never build*: Structurizr DSL support (it would duplicate `validate`
+    and `inspect`, shipped by the language's owner); a Structurizr-export
+    recognizer or profile (special-cases one producer among many, and
+    encodes a third party's output shape as a contract this project would
+    have to track); any claim that pumllint checks Structurizr models.
+  - *Added to the record* (not corrections — the C4 notes are silent on
+    both, not wrong): **`inspect` is a documented CLI verb** alongside
+    `validate`, so Structurizr is the only ecosystem in the series
+    shipping syntax validation *and* a named rule set from one CLI; and
+    **the ecosystem count stays at eight, not nine** — Structurizr was the
+    first validator counted in the no-grader streak, so re-confirming it
+    is a check, not a new data point.
+  - *Licence checked*: Structurizr DSL is Apache-2.0 (Simon Brown; free
+    open-source core plus a paid hosted platform). No blocker; nothing
+    proposes depending on it.
+  - *Recorded, not queued*: (1) **a short note on generated `.puml`** —
+    what to expect from each of the three export shapes, and that GEN004's
+    `pattern`/`per_kind` and GEN003's `allowed` already neutralise both
+    systematic findings in `pumllint.toml`. Documentation only; awaiting
+    an observed user. (2) **The generated-artefact principle** — second
+    instance after ArchiMate, stated once so a third does not re-derive
+    it: the hazard is not wrong findings but **true and unownable** ones.
+    (3) Type-fallback class, sixth notation — no new candidate; the
+    ArchiMate entry's candidate 1 as amended by the D2 entry covers it.
+  - Re-litigate on: an adopter piping `structurizr-cli export` output into
+    pumllint and reporting friction (the only trigger here a user can
+    fire, and it would turn the documentation candidate into a page);
+    Structurizr's inspections gaining an aggregate verdict (the standing
+    streak trigger); or evidence that exported sequence diagrams are a
+    common input, which would make the GEN004 pattern a common experience
+    rather than a latent one.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
