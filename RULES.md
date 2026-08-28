@@ -1972,11 +1972,13 @@ XD001–003 walk the participant tables of sequence diagrams; XD004–005
 classifiers and activity swimlanes name entities, while state names stay out
 on purpose (states are modes of an entity, not entities). All activate only
 when more than one diagram is linted (SCORING.md §6); single-diagram runs
-score DIM-CON from naming rules alone. For XD001/XD002/XD005 the **majority
-declaration wins** (ties resolve to the first-seen form): violations are
-attributed to the *minority* sites and reference an authoritative majority
-site, so a single outlier never indicts the conforming rest. XD003/XD004 flag
-later case-variants of the first-seen spelling.
+score DIM-CON from naming rules alone. For XD001/XD002/XD005 **no side is
+elected**: every conflicted site is reported symmetrically, each message
+listing every variant with counts, because electing a majority indicts the
+conforming sites once a drift has spread (issue #36, v0.29.0). The per-entity
+`authoritative` option pins the intended value; with it set, only the
+non-conforming sites are reported. XD003/XD004 flag later case-variants of
+the first-seen spelling.
 
 ### XD001 — Conflicting participant kind
 **Severity:** major · **Status:** ✅ Implemented (v0.5.0)

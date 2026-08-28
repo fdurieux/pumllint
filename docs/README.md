@@ -381,6 +381,25 @@ but they are a useful cross-check that no audience was forgotten.
   component diagram's zero-element honesty cap turns on a single
   participant keyword. One attractive claim withdrawn — the two
   products' notions of *type* are not commensurable.
+- [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
+  — dated evaluation (2026-08-28), second in the Linked.Archi thread and
+  the first pointing at the product's own cross-diagram layer: does
+  pumllint lint relationships *between* diagrams, the way Linked.Archi's
+  RDF qualified relationships declare them? Verdict: no — the XD pack
+  joins entity **nodes** by name-equality and never compares **edges**
+  (contradictory relationships across three diagrams draw zero
+  cross-diagram findings), and nothing in the model, schemas or CLI has
+  a slot for a declared diagram→diagram relation. Four measured gaps:
+  the alias is the join key (same display name, different aliases —
+  silent); an `!include`d declaration blinds XD001/XD002 **and raises
+  the score 72.5 → 87.5**; no namespace means "deliberately different"
+  is inexpressible; and `ref over` — the notation's one cross-diagram
+  construct, recommended by SEQ006's own message — is dropped by the
+  parser. The RDF shape itself is refused on two standing settlements
+  (that is Linked.Archi's job); the in-notation half is the already
+  recorded Arc C edge-coherence item, which this note supplies with the
+  reproducible probe it lacked. One defect found and fixed: RULES.md's
+  XD preamble still described the pre-v0.29.0 majority vote.
 - [A foreign corpus reads back — the J-F audit](foreign-corpus-audit.md)
   — dated evidence note (2026-08-26): the first time a corpus this
   repository did not author was read for *semantics* rather than
