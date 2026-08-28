@@ -2716,6 +2716,91 @@ list and license posture live in § Settled questions.
     direction: thirty-nine years without producing an artefact a linter
     could read.
 
+- **FEAF / Gartner EA ecosystem (2026-08-28): no as a build — and the two
+  halves reach it by opposite routes.** Eighteenth (full record:
+  docs/feaf-gartner-ecosystem-evaluation.md; pumllint claims executed at
+  `ad30b03`, default config, neutral cwd). **Access, sixth and seventh,
+  in one note: FEAF is a US Government work and was read directly** (434
+  pages, every FEAF quotation extracted from the OMB PDF); **Gartner is
+  subscription-only and was not read** — its quotations are from press
+  releases and trade coverage. The pattern holds: how a publisher
+  publishes predicts readability far better than what it charges.
+  - **FEAF confirms a mapping this series had only inferred.** FEAF v2
+    (OMB, 29 Jan 2013) names ~50 artifacts across six sub-architecture
+    domains — Strategic, Business Services, Data and Information,
+    Enabling Applications, Host Infrastructure, Security — with **one
+    required "core" artifact per domain**, and publishes an *"Other
+    Framework Names"* column giving each one's DoDAF equivalent.
+    Verbatim: **D-8 Event Sequence Diagram** = *"DoDAF SV/SvcV-10c"*;
+    **D-7 State-Transition Diagram** = *"DoDAF SV/SvcV-10b"*; **S-1
+    Concept Overview Diagram (core)** = *"DoDAF OV-1"*. The DoDAF entry
+    assigned SvcV-10c to the `sequence` pack **by judgement**; FEAF
+    publishes the equivalence normatively. **The framework-to-framework
+    half of the mapping method is now externally corroborated** — the
+    pumllint end of the chain remains this series' judgement.
+  - *Measured*: **D-8 → `sequence`, D-7 → `state`, D-1 Logical Data Model
+    (core) → `class`, all Level 4, all 100.00, zero findings, exit 0.**
+    Cleanest sweep in eighteen — **and inflated**: the samples carry
+    `@startuml <name>` and a `title`, so GEN001/GEN002 have nothing to
+    say, where DoDAF's samples did not and scored 99.75–99.92. Defensible
+    (FEAF artifacts are named, coded deliverables) but **the two notes'
+    numbers are not comparable**, and no FEAF-beats-DoDAF reading is
+    available. *No coverage count is attempted* — most of FEAF's ~50
+    artifacts are catalogues, matrices and inventories, and counting them
+    would be noise.
+  - *Notation*: FEAF sits between DoDAF and NAF — it **names UML and BPMN
+    as examples**, verbatim *"'open' industry standard notational formats
+    that support model-based systems engineering"*, and mandates neither.
+  - **GARTNER — the first market headwind in eighteen evaluations, and it
+    is not answered here.** Gartner is the first subject that is not a
+    framework, standard, notation or tool but a **commercial advisory
+    practice**: nothing to lint, nothing to conform to, and the
+    "ecosystem" is an argument. Its published position (research VP Brian
+    Burke): **"Focusing on a standard EA framework doesn't work"**;
+    practitioners historically **"focused on deliverables that were
+    useful to enterprise architects but not valuable to senior
+    management"**; **"stakeholders only value actionable and measurable
+    deliverables"**. **That is a claim that architecture documentation
+    fails on *relevance*, not *incoherence* — and pumllint measures
+    incoherence.** Two readings, **neither adopted**: (a) the critique
+    exempts pumllint, which gates diagrams developers already keep, tied
+    to codegen and traceability — comfortable, partly true, and the
+    seventeen prior refusals have tracked Burke's argument by instinct;
+    (b) it includes pumllint, because a quality score is worth something
+    only if the artefact is, and a maturity level is precisely the
+    architect-facing metric he describes. **The threats column stays
+    open**; adopting (a) would discard the one external critique the
+    series has found. Same open question as 42030's abstention and
+    TOGAF's aggregate-elsewhere, stated in plain commercial terms.
+  - **The graded-object tally now runs to four, and none is a
+    description.** ACMM grades an **organization's capability**; TOGAF
+    Compliance an **implementation against a specification**; **FEAF a
+    business service** (its services maturity matrix, "level 0"
+    baseline); **Gartner a vendor or technology** (Magic Quadrant, Hype
+    Cycle); ISO 42030 **declines to define an aggregate at all**.
+    **Cite the no-grader streak with this list rather than as a count** —
+    the field aggregates enthusiastically and consistently over something
+    other than the artefact.
+  - *Never build*: a FEAF artifact pack, "D-8 mode" or recognizer (FEAF
+    prescribes no notation, so the code would label a sequence diagram
+    and add nothing — third instance of this refusal, wording settled);
+    any FEAF compliance or Federal-EA claim; anything premised on the
+    three 100.00s being a result about FEAF (they are inflated by naming
+    the samples); and **anything built to answer the Gartner critique** —
+    it is about whether the artefact matters, which no rule, report or
+    feature addresses.
+  - *Recorded, not queued*: (1) **FEAF's confirmation of the
+    cross-framework mapping**; (2) **the four-object graded tally**; (3)
+    **the Gartner critique, unanswered**, with both readings and neither
+    adopted.
+  - Re-litigate on: **an adopter running pumllint on diagrams they
+    already care about** — the only evidence that bears on the Gartner
+    critique, and the same trigger the demand bar has awaited since the
+    series began; a Gartner subscription becoming available, to check the
+    critique against primary research rather than press coverage. **Not**
+    on FEAF adoption — thirteen years old, prescribes no notation, and
+    its artifacts are already reachable with nothing built.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
