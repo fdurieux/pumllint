@@ -1175,7 +1175,12 @@ list and license posture live in § Settled questions.
     with a measured defect behind it** (the WS3a / link-integrity label).
     **Supersedes the Linked.Archi entry's component-diagram residual** —
     same class, different mechanism. No trigger: it awaits a decision, not
-    demand. (2) The **generated-`.puml` hazard** — exported ArchiMate views
+    demand. *Amended 2026-08-27 by the D2 entry: the class has
+    a **second silencing mechanism** — a zero-declaration foreign-syntax
+    file reaches Level 4 (Precise) 99.17 with only GEN001, because SEQ001's
+    `only_if_any_declared` default (correct, and not a defect) withdraws the
+    last objection. Any fix must be validated against that case or it
+    repairs the loud instances and leaves the quietest one.* (2) The **generated-`.puml` hazard** — exported ArchiMate views
     score Level 4 today, so a pipeline gating an agent loop on pumllint gets
     a passing verdict on a diagram the tool did not read; the consequence a
     user would actually meet, and candidate 1's motivation. (3) **Archi's
@@ -1516,6 +1521,89 @@ list and license posture live in § Settled questions.
     Mermaid recognizer serves an existing user rather than a new market); a
     carrier wave reversing W3's ordering; or Mermaid's C4 leaving
     experimental status *and* the C4 census trigger firing together.
+
+- **D2 ecosystem (2026-08-27): no — the first refusal in the series where
+  the linting niche is *open*, so it rests on ground none of the six
+  predecessors used. One candidate recorded, and it amends an existing
+  item rather than adding one.** Seventh of the series (full record:
+  docs/d2-ecosystem-evaluation.md; repo claims executed at `5b4a5a0`;
+  **no D2 tool executed** — `d2` was not installed, so nothing reports what
+  `d2 validate` actually accepts; no GitHub repository read). Verdict:
+  - *Naming collision, cleared first.* **"D2" is already taken in this
+    repository** — EVIDENCE.md uses it as a pre-registered wave hypothesis
+    label ("D2 (generator robustness): the below-composite-40 cliff
+    reproduces under a weaker generator (`claude-haiku-4-5`)"; resolved
+    "D2 — confirmed"), cited again in the Aschenbrenner note. Both names
+    are correct, neither should change; recorded so the collision is
+    deliberate rather than discovered.
+  - *(1) Refused on the artefact.* D2 is a **general graph language**, not
+    a family of typed notations: three primitives (shapes, connections,
+    containers) and a presentational shape vocabulary (`rectangle, square,
+    page, parallelogram, document, cylinder, queue, package, step,
+    callout, stored_data, person, diamond, oval, circle, hexagon, cloud,
+    c4-person`). Sequence is the **one verified** pack counterpart
+    (`shape: sequence_diagram`); class/state/use-case/activity have none —
+    not as missing features but as categories a general graph language
+    does not have. Most D2 diagrams are therefore diagrams this catalog has
+    no rules for at all. "One of five" is a **floor**: further special
+    object types are documented on pages not fetched.
+  - *(2) The niche is open but claimed by upstream.* First of seven
+    ecosystems with no third-party linter found — and the only one whose
+    maintainers have written the intent down: D2's roadmap reads verbatim
+    **"Build a configurable linter."** Building it for them is the
+    SonarQube-plugin lesson with the vendor's plan on the record.
+  - *(3) D2's syntax floor is already higher than PlantUML's.* It ships
+    `d2 fmt`, `d2 validate`, and a parser designed for "being able to parse
+    broken syntax and output multiple, human-readable error messages". The
+    founding premise (PlantUML renders inconsistent diagrams without
+    complaint) travels to D2 only in its *semantic* half.
+  - *The measurement is the series' sharpest, and it indicts this tool
+    rather than D2.* D2's connections are written `a -> b: label` —
+    **character-identical** to PlantUML's messages — and D2 auto-creates
+    actors on first reference, exactly as PlantUML auto-creates lifelines.
+    A D2 sequence diagram wrapped in `@startuml…@enduml` is typed
+    `sequence` and scored **Level 4 (Precise), 99.17/100, one cosmetic
+    finding (GEN001), exit 0**. The Mermaid equivalent measured a day
+    earlier gave 7 findings, 2 critical, exit 1. Mermaid's foreign syntax
+    was loud and wrong; D2's is quiet and wrong.
+  - *And the silence is a designed behaviour, not a defect.* SEQ001 carries
+    `only_if_any_declared` (default True), documented in the rule as *"stay
+    quiet in files that declare nothing at all, so quick ad-hoc sketches
+    aren't punished"* (pumllint/rules/sequence/participants.py:19-20). A D2
+    file yields zero PlantUML declarations, so the one rule that would
+    object withdraws by design. Correct for its intended input; it removes
+    the last signal on unintended input. **No change to SEQ001 is
+    proposed.**
+  - *The one thing that transfers is a hazard, not a rule.* D2's own
+    sequence docs say *"You don't have to explicitly define actors … but if
+    you want to define a specific order, you should"* — SEQ001's rationale
+    reached independently by a language with no linter to express it. After
+    bpmnlint and mermaid-lint converged on *implemented* rules, this is the
+    third convergence and the first where only the **hazard** converged.
+    The rules are right; the reach is wrong.
+  - *Never build*: a D2 parser or rule pack (refused on **merit**, not
+    demand — an adopter asking would not fix the type mismatch or unclaim
+    upstream's roadmap); a third-party D2 linter; any repositioning to
+    "diagram linter" (three substitute notations now, one supported).
+  - *Licence posture checked*: D2 is **MPL-2.0**, an independent project
+    fiscally sponsored by Hack Club, source moved `terrastruct/d2` →
+    `d2lang/d2`. No blocker, and nothing here proposes vendoring.
+  - *Eighth ecosystem, no grader* — and the one roadmap that names a linter
+    does not name a score, level or maturity model.
+  - *Recorded, not queued*: (1) **amend the type-fallback candidate** (the
+    ArchiMate entry's candidate 1) to cover the silent case — it addresses
+    typing confidence and cap C6, and the D2 case passes both, being
+    silenced instead by a *rule option*. Any fix must be validated against a
+    zero-declaration foreign-syntax file or it repairs the five loud
+    instances and leaves the quietest one at Level 4 (Precise) 99.17.
+    (2) The naming-collision note above.
+  - Re-litigate on: **D2 shipping its configurable linter with a graded
+    verdict** (the single event that would end the eight-ecosystem streak,
+    from a language whose tooling culture is unusually strong); an adopter
+    with PlantUML *and* D2 in one repository asking for one gate over both
+    (which would still face the one-of-five type mismatch); or evidence
+    that `shape: sequence_diagram` dominates real D2 usage, which would
+    raise the type-transfer floor and is currently unmeasured.
 
 ## Working agreements (read before picking anything up)
 
