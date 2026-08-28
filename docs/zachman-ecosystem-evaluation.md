@@ -58,8 +58,12 @@ interrogative classification is a judgement about each rule's subject and
 another reader could move a handful of borderline cases (SEQ103, SEQ107
 and SEQ109 are the ones most open to argument); the headline shape — Where
 zero, Why one, Who+When dominant — does not depend on them. Every pumllint
-claim was executed at `51c9eea` with default config from a neutral working
-directory. Per session scope no GitHub repository was read.*
+claim was executed at `51c9eea` (v0.29.0) with default config from a
+neutral working directory, and **re-confirmed unchanged at v0.30.0**,
+which landed on `main` while this note was in review: still 51 rules with
+the same prefix distribution, so §8.2's classification is intact; §8.3's
+two scores identical; and the JSON report's keys unchanged, so nothing new
+records interrogative mix. Per session scope no GitHub repository was read.*
 
 ## 0. Why this ran, and the loop it closes
 
