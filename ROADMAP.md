@@ -2342,6 +2342,106 @@ list and license posture live in § Settled questions.
     which has been large for twenty years without producing a description
     linter.
 
+- **DoDAF / UAF ecosystem (2026-08-28): still no as a build — and the
+  strongest artefact fit in the series, the first that is both real and
+  reachable.** Fifteenth (full record:
+  docs/dodaf-uaf-ecosystem-evaluation.md; pumllint claims executed at
+  `a8ef78a`, default config, neutral cwd, except where `codegen` is
+  named). **First ecosystem in three whose normative text was readable** —
+  DoDAF is a US Government work published openly and the quotations below
+  are from `dodcio.defense.gov` directly. UAF's grid and 71 view
+  specifications are characterized from vendor/OMG secondary sources.
+  **The four samples are mine, written to be well-formed**, so the note
+  measures the *ceiling*, not the field.
+  - **The fit turns on one sentence of official DoDAF text.** The
+    **OV-6c Event-Trace Description** is a required model, described by
+    DoDAF as *"a time-ordered examination of the Resource Flows as a
+    result of a particular scenario"* and **"sometimes called sequence
+    diagrams"** — and on notation: *"**DoDAF does not endorse a specific
+    event-trace modeling methodology. An OV-6c may be developed using any
+    modeling notation (e.g., BPMN) that supports the layout of timing and
+    sequence of activities.**"* **So a PlantUML sequence diagram is a
+    conformant OV-6c** — authorized in normative text, not a workaround.
+    Capella's Exchange Scenario fitted and was unreachable (no PlantUML
+    export); here there is nothing to reach past.
+  - **The measurement, default profile — best in fifteen evaluations.**
+    OV-6c → **`sequence`, Level 4, 99.88, exit 0, one `info` finding
+    (GEN002)**; OV-6b State Transition → **`state`, 99.92**; DIV-2
+    Logical Data Model → **`class`, 99.75** — each with only "no name",
+    true of the samples. Nothing false. The OV-6c exercised the deepest
+    pack correctly: declared participants (SEQ001/002 satisfied on
+    evidence), balanced activations (SEQ003), and **SEQ009 *correct***
+    where it was false in six prior evaluations, because the artefact
+    really is a sequence. SV-1 Systems Interface falls through to
+    `sequence` at 89.79 with 2 false SEQ009s — standing type-fallback
+    class, **no candidate, no amendment**.
+  - **And the counterweight, which is the first *configuration* finding
+    in fifteen evaluations.** The same OV-6c under **`--profile
+    codegen`** collapses to **Level 2 (Structured), 52.4/100, four
+    blockers, exit 1** — SEQ103 demanding signature-shaped messages of
+    `request immediate CAS` and `transmit 9-line brief`. Those are
+    *correct DoDAF*: an OV-6c records operational events in operational
+    language and will never generate code. The rules are not defective;
+    the profile encodes an assumption about the diagram's destiny and is
+    pointed at the wrong artefact. **The default profile — what a user
+    gets without asking — is right, and nothing warns that `codegen` is
+    not.** Recorded, parked on the demand bar; a "DoDAF profile" is
+    refused (the default already behaves correctly).
+  - **One turn after TOGAF, this is the exact inversion, and the pair is
+    the finding.** TOGAF: 32 diagrams, 7 map to a pack, **`sequence` 0**.
+    DoDAF: 52 models, **12 map**, **`sequence` 3** (OV-6c, SvcV-10c,
+    SV-10c), plus `state` 3, `activity` 3, `class` 3, `usecase` **0**.
+    Read together: **frameworks differ sharply in whether they ask for
+    time-ordered interaction models at all, and pumllint's centre of
+    gravity suits the ones that do.** Neither note could say this alone.
+  - *Fourth independent convergence on the pack decomposition.* UAF's
+    grid is 10 stakeholder-domain rows × **11 model-kind columns**, and
+    four of the columns — **sequences, states, processes, information** —
+    are pumllint's packs by name. After bpmnlint's rules, Capella's rule
+    categories and 42010's correspondences.
+  - **Fifteenth ecosystem, no grader** (in the corrected form the TOGAF
+    entry established: nothing grades a *description*) — **and the first
+    that states a reason.** DoDAF's organizing doctrine is
+    **"Fit-for-Purpose"**: content tailored so that *"the purpose or use
+    of an architectural description at each level will be different in
+    content, structure, and level of detail"*. A fixed rubric denies
+    that. It does not settle the running question — the argument is
+    against a fixed *content checklist*, and pumllint's rules are mostly
+    about internal coherence, a narrower target — but it is the closest
+    thing to a stated first-party objection the series has found, and it
+    belongs beside 42030's abstention and TOGAF's aggregation-elsewhere.
+  - *Access, third data point, and the pattern is not the obvious one*:
+    ISO 42010 **paid** → Clause 4 quoted verbatim from a preview; TOGAF
+    **free but registration-gated** → no primary text at all; DoDAF
+    **openly published** → quoted directly. Price predicts readability
+    poorly; publication model predicts it well.
+  - *Never build*: a DoDAF/UAF pack, mode or model-type recognizer (an
+    OV-6c *is* a sequence diagram and already parses as one — a
+    recognizer adds a label and no capability); any DoDAF or UAF
+    conformance/support/alignment claim (DoDAF conformance concerns the
+    DM2 and model content, neither of which pumllint checks); a UAF
+    profile or an integration justified by the grid-column vocabulary
+    (fourth instance of this refusal); a "DoDAF profile" of the rule set;
+    and **marketing the OV-6c result** — it is a good number from a
+    sample written to be well-formed, which is how a project talks itself
+    into a market that is not there.
+  - *Recorded, not queued*: (1) **the OV-6c result as the series'
+    high-water mark**, to be cited *with* the caveat that the sample was
+    self-authored and no user is demonstrated; (2) **the TOGAF pairing**
+    (above); (3) **the `codegen` mismatch** — first configuration
+    finding, at most a documentation note; (4) **"Fit-for-Purpose" as the
+    first stated reason** for the no-grader pattern.
+  - Re-litigate on: **any evidence that a DoD program office, contractor
+    or UAF user renders event traces in PlantUML** — the single trigger
+    that would turn the ceiling measurement into an audience, and the
+    only one a user can fire; **a real OV-6c to measure**, from anywhere,
+    since the interesting question is what the messy ones score; an
+    adopter hitting the `codegen` mismatch and reporting the blockers as
+    wrong. **Not** on DoDAF or UAF adoption — both are large and have
+    been for years without producing a description linter, and
+    "Fit-for-Purpose" suggests the reason is doctrinal rather than
+    accidental.
+
 - **Cross-diagram relationships (2026-08-28): the XD pack joins entity
   *nodes*, never *edges* — no declared diagram→diagram relation exists
   anywhere in the product, the RDF qualified-relationship shape stays

@@ -271,6 +271,23 @@ but they are a useful cross-check that no audience was forgotten.
   99.31, conceptual data → 98.75, data lifecycle → 99.48), across three
   different packs — while the deepest pack, `sequence`, maps to **none**
   of TOGAF's 32 diagrams.
+- [The DoDAF / UAF ecosystem, evaluated](dodaf-uaf-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), fifteenth in the series and the
+  **strongest artefact fit yet — the first that is both real and
+  reachable**. DoDAF's OV-6c Event-Trace Description is a required model
+  "sometimes called sequence diagrams", and the DoD CIO's own page says
+  *"DoDAF does not endorse a specific event-trace modeling methodology. An
+  OV-6c may be developed using any modeling notation…"* — so **a PlantUML
+  sequence diagram is a conformant OV-6c**. Measured on the default
+  profile: OV-6c → `sequence`, **Level 4, 99.88, exit 0, one info
+  finding**, with the deepest pack applying correctly and **SEQ009 right**
+  where it was false in six prior evaluations; OV-6b → `state` 99.92;
+  DIV-2 → `class` 99.75. The counterweight is the first *configuration*
+  finding in the series: under `--profile codegen` the same file collapses
+  to **Level 2, 52.4, four blockers**, because SEQ103 demands
+  signature-shaped messages of narrative operational events. And one turn
+  after TOGAF, the exact inversion — `sequence` maps to **0** of TOGAF's
+  32 diagrams and **3** of DoDAF's 52.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
