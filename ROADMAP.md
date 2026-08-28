@@ -1421,6 +1421,102 @@ list and license posture live in § Settled questions.
     implementation is on GitHub, outside scope); or evidence that a UML tool has
     begun producing a graded verdict, ending the six-ecosystem streak.
 
+- **Mermaid ecosystem (2026-08-27): no — and the 2026-07-26 sibling-stack
+  parking is upgraded from *unqueued on cost* to *refused on an occupied
+  niche*. Two documentation candidates recorded, nothing queued.** Sixth and
+  last of the week's series, and the only ecosystem that is a **direct
+  substitute** rather than an adjacent layer: same artefact class, same
+  repositories, same authors, increasingly the same machine authors (full
+  record: docs/mermaid-ecosystem-evaluation.md; repo claims executed at
+  `f806dce`; **no Mermaid tool executed**, no GitHub repository read — both
+  linters and Mermaid itself are GitHub-hosted, so the §3.1 rule mapping is
+  read from published rule descriptions, not paired runs). Verdict:
+  - *(1) The sibling stack exists.* `@mermaid-lint/cli` (0.53.1, created
+    2026-06-16, published 2026-08-13) is a near-complete architectural
+    mirror: config file (`mermaid-lint.config.js`/`.mermaidlintrc`),
+    per-rule severities `off`/`warn`/`error`, inline suppression
+    (`%% mermaid-lint-disable`), `--format json`, an **`--fix` autofix**, a
+    GitHub Action posting inline PR annotations — and it lints **fenced
+    diagrams inside Markdown**, the capability this repo demand-tested and
+    declined for PlantUML. `@probelabs/maid` (0.0.29, ISC) is a second.
+    Mermaid itself ships no semantic validation, and `mmdc` is
+    characterized as unreliable even at parse errors.
+  - *(2) Mermaid owns the niche the demand scan measured.* Native GitHub
+    rendering since Feb 2022, plus GitLab/Notion/Obsidian/VS Code;
+    characterized as the only format rendering inline in a README with no
+    build step, and as what most LLMs emit when asked for a diagram in
+    markdown. The scan already saw the local form: Mermaid outnumbering
+    PlantUML 76× (`.kiro/`) and 437× (spec-kit `plan.md`).
+  - *(3) This project's own evidence ranks the carrier lower.* W3:
+    Mermaid sequence **−9.1 pp pooled / −20.0 pp flow-sensitive** vs the
+    PlantUML baseline, carrier equivalence refuted. Extending the codegen
+    profile to the carrier this lab measured as weaker, in order to serve
+    generation quality, is incoherent. (W3b's non-reproduction of the
+    stored-frame deficit does not rescue it; the recorded carrier-deficit
+    reproduction wave stays gated as written.)
+  - *(4) Seventh ecosystem, still no grader.* `mermaid-lint` reports
+    pass/fail per diagram with file, line and message — no aggregate score,
+    level, gap report or ratchet. Seven validators now (Structurizr,
+    LikeC4, SHACL, Archi, bpmnlint, SDMetrics, mermaid-lint) and the
+    grading layer is unoccupied **even where two linters compete**, which
+    is the strongest form the finding has taken.
+  - *The uncomfortable part, recorded because either half alone misleads:*
+    the category claim and the carrier evidence now point opposite ways.
+    The 2026-07-26 positioning is "deterministic verifiers for
+    AI-read/AI-written artifacts"; Mermaid is where AI-authored diagrams
+    land; and `mermaid-lint`'s stated motivation is this project's thesis in
+    someone else's words — *"In agentic engineering workflows … your Markdown
+    files are live context. A broken diagram doesn't just fail a human
+    reader; it injects a parse error into a context window."* **The category
+    is validated and the niche is contested.**
+  - *Convergence, second instance and the sharper one.* After `bpmnlint`,
+    a second independent linter reached this catalog's concepts — and this
+    time in a substitute notation: `sequenceDiagram` activations without
+    matching deactivations = **SEQ003/SEQ108**; duplicate or self-looping
+    edges = **SEQ006**; empty labels = **SEQ005/STA003/CLS003**; duplicate
+    node IDs = the **XD** identity family. Its own documentation
+    distinguishes semantic rules from syntax because they catch diagrams
+    that parse but "still mislead" — this project's founding distinction,
+    independently derived. The surviving difference is exactly two rows:
+    **DIM-AMB and the codegen lexicons** (mermaid-lint checks a label's
+    *presence*, never what it *says*) and **the graded verdict**.
+  - *Type transfer is partial*: Mermaid has sequence/class/state but **no
+    use-case diagram at all**, and its flowchart is not a UML activity
+    diagram — 3 of 5 packs transfer. Its own large surface (Gantt, pie, git
+    graph, mindmap, ~15 experimental types) is mostly outside any
+    modelling-hygiene rule set. Mermaid's C4 is flagged ⚠️ experimental,
+    which weakens the C4 note's S4 transfer argument rather than
+    strengthening it.
+  - *Never build*: a Mermaid parser/rule pack (occupied niche + full
+    sibling stack + a carrier this lab ranks lower); a PlantUML↔Mermaid
+    converter or Mermaid `fix` output; **any repositioning from "PlantUML
+    linter" to "diagram linter"** — the claim-language discipline audited
+    clean against UML on 2026-08-27 and this is where it would break first.
+  - *Boundary measured honestly in all three arrival forms*: a directory of
+    `.mmd`/`.md`, a bare `.mmd`, and Mermaid source saved with a `.puml`
+    extension all warn on stderr and leave the exit code at 0. The one
+    dishonest case needs a user to wrap Mermaid in `@startuml…@enduml`:
+    7 findings, 2 critical, exit 1, Level 3 — of which five are alias-binding
+    artefacts (Mermaid's `participant X as Long Name` binds the opposite way)
+    **but SEQ003 is correct**, and it is the very rule mermaid-lint names.
+    Recorded as an observation, not a candidate.
+  - *Recorded, not queued*: (1) **restate the demand-scan finding** — the
+    2026-07-26 record concludes embedded PlantUML has no demand, which is
+    right; its own numbers also support the stronger sentence that *the
+    embedded niche is large and PlantUML does not own it*, and
+    mermaid-lint shipping Markdown-fence linting is the confirmation. A
+    dated pointer is added to that note; documentation only. (2) **The
+    convergence record**, worth re-checking if mermaid-lint's rule set
+    grows — **especially upward into a graded verdict**, which is the one
+    change that would end the seven-ecosystem streak from the closest
+    possible range.
+  - Re-litigate on: **mermaid-lint or Maid shipping a level, score or
+    maturity verdict**; a concrete adopter with PlantUML *and* Mermaid in
+    one repository asking for one gate over both (the only shape in which a
+    Mermaid recognizer serves an existing user rather than a new market); a
+    carrier wave reversing W3's ordering; or Mermaid's C4 leaving
+    experimental status *and* the C4 census trigger firing together.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

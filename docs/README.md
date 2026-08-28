@@ -139,6 +139,19 @@ but they are a useful cross-check that no audience was forgotten.
   widest form — nine uncovered diagram types, a two-line file scoring Level 4
   Precise 100/100. Produced by a 14-agent fan-out; all five adversarial
   verifiers returned "refuted", and their corrections are what the note carries.
+- [The Mermaid ecosystem, evaluated](mermaid-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), sixth and last in the series and the only
+  ecosystem that is a **direct substitute** rather than an adjacent layer.
+  Verdict: no sibling stack — the 2026-07-26 parking upgrades from *unqueued
+  on cost* to *refused on an occupied niche*. `@mermaid-lint/cli` is a
+  near-complete architectural mirror of this tool (config, severities,
+  `--fix`, GitHub Action) and lints Markdown fences, the capability this repo
+  demand-tested and declined; Mermaid owns the niche the scan measured; and
+  W3 ranks the carrier −9.1 pp below PlantUML. Two findings sit
+  uncomfortably together and are recorded that way: the **category is
+  validated** (mermaid-lint's motivation is this project's thesis in someone
+  else's words) and the **niche is contested**. Seventh ecosystem, still no
+  grader — now even where two linters compete.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
