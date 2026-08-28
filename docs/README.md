@@ -303,6 +303,22 @@ but they are a useful cross-check that no audience was forgotten.
   framework in sixteen evaluations, and the empirical case for refusing
   framework-shaped packs — a PlantUML sequence diagram was a MODAF OV-6c
   in 2010 and is a NAF view in 2026, with no code change.
+- [The Zachman ecosystem, evaluated](zachman-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), seventeenth in the series and the
+  oldest subject in it (1987). The purest **"nothing to lint"** case —
+  Zachman is an *ontology, not a methodology*, prescribes no notation, and
+  has no artefact a linter could read — but the note is not about the
+  refusal. It supplies the vocabulary this project lacked for its own unit
+  of analysis: Zachman's cells hold **primitives**, while a PlantUML
+  sequence diagram mixes **Who + When + What** and is therefore a
+  **composite**, which pumllint scores on the same "Precise" scale as a
+  primitive-like class diagram with nothing distinguishing them. The
+  contribution is a measurement: **all 51 rules classified by
+  interrogative — What 5, How 8, Where 0, Who 13, When 15, Why 1** (plus 9
+  artefact-level), so **Who+When carry 67% of the enterprise-facing
+  rules**. The first quantitative statement of what pumllint's rules are
+  *about* — worth consulting before describing the tool as broad
+  enterprise-diagram hygiene.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
