@@ -2548,6 +2548,88 @@ list and license posture live in § Settled questions.
     `authoritative`, closing G4's bounded-context false positive.
     Candidate (2) and the G2 alias gap moved to Arc C checkboxes with
     their triggers intact.*
+- **NAF / MODAF ecosystem (2026-08-28): no — and the note was run as a
+  *sibling test* of the DoDAF result, which comes back negative.**
+  Sixteenth (full record: docs/naf-modaf-ecosystem-evaluation.md;
+  pumllint claims executed at `a923595`, default config, neutral cwd).
+  **Bounds, and an uncomfortable one: NAFv4 is freely downloadable and I
+  did not read it** — NATO's topic page 404'd and no substitute primary
+  source was obtained, so the framework's structure, its two approved
+  metamodels and the absence of a grading scheme are characterized from
+  Wikipedia and vendor guides. Fourth access data point, and the first
+  where the limit was mine rather than the publisher's: **free is
+  necessary and not sufficient**. The exact NAFv4 grid rows/columns could
+  not be obtained, so none are named and no coverage count is attempted.
+  - **NARROWING CORRECTION to the DoDAF/UAF entry (one turn old).** That
+    entry's fit rested on one sentence — *"DoDAF does not endorse a
+    specific event-trace modeling methodology. An OV-6c may be developed
+    using any modeling notation…"* — making a PlantUML sequence diagram a
+    conformant OV-6c. **NAF says something that sounds similar and is
+    not.** NAF is notation-agnostic about *drawing* but requires a
+    NAF-compliant architecture to be built on one of exactly **two
+    approved metamodels — ArchiMate 3.1 or the OMG UAF Domain
+    Meta-Model** — with "traceable, consistent architectural information
+    structured according to its viewpoints". **NAF conformance lives in
+    the metamodel, not the picture.** So the DoDAF result is **specific
+    to DoDAF's wording and does not generalize to the family it was
+    unified with**; cite it as a fact about DoDAF, never about defence
+    frameworks.
+  - **The measurement inverts, which is the sharpest form of that
+    correction.** Two routes, both legitimate NAF practice: **the
+    ArchiMate metamodel route** (one of the two NAF approves) →
+    `sequence`, **Level 4, 89.22, 4 false SEQ009s**; **a picture** (an
+    event trace as an ordinary sequence diagram, no metamodel behind it)
+    → `sequence`, **Level 4, 100.00, no findings, exit 0**. **The
+    NAF-conformant artefact scores worse than the NAF-meaningless one.**
+    Not a defect — pumllint measures what it says it measures — but a
+    positioning result: **when a framework's conformance lives in a
+    metamodel, a renderer-level score can rank artefacts in the opposite
+    order from the framework's own criterion.** Route A is the standing
+    type-fallback class (the `archimate` keyword is not a type marker),
+    **no candidate and no amendment**.
+  - **MODAF is dead — the first withdrawn framework in sixteen
+    evaluations, and it supplies the empirical case for a standing
+    refusal.** Its GOV.UK guidance is marked **[Withdrawn]**, its
+    published PDFs carry `-withdrawn` in their filenames, and the UK
+    MOD's **2024 Defence Architecture Framework adopts NAFv4**. Sixteen
+    notes have refused framework-specific packs on scope, claim language
+    and demand — all arguments. MODAF is a fact: **a framework with ~47
+    prescribed views, national backing and a decade of use is now
+    withdrawn, and anything built to recognize its view types would be
+    dead code today.** pumllint's notation-level position survived
+    without a code change: a PlantUML sequence diagram was a MODAF OV-6c
+    in 2010 and is a NAF sequence-aspect view in 2026. First time the
+    series can argue the layer choice from evidence rather than
+    principle.
+  - **The ArchiMate finding is now load-bearing.** The third note
+    measured native ArchiMate as invisible to pumllint; that was a fact
+    about one notation. **NAF makes ArchiMate one of exactly two approved
+    metamodels for a live NATO framework**, so that finding now describes
+    what happens on half of NAF's sanctioned routes — re-confirmed at
+    current HEAD.
+  - *Sixteenth ecosystem, no grader* (corrected form: nothing grades a
+    *description*). No conformance levels, maturity model or scoring
+    found — **weaker evidence than usual**, since the standard itself was
+    not read.
+  - *Never build*: a NAF or MODAF pack, view-type recognizer or mode (no
+    notation to recognize, and MODAF shows what such a pack is worth);
+    **any NAF conformance claim** (NAF conformance is metamodel
+    conformance; pumllint reads a rendering and has no metamodel,
+    deliberately); **reading the DoDAF result as a family result** — the
+    specific trap this note closes; a metamodel layer, model store or
+    ArchiMate/UAF-DMM conformance checker motivated by NAF (the standing
+    knowledge-graph/OWL-SHACL never-build — a new reason to *want* it is
+    not a new reason to build it); and **quoting the 100.00 without the
+    89.22 beside it**.
+  - *Recorded, not queued*: (1) the narrowing correction (above); (2)
+    **MODAF's withdrawal as empirical support** for the framework-pack
+    refusal; (3) **the ArchiMate finding promoted to load-bearing**.
+  - Re-litigate on: **NAF issuing a notation-level conformance statement
+    of DoDAF's kind** — the only development that would reopen the fit,
+    and there is no sign of it; an adopter working the ArchiMate route
+    and reporting the fall-through. **Not** on NAF adoption, and
+    emphatically not on MODAF: one has a conformance criterion pumllint
+    structurally cannot meet, the other is withdrawn.
 
 ## Working agreements (read before picking anything up)
 
