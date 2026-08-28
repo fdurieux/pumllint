@@ -20,6 +20,14 @@ with a pilot measurement plan), and the *tooling landscape*
 capabilities have outcome evidence at all, what AI changes, and where
 pumllint's category sits on a Wardley map of the whole pipeline).
 
+The shelf shares one market picture — the positioning quadrant, scored
+against the published rubric in
+[Positioning pumllint](positioning-quadrant.md):
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders quadrant
+is empty; pumllint sits deep in Visionaries; the incumbents cluster in
+Challengers](positioning-quadrant.svg)
+
 ## How this split was chosen
 
 The roles fall out of the product's own delivery arcs (see
