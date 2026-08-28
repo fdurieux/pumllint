@@ -1765,6 +1765,105 @@ list and license posture live in § Settled questions.
     The YAML candidate is not demand-gated at all — it awaits the
     type-fallback decision, already recorded as maintainer self-demand.
 
+- **Graphviz / DOT ecosystem (2026-08-28): no — and the first refusal in
+  the series where this repository's own licence posture is decisive.**
+  Tenth and last obvious one (full record:
+  docs/graphviz-dot-ecosystem-evaluation.md; pumllint claims executed at
+  `73f8ed9` with default config outside the repo; **`dot` was not
+  installed**, so nothing reports what Graphviz itself accepts; per
+  session scope **no GitHub repository was read**, so the four linting
+  attempts are characterized from descriptions and forum discussion, not
+  inspected; the licence and its date are verified from
+  `graphviz.org/license/`). Verdict, on four independent grounds:
+  - **(1) The licence, and this is the new thing.** Graphviz is **EPL
+    2.0**, relicensed **7 March 2026**. The prose-pipeline settlement's
+    never-build reads *"EPL dependencies anywhere in the repo (one GPL
+    sdist — product and lab alike)"*, and the rule is categorical.
+    Nothing is violated today (`pyproject.toml` is `dependencies = []`,
+    verified; no source file mentions Graphviz). Nine ecosystems raised
+    no licence obstacle; this one does. **The consequence worth
+    recording is about `tools/`**: the knowledge-graph evaluation
+    established that licensing does *not* bind lab tooling (rdflib BSD,
+    pyshacl Apache-2.0, networkx BSD) — **Graphviz is the exception**,
+    so the optional-extras door that stood open for the graph stack is
+    **closed** for this one. Recorded because "let's just use
+    `pygraphviz` in `tools/` for a quick visualization" is exactly the
+    shape the rule exists to stop. *Invoking* a separately-installed
+    binary would be the recorded run-not-linked posture and permissible;
+    there is no reason to, so the distinction is recorded, not exercised.
+  - **(2) Zero of five packs transfer — a first.** DOT is a *graph*
+    language with layout attributes, not a diagram notation: no diagram
+    types, no lifeline, message or activation concept, nothing for a rule
+    to attach to. Mermaid transferred three of five, D2 one, Ilograph a
+    partial sequence mapping. DOT transfers none.
+  - **(3) Graphviz is not beside this project, it is underneath it.**
+    `dot` was PlantUML's layout engine for most of its history and is
+    optional since the pure-Java **Smetana** port (1.2021.5,
+    `!pragma layout smetana`). A dependency-of-the-renderer relationship
+    is unique across the ten, and it is the opposite of an adjacency —
+    pumllint has never needed to know which engine drew the picture.
+  - **(4) The niche is repeatedly attempted and unsettled**, a fourth
+    distinct pattern after occupied (Mermaid, BPMN) and open-and-claimed
+    (D2): `redot-lint` (community discussion, 2023: *"unfinished,
+    unmaintained and tied to the redot editor"*), `graphviz-dot-hooks`,
+    an attribute checker, `gvpr` as a substrate, and forum threads
+    literally asking for a DOT linter. Thirty years, a large user base,
+    nothing sustained — read as evidence *against* building, not as an
+    opening.
+  - *The measurement is the best boundary result in the series, and it
+    is luck.* Idiomatic DOT wrapped in `@startuml` is `unknown`, 0
+    elements, **Level 1 (Sketchy) 95.0** — where D2 reached Level 4
+    99.17 and Ilograph YAML Level 4 99.62. **The semicolon is why**:
+    `a -> b;` fails the message pattern on its trailing punctuation,
+    `a -> b` matches. Semicolons are **optional** in DOT, so the same
+    graph written without them types `sequence` at **Level 3, 89.0**,
+    and the undirected `a -- b` form — the token the ArchiMate note
+    already named unsafe — reaches **Level 4, 91.0**. Three honest
+    results in the note have three *different* accidental causes. The
+    protection is real and it is incidental; do not rely on it.
+  - *The boundary itself is correct in three forms* (§8.1): a directory
+    of `.dot` files warns "no PlantUML files found"; a `.dot` file passed
+    directly warns "no @startuml block"; and PlantUML's own `@startdot`
+    passthrough is correctly excluded. Exit 0 throughout.
+  - *Tenth ecosystem, no grader* — the streak reaches ten, and unlike
+    Ilograph's near-vacuous entry this is a real data point, with one
+    qualification: what is established is that **none of the four
+    attempts is *described* as grading** (their stated jobs are style,
+    pre-commit hygiene and attribute validity), since none was inspected.
+  - *Bookkeeping correction, made once so it is not re-derived*: the
+    type-fallback instance count in this record had drifted. BPMN
+    *fourth* and UML *fifth* are right; **Mermaid broke the one-per-
+    ecosystem correspondence** by contributing no instance, and the two
+    entries after it both reverted to counting by ecosystem position and
+    both said "sixth" (Structurizr "sixth notation", Ilograph "sixth
+    instance"), which cannot both hold. Correct enumeration:
+    Linked.Archi 1, C4 2, ArchiMate 3, BPMN 4, UML 5, D2 6 (the quiet
+    one), Structurizr 7, Ilograph 8, Graphviz 9. No finding changes —
+    nothing downstream depended on the number.
+  - *Never build*: a DOT parser or rule pack; **any Graphviz dependency,
+    binding or vendored layout, in the product *or* in `tools/`**;
+    anything premised on PlantUML's Graphviz dependency being a
+    connection (it is a rendering detail, and optional); a "fix" for the
+    semicolon result, which is a *pass* — §8.2's non-idiomatic forms are
+    the standing type-fallback class, not a new defect.
+  - *Recorded, not queued*: (1) **the incidental-honesty design note** —
+    a type-fallback fix must not assume the existing honest cases are
+    honest for a principled reason; attaches to the ArchiMate entry's
+    candidate 1 as twice amended, adding no third amendment. (2) **The
+    scope-guard wording** — `cli.py:326-329` enumerates four non-UML
+    `@start*` forms with no "e.g." and reads as exhaustive; `@startdot`
+    is absent and is the one a Graphviz user arrives with. Behaviour is
+    correct; the enumeration is short. User-facing output through `_err`
+    is a contract surface, so this is a recorded wording change rather
+    than a drive-by.
+  - Re-litigate on: **nothing an adopter can bring** — the artefact
+    argument and the licence are both structural. **Graphviz relicensing
+    away from EPL** would remove ground (1) and change nothing, since the
+    other three stand; recorded so a licence change is not mistaken for
+    an opening. A DOT linter finally establishing itself would settle the
+    niche question the other way and still not make DOT a diagram
+    notation.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
