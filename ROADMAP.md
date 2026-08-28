@@ -2112,6 +2112,120 @@ list and license posture live in § Settled questions.
     Arcadia adoption growing — Capella users use Capella, and volume
     creates no PlantUML artefact to lint.
 
+- **ISO 42010 / viewpoint ecosystem (2026-08-28): no — and the first
+  subject in the series that is not a notation, a tool or a product, but
+  a standard about the same question this project asks.** Thirteenth
+  (full record: docs/iso42010-viewpoint-ecosystem-evaluation.md; pumllint
+  claims executed at `40c132c`, default config, neutral cwd). **Bounds
+  first, because one of them is the subject: ISO/IEC/IEEE 42010:2022 is
+  paywalled and was not read.** What is quoted comes from the publisher's
+  **15-page preview** — front matter, full table of contents, part of
+  Clause 3, **Clause 4 (Conformance) in full**, and the opening of Clause
+  5. **Clauses 6, 7 and 8, which contain every requirement, were not
+  read**, so this record states what conformance is claimed *for*, never
+  what it *requires*. 42030 is characterized from secondary summaries
+  only; its text was not seen.
+  - **(1) pumllint's unit is precisely the one thing 42010 defines no
+    conformance for.** Clause 4 names five claim situations — architecture
+    description (Clause 6), architecture description framework (7.1),
+    architecture description language (7.2), architecture viewpoint, and
+    model kind. A `.puml` file is none: in 42010's vocabulary it is at
+    best a **view component** (3.19), *"separable portion of one or more
+    architecture views… governed by the applicable model kind or
+    legend"*. **pumllint can neither conform to 42010 nor fail to.** That
+    settles "42010-conformant" / "42010-aligned" before it is claimed —
+    and the Linked.Archi note's record of *its* subject's alignment claim
+    should be read with this attached. Note also 42010's ADL examples:
+    AADL, ArchiMate, UML, SysML, UAF — an ADL needs *syntax **and**
+    semantics*, so PlantUML is not one, which lands beside (not identical
+    to) README.md:6-8's "drawing tool rather than a modeling tool".
+  - **(2) Correspondences — half implemented, and measured.** 42010's
+    central structural idea is that views *correspond*; the 2022 revision
+    made "correspondences for model and view consistency" a headline.
+    **XD001–005 (all DIM-CON, all about identity) are correspondence
+    rules**, arrived at independently and first. What has no counterpart
+    is the correspondence **requirement**:
+    two views sharing an entity with a conflicting kind → **XD001 ×2,
+    major, exit 1**; two views sharing **nothing at all** → **"✔ No
+    issues found", Model set: Level 4 (Precise) 100/100**. **Two disjoint
+    diagrams are a "Precise" architecture description at 100/100.**
+    *And the fix is already refused*: a "views must correspond" rule is
+    **missing-edge inference** — the never-build's *"participant-pair
+    sweep's no-oracle shape"* — and the reason transfers exactly (nothing
+    says which diagrams are meant to be one AD) with a worse
+    false-positive shape (independent diagrams are normal). 42010 supplies
+    a precise name for the gap and no way to close it. Recorded so a
+    future reader meeting 42010 does not re-propose the rule as new.
+  - **(3) The streak, reframed — the finding that outlives the note.**
+    **Thirteenth ecosystem, no grader**, but not like the twelve before.
+    Those were tools that happened not to aggregate. **ISO/IEC/IEEE
+    42030:2019 is the standard in this family whose entire subject is
+    architecture evaluation**, and it defines evaluation objectives,
+    methods, quality models, criteria and stakeholder involvement while
+    defining *"only a process and framework… not a scoring scheme, rating
+    scale, maturity level, or aggregate verdict"*, declining to
+    "prescribe how to aggregate results into an overall verdict".
+    A standards body that owns the question, considered the aggregate,
+    and stopped short. **Two readings, and this record picks neither**:
+    either pumllint built something the field overlooked, or it does
+    something the field examined and declined to standardize. **The
+    consequence for the record is concrete — the no-grader streak may no
+    longer be cited as evidence of an unoccupied niche without this
+    caveat attached.** (Characterized from a secondary summary; anyone
+    who can open 42030 should verify before leaning further on it.)
+  - *A new kind of boundary, and it breaks the EPL run.* Twelve
+    predecessors had readable normative text (OMG free, ArchiMate free
+    behind registration, D2/Mermaid grammars in source). **42010 is the
+    first ecosystem whose normative content could not be read.** The
+    constraint is **access, not licence compatibility** — three
+    consecutive evaluations turned on EPL and this one does not. It is
+    also an independent argument against any conformance claim: **users
+    could not check it either**, and a badge citing a document its
+    audience cannot open is unauditable by design.
+  - *The model-set verdict exists, which the altitude argument must not
+    obscure.* `score` over a directory emits `Model set: Level 4
+    (Precise) — 100/100 weighted across 3 diagram(s)`. pumllint does
+    reason above the single file. What it does not see is what makes a
+    set an architecture description: stakeholders as AD elements
+    (they are substrings of title text), viewpoints, model kinds,
+    rationale, correspondences.
+  - *No boundary probe exists and that is the point*: 42010 defines no
+    syntax, so there is nothing to wrap in `@startuml` and no
+    type-fallback question. First note in the series with no §8.1
+    discovery measurement.
+  - *Never build*: a 42010 conformance claim, alignment badge or
+    "42010-aware" mode; viewpoints/views/stakeholders/concerns as
+    first-class model concepts (that is an AD tool with a linter
+    attached); **a "views must correspond" rule** (missing-edge
+    inference); renaming dimensions or levels into 42010 vocabulary
+    (the badge claim by vocabulary instead); and **reading 42030's
+    abstention as permission** — it is not endorsement of this project's
+    aggregate and not proof the field was wrong; it makes the scoring
+    model *more* exposed, not less.
+  - *Recorded, not queued*: (1) the correspondence half-implementation
+    with its never-build link (above); (2) **the model-kind fit** — a
+    **model kind** (3.15, *"category of model distinguished by its key
+    characteristics and modelling conventions"*) **is** a conformance
+    target, and a pumllint profile is a statement of modelling
+    conventions, so this is the single reachable fit in the note; parked
+    jointly on the paywall (Clause 8's requirements unread, so nobody
+    here can say what conformance would take) and the demand bar (no
+    adopter has asked; the artefact is a document, not a capability);
+    (3) the streak reframe (above).
+  - Re-litigate on: **an adopter needing a 42010 conformance statement
+    for procurement** — the only trigger a user can fire, plausible in
+    defence and aerospace, and the one case where the correct answer
+    ("the standard defines no target at this altitude") is unsatisfying
+    enough to reopen; **42010 or 42030 becoming freely readable** (would
+    make the model-kind question checkable and let the 42030
+    characterization be verified rather than trusted); evidence that any
+    tool produces an aggregate architecture-quality verdict — the
+    standing streak trigger, now sharper, since it would show the field
+    moving *toward* what this project already does. **Not** on viewpoint
+    catalogues (4+1, Rozanski & Woods, TOGAF) gaining adoption — they
+    describe how to organize descriptions, not how to check files, and
+    have had decades.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

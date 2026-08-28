@@ -236,6 +236,24 @@ but they are a useful cross-check that no audience was forgotten.
   tool space rather than a third coincidence; and the closest taxonomic
   convergence yet — two of Capella's four validation-rule categories are
   pumllint's dimension names verbatim.
+- [The ISO 42010 / viewpoint ecosystem, evaluated](iso42010-viewpoint-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), thirteenth in the series and the first
+  whose subject is **not a notation, a tool or a product** but a standard
+  about the same question this project asks. Three findings.
+  **pumllint's unit is precisely the one thing 42010 defines no
+  conformance for**: its five claim targets are AD, framework, language,
+  viewpoint and model kind, and a `.puml` file is a *view component* —
+  so pumllint can neither conform nor fail to, which settles
+  "42010-aligned" before it is claimed. **Correspondences are half
+  implemented**: XD001–005 *are* correspondence rules, but two views
+  sharing nothing score **Level 4 (Precise) 100/100** as a model set —
+  and the fix is already on the never-build list as missing-edge
+  inference. And **the no-grader streak is reframed**: ISO/IEC/IEEE
+  42030, the standard whose whole subject is architecture evaluation,
+  declines to define an aggregate verdict — so twelve tools not grading
+  may be a considered position rather than an empty niche. Also the first
+  ecosystem whose normative text could not be read: paywalled, which is
+  an argument against conformance claims users could not audit either.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
