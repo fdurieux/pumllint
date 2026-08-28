@@ -1,0 +1,6 @@
+' Shared lifelines for the order-flow diagrams. pumllint never expands
+' !include, so these declarations are invisible to it — which is exactly
+' what the disclosure warning in the walkthrough is about.
+participant OrderService <<service>>
+participant InventoryService <<service>>
+participant PaymentGateway <<external>>

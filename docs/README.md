@@ -447,3 +447,8 @@ but they are a useful cross-check that no audience was forgotten.
   what held up, and what to watch. The diagram source itself is described
   construct by construct in
   [the annotated walkthrough](pumllint-lint-flow-explained.md).
+- [Cross-diagram identity, worked](xd-identity-demo.md) — the `!include`
+  disclosure and the `distinct` option demonstrated on committed files
+  ([docs/xd-demo/](xd-demo/)): the runnable companion to the
+  cross-diagram relationships evaluation's G3/G4 findings, transcripts
+  drift-guarded (`tests/test_xd_demo.py`).
