@@ -57,3 +57,25 @@ Feature: XD002 conflicting participant stereotype
       """
     When the linter runs
     Then no "XD002" issue is reported
+
+  Scenario: a distinct entity is never compared
+    Given the configuration:
+      """
+      [rules.XD002]
+      distinct = ["Payments"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD002" issue is reported

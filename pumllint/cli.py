@@ -328,7 +328,47 @@ def _parse_input_files(files: list[Path]):
             "@startuml…@enduml sources; @startmindmap / @startjson / "
             "@startsalt / @startgantt blocks are not linted"
         )
+    _warn_hidden_declarations(diagrams)
     return diagrams
+
+
+def _declares_nothing_behind_includes(d) -> bool:
+    """True when this diagram's declarations may hide behind ``!include``.
+
+    The predicate behind the disclosure below: the diagram carries at least
+    one include directive, names entities, and declares none of them — the
+    shape an ``!include``d shared-declaration file produces, since pumllint
+    never expands the preprocessor.
+    """
+    if not any(x.kind == "include" for x in d.directives):
+        return False
+    entities = list(d.participants.values()) + list(d.classes.values()) + list(
+        d.states.values()
+    )
+    return bool(entities) and not any(e.declared for e in entities)
+
+
+def _warn_hidden_declarations(diagrams) -> None:
+    """Disclose diagrams whose declarations pumllint cannot see.
+
+    A diagram that ``!include``s its declarations parses with only implicit
+    entities, so the cross-diagram (XD) identity checks and every
+    declared-entity rule go silent — and the maturity score *rises* for it
+    (docs/cross-diagram-relationships-evaluation.md, G3). A gate that scores
+    a file it half-read must say so: warn on stderr, like the "nothing was
+    checked" warning — never a finding, never an exit-code change.
+    """
+    hidden = [d for d in diagrams if _declares_nothing_behind_includes(d)]
+    if not hidden:
+        return
+    shown = ", ".join(d.file_path for d in hidden[:5])
+    more = f" (+{len(hidden) - 5} more)" if len(hidden) > 5 else ""
+    _err(
+        f"warning: {len(hidden)} diagram(s) contain '!include' but declare "
+        f"nothing: {shown}{more} — pumllint does not expand preprocessor "
+        "directives, so declarations inside included files are invisible to "
+        "cross-diagram (XD) identity checks and declared-entity rules"
+    )
 
 
 def _run_lint(argv: list[str]) -> int:

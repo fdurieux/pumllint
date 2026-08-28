@@ -33,3 +33,23 @@ Feature: XD003 participant name case collision
       """
     When the linter runs
     Then no "XD003" issue is reported
+
+  Scenario: a distinct name is exempt from case-collision, case-insensitively
+    Given the configuration:
+      """
+      [rules.XD003]
+      distinct = ["LEDGER"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Ledger
+      Ledger -> Ledger : sweep()
+      @enduml
+      @startuml two
+      participant ledger
+      ledger -> ledger : sweep()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD003" issue is reported

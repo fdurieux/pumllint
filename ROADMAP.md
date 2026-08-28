@@ -131,7 +131,35 @@ grouped into arcs. Keep it updated as items land.
   cautionary number, not the encouraging one. Arc C's bar applies in full
   (mutation ladders, clean probes, deliberate additive golden re-freeze, pilot
   regeneration). *Trigger: a second corpus or an adopter showing the same
-  defect class — one corpus is an anecdote.*
+  defect class — one corpus is an anecdote.* *Annotated 2026-08-28: the
+  cross-diagram-relationships evaluation
+  (docs/cross-diagram-relationships-evaluation.md) reached this same gap
+  from the opposite direction — a synthetic probe (its M3: contradictory
+  edges over perfectly agreeing entities, zero cross-diagram findings) now
+  gives the item a reproducible fixture, and its §5 argues the scope
+  boundary: within-notation edge coherence, never the RDF
+  qualified-relationship shape. The trigger is unchanged — a probe is not
+  a second corpus.*
+- [ ] **XD display-name identity (G2)** — the cross-diagram join is keyed on
+  the `as` alias, so `participant "Order Service" as OS` and `database
+  "Order Service" as OrderService` — one entity by every human reading, with
+  a conflicting kind and stereotype — are never compared (measured:
+  docs/cross-diagram-relationships-evaluation.md, G2/M2), and an alias
+  rename silences any XD finding. Candidate: an evidence-shaped rule
+  (XD003/XD004 family, minor) flagging the same display name under
+  different aliases as "likely one entity", honouring `distinct`. Moderate
+  false-positive risk on generic display names; Arc C bar in full.
+  *Trigger: an adopter corpus using `as` aliases inconsistently.*
+- [ ] **`ref over` capture + declared diagram→diagram links (G6/O4)** — the
+  notation's one cross-diagram construct (recommended by SEQ006's own
+  message) is dropped whole by the parser, and the nearest declared-link
+  mechanism, `trace`, is untyped and undirected (same note, G6/§2.3).
+  Candidate, built together if built: parse `ref over` into the model, and
+  a link-integrity check (dangling target, orphan diagram) with
+  `trace`-style gates; any carrier widening moves GEN007 and `trace`
+  together (the SysML invariant). Same shape as the Linked.Archi `'!la-`
+  candidate — if either is built, build both. *Trigger: an adopter running
+  `trace` who asks for diagram→diagram links in the same table.*
 
 ## Arc D — Evidence engine (core done; optional deepening)
 
@@ -2434,6 +2462,92 @@ list and license posture live in § Settled questions.
     "Fit-for-Purpose" suggests the reason is doctrinal rather than
     accidental.
 
+- **Cross-diagram relationships (2026-08-28): the XD pack joins entity
+  *nodes*, never *edges* — no declared diagram→diagram relation exists
+  anywhere in the product, the RDF qualified-relationship shape stays
+  refused, and the in-notation half of the ask is the Arc C
+  edge-coherence item, which now has its reproducible probe. Two
+  candidates recorded, nothing queued.** The question (does pumllint
+  support/lint relationships *between* diagrams, versus Linked.Archi's
+  declared qualified relationships — direct triple, qualified predicate,
+  first-class relationship resource with source/target/provenance/owner)
+  was run through the house triage against `e989da8` (full record:
+  docs/cross-diagram-relationships-evaluation.md; every claim executed,
+  commands quoted). Verdict:
+  - *The asker's reading is correct, and sharper than stated.* The
+    cross-diagram layer is an **implicit, undeclared name-equality
+    join**: two diagrams are "related" iff they spell an entity the same
+    way, and only node properties (kind, stereotype, spelling) are
+    compared. Measured: three diagrams whose entities agree perfectly
+    but whose *relationships* directly contradict each other — an edge
+    asserted, reversed, and absent — draw **zero cross-diagram
+    findings**. Nothing in `model.py`, the parser, the report schemas or
+    the CLI has a slot for a relation between diagrams; `trace` is the
+    nearest shipped mechanism and is bipartite, untyped and undirected
+    (a diagram that *is* DGM-001 and a diagram that *refines* DGM-001
+    land in the same row, undifferentiated).
+  - *Three further measured gaps, all silencing- or false-positive-shaped*:
+    the join key is the **alias**, so the same display name
+    (`"Order Service" as OS` / `as OrderService`) with a conflicting kind
+    *and* stereotype is silent — an alias rename clears any XD finding;
+    an **`!include`d declaration** never reaches the model (the parser
+    skips `!` lines), so the same XD001/XD002 conflict scores 72.5
+    inline and **87.5 via include (DIM-CON 0 → 100)** — an evasion that
+    *raises* the maturity score, the sharpest silencing instance on
+    record and the first that is not a mistyping artefact; and with **no
+    namespace**, two bounded contexts sharing a word (`Order` the
+    aggregate, `Order` the work order) draw symmetric XD005 findings
+    that `authoritative` cannot dissolve — identity without namespacing
+    has no negative form. Also measured: **`ref over`** — the notation's
+    one cross-diagram construct, recommended by SEQ006's own message —
+    is dropped whole by the parser.
+  - *Never build*: RDF/OWL/SHACL as substrate (the 2026-08-26 N1/N3,
+    verbatim); reified relationship resources smuggled through `.puml`
+    comments (convention-manufacturing, and the correct product for that
+    need is Linked.Archi with pumllint gating the producer — the shipped
+    zero-code fit); hierarchy inferred from filenames or folders
+    (invention upstream of the gate that exists to catch invention);
+    cross-diagram *completeness* quotas (no oracle — a disconnected
+    portfolio linting clean at exit 0 is measured and **correct**);
+    `!include` resolution in the parser as scoped today (path semantics,
+    `!includeurl` network fetches, macro expansion, a security surface
+    SECURITY.md's trust boundary was written to avoid).
+  - *Recorded, not queued*: (1) an **`!include`-evasion disclosure** —
+    not include resolution but visibility: a sequence diagram carrying
+    preprocessor lines and declaring nothing gets a "nothing was
+    declared here" signal, following the "nothing was checked"
+    stderr-warning precedent (exit codes untouched). Fixes a
+    scoring-integrity defect independent of this question. Trigger: an
+    adopter whose corpus uses `!include` for shared declarations and
+    whose scores are consequently inflated. (2) **Declared
+    diagram→diagram links** via `ref over` (externally-authored
+    convention — PlantUML's own, already recommended by SEQ006) and/or a
+    prose-carrier ID scheme extending `trace`: link-integrity checking
+    (dangling target, orphan diagram) with `trace`-style gates. Same
+    shape as the Linked.Archi `'!la-` candidate — if either is built,
+    build them together. Trigger: an adopter running `trace` who asks
+    for diagram→diagram links in the same table.
+  - The **Arc C "XD member and relationship coherence" item is this
+    question's in-notation core**, arrived at from the opposite
+    direction (J-F corpus, 2026-08-26); its trigger (a second corpus or
+    an adopter showing the defect class) is unchanged, and the note's M3
+    probe is now its reproducible fixture.
+  - One defect found and fixed with the note: RULES.md's XD pack
+    preamble still described the pre-v0.29.0 **majority vote**,
+    contradicting `9f06672` (issue #36), the rule bodies below it, the
+    README and shipped behaviour.
+  - Re-litigate on: the recorded triggers above, or the Arc C trigger —
+    **not** on the existence of Linked.Archi, RDF 1.2 reification, or
+    any ecosystem's relationship model (settled 2026-08-26 and
+    2026-08-27). *Amended 2026-08-28, same day: the maintainer picked up
+    candidate (1) and the G4 residual directly — the `!include`
+    hidden-declarations disclosure shipped (stderr warning in the CLI
+    parse funnel, exit codes and scores untouched; the parser now records
+    the `!include` family as directives, still never expanding them), and
+    every XD rule gained the `distinct` option, the negative form of
+    `authoritative`, closing G4's bounded-context false positive.
+    Candidate (2) and the G2 alias gap moved to Arc C checkboxes with
+    their triggers intact.*
 - **NAF / MODAF ecosystem (2026-08-28): no — and the note was run as a
   *sibling test* of the DoDAF result, which comes back negative.**
   Sixteenth (full record: docs/naf-modaf-ecosystem-evaluation.md;

@@ -39,6 +39,9 @@ _IDENT = r'(?:"[^"]+"|[\w.]+)'
 
 RE_STARTUML = re.compile(r"^@startuml\s*(?P<name>\S.*)?$")
 RE_ENDUML = re.compile(r"^@enduml\b")
+# The include family only — pumllint does not expand these; they are recorded
+# as directives so the CLI can disclose declarations it therefore cannot see.
+RE_INCLUDE = re.compile(r"^!include(?:_many|_once|sub|url)?\b\s*(?P<target>.*)$")
 
 RE_DECLARATION = re.compile(
     r"^(?P<kw>" + "|".join(PARTICIPANT_KEYWORDS) + r")\s+"
@@ -165,7 +168,12 @@ def _strip_ident(raw: Optional[str]) -> Optional[str]:
 
 
 def _iter_logical_lines(text: str) -> Iterator[tuple[int, str]]:
-    """Yield (line_number, stripped_line), skipping comments/preprocessor."""
+    """Yield (line_number, stripped_line), skipping comments/preprocessor.
+
+    ``!include`` lines are yielded (recorded as directives so the CLI can
+    disclose declarations pumllint cannot see); every other preprocessor
+    line (``!define``, ``!theme``, ``!if``, …) is skipped here as before.
+    """
     for i, raw in enumerate(text.splitlines(), start=1):
         line = raw.strip()
         if not line:
@@ -173,6 +181,8 @@ def _iter_logical_lines(text: str) -> Iterator[tuple[int, str]]:
         if line.startswith("'") or line.startswith("/'"):
             continue
         if line.startswith("!"):  # preprocessor: !include, !define, ...
+            if RE_INCLUDE.match(line):
+                yield i, line
             continue
         yield i, line
 
@@ -246,6 +256,16 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             continue
         if RE_LEGEND_START.match(line):
             in_legend = True
+            continue
+
+        # Preprocessor include: recorded, never expanded. Only the include
+        # family reaches here (see _iter_logical_lines); its target may hold
+        # declarations pumllint cannot see, so the CLI disclosure needs the fact.
+        m = RE_INCLUDE.match(line)
+        if m:
+            current.directives.append(
+                Directive(kind="include", value=m.group("target").strip(), line=lineno)
+            )
             continue
         if RE_NOTE_END.match(line):
             continue

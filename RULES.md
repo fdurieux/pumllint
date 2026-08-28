@@ -1972,11 +1972,21 @@ XD001–003 walk the participant tables of sequence diagrams; XD004–005
 classifiers and activity swimlanes name entities, while state names stay out
 on purpose (states are modes of an entity, not entities). All activate only
 when more than one diagram is linted (SCORING.md §6); single-diagram runs
-score DIM-CON from naming rules alone. For XD001/XD002/XD005 the **majority
-declaration wins** (ties resolve to the first-seen form): violations are
-attributed to the *minority* sites and reference an authoritative majority
-site, so a single outlier never indicts the conforming rest. XD003/XD004 flag
-later case-variants of the first-seen spelling.
+score DIM-CON from naming rules alone. For XD001/XD002/XD005 **no side is
+elected**: every conflicted site is reported symmetrically, each message
+listing every variant with counts, because electing a majority indicts the
+conforming sites once a drift has spread (issue #36, v0.29.0). The per-entity
+`authoritative` option pins the intended value; with it set, only the
+non-conforming sites are reported. XD003/XD004 flag later case-variants of
+the first-seen spelling. Every XD rule also accepts a `distinct` list — the
+negative form of `authoritative`: names listed there are deliberately
+*different* entities that happen to share a spelling (a bounded-context
+`Order` here, a work-order `Order` there), so no cross-diagram comparison
+applies to them (XD003/XD004 match case-insensitively, like their joins).
+Declarations pumllint cannot see are a separate concern: the preprocessor is
+never expanded, so a diagram whose declarations live behind `!include` parses
+with only implicit entities and every XD rule goes quiet — the CLI disclosure
+warning (stderr, exit codes untouched) says so per run.
 
 ### XD001 — Conflicting participant kind
 **Severity:** major · **Status:** ✅ Implemented (v0.5.0)
@@ -2047,6 +2057,28 @@ Feature: XD001 conflicting participant kind
       @startuml two
       participant Client
       participant OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD001" issue is reported
+
+  Scenario: a distinct entity is never compared
+    Given the configuration:
+      """
+      [rules.XD001]
+      distinct = ["OrderSvc"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : run()
+      @enduml
+      @startuml two
+      participant Client
+      database OrderSvc
       Client -> OrderSvc : query()
       @enduml
       """
@@ -2126,6 +2158,28 @@ Feature: XD002 conflicting participant stereotype
       """
     When the linter runs
     Then no "XD002" issue is reported
+
+  Scenario: a distinct entity is never compared
+    Given the configuration:
+      """
+      [rules.XD002]
+      distinct = ["Payments"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Payments <<service>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : pay()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD002" issue is reported
 ```
 
 ### XD003 — Participant name case collision
@@ -2168,6 +2222,26 @@ Feature: XD003 participant name case collision
       participant Client
       participant OrderSvc
       Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD003" issue is reported
+
+  Scenario: a distinct name is exempt from case-collision, case-insensitively
+    Given the configuration:
+      """
+      [rules.XD003]
+      distinct = ["LEDGER"]
+      """
+    And the diagram:
+      """
+      @startuml one
+      participant Ledger
+      Ledger -> Ledger : sweep()
+      @enduml
+      @startuml two
+      participant ledger
+      ledger -> ledger : sweep()
       @enduml
       """
     When the linter runs
@@ -2222,6 +2296,26 @@ Feature: XD004 cross-type name collision
       """
     When the linter runs
     Then no "XD004" issue is reported
+
+  Scenario: a distinct name is exempt from cross-type collision, case-insensitively
+    Given the configuration:
+      """
+      [rules.XD004]
+      distinct = ["orderservice"]
+      """
+    And the diagram:
+      """
+      @startuml classes
+      class OrderService
+      @enduml
+      @startuml seq
+      participant orderService
+      participant Client
+      Client -> orderService : run()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD004" issue is reported
 ```
 
 ### XD005 — Cross-type stereotype conflict
@@ -2271,6 +2365,26 @@ Feature: XD005 cross-type stereotype conflict
       participant OrderService <<service>>
       participant Client
       Client -> OrderService : place()
+      @enduml
+      """
+    When the linter runs
+    Then no "XD005" issue is reported
+
+  Scenario: bounded-context homonyms declared distinct are never compared
+    Given the configuration:
+      """
+      [rules.XD005]
+      distinct = ["Order"]
+      """
+    And the diagram:
+      """
+      @startuml sales
+      class Order <<aggregate>>
+      @enduml
+      @startuml checkout
+      participant Order <<work-order>>
+      participant Client
+      Client -> Order : place()
       @enduml
       """
     When the linter runs
