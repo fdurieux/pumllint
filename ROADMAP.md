@@ -2801,6 +2801,127 @@ list and license posture live in § Settled questions.
     on FEAF adoption — thirteen years old, prescribes no notation, and
     its artifacts are already reachable with nothing built.
 
+- **ArchiMate viewpoints ecosystem (2026-08-28): no — and the hypothesis
+  the note was opened to test did not survive its own research, which is
+  the useful part.** Nineteenth, and a **narrowing return**: ArchiMate the
+  *notation* was settled third (2026-08-27); this is its **viewpoint
+  mechanism**, which that note did not examine. Full record:
+  docs/archimate-viewpoints-ecosystem-evaluation.md. **Bounds: ArchiMate
+  3.2 could not be read** — every Open Group host redirects to SSO, the
+  same gate that defeated TOGAF — so **every verbatim quotation is
+  ArchiMate 3.1 (C197, 2019)**, read as the Personal PDF Edition, and the
+  3.2 catalogue is unknown to the note. **No ArchiMate tool was
+  executed.** pumllint claims executed at `51bc97d` (v0.30.0), default
+  config, neutral cwd. Research ran as a parallel workflow with an
+  adversarial verification pass; corrected forms are what the note
+  carries.
+  - *The hypothesis*: an ArchiMate viewpoint is built by selecting a
+    subset of element and relationship types, so viewpoint conformance
+    looks **mechanically checkable** — rare in this series. **Three
+    findings killed it.**
+  - **(1) ArchiMate does not make view-to-viewpoint conformance a
+    requirement.** Viewpoint = *"A specification of the conventions for a
+    specific architecture view"* (§2.4); view = *"A representation of a
+    system from the perspective of a related set of concerns"* (§2.3).
+    The construction procedure is a subset selection, but the criterion
+    for what appears in a view is **stakeholder relevance, an editorial
+    judgement, stated as such**. Adversarial verification could not refute
+    the load-bearing negative: **no normative rule anywhere in the spec
+    makes a view's conformance to its viewpoint a requirement.** The 25
+    example viewpoints (3.1, Appendix C) are **informative** — conformance
+    requires the *mechanism*; supporting the examples is a **MAY**. A
+    linter enforcing viewpoint membership would be **inventing a
+    requirement the ecosystem declined to make**.
+  - **(2) The ecosystem already drew the line, and it is our line.**
+    Archi offers the 25 viewpoints as a per-view setting (default *None*)
+    and **does not enforce them** — out-of-viewpoint elements are ghosted
+    and greyed, never blocked. Its Validator checks viewpoint conformance
+    as **one of eight opt-in checkers, a WarningType, elements only**. By
+    contrast Archi **hard-blocks illegal relationships at authoring
+    time**. Two constraints from one spec, deliberately given different
+    enforcement strengths. **That is the ArchiMate note's N2 extending to
+    viewpoints** ("legality is the settled anti-goal, and this ecosystem
+    enforces it upstream by construction") — refused under the existing
+    never-build, not a new one.
+  - **(3) A controlled experiment — the series' cleanest measurement.**
+    Two ArchiMate views **identical in structure, glyphs and element
+    count**, differing only in element type and layer: one conformant to
+    the Application Cooperation viewpoint, one violating it with
+    business- and technology-layer elements it excludes. Both →
+    `sequence`, **Level 4, 90.00, 8 elements, 4 false SEQ009s** —
+    **byte-identical output**. Identical again under `--profile codegen`
+    (both **Level 2, 47.50, 4 blockers**). Replacing the declared
+    viewpoint with a *wholly fictitious* one also changes nothing: the
+    title is opaque text. **Viewpoint conformance is not partially
+    visible; it is exactly invisible**, and profile-independently so.
+  - *A deeper reframe, and it belongs to this note*: **PlantUML does not
+    model ArchiMate element types either.** `archimate` is a single-line
+    *element command* in the Description Diagram factory — PlantUML
+    classifies it among **53 element-type keywords** beside `rectangle`
+    and `node`; there is no ARCHIMATE diagram type, `@startarchimate` is
+    rejected, the element becomes a generic description leaf with **no
+    element-type field**, the `<<element-type>>` stereotype is
+    string-interpolated into a sprite path with **nothing validating it**
+    (a nonexistent type is accepted silently), and the layer colours are
+    seven ordinary named colours. **So the property is absent from the
+    artefact, not merely unread** — a stronger statement than "pumllint
+    does not recognise the keyword".
+  - **THE ONE NEW MEASUREMENT — third amendment to candidate 1.** The
+    ArchiMate note's §8.1 arrow table has **two** outcomes
+    (`unknown`/L1, or `sequence`/L3–4). Extending it with the glyphs
+    practitioners use for named ArchiMate relationship types produces a
+    **third**: composition `*-->` → `unknown` L1 95.00 (0 elements);
+    **realization `..|>` → `class`, L4, 99.31**; serving `-[#black]->` →
+    `sequence` L3 88.19; association/aggregation/triggering/plain →
+    `sequence` L4 90.42. **The realization row is the worst case in this
+    ecosystem and the quietest instance on record**: typed as a
+    *different diagram type*, scored **99.31**, and **completely
+    silent** — only "no title"/"no name", where the sequence-typed cases
+    at least emit false SEQ009s. Mechanism is exact and is **not a
+    fallback**: `_TYPE_MARKER_ARROW = re.compile(r"<\||\|>")`
+    (`parser/class_.py:67`) and `parser/class_.py:161` set
+    `diagram_type = "class"` on `<|` or `|>` **independent of any `class`
+    keyword** — confirmed across `..|>`, `--|>`, `<|..`, each `class` L4
+    97.92. The ArchiMate note tested `..>` (no bar) and got `sequence`:
+    **one glyph character apart, a different kind of diagram.**
+    *Amendment*: candidate 1's type-marker set does not only **omit**
+    declaration keywords, it **mis-fires** — a fix that widens keywords
+    alone leaves this cell wrong, and must be validated against a
+    realization-glyph file as well as the foreign-diagram and YAML shapes
+    the two earlier amendments named.
+  - *Intersection with the pack set is near-empty, consistent with
+    TOGAF*: research found **no sequence-shaped viewpoint** among the 25
+    — upheld under verification but with the evidence flagged fragile, so
+    it is a conclusion and **not a count**. ArchiMate viewpoints are
+    structural and relational; the Zachman entry measured pumllint's rule
+    mass at **67% Who+When**. Third data point for the same rule:
+    **fit tracks whether a framework asks for time-ordered interaction
+    models** — TOGAF `sequence` 0/32, DoDAF 3/52 with an any-notation
+    permission, ArchiMate viewpoints none.
+  - *Access, eighth data point, and a new resolution*: **current edition
+    gated, previous edition readable.** TOGAF yielded no primary text at
+    all; here 3.2 is behind the same SSO but **3.1 is a published Personal
+    PDF Edition and was read**, so the note has verbatim spec quotations
+    one version behind and says so in every one.
+  - *Nineteenth ecosystem, no grader* (corrected form; cite with the
+    four-object tally, not as a count).
+  - *Never build* — **every refusal extends an existing never-build,
+    which is what a mature record should do on its nineteenth
+    evaluation**: a viewpoint-conformance rule (ArchiMate N2);
+    viewpoints/views/stakeholders/concerns as model concepts (42010 N2);
+    anything premised on ArchiMate element types being readable (they are
+    not in the artefact); **and presenting any of this as a new defect
+    class** — the type-fallback class was characterized and closed in the
+    ArchiMate note, §8.3 is a sharper demonstration of it and §8.4 an
+    amendment to its candidate, and the record must not read as though a
+    nineteenth note found a nineteenth defect.
+  - Re-litigate on: **ArchiMate 3.2 becoming readable** (to check the
+    §1.1 negative against the current edition); ArchiMate making
+    view-to-viewpoint conformance normative in a future edition — the one
+    change that would reopen this, with no sign of it. **Not** on Archi's
+    Validator gaining strength: that is the ecosystem doing its own job
+    upstream, which is the reason for the refusal rather than an opening.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

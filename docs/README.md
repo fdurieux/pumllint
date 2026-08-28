@@ -336,6 +336,24 @@ but they are a useful cross-check that no audience was forgotten.
   recorded and neither adopted; the threats column stays open. Also: the
   graded-object tally reaches four (organization, implementation,
   business service, vendor) and **none of them is a description**.
+- [The ArchiMate viewpoints ecosystem, evaluated](archimate-viewpoints-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), nineteenth in the series and a
+  **narrowing return** to the third note's subject: ArchiMate the
+  *notation* was settled then; this is its **viewpoint mechanism**. The
+  note was opened to test whether viewpoint conformance is mechanically
+  checkable, and **its own research refuted the hypothesis**: no normative
+  rule makes a view's conformance to its viewpoint a requirement, the 25
+  example viewpoints are informative, and Archi itself only *ghosts*
+  out-of-viewpoint elements while **hard-blocking illegal
+  relationships** — the ecosystem's own line, and the third note's N2.
+  Measured with the series' first **controlled experiment**: two views
+  identical but for element type — one conformant, one violating — give
+  **byte-identical output**, under both profiles, and with a fictitious
+  viewpoint name. The one new measurement amends a standing candidate:
+  the third note's arrow table has two outcomes, and ArchiMate's
+  **realization** glyph `..|>` adds a third — typed **`class`, 99.31, and
+  completely silent**, because `<|`/`|>` are type markers in their own
+  right (`parser/class_.py:67`).
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
