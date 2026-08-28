@@ -46,6 +46,22 @@ measured on this organisation's diagrams yet.** The pilot exists to
 produce that number either way — charter it as measurement, not as a
 foregone conclusion.
 
+For the deck's market slide, the field is drawn:
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders
+quadrant is empty; pumllint sits deep in Visionaries on the strength of
+its semantic and scoring layers; the incumbents cluster in
+Challengers](positioning-quadrant.svg)
+
+Present it with the same scoping discipline as the numbers above: a
+self-assessment in Gartner-style form, positions computed from the
+published rubric in [Positioning pumllint](positioning-quadrant.md),
+not an analyst's judgment. It gives a sponsor two honest facts: no tool
+in this field yet pairs a graded verdict with an installed base — the
+Leaders quadrant is empty — and pumllint's low execution scores
+(deliberately 0.x, adoption unproven) are precisely the numbers this
+pilot exists to move.
+
 ## The 30-minute first move: the census (runbook)
 
 Read-only, offline, no gating, no install beyond the tool itself.
