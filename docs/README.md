@@ -152,6 +152,18 @@ but they are a useful cross-check that no audience was forgotten.
   validated** (mermaid-lint's motivation is this project's thesis in someone
   else's words) and the **niche is contested**. Seventh ecosystem, still no
   grader — now even where two linters compete.
+- [The D2 ecosystem, evaluated](d2-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), seventh in the series and the first
+  refusal where the linting niche is **open**: D2 is a general graph
+  language, not typed notations (one of five packs transfers, and that is a
+  floor), and its own roadmap says *"Build a configurable linter."* The
+  measurement is the series' sharpest and indicts this tool, not D2 — D2's
+  `a -> b: label` is character-identical to PlantUML's, so a D2 sequence
+  diagram wrapped in `@startuml` scores **Level 4 (Precise), 99.17, one
+  cosmetic finding**, quieter and worse than the Mermaid equivalent. The
+  silence is a *designed* behaviour (SEQ001's `only_if_any_declared`), not
+  a defect — which gives the type-fallback class a second silencing
+  mechanism any fix must be validated against. Eighth ecosystem, no grader.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
