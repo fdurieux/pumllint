@@ -58,7 +58,10 @@ sufficient, and the limit this time was mine, not the publisher's. **I
 could not obtain the exact NAFv4 grid rows and columns** from any source
 fetched, so this note does not name them. Both probe samples are mine.
 Every pumllint claim was executed at `a923595` with default config from a
-neutral working directory. Per session scope no GitHub repository was
+neutral working directory, and **re-confirmed unchanged after merging the
+G3/G4 rule and CLI changes** that landed on `main` while this note was in
+review — both §8.3 numbers and the finding set are identical either side
+of that change. Per session scope no GitHub repository was
 read.*
 
 ## 0. Why this ran, and what a sibling test is for
