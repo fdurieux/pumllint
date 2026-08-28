@@ -288,6 +288,21 @@ but they are a useful cross-check that no audience was forgotten.
   signature-shaped messages of narrative operational events. And one turn
   after TOGAF, the exact inversion — `sequence` maps to **0** of TOGAF's
   32 diagrams and **3** of DoDAF's 52.
+- [The NAF / MODAF ecosystem, evaluated](naf-modaf-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), sixteenth in the series and the first
+  run deliberately as a **sibling test**: NAF, MODAF and DoDAF were all
+  unified into UAF, so does the DoDAF fit generalize? **It does not.**
+  DoDAF freed the *notation*, making a PlantUML sequence diagram a
+  conformant OV-6c; NAF frees the *rendering* and constrains the
+  **metamodel** to ArchiMate 3.1 or the UAF DMM — so NAF conformance
+  lives where pumllint does not look. Measured, and it **inverts**: the
+  ArchiMate route (one of NAF's two approved metamodels) scores **89.22
+  with four false SEQ009s**, while a bare picture with no metamodel behind
+  it scores **100.00 clean** — the NAF-conformant artefact ranks below the
+  NAF-meaningless one. Also: **MODAF is withdrawn**, the first dead
+  framework in sixteen evaluations, and the empirical case for refusing
+  framework-shaped packs — a PlantUML sequence diagram was a MODAF OV-6c
+  in 2010 and is a NAF view in 2026, with no code change.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
