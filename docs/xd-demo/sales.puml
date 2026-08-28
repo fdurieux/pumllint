@@ -1,0 +1,10 @@
+@startuml sales
+title Sales context — customer orders (REQ-201)
+footer owner: pumllint docs
+class Order <<aggregate>> {
+  +lines: LineItem[]
+  +total(): Money
+}
+class Customer
+Order "1..*" --> "1" Customer : placed_by
+@enduml

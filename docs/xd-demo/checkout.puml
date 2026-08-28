@@ -1,0 +1,9 @@
+@startuml checkout
+title Checkout flow — REQ-101
+footer owner: pumllint docs
+!include _participants.iuml
+OrderService -> InventoryService : reserve(sku, qty)
+InventoryService --> OrderService : reservationId
+OrderService -> PaymentGateway : authorize(amount)
+PaymentGateway --> OrderService : authCode
+@enduml

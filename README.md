@@ -294,7 +294,10 @@ bounded contexts sharing a word — so no cross-diagram comparison applies.
 One disclosure: pumllint never expands the preprocessor, so a diagram whose
 declarations live behind `!include` parses with only implicit entities and
 the XD pack goes quiet on it; the CLI then warns on stderr (exit codes and
-scores untouched) that declarations may be hidden.
+scores untouched) that declarations may be hidden. Both mechanisms are
+demonstrated on committed files in
+[a worked example](docs/xd-identity-demo.md) (`docs/xd-demo/`), drift-guarded
+by `tests/test_xd_demo.py`.
 
 ### Codegen-readiness pack (profile: `codegen`)
 

@@ -1,0 +1,7 @@
+@startuml refund
+title Refund flow — REQ-102
+footer owner: pumllint docs
+!include _participants.iuml
+OrderService -> PaymentGateway : refund(authCode)
+PaymentGateway --> OrderService : refundId
+@enduml

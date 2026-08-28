@@ -1,0 +1,6 @@
+# Demo config: the walkthrough's runs are self-contained, so the
+# convention-gated governance rules stay off (the repository's own
+# pumllint.toml would otherwise require its owner/requirement tags).
+[rules]
+GEN006 = false
+GEN007 = false

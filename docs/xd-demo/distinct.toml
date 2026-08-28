@@ -1,0 +1,8 @@
+# Same as lint.toml, plus the walkthrough's point: the sales Order and the
+# manufacturing Order are deliberately different things that share a word.
+[rules]
+GEN006 = false
+GEN007 = false
+
+[rules.XD005]
+distinct = ["Order"]   # sales Order and manufacturing Order are different things
