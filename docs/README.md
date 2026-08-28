@@ -177,6 +177,17 @@ but they are a useful cross-check that no audience was forgotten.
   generated-artefact problem in the series: nothing malfunctions, the
   findings are *true*, and their only fix is upstream where Structurizr's
   own `inspect` already runs.
+- [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-27), ninth in the series and the cleanest
+  refusal: not a diagram notation (a model+perspectives format for an
+  interactive viewer), the **first fully closed commercial ecosystem** in
+  the series, and made of YAML — which W3 ranked last of five carriers.
+  The yield is not about Ilograph: wrapping YAML in `@startuml` reads the
+  **list dash as an arrow** and turns keys into participants, scoring
+  **Level 4 (Precise) 99.62** — and the composite *rises* with the volume
+  of unrecognized content (99.44 → 99.82 across 3→40 resources). Sixth
+  instance of the type-fallback class and the first that **manufactures**
+  content rather than dropping it.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
