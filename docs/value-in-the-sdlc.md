@@ -465,3 +465,9 @@ cheapest to remove. An assessment that scored well everywhere should worry
 you. Concentration plus stated limits is what a real instrument looks
 like; it is also, not coincidentally, how this project treats its own
 evidence.
+
+This table is also drawn: [the SAFe DevOps wheel
+figure](safe-devops-wheel.svg) reproduces the sixteen claim marks on the
+four-aspect wheel and places the neighbouring artefact validators
+upstream and downstream; the placement argument is in
+[Positioning pumllint](positioning-quadrant.md).
