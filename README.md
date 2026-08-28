@@ -87,6 +87,22 @@ survives contact with a foreign corpus. Run
 [`tools/pilot_census.py`](tools/pilot_census.py) against a real corpus first
 (read-only dialect census); that, plus a pilot, is the gate.
 
+That status has a picture. On a Gartner-style quadrant of the
+diagram-as-code checking field — positions computed from a published
+rubric, not judged — pumllint holds the far edge of the vision axis alone
+(no other checker of this artefact class carries a semantic rule layer
+*and* a graded verdict) from below the execution midline, which is the
+`0.x` posture above in chart form: the vision scores are shipped, the
+execution scores are the ones only adoption can write. The Leaders
+quadrant is empty across the whole field.
+
+![Positioning quadrant of diagram-as-code checkers: the Leaders quadrant
+is empty; pumllint sits deep in Visionaries; the incumbents cluster in
+Challengers](https://fdurieux.github.io/pumllint/positioning-quadrant.svg)
+
+The rubric, the per-tool scores and the reading are in
+[Positioning pumllint](docs/positioning-quadrant.md).
+
 ## Documentation by audience
 
 This README is the reference. [docs/](docs/README.md) has role-specific guides:
