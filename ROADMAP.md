@@ -2003,6 +2003,237 @@ list and license posture live in § Settled questions.
     volume — the profile mode is refused on what it would claim, and
     volume does not move that.
 
+- **Capella / Arcadia ecosystem (2026-08-28): no — and the first refusal
+  in the series argued *against a fit that works*.** Twelfth (full
+  record: docs/capella-arcadia-ecosystem-evaluation.md; pumllint claims
+  executed at `e989da8`, default config, neutral cwd — GEN006/GEN007
+  verified dormant; **no Capella installed or run**, so its validation
+  behaviour, rule categories and add-on catalogue are characterized from
+  mbse-capella.org and the Eclipse project page; per session scope **no
+  GitHub repository was read**, so Python4Capella and the
+  Capella-Extensions collection were not inspected and "no PlantUML
+  exporter" is a statement about the official catalogue plus search, not
+  a proof of absence; the Arcadia samples are hand-written, since Capella
+  cannot emit PlantUML).
+  - **The central measurement is a *positive* result, the first in
+    twelve.** An Arcadia **Exchange Scenario** (lifelines = components
+    and actors, messages = exchanges) hand-drawn in PlantUML is typed
+    `sequence`, parsed correctly, and scores **Level 4 (Precise) 99.38,
+    exit 0**, with two cosmetic findings (GEN001, GEN002) and nothing
+    else. Everything worked for the right reason: participants declared
+    so SEQ001/SEQ002 are satisfied rather than dormant; activations
+    balanced so SEQ003 is quiet on evidence; **SEQ009 — false in five
+    previous evaluations — is correct here**, because the dashed arrows
+    are genuine returns paired with genuine calls. An Exchange Scenario
+    *is* a sequence diagram, so the deep pack applies as designed. **This
+    is the first artefact from a foreign ecosystem that pumllint handles
+    well.**
+  - *And it is unreachable, which is the honest other half.* **Capella
+    has no PlantUML export** — the official add-on catalogue exports to
+    HTML, MS-Word (M2Doc), Simulink, ASN.1/AADL, SCADE, SysML (Obeo's
+    commercial bridge) and Reqtify, plus Python4Capella scripting; no
+    PlantUML anywhere, and no community converter surfaced in search. The
+    §8.3 file had to be written by hand. A fit reachable only by users
+    who have stopped using the ecosystem's own tool is not a fit with the
+    ecosystem.
+  - **Not a producer — recorded as a finding, not an absence.** Unlike
+    Structurizr and the SysML v2 pilot, nothing here writes `.puml`. Two
+    consecutive evaluations turned on producer relationships; checking
+    and finding none stops "MBSE tools emit PlantUML" hardening into a
+    generalization on two data points.
+  - *Three further grounds, none needing the first*: Capella is an
+    Eclipse/Sirius **graphical** tool over XML (`.capella`, `.aird`) with
+    no text notation to lint; **Arcadia is a method before it is a
+    language** (five perspectives — Operational Analysis, System
+    Analysis, Logical, Physical, Component Contracts; an **AFNOR standard
+    Z67-140 since 2018**, the first national-standard ecosystem in the
+    series); and the licence, below.
+  - **Licence — third consecutive EPL collision, and the repetition is
+    itself the finding.** Capella is **EPL-2.0** (verified, Eclipse
+    project page; Mature, 7.1.0, 2026-07-10). Graphviz collided as a
+    *library*, SysML v2 as an open *tool ecosystem*, Capella as *the tool
+    and its whole add-on platform*. **This is one condition, not three
+    coincidences**: the MBSE and modelling-tool world is Eclipse-shaped
+    (EMF, Sirius, Papyrus, Capella, SysON), so a GPL project forbidding
+    EPL is **structurally excluded from the MBSE tool space**. Stated
+    once here as a standing condition — a fourth evaluation should cite
+    it, not rediscover it, and must not present it as news. The exclusion
+    binds *linking*, not *reading*: nothing stops pumllint linting a
+    `.puml` a Capella user wrote by hand.
+  - **Twelfth ecosystem, no grader — and the closest taxonomic
+    convergence found so far.** Capella *"organizes model validation
+    rules in several categories: **Integrity, design, completeness,
+    traceability**, etc."* with **validation profiles**. Two of those
+    four are pumllint's dimension names verbatim (DIM-CMP completeness,
+    DIM-TRC traceability), and "validation profiles" is what this
+    repository calls rule profiles — arrived at independently. Second
+    convergence data point after bpmnlint, and the first on the
+    *taxonomy* rather than on individual rules. Capella reports
+    violations with severities; no score, level, grade or aggregate in
+    its documentation, and no metrics add-on in its catalogue.
+  - *The other three shapes fall through, and none of it is new.* LAB
+    (components + exchanges) and SDFB (functions + functional exchanges)
+    both type `sequence` at Level 4 with **false SEQ009s** — in Arcadia a
+    `-->` is a *functional exchange*, a directed dependency, while
+    `is_return_arrow` (`parser/sequence.py:472`) reads any `--`/`..` as a
+    return. The ArchiMate note named this explicitly and C4, Mermaid and
+    UML each recorded the mechanism; the standing type-fallback class
+    covers it, **no candidate and no amendment**. One coincidence, stated
+    carefully: the LAB lands on **the same composite as C4 sample C**
+    (Level 4, 6 elements, 88.96) with a *different finding set* — three
+    false SEQ009s here, two plus a SEQ006 there. Not a reproduction; two
+    foreign notations reaching an identical score through different
+    penalties, which says something about how coarse the composite is at
+    that end and nothing about Arcadia.
+  - *A precision point recorded so it is not assumed*: an Arcadia
+    data-flow blank is **not** a flowchart — it shows information
+    dependency between functions, not control flow — so "Arcadia has
+    dataflow, pumllint has an activity pack" is **not** a mapping. A
+    PlantUML activity diagram scores well (`activity`, Level 4, 99.31)
+    and is not an Arcadia rendering.
+  - *Never build*: a Capella/Arcadia reader or rule pack; **any mapping
+    of pumllint's maturity levels onto Arcadia's five perspectives** —
+    both are five-step ladders and both get called "levels", and the
+    alignment is entirely spurious: Arcadia's is *abstraction* (every
+    perspective present in a finished model) and pumllint's is *grade*
+    (exactly one applies at a time), so a model can be at Physical
+    Architecture and score Sketchy; **a Capella→PlantUML exporter in this
+    repository** — building the producer to create demand for your own
+    consumer is manufacturing the pipeline rather than finding it, and if
+    it should exist it is a Python4Capella script in a Capella user's
+    repo; any Capella or Eclipse-platform dependency, product or
+    `tools/`; and an integration justified by the shared category
+    vocabulary (convergence is evidence the decomposition is natural, not
+    that the tools should meet).
+  - *Recorded, not queued*: (1) **the Exchange Scenario as the series'
+    positive control** — twelve evaluations of negative results and one
+    artefact class that lands right; worth citing when the question is
+    what pumllint is *for*, and worth citing with the unreachability
+    attached, since the population that would benefit is unverified.
+    (2) **The EPL/MBSE structural exclusion, stated once** (above).
+  - Re-litigate on: **somebody publishing a Capella→PlantUML exporter
+    with users** — the only trigger here a user can fire, and the one
+    that moves the fit from unreachable to reachable without this project
+    building anything (refusing to *build* it is not refusing to *benefit*
+    from it); Capella gaining an aggregate verdict (the standing streak
+    trigger, and a plausible source given the taxonomy). **Not** on
+    Arcadia adoption growing — Capella users use Capella, and volume
+    creates no PlantUML artefact to lint.
+
+- **ISO 42010 / viewpoint ecosystem (2026-08-28): no — and the first
+  subject in the series that is not a notation, a tool or a product, but
+  a standard about the same question this project asks.** Thirteenth
+  (full record: docs/iso42010-viewpoint-ecosystem-evaluation.md; pumllint
+  claims executed at `40c132c`, default config, neutral cwd). **Bounds
+  first, because one of them is the subject: ISO/IEC/IEEE 42010:2022 is
+  paywalled and was not read.** What is quoted comes from the publisher's
+  **15-page preview** — front matter, full table of contents, part of
+  Clause 3, **Clause 4 (Conformance) in full**, and the opening of Clause
+  5. **Clauses 6, 7 and 8, which contain every requirement, were not
+  read**, so this record states what conformance is claimed *for*, never
+  what it *requires*. 42030 is characterized from secondary summaries
+  only; its text was not seen.
+  - **(1) pumllint's unit is precisely the one thing 42010 defines no
+    conformance for.** Clause 4 names five claim situations — architecture
+    description (Clause 6), architecture description framework (7.1),
+    architecture description language (7.2), architecture viewpoint, and
+    model kind. A `.puml` file is none: in 42010's vocabulary it is at
+    best a **view component** (3.19), *"separable portion of one or more
+    architecture views… governed by the applicable model kind or
+    legend"*. **pumllint can neither conform to 42010 nor fail to.** That
+    settles "42010-conformant" / "42010-aligned" before it is claimed —
+    and the Linked.Archi note's record of *its* subject's alignment claim
+    should be read with this attached. Note also 42010's ADL examples:
+    AADL, ArchiMate, UML, SysML, UAF — an ADL needs *syntax **and**
+    semantics*, so PlantUML is not one, which lands beside (not identical
+    to) README.md:6-8's "drawing tool rather than a modeling tool".
+  - **(2) Correspondences — half implemented, and measured.** 42010's
+    central structural idea is that views *correspond*; the 2022 revision
+    made "correspondences for model and view consistency" a headline.
+    **XD001–005 (all DIM-CON, all about identity) are correspondence
+    rules**, arrived at independently and first. What has no counterpart
+    is the correspondence **requirement**:
+    two views sharing an entity with a conflicting kind → **XD001 ×2,
+    major, exit 1**; two views sharing **nothing at all** → **"✔ No
+    issues found", Model set: Level 4 (Precise) 100/100**. **Two disjoint
+    diagrams are a "Precise" architecture description at 100/100.**
+    *And the fix is already refused*: a "views must correspond" rule is
+    **missing-edge inference** — the never-build's *"participant-pair
+    sweep's no-oracle shape"* — and the reason transfers exactly (nothing
+    says which diagrams are meant to be one AD) with a worse
+    false-positive shape (independent diagrams are normal). 42010 supplies
+    a precise name for the gap and no way to close it. Recorded so a
+    future reader meeting 42010 does not re-propose the rule as new.
+  - **(3) The streak, reframed — the finding that outlives the note.**
+    **Thirteenth ecosystem, no grader**, but not like the twelve before.
+    Those were tools that happened not to aggregate. **ISO/IEC/IEEE
+    42030:2019 is the standard in this family whose entire subject is
+    architecture evaluation**, and it defines evaluation objectives,
+    methods, quality models, criteria and stakeholder involvement while
+    defining *"only a process and framework… not a scoring scheme, rating
+    scale, maturity level, or aggregate verdict"*, declining to
+    "prescribe how to aggregate results into an overall verdict".
+    A standards body that owns the question, considered the aggregate,
+    and stopped short. **Two readings, and this record picks neither**:
+    either pumllint built something the field overlooked, or it does
+    something the field examined and declined to standardize. **The
+    consequence for the record is concrete — the no-grader streak may no
+    longer be cited as evidence of an unoccupied niche without this
+    caveat attached.** (Characterized from a secondary summary; anyone
+    who can open 42030 should verify before leaning further on it.)
+  - *A new kind of boundary, and it breaks the EPL run.* Twelve
+    predecessors had readable normative text (OMG free, ArchiMate free
+    behind registration, D2/Mermaid grammars in source). **42010 is the
+    first ecosystem whose normative content could not be read.** The
+    constraint is **access, not licence compatibility** — three
+    consecutive evaluations turned on EPL and this one does not. It is
+    also an independent argument against any conformance claim: **users
+    could not check it either**, and a badge citing a document its
+    audience cannot open is unauditable by design.
+  - *The model-set verdict exists, which the altitude argument must not
+    obscure.* `score` over a directory emits `Model set: Level 4
+    (Precise) — 100/100 weighted across 3 diagram(s)`. pumllint does
+    reason above the single file. What it does not see is what makes a
+    set an architecture description: stakeholders as AD elements
+    (they are substrings of title text), viewpoints, model kinds,
+    rationale, correspondences.
+  - *No boundary probe exists and that is the point*: 42010 defines no
+    syntax, so there is nothing to wrap in `@startuml` and no
+    type-fallback question. First note in the series with no §8.1
+    discovery measurement.
+  - *Never build*: a 42010 conformance claim, alignment badge or
+    "42010-aware" mode; viewpoints/views/stakeholders/concerns as
+    first-class model concepts (that is an AD tool with a linter
+    attached); **a "views must correspond" rule** (missing-edge
+    inference); renaming dimensions or levels into 42010 vocabulary
+    (the badge claim by vocabulary instead); and **reading 42030's
+    abstention as permission** — it is not endorsement of this project's
+    aggregate and not proof the field was wrong; it makes the scoring
+    model *more* exposed, not less.
+  - *Recorded, not queued*: (1) the correspondence half-implementation
+    with its never-build link (above); (2) **the model-kind fit** — a
+    **model kind** (3.15, *"category of model distinguished by its key
+    characteristics and modelling conventions"*) **is** a conformance
+    target, and a pumllint profile is a statement of modelling
+    conventions, so this is the single reachable fit in the note; parked
+    jointly on the paywall (Clause 8's requirements unread, so nobody
+    here can say what conformance would take) and the demand bar (no
+    adopter has asked; the artefact is a document, not a capability);
+    (3) the streak reframe (above).
+  - Re-litigate on: **an adopter needing a 42010 conformance statement
+    for procurement** — the only trigger a user can fire, plausible in
+    defence and aerospace, and the one case where the correct answer
+    ("the standard defines no target at this altitude") is unsatisfying
+    enough to reopen; **42010 or 42030 becoming freely readable** (would
+    make the model-kind question checkable and let the 42030
+    characterization be verified rather than trusted); evidence that any
+    tool produces an aggregate architecture-quality verdict — the
+    standing streak trigger, now sharper, since it would show the field
+    moving *toward* what this project already does. **Not** on viewpoint
+    catalogues (4+1, Rozanski & Woods, TOGAF) gaining adoption — they
+    describe how to organize descriptions, not how to check files, and
+    have had decades.
+
 - **Cross-diagram relationships (2026-08-28): the XD pack joins entity
   *nodes*, never *edges* — no declared diagram→diagram relation exists
   anywhere in the product, the RDF qualified-relationship shape stays

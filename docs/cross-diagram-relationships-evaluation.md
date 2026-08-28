@@ -77,8 +77,8 @@ never the RDF qualified-relationship shape. Nothing is queued here either.
 
 ## 0. Why this ran, and what it is not
 
-This is the twelfth externally-prompted analysis run under the house
-discipline and the second in the Linked.Archi thread. The first
+This is an externally-prompted analysis run under the house discipline,
+and the second in the Linked.Archi thread. The first
 ([Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md),
 2026-08-27) asked whether the *ecosystem* was a build or dependency
 candidate, and answered no. This one asks a narrower, product-facing
