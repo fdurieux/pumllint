@@ -188,6 +188,21 @@ but they are a useful cross-check that no audience was forgotten.
   of unrecognized content (99.44 → 99.82 across 3→40 resources). Sixth
   instance of the type-fallback class and the first that **manufactures**
   content rather than dropping it.
+- [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-28), tenth and last obvious one in the
+  series, and the **first refusal where the repository's own licence
+  posture is decisive**: Graphviz relicensed to **EPL 2.0 on 7 March
+  2026**, and the never-build names EPL "anywhere in the repo — product
+  and lab alike", which closes the `tools/` extras door the knowledge-graph
+  note had found open. Three further grounds: **zero of five packs
+  transfer** (DOT is a graph language with no diagram types — a first),
+  Graphviz sits **underneath** PlantUML as its optional layout engine
+  rather than beside it, and the DOT linting niche has been repeatedly
+  attempted with nothing sustained. The measurement is the best boundary
+  result in the series and the note says why not to trust it: idiomatic
+  DOT lands honestly at **Level 1**, but only because of **semicolons**,
+  which DOT permits and does not require — drop them and the same graph
+  types `sequence` at Level 3, or Level 4 in its undirected form.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
