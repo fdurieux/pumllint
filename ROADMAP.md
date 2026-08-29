@@ -3082,6 +3082,129 @@ list and license posture live in § Settled questions.
     anything here — this entry corrects a generalization and touches no
     condition.
 
+- **BPMN ecosystem, re-examined (2026-08-29): the fourth note's
+  settlement is unchanged — and its central claim about the product
+  boundary is CORRECTED.** Twenty-second. The BPMN ecosystem was settled
+  fourth (2026-08-27, `eee24ac`); nothing here reopens the decision, the
+  four grounds or the never-builds. Full record:
+  docs/bpmn-ecosystem-reexamined.md; pumllint claims executed at
+  `1089a99` (v0.30.0), default config, neutral cwd. **`bpmnlint` 11.13.0
+  and `bpmnlint-plugin-camunda-compat` 2.59.2 were installed from npm and
+  EXECUTED** — the fourth note ran no BPMN tool. Still no GitHub read
+  (session scope), so §7's upstream slip is reported as observed
+  behaviour at a pinned version, not as a bug report, and no issue was
+  filed. BPMN corpus hand-written, one process, four variants.
+  - *Why it could run.* The fourth note's §8.4 deferred the paired run
+    for want of "a Node toolchain and a corpus of matched BPMN/PlantUML
+    pairs that does not exist". This session has Node v22.22.2 and
+    reachable npm; the corpus was written. **The §3 convergence mapping
+    is no longer a reading of rule names.**
+  - *The measured half held exactly.* Matched defective activity diagram
+    at v0.30.0 → **ACT001, ACT003 ×2, ACT002; 2 major, 2 minor, exit 1**,
+    reproducing the fourth note's published output at a different
+    version. Clean pair: both tools silent, **both exit 0**, Level 4
+    (Precise) 100/100. Four of the five exercised mapping rows survive.
+  - **CORRECTION 1: `conditional-flows` is not ACT003.** It is guarded on
+    `isConditionalForking` — *a default flow, or an outflow that already
+    carries a condition*. A gateway with **zero** conditions is clean
+    under `bpmnlint:recommended`; the rule fires only on the partial
+    case. **It enforces consistency; ACT003 enforces completeness.** The
+    honest restatement is **subsumption, not equivalence** — a stronger
+    claim for this project than the one published, and the published one
+    was unsupported. Principled, not an oversight: a BPMN condition is
+    *executable*, so the tool with a runtime behind it can afford to
+    wait; a PlantUML branch label is the only record, so this one cannot.
+  - **CORRECTION 2: 27 rules, not "~25" — and the miscount deleted the
+    best correspondence from the evidence.** 11.13.0 (published
+    2026-08-19, the same version the fourth note read) has **28 files =
+    27 rules + `helper.js`**. `global.js` was filed as infrastructure; it
+    is a shipped rule, in `all` **and** `recommended` (at `warn`). It
+    checks *has a name* + *is referenced at least once* + *is unique per
+    type per name* — **the label-required family, the orphan family and
+    the XD family in one rule.** Against candidate 2's re-check
+    instruction, *has the rule set changed materially?* — **no**; the
+    delta was entirely in the reading.
+  - **CORRECTION 3, the one that matters: THE AMBIGUITY DIMENSION
+    EXISTS.** §3's product boundary read *"`bpmnlint` has none because a
+    BPMN task label is documentation for humans"*. True of core, **false
+    of the ecosystem, and false six weeks before the note was written.**
+    `bpmnlint-plugin-camunda-compat` ships `agent-tool-documentation`,
+    `agent-tool-output-key` and `agent-fromai-contract` — **absent in
+    2.55.0 (2026-06-25), present in 2.56.0 (2026-07-15)**. Their own
+    docblocks: *"The AI agent reads a tool's element documentation to
+    decide which tool to call; without it the LLM falls back to the
+    element name, which is underspecified"*; *"the agent gets no
+    completion signal and may retry or hallucinate an outcome"*; *"the
+    call silently resolves to nothing at runtime, with no error"*. **That
+    is DIM-AMB's argument and the codegen profile's blocker argument,
+    verbatim, in BPMN.**
+  - **Ground (3) is narrower than written; the decision is
+    REINFORCED.** "A BPMN file *is* the implementation, so there is no
+    generation step to gate" holds for what a deterministic engine
+    executes. It does not hold for **what a model reads**: in an agentic
+    ad-hoc sub-process the tool documentation is handed to an LLM, so for
+    that text the file *is* a description feeding a generator. **A
+    consumption step appeared in BPMN and the ecosystem grew an ambiguity
+    dimension within weeks.** This is the strongest external validation
+    on file — convergence on the very dimension the fourth note used as
+    the product boundary — and it is **not** an opening: the vendor that
+    owns the runtime filled it, with rules reaching into FEEL AST shapes
+    and `toolCall` variable channels. Record N3 ("a competitor's adoption
+    is not your pull") applies with more force, not less.
+  - *Re-verified at HEAD.* Honest boundary intact, exit code unmoved, the
+    warning **gained a clause** naming sibling block types since
+    `eee24ac`. Type-fallback **instance 4** still reproduces
+    (`sequence`, L4, 90.97, 9 elements) — sample reconstructed, so the
+    figures are **not** comparable to the note's `91.0 / 5`; no new
+    candidate. **No grader**, now measured rather than read, across four
+    files and two configs, and the 60-rule vendor pack adds nothing above
+    `bpmnlint`'s reporter — under the corrected criterion (*nothing
+    grades a **description***) BPMN is not a counterexample.
+  - **Candidate 1's gate is still shut, and is now MEASURED.** ACT pack
+    unchanged at ACT001–006, on DIM-CMP/SEM/CON and **none on DIM-AMB**;
+    every DIM-AMB rule is scoped `class`/`sequence`/`state`. A
+    deliberately vague activity diagram scores **Level 4, 100.0, with
+    `DIM-AMB {score 100.0, penalty 0, weight 0.25}`** — a quarter of the
+    composite awarded for a dimension with no applicable rule. The fourth
+    note asserted this from the catalogue; it is directly observable.
+  - *Trigger 1 has NOT fired, and is now verified.* The fourth note
+    hedged the PlantUML situation as read from search-result *titles*.
+    plantuml.com's language-specification index (2026-08-29) documents 23
+    diagram types; **archimate is one, BPMN is not.**
+  - *Plugin surface quantified — two readings that pull apart.* **8
+    published `bpmnlint-plugin-*` packages.** The niche is **occupied
+    twice over** (27 notation rules + a 60-rule vendor pack, larger than
+    core and larger than this project's 51) — ground (2) is stronger. But
+    after nearly five years and 134 versions of the leading plugin, the
+    open extension surface is **one example package and a few vendor
+    packs**. Sober data for this project's own `@register` +
+    `catalog.toml` story: the right architecture attracts **the platform
+    vendor, and almost nobody else**. Not a reason to remove it; a reason
+    not to count third-party packs as growth.
+  - *An upstream slip worth recording only for its shape.* `global`'s
+    `hasName` is `event.name?.trim() !== ''`, which is **true when `name`
+    is absent** — only an explicit `name=""` is reported, though the
+    docblock says "element must have a name". Measured both ways. Same
+    defect shape as this repo's type-fallback class: correct on the
+    values it was written against, silently permissive on the untested
+    one, and the permissive branch is the common one. **Two linters, two
+    languages, one failure mode** — instance 4 is not evidence of unusual
+    carelessness here.
+  - *Never build*: everything the fourth note lists, unchanged; **plus an
+    agent-tooling rule pack aimed at BPMN's agentic constructs** — the
+    ambiguity finding is validation, not an opening, and the required
+    runtime knowledge is the vendor's. Refuse the tempting inversion
+    *"BPMN grew our dimension, therefore there is a gap for us"*; it is
+    convention-manufacturing by another road.
+  - *Candidate 2 should be widened, not retired*: its re-check
+    instruction must read **"if `bpmnlint` or its plugin ecosystem
+    changes materially"** — the material change was in a plugin, and
+    reading core's inventory could never have found it.
+  - Re-litigate on: the fourth note's three triggers, all **not fired**;
+    **plus new** — the DIM-AMB residual being closed for activity
+    diagrams, which ungates candidate 1 with no further BPMN argument.
+    The measurement to re-run is the vague-activity probe above.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

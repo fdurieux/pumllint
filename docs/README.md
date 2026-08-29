@@ -397,6 +397,27 @@ but they are a useful cross-check that no audience was forgotten.
   container and component views export indistinguishably, **harmlessly**;
   and the view key *does* survive in `@startuml(id=…)`, landing in
   `diagram.name` verbatim as `'(id=Containers)'`.
+- [The BPMN ecosystem, re-examined](bpmn-ecosystem-reexamined.md)
+  — dated evaluation (2026-08-29), twenty-second in the series. The fourth
+  note's settlement (2026-08-27) is unchanged — no BPMN support, same four
+  grounds — and this one **executes the paired run that note deferred**
+  for want of a Node toolchain. `bpmnlint` 11.13.0 and
+  `bpmnlint-plugin-camunda-compat` 2.59.2 installed and **run**. Three
+  corrections follow. `conditional-flows` is **not** ACT003: it enforces
+  *consistency* (fires only once conditions have been started), where
+  ACT003 enforces *completeness* — subsumption, not equivalence. The rule
+  count was 27, not "~25", and `global` — filed as infrastructure — is the
+  one rule mapping to **three** pumllint principles at once. And the
+  claim that the BPMN ecosystem has **no ambiguity dimension is false**,
+  and was false six weeks before it was written: Camunda's plugin has
+  shipped `agent-tool-documentation`, `agent-tool-output-key` and
+  `agent-fromai-contract` since 2026-07-15, whose stated rationale is that
+  *an LLM reads the text*. A consumption step appeared in BPMN and the
+  ecosystem grew this project's dimension to gate it — **validation, not
+  an opening**, since the vendor owning the runtime filled it. Also
+  measured: the DIM-AMB residual that gates the ACT-pack positioning note
+  (a vague activity diagram scores 100/100 with DIM-AMB weighted 0.25 and
+  penalised 0).
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
