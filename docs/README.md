@@ -516,6 +516,21 @@ but they are a useful cross-check that no audience was forgotten.
   filenames; warn on an empty inventory, matching the lint path's
   "nothing was checked" contract), plus the test that would have caught
   it.
+- [Semgrep and rules-as-data, evaluated](semgrep-rules-as-data-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-ninth and a narrowing return on
+  the Spectral note, whose boundary rested on a 13-function library and so
+  invited the objection *the limit is Spectral's vocabulary, not
+  rules-as-data*. **Semgrep answers it**: rules are data but the
+  vocabulary is a pattern language with metavariables, and generic mode
+  runs on `.puml`. Measured on a four-rung ladder up this project's own
+  rule classes — **lexical works; file-scope absence, identity
+  correlation and cross-file identity do not** (2 findings where 1 is
+  correct, twice). **The boundary is state, not vocabulary**:
+  `pattern-not-inside` scopes to a region enclosing the match, never the
+  file, so "no `participant … as $X` anywhere" is not expressible.
+  Consequence: the Spectral note's declarative-rule-layer candidate is
+  **narrowed, not closed** — viable for the lexical tier (vague terms,
+  elision tokens, stop-words) and nothing above it.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
