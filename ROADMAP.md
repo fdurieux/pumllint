@@ -3483,6 +3483,82 @@ list and license posture live in § Settled questions.
     maturity aggregate, or an adopter explicitly declining one (both
     currently absent); the cross-check trigger, unchanged.
 
+- **Prose-linting ecosystem (2026-08-29): no — and the NEGATIVE is the
+  finding.** Twenty-sixth, the direct follow-on to the FEEL note
+  (twenty-fourth), which recorded the prose-guard hole and **deliberately
+  refused to invent a mechanism**. This asks whether the field that
+  specialises in hedges already has one. Full record:
+  docs/prose-linting-ecosystem-evaluation.md; pumllint at `cef591e`
+  (v0.30.0), `codegen` profile, neutral cwd. **`proselint` 0.16.0 and
+  `write-good` 1.0.8 installed and EXECUTED** — proselint's harness
+  verified against a known-positive (8 findings, exit 1) **before** any
+  silence was recorded as a result. **Vale was NOT run** (Go binary
+  unavailable), so nothing here is a claim about Vale's style packages;
+  `textlint`/`markdownlint` not examined; English only.
+  - *Why it also had to run.* **pumllint already IS a small
+    lexicon-based prose linter and had never said so** — five codegen
+    rules carry word lists totalling **70 entries** (SEQ103
+    `arg_stop_words` 44, SEQ105 `vague_terms` 5, SEQ106 `tokens` 7,
+    SEQ107 `failure` 9, SEQ109 `non_informative` 5) — and in 25 prior
+    notes the neighbouring field was never mentioned. That was a gap in
+    the record whatever the answer.
+  - **THE OVERLAP IS EMPTY.** Eight labels, each in the syntactic slot
+    its rule watches: the prose linters fire on **none** of pumllint's
+    six DIM-AMB targets (`getOrder(the customer id)`, `handle TBD`, `ok`,
+    `otherwise`, `the customer is probably eligible`, and the elision
+    case below), and pumllint fires on none of theirs (`utilize the very
+    unique path`, `At the end of the day`).
+  - **The specialists miss the hedges, and the reason is measured.**
+    proselint's **entire** `hedging` check is **three phrases** — *"I
+    would argue that"*, *", so to speak"*, *"to a certain degree"*
+    (sourced to Pinker) — and `weasel_words` is **one word**, `very`.
+    **Four items total**, against our seventy. Its 116 checks / 76
+    modules are real but aimed elsewhere: clichés, malapropisms,
+    needless variants, uncomparables, typography, archaisms. `write-good`
+    with **every** check on flags `the customer is probably eligible`
+    only as E-Prime (*"'is' is a form of 'to be'"*) and misses `user
+    seems fine` and `it should basically work` outright.
+  - **THE ELLIPSIS COLLISION — the sharpest image.** On `validate(...)`
+    proselint reports `typography.symbols.ellipsis: '...' is an
+    approximation, use the ellipsis symbol '…'`. **Taking that advice
+    leaves SEQ106 firing at `blocker` — verified on BOTH spellings** —
+    because our `tokens` lexicon lists `"..."` *and* `"…"`. proselint
+    thinks the **glyph** is wrong; we think the **omission** is. Same
+    three characters, opposite readings, and **neither is wrong**.
+  - *A false friend worth naming.* `write-good` hits `validate(...)` with
+    *"'validate' is wordy or unneeded"* — right label, wrong reason. A
+    pipeline acting on it renames the operation and leaves the defect.
+  - **What this establishes: DIM-AMB is NOT a reimplementation of prose
+    linting.** Prose linters check *free-running English* for **style,
+    usage, clichés, typography**; DIM-AMB checks *a label in a named
+    syntactic slot* for **specificity sufficient to generate from**.
+    Different property, scope and unit. **Position-scoping is the asset**
+    — 70 entries outwork 116 checks here not because the lists are better
+    but because each is bound to a slot where a specific vagueness
+    matters, which is exactly what is not portable to prose.
+  - *Never build*: a dependency on or vendored copy of a prose linter; a
+    prose-quality dimension over notes/titles/labels (DIM-RDB already
+    prices notes structurally via GEN008, and grading English is
+    convention-manufacturing on a mature field's turf); a `vague_terms`
+    extension sourced from their lexicons — **there is nothing there to
+    source.**
+  - *Recorded, not queued*: **(1) claim language — DIM-AMB is not prose
+    linting**, worth one sentence wherever it is described, because the
+    confusion is natural and invites the misuse below. **(2)** the FEEL
+    note's prose-guard hole, **unchanged**, with the external option now
+    measured closed — **explicitly NOT a mandate**: "nobody else solved
+    it" is not a reason to solve it, and a home-grown hedge lexicon would
+    put this project's name on every call about whether `probably` is
+    vague in a guard. **(3)** the misuse warning: **a prose linter
+    pointed at `.puml` files produces advice that degrades the artefact
+    in at least two measured ways** — a realistic scenario, since prose
+    linters are commonly wired repo-wide.
+  - Re-litigate on: **Vale being runnable** (its style packages are
+    larger and were not measured — would sharpen the vocabulary point,
+    unlikely to move the disjointness, since the boundary is
+    position-scoping not list size); an adopter reporting a prose-linter
+    conflict on the same files; the FEEL note's triggers, unchanged.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

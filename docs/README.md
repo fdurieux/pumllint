@@ -469,6 +469,22 @@ but they are a useful cross-check that no audience was forgotten.
   functions), **ours are code** — and none of those thirteen can express
   call/reply pairing or cross-file identity, because an OpenAPI document
   is a *tree* and a sequence diagram is a *trace*.
+- [The prose-linting ecosystem, evaluated](prose-linting-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-sixth and the follow-on to the
+  FEEL note, which recorded a prose-guard hole and refused to invent a
+  mechanism. **Does the field that specialises in hedges already have
+  one? No — and the negative is the finding.** `proselint` 0.16.0's
+  *entire* `hedging` check is three phrases and its `weasel_words` check
+  is the single word `very`: **four items against pumllint's seventy**.
+  `write-good` with every check on flags `the customer is probably
+  eligible` only as E-Prime. Across eight labels the two ecosystems are
+  **disjoint** — the prose linters fire on none of the six DIM-AMB
+  targets and vice versa. The one intersection is a collision: proselint
+  says replace `...` with `…`, and **SEQ106 fires at blocker on both
+  spellings**, because the defect is the omission, not the glyph. So
+  **DIM-AMB is not a reimplementation of prose linting**: those tools
+  check free-running English for style, this checks a label in a named
+  slot for specificity sufficient to generate from.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
