@@ -3717,6 +3717,86 @@ list and license posture live in § Settled questions.
     decision, not an adopter's arrival — the demand bar governs new
     capability, not correctness.
 
+- **Semgrep / rules-as-data (2026-08-29): the Spectral note's boundary is
+  STRUCTURAL, confirmed at a far more expressive point — and its F2
+  becomes SCOPED rather than open.** Twenty-ninth, a narrowing return on
+  the twenty-fifth. Full record:
+  docs/semgrep-rules-as-data-evaluation.md; pumllint at `95c157a`
+  (v0.30.0). **Semgrep 1.175.0 installed and EXECUTED**; counts taken
+  from the JSON `results` array (Semgrep redacts matched source lines
+  without an account, so claims rest on counts/ids/line numbers, which
+  are returned). **OPA/Conftest/Rego — the original candidate for this
+  slot — was NOT run** (the engine needs a binary not obtainable here via
+  a package registry); nothing here is a claim about it. No GitHub read.
+  - *The objection this answers.* Spectral's boundary rested on a
+    **13-item function library**, which invites: *the limit is Spectral's
+    small vocabulary, not rules-as-data.* Semgrep is the test — rules are
+    YAML (data) but the vocabulary is a **pattern language with
+    metavariables**, and `generic` mode matches arbitrary text, so it can
+    be pointed straight at `.puml`.
+  - **THE LADDER, measured against this project's own rule classes:**
+    **Rung 1 lexical** (SEQ106 elision) — **✔ 1 finding, right line.**
+    **Rung 2 file-scope absence** (GEN001 no title) — **✘ 2 findings**,
+    flags the titled file too; correct is 1. **Rung 3 identity
+    correlation** (SEQ001/SEQ101 used-but-never-declared) — **✘ 2
+    findings**, cannot tell the declared participant from the undeclared
+    one; correct is 1, and on a single-arrow probe the metavariable came
+    back **unbound (`None`)** — it matched the right line by arithmetic,
+    not by identifying anything. **Rung 4 cross-file identity** (XD
+    family) — **structurally out of scope**, OSS Semgrep is single-file.
+  - **THE BOUNDARY IS STATE, NOT VOCABULARY.** Rungs 2–3 fail the same
+    way: `pattern-not-inside` scopes to a region *enclosing the match*,
+    never the file, so there is no way to say *"and no `participant … as
+    $X` exists anywhere in this file"* with `$X` bound from the arrow.
+    Rung 1 needs only the current line; rung 2 needs the rest of the
+    file; rung 3 the rest of the file **indexed by identity**; rung 4 the
+    rest of the **batch**. **pumllint's rules run against a parsed model,
+    so 2–4 are ordinary code; a rule that is a *pattern* has only the
+    match.** Tree-vs-trace restated, and the Spectral explanation was
+    right.
+  - **CONSEQUENCE — the Spectral note's F2 is NARROWED, not closed.** A
+    declarative rule layer here is viable for the **lexical tier and
+    nothing above it**: SEQ105 vague terms, SEQ106 elision tokens,
+    SEQ109 non-informative replies, SEQ103 arg stop-words, GEN008
+    density are rung-1 shaped; SEQ001/SEQ101, ACT001/ACT002, SEQ011,
+    GEN005 and **the whole XD family** are rungs 2–4. **F2's honest form
+    is "author *lexicon and pattern* rules without a Python
+    contribution"** — still possibly worth something (a team's own
+    vague-term vocabulary is exactly what they want to own) but a
+    **smaller promise**, and it must be recorded as the smaller one.
+  - *Bounds that matter.* **The rules are mine.** I could not express
+    rungs 2–4 with the documented `patterns`/`pattern-not-inside`
+    operators in generic mode; **Semgrep also ships a `join` mode**
+    (present in this version) for correlating findings across rules,
+    **which I did not get working and do NOT claim is incapable.** The
+    state explanation is my reading of the failures, not a statement
+    about the tool in principle.
+  - *Never build*: a dependency on Semgrep or a Semgrep-based checking
+    path (it would cover the lexical tier and **silently miss everything
+    the catalogue exists for**, while reporting confidently on what it
+    did match — rung 3's wrong count looks exactly like a right one); a
+    **Semgrep language plugin for PlantUML** (that is this project's
+    parser re-implemented inside another tool's extension point, to gain
+    an authoring format for the subset of rules that needed it least).
+    Equally refused: *"rules-as-data is a dead end"* — rung 1 is why.
+  - *Recorded, not queued*: **(1)** F2 narrowed to the lexical tier —
+    the Spectral entry should be read with this scoping attached, the way
+    the decision-table result is read with its suite-composition scoping.
+    **(2) THE RUNG CLASSIFICATION — a missing measurement**: how many of
+    the 51 rules are decidable from the matched text alone, without
+    consulting the rest of the file? A morning's pass over
+    `pumllint/rules/`; it would size F2 honestly, and this note
+    **deliberately does not guess the number.** **(3)** the
+    state-not-vocabulary boundary, worth citing whenever a declarative or
+    externally-authored rule format is proposed, in place of re-deriving
+    it from a function-library count.
+  - Re-litigate on: **a working `join`-mode formulation of rung 3** — the
+    one thing that would weaken this, and explicitly not achieved rather
+    than proved impossible; an adopter asking to author project-local
+    **lexicon** rules (the narrowed F2's actual constituency, a smaller
+    ask than Spectral's framing implied); OPA/Conftest becoming runnable,
+    if the policy-as-code comparison is ever wanted.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
