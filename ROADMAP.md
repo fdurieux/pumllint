@@ -3395,6 +3395,94 @@ list and license posture live in § Settled questions.
     costs what a grammar would avoid (a long way off, since the grammar
     does not do this job at all); the DMN note's triggers, unchanged.
 
+- **Spectral / OpenAPI (2026-08-29): no change — and the project's
+  FOUNDING ANALOGY, executed for the first time, holds.** Twenty-fifth.
+  Spectral is not a neighbouring ecosystem this project might expand
+  into: it is the tool `case-for-pumllint.md` names as its precedent
+  (*"a rule-based checker of exactly this kind"*) and the quadrant
+  excludes as a peer. **Both claims were made from description.** Full
+  record: docs/spectral-openapi-ecosystem-evaluation.md; **Spectral
+  6.16.3 installed from npm and EXECUTED**, including a custom ruleset
+  written for the note; rule counts read by loading the shipped rulesets
+  in Node. pumllint claims at `89c1f36` (v0.30.0). The wider OpenAPI
+  ecosystem (Redocly, Vacuum, oas-tools) was **not** surveyed — this is
+  about Spectral specifically. No GitHub read.
+  - *The analogy survives contact, and is now sourced.* Apache-2.0, 47
+    versions, 2021-06-18 → **2026-08-03**. Configuration (`.spectral.yaml`
+    `extends`+`rules`), named presets (`spectral:oas` 56 rules,
+    `:asyncapi` 55, `:arazzo` 22 = **133**), four severities
+    (error/warn/info/hint), a fail gate (`-F/--fail-severity`, default
+    `error`), an extension surface, exit 1/0, and the terminal summary
+    `✖ 7 problems (1 error, 6 warnings, 0 infos, 0 hints)` — **the same
+    shape as `bpmnlint`'s and ours.** Every row the claim was asked to
+    carry holds under execution.
+  - **THE GRADING GAP, on the closest peer there is — and STARKER than
+    anywhere in the series: `spectral --help` lists ONE subcommand,
+    `lint`.** Not "no aggregate we could find" but **no place in the CLI
+    where one could live.** The standing objection to previous
+    no-grader observations (the ecosystems aren't comparable) does not
+    survive here.
+  - **Recorded two-sided, deliberately.** An unoccupied slot beside a
+    mature peer is evidence in *two* directions: the maturity model is
+    the differentiator (this project's reading since the start), **or**
+    teams who block builds on findings have never wanted a number and the
+    silence is an answer. **Nothing measured here decides it** — nothing
+    here bears on demand. **Cite the no-grader point with its
+    counter-reading attached**, the way the decision-table result is
+    cited with its suite-composition scoping.
+  - **The one real architectural difference: Spectral's rules are DATA,
+    ours are CODE.** A rule is a JSONPath (`given`) plus one of
+    **thirteen** built-in functions (`alphabetical, casing, defined,
+    enumeration, falsy, length, or, pattern, schema, truthy, undefined,
+    unreferencedReusableObject, xor`). *In its favour*: reviewable by
+    non-programmers, safely shareable, bounded by construction — **an API
+    guild can own a ruleset without owning a codebase, and we have no
+    such path.** *In ours, decisively*: none of those thirteen expresses
+    SEQ call/reply pairing, activation balance, XD cross-file identity or
+    GEN007's single carrier set — **path-plus-predicate over a node, vs
+    computation over a parsed model with cross-node and cross-file
+    state.** Spectral supports custom JS for exactly this reason, at
+    which point the rule is code again in a second language.
+  - *The divergence is the artefact talking, not taste* — **an OpenAPI
+    document is a TREE and yields to path-plus-predicate; a sequence
+    diagram is a TRACE and does not.** Same conclusion the BPMN note
+    reached about layout rules, from the opposite direction.
+  - *A small convergence addition.* Spectral's one `error` among six
+    warnings on the probe was `path-params` — a **model-consistency**
+    defect (path declares `{id}`, operation defines no parameter). Two
+    independent tools, two artefacts, agreeing that **internal
+    inconsistency outranks missing description**.
+  - **DISCIPLINE NOTE — nothing here is a newly-found gap.** Spectral
+    ships **12** output formats incl. SARIF/`github-actions`/`junit`/
+    `code-climate`/`gitlab`; we ship 3 (`lint`) and 5 (`score`).
+    **SARIF is ALREADY on record as "absent, demand-gated like every
+    other format request"** (sdd-manifest-evaluation). A peer shipping a
+    thing is **not demand**; this is evidence about where the bar sits
+    and nothing more. Refuse "Spectral has it, so we should" as
+    *reasoning*, whatever the eventual answer.
+  - *Never build*: an OpenAPI/AsyncAPI rule pack (occupied, better
+    served, outside our artefact identity); a declarative rule layer
+    built to **imitate** Spectral rather than to serve an asked-for need.
+  - *Recorded, not queued*: **(1) a declarative rule-authoring layer** —
+    the note's only genuinely open idea, demand-gated on an adopter
+    wanting project-local rules without a Python contribution; must
+    preserve rule IDs and kebab-case names and must not become a second,
+    weaker way to say what the catalogue already says in code. **(2)** the
+    two-sided grading reading above. **(3)** the `path-params`
+    correspondence.
+  - *Where the artefacts actually meet, unchanged*: the **sequence ↔
+    contract cross-check** (message signatures against OpenAPI/AsyncAPI
+    operations, recorded 2026-07-29, trigger-gated). W1b's OpenAPI
+    finding is its substrate — *"the OpenAPI schema mirror held the
+    validation bounds at exactly 0.0 loss when the tables left"* — so the
+    repository's position on OpenAPI is already evidence-backed and
+    narrower than "different artefact class".
+  - Re-litigate on: an adopter asking to author rules without
+    contributing Python; **evidence bearing on the two-sided grading
+    reading either way** — a peer in any artefact class shipping a
+    maturity aggregate, or an adopter explicitly declining one (both
+    currently absent); the cross-check trigger, unchanged.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
