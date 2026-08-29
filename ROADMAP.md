@@ -3559,6 +3559,91 @@ list and license posture live in § Settled questions.
     position-scoping not list size); an adopter reporting a prose-linter
     conflict on the same files; the FEEL note's triggers, unchanged.
 
+- **Gherkin / Cucumber (2026-08-29): nothing to adopt and nothing to
+  refuse — the first subject in the series that is ALREADY INSIDE the
+  project.** Twenty-seventh. RULES.md's Gherkin blocks →
+  `tools/extract_features.py` → **43 feature files, 122 scenarios** →
+  pytest-bdd, with a staleness gate in `.github/workflows/tests.yml`. So
+  the question is inward-facing, and the series had never asked one.
+  Full record: docs/gherkin-cucumber-ecosystem-evaluation.md.
+  **`gherkin-lint` 4.2.4 installed and EXECUTED against this
+  repository's real `tests/bdd/features/`.** No Cucumber suite run;
+  reqnroll/SpecFlow/Behave not examined; no GitHub read.
+  - **THE METHOD TURNED ON OURSELVES: 562 → 0.** Under `gherkin-lint`'s
+    defaults the corpus reports **562 findings** (559 `indentation`, 3
+    `no-dupe-scenario-names`), exit 1. Declare the project's actual
+    conventions — its real indentation, and `no-dupe-scenario-names`
+    scoped `in-feature` — and the same tool reports **zero, exit 0**.
+    **Not one finding was a defect.**
+  - *The 559*: gherkin-lint's default expects `Scenario` at **column 0**,
+    flush with `Feature`. We nest (`Feature` 0 / `Scenario` 2 / `Step`
+    4) — the shape Cucumber's own docs display. A configurable style
+    default, nothing more.
+  - *The 3*: `diagram within the limit passes` (SEQ011/GEN005),
+    `conforming names pass` (UC002/CLS001), `a distinct entity is never
+    compared` (XD001/XD002) — **analogous scenarios in analogous per-rule
+    files**, where the `Feature:` line disambiguates. Enforcing global
+    uniqueness would restate the filename in every scenario name;
+    **the redundancy is the point of the per-rule layout.**
+  - **The transferable lesson, and it is about US:** *a linter run
+    without its configuration is not a measurement of quality, it is a
+    measurement of whose defaults you inherited.* **pumllint's defaults
+    are equally opinionated**, and an adopter running us cold on a mature
+    corpus meets the 559, not the 0. Same shape as the prose-linting
+    note's convention-not-correctness result, now quantified on our own
+    files.
+  - **LINTER-VITALITY PATTERN — third instance, with its exception
+    identified.** Parser alive / standalone linter stale: **DMN**
+    (`dmn-js` 17.10.2 vs `dmnlint` 1.0.0, 2 rules), **FEEL** (`feelin`
+    7.0.1/99 versions vs *no linter*), **Gherkin** (`@cucumber/gherkin`
+    **42.0.1, 2026-08-05** vs `gherkin-lint` **4.2.4, last shipped
+    2023-12-20** — near-identical release counts, 2½ years apart in
+    recency). **BPMN is the counter-example and it EXPLAINS the pattern**:
+    `bpmnlint` (11.13.0, 27 rules, 2026-08-19) **is embedded** — the
+    modeler's live feedback via `bpmn-js-bpmnlint` that also ships a CLI.
+    The three stale entries each sit beside a *different* loop that
+    already tells the author: a Gherkin feature **is executed as a test**,
+    a DMN table **is analysed by the modeler**, a FEEL expression **is
+    parsed by the editor**.
+  - **Stated: a standalone linter CLI goes stale unless it is also the
+    feedback where authoring happens.** Offered as a **predictor to
+    test**, four points with one explaining counter-example — the
+    Structurizr withdrawal is why the counter-example was hunted before
+    the pattern was stated. **NOT a roadmap input.**
+  - *The uncomfortable part, faced rather than buried.* We are a
+    standalone linter CLI with no editor integration (LSP = Arc E,
+    wait-for-pull). **Three reasons the inference does not go through:**
+    each stale linter sat beside an incumbent feedback loop, and
+    PlantUML's authoring loop only tells you *whether it draws* (the case
+    document's central observation) — **no incumbent is absorbing the
+    maintenance here**; our designed home **is** the gate (action, both
+    hooks, exit-code contract), whereas `gherkin-lint` went stale as a
+    gate people forgot to run; and four points is four points. **What the
+    pattern does do is sharpen what the LSP item is FOR** — the point of
+    authoring is where a checker's maintenance gets funded — which is a
+    better argument than "editors are nice". Gating unchanged.
+  - *Overlap worth one line*: `no-dupe-scenario-names` ↔ **the XD
+    family** — both identity-and-duplication checks across a batch of
+    files, both forced to answer *is cross-file duplication a defect or
+    only within one?* Independently recognised as needing an answer.
+  - *Never build*: a `gherkin-lint` CI step (stale tool, zero findings,
+    and the corpus is **generated** — linting it checks the generator,
+    which the staleness gate plus the executing suite already check);
+    global scenario-name uniqueness (it would fight the per-rule layout).
+  - *Recorded, not queued*: **(1)** the vitality pattern above, as a
+    predictor. **(2)** §7's argument for the LSP item — if it is ever
+    picked up, *this* is the argument; gating unchanged. **(3) the
+    cold-run gap — a MEASUREMENT THAT DOES NOT EXIST**: nobody has
+    measured what our defaults report on a large, mature, third-party
+    diagram corpus, and the 562→0 ratio suggests the number would be
+    large and mostly conventional. Recorded as a missing measurement,
+    not a candidate.
+  - Re-litigate on: `gherkin-lint` being superseded by a maintained
+    successor the Cucumber project itself ships (**the cleanest test of
+    the pattern**); an adopter reporting the cold-run experience, which
+    turns candidate 3 into a real question about default profiles; the
+    LSP item's own trigger, unchanged.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
