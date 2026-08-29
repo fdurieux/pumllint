@@ -2936,6 +2936,77 @@ list and license posture live in § Settled questions.
     Validator gaining strength: that is the ecosystem doing its own job
     upstream, which is the reason for the refusal rather than an opening.
 
+- **C4 viewpoints / notation (2026-08-28): the settlement is unchanged —
+  *fit verified, wait for census pull* — and the contribution is a
+  *reason*, not a finding.** Twentieth, and the **second narrowing return
+  in two turns** (ArchiMate viewpoints was nineteenth). Full record:
+  docs/c4-viewpoints-notation-evaluation.md; pumllint claims executed at
+  `9e14f02` (v0.30.0), default config, neutral cwd. **c4model.com is free
+  and was read directly** — ninth access data point and the best case,
+  after ArchiMate 3.2 and TOGAF both behind Open Group SSO.
+  - **The doctrine explains the C4 note's 40% ceiling.** That note
+    measured C4's 21-item checklist as roughly **40% mechanizable** from
+    `.puml` text and attributed the rest to *"the rendered picture"* —
+    correct but incomplete. C4's own notation page: **"The C4 model is
+    notation independent, and doesn't prescribe any particular
+    notation."** and **"Any notation used should be as self-describing as
+    possible, but all diagrams should have a key/legend to make the
+    notation explicit."** **C4 is picture-heavy in its guidance *because*
+    it refuses to specify a notation** — when shapes and colours are the
+    author's free choice, all that is left to review is whether they were
+    chosen sensibly (the image) or *declared* (the legend). So the
+    source-checkable residue is small **structurally, and no parser work
+    moves it**. *Attach to the C2 correction so the 40% is never read as
+    a coverage gap better engineering could close.* This does not weaken
+    the recorded fit: the pack's value was always tiers 2 and 3, which
+    that note calls "this project's own design".
+  - *Measured — C4's one unambiguously source-checkable requirement is
+    invisible in **both** spellings.* PlantUML `legend`…`endlegend`
+    present vs absent → identical (`sequence`, L4, 100.00, 7 elements);
+    C4-PlantUML `SHOW_LEGEND()` present vs absent → identical
+    (`unknown`, L1, 100.00, 0 elements, "✔ No issues found", exit 0).
+    Byte-identical reports in both pairs.
+  - **But the parser already tokenises legends**, which makes the
+    recorded candidate cheaper than it looked: `RE_LEGEND_START` /
+    `RE_LEGEND_END` at `parser/sequence.py:91-92`, with a deliberate
+    swallow at `:249-251` — *"Legend blocks are display furniture:
+    swallow until 'endlegend' so body text can never parse as live
+    messages or participants."* Correct for a parser hunting model
+    content, and it means *"is a legend declared?"* needs **no parser
+    work for the PlantUML spelling**. The `SHOW_LEGEND()` spelling
+    remains the macro-reading problem the pack already has.
+  - *The honest Level 1 and the blindness are one behaviour seen from two
+    sides*: a complete C4-PlantUML container diagram scores `unknown`,
+    **Level 1 (Sketchy), 100.00, 0 elements, exit 0** — the honest result
+    the C4 note recorded, re-confirmed at v0.30.0 — and it is invisible
+    to the legend question for the same reason (no macro content is
+    read). Worth stating once rather than recording as two findings.
+  - **Viewpoint-shaped mechanisms are guidance, not contracts — second
+    instance in two turns.** C4's four levels of zoom, each for *"a
+    different amount of detail for a different audience"*, are 42010's
+    viewpoint idea in plain words, and **C4 defines no conformance**;
+    ArchiMate publishes 25 viewpoints *with* element subsets and still
+    makes conformance no requirement. Stated once so a third ecosystem
+    does not re-derive it, and as the general reason a third-party linter
+    adjudicating a viewpoint would be **inventing an obligation**.
+  - *Nothing here is new as a candidate.* The legend rule, abstraction
+    mixing (a **PlantUML-only defect**), the 40% figure, the census
+    exclusion guard and the codegen amplification are all on record in the
+    C4 note; this entry adds an explanation, an implementation cost and a
+    measurement, and **the record must not read as though a twentieth
+    note found a twentieth gap**.
+  - *Never build*: anything premised on the doctrine being demand (the
+    trigger is unchanged); **a notation-conformance check** — C4
+    prescribes no notation, so it would enforce this project's idea of C4
+    against a model that declines to have one; a level-conformance check
+    (already inside the waiting pack as abstraction mixing); and quoting
+    the macro file's 100.00 without its Level 1 and zero element count.
+  - Re-litigate on: **the C4 settlement's existing triggers, unchanged** —
+    an adopter's own census after the exclusion rule, a concrete user with
+    hand-written C4-PlantUML asking for a gate, or a vendor shipping
+    quality checking for C4-PlantUML specifically. **Not** on anything in
+    this entry: it explains the ceiling and does not touch the conditions.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
