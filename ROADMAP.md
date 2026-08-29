@@ -3007,6 +3007,81 @@ list and license posture live in § Settled questions.
     quality checking for C4-PlantUML specifically. **Not** on anything in
     this entry: it explains the ceiling and does not touch the conditions.
 
+- **Structurizr DSL viewpoints (2026-08-29): no — the eighth note's
+  settlement stands, and the contribution is a CORRECTION to the two
+  entries immediately before this one.** Twenty-first, and the **third
+  narrowing return in three turns**. Full record:
+  docs/structurizr-viewpoints-evaluation.md; pumllint claims executed at
+  `1d08d02` (v0.30.0), default config, neutral cwd. **Export samples are
+  reconstructed, not from a real `structurizr-cli` run** — the same bound
+  the eighth note carried for the same reason, so figures across the two
+  notes are **not comparable** (84.58 here vs 85.0 there is a sample
+  difference, not behaviour).
+  - **WITHDRAWN: "viewpoint-shaped mechanisms are guidance, not
+    contracts."** Recorded in the ArchiMate viewpoints entry and repeated
+    in the C4 viewpoints entry as a "second instance". **Generalized from
+    n = 2; n = 3 refutes it.** Structurizr's views take a **typed scope
+    argument** (`container <software system>`, `component <container>`)
+    naming an identifier that must exist in the model, and **the C4
+    evaluation has recorded Structurizr as preventing abstraction mixing
+    *"by construction"* since 2026-08-27** — quoting *"components can't be
+    added to a container diagram"*. **Both viewpoint notes cited that
+    evaluation and neither noticed the row cut against them.**
+  - **The replacement is DERIVED views vs DRAWN views** — offered as a
+    predictor to test, not another law from three points. **ArchiMate**
+    (in Archi): views are *drawn* by dragging elements, the viewpoint is a
+    filter and label over what you drew → conformance is a live question,
+    answered advisorily. **C4** (the model): no tool, no model →
+    undefined. **Structurizr**: views are *derived* — `include *` means
+    "compute the members from the model and the scope" → **conformance is
+    not unenforced, it is vacuous.** You cannot draw a wrong view, only
+    scope one.
+  - *The practical rule is unchanged and now has two reasons.* Do not
+    adjudicate viewpoint conformance: for ArchiMate and C4 because it
+    would **invent an obligation**; for Structurizr because the check
+    would be a **tautology** on every conformant export, able to fire only
+    on a hand-edited file. The reason matters for anything built later —
+    a reader taking the withdrawn line as fact would mis-predict
+    Structurizr and any other model-first tool.
+  - *Measured*: a **container** view and a **component** view export
+    indistinguishably — `sequence`, **Level 3, 84.58, 3 elements,
+    identical findings** (GEN002 + 3× GEN003 inline-skinparam, the
+    exporter-generated styling the eighth note called unownable). Third
+    measurement of this shape in three turns and **here it is harmless**,
+    because both exports are conformant by construction — an observation
+    about the ecosystem, not a gap in the tool.
+  - **The view key survives export and pumllint already reads it.** The
+    documented `@startuml(id=…)` construct lands in `diagram.name` and
+    **satisfies GEN002** (84.58 → 85.00) — but is captured **verbatim
+    including the wrapper**: `name='(id=Containers)'`. Mechanism:
+    `RE_STARTUML = re.compile(r"^@startuml\s*(?P<name>\S.*)?$")`
+    (`parser/sequence.py:40`) — `\s*` matches the zero spaces before `(`
+    and the rest of the line becomes the name. Right outcome, slightly
+    wrong reading, and **not a candidate**: parsing Structurizr's `id=`
+    syntax is exactly the **Structurizr-export recognizer the eighth note
+    already refused** ("special-cases one producer among many, and
+    encodes a third party's output shape as a contract this project would
+    have to track").
+  - *Scope enforcement is only partly established, and the note says so*:
+    the DSL docs give verbatim permission rules for **two** view types
+    only — `dynamic` (*"scope determines permissible elements"*) and
+    `custom` (*"Only custom elements are permitted to be included on a
+    custom view"*). For `container` and `component` they state **default
+    inclusion**, not prohibition, and **whether an explicit out-of-scope
+    `include` errors was not established**. Nothing here depends on it.
+  - *The reading failure is worth naming* — three consecutive narrowing
+    returns, each reading its predecessor **for what it left out rather
+    than for what it already answered**. The format invites it; the C4
+    occupancy row was the counterexample all along.
+  - *Never build*: a view-type or scope-conformance rule over Structurizr
+    exports (the property cannot fail in a derived view); **parsing
+    `@startuml(id=…)` as a view key** (the eighth note's export-recognizer
+    never-build covers it exactly); anything premised on the withdrawn
+    generalization.
+  - Re-litigate on: the eighth note's triggers, unchanged. **Not** on
+    anything here — this entry corrects a generalization and touches no
+    condition.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
