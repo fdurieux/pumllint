@@ -199,6 +199,21 @@ def scan_inventory(path: str | Path, pattern: re.Pattern[str]) -> list[str]:
     sorted order; an explicit file is scanned regardless of suffix. Matches
     use the whole-match text (group 0), so patterns with groups behave the
     same here as in GEN007. First-seen order, deduped.
+
+    **Both the file's name and its text are matched.** Identifier schemes
+    that carry the ID in the filename (``ADR-0007-use-plantuml.md``,
+    ``REQ-123.md``) are as common as ones that write it in the body, and
+    scanning the body alone finds nothing at all for them — an empty
+    inventory, which the matrix can only report as every reference being
+    unknown. The name is scanned before the text, so a file's own ID
+    precedes any it merely cites.
+
+    Note that this cannot reconcile *different* spellings of one ID: a
+    tree of ``0001-use-plantuml.md`` files holds ``0001``, not
+    ``ADR-0001``, so a pattern written for the prose form still matches
+    nothing there. That is an inventory the pattern genuinely does not
+    describe, and the caller is expected to say so rather than let it pass
+    as silence.
     """
     p = Path(path)
     if p.is_dir():
@@ -209,6 +224,7 @@ def scan_inventory(path: str | Path, pattern: re.Pattern[str]) -> list[str]:
         raise FileNotFoundError(p)
     ids: list[str] = []
     for f in files:
+        ids.extend(m.group(0) for m in pattern.finditer(f.name))
         text = f.read_text(encoding="utf-8", errors="replace")
         ids.extend(m.group(0) for m in pattern.finditer(text))
     return _dedupe(ids)

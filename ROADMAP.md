@@ -3797,6 +3797,46 @@ list and license posture live in § Settled questions.
     ask than Spectral's framing implied); OPA/Conftest becoming runnable,
     if the policy-as-code comparison is ever wanted.
 
+- **ADR requirements-scan repair (2026-08-29): SHIPPED — and it corrected
+  the note that proposed it.** Implements the twenty-eighth note's F1 and
+  F2. Two changes, both stdlib-only, no report-*shape* change and no
+  schema change.
+  - **`scan_inventory` now matches the pattern against each file's NAME as
+    well as its text** (`pumllint/trace.py`), name first so a file's own
+    ID precedes any it cites, deduped across both, suffix filter unchanged
+    (a `.py` file is still never walked, so its name is never scanned).
+    Fixes schemes carrying the whole ID in the filename — `ADR-0007-use-
+    plantuml.md`, `REQ-123.md` — which previously returned an **empty
+    inventory** and so reported every correct reference as unknown.
+    Measured: that layout went **0/0 with 2 false "unknown references" →
+    2/2 covered, exit 0**, and `--fail-on-unknown-ref` **0 instead of 1**.
+  - **`trace` now warns when the inventory is empty** (`pumllint/cli.py`),
+    on stderr, **exit code unmoved** — the same contract CLAUDE.md records
+    for the lint path's "nothing was checked". It names the source, the
+    pattern, and how many references were compared against nothing.
+  - **THE CORRECTION.** The note claimed F1 *"makes the documented
+    workflow work against both dominant conventions"*. **It does not, and
+    that was checked before any code was written.** `ADR-\d+` matches
+    neither the body **nor the filename** of `0001-use-plantuml.md`: the
+    adr-tools/MADR ID is `0001`, the diagram cites `ADR-0001`, so
+    **reference form and inventory form are different strings and no
+    single regex reconciles them.** §2's measurement of the *defect*
+    stands; the proposed *remedy* was overstated. Corrected in the note
+    and above.
+  - *Consequence: F2 was the more important half all along.* For a
+    bare-number scheme the honest answers are `--requirements` with an
+    explicit list, or a pattern matching both spellings — and above all
+    **being told the inventory is empty** instead of being told the
+    diagram has a typo.
+  - *Tests*: 6 added — filename-carried IDs; name-before-body ordering
+    with dedupe across both; the suffix filter still governing name
+    matching; the empty-inventory warning with exit 0; no warning when the
+    inventory is non-empty; and the `--fail-on-unknown-ref` gate passing
+    on filename-carried IDs. **501 stdlib / 623 pytest.**
+  - *Docs*: README's `--requirements-scan` paragraph now states the name
+    matching, its limit (it cannot reconcile two spellings of one ID), and
+    the empty-inventory warning.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -512,10 +512,13 @@ but they are a useful cross-check that no audience was forgotten.
   `ADR-0001` references as *"a typo, or the inventory is stale"*. With
   `--fail-on-unknown-ref` it **exits 1 on correct input**. A control
   layout that spells the ID in the body scans fine, so the feature works
-  on a convention almost nobody uses. Two repairs recorded (match
-  filenames; warn on an empty inventory, matching the lint path's
-  "nothing was checked" contract), plus the test that would have caught
-  it.
+  on a convention almost nobody uses. **Both repairs have since shipped**
+  — `scan_inventory` matches filenames as well as contents, and an empty
+  inventory now draws a stderr warning naming the source and the pattern,
+  exit code unmoved — **and implementing them corrected the note**: the
+  proposed filename fix does *not* rescue the bare-number layouts, because
+  `ADR-\d+` matches neither their body nor their filename. The note
+  carries that correction inline.
 - [Semgrep and rules-as-data, evaluated](semgrep-rules-as-data-evaluation.md)
   — dated evaluation (2026-08-29), twenty-ninth and a narrowing return on
   the Spectral note, whose boundary rested on a 13-function library and so

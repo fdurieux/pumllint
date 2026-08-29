@@ -433,6 +433,18 @@ extracts IDs by regex — so the two inventory sources parse differently:
 a doc line yields the matched ID alone, while the same line moved into
 a dedicated list file is taken verbatim as one ID.
 
+Each file's **name** is matched as well as its text, so ID schemes that
+live in the filename (`ADR-0007-use-plantuml.md`, `REQ-123.md`) are
+found even when the body only carries a human title. This cannot
+reconcile two different spellings of one ID: a tree of
+`0001-use-plantuml.md` files holds `0001`, not `ADR-0001`, so a pattern
+written for the prose form matches nothing there — use `--requirements`
+with an explicit list, or a pattern that matches both forms. **An
+inventory that ends up empty draws a stderr warning naming the source
+and the pattern**, without changing the exit code — otherwise every
+correct reference is reported as unknown, which reads as an accusation
+against the diagram.
+
 CI gates are opt-in, one per direction — without them the command is
 report-only (exit 0):
 

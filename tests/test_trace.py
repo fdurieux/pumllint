@@ -138,6 +138,38 @@ def test_scan_inventory_walks_docs_in_first_seen_order():
         assert scan_inventory(root, _PATTERN) == ["REQ-2", "REQ-1", "ADR-7"]
 
 
+def test_scan_inventory_matches_ids_carried_in_the_filename():
+    # ADR/requirement schemes commonly put the ID in the filename and a plain
+    # human title in the body (adr-tools, MADR). Scanning only the body finds
+    # nothing at all for them, so the matrix reports every correct reference
+    # as unknown.
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        (root / "ADR-0007-use-plantuml.md").write_text(
+            "# Use PlantUML for design diagrams\n\n## Status\nAccepted\n",
+            encoding="utf-8",
+        )
+        assert scan_inventory(root, re.compile(r"ADR-\d+")) == ["ADR-0007"]
+
+
+def test_scan_inventory_name_precedes_body_and_dedupes_across_both():
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        # The file's own ID is in its name; it cites another in its body, and
+        # repeats its own — first-seen order, deduped across both sources.
+        (root / "REQ-1-latency.md").write_text("supersedes REQ-2, see REQ-1", encoding="utf-8")
+        assert scan_inventory(root, _PATTERN) == ["REQ-1", "REQ-2"]
+
+
+def test_scan_inventory_name_matching_respects_the_suffix_filter():
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        (root / "REQ-9-helper.py").write_text("nothing here", encoding="utf-8")
+        (root / "notes.md").write_text("REQ-1", encoding="utf-8")
+        # The .py file is never walked, so its name is never scanned either.
+        assert scan_inventory(root, _PATTERN) == ["REQ-1"]
+
+
 def test_scan_inventory_group_patterns_use_whole_match():
     with tempfile.TemporaryDirectory() as td:
         f = Path(td) / "reqs.md"
@@ -370,6 +402,79 @@ def test_text_inventory_warns_once_per_whitespace_id():
         assert ids == ["ARC D7", "ARC-D8"]  # kept verbatim, not dropped
         assert len(warnings) == 1 and "ARC D7" in warnings[0]
         assert load_inventory(f) == ids  # silent without the callback
+
+
+def test_cli_trace_warns_when_the_inventory_is_empty_without_changing_exit():
+    # A scan that matches nothing is otherwise indistinguishable from a stale
+    # inventory: every correct reference is reported as unknown, which reads as
+    # an accusation against the diagram. Same contract as the lint path's
+    # "nothing was checked" — stderr, exit code unmoved.
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        docs = td / "adr"
+        docs.mkdir()
+        # MADR shape: the ID is '0001', so a pattern written for the prose form
+        # genuinely does not describe this inventory.
+        (docs / "0001-use-plantuml.md").write_text(
+            "# Use PlantUML\n", encoding="utf-8"
+        )
+        puml = td / "d.puml"
+        puml.write_text(
+            "@startuml d\ntitle Realizes ADR-0001\nA -> B : go()\n@enduml\n",
+            encoding="utf-8",
+        )
+        code, _, err = _run(
+            ["trace", str(puml), "--requirements-scan", str(docs), "--pattern", r"ADR-\d+"]
+        )
+        assert code == 0
+        assert "warning:" in err and "inventory is empty" in err
+        # It must name the source and the pattern, and say what was lost.
+        assert "--requirements-scan" in err
+        assert "1 diagram reference(s) were compared against nothing" in err
+
+
+def test_cli_trace_no_empty_warning_when_the_inventory_has_ids():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        docs = td / "adr"
+        docs.mkdir()
+        (docs / "ADR-0001-use-plantuml.md").write_text("# Use PlantUML\n", encoding="utf-8")
+        puml = td / "d.puml"
+        puml.write_text(
+            "@startuml d\ntitle Realizes ADR-0001\nA -> B : go()\n@enduml\n",
+            encoding="utf-8",
+        )
+        code, out, err = _run(
+            ["trace", str(puml), "--requirements-scan", str(docs), "--pattern", r"ADR-\d+"]
+        )
+        # The filename carried the ID, so the reference resolves and the gate holds.
+        assert code == 0
+        assert "1/1 covered" in out
+        assert "inventory is empty" not in err
+
+
+def test_cli_trace_filename_ids_satisfy_the_unknown_ref_gate():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        docs = td / "adr"
+        docs.mkdir()
+        (docs / "ADR-0001-use-plantuml.md").write_text("# Use PlantUML\n", encoding="utf-8")
+        puml = td / "d.puml"
+        puml.write_text(
+            "@startuml d\ntitle Realizes ADR-0001\nA -> B : go()\n@enduml\n",
+            encoding="utf-8",
+        )
+        code, _, _ = _run(
+            [
+                "trace", str(puml),
+                "--requirements-scan", str(docs),
+                "--pattern", r"ADR-\d+",
+                "--fail-on-unknown-ref",
+            ]
+        )
+        # Previously exit 1: the inventory was empty, so a correct reference
+        # counted as unknown and broke the build.
+        assert code == 0
 
 
 def test_cli_trace_whitespace_id_warns_on_stderr_without_changing_exit():
