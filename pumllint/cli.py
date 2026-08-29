@@ -183,7 +183,8 @@ def build_trace_parser() -> argparse.ArgumentParser:
         "--requirements-scan",
         metavar="PATH",
         help="Build the inventory by scanning a docs file or tree "
-        "(*.md/*.txt/*.adoc/*.rst) with the pattern",
+        "(*.md/*.txt/*.adoc/*.rst) with the pattern — each file's name is "
+        "matched as well as its text, so filename-carried IDs are found",
     )
     p.add_argument(
         "-f", "--format", default="text", choices=formats_supporting("render_trace"),
@@ -572,6 +573,28 @@ def _run_trace(argv: list[str]) -> int:
         inventory = list(dict.fromkeys(inventory))  # union, first-seen order
         diagrams = _parse_input_files(_collect_input_files(args.paths))
         result = build_matrix(diagrams, inventory, pattern)
+        if not inventory:
+            # Same contract as the lint path's "nothing was checked": an input
+            # that yielded nothing is said out loud, on stderr, without moving
+            # the exit code. Without it an empty inventory is indistinguishable
+            # from a stale one, and every correct reference is reported as
+            # unknown — blaming the diagram for the inventory's silence.
+            sources = " and ".join(
+                s
+                for s in (
+                    f"--requirements {args.requirements}" if args.requirements else "",
+                    f"--requirements-scan {args.requirements_scan}"
+                    if args.requirements_scan
+                    else "",
+                )
+                if s
+            )
+            _err(
+                f"warning: requirements inventory is empty ({sources} yielded no "
+                f"IDs matching {pattern.pattern!r}) — "
+                f"{len(result.unknown_references)} diagram reference(s) were "
+                f"compared against nothing"
+            )
         report = get_reporter(args.format).render_trace(result)
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
         _err(f"error: {e}")

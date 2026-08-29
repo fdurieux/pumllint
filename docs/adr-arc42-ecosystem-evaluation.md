@@ -248,20 +248,31 @@ records it as such — but the fix is on this side.
 
 ## 7. Fit — graded
 
-### F1 — scan filenames as well as contents. **Recorded, and the strongest candidate this series has produced.**
+### F1 — scan filenames as well as contents. **Recorded — and this note's own claim about it was wrong.**
+
+> **Correction, 2026-08-29, applied when the fix was implemented.** This
+> section originally said filename scanning "makes the documented workflow
+> work against both dominant conventions". **It does not.** `ADR-\d+`
+> matches neither the body *nor the filename* of `0001-use-plantuml.md`:
+> the ID in the adr-tools and MADR layouts is `0001`, not `ADR-0001`, so
+> the reference form and the inventory form are **different strings**, and
+> no single regex reconciles them. §2's measurement stands; the proposed
+> remedy was overstated, and §2.4's silence turns out to be the more
+> important half.
 
 One additional match target in `scan_inventory`: apply the pattern to
-`f.name` as well as `f.read_text()`. It is small, it is
-zero-dependency, it does not change any report *shape*, and it makes the
-documented workflow work against both dominant conventions.
+`f.name` as well as `f.read_text()`. Small, zero-dependency, no report
+*shape* change — and it genuinely fixes the schemes that carry the whole
+ID in the filename (`ADR-0007-use-plantuml.md`, `REQ-123.md`), which
+today return an empty inventory and therefore report every correct
+reference as unknown. That is a real and common layout, so the repair has
+independent merit.
 
-**Not queued here, and the reasons matter.** It changes what
-`--requirements-scan` returns, which changes `trace` output for existing
-users — a behaviour change to a JSON-schema-pinned report's *content*,
-needing its own test coverage, a RULES/docs pass, and a maintainer's
-decision about whether filename matches should be distinguishable from
-content matches in the JSON. **This note's job is the measurement; the
-change is a maintainer's call.**
+**What it does not do** is rescue a bare-number scheme whose diagrams
+cite a prefixed form. For those, the honest answers are `--requirements`
+with an explicit list, or a pattern matching both spellings — and, above
+all, **being told the inventory is empty** rather than being told the
+diagram has a typo.
 
 ### F2 — warn when the inventory is empty. **Recorded, and it is the cheaper half.**
 
