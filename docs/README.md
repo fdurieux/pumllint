@@ -485,6 +485,22 @@ but they are a useful cross-check that no audience was forgotten.
   **DIM-AMB is not a reimplementation of prose linting**: those tools
   check free-running English for style, this checks a label in a named
   slot for specificity sufficient to generate from.
+- [The Gherkin / Cucumber ecosystem, evaluated](gherkin-cucumber-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-seventh, and the first whose
+  subject is **already inside the project**: RULES.md's Gherkin blocks
+  become 43 feature files and 122 scenarios, CI-gated for staleness. So
+  the questions are inward-facing. **The method turned on ourselves:
+  `gherkin-lint` reports 562 findings on our own corpus under its
+  defaults and zero once the project's real conventions are declared** —
+  not one was a defect. The lesson transfers: *a linter run without its
+  configuration measures whose defaults you inherited, not quality* — and
+  **pumllint's defaults are equally opinionated**. Also: a
+  **linter-vitality pattern** reaching its third instance — parser alive,
+  standalone linter stale (`@cucumber/gherkin` v42 shipped 2026-08-05;
+  `gherkin-lint` last shipped 2023-12-20) — with **BPMN as the
+  counter-example that explains it**: `bpmnlint` is embedded in the
+  modeler. Stated as a predictor, with the uncomfortable implication for
+  a standalone CLI faced rather than buried.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
