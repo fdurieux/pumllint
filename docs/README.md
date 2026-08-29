@@ -453,6 +453,22 @@ but they are a useful cross-check that no audience was forgotten.
   both**. Also: `feelin` parses that phrase as one multi-word name while
   Camunda's engine docs forbid whitespace in names, so "validate it with
   FEEL" does not name a single behaviour.
+- [The Spectral / OpenAPI ecosystem, evaluated](spectral-openapi-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-fifth, and the one with the
+  least distance to travel: Spectral is **the tool this project's
+  positioning case names as its own precedent**, and that claim had never
+  been executed. **It survives contact** — configuration, presets, four
+  severities, a fail gate, an extension surface and the summary line all
+  map across. **The grading gap is confirmed on the closest peer there is,
+  and starker than anywhere else: `spectral --help` lists one subcommand,
+  `lint`** — no place in the CLI where an aggregate could live. Recorded
+  deliberately **two-sided**, since an empty slot beside a mature peer can
+  mean the maturity model is the differentiator *or* that nobody wanted a
+  number. The one real architectural difference is a trade-off, not a gap:
+  **Spectral's rules are data** (a JSONPath plus one of thirteen
+  functions), **ours are code** — and none of those thirteen can express
+  call/reply pairing or cross-file identity, because an OpenAPI document
+  is a *tree* and a sequence diagram is a *trace*.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
