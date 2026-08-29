@@ -437,6 +437,22 @@ but they are a useful cross-check that no audience was forgotten.
   carrier set. And W1b's emphatic decision-table result (+40.9 pp pooled,
   the only component whose removal hurts) was pre-registered as licensing
   **"none about DMN or any unmeasured carrier"**.
+- [The FEEL expression language ecosystem, evaluated](feel-expression-language-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-fourth and a narrowing return on
+  the DMN note. **No — and decided by a measurement rather than by scope**,
+  because FEEL is the only subject in the series with a named counterpart
+  inside this project's catalogue: SEQ105's class is
+  `MachineEvaluableGuards`. Read precisely, SEQ105 is two membership tests
+  against a five-word lexicon, not an evaluability check. Fed to `feelin`
+  7.0.1, **four of those five phrases parse cleanly as valid FEEL** — only
+  `if needed` fails, and only because `if` is a keyword. **A real parser
+  would lose 4 of the rule's 5 findings.** Across eleven guards with both
+  sides executed the two standards agree on 5 and disagree on 6 (SEQ105
+  stricter on 4, FEEL stricter on 2) — orthogonal, not ordered — and the
+  case that matters most, `the customer is probably eligible`, **passes
+  both**. Also: `feelin` parses that phrase as one multi-word name while
+  Camunda's engine docs forbid whitespace in names, so "validate it with
+  FEEL" does not name a single behaviour.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
