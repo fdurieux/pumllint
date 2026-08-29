@@ -3316,6 +3316,85 @@ list and license posture live in § Settled questions.
     ground**; what that would justify is *documentation* of the
     Level-4-on-an-ambiguous-decision result, not a rule.
 
+- **FEEL expression language (2026-08-29): no — and this is the first
+  refusal in the series decided by a MEASUREMENT rather than by scope.**
+  Twenty-fourth, a narrowing return on the DMN note (twenty-third), whose
+  decision and fence are unchanged. Full record:
+  docs/feel-expression-language-evaluation.md; pumllint claims executed
+  at `76dfc24` (v0.30.0), `codegen` profile, neutral cwd. **`feelin`
+  7.0.1 installed from npm and EXECUTED**; Camunda's FEEL engine was
+  **not** run (its name restriction is read from documentation), and the
+  DMN spec's FEEL grammar text was **not** read — so §4's implementation
+  disagreement is measured on one side, read on the other.
+  - *Why FEEL and not "another ecosystem".* It is the only subject in 24
+    notes with a **named counterpart inside this project's own
+    catalogue**: SEQ105's class is `MachineEvaluableGuards`, and
+    machine-evaluable expressions are what FEEL is for. The question is
+    not "is the artefact in scope" but "there is a real overlap — take
+    it?"
+  - *What SEQ105 actually does.* Two tests: guard non-empty, and guard —
+    whole string, case-insensitive — a member of a five-word lexicon
+    (`otherwise`, `sometimes`, `if needed`, `maybe`, `as required`,
+    configurable via `vague_terms`/`extra_vague_terms`). **It does not
+    check that anything is a boolean expression**, despite the class name
+    and the message "write a boolean expression instead".
+  - **THE MEASUREMENT: a real FEEL parser would lose 4 of SEQ105's 5
+    findings.** `otherwise`, `maybe`, `as required`, `sometimes` all
+    **parse cleanly** as FEEL. Only `if needed` fails, and only because
+    `if` opens an if-expression — the grammar objecting to a keyword, not
+    the language objecting to a hedge. **Swapping the lexicon for the
+    parser is a straight downgrade at the rule's stated purpose.**
+  - *Eleven-guard corpus, both sides executed: agree on 5, disagree on 6
+    — **SEQ105 stricter on 4, FEEL stricter on 2**.* Orthogonal, not
+    ordered; neither subsumes the other. FEEL's two genuine catches
+    (`total >`, `>`) are **malformed-fragment** defects, not
+    expression-semantics ones.
+  - **And the target walks through both.** `the customer is probably
+    eligible` passes SEQ105 (not in the lexicon) **and** parses as FEEL —
+    precisely the prose-wearing-a-condition's-clothes the codegen profile
+    exists to stop. **The lexicon is not a weak approximation of
+    FEEL-parseability; FEEL-parseability is not the property anyone
+    wanted.**
+  - *Mechanism.* `feelin` parses the phrase as ONE multi-word name:
+    `Expression > VariableName > Identifier ×5`; bound in a context it
+    evaluates to `true`, unbound it warns `NO_VARIABLE_FOUND`. **So FEEL
+    can flag it — but only with a variable environment, which a linter
+    reading a `.puml` file does not have.** The ecosystem splits
+    context-free syntax (permissive) from context-dependent resolution
+    (informative); this project can only ever reach the permissive half.
+  - **Second finding: "validate it with FEEL" is not single-valued.**
+    `feelin` (the parser in the modeler) accepts multi-word names;
+    Camunda's FEEL docs say a name *"may not contain whitespaces (e.g.
+    `order number` is not allowed)"* and require backticks. **The parser
+    used while editing accepts what the documented engine rules reject**,
+    on exactly the input class this rule cares about. Not adjudicated
+    here — but adopting "FEEL" would mean choosing one.
+  - *Ecosystem shape repeats DMN's.* `dmnlint` the *linter*: 4 versions,
+    2 rules. `feelin` the *parser*: **99 versions**, 2019-12-27 →
+    2026-05-29. Investment goes to the thing that understands the
+    language; the linting on top is someone else's. FEEL has also
+    **escaped DMN** — Camunda 8 uses it across BPMN, which is why
+    `agent-fromai-contract` parses FEEL AST inside a *BPMN* linter.
+  - *Never build*: a FEEL parser or FEEL subset validator inside
+    pumllint, or a dependency on one; a rule requiring guards, labels or
+    arguments to be valid FEEL (convention-manufacturing, and per the
+    above the convention is not even single-valued).
+  - *Recorded, not queued*: **(1)** the malformed-guard residual —
+    `total >` and `>` pass SEQ105; if ever closed, close it with
+    pattern-matching **inside the existing rule**, not with FEEL and not
+    as a new rule ID. **(2)** SEQ105's claim language — the class name
+    and message overpromise against two membership tests; message text is
+    a golden re-freeze, and the rule ID and kebab-case name are contracts
+    that do not move. **(3)** the prose-guard hole, recorded
+    **deliberately without a proposed mechanism** — the measurement says
+    what does not work, and inventing a hedge-detector on that basis
+    would be the same error in the other direction.
+  - Re-litigate on: PlantUML gaining a **typed guard construct** that
+    some other tool already parses — the only condition that makes the
+    convention someone else's; the lexicon growing until maintaining it
+    costs what a grammar would avoid (a long way off, since the grammar
+    does not do this job at all); the DMN note's triggers, unchanged.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
