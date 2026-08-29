@@ -418,6 +418,25 @@ but they are a useful cross-check that no audience was forgotten.
   measured: the DIM-AMB residual that gates the ACT-pack positioning note
   (a vague activity diagram scores 100/100 with DIM-AMB weighted 0.25 and
   penalised 0).
+- [The DMN ecosystem, evaluated](dmn-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-third in the series and BPMN's
+  sibling. **No**, on five grounds, and the strongest is that this project
+  fenced DMN off from its own best evidence in advance. DMN is *"a
+  graphical notation and an expression language"* — twenty-two prior notes
+  were about diagrams, and here the substance is a table of FEEL
+  expressions under a hit policy. Its interesting properties —
+  completeness, overlap, masking — are **decidable, and belong to a
+  solver**, which is why the ecosystem's linter is vestigial (`dmnlint`
+  1.0.0, **two** DRD-graph rules, measured **silent on a table with both
+  canonical defects**) while the analysers and modelers do the work.
+  Measured here: a PlantUML `switch` with a real overlap and a real gap
+  scores **Level 4 (Precise) — 100/100**; the same decision table is
+  **byte-identical to absent** whether pasted into a `legend` or a `note`;
+  but the two are *not* equally invisible — `trace` reports **3/3 covered
+  from a note, 0/3 from a legend**, a documented consequence of the single
+  carrier set. And W1b's emphatic decision-table result (+40.9 pp pooled,
+  the only component whose removal hurts) was pre-registered as licensing
+  **"none about DMN or any unmeasured carrier"**.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
