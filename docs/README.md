@@ -363,6 +363,23 @@ but they are a useful cross-check that no audience was forgotten.
   **realization** glyph `..|>` adds a third — typed **`class`, 99.31, and
   completely silent**, because `<|`/`|>` are type markers in their own
   right (`parser/class_.py:67`).
+- [The C4 viewpoints / notation ecosystem, evaluated](c4-viewpoints-notation-evaluation.md)
+  — dated evaluation (2026-08-28), twentieth in the series and the second
+  **narrowing return** in two turns. The C4 settlement is unchanged (*fit
+  verified, wait for census pull*); the contribution is a **reason**. The
+  C4 note measured its 21-item checklist as ~40% mechanizable and put the
+  rest down to "the rendered picture" — true but incomplete. C4's own
+  notation page says **"The C4 model is notation independent, and doesn't
+  prescribe any particular notation"** and **"all diagrams should have a
+  key/legend"**: C4's guidance is picture-heavy *because* it refuses to
+  specify a notation, so the source-checkable residue is small
+  **structurally**, and no parser work moves it. Measured: the legend is
+  invisible in **both** spellings — yet `parser/sequence.py:91-92` already
+  tokenises `legend`/`endlegend` and swallows it as "display furniture",
+  so the recorded legend candidate needs no parser work for that
+  spelling. And a second instance of a pattern: **viewpoint-shaped
+  mechanisms are guidance, not contracts** — C4 defines no conformance
+  for its four levels, as ArchiMate defines none for its 25 viewpoints.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
