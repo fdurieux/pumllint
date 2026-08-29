@@ -380,6 +380,23 @@ but they are a useful cross-check that no audience was forgotten.
   spelling. And a second instance of a pattern: **viewpoint-shaped
   mechanisms are guidance, not contracts** — C4 defines no conformance
   for its four levels, as ArchiMate defines none for its 25 viewpoints.
+- [The Structurizr DSL viewpoints ecosystem, evaluated](structurizr-viewpoints-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-first in the series and the
+  third **narrowing return** in three turns. The eighth note's settlement
+  is unchanged; the contribution is a **correction to the two notes before
+  this one**. *"Viewpoint-shaped mechanisms are guidance, not contracts"*
+  was generalized from n=2 and is **withdrawn**: Structurizr's views take
+  a typed scope argument and derive their content from the model, and the
+  C4 evaluation had recorded Structurizr preventing abstraction mixing
+  *"by construction"* since 2026-08-27 — a row both notes cited without
+  noticing it refuted them. The replacement predictor is **derived views
+  vs drawn views**: where content is derived from a typed model by scope,
+  conformance is not unenforced but **vacuous**. The practical rule is
+  unchanged with two different reasons — inventing an obligation
+  (ArchiMate, C4) versus checking a **tautology** (Structurizr). Measured:
+  container and component views export indistinguishably, **harmlessly**;
+  and the view key *does* survive in `@startuml(id=…)`, landing in
+  `diagram.name` verbatim as `'(id=Containers)'`.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
