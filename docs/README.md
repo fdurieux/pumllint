@@ -501,6 +501,21 @@ but they are a useful cross-check that no audience was forgotten.
   counter-example that explains it**: `bpmnlint` is embedded in the
   modeler. Stated as a predictor, with the uncomfortable implication for
   a standalone CLI faced rather than buried.
+- [The ADR / arc42 ecosystem, evaluated](adr-arc42-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), twenty-eighth, and the second subject
+  already inside the project — ADRs are named in the catalogue (GEN007,
+  DIM-TRC) and in the CLI's own help. **Nothing to adopt, and the note
+  found a defect instead.** `trace --requirements-scan` builds an **empty
+  inventory** against both dominant ADR conventions — adr-tools and MADR
+  keep the identifier in the *filename*, and `scan_inventory` matches
+  against file **contents only** — then reports the diagram's correct
+  `ADR-0001` references as *"a typo, or the inventory is stale"*. With
+  `--fail-on-unknown-ref` it **exits 1 on correct input**. A control
+  layout that spells the ID in the body scans fine, so the feature works
+  on a convention almost nobody uses. Two repairs recorded (match
+  filenames; warn on an empty inventory, matching the lint path's
+  "nothing was checked" contract), plus the test that would have caught
+  it.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
