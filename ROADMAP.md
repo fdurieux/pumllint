@@ -3205,6 +3205,117 @@ list and license posture live in § Settled questions.
     diagrams, which ungates candidate 1 with no further BPMN argument.
     The measurement to re-run is the vague-activity probe above.
 
+- **DMN ecosystem (2026-08-29): no, on five grounds — and the strongest
+  is that this project fenced DMN off from its own best evidence before
+  that evidence existed.** Twenty-third, and BPMN's sibling. Full record:
+  docs/dmn-ecosystem-evaluation.md; pumllint claims executed at `a4d5f89`
+  (v0.30.0), default config, neutral cwd. **`dmnlint` 1.0.0 installed
+  from npm and EXECUTED.** No GitHub read (session scope), so `dmn-check`
+  is characterized from Maven coordinates and its own published
+  description only — no claim about which validators it ships. No DMN
+  engine run.
+  - *(1) No artefact.* PlantUML's language-specification index enumerates
+    23 diagram types and DMN is not among them. `.bpmn`'s sibling `.dmn`
+    is OMG XML, never discovered, correctly warned, exit unmoved.
+  - *(2) The payload is not a diagram.* OMG's own scope line: DMN is
+    *"two tools for modeling decision-making: a graphical notation and an
+    expression language"*. **Twenty-two prior notes were about diagrams.**
+    Here the DRD is an index and the substance is a table of FEEL
+    expressions under a declared hit policy. DMN 1.5 formal (Aug 2024);
+    1.6/1.7 beta.
+  - *(3) The interesting properties are DECIDABLE, and belong to a
+    solver.* Completeness, overlap under hit policy, subsumption,
+    masking — constraint problems over interval domains, not
+    pattern-matching over source text. **Every one of this project's 51
+    rules is decidable from the source without reasoning about the
+    domain; DMN's core question is about the domain.** The boundary is
+    not a matter of effort.
+  - *(4) The niche is occupied by ANALYSERS, not linters — and the
+    thinness is informative.* `dmnlint` 1.0.0 ships **two** rules
+    (`label-required`, `no-duplicate-requirements`), both DRD-graph, and
+    is **measured silent (exit 0) on a table carrying both canonical
+    defects** — an overlap illegal under its own `hitPolicy="UNIQUE"` and
+    a coverage gap. Confirmed a result, not a misconfiguration, by a
+    probe firing both rules (3 problems, exit 1). Four published versions
+    total: 0.1.0 (2019-12-12) → 0.2.0 (2020-03-30) → **six-year gap** →
+    1.0.0 (2026-05-20), while `dmn-js` the *editor* sits at 17.10.2
+    (2026-08-25). **The editor is alive; the linter is a placeholder,
+    because the work went to `dmn-check` (`de.redsix` 1.3.1, 2024-08-02,
+    seven Maven artefacts incl. `dmn-check-validators`), the vendor
+    modelers and the research tooling.** An unoccupied niche adjacent to
+    a well-occupied one is evidence about where work belongs, not an
+    invitation.
+  - **(5) THE PRE-REGISTRATION FENCE — the ground worth recording.** W1b
+    measured decision tables as a carrier and the result is emphatic:
+    **+40.9 pp pooled add-one over A2**, largest of four components, both
+    generators concordant; **the only component whose removal hurts**
+    (+12.1 pp LOO); and removing each of the other three (spec prose,
+    OpenAPI, state model) **improved** pooled results by 10.6–21.2 pp.
+    That is the obvious opening argument for a DMN arm, and
+    W1B_PREREGISTRATION refuses it **twice, before the fact**: *"the
+    decision tables win" licenses no claim about table form vs number
+    content (W3b) and **none about DMN or any unmeasured carrier***; and
+    finding 7's suite-composition scoping — *the oracle's composition
+    gives the decision tables the largest sensitivity surface **by
+    design***, so *"the decision tables carry it" may never be quoted
+    without this scoping*. **The charter discipline held under exactly
+    the pressure it was written for.** Quote the two clauses; paraphrase
+    loses them.
+  - *Measured — the honest scoring that will be misread.* A PlantUML
+    `switch` whose cases genuinely overlap (`100..500` and `400..1000`
+    both match `400..500`) and genuinely leave a gap (`> 1000`) scores
+    **Level 4 (Precise) — 100/100, "No issues found", exit 0**. Not a
+    defect: the case labels are *strings*, and reading them as intervals
+    is the solver of ground (3). The tool is honest about what it
+    measures — ACT003 asks that branches be labelled, and they are — but
+    **"Precise" is the word most likely to be over-read on a decision
+    table**, and it is a presentation risk the activity-diagram DIM-AMB
+    residual makes worse.
+  - *Measured — the payload is invisible in both places anyone would put
+    it.* Same activity diagram three ways: no table; the table in a
+    `legend`; the table in a `note`. All three `activity`, **L4, 100.0, 7
+    elements**, and the full `score -f json` reports **byte-identical in
+    both pairs**. By design, and the source says so — *"Legend blocks are
+    display furniture"* (`parser/sequence.py`) and *"Message labels and
+    other model content are deliberately not carriers"* (`trace.py`).
+    **DMN's payload lands exactly where this project has decided not to
+    look**, correctly.
+  - **But the two carriers are NOT equally invisible — measured, and new
+    to the series.** Same table, same three rule IDs: from a `note`,
+    `trace` reports **3/3 covered**; from a `legend`, **0/3 covered, 3
+    uncovered, 1 unlinked diagram**. Mechanism: `prose_directives`
+    (`model.py`) has kinds `title/header/footer/caption/note` — **legend
+    is not one**, deliberately ("one carrier set, so the rule and the
+    matrix cannot disagree"). **Documented, not hidden** — GEN006/GEN007
+    say the carrier set in their own finding text, `trace --help` says
+    it, three docs repeat it — so **not a gap and NOT a candidate**;
+    recorded so it is not re-discovered as a bug. *Minor fidelity
+    observation, not raised:* every ID in a multi-line note attributes to
+    the note's **opening** line, not its own row.
+  - *Type-fallback **instance 10*** — a DRD as `rectangle` + `-->` →
+    `sequence`, L4, 90.0, 8 elements. No new candidate; the ArchiMate
+    entry's candidate 1 covers it. Enumeration: Linked.Archi 1, C4 2,
+    ArchiMate 3, BPMN 4, UML 5, D2 6, Structurizr 7, Ilograph 8,
+    Graphviz 9, **DMN 10**.
+  - *The misleading true sentence.* The fourth note's table cell
+    "`bpmnlint` (+ `dmnlint`)" is **true** and invites the reader to
+    assume DMN's linting layer is BPMN's with another extension. It is
+    not, and the expectation of a second convergence data point is where
+    this note's only negative measurement earns its place.
+  - *Never build*: a DMN rule pack over `.dmn` or over PlantUML;
+    **a decision-table completeness, overlap, subsumption or masking rule
+    in any form** — a solver wearing a rule's clothes, and the
+    relationship-legality anti-goal's nearest relative; reading `.dmn`
+    XML (refused on identity, as with `.archimate`, `.bpmn`, XMI); a
+    DMN/FEEL carrier arm without a pre-registered wave under charter §10.
+  - Re-litigate on: PlantUML gaining a DMN diagram type with
+    decision-table semantics; a pre-registered wave measuring DMN or FEEL
+    as a carrier and beating the diagram baseline (W3 points the other
+    way); an adopter carrying decision logic in PlantUML `switch`/`case`
+    and asking for coverage checks — **still refused on the solver
+    ground**; what that would justify is *documentation* of the
+    Level-4-on-an-ambiguous-decision result, not a rule.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
