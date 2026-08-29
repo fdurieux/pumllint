@@ -3644,6 +3644,79 @@ list and license posture live in § Settled questions.
     turns candidate 3 into a real question about default profiles; the
     LSP item's own trigger, unchanged.
 
+- **ADR / arc42 (2026-08-29): nothing to adopt — and this note found a
+  DEFECT instead.** Twenty-eighth, and the **second** subject already
+  inside the project after Gherkin — tighter, because ADRs are named in
+  the **product's own catalogue and CLI**: GEN007 is *"Diagram references
+  no requirement/ADR"*, DIM-TRC is *"requirement/ADR links"*, and
+  `ADR-\d+` is the CLI help's worked example. Full record:
+  docs/adr-arc42-ecosystem-evaluation.md; everything executed at
+  `6b727fa` (v0.30.0). ADR conventions reproduced from their published
+  templates **as I understand them, not fetched this session**; **no ADR
+  tool was executed** (adr-tools/Log4brains/adr-manager named, not run or
+  version-checked); no GitHub read.
+  - **`pumllint trace --requirements-scan` does not work against either
+    dominant ADR convention, and when it fails it BLAMES THE DIAGRAM.**
+    Given a diagram whose note correctly cites `ADR-0001`/`ADR-0002` and
+    an ADR directory in **adr-tools** (`0001-record-architecture-
+    decisions.md`) or **MADR** (`0001-use-plantuml.md`) layout, the scan
+    builds an **empty inventory** and reports *"Unknown references (not in
+    the inventory — **a typo, or the inventory is stale**)"*. **The
+    references are correct and the ADRs exist.**
+  - **With the gate on, `--fail-on-unknown-ref` EXITS 1** — a build broken
+    by a correctly-annotated diagram and a correctly-maintained ADR
+    directory. **The worst shape a finding can take: not a missed defect
+    but a confidently reported false one.**
+  - *Cause, one line of design.* `scan_inventory` walks
+    `{.md,.txt,.adoc,.rst}` and matches the pattern against **file
+    contents only** — `f.read_text()`, never `f.name`. **Both dominant
+    conventions put the ID in the FILENAME** and a human title in the body
+    (`# 1. Record architecture decisions`, `# Use PlantUML…`), so there is
+    no `ADR-0001` string to find. A control layout spelling the ID in the
+    body scans correctly (**2/2 covered, exit 0**) — so the feature works,
+    **on a convention almost nobody uses.**
+  - *The silence is the other half.* An inventory that matched nothing is
+    indistinguishable from one that never could; no warning, exit 0
+    without the gate. **The precedent is in this repo**: the lint path
+    warns *"no PlantUML files found … — nothing was checked"*, which
+    CLAUDE.md records as a contract (stderr, exit unmoved). `trace` errors
+    when **no** inventory option is given and is silent when one is given
+    and yields zero. **Same condition, missing sentence.**
+  - *Recorded, not queued — both are maintainer calls about a shipped
+    feature's behaviour, and this note's job was the measurement:*
+    **(1) F1 — match the pattern against `f.name` as well as contents.**
+    The substantive repair; small, stdlib-only, no report-*shape* change,
+    but it changes existing `trace` output and needs tests, a docs pass,
+    and a decision on whether the JSON distinguishes filename from content
+    matches. **(2) F2 — warn on an empty inventory** (stderr, exit
+    unmoved), matching the lint path's contract exactly; cheaper,
+    independent, and it converts a misleading report into an accurate one
+    even if F1 never lands. **(3) a MISSING TEST** —
+    `--requirements-scan` against a realistic ADR tree in both
+    conventions; this is what would have caught it. **(4) an interim docs
+    line** — the scan matches file *contents*, so filename-ID schemes need
+    `--requirements` with an explicit list until F1 lands (honest, and
+    explicitly **not** a substitute for the fix).
+  - *Refused*: ADR content parsing (status, supersession, decision text);
+    an ADR rule pack or arc42 conformance check — **the ID is the whole
+    interface**, and that coupling is right. Also refused as a *primary*
+    answer: "tell users to put the ID in the body", which asks every
+    adopter to deviate from both templates to suit one tool.
+  - *No ADR linter exists to compare against* — a **fourth ecosystem
+    shape** after the vitality pattern's three: the artefact is prose in
+    markdown and its tooling is generators and viewers, because there is
+    little to check mechanically. arc42 is a documentation *template*
+    with no machine-readable form; nothing here bears on it.
+  - **The method note.** Twenty-seven prior notes produced boundary
+    observations and refusals. Running the project's **own documented
+    workflow** against an ecosystem **as it actually exists** produced a
+    reproducible bug in under an hour. That is an argument for the method
+    — and the corollary is that the workflow had shipped unexercised.
+  - Re-litigate on: **nothing external.** These are repairs to a shipped
+    feature, not ecosystem questions; the trigger is a maintainer's
+    decision, not an adopter's arrival — the demand bar governs new
+    capability, not correctness.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
