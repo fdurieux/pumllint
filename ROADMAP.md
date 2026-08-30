@@ -3928,6 +3928,85 @@ list and license posture live in § Settled questions.
     across three notes); evidence that a graph-query format can or cannot
     express the **ordering tier**, which is what would finally size F2.
 
+- **TLA+ / Alloy (2026-08-30): no adoption, unchanged — and the
+  contribution is a FRONTIER LOCATED, not a gap found.** Thirty-first.
+  **Already settled** by the 2026-08-02 model-verification evaluation
+  (deadlock-freedom a category error; rule-set consistency witnessed
+  constructively; well-formedness-as-a-type the anti-goal) — **none of
+  that is reopened.** That note examined **sequence** diagrams and three
+  named ambitions; this asks what it did not, about **state** diagrams.
+  Full record: docs/tlaplus-alloy-ecosystem-evaluation.md; pumllint
+  executed at `f4b8026` (v0.30.0).
+  - **BOUND, governing everything: TLA+ and Alloy were NOT run.**
+    `tla2tools` absent from Maven Central, `org.lamport` returns nothing,
+    neither PyPI nor npm carries either; distributions come from GitHub
+    releases — the same wall as OPA one note earlier. **Every claim about
+    what a model checker computes is read, not executed, and no verdict
+    rests on one.** The executed substance is the pumllint side.
+  - **Measured — three cases on well-formed state machines** (STA001/003
+    satisfied, so STA002 is the only rule in play): **in-degree 0**
+    (`Orphan`) → **STA002 fires** ✔; **disconnected island** (`Stale ⇄
+    Archived`, neither reachable from `[*]`) → **silent, exit 0**;
+    **sink** (`Wedged` entered, never left, never `[*]`) → **silent, exit
+    0**.
+  - **THE ISLAND IS NOT A GAP — and I expected it to be.** I built it
+    looking for a SEQ105-style name-vs-behaviour mismatch and found a
+    line drawn on purpose and written down **twice**: the docstring says
+    *"In-degree only: a cycle disconnected from `[*]` is not reported
+    (there is no reachability traversal)"*, and RULES.md says the same in
+    its own words. **Disclosure rather than silence** — the same
+    discipline as the `.bpmn` "nothing was checked" warning. Reporting it
+    as a defect would be the Gherkin note's lesson inverted.
+  - **THE CONTRIBUTION — a distinction the record does not yet draw:
+    the category error vs its LOOK-ALIKE.** *"Deadlock-freedom is a
+    category error"* is exact **and scoped to its premise**: PlantUML's
+    **sequence** diagrams have no concurrency semantics, so the verdict
+    would be over semantics the checker supplied. **A state machine's
+    transition graph is declared verbatim** — `[*] --> Idle`, `Idle -->
+    Running` — so *"is this state reachable from `[*]`?"* or *"is there a
+    path to `[*]`?"* **invents no semantics at all**: a traversal of
+    declared edges, linear, stdlib-only, with STA001 already guaranteeing
+    exactly one place to start. **Separating these protects a good
+    settled sentence from being quoted to close a question it does not
+    reach.**
+  - *And the second half of that distinction, kept honest*: **decidable,
+    yes; desirable, unestablished.** An absorbing `Failed`/`Cancelled`
+    state deliberately drawn without `--> [*]` is a legitimate model, so
+    a sink rule needs an opt-in or a stated convention. STA001's single
+    initial marker hints that `[*]` is canonical here, but *requiring
+    every path to reach it* is stronger than anything shipped.
+  - *Three real arguments for the line as drawn, none decisive, none
+    resolved here*: an island is a property of **the model**, not a
+    state, so the report shape and severity change; **work-in-progress
+    and `!include`-split diagrams legitimately have islands**, and
+    in-degree is the safer default at `major`; and the strongest form of
+    the 2026-08-02 reasoning is that a linter reports what the source
+    *says*, with each inference a step toward verifying an imposed model
+    — a traversal is a small step, but a step. **Against them**: the rule
+    is *named* `unreachable-state` and its rationale is *"dead model
+    content"*, which the island is.
+  - *Never build*: reading or linting `.tla`/`.als`; deadlock or liveness
+    proofs over sequence diagrams (settled); **any check whose verdict
+    depends on semantics PlantUML does not define.**
+  - *Recorded, not queued — NEITHER proposed as a build*: **(1) F3
+    transitive reachability on state diagrams** — the documented
+    in-degree limitation, now with the measurement and the three
+    arguments attached so the question is answerable rather than
+    re-derivable. **(2) F4 path-to-termination (the sink)** — weaker than
+    F3, decidable without invented semantics, desirability
+    unestablished, and **new to the record**: it appears in no rule, no
+    RULES.md entry and no prior ROADMAP line. **(3) the category-error
+    scoping**, to be cited with its premise attached, exactly as the
+    decision-table result carries its suite scoping and the no-grader
+    observation its counter-reading.
+  - *Cheapness is not demand.* A build on this evidence would be
+    premature; both items wait on an adopter reporting an island or a
+    wedged state that pumllint passed.
+  - Re-litigate on: that adopter report; TLA+/Alloy becoming runnable
+    through a package registry, if the ecosystem half is ever wanted at
+    the series' standard; **nothing else** — the 2026-08-02 triggers are
+    unchanged.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
