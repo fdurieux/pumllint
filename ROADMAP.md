@@ -4173,9 +4173,19 @@ list and license posture live in § Settled questions.
     (HTTP 403). Actionable only if access changes. **(c) A NAMED TOOL
     THAT WENT UNRUN — the actionable set.**
   - **Category (c), tested against the registries today:**
-    **RUNNABLE NOW** — **D2** (`@terrastruct/d2` 0.1.33, note 7: *"No D2
-    tool was executed"*); **Cucumber** (`@cucumber/cucumber` 13.2.1, note
+    **RUNNABLE NOW** — **Cucumber** (`@cucumber/cucumber` 13.2.1, note
     27); **ADR tools** (`adr-tools` 2.0.4, `log4brains` 1.1.0, note 28).
+    **PARTLY RUNNABLE — D2** (note 7: *"No D2 tool was executed"*):
+    `@terrastruct/d2` 0.1.33 is **D2.js, a WASM wrapper library, not the
+    CLI** — it declares no `bin`, and the real `d2` binary comes from
+    `d2lang.com/install.sh`, which fetches **GitHub release assets**. The
+    WASM build *does* expose `compile()`, which answers what D2 accepts
+    and rejects; `d2 fmt` and the CLI's own behaviour stay unrun.
+    **This corrects this entry's own first draft**, which listed D2 as
+    flatly runnable: *the check performed was `npm view <pkg> version`
+    returning a number, which is registry PRESENCE, not runnability.*
+    The same shortcut is worth avoiding for the other two — neither has
+    been executed, only resolved.
     **NOT OBTAINABLE** — `structurizr-cli` (absent from npm **and** Maven
     Central; notes 8 and 21 both bound on it); **Graphviz** (pip ships
     bindings only, the `dot` binary is absent; note 10); **Archi,
@@ -4204,10 +4214,11 @@ list and license posture live in § Settled questions.
   - *Nothing queued.* The three runnable items are a **backlog, not a
     plan**; none of the three notes' verdicts is in doubt, and running a
     tool is worth doing when a note's *argument* depends on its
-    behaviour, not merely because the package installs. D2 (note 7) is
-    the strongest of the three on that test, since its refusal rests on
-    a pack-transfer comparison; Cucumber (27) and Log4brains (28) bound
-    only peripheral characterizations.
+    behaviour, not merely because the package installs. D2 (note 7) was
+    the strongest of the three on that test — its refusal rests partly on
+    a claim about D2's own tooling — and **it was acted on immediately;
+    see the D2 re-examination entry.** Cucumber (27) and Log4brains (28)
+    bound only peripheral characterizations.
 
 ## Working agreements (read before picking anything up)
 
