@@ -4220,6 +4220,65 @@ list and license posture live in § Settled questions.
     see the D2 re-examination entry.** Cucumber (27) and Log4brains (28)
     bound only peripheral characterizations.
 
+- **D2 ecosystem, re-examined (2026-08-30): ground (3) CORRECTED, and the
+  correction cuts AGAINST the refusal — which stands on (1) and (2).**
+  Thirty-third, and the **third re-examination** after BPMN (22nd) and
+  Mermaid (32nd). Picked by the same day's bounds scan as the one
+  unexecuted item worth acting on, because the seventh note's refusal
+  rests partly on a claim about **D2's own tooling**. Full record:
+  docs/d2-ecosystem-reexamined.md.
+  - **Bound, and it corrects the scan too.** **`@terrastruct/d2` 0.1.33
+    (D2.js — the WASM build of the compiler) was installed and
+    EXECUTED**; every ACCEPTED/REJECTED below is a run. **The `d2` CLI was
+    NOT run** — `d2 fmt`, exit codes and CLI ergonomics stay uninspected.
+    The scan had listed D2 as flatly *runnable* on the strength of
+    `npm view` returning a version: **that is registry PRESENCE, not
+    runnability** — the package declares no `bin`, and the real binary
+    comes from an install script fetching GitHub release assets. Caught
+    and corrected in the scan entry **before it merged**.
+  - *What held.* **Multiple errors from one broken program: confirmed** —
+    two distinct `errmsg` entries with line:column from a single input.
+    **The shape vocabulary is closed and enforced** (`unknown shape
+    "not_a_real_shape"` is rejected) — but the error does **not**
+    enumerate the set, so the seventh note's hedge (*"bounded, not
+    exact"*, one-of-five-packs is *a floor*) **stands as written**.
+  - **THE CORRECTION.** Ground (3) said D2 ships more language tooling
+    *"so the gap that motivates this tool for PlantUML is **narrower**
+    there"*. **The premise is right; the conclusion does not follow.**
+    D2's compiler **rejects** malformed programs and unknown keywords and
+    **ACCEPTS every semantic defect tested** — self-loop, duplicate
+    connection, unlabelled connection. On the equivalent PlantUML we
+    report **SEQ006** and **SEQ005**. **So D2 ships more *syntax and
+    vocabulary* tooling; the SEMANTIC gap is not narrower — it is the
+    same size.** *Precision: of the three, we catch two — a duplicate
+    connection is not a single-file finding here either (XD is
+    cross-file), so that row is a wash and is not evidence either way.*
+  - **Which way it cuts, stated plainly.** Ground (3) was a reason **not
+    to build**; correcting it **removes** that reason. The refusal
+    survives on **(1)** D2 is not a UML notation — four of five packs
+    have no counterpart (untouched, and the closed shape set firms up the
+    "presentational vocabulary" reading) — and **(2)** the niche is
+    unoccupied but **claimed by upstream** (*"Build a configurable
+    linter"*). **What changes is the shape of the argument, not the
+    verdict**: the need is the same size as PlantUML's, and what stops
+    the build is that someone else announced they will meet it.
+  - **Ground (2) is now load-bearing and it is the FRAGILE one** — it is
+    a statement about someone's **intentions**, and intentions lapse. **D2
+    abandoning that roadmap item would remove the second of three grounds
+    and leave only ground (1).** That is the trigger to watch, and **it is
+    someone else's decision, not ours.**
+  - **Fifth self-correction of the same shape** — sound premise or sound
+    measurement, over-reaching conclusion — after the viewpoint
+    generalization, BPMN's ambiguity dimension, the ADR filename claim
+    and the Semgrep narrowing. **It recurs even when the underlying facts
+    are right**, which is what makes it a habit rather than a run of
+    accidents. **The scan's own error is the same shape one layer up**:
+    "the package resolves" inferred to "the tool runs".
+  - *Recorded, not queued*: the corrected ground, annotated inline in the
+    seventh note **in this turn**; the fragility of ground (2) as the
+    thing to watch; the CLI still unrun, **not worth a third pass unless
+    ground (2) moves**.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -584,6 +584,20 @@ but they are a useful cross-check that no audience was forgotten.
   artefact classes. And new to the record: **the aggregate does double
   duty** — `100/100 (3 suppressed)` is a disclosure channel that only
   exists because there is a score to annotate.
+- [The D2 ecosystem, re-examined](d2-ecosystem-reexamined.md)
+  — dated evaluation (2026-08-30), thirty-third and the **third
+  re-examination**, picked by the bounds scan because the seventh note's
+  refusal rested partly on a claim about D2's own tooling. **Ground (3) is
+  corrected, and the correction cuts *against* the refusal.** D2's
+  compiler (run via the WASM build) rejects syntax errors and unknown
+  shape keywords but **accepts every semantic defect tested** — self-loop,
+  duplicate connection, unlabelled connection, which are SEQ006 and SEQ005
+  on the PlantUML side. So D2 ships more *syntax* tooling; **the semantic
+  gap is the same size, not narrower.** The refusal stands on grounds (1)
+  and (2) — and **(2) is now load-bearing and fragile**, resting on
+  upstream's stated intention to build a linter. Also corrects the bounds
+  scan's own D2 row: `@terrastruct/d2` is a WASM library, not the CLI, so
+  **registry presence is not runnability**.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
