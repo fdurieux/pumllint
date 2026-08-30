@@ -216,6 +216,23 @@ ladder breaks at the same rung.
 
 ## 4. The consequence for the Spectral note's F2 — it becomes scoped
 
+> **Correction, 2026-08-29, one note later.** The claim below —
+> *"viable for the lexical tier and nothing above it"* — is **too
+> strong**, and the [policy-as-code note](policy-as-code-ecosystem-evaluation.md)
+> is the counter-example. A checkov custom policy in **pure YAML**
+> expresses a cross-entity relationship (`cond_type: connection`) and
+> discriminates a resource that references a security group from one that
+> does not — **SEQ001's exact shape**, in data. §3's finding that the
+> boundary is *state, not vocabulary* stands; the inference that no
+> declarative format can carry state does not. The real discriminator is
+> **what the rule is evaluated against**: Spectral and Semgrep match
+> against text positions or a document tree with no identity resolution,
+> while checkov's YAML is evaluated against a resource **graph it built
+> first**. Given a resolved model — which pumllint has — a declarative
+> format can ask relational questions of it. F2 is therefore **bigger
+> than this section says** and needs three tiers, not two; see that
+> note's §4.4.
+
 This is the practical output.
 
 **A declarative rule layer for pumllint is viable for the lexical tier

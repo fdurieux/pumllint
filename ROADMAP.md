@@ -3754,9 +3754,15 @@ list and license posture live in § Settled questions.
     so 2–4 are ordinary code; a rule that is a *pattern* has only the
     match.** Tree-vs-trace restated, and the Spectral explanation was
     right.
-  - **CONSEQUENCE — the Spectral note's F2 is NARROWED, not closed.** A
-    declarative rule layer here is viable for the **lexical tier and
-    nothing above it**: SEQ105 vague terms, SEQ106 elision tokens,
+  - **CONSEQUENCE — the Spectral note's F2 is NARROWED, not closed.**
+    **[CORRECTED one note later by the policy-as-code entry: "lexical
+    tier and nothing above it" is TOO STRONG. A checkov custom policy in
+    pure YAML expresses `cond_type: connection` and discriminates
+    declaration-versus-use — SEQ001's shape — in data. The boundary is
+    not data-vs-code but WHAT THE RULE IS EVALUATED AGAINST: text
+    positions vs a resolved graph. F2 needs three tiers, not two.]** As
+    written here, a declarative rule layer was judged viable for the
+    **lexical tier and nothing above it**: SEQ105 vague terms, SEQ106 elision tokens,
     SEQ109 non-informative replies, SEQ103 arg stop-words, GEN008
     density are rung-1 shaped; SEQ001/SEQ101, ACT001/ACT002, SEQ011,
     GEN005 and **the whole XD family** are rungs 2–4. **F2's honest form
@@ -3836,6 +3842,91 @@ list and license posture live in § Settled questions.
   - *Docs*: README's `--requirements-scan` paragraph now states the name
     matching, its limit (it cannot reconcile two spellings of one ID), and
     the empty-inventory warning.
+
+- **Policy-as-code (2026-08-29): no adoption — and this note CORRECTS the
+  one before it.** Thirtieth. Ranked as a candidate two notes ago and
+  deferred when the canonical engine proved unrunnable; this runs the
+  part that is. Full record:
+  docs/policy-as-code-ecosystem-evaluation.md; pumllint at `14fce84`
+  (v0.30.0). **checkov 3.3.16 installed from PyPI and EXECUTED** — every
+  count, exit code and finding is a run. **OPA / Rego / Conftest were NOT
+  run**: the engine is a Go binary and `openpolicyagent.org/downloads/…`
+  **resolves (checked) to a GitHub release asset**, which this session's
+  scope keeps me from — the same line held when this ecosystem was first
+  deferred. **Nothing here is a behavioural claim about Rego**, and the
+  correction below rests on checkov alone. Corpus: one Dockerfile, one
+  Terraform file, hand-written. No GitHub read.
+  - **THE CORRECTION — the Semgrep entry's "lexical tier and nothing
+    above it" is TOO STRONG.** A checkov custom policy in **pure YAML, no
+    code** — `cond_type: connection`, `resource_types: [aws_instance]`,
+    `connected_resource_types: [aws_security_group]`, `operator: exists`
+    — **discriminated correctly**: `aws_instance.connected` PASSED,
+    `aws_instance.orphan` FAILED. **That is SEQ001's exact shape** (*used
+    but never connected to what declares it*), which Semgrep could not do
+    (2 findings where 1 was correct). **Control**: strip the reference
+    from `connected` and all three fail, so it reads the **resolved
+    reference graph**, not names.
+  - **The corrected boundary: not data-vs-code, and not "state" in the
+    abstract — WHAT THE RULE IS EVALUATED AGAINST.** Spectral (JSONPath +
+    13 functions) and Semgrep (patterns over text) match **positions**,
+    with no identity resolution to query. checkov's YAML is evaluated
+    against a **graph checkov built first**, in which
+    `aws_security_group.web.id` is already an edge. **Given a resolved
+    model — which we have (`diagram.participants`, `diagram.blocks`, the
+    batch) — a declarative format can ask relational questions of it.**
+  - *F2 re-scoped to THREE tiers, and still unsized.* **Lexical**
+    (SEQ103/105/106/109, GEN008) — expressible anywhere. **Relational**
+    (SEQ001/SEQ101 declaration-vs-use, orphan/unused-participant,
+    plausibly parts of XD) — expressible over a resolved graph, on this
+    evidence. **Ordering/structural** (ACT001/002 terminals, activation
+    balance, fragment nesting) — **not established either way**; these are
+    questions about *sequence*, not *connection*, and nothing here speaks
+    to them. The sizing measurement is unchanged and still absent; the
+    note deliberately does not guess the split. **None of this makes F2 a
+    better idea, only a better-understood one** — demand still absent,
+    Spectral's costs untouched.
+  - **THE RATCHET, CONVERGED — a second unsolicited convergence, and on a
+    MECHANISM rather than a rule.** Measured: `--create-baseline` records
+    3 failures → `--baseline` accepts them (**exit 0**) → a new violation
+    fails **alone** (`Failed checks: 1`, **exit 1**). That is our
+    `score --baseline` semantics, independently arrived at in another
+    artefact class.
+  - **And the divergence is the grading gap in a second mechanism.**
+    checkov ratchets a **finding set**; we ratchet a **per-diagram
+    level**. **checkov could not ratchet a level because it computes
+    none** — its summary is `Passed checks: 20, Failed checks: 3, Skipped
+    checks: 0`. So the no-grader observation reappears **not as a missing
+    report but as a missing AXIS on a mechanism both projects have.**
+    **Sixth ecosystem, and the first where a denominator was available
+    and still unused** — checkov knows how many checks passed, the exact
+    input a score needs, and computes none. Still **two-sided**, per the
+    Spectral caution.
+  - *A genuine design fork, not a gap*: **checkov reports PASSES
+    alongside failures** (20 passed / 3 failed). Every other checker in
+    the series reports findings only. A different theory of what a report
+    is for — evidence of coverage, not a defect list. **Refused as a
+    change**: `score` already answers "how good is this?"; a pass list
+    would be a third answer to a question two mechanisms cover.
+  - *Scale, recorded only to disarm it*: **~7,973 shipped policies** vs
+    our 51 — one-per-cloud-resource-property across many providers and
+    frameworks vs one-per-defect-class over one notation. **Not a
+    meaningful comparison as a count.**
+  - *Never build*: an IaC or policy-as-code rule pack (occupied, and the
+    artefact is not ours — **zero functional overlap**, the overlap is
+    entirely architectural); a declarative rule layer built because a
+    counter-example showed it **possible** rather than because someone
+    asked — that would be the Semgrep error in the opposite direction.
+  - **A habit to watch, not just an incident.** This is the **fourth**
+    self-correction in the series (withdrawn viewpoint generalization;
+    BPMN's ambiguity dimension; the ADR filename claim; this). Each time
+    the *measurement* was sound and the *generalization from it* was not
+    — and it recurred despite the Structurizr entry existing to warn
+    against exactly that.
+  - Re-litigate on: **OPA/Rego/Conftest becoming runnable without a
+    repository fetch** — the half this note did not touch; an adopter
+    asking to author project-local rules (F2's constituency, unchanged
+    across three notes); evidence that a graph-query format can or cannot
+    express the **ordering tier**, which is what would finally size F2.
 
 ## Working agreements (read before picking anything up)
 
