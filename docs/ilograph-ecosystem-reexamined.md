@@ -386,10 +386,15 @@ vendor's, but it is not the editor. The rule-catalogue count (~40
 templates) is a **heuristic extraction from minified source** and should
 be treated as a floor, not a census. The pricing table was re-read from
 the vendor's pricing page today; no purchase was made. Per this session's
-repository scope **no GitHub repository was read**, so the unofficial MCP
+repository scope no GitHub repository was read, so the unofficial MCP
 server remains uninspected — the ninth note's claim that it "validates
 without grading" is **still unverified**, and is now the only claim in
-that note left standing on description alone. Adoption is not measured.*
+that note left standing on description alone. **[RETIRED 2026-08-30 — this
+bound was session scope, not obtainability, and session scope is
+extensible: the repository is public and was one clone away. Executed in
+[the MCP server evaluation](ilograph-mcp-server-evaluation.md); the claim
+is corrected. Fifth consecutive turn in which a bound recorded as a
+limitation turned out to be debt.]** Adoption is not measured.*
 
 ## Related reading
 

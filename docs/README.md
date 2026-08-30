@@ -216,6 +216,24 @@ but they are a useful cross-check that no audience was forgotten.
   re-located: the trigger is the line shape **`- key: value`**, not YAML
   — JSON and TOML land honestly at `unknown`/Level 1, but a plain
   **Markdown** bullet list of `- Owner: Alice` scores **Level 4, 99.22**.
+- [The unofficial Ilograph MCP server, evaluated](ilograph-mcp-server-evaluation.md)
+  — dated evaluation (2026-08-30), thirty-fifth in the series, and it
+  retires **the last claim in the ninth note resting on description
+  alone**. Cloned and run. The ninth note's *"validates without grading"*
+  is corrected: it emits a three-band `assessment` field
+  (`Valid` / `Valid with suggestions` / `Invalid - contains errors`) —
+  **the closest approach to grading a description in the series**, though
+  the streak **holds at fifteen**, and both readings are recorded. Run
+  head-to-head against the vendor's validator it is **materially worse in
+  four measured ways**: no duplicate-`name` check (0 errors on the
+  vendor's own file, where the vendor reports 8 fatal), **no
+  dangling-reference check at all**, and false positives on the valid
+  properties `style` and `backgroundColor`. Its last commit predates the
+  vendor's validator by **170 days** and it has been untouched for 440 —
+  a new variant of the linter-vitality pattern, where **upstream overtook
+  the stale community linter**. The yield is the delivery question: this
+  is the series' first linter whose consumer is **a model, not a gate**,
+  and it has **no exit code** because it does not need one.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence
