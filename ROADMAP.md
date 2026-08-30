@@ -2981,8 +2981,16 @@ list and license posture live in § Settled questions.
     the C4 note recorded, re-confirmed at v0.30.0 — and it is invisible
     to the legend question for the same reason (no macro content is
     read). Worth stating once rather than recording as two findings.
-  - **Viewpoint-shaped mechanisms are guidance, not contracts — second
-    instance in two turns.** C4's four levels of zoom, each for *"a
+  - **~~Viewpoint-shaped mechanisms are guidance, not contracts — second
+    instance in two turns.~~ WITHDRAWN 2026-08-29 by the Structurizr DSL
+    viewpoints entry (its N4 refuses to carry it forward): generalized
+    from n = 2, refuted at n = 3 by Structurizr's typed view scopes,
+    which prevent abstraction mixing BY CONSTRUCTION — a row this very
+    note recorded and cited without noticing. The ecosystem-scoped facts
+    below stay true; the LAW does not. Replacement predictor: DERIVED
+    views vs DRAWN views, offered as a predictor to test. The practical
+    rule is unchanged with two distinct reasons.** As originally
+    written: C4's four levels of zoom, each for *"a
     different amount of detail for a different audience"*, are 42010's
     viewpoint idea in plain words, and **C4 defines no conformance**;
     ArchiMate publishes 25 viewpoints *with* element subsets and still

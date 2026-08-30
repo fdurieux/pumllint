@@ -377,9 +377,13 @@ but they are a useful cross-check that no audience was forgotten.
   invisible in **both** spellings — yet `parser/sequence.py:91-92` already
   tokenises `legend`/`endlegend` and swallows it as "display furniture",
   so the recorded legend candidate needs no parser work for that
-  spelling. And a second instance of a pattern: **viewpoint-shaped
-  mechanisms are guidance, not contracts** — C4 defines no conformance
-  for its four levels, as ArchiMate defines none for its 25 viewpoints.
+  spelling. It also recorded a second instance of a pattern —
+  *"viewpoint-shaped mechanisms are guidance, not contracts"* — which the
+  Structurizr viewpoints note **withdrew** the following day as
+  generalized from n = 2. The ecosystem-scoped facts stand (C4 defines no
+  conformance for its four levels, as ArchiMate defines none for its 25
+  viewpoints); the law does not, and the replacement predictor is
+  **derived views vs drawn views**.
 - [The Structurizr DSL viewpoints ecosystem, evaluated](structurizr-viewpoints-evaluation.md)
   — dated evaluation (2026-08-29), twenty-first in the series and the
   third **narrowing return** in three turns. The eighth note's settlement
