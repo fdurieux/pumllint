@@ -23,6 +23,21 @@ YAML as the **worst** codegen carrier of five (−30.3 pp pooled, −66.7 pp
 flow-sensitive, with the strong generator producing non-compiling code in
 3 of 3 runs).**
 
+> **GROUNDS (2) AND (3) CORRECTED 2026-08-30 by
+> [the Ilograph re-examination](ilograph-ecosystem-reexamined.md), which
+> ran the vendor's own validator.** **Ground (2) is FALSE**: Ilograph is
+> not fully closed. The vendor publishes `validate-ilograph` on npm under
+> the **verbatim MIT grant**, authored "Ilograph LLC", released
+> **2025-12-03 — nine months before this note**. The *product* remains
+> commercial (pricing re-verified 2026-08-30), but "no open-source
+> component at all" is wrong. **Ground (3) is MIS-LOCATED**: the trigger
+> is the line shape **`- key: value`**, not YAML. A plain **Markdown**
+> bullet list of `- Owner: Alice` is typed `sequence` and scores **Level
+> 4 (Precise), 99.22/100, exit 0**; the same bullets without colons score
+> `unknown`/Level 1/0 elements. **Cite this note's refusal as ONE
+> sufficient ground — (1), not a diagram notation — which is untouched
+> and now verified by execution.**
+
 **The finding is the third one, generalized past its occasion. Wrapping
 an Ilograph model in `@startuml…@enduml` — the migration mistake — is
 typed `sequence` and scored **Level 4 (Precise), 99.62/100, with one
@@ -36,6 +51,15 @@ labelled `Checkout UI`. The four "participants" recovered were `id`,
 **And it gets worse with size, which is the part that matters. Measured
 across four model sizes, the composite **rises monotonically** as the
 volume of unrecognized YAML grows:**
+
+> **"MONOTONICALLY" CORRECTED 2026-08-30.** Re-measured on a **real
+> vendor-authored** file (`lib/aws.ilograph`, shipped with the
+> validator — 8175 lines), the composite rises **98.44 → 99.99** across
+> 3 → 1438 resources but **dips once** (25 → 40: 99.76 → 99.73). *Rises
+> with volume* is the finding; *monotonically* was an artefact of the
+> uniform synthetic sample. The real-content ceiling is **99.99,
+> displayed as `100.0/100`**, from a file that yields **one participant,
+> named `name`**, and 1438 messages.
 
 | resources | level | score | elements | findings | exit |
 |---|---|---|---|---|---|
@@ -52,19 +76,33 @@ simultaneously the carrier this lab ranked last, the serialization
 Structurizr uses for its Ilograph export, and one of the most common file
 shapes in any repository.**
 
+> **NOT A YAML PROPERTY — corrected 2026-08-30.** It is a property of the
+> line shape **`- key: value`**. JSON, TOML and Markdown-without-colons
+> all land at `unknown`/Level 1/**0 elements** — the honest outcome. But
+> **Markdown bullets that contain a colon reproduce the hazard in full**.
+> The correction *widens* the risk: `- Owner: Alice` is ordinary
+> Markdown, far commoner in a repository than `.ilograph`. **Any fix for
+> the type-fallback class must be validated against the line shape, not
+> against a file format.**
+
 *Bounds. Every pumllint claim was executed at `7043819` with default
 config on files outside the repo (verified: GEN006/GEN007 stay dormant).
 **No Ilograph tool was executed** — it is closed commercial software and
 was not licensed or installed, so nothing here reports what its editor
-accepts or rejects. The sample model is **reconstructed** from the
+accepts or rejects. **[This was DEBT, not a limitation — corrected
+2026-08-30: the vendor's validator was on public npm the whole time, and
+one `npm install` retired this bound and the reconstruction bound below.
+The editor itself is still unrun.]** The sample model is **reconstructed** from the
 published spec's property list, not exported from Ilograph; the spec page
 fetched documents `resources`/`perspectives`/`contexts`/`imports` and
 their properties **but does not state the serialization format** — that
 it is YAML is taken from Structurizr's exporter documentation ("Ilograph
 (as YAML)") and is characterized, not verified against Ilograph's own
-docs. Per this session's repository scope **no GitHub repository was
+docs. **[RESOLVED 2026-08-30: verified from a vendor-authored
+`.ilograph` file shipped inside `validate-ilograph`. It is YAML.]** Per this session's repository scope **no GitHub repository was
 read**, so the unofficial MCP server's actual validation behaviour is
-uninspected. Adoption is not measured.*
+uninspected. **[STILL UNVERIFIED as of 2026-08-30, and now the only claim
+in this note resting on description alone.]** Adoption is not measured.*
 
 ## 0. Why this ran, and what it is not
 
@@ -108,7 +146,9 @@ system for repeated resources.
 pack — and even there the mapping is loose: Ilograph's steps carry
 `toAsync` and `subSequence`, but there is no activation/deactivation
 concept, which is where four of pumllint's eleven base sequence rules
-live.
+live. **[VERIFIED BY EXECUTION 2026-08-30 — the vendor validator
+recognises `start`, `steps`, `toAndBack`, `toAsync`, `restartAt`,
+`subSequence` and no `activate`/`deactivate` of any kind.]**
 
 ### 1.2 Governance — the first closed ecosystem in the series
 
@@ -119,6 +159,13 @@ live.
 | Team | ~$25–30/editor/mo | collaboration, unlimited viewers |
 | Team+ | custom | SAML 2.0 SSO, **API access** |
 | Desktop | ~$11–15/mo | offline, local files, "behind firewalls" |
+
+> **CORRECTED 2026-08-30 — the two paragraphs below are false.**
+> `validate-ilograph@0.0.1` is **MIT-licensed**, authored "Ilograph LLC".
+> So there **is** source to check a recognizer against (`index.js`,
+> shipped, though minified), and the licence-posture question **does**
+> have an answer: **MIT, GPL-3.0-compatible**. See
+> [the re-examination §2](ilograph-ecosystem-reexamined.md).
 
 No open-source component was found. That is a first: Structurizr DSL is
 Apache-2.0, D2 is MPL-2.0, Mermaid, bpmnlint, Archi, Papyrus and LikeC4
@@ -132,6 +179,12 @@ source to check a recognizer against, and the licence posture question
 ("could we depend on it?") has no answer to give.
 
 ### 1.3 Validation and the AI layer
+
+> **CORRECTED 2026-08-30.** The distinction this section missed: Ilograph
+> **documents** no validation — literally true, the validator appears
+> nowhere in its docs — but the vendor **has published** one,
+> `validate-ilograph`, on **2025-12-03**. Everything below that infers
+> from the documentation gap to a vendor gap is wrong.
 
 Ilograph documents **no** validation, linting or semantic checking of its
 own — the spec is a property-by-property reference with types and
@@ -147,7 +200,7 @@ So the pattern differs from every predecessor: Mermaid's niche is
 occupied by third parties, D2's is claimed by upstream, BPMN's is
 occupied by a mature incumbent — Ilograph's validation story is a
 community MCP server for a closed product whose vendor has published no
-validator.
+validator. **[FALSE — the vendor published one on 2025-12-03.]**
 
 **On the no-grader streak:** nothing here grades either, but this is a
 weaker data point than its eight predecessors and should be counted as
@@ -155,6 +208,17 @@ one. Ilograph ships no validator of its own, so "it does not grade" is
 close to vacuous; the unofficial MCP server validates without grading,
 which is the only real observation available. The streak holds at nine
 with that caveat attached.
+
+> **CAVEAT WITHDRAWN 2026-08-30 — and withdrawing it makes entry nine
+> one of the STRONGEST in the streak, not the weakest.** Ilograph ships a
+> competent validator (~40 diagnostic templates: duplicate sibling ids,
+> dangling references, circular imports, context cycles, unrecognized
+> properties) with **three severities** and **zero** occurrences of
+> `score`/`grade`/`maturity`/`rating`/`percent`/`quality` in its source.
+> Its `--level 0/1/2` is a **severity filter, not a grade**. So the
+> observation is the substantive one — a capable validator that **chose**
+> not to grade — rather than the vacuous one. **Cite entry nine without
+> this caveat.**
 
 ## 2. The relationship
 
@@ -222,7 +286,12 @@ understands. That inverts the honesty property cap C6 exists to protect.
 premise, from an unexpected direction.** `id`, `instanceOf` and `abstract`
 exist because a resource referenced from many perspectives must be *one*
 resource. That is XD001–005's thesis — one entity, one identity — solved
-structurally by a tool that has a model. pumllint enforces it by
+structurally by a tool that has a model. **[MECHANISM CORRECTED
+2026-08-30: it is not solved structurally. It is *linted* — the vendor's
+validator reports "Duplicate name or id … used for two or more sibling
+resources" — and the vendor's own shipped model fails that check 8 times.
+The conclusion survives and is strengthened: identity needs a checker,
+exactly as the XD pack assumes.]** pumllint enforces it by
 inspection because PlantUML does not.
 
 ## 6. Nonsense — five moves to refuse
@@ -232,7 +301,10 @@ inspection because PlantUML does not.
 three.
 
 **N2. A YAML front-end of any kind. Refused, and this is the one worth
-stating plainly.** §8 makes YAML input look tempting — "we clearly need
+stating plainly.** **[The refusal stands; its framing is corrected
+2026-08-30 — the hazard is the line shape `- key: value`, which Markdown
+also produces, so "YAML" was never the right unit to refuse. See the
+re-examination §5.4.]** §8 makes YAML input look tempting — "we clearly need
 to handle it better". The opposite follows: pumllint has no business
 reading YAML at all, and W3 measured why (structured YAML last of five
 carriers; the only non-compiles in the single-shot programme). The fix
@@ -274,6 +346,11 @@ Recorded honestly: Ilograph ships no validator, so its non-grading is
 close to vacuous. This is the first entry in the streak that should not
 be cited without its caveat.
 
+> **CAVEAT WITHDRAWN 2026-08-30.** Ilograph ships a validator; it does
+> not grade, by choice. Entry nine is now one of the *strongest* in the
+> streak. See §1.3's annotation and
+> [the re-examination §3](ilograph-ecosystem-reexamined.md).
+
 ### Fit against declared constraints
 
 | Declared constraint | Where the Ilograph fits land |
@@ -282,7 +359,7 @@ be cited without its caveat.
 | **Deterministic product path, no LLM** | Not reached. |
 | **Golden score contract** | Material only for F3, which inherits the existing candidate's re-freeze requirement. |
 | **Demand-driven / Arc E bar** | F1 fails on **merit** three ways; demand is not the operative gate. |
-| **Licence posture** (GPL-3.0-or-later) | **No answer available** — Ilograph is closed commercial software with no open component. Recorded as a first for the series, and as a blocker were anything ever proposed. |
+| **Licence posture** (GPL-3.0-or-later) | ~~**No answer available** — Ilograph is closed commercial software with no open component.~~ **CORRECTED 2026-08-30: the answer is MIT** (`validate-ilograph`), which is GPL-3.0-compatible. Not a blocker — and not proposed as a dependency either. |
 | **Claim language is settled** | Unaffected; nothing here proposes a claim. |
 
 ## 8. Gap — measured
@@ -369,6 +446,17 @@ the same mechanism affects JSON, TOML or Markdown wrapped in `@startuml`
 is unmeasured and is the obvious next probe if the candidate is ever
 picked up.
 
+> **PROBE EXECUTED 2026-08-30, and the answer inverts the expectation.**
+> Same model, four carriers: YAML `sequence`/L4/99.8/82 elements; **JSON,
+> TOML and Markdown all `unknown`/L1/95.0/0 elements** — the honest
+> outcome, so cap C6 works for three of the four. **But Markdown passed
+> only because its bullets had no colons.** With colons
+> (`- Owner: Alice`) Markdown is typed `sequence` at **Level 4, 99.22,
+> exit 0**. The trigger is the line shape `- key: value`, not the file
+> format. The reconstruction-fidelity bound is resolved too: a **real
+> vendor-authored** `.ilograph` file now exists to test against, and on
+> it the composite reaches **99.99**.
+
 ## 9. SWOT
 
 Scope: *pumllint's position relative to Ilograph*.
@@ -431,12 +519,16 @@ rather than adding one.**
    validated against a YAML-shaped file as well as a
    foreign-diagram-shaped one. Maintainer self-demand; scoring change;
    inherits the existing candidate's decision and golden re-freeze.
-2. **The next probe, if that candidate is picked up**: JSON, TOML and
+2. ~~**The next probe, if that candidate is picked up**: JSON, TOML and
    Markdown wrapped in `@startuml`. §8.4 — unmeasured, and the mechanism
-   suggests they may behave differently again.
-3. **The no-grader streak's first caveated entry** (§1.3) — Ilograph
+   suggests they may behave differently again.~~ **DONE 2026-08-30 — they
+   do not trigger it; Markdown *with colons* does. The trigger is
+   `- key: value`.**
+3. ~~**The no-grader streak's first caveated entry** (§1.3) — Ilograph
    ships no validator, so its non-grading is near-vacuous. Cite the
-   streak at nine only with this attached.
+   streak at nine only with this attached.~~ **WITHDRAWN 2026-08-30 — the
+   vendor ships a validator that chooses not to grade. Cite entry nine
+   without a caveat.**
 
 **Re-litigate on:**
 
@@ -450,6 +542,10 @@ rather than adding one.**
 
 ## Related reading
 
+- [The Ilograph ecosystem, re-examined](ilograph-ecosystem-reexamined.md)
+  — **runs the vendor's validator this note said did not exist**, and
+  corrects grounds (2) and (3), the monotonicity claim, the S4 mechanism
+  and the licence-posture answer. Read it alongside this note.
 - [The Structurizr DSL ecosystem, re-examined](structurizr-dsl-ecosystem-evaluation.md)
   — where Ilograph first appears, as one of six export targets; §2's
   shared-supplier relationship.
