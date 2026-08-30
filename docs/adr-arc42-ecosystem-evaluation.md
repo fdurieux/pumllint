@@ -96,6 +96,17 @@ file, numbered. Two conventions dominate:
 | **`adr-tools` / Nygard** | `0001-record-architecture-decisions.md` | `# 1. Record architecture decisions` |
 | **MADR** | `0001-use-plantuml.md` | YAML front-matter, then `# Use PlantUML` |
 
+> **Corroborated 2026-08-30 by running a real tool** — the bounds above
+> say the conventions were "reproduced from their published templates as
+> I understand them, not fetched", and that premise carries the whole
+> finding and the shipped fix. npm's `adr-tools` 2.0.4, run for real,
+> produces `docs/adr/0001-use.md` whose body opens `# 1. Use` — **ID in
+> the filename, plain human title in the body, no `ADR-0001` string
+> anywhere.** *Caveat: this is the npm `adr-tools`, a different project
+> from Nygard's shell script, which is not distributed through a package
+> registry. It corroborates the **convention**, not Nygard's specific
+> implementation.*
+
 **The identifier lives in the filename in both.** The body carries a
 human title. This is not incidental: the number is the file's sort key
 and its permanent handle, and the title is what a reader sees. Tooling
