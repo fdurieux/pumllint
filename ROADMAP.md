@@ -4024,6 +4024,68 @@ list and license posture live in § Settled questions.
     the series' standard; **nothing else** — the 2026-08-02 triggers are
     unchanged.
 
+- **Sweep of ecosystem notes 1–18 (2026-08-30): ONE defect, concentrated
+  in note 4; the other seventeen are clean.** Prompted by the ArchiMate/C4
+  viewpoints turns, which found a withdrawal that had never reached the
+  notes citing it. This is the systematic version, run once over the whole
+  early series so it is not repeated note-by-note. Executed at `b690e3f`
+  (v0.30.0).
+  - *Scope.* The eighteen ecosystem notes from Linked.Archi (1st,
+    2026-08-27) to FEAF/Gartner (18th, 2026-08-28). The undated
+    evaluations (spec-stack, external-review, model-verification,
+    knowledge-graph, sdd-manifest, prose-pipeline, c4-pack,
+    aschenbrenner, cross-diagram) are **not** part of the ecosystem
+    series and were out of scope.
+  - **THE FINDING — note 4 (BPMN) carried NONE of the three corrections
+    the twenty-second note made to it, and did not even link to it.**
+    That note's entire purpose was correcting note 4. Now annotated
+    inline, in four places plus a Related-reading entry:
+    **(a)** the abstract's headline correspondence — *"`start-event-
+    required`, `end-event-required` and `conditional-flows` are ACT001,
+    ACT002 and ACT003"* — two of three hold; **`conditional-flows` is not
+    ACT003** (consistency vs completeness; **subsumption, not
+    equivalence**). **(b)** the §3 mapping-table row, struck through.
+    **(c)** the rule count — **28 files = 27 rules + one helper**, not
+    "27 files, two infrastructure, ~25 rules"; `global.js` is a shipped
+    rule and **the richest correspondence in the catalogue**, which the
+    note filed under "infrastructure" and dropped from its own evidence.
+    **(d)** the product-boundary sentence — *"`bpmnlint` has none because
+    a BPMN task label is documentation for humans"* — true of core,
+    **false of the ecosystem and false six weeks before the note was
+    written** (camunda-compat's three agent rules, since 2.56.0,
+    2026-07-15). Also folded in: the **no-grader criterion refinement**
+    (nothing grades a *description*), under which BPMN is still not a
+    counterexample, with the ordinal marked as a period figure and the
+    observation flagged **two-sided**.
+  - **Everything else came back CLEAN, and the negatives are the point of
+    running it once:** every relative link in all eighteen **resolves**;
+    **no law-shaped over-generalizations** (the `generalise` hits are the
+    type-fallback *mechanism* generalising — which was borne out across
+    ten notations — plus UML's `Generalization` relationship and explicit
+    scoping statements); **type-fallback ordinals correct** (only note 4
+    states one, "fourth", which matches the corrected enumeration);
+    **no-grader ordinals** stated only in note 4; and **version pinning
+    sound** — every note carries its commit and version in the dateline,
+    which is the house convention, so a dated figure is a record rather
+    than drift (the C4 note even carries its own §8.1 re-verification).
+  - **The mechanism, now confirmed rather than suspected.** Propagation
+    fails **only** where a *later note* corrects an earlier one and
+    nobody walks back: note 4 ← note 22 (**was** unannotated), notes
+    19/20 ← note 21 (annotated 2026-08-30), note 29 ← note 30 (annotated
+    in the same turn). Where a correction was applied **inline in its own
+    turn** — note 28's filename claim — nothing was ever lost. **The
+    guard is therefore narrow and cheap**: when a note corrects an
+    earlier one, grep the record for the corrected claim's wording and
+    annotate every site **before closing that turn**, and confirm which
+    note actually originated the claim (the Structurizr withdrawal named
+    the ArchiMate note, but the C4 note was where the law was stated —
+    the misattribution is plausibly *why* the citations went unwalked).
+  - *Nothing queued; no verdict in any of the eighteen notes changes.*
+    Note 4's decision — no BPMN support, four grounds — stands, and the
+    correction to (d) **reinforces** it rather than weakening it: a
+    consumption step did appear in BPMN, and the vendor that owns the
+    runtime filled it.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

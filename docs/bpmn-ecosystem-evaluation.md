@@ -48,6 +48,25 @@ ambiguity hazard, so declare it. Convergent design from an independent
 implementation is worth more than any review, because nobody was trying
 to agree.**
 
+> **CORRECTED 2026-08-29 by [the BPMN re-examination](bpmn-ecosystem-reexamined.md),
+> which executed the paired run this note deferred (§8.4).** Two of the
+> three named correspondences hold; **`conditional-flows` is NOT ACT003.**
+> It is guarded on the node *already* being conditional-forking, so a
+> gateway with **zero** conditions is clean under `bpmnlint:recommended`.
+> **It enforces consistency; ACT003 enforces completeness.** The honest
+> restatement is **subsumption, not equivalence** — everything
+> `conditional-flows` catches ACT003 would also catch, and not the
+> converse. The convergence argument survives and is narrower than
+> written here.
+
+> **Criterion refined 2026-08-27 (TOGAF) and re-verified 2026-08-29:**
+> the claim is that **nothing grades a *description***. Under that
+> criterion BPMN is not a counterexample — `bpmnlint` grades nothing at
+> all — so the paragraph stands, but the *ordinal* is a period figure:
+> the count has since passed six, and the observation is now cited
+> **two-sided** (an unoccupied slot beside a mature peer can mean the
+> maturity model is the differentiator, or that nobody wanted a number).
+
 **And it is the fifth ecosystem in a row with no grader. `bpmnlint`
 reports raw problem counts with severity breakdowns and stops there — no
 level, no dimension weighting, no gap report, no ratchet, no aggregate of
@@ -131,6 +150,16 @@ Its published package carries 27 rule files, two of which (`global.js`,
 this project's 51, for a notation with one diagram type against this
 project's five.
 
+> **CORRECTED 2026-08-29 (same version, so this was a miscount, not
+> drift): 28 files = 27 rules + one helper.** `global.js` is **a shipped
+> rule**, present in both `all` and `recommended` — and it is the single
+> richest correspondence in the catalogue, checking *has a name* + *is
+> referenced at least once* + *is unique per type per name*, i.e. the
+> label-required family, the orphan family and the XD family in one rule.
+> **This note filed its best piece of evidence under "infrastructure" and
+> dropped it from the table built to argue the catalogues converge.**
+
+
 ### 1.3 The AI layer — the most developed of the four ecosystems, and pointing the other way
 
 Camunda's 2026 material describes three distinct MCP directions: a **BPMN
@@ -205,7 +234,7 @@ Read `bpmnlint`'s inventory against this project's catalog:
 |---|---|---|
 | `start-event-required` | **ACT001** missing-start | a flow must declare its entry |
 | `end-event-required` | **ACT002** missing-stop | a flow must declare its termination |
-| `conditional-flows` | **ACT003** unlabelled-decision-branch, **SEQ007** unlabelled-block-condition | a branch must say what condition selects it |
+| ~~`conditional-flows`~~ | ~~**ACT003** unlabelled-decision-branch, **SEQ007** unlabelled-block-condition~~ | **ROW CORRECTED — see the abstract's note. Measured: subsumption, not equivalence.** |
 | `label-required` | **SEQ005**, **STA003**, **CLS003** unlabelled-* | an element that carries meaning must be named |
 | `no-disconnected` | **UC001** orphan, **SEQ002** unused-participant, **STA002** unreachable-state | a declared element that connects to nothing is a defect |
 | `no-implicit-start` / `no-implicit-end` / `no-implicit-split` | **SEQ001** undeclared-participant, **SEQ010** explicit-participant-order, **SEQ101** codegen-implicit-participant | **relying on the tool's implicit behaviour is an ambiguity hazard — declare it** |
@@ -233,6 +262,20 @@ lays out for you. pumllint has an ambiguity dimension because its
 artefact is prose-bearing and feeds a generator; `bpmnlint` has none
 because a BPMN task label is documentation for humans while the execution
 semantics live in the attributes.
+
+> **CORRECTED 2026-08-29, and this is the one that matters.** The clause
+> after the semicolon is **true of `bpmnlint` core and false of the BPMN
+> ecosystem — and it was false six weeks before this note was written.**
+> `bpmnlint-plugin-camunda-compat` has shipped `agent-tool-documentation`,
+> `agent-tool-output-key` and `agent-fromai-contract` since 2.56.0
+> (**2026-07-15**); their stated rationale is that *an LLM reads the text
+> and an underspecified label degrades what it does*. **That is DIM-AMB's
+> argument, verbatim, in BPMN.** The boundary claim was scoped to a
+> *package* and stated about an *ecosystem*. It also narrows ground (3)
+> below: a consumption step **did** appear in BPMN — and the ecosystem
+> grew this project's dimension to gate it, which **reinforces** the
+> refusal rather than weakening it.
+
 
 **The last two rows are the whole product boundary.** What pumllint has
 that `bpmnlint` does not is exactly what §2 says BPMN does not need
@@ -526,6 +569,10 @@ correctness precondition.**
 - [The ArchiMate ecosystem, evaluated](archimate-ecosystem-evaluation.md)
   — the previous note; its type-fallback defect class gains a fourth
   instance here, and its agent-strategy triple becomes a quadruple.
+- [The BPMN ecosystem, re-examined](bpmn-ecosystem-reexamined.md) — the
+  twenty-second note, which executed §8.4's deferred paired run and
+  **corrected three claims here**, one of them central. Read it with this
+  one.
 - [The C4 model ecosystem, re-examined](c4-ecosystem-evaluation.md) — the
   "a competitor's adoption is not your pull" record N3 reuses.
 - [Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md) — its
