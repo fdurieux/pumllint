@@ -4197,7 +4197,15 @@ list and license posture live in § Settled questions.
     *"[an] Open Source Solution for Model-Based Systems Engineering"*
     (both verified from the projects' own sites today). Only **Ilograph**
     is commercial (note 9's own bound: *"not licensed or installed"*,
-    read not re-verified). **The real reason none is obtainable here is
+    read not re-verified). **[Ilograph row CORRECTED AGAIN 2026-08-30 —
+    the fourth consecutive correction to this entry, and the first to
+    change an obtainability verdict rather than a label. Ilograph should
+    never have been on this list whole: the *editor* is unobtainable, but
+    the vendor's **`validate-ilograph`** is an ordinary npm package with a
+    `bin`, MIT-licensed, published 2025-12-03 — **now installed and run**,
+    and it is what actually answered note 9's open questions. See the
+    re-examination. The lesson repeats one layer up: this entry keeps
+    classifying an *ecosystem* by its flagship application.]** **The real reason none is obtainable here is
     distribution form, not licence: all three are GUI desktop
     applications shipped as installers rather than registry packages, in
     an environment with no display** — Capella's headless validation mode
@@ -4306,6 +4314,93 @@ list and license posture live in § Settled questions.
     seventh note **in this turn**; the fragility of ground (2) as the
     thing to watch; the CLI still unrun, **not worth a third pass unless
     ground (2) moves**.
+
+- **The Ilograph ecosystem, re-examined (2026-08-30) — the vendor's
+  validator existed the whole time, and running it falsified two of the
+  ninth note's three refusals.** Asked to evaluate Ilograph, which was
+  settled ninth (2026-08-27). The D2 precondition applies and **is met**:
+  that note makes capability claims about Ilograph's own tooling and had
+  run none of it. Full note:
+  [docs/ilograph-ecosystem-reexamined.md](docs/ilograph-ecosystem-reexamined.md).
+  - **The refusal STANDS, on ground (1) alone** — Ilograph is a
+    model+perspectives format for an interactive viewer, not a diagram
+    notation. That ground is untouched and is now *verified by execution*
+    rather than read from the spec. **Cite the ninth note as ONE
+    sufficient ground, not "three refusals, each sufficient".**
+  - **Ground (2) — "the first fully commercial, fully closed ecosystem …
+    with no open-source component at all" — is FALSE.** The vendor
+    publishes **`validate-ilograph`** on npm, `author: "Ilograph LLC"`,
+    under the **verbatim MIT grant**, released **2025-12-03 — nine months
+    before the note asserted it did not exist**. Two conclusions drawn
+    from ground (2) fall with it: *"there is no source to check a
+    recognizer against"* (there is — shipped, though minified) and the Fit
+    table's **licence posture: "no answer available"** (the answer is
+    **MIT**, GPL-3.0-compatible). The *product* is still commercial —
+    pricing re-verified today, Free $0 / Pro $18 / Team $25 / Team+ custom
+    / Desktop $11.99 — so what was wrong is the absolute, not the
+    characterization.
+  - **Ground (3) — "it is a YAML property" — is MIS-LOCATED, and
+    correcting it WIDENS the hazard.** §8.4's recorded probe was run:
+    JSON, TOML and Markdown wrapped in `@startuml` all land at
+    `unknown`/**Level 1**/0 elements — the honest outcome, so **cap C6
+    works for three of the four carriers**. Markdown passed only because
+    its bullets had no colons. **With colons, a plain Markdown bullet list
+    (`- Owner: Alice`) is typed `sequence` at Level 4 (Precise),
+    99.22/100, exit 0.** The trigger is the **line shape `- key: value`**,
+    not the file format — and `- key: value` bullets are ordinary Markdown,
+    far commoner in a repository than `.ilograph`.
+  - **The type-fallback candidate is amended a THIRD time, and this
+    amendment changes what a fix must do.** Validate against the **line
+    shape**, not a file format: a carrier-scoped fix would miss Markdown
+    entirely. New ceiling, on the **real vendor-authored** model the
+    validator ships (`lib/aws.ilograph`, 8175 lines): pumllint recovers
+    **one participant, named `name`**, with 1438 messages, and reports
+    **Level 4 (Precise), composite 99.99, displayed `100.0/100`, exit 0**
+    — four of six dimensions at a flat 100.0. The ninth note's 99.82 was
+    measured on a reconstruction; this is real content. Its
+    "rises **monotonically**" is also corrected — on real content the rise
+    dips once (25 → 40: 99.76 → 99.73). *Rises with volume* is the
+    finding; *monotonically* was an artefact of a uniform synthetic
+    sample.
+  - **F4's caveat is WITHDRAWN, and withdrawing it makes the entry
+    stronger.** The ninth note called streak entry nine "close to vacuous"
+    *because* Ilograph shipped no validator. It ships one — ~40 diagnostic
+    templates, three severities — with **zero** occurrences of
+    `score`/`grade`/`maturity`/`rating`/`percent`/`quality` in its source;
+    `--level 0/1/2` is a **severity filter, not a grade**. That is the
+    substantive observation the streak wants: a capable validator that
+    **chose** not to grade. **Cite entry nine without a caveat.**
+  - **Two things pumllint has that the vendor's validator does not**, both
+    invisible to a note that ran nothing. It **always exits 0** — measured
+    without a pipe, including on **8 Fatal Errors** in the vendor's own
+    shipped model — so it cannot gate anything, which is exactly the
+    contract `action.yml` and both pre-commit hooks depend on. And at its
+    **default** `-l 1`, a dangling reference prints *nothing*; it is a
+    Warning, needing `-l 2`.
+  - **S4's mechanism was wrong, its conclusion strengthened.** Identity is
+    not solved "by construction" — it is **linted** (*"Duplicate name or
+    id … used for two or more sibling resources"*), and the vendor's own
+    flagship model **fails that check 8 times**. Identity needs a checker,
+    which is the XD pack's premise.
+  - **A fourth consecutive correction to the bounds-scan entry**, and the
+    first that changes an *obtainability* verdict rather than a label:
+    part of the Ilograph ecosystem was always obtainable. **Every one of
+    the four was found by an outside request; none by the list.** The
+    entry is a list asserting completeness about third parties, and it has
+    now been wrong four times running.
+  - **Sixth self-correction of the "sound premise, over-reaching
+    conclusion" shape** — after the viewpoint generalization, BPMN's
+    ambiguity dimension, the ADR filename claim, the Semgrep narrowing and
+    D2's ground (3). Here it compounds with the *other* recurring shape:
+    an absolute ("no open-source component **at all**") that one `npm
+    install` would have falsified on the day it was written.
+  - *Recorded, not queued*: the amended candidate (validate against
+    `- key: value`); F4's caveat withdrawn; the ninth note's "three
+    refusals" cited as one — all **annotated inline in the ninth note in
+    this turn**, in eighteen places, and propagated to its index row. The
+    Ilograph **editor** is still unrun (paid, GUI-only) and the unofficial
+    MCP server is still uninspected — now the only claim in the ninth note
+    resting on description alone.
 
 ## Working agreements (read before picking anything up)
 

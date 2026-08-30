@@ -188,14 +188,34 @@ but they are a useful cross-check that no audience was forgotten.
 - [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
   — dated evaluation (2026-08-27), ninth in the series and the cleanest
   refusal: not a diagram notation (a model+perspectives format for an
-  interactive viewer), the **first fully closed commercial ecosystem** in
-  the series, and made of YAML — which W3 ranked last of five carriers.
-  The yield is not about Ilograph: wrapping YAML in `@startuml` reads the
-  **list dash as an arrow** and turns keys into participants, scoring
-  **Level 4 (Precise) 99.62** — and the composite *rises* with the volume
-  of unrecognized content (99.44 → 99.82 across 3→40 resources). Sixth
-  instance of the type-fallback class and the first that **manufactures**
-  content rather than dropping it.
+  interactive viewer), ~~the **first fully closed commercial ecosystem**
+  in the series~~, and made of YAML — which W3 ranked last of five
+  carriers. The yield is not about Ilograph: wrapping YAML in `@startuml`
+  reads the **list dash as an arrow** and turns keys into participants,
+  scoring **Level 4 (Precise) 99.62** — and the composite *rises* with
+  the volume of unrecognized content (99.44 → 99.82 across 3→40
+  resources). Sixth instance of the type-fallback class and the first
+  that **manufactures** content rather than dropping it.
+  **Two of its three refusals were CORRECTED 2026-08-30 — see the
+  re-examination below. Cite this note's refusal as ONE ground, not
+  three.**
+- [The Ilograph ecosystem, re-examined](ilograph-ecosystem-reexamined.md)
+  — dated evaluation (2026-08-30), thirty-fourth in the series and the
+  **fourth re-examination**, after BPMN, Mermaid and D2. Runs the
+  validator the ninth note said did not exist: **`validate-ilograph`,
+  authored "Ilograph LLC", MIT-licensed, published 2025-12-03 — nine
+  months before that note**. So Ilograph is **not** the series' first
+  fully closed ecosystem, there **is** source to check a recognizer
+  against, and the licence-posture answer is **MIT**, not "none
+  available". The no-grader caveat is **withdrawn** and the entry gets
+  *stronger*: the validator has three severities and zero occurrences of
+  score/grade/maturity in its source — it **chose** not to grade. It also
+  ships a **real 8175-line vendor model**, on which pumllint recovers
+  **one participant named `name`** with 1438 messages and reports
+  **Level 4 (Precise), `100.0/100`, exit 0**. And the hazard is
+  re-located: the trigger is the line shape **`- key: value`**, not YAML
+  — JSON and TOML land honestly at `unknown`/Level 1, but a plain
+  **Markdown** bullet list of `- Owner: Alice` scores **Level 4, 99.22**.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence
