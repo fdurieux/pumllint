@@ -551,6 +551,21 @@ but they are a useful cross-check that no audience was forgotten.
   missing **axis** rather than a missing report. **OPA/Rego/Conftest were
   not run** — the engine's download resolves to a GitHub release asset —
   so nothing here is a claim about Rego.
+- [The TLA+ / Alloy ecosystem, evaluated](tlaplus-alloy-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-30), thirty-first. TLA+/Alloy were **already
+  settled** in 2026-08-02's model-verification note, which examined
+  *sequence* diagrams; this asks what it did not, about **state**
+  diagrams. **Neither tool was run** — absent from every package registry
+  — so the executed substance is the pumllint side. Measured: STA002
+  catches **in-degree zero** but is silent on a **disconnected island**
+  and on a **sink**. The island is **not a gap** — the docstring and
+  RULES.md both say in-degree only, a line drawn on purpose. The
+  contribution is a distinction: *"deadlock-freedom is a category error"*
+  is scoped to sequence diagrams, where PlantUML supplies no concurrency
+  semantics — but a **state machine's transition graph is declared
+  verbatim**, so reachability from `[*]` invents nothing. **Decidable,
+  yes; desirable, unestablished** — an absorbing terminal state is a
+  legitimate model. Two candidates recorded, neither proposed as a build.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
