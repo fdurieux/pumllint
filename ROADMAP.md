@@ -4191,7 +4191,22 @@ list and license posture live in § Settled questions.
     bindings only, the `dot` binary is absent; note 10); **Archi,
     Capella, Ilograph** (desktop/commercial; notes 3, 12, 9); **OPA /
     Rego / Conftest, TLA+, Alloy** (GitHub release assets only —
-    established in notes 30 and 31).
+    established in notes 30 and 31); **SysML tooling** — Cameo, SysON and
+    the v2 **pilot implementation** (note 11: *"No SysML tool of any kind
+    was executed"*), **verified 2026-08-30**: absent from npm, **0 results
+    on Maven Central**, and PyPI's `sysml` is an unrelated placeholder
+    (*"not intended for general use"*); **DMN engines** — Camunda, Drools,
+    jDMN (note 23: *"No DMN engine was run"*), Java runtimes outside every
+    registry checked.
+    *Coverage note: notes 2/20 ("No C4 tool was executed") and note 19
+    ("No ArchiMate tool was run") are covered transitively — C4's tooling
+    **is** Structurizr, and ArchiMate's is Archi, both listed above. Note
+    5 (UML) names Modelio, the SysML v2 pilot and the MIWG interchange
+    cases as GitHub-blocked, not as unrun local tools.*
+    **This list omitted SysML and the DMN engines on first writing**, and
+    the omission was found by someone asking for a SysML re-examination —
+    which is the completeness failure the withdrawal-propagation guard
+    exists for, one layer over.
     **ALREADY DISCHARGED** — BPMN (note 4 → note 22) and Mermaid (note 6
     → note 32), the two notes that said in writing they had run nothing.
   - **One item verified in this scan, because it was load-bearing.** Note
