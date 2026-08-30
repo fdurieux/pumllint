@@ -398,6 +398,16 @@ viewpoint is opaque text.
 **Three ways of asking the question, three identical answers.** The
 property is absent, not approximated.
 
+> **Re-verified 2026-08-30 at `1d023f9` (v0.30.0).** A conformant and a
+> viewpoint-violating pair — identical structure, the second swapping an
+> `<<application-component>>` for a Technology `<<node>>` the declared
+> viewpoint does not permit — still produce **byte-identical** reports
+> (`sequence`, Level 4, 93.33, 3 elements). **The mechanism holds.** The
+> figures differ from those above because this pair is a
+> **reconstruction** — the original samples were not published with the
+> note — so the numbers are not comparable to the 90.00 / 8 elements
+> recorded here; only the identity is.
+
 ### 8.4 A third outcome for the third note's arrow table
 
 The third note's §8.1 measured seven relationship notations and found two

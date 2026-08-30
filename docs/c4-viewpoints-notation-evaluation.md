@@ -390,13 +390,23 @@ exist.**
    deliberate swallow at `:249-251`. The recorded legend candidate needs
    no parser work for the PlantUML spelling; the `SHOW_LEGEND()` spelling
    remains the macro-reading problem the pack already has.
-3. **Viewpoint-shaped mechanisms are guidance, not contracts** (§1.2) —
-   second instance in two turns. ArchiMate publishes 25 viewpoints with
-   element subsets and makes conformance no requirement; C4 has four
-   levels of zoom for different audiences and defines no conformance at
-   all. Stated once so a third ecosystem does not re-derive it, and as
-   the general reason a third-party linter adjudicating a viewpoint would
-   be inventing an obligation.
+3. **~~Viewpoint-shaped mechanisms are guidance, not contracts~~** (§1.2)
+   — **WITHDRAWN 2026-08-29 by the
+   [Structurizr DSL viewpoints note](structurizr-viewpoints-evaluation.md),
+   whose N4 refuses to carry it forward.** It was generalized from n = 2
+   and n = 3 refutes it: Structurizr's views take a **typed scope
+   argument** and derive their content from the model, so abstraction
+   mixing is prevented **by construction** — a row *this note already
+   recorded* and cited without noticing it cut against the
+   generalization. The **ecosystem-scoped observations remain true**:
+   ArchiMate publishes 25 viewpoints with element subsets and makes
+   conformance no requirement; C4 has four levels of zoom and defines no
+   conformance at all. **What does not follow is the law.** The
+   replacement predictor is **derived views vs drawn views** — where
+   content is derived, conformance is not unenforced but *vacuous* — and
+   it is offered as a predictor to test, not as another generalization
+   from three points. The practical rule (do not adjudicate viewpoint
+   conformance) is unchanged, with two distinct reasons rather than one.
 
 **Re-litigate on:** the C4 settlement's existing triggers, unchanged — an
 adopter's own census after the exclusion rule, a concrete user with
