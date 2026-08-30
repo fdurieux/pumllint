@@ -532,8 +532,25 @@ but they are a useful cross-check that no audience was forgotten.
   `pattern-not-inside` scopes to a region enclosing the match, never the
   file, so "no `participant … as $X` anywhere" is not expressible.
   Consequence: the Spectral note's declarative-rule-layer candidate is
-  **narrowed, not closed** — viable for the lexical tier (vague terms,
-  elision tokens, stop-words) and nothing above it.
+  **narrowed, not closed**. *(Corrected by the policy-as-code note: the
+  narrowing to "the lexical tier and nothing above it" is too strong — a
+  checkov YAML policy expresses declaration-versus-use in data, because it
+  is evaluated against a resolved graph rather than text positions.)*
+- [The policy-as-code ecosystem, evaluated](policy-as-code-ecosystem-evaluation.md)
+  — dated evaluation (2026-08-29), thirtieth. **No adoption — and it
+  corrects the note before it.** The Semgrep note concluded a declarative
+  rule layer was "viable for the lexical tier and nothing above it"; a
+  checkov custom policy in **pure YAML** expresses `cond_type: connection`
+  and discriminates a resource that references a security group from one
+  that does not — **SEQ001's exact shape, in data**. The real boundary is
+  not data-vs-code but **what the rule is evaluated against**: text
+  positions versus a **resolved graph**. Also measured: checkov's
+  `--create-baseline`/`--baseline` is **pumllint's ratchet, independently
+  arrived at** — but it ratchets a *finding set* where we ratchet a
+  *level*, because it computes none, so the grading gap reappears as a
+  missing **axis** rather than a missing report. **OPA/Rego/Conftest were
+  not run** — the engine's download resolves to a GitHub release asset —
+  so nothing here is a claim about Rego.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
