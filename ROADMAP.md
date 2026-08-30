@@ -4189,7 +4189,20 @@ list and license posture live in § Settled questions.
     **NOT OBTAINABLE** — `structurizr-cli` (absent from npm **and** Maven
     Central; notes 8 and 21 both bound on it); **Graphviz** (pip ships
     bindings only, the `dot` binary is absent; note 10); **Archi,
-    Capella, Ilograph** (desktop/commercial; notes 3, 12, 9); **OPA /
+    Capella, Ilograph** (notes 3, 12, 9) — **label CORRECTED 2026-08-30,
+    it said "desktop/commercial" and that is wrong for two of the
+    three.**
+    **Archi** is *"The Open Source modelling toolkit"*, free, *"All
+    development work and support is done for free"*; **Capella** is
+    *"[an] Open Source Solution for Model-Based Systems Engineering"*
+    (both verified from the projects' own sites today). Only **Ilograph**
+    is commercial (note 9's own bound: *"not licensed or installed"*,
+    read not re-verified). **The real reason none is obtainable here is
+    distribution form, not licence: all three are GUI desktop
+    applications shipped as installers rather than registry packages, in
+    an environment with no display** — Capella's headless validation mode
+    would still need the install. *Conflating licence with obtainability
+    was the error; obtainability is what this list is for.* **OPA /
     Rego / Conftest, TLA+, Alloy** (GitHub release assets only —
     established in notes 30 and 31); **SysML tooling** — Cameo, SysON and
     the v2 **pilot implementation** (note 11: *"No SysML tool of any kind
