@@ -4402,6 +4402,98 @@ list and license posture live in § Settled questions.
     MCP server is still uninspected — now the only claim in the ninth note
     resting on description alone.
 
+- **The unofficial Ilograph MCP server, evaluated (2026-08-30) — cloned
+  and run; it retires the ninth note's last description-only claim, and
+  the yield is the delivery question.** Full note:
+  [docs/ilograph-mcp-server-evaluation.md](docs/ilograph-mcp-server-evaluation.md).
+  - **The bound was session scope, not obtainability — and session scope
+    is extensible.** Yesterday's re-examination left exactly one claim
+    standing on description alone because "no GitHub repository was read".
+    The repository is public and was one clone away. **Fifth consecutive
+    turn in which a bound recorded as a limitation turned out to be debt**
+    — the ninth note has now had *both* of its "not obtainable" claims
+    retired by someone simply asking. The habit to name: *this series has
+    repeatedly mistaken "I did not do it" for "it could not be done."*
+  - **"Validates without grading" is CORRECTED.** It emits an aggregate
+    ordinal verdict in a field named `assessment`: `Valid` /
+    `Valid with suggestions` / `Invalid - contains errors`, computed from
+    finding counts. The right sentence is *"emits a three-band
+    pass/warn/fail label and no quality scale."*
+  - **The no-grader streak HOLDS at fifteen, and this is the closest
+    approach yet — both readings recorded.** Against the corrected
+    criterion (*"grades the artefact class pumllint grades — a
+    description"*), three ordered bands over a diagram meets the letter.
+    **The reading taken:** the bands are two booleans wearing three labels
+    — *errors?* and *warnings?* — with **no quality scale independent of
+    pass/fail**; every clean diagram gets the identical top label. If a
+    labelled pass/warn/fail rollup counts as grading, the criterion is
+    vacuous and would catch `bpmnlint`, which the series counted as a
+    non-grader. **Recorded so a future reader who wants to count it as
+    broken can see why without re-deriving it.**
+  - **Executed head-to-head, it is materially worse than the vendor's
+    validator — four defects, each reproduced under two independent
+    dependency sets.** Two false negatives: **no duplicate-`name` check**
+    (only `id`, which is why it reports **0 errors** on the vendor's own
+    8175-line model where the vendor reports **8 Fatal Errors**), and **no
+    dangling-reference check at all** (it calls a relation pointing at a
+    non-existent resource *"Valid"*). Two false positives: it warns
+    "Unknown resource property" on **`style`** and **`backgroundColor`**,
+    which the vendor accepts and its own flagship file uses; and its
+    duplicate-`id` check is **global, not sibling-scoped**, rejecting a
+    legal model. **Simultaneously too lax and too strict on the same
+    rule.** The ninth note quoted its README — *"real-time validation with
+    detailed error analysis and suggestions"* — and that description does
+    not survive contact.
+  - **The chronology reframes the ninth note's §1.3.** Last commit
+    **2025-06-16**; the vendor's validator shipped **2025-12-03, 170 days
+    later**; today is **440 days (~14.5 months)** on. It was not a
+    community filling a vacuum the vendor refused — it was a community
+    tool the vendor **then overtook**, which never reacted because it had
+    already stopped. **A new variant of the linter-vitality pattern**
+    (DMN/FEEL/Gherkin): *the standalone linter went stale and then
+    upstream shipped the thing it existed to provide.* Generalized:
+    **check a community tool's last commit before citing its existence as
+    evidence of a live niche.**
+  - **THE FINDING WORTH KEEPING — a linter for a model has no exit code.**
+    First tool in thirty-five evaluations whose primary interface is an
+    **LLM tool call** rather than a CLI, action, library or GUI. It
+    **cannot gate CI**, because there is nothing to exit; it returns a
+    dict. It traded gating for **per-finding `suggestion` fields** written
+    for a model to act on — which a CLI has nowhere to put. And the
+    vendor's validator made the same trade from the other side: it
+    **always exits 0**. **Two independent Ilograph validators, neither able
+    to fail a build.** So if an MCP interface for pumllint is ever taken
+    up, **the exit-code contract is the thing that must survive**, and it
+    is exactly the thing this shape has nowhere to put. *Recorded as a
+    design note, NOT a proposal — one stale alpha is not demand; revisit
+    only on pumllint's own demand signal.*
+  - **A measurement I got wrong and caught before reporting.** My first
+    run of its test suite said **55 failed, 29 passed**. That was **my
+    artefact**: I had installed the newest fastmcp (3.4.7) against a
+    project pinning `>=2.7.0`, and every failure was an fastmcp 2→3 API
+    change in the *tests'* assertions while the server itself logged
+    `Validation successful`. On its `uv.lock` pins the suite is **84
+    passed**. Reporting the first number would have been a false
+    accusation against someone's project — the same class as the
+    GEN006/GEN007 config contamination caught the day before. **The
+    honest, narrower finding**: its declared ranges (`fastmcp>=2.7.0`,
+    `pydantic>=2.0.0`, both unbounded above) no longer resolve to a
+    working combination — newest fastmcp breaks the tests, and the locked
+    2.7.0 will not import against current pydantic. A plain
+    `pip install` from `pyproject.toml` yields a broken install today.
+  - **No fit, nothing queued.** MIT, so licence-compatible and irrelevant:
+    it checks a format pumllint does not read, and gets that wrong. Second
+    MIT component in the Ilograph ecosystem after the vendor's validator,
+    which buries the ninth note's ground (2) further.
+  - *Recorded, not queued*: the corrected "validates without grading"
+    phrasing; the MCP design note (§6) with the exit-code contract as its
+    constraint; "check the last commit before citing a community tool as
+    evidence of a live niche". All **annotated inline in notes 9 and 34 in
+    this turn**. Still unexercised: the **MCP transport itself** (no client
+    attached — the validator was imported and called directly), the
+    published **`ghcr.io` Docker image**, and the nine non-validation tools,
+    which were read rather than run.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

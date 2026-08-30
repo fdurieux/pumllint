@@ -200,7 +200,12 @@ So the pattern differs from every predecessor: Mermaid's niche is
 occupied by third parties, D2's is claimed by upstream, BPMN's is
 occupied by a mature incumbent — Ilograph's validation story is a
 community MCP server for a closed product whose vendor has published no
-validator. **[FALSE — the vendor published one on 2025-12-03.]**
+validator. **[FALSE — the vendor published one on 2025-12-03. And the
+framing is wrong twice over, corrected 2026-08-30: the MCP server's last
+commit is 2025-06-16, so the vendor shipped its validator **170 days
+after** the community project had already stopped. This was not a
+community filling a gap the vendor refused — it was a community tool the
+vendor then overtook, untouched for 440 days.]**
 
 **On the no-grader streak:** nothing here grades either, but this is a
 weaker data point than its eight predecessors and should be counted as
@@ -219,6 +224,24 @@ with that caveat attached.
 > observation is the substantive one — a capable validator that **chose**
 > not to grade — rather than the vacuous one. **Cite entry nine without
 > this caveat.**
+
+> **"THE UNOFFICIAL MCP SERVER VALIDATES WITHOUT GRADING" — CORRECTED
+> 2026-08-30 by [the MCP server evaluation](ilograph-mcp-server-evaluation.md),
+> which cloned and ran it.** It **does** emit an aggregate ordinal verdict
+> — a field named `assessment`, three bands: `Valid` /
+> `Valid with suggestions` / `Invalid - contains errors`, computed from
+> finding counts. The right sentence is *"emits a three-band pass/warn/fail
+> label and no quality scale."* **The streak still holds** — the three
+> bands are two booleans wearing three labels, with no quality scale
+> independent of pass/fail — but this is the **closest approach to grading
+> a description found in the series**, and that note records both readings.
+> Executed, the server is also **materially worse than the vendor's
+> validator**: it misses duplicate `name`s entirely (0 errors on the
+> vendor's own file, where the vendor reports 8 Fatal Errors), has **no
+> dangling-reference check at all**, and produces false positives on the
+> valid properties `style` and `backgroundColor`. Its README's *"real-time
+> validation with detailed error analysis"*, quoted above, does not survive
+> contact.
 
 ## 2. The relationship
 
