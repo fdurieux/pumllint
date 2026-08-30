@@ -2997,6 +2997,15 @@ list and license posture live in § Settled questions.
     makes conformance no requirement. Stated once so a third ecosystem
     does not re-derive it, and as the general reason a third-party linter
     adjudicating a viewpoint would be **inventing an obligation**.
+  - *Re-verified 2026-08-30 at `8120d08`.* Both rows of the legend table
+    hold; the C4-PlantUML pair reproduces **exactly** (`unknown`, L1,
+    **100.00**, 0 elements, exit 0, byte-identical), the PlantUML pair
+    re-verifies as **identical** at reconstructed figures. A first
+    measurement of **95.00** was chased to its cause — the reconstructed
+    sample had no `title`, so GEN001 zeroed DIM-TRC at weight 0.05 — and
+    was **not** drift. **Audited the same day for other law-shaped
+    claims: none found**, so the withdrawn finding 3 was a single
+    incident rather than a habit of this note.
   - *Nothing here is new as a candidate.* The legend rule, abstraction
     mixing (a **PlantUML-only defect**), the 40% figure, the census
     exclusion guard and the codegen amplification are all on record in the

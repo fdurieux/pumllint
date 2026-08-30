@@ -41,6 +41,27 @@ is invisible to pumllint in **both** of its spellings:
 | PlantUML `legend`…`endlegend` | `sequence`, L4, 100.00 | `sequence`, L4, 100.00 | **none** |
 | C4-PlantUML `SHOW_LEGEND()` | `unknown`, L1, 100.00, exit 0 | `unknown`, L1, 100.00, exit 0 | **none** |
 
+> **Re-verified 2026-08-30 at `8120d08` (v0.30.0). Both rows hold.** The
+> C4-PlantUML pair reproduces the recorded figure **exactly** —
+> `unknown`, Level 1 (Sketchy), **100.00**, 0 elements, exit 0, and
+> byte-identical across the `SHOW_LEGEND()` difference. The PlantUML pair
+> is byte-identical too, at 93.57 / 7 elements rather than 100.00 —
+> **because the sample is a reconstruction** (the originals were not
+> published with the note), so for that row the *identity* is what
+> re-verifies, not the absolute score.
+>
+> *A false alarm worth recording, because a less careful pass would have
+> filed it as a regression.* The C4-PlantUML pair first measured **95.00,
+> not 100.00**. The cause was the reconstruction, not the tool: the
+> sample had no `title`, so GEN001 fired and zeroed DIM-TRC at weight
+> 0.05 — exactly five points. Adding a title restored 100.00. **Chase a
+> discrepancy to its cause before reporting it as drift.**
+>
+> *Audited the same day for other law-shaped claims* (the failure mode
+> that produced finding 3's withdrawal): **none found.** Every other
+> claim in this note is scoped to C4 or to this repository. The
+> over-generalization was a single incident, not a habit of the note.
+
 **And pumllint already recognises the token.** `parser/sequence.py:91-92`
 defines `RE_LEGEND_START` and `RE_LEGEND_END`, and the parser swallows the
 block on purpose:
