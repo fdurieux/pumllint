@@ -4158,6 +4158,127 @@ list and license posture live in § Settled questions.
   - *Nothing reopens the refusal.* The sixth note's four grounds, its
     never-builds and all three of its recorded candidates stand.
 
+- **Bounds scan of the whole series (2026-08-30): which claims rest on
+  READING rather than RUNNING, and which of those are fixable today.**
+  A maintenance scan, not an evaluation — the companion to the 1–18
+  sweep, which checked cross-note consistency and explicitly did *not*
+  check whether each note's research was executed. Every note's `*Bounds*`
+  paragraph was extracted and classified.
+  - **Three categories, and only one is actionable.** **(a)
+    Session-scope**: *"no GitHub repository was read"* appears in nearly
+    every note. Universal, stated, and **not a defect** — it is the
+    session's access boundary, not an omission. **(b) Inaccessible
+    sources**: ISO 42010 (paid), TOGAF and ArchiMate 3.2 (registration),
+    Gartner (subscription), NAF (free but unread), `probelabs.com/maid`
+    (HTTP 403). Actionable only if access changes. **(c) A NAMED TOOL
+    THAT WENT UNRUN — the actionable set.**
+  - **Category (c), tested against the registries today:**
+    **RUNNABLE NOW** — **Cucumber** (`@cucumber/cucumber` 13.2.1, note
+    27); **ADR tools** (`adr-tools` 2.0.4, `log4brains` 1.1.0, note 28).
+    **PARTLY RUNNABLE — D2** (note 7: *"No D2 tool was executed"*):
+    `@terrastruct/d2` 0.1.33 is **D2.js, a WASM wrapper library, not the
+    CLI** — it declares no `bin`, and the real `d2` binary comes from
+    `d2lang.com/install.sh`, which fetches **GitHub release assets**. The
+    WASM build *does* expose `compile()`, which answers what D2 accepts
+    and rejects; `d2 fmt` and the CLI's own behaviour stay unrun.
+    **This corrects this entry's own first draft**, which listed D2 as
+    flatly runnable: *the check performed was `npm view <pkg> version`
+    returning a number, which is registry PRESENCE, not runnability.*
+    The same shortcut is worth avoiding for the other two — neither has
+    been executed, only resolved.
+    **NOT OBTAINABLE** — `structurizr-cli` (absent from npm **and** Maven
+    Central; notes 8 and 21 both bound on it); **Graphviz** (pip ships
+    bindings only, the `dot` binary is absent; note 10); **Archi,
+    Capella, Ilograph** (desktop/commercial; notes 3, 12, 9); **OPA /
+    Rego / Conftest, TLA+, Alloy** (GitHub release assets only —
+    established in notes 30 and 31).
+    **ALREADY DISCHARGED** — BPMN (note 4 → note 22) and Mermaid (note 6
+    → note 32), the two notes that said in writing they had run nothing.
+  - **One item verified in this scan, because it was load-bearing.** Note
+    28's premise — that adr-tools and MADR put the ID in the **filename**
+    with a plain title in the body — was *"reproduced from their
+    published templates as I understand them, not fetched"*, and **it
+    carries the whole ADR finding and the shipped `trace` fix.** Run for
+    real, npm's `adr-tools` produces `docs/adr/0001-use.md` opening
+    `# 1. Use`: **ID in the filename, plain title in the body, no
+    `ADR-0001` string anywhere.** The premise holds. *Caveat recorded
+    inline: this is the npm `adr-tools`, a different project from
+    Nygard's shell script, which no package registry carries — so it
+    corroborates the **convention**, not that implementation.*
+  - **The distinction worth keeping.** A bound that says *"I could not
+    reach this"* is a limitation; a bound that says *"I did not run the
+    tool I had"* is **debt**. The two re-examinations (22, 32) paid two
+    such debts and returned different verdicts — three corrections in
+    one, one correction plus a sharpening in the other — so the category
+    is worth acting on and **the outcome is not predictable in advance**.
+  - *Nothing queued.* The three runnable items are a **backlog, not a
+    plan**; none of the three notes' verdicts is in doubt, and running a
+    tool is worth doing when a note's *argument* depends on its
+    behaviour, not merely because the package installs. D2 (note 7) was
+    the strongest of the three on that test — its refusal rests partly on
+    a claim about D2's own tooling — and **it was acted on immediately;
+    see the D2 re-examination entry.** Cucumber (27) and Log4brains (28)
+    bound only peripheral characterizations.
+
+- **D2 ecosystem, re-examined (2026-08-30): ground (3) CORRECTED, and the
+  correction cuts AGAINST the refusal — which stands on (1) and (2).**
+  Thirty-third, and the **third re-examination** after BPMN (22nd) and
+  Mermaid (32nd). Picked by the same day's bounds scan as the one
+  unexecuted item worth acting on, because the seventh note's refusal
+  rests partly on a claim about **D2's own tooling**. Full record:
+  docs/d2-ecosystem-reexamined.md.
+  - **Bound, and it corrects the scan too.** **`@terrastruct/d2` 0.1.33
+    (D2.js — the WASM build of the compiler) was installed and
+    EXECUTED**; every ACCEPTED/REJECTED below is a run. **The `d2` CLI was
+    NOT run** — `d2 fmt`, exit codes and CLI ergonomics stay uninspected.
+    The scan had listed D2 as flatly *runnable* on the strength of
+    `npm view` returning a version: **that is registry PRESENCE, not
+    runnability** — the package declares no `bin`, and the real binary
+    comes from an install script fetching GitHub release assets. Caught
+    and corrected in the scan entry **before it merged**.
+  - *What held.* **Multiple errors from one broken program: confirmed** —
+    two distinct `errmsg` entries with line:column from a single input.
+    **The shape vocabulary is closed and enforced** (`unknown shape
+    "not_a_real_shape"` is rejected) — but the error does **not**
+    enumerate the set, so the seventh note's hedge (*"bounded, not
+    exact"*, one-of-five-packs is *a floor*) **stands as written**.
+  - **THE CORRECTION.** Ground (3) said D2 ships more language tooling
+    *"so the gap that motivates this tool for PlantUML is **narrower**
+    there"*. **The premise is right; the conclusion does not follow.**
+    D2's compiler **rejects** malformed programs and unknown keywords and
+    **ACCEPTS every semantic defect tested** — self-loop, duplicate
+    connection, unlabelled connection. On the equivalent PlantUML we
+    report **SEQ006** and **SEQ005**. **So D2 ships more *syntax and
+    vocabulary* tooling; the SEMANTIC gap is not narrower — it is the
+    same size.** *Precision: of the three, we catch two — a duplicate
+    connection is not a single-file finding here either (XD is
+    cross-file), so that row is a wash and is not evidence either way.*
+  - **Which way it cuts, stated plainly.** Ground (3) was a reason **not
+    to build**; correcting it **removes** that reason. The refusal
+    survives on **(1)** D2 is not a UML notation — four of five packs
+    have no counterpart (untouched, and the closed shape set firms up the
+    "presentational vocabulary" reading) — and **(2)** the niche is
+    unoccupied but **claimed by upstream** (*"Build a configurable
+    linter"*). **What changes is the shape of the argument, not the
+    verdict**: the need is the same size as PlantUML's, and what stops
+    the build is that someone else announced they will meet it.
+  - **Ground (2) is now load-bearing and it is the FRAGILE one** — it is
+    a statement about someone's **intentions**, and intentions lapse. **D2
+    abandoning that roadmap item would remove the second of three grounds
+    and leave only ground (1).** That is the trigger to watch, and **it is
+    someone else's decision, not ours.**
+  - **Fifth self-correction of the same shape** — sound premise or sound
+    measurement, over-reaching conclusion — after the viewpoint
+    generalization, BPMN's ambiguity dimension, the ADR filename claim
+    and the Semgrep narrowing. **It recurs even when the underlying facts
+    are right**, which is what makes it a habit rather than a run of
+    accidents. **The scan's own error is the same shape one layer up**:
+    "the package resolves" inferred to "the tool runs".
+  - *Recorded, not queued*: the corrected ground, annotated inline in the
+    seventh note **in this turn**; the fragility of ground (2) as the
+    thing to watch; the CLI still unrun, **not worth a third pass unless
+    ground (2) moves**.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

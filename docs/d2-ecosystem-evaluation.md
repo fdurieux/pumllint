@@ -24,6 +24,21 @@ do it. (3) D2 already ships more language tooling than PlantUML does —
 errors from one broken program — so the gap that motivates this tool for
 PlantUML is narrower there before any semantic rule exists.**
 
+> **GROUND (3) CORRECTED 2026-08-30 by
+> [the D2 re-examination](d2-ecosystem-reexamined.md), which ran D2's
+> compiler.** The *premise* holds — multiple errors from one broken
+> program is confirmed, and the shape vocabulary is closed and enforced.
+> **The conclusion does not.** Measured, D2's compiler rejects syntax
+> errors and unknown shape keywords and **accepts every semantic defect
+> tested**: self-loop, duplicate connection, unlabelled connection. On
+> the equivalent PlantUML pumllint reports **SEQ006** and **SEQ005**. So
+> what D2 ships more of is *syntax and vocabulary* tooling; **the
+> semantic gap is not narrower there, it is the same size.**
+> **The refusal stands on grounds (1) and (2)** — which this correction
+> does not touch — and **ground (2) is now load-bearing, and it is the
+> fragile one**, since it rests on upstream's stated intention to build a
+> linter.
+
 **The measurement is the sharpest in the series, and it is not about D2.
 D2's connection syntax — `a -> b: label` — is character-identical to
 PlantUML's message syntax, and D2 auto-creates actors on first reference
