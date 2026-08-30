@@ -4086,6 +4086,78 @@ list and license posture live in § Settled questions.
     consumption step did appear in BPMN, and the vendor that owns the
     runtime filled it.
 
+- **Mermaid ecosystem, re-examined (2026-08-30): the settlement stands,
+  and — unlike the BPMN re-examination — THE CONVERGENCE CLAIM SURVIVES
+  EXECUTION.** Thirty-second, and the **second re-examination** after the
+  twenty-second. Full record: docs/mermaid-ecosystem-reexamined.md.
+  **`@mermaid-lint/cli` 0.53.1 and `@probelabs/maid` 0.0.29 installed
+  from npm and EXECUTED**; every finding, exit code and summary line is a
+  run. Six hand-written `.mmd` files plus one Markdown fence. **No GitHub
+  read**, so the sixth note's stated cost (maintenance status, issue
+  activity, source-level implementations) is **still unpaid**.
+  - *Why it ran, and it was pre-authorised.* The sixth note's bounds say
+    *"**No Mermaid tool was executed** — neither linter was installed or
+    run, so the rule mapping in §3 is read from published rule
+    descriptions"*, and its **candidate 2** asked for a re-check *"if
+    `mermaid-lint`'s rule set grows, **especially if it grows upward into
+    a graded verdict**"*. **This discharges that instruction.**
+  - **CANDIDATE 2 DISCHARGED: rule set unchanged at 0.53.1 (since
+    2026-08-13), and NO graded verdict** — `--help` has no
+    score/grade/level/aggregate; output is `checked 1 diagram … 5
+    warnings`, and `maid`'s JSON is `valid`/`errorCount`/`warningCount`.
+    **The streak stands, now confirmed by execution rather than a feature
+    list.** Keep the trigger: it worked.
+  - **What HELD — eight for eight.** Every semantic rule the sixth note
+    read from documentation fires, with matching names:
+    `prefer-flowchart`, `require-direction`, `no-duplicate-edges`,
+    `no-self-loop`, `no-empty-labels`, `no-activate-without-deactivate`,
+    `no-duplicate-methods`, `duplicate-ids`. `--format json`, `--fix` and
+    **Markdown-fence linting** all confirmed (line numbers point *into*
+    the fence). **Worth saying plainly: the BPMN precedent predicted the
+    reading would be wrong, and here it was right.**
+  - **THE ONE CORRECTION — the suppression row.** Documented as `%%
+    mermaid-lint-disable <rule>`; executed, that form is **rejected** —
+    the rule still fires **and** a `suppression-malformed` warning is
+    added. The working form needs `-next-line` **and a reason**:
+    `%% mermaid-lint-disable-next-line no-self-loop: intentional retry
+    edge`. **`mermaid-lint` requires a justification at the suppression
+    site.** Annotated inline in the sixth note **in this turn**, per the
+    guard established by the 1–18 sweep.
+  - **SHARPENED, not weakened: `duplicate-ids` is the ONLY error-severity
+    semantic rule** (exit 1); all seven others warn at exit 0. The sixth
+    note mapped duplicate node IDs to **the XD identity family** from the
+    name; execution shows `mermaid-lint` **rates identity above
+    everything else it checks**. **Third instance of the shape** —
+    `bpmnlint`'s `no-duplicate-sequence-flows`, Spectral's `path-params`
+    as its lone `error`, now this — **independent tools, four artefact
+    classes, all rating identity-and-consistency as what stops a build.**
+  - *Two more things reading could not see.* **`--no-semantic`** is a
+    first-class CLI toggle ("Disable all semantic rule checks"), so the
+    semantic/syntax split the sixth note called *"word for word, this
+    project's founding distinction"* is **a switch, not just prose**;
+    and **`--strict`** ("exit 1 if any warnings are present") is the
+    `--fail-on` analogue, absent from that note's table.
+  - *The incumbents disagree.* Same input (`graph`, no direction):
+    **mermaid-lint exit 0 (warning), maid exit 1 (error
+    `FL-DIR-MISSING`)**. A more accurate picture than "two incumbents
+    hold the niche" — and it **does not reopen the refusal**: two
+    incumbents disagreeing is still two incumbents. `maid` is also much
+    more than the note's `—` cells (`--format json`, `--fix[=all]`, a
+    coded rule taxonomy, a `render` subcommand).
+  - **NEW TO THE RECORD — the aggregate does DOUBLE DUTY.**
+    `mermaid-lint` demands the reason **where the suppression is
+    written**; we make suppressions **visible in the score and auditable
+    in CI** — *"Suppressed findings never vanish silently from maturity
+    scores"*, `100/100 (3 suppressed)`, `suppressedCount`,
+    `--no-suppressions`. **Same requirement, solved at different
+    layers** — and `100/100 (3 suppressed)` is not a grade, it is a
+    **disclosure channel that only exists because there is an aggregate
+    to annotate.** Thirty-one notes treated the maturity model purely as
+    an unbuilt grading feature; this is a second job for it, and it
+    belongs **beside** the two-sided grading caution, not inside it.
+  - *Nothing reopens the refusal.* The sixth note's four grounds, its
+    never-builds and all three of its recorded candidates stand.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

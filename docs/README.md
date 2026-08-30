@@ -570,6 +570,20 @@ but they are a useful cross-check that no audience was forgotten.
   verbatim**, so reachability from `[*]` invents nothing. **Decidable,
   yes; desirable, unestablished** — an absorbing terminal state is a
   legitimate model. Two candidates recorded, neither proposed as a build.
+- [The Mermaid ecosystem, re-examined](mermaid-ecosystem-reexamined.md)
+  — dated evaluation (2026-08-30), thirty-second and the **second
+  re-examination**. The sixth note said in its own bounds that **no
+  Mermaid tool was executed**, and its candidate 2 asked for a re-check;
+  both linters were installed and run. **Unlike the BPMN re-examination,
+  the convergence claim survives**: all eight semantic rules fire with
+  matching names. **One correction** — the documented suppression form is
+  rejected in practice; `mermaid-lint` **requires a justification** at the
+  suppression site. **One sharpening** — `duplicate-ids` is the *only*
+  error-severity semantic rule, so the tool rates identity above
+  everything else it checks, a third instance of that pattern across four
+  artefact classes. And new to the record: **the aggregate does double
+  duty** — `100/100 (3 suppressed)` is a disclosure channel that only
+  exists because there is a score to annotate.
 - [Prose→model→prose pipeline: fit evaluation](prose-pipeline-evaluation.md)
   — dated fit note (2026-07-29) behind the ROADMAP's requirements-pipeline
   record (Arcs G–J): an external reassessment of the round-trip
