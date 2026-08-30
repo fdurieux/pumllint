@@ -40,6 +40,13 @@ lives. (4) *Seventh ecosystem, still no grader.* `mermaid-lint` reports
 pass/fail per diagram with file, line and message, and produces **no
 aggregate score or grade**.**
 
+> *Confirmed by execution 2026-08-30, for **both** linters — and
+> **candidate 2's re-check is discharged**: the rule set is unchanged at
+> 0.53.1 and has **not** grown into a graded verdict, so the streak
+> stands. Execution also showed `duplicate-ids` is the **only**
+> error-severity semantic rule, which **sharpens** §3's XD mapping —
+> `mermaid-lint` rates identity above everything else it checks.*
+
 **The uncomfortable part is not any of those; it is that the category
 claim and the carrier evidence now point in opposite directions.**
 pumllint's positioning, settled 2026-07-26, is "deterministic verifiers
@@ -140,12 +147,24 @@ linters exist to fill.
 | Licence | **none stated on npm** | ISC | GPL-3.0-or-later |
 | Config file | `mermaid-lint.config.js` / `.mermaidlintrc` / `package.json` | — | `pumllint.toml` |
 | Severities | `off` / `warn` / `error` | — | 5 levels + `--fail-on` |
-| Suppression | `%% mermaid-lint-disable <rule>` | — | suppression comments |
+| Suppression | ~~`%% mermaid-lint-disable <rule>`~~ **CORRECTED — see below** | — | suppression comments |
 | Machine output | `--format json` | "clear diagnostics" | `-f json`, schema-pinned |
 | Autofix | `--fix` | "fixing them instantly" | `pumllint fix` |
 | CI | GitHub Action, inline PR annotations | CLI for CI/agents | Action + pre-commit hooks |
 | **Markdown fences** | **yes** — `"docs/**/*.md"` | yes | **no** |
 | **Aggregate verdict** | **none** | none found | levels, gaps, ratchet, badge |
+
+> **CORRECTED 2026-08-30 by [the Mermaid re-examination](mermaid-ecosystem-reexamined.md),
+> which installed and ran both linters.** The suppression row was read from
+> documentation and is wrong in practice: `%% mermaid-lint-disable <rule>`
+> is **rejected** — the rule still fires *and* a `suppression-malformed`
+> warning is added. The working form needs `-next-line` **and a reason**:
+> `%% mermaid-lint-disable-next-line no-self-loop: intentional retry edge`.
+> **`mermaid-lint` requires a justification at the suppression site.**
+> Everything else in this table held under execution, and `maid`'s `—`
+> cells understate it (it has `--format json`, `--fix[=all]`, a coded rule
+> taxonomy and a `render` subcommand). The rule inventory below was read
+> correctly: **all eight rules fire, with matching names.**
 
 `mermaid-lint`'s architecture is a two-tier parse — a Rust WASM parser
 with the official `mermaid.parse()` API as authoritative fallback — and
