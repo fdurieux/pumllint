@@ -4494,6 +4494,85 @@ list and license posture live in § Settled questions.
     published **`ghcr.io` Docker image**, and the nine non-validation tools,
     which were read rather than run.
 
+- **The `export-ilograph` package, evaluated (2026-08-31) — the vendor
+  split checking from gating across two packages, and neither has both.**
+  Full note:
+  [docs/export-ilograph-package-evaluation.md](docs/export-ilograph-package-evaluation.md).
+  Third runnable tool from an ecosystem the ninth note recorded as having
+  none. Installed and **executed seven times**.
+  - **THE RESULT WORTH KEEPING — independent corroboration of the
+    exit-code contract, arrived at by someone else's decisions.**
+    `validate-ilograph` **checks but cannot gate** (~40 diagnostics,
+    always exit 0, even on 8 Fatal Errors). `export-ilograph` **gates but
+    does not check** (exit 1 on parse/read failure; **zero** semantic
+    checks — none of the validator's signature diagnostics appears in its
+    source, and its entire error vocabulary is four I/O messages). The
+    community MCP server returns a dict and cannot gate at all. **Its
+    README documents this exporter for CI/CD — so wiring Ilograph into CI
+    as the vendor documents it means nothing checks your model**: it
+    exported the vendor's own **7-fatal-error** sample at **exit 0**, and
+    still wrote 493 KB of HTML. **The contract is not the exit code
+    alone — it is checking and gating in the same tool**, and three tools
+    in one commercial ecosystem fail to combine them. Cite this when the
+    contract is questioned. Companion to the 35th note's finding that a
+    linter for a model has no exit code: **this is a tool with an exit
+    code and nothing to say.**
+  - **"Ilograph ships MIT" is FALSE — one of its two packages does.**
+    `export-ilograph`'s licence is the MIT *warranty disclaimer* with the
+    *permission grant removed*: "All rights reserved". Verified by direct
+    count — the grant string occurs **once** in the validator's licence
+    and **zero** times in the exporter's. **This corrects nothing in the
+    34th note**, which scoped its MIT finding to `validate-ilograph` by
+    name throughout, as did that note's ROADMAP entry; it guards the
+    over-generalisation those correctly-scoped claims invite. The accurate
+    statement is narrow: **a commercial, closed product that has published
+    exactly one permissively-licensed component.** Ground (2) of the ninth
+    note has now been re-litigated three times; this is where it settles.
+  - **The vitality inversion — the ninth note's instinct was right for the
+    wrong reason.** `export-ilograph`: **23 releases, 2021-12-04 →
+    2026-07-26, 4.6 years**. `validate-ilograph`: **one** release
+    (`0.0.1`). The community MCP server: dead 440 days. So the vendor's
+    most-maintained public artefact is its **exporter, by an order of
+    magnitude**. The ninth note inferred "this ecosystem does not invest
+    in checking" from an absence that **was not there**; the release
+    histories support the same conclusion **properly**.
+  - **Ground (1) of the ninth note — not a diagram notation — is now
+    confirmed a THIRD way, and it is the one refusal that survived all
+    three re-examinations.** The export is a **494 KB self-contained
+    interactive viewer application** (bundled JS, `<canvas>`, SVG, UI
+    strings like *"Add extended description"*), not a picture. **There is
+    no static artefact anywhere in this ecosystem for a linter to read** —
+    not at the source, and not at the end of the vendor's own CI pipeline.
+  - **The free path ignores your diagram entirely.** Without `-k` it warns
+    *"Exporting a demo diagram"* and returns a canned 494 KB artefact
+    **containing none of your input** — verified four ways against a
+    four-line source (raw, case-insensitive, URL-encoded, and by
+    base64-decoding every long blob): **zero hits** for all four strings.
+    Not a watermarked export; a demo of the renderer.
+  - **The two vendor packages ship DIVERGENT copies of the same flagship
+    sample.** `lib/aws.ilograph` differs by 60 lines between them (1438 vs
+    1439 top-level resources); against the vendor's own validator the
+    validator's copy has **8** Fatal Errors and the exporter's **7**.
+    **Both fail.** The 34th note found one stale sample; the fuller
+    picture is an **unvalidated asset, duplicated across packages and
+    drifting** — the cleanest illustration in the series of what a
+    validator that cannot gate is worth: the vendor *has* the check, ships
+    it, and does not run it on its own published files.
+  - **No fit, nothing queued, and the first Ilograph note in four to find
+    no pumllint defect** — the previous three found the type-fallback
+    ceiling (99.99 displayed as 100.0), the `- key: value` trigger, and
+    the no-grader streak's phrasing. Refused: any export or render
+    capability (wrong artefact, terminal output, **all rights reserved**,
+    network-bound); the Structurizr→Ilograph→export chain as a pipeline,
+    now provably terminating in an HTML application.
+  - *Recorded, not queued*: the exit-code result as citable evidence; the
+    MIT scope, **annotated into the 34th note in this turn**; ground (1)'s
+    third confirmation. **Bound: the paid path was not tested** — no key
+    was purchased, so whether the export API validates server-side is
+    unknown. That does not weaken the finding, which is about what the
+    *packages* do, verified against source. The **Desktop app** remains
+    unrun.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
