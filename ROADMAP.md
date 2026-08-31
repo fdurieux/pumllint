@@ -4842,6 +4842,77 @@ list and license posture live in § Settled questions.
     observed**. Nothing was patched or bypassed; a public download was
     read, exactly as the npm packages were.
 
+- **The Ilograph web app, evaluated (2026-08-31) — one checker, every
+  authoring surface, never wired to a build. THE ILOGRAPH RUN CLOSES.**
+  Full note:
+  [docs/ilograph-web-app-evaluation.md](docs/ilograph-web-app-evaluation.md).
+  Seventh and last on this ecosystem (9th, 34th–40th); the surface
+  inventory is exhausted. Client bundles were **fetched and compared**;
+  the app itself was **not used** — that needs an account, declined as at
+  Confluence.
+  - **THE STRUCTURAL RESULT — Desktop *is* the web app.**
+    `/dist/editor.js` served publicly by `app.ilograph.com` is
+    **byte-identical** to Desktop 2.4.4's `electron/dist/editor.js`
+    (`sha256 cddd923b…`), verified by **re-downloading the 120 MB
+    AppImage** rather than inferring from the size match that first
+    suggested it. So the 39th note's finding is **not a fact about
+    Desktop** but about **the Ilograph editor wherever it runs** — the
+    validator ships to every user of the web app too. **What is
+    Desktop-only is `license.js`, `offlineActivation.js`,
+    `exportOptions.js`, `manualChit.js` and the Electron `main.js`:
+    licensing, activation and export plumbing.** One editor, two shells,
+    with the commercial machinery in the shell.
+  - **A FIFTH copy of `aws.ilograph`, and the LIVE PRODUCTION one is the
+    worst.** The web app serves `/lib/aws.ilograph`: **1441 resources,
+    177 156 bytes, 8 Fatal Errors** — distinct from all four previously
+    found. **Five published copies, four distinct checksums** (only
+    Desktop and `export-ilograph` share one). **The live web app serves a
+    standard library with eight fatal errors, from an app that bundles the
+    validator which reports them.** The sharpest the thread gets, and
+    where it ends.
+  - **THE RUN'S CLOSING STATEMENT.** Seven surfaces, **still zero
+    combining checking with gating** — but §2 collapses the table:
+    the seven are **not** seven checking implementations, they are **one
+    editor validator** (byte-identical across web and Desktop), **one CLI
+    validator** of the same lineage that always exits 0, **one community
+    reimplementation** that is measurably worse, and **one type system**
+    that sees shape and not values. **So the vendor has exactly one good
+    checker, ships it in every authoring surface it owns, and has never
+    wired it to a build** — the CLI edition cannot fail one, and the CI
+    tool the vendor documents does not call it. **That is a better closing
+    statement than "this ecosystem does not check", which is what the
+    ninth note believed and what four of these seven notes progressively
+    dismantled. It checks well. It checks in the one place a build cannot
+    see.**
+  - **METHOD CORRECTION, caught before publication.**
+    `app.ilograph.com` returns **HTTP 200 with the 88 110-byte SPA shell
+    for any unknown path**, not a 404. A first pass of this evaluation
+    reported **five files that do not exist** — every one was the
+    catch-all. Caught by fetching a control path certain not to exist and
+    byte-comparing every candidate against it. **Generalized: on a
+    single-page app, HTTP 200 is not evidence a file exists.** Third
+    instance of **"a cheap signal stood in for the expensive check"**,
+    after *registry presence is not runnability* (the D2 scan row) and *a
+    test failure under the wrong dependency version is not a defect* (the
+    35th note's fastmcp artefact) — **and the first caught before it
+    reached a note.**
+  - **Obtainability, final scoreboard for the run: six of seven Ilograph
+    surfaces were inspectable without an account**; the one that was not
+    (Confluence) is Atlassian-hosted with no artefact. **The ninth note's
+    premise — a closed ecosystem with nothing to read — was wrong six
+    times over.**
+  - **No fit, nothing queued.** Ground (1) of the ninth note — not a
+    diagram notation — is the only one of its three that survived every
+    re-examination, and it carries the refusal alone.
+  - *Recorded, not queued*: the closing statement (§4); web/Desktop
+    byte-identity (§2); "on an SPA, HTTP 200 is not existence" (§5); and
+    **carried forward unchanged — an editor plugin / LSP for pumllint**,
+    the strongest unclaimed idea of the run, **unrequested and gated on
+    the Arc E bar**. That is the only live thread the Ilograph run leaves
+    behind. *Bound: the app was never used, so "validates live as you
+    type" is inherited from the byte-identical bundle plus the 39th note's
+    reading — strong, still not observed in a running editor.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

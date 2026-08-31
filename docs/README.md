@@ -307,6 +307,23 @@ but they are a useful cross-check that no audience was forgotten.
   and lives where builds cannot see it.* **Editor-time checking is not CI
   checking**, argued with the concession that **pumllint has no
   authoring-time story at all**.
+- [The Ilograph web app, evaluated](ilograph-web-app-evaluation.md)
+  — dated evaluation (2026-08-31), fortieth in the series and the
+  **seventh and last** on this ecosystem; the surface inventory is now
+  exhausted. All client bundles serve to an anonymous fetch, and
+  **`/dist/editor.js` is BYTE-IDENTICAL to Desktop's** (`sha256
+  cddd923b…`) — so **Desktop is an Electron shell around the same
+  editor**, and what the paid product adds is **licensing, activation and
+  export plumbing, not checking**. A **fifth** copy of the flagship
+  sample, and **the live production one is the worst**: 1441 resources,
+  **8 Fatal Errors**, served by an app bundling the validator that reports
+  them. **Seven surfaces, still zero combining checking with gating** —
+  but the table collapses to **four checking implementations**, and the
+  run's closing statement is that **the vendor has one good checker,
+  ships it in every authoring surface, and has never wired it to a
+  build.** Also records a method correction caught in flight: **on an SPA,
+  HTTP 200 is not evidence a file exists** — a first pass reported five
+  files that were all the catch-all.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence
