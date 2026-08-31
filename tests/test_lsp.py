@@ -20,6 +20,7 @@ from pumllint.engine import Engine
 from pumllint.fixer import apply_fixes, compute_fixes
 from pumllint.lsp import (
     LspServer,
+    RenameUnsafe,
     diagnostics_for,
     lsp_severity,
     read_message,
@@ -761,3 +762,218 @@ def test_lsp_honours_profile_and_no_suppressions_like_the_fix_command():
     quiet = LspServer(io.BytesIO(), no_suppressions=True)
     quiet._root = tempfile.gettempdir()
     assert quiet._ensure_engine().config.get("suppressions") is False
+
+
+# -- hover ------------------------------------------------------------------
+
+
+def _hover(doc: str, line: int, character: int) -> dict | None:
+    from pumllint.lsp import hover_for
+
+    return hover_for(doc, "d.puml", Engine({}), line, character)
+
+
+def test_lsp_hover_documents_the_rule_behind_a_finding():
+    value = _hover(_DOC, 0, 3)["contents"]["value"]
+    # Every field is declared metadata, so hover cannot drift from the rule.
+    assert "GEN001" in value and "missing-title" in value
+    assert "severity `minor`" in value and "DIM-TRC" in value
+    assert "pumllint: disable=missing-title" in value
+
+
+def test_lsp_hover_documents_a_suppression_key():
+    """Hovering a rule key in a disable comment explains what was switched off."""
+    doc = "@startuml d\n' pumllint: disable=missing-title\ntitle T\nA -> A : x\n@enduml\n"
+    value = _hover(doc, 1, 25)["contents"]["value"]
+    assert "GEN001" in value and "Diagram has no title" in value
+
+
+def test_lsp_hover_on_the_suppression_keyword_itself_says_nothing():
+    doc = "@startuml d\n' pumllint: disable=missing-title\ntitle T\nA -> A : x\n@enduml\n"
+    assert _hover(doc, 1, 4) is None  # the word "pumllint"
+
+
+def test_lsp_hover_is_none_where_there_is_no_finding():
+    clean = "@startuml d\ntitle T\nparticipant A\nparticipant B\nA -> B : go\n@enduml\n"
+    assert _hover(clean, 2, 0) is None
+    assert _hover(clean, 99, 0) is None
+
+
+def test_lsp_hover_lists_every_rule_on_a_line():
+    # The @startuml line trips both GEN001 and GEN002 in the fixture.
+    value = _hover(_DOC, 0, 0)["contents"]["value"]
+    assert "GEN001" in value and "GEN002" in value
+
+
+# -- completion -------------------------------------------------------------
+
+
+def _complete(doc: str, line: int, character: int) -> list[dict]:
+    from pumllint.lsp import completions_for
+
+    return completions_for(doc, "d.puml", line, character)
+
+
+def test_lsp_completion_offers_the_buffers_own_participants():
+    # _DOC declares both, so nothing here is implicit.
+    assert [i["label"] for i in _complete(_DOC, 3, 0)] == ["A", "B"]
+
+
+def test_lsp_completion_marks_implicit_lifelines():
+    """An implicit participant is worth flagging — declaring it is the fix."""
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : go\n@enduml\n"
+    items = {i["label"]: i["detail"] for i in _complete(doc, 3, 0)}
+    assert "implicit" in items["B"] and "implicit" not in items["A"]
+
+
+def test_lsp_completion_offers_rule_keys_inside_a_disable_comment():
+    labels = {i["label"] for i in _complete("' pumllint: disable=", 0, 20)}
+    # Both spellings are accepted by the suppression parser, so both are offered.
+    assert "missing-title" in labels and "GEN001" in labels
+
+
+def test_lsp_completion_offers_no_plantuml_syntax():
+    """Deliberate: pumllint's parser is partial, so a keyword list would be invented.
+
+    Completion returns only names this buffer already contains.
+    """
+    labels = {i["label"] for i in _complete(_DOC, 3, 0)}
+    assert not labels & {"participant", "@startuml", "actor", "note", "title"}
+
+
+# -- rename -----------------------------------------------------------------
+
+
+def _rename(doc: str, old: str, new: str) -> list[dict]:
+    from pumllint.lsp import rename_edits
+
+    return rename_edits(doc, "d.puml", old, new)
+
+
+def test_lsp_rename_updates_declaration_and_message_endpoints():
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : go\nactivate A\n@enduml\n"
+    edits = _rename(doc, "A", "Auth")
+    assert len(edits) == 3  # declaration, message source, activate
+    assert all(e["newText"] == "Auth" for e in edits)
+
+
+def test_lsp_rename_leaves_prose_in_labels_alone():
+    """`A` in `A -> B : notify A owner` is a word in a sentence, not a reference.
+
+    The parser's message pattern captures src/dst separately from label, so
+    the identifier can be located without touching the prose beside it.
+    """
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : notify A owner\n@enduml\n"
+    edits = _rename(doc, "A", "Auth")
+    from pumllint.lsp import _apply_locally
+
+    assert "notify A owner" in _apply_locally(doc, edits)
+
+
+def test_lsp_rename_refuses_rather_than_half_renaming_a_note_target():
+    """pumllint parses note bodies as prose and records no note targets.
+
+    A rename that silently left `note over A` behind would leave PlantUML
+    rendering a brand-new lifeline, so this refuses with the reason.
+    """
+    doc = "@startuml d\ntitle T\nparticipant A\nnote over A\n  hi\nend note\nA -> B : go\n@enduml\n"
+    try:
+        _rename(doc, "A", "Auth")
+        raise AssertionError("expected a refusal")
+    except RenameUnsafe as exc:
+        assert "note" in str(exc)
+
+
+def test_lsp_rename_allows_a_note_body_that_merely_mentions_the_name():
+    doc = "@startuml d\ntitle T\nparticipant A\nnote over B\n  about A\nend note\nA -> B : go\n@enduml\n"
+    assert _rename(doc, "A", "Auth")
+
+
+def test_lsp_rename_refuses_a_collision():
+    doc = "@startuml d\ntitle T\nparticipant A\nparticipant B\nA -> B : go\n@enduml\n"
+    try:
+        _rename(doc, "A", "B")
+        raise AssertionError("expected a refusal")
+    except RenameUnsafe as exc:
+        assert "merge" in str(exc)
+
+
+def test_lsp_rename_refuses_an_unknown_participant_or_empty_name():
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : go\n@enduml\n"
+    for old, new in (("Nope", "X"), ("A", "  ")):
+        try:
+            _rename(doc, old, new)
+            raise AssertionError(f"expected a refusal for {old!r} -> {new!r}")
+        except RenameUnsafe:
+            pass
+
+
+def test_lsp_rename_verifies_itself_by_reparsing():
+    """The result must parse back to exactly the expected participant set."""
+    doc = "@startuml d\ntitle T\nparticipant A\nparticipant B\nA -> B : go\n@enduml\n"
+    from pumllint.lsp import _apply_locally
+
+    renamed = _apply_locally(doc, _rename(doc, "A", "Auth"))
+    names = {p for d in parse_source(renamed, "d.puml") for p in d.participants}
+    assert names == {"Auth", "B"}
+
+
+def test_lsp_rename_quotes_a_name_that_needs_it():
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : go\n@enduml\n"
+    assert all(e["newText"] == '"Auth Service"' for e in _rename(doc, "A", "Auth Service"))
+
+
+def test_lsp_prepare_rename_only_offers_participants():
+    from pumllint.lsp import participant_at
+
+    doc = "@startuml d\ntitle T\nparticipant A\nA -> B : go\n@enduml\n"
+    assert participant_at(doc, 2, 12)[0] == "A"      # on the declaration
+    assert participant_at(doc, 1, 3) is None          # on `title`
+    assert participant_at(doc, 0, 2) is None          # on `@startuml`
+
+
+def test_lsp_rename_over_the_protocol_returns_an_error_with_the_reason():
+    """A refusal must be a JSON-RPC error, not an empty edit.
+
+    An editor given no edits says "nothing to rename", which hides exactly
+    the information that makes the refusal useful.
+    """
+    doc = "@startuml d\ntitle T\nparticipant A\nnote over A\n  hi\nend note\nA -> B : go\n@enduml\n"
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": "file:///d.puml", "text": doc}},
+            },
+            {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "textDocument/rename",
+                "params": {
+                    "textDocument": {"uri": "file:///d.puml"},
+                    "position": {"line": 2, "character": 12},
+                    "newName": "Auth",
+                },
+            },
+            {"jsonrpc": "2.0", "id": 3, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    reply = [r for r in replies if r.get("id") == 2][0]
+    assert "error" in reply and "note" in reply["error"]["message"]
+
+
+def test_lsp_initialize_advertises_hover_completion_and_rename():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    caps = [r for r in replies if r.get("id") == 1][0]["result"]["capabilities"]
+    assert caps["hoverProvider"] is True
+    assert "completionProvider" in caps
+    assert caps["renameProvider"]["prepareProvider"] is True

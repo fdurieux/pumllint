@@ -709,6 +709,45 @@ And unlike `pumllint fix`, a code action does not normalise line endings: the
 CLI rewrites a mixed-ending file to one style, an edit changes only the lines
 it touches.
 
+### Hover, completion and rename
+
+All three are backed by something pumllint already knows, and stop where that
+knowledge stops.
+
+**Hover** shows the rule behind a finding — id, kebab name, description,
+severity, dimension, scope, profile gating, and the `disable` comment that
+silences it. Every field is declared metadata from `rules/catalog.toml`, so
+hover cannot drift from what the linter enforces. Hovering a rule key inside a
+`' pumllint: disable=` comment explains what you switched off.
+
+**Completion** offers the participants *this buffer* already mentions
+(implicit lifelines marked, since declaring them is the fix), and the rule
+catalogue inside a `disable` comment. **It completes no PlantUML syntax** —
+the parser is deliberately partial and line-oriented, so a keyword list would
+be invented rather than derived, and would go stale against upstream.
+
+**Rename** renames a participant across the diagram. It updates declarations,
+message endpoints and `activate`/`destroy`, and deliberately leaves prose
+alone: the `A` in `A -> B : notify A owner` is a word in a sentence, and the
+parser's own pattern captures endpoints separately from labels, which is why
+it survives.
+
+pumllint does not model note or ref targets, so rather than half-rename a
+diagram, **rename verifies itself and refuses with a reason**:
+
+```
+note over A          -> "'A' still appears on line 4 — pumllint does not track
+                         note or ref targets, so renaming there is not safe
+                         to automate"
+rename A to B        -> "'B' is already a participant — rename would merge
+                         two lifelines"
+```
+
+The check is not a heuristic: the edits are applied to a copy, the result is
+re-parsed, and the participant set must come back as the original with exactly
+one name swapped. Refusals arrive as a JSON-RPC error so the editor shows the
+reason, rather than as an empty edit that would read as "nothing to rename".
+
 **One caveat worth knowing.** The protocol owns stdout, so `pumllint lsp` is
 the one subcommand that prints no report there; diagnostics travel as
 JSON-RPC and everything else goes to stderr. Exit codes still hold: `0` after
