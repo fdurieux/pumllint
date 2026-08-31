@@ -4573,6 +4573,96 @@ list and license posture live in § Settled questions.
     *packages* do, verified against source. The **Desktop app** remains
     unrun.
 
+- **The `ilograph-typescript` package, evaluated (2026-08-31) — what a
+  type system can and cannot take away from a linter.** Full note:
+  [docs/ilograph-typescript-package-evaluation.md](docs/ilograph-typescript-package-evaluation.md).
+  Fourth consecutive Ilograph note. Installed, **compiled and executed**:
+  six defect cases through `tsc --strict`, two programs emitted to YAML,
+  both run through the vendor's validator.
+  - **THE RESULT — the standing objection to pumllint's premise, answered
+    by measurement instead of argument.** *Why check for defects when you
+    could make them unrepresentable?* This library is that objection in
+    its strongest available form: diagrams-as-code in a **typed
+    general-purpose language**. Measured, `tsc` rejected **five of six**
+    defects at compile time — missing required field (TS2345), invalid
+    enum literal (TS2322), mistyped icon (TS2820, from a **907-member
+    closed union**, *with a "did you mean"*), unknown property (TS2561),
+    and **dangling references**, which the public API makes
+    **structurally impossible**: `addRelation` takes `Resource` objects
+    and `Omit`s `'from' | 'to'`, so you cannot name a resource that does
+    not exist. **The sixth compiled clean: duplicate names.**
+  - **THE DIVIDING LINE, and it is exact: a type system catches what is a
+    property of the program's SHAPE, and nothing that is a property of its
+    VALUES.** Sorting pumllint's rule classes across it — **shape, and so
+    retirable by authoring design**: SEQ001 undeclared participant
+    (exactly the dangling-reference case), GEN001 missing title (a
+    required field), schema/unknown-property concerns. **Value, and so
+    beyond any type system**: **XD001–005** cross-diagram identity
+    (exactly the duplicate-name case), **SEQ002** unused participant and
+    **STA002** unreachable state (properties of the assembled graph, not
+    of any type), **DIM-AMB** and the codegen lexicons (natural-language
+    content), **GEN009/SEQ011** density budgets (counts over the whole
+    artefact). **So the strongest possible unrepresentability argument
+    retires one class and leaves identity, reachability, ambiguity and
+    density exactly where they were — which is where most of pumllint
+    lives.** Use this to classify any future rule. *Measured on six
+    hand-chosen cases plus the type declarations — a well-supported
+    generalization, not a census.*
+  - **Proved end to end, and the failure is worse than a missed check.** A
+    program that is **clean under `--strict`** emits YAML the vendor's
+    validator rejects: `Fatal Error — Duplicate name or id … used for two
+    or more sibling resources`. And because `effectiveId` is `id ?? name`,
+    **two objects the compiler knows to be distinct collapse into one
+    string** on the way out: `addRelation(a, b)` emitted `from: X` →
+    `to: X`, **a self-relation the program never expressed**. The type
+    system's object-identity guarantee is real inside the program and
+    **does not survive serialization**. *In fairness, the escape hatch
+    works — with explicit distinct `id`s the output is clean; what is
+    lossy is the **default** path, silently, at the boundary.*
+    **Generalized: any scheme that establishes a property in one
+    representation and then converts must re-establish it downstream —
+    which is an argument for a checker at the artefact.**
+  - **"Unrepresentable" cuts both ways.** `Workspace` models **2 of the
+    spec's 4** top-level properties — no `contexts`, **no `imports`** —
+    and omits `subSequence` and `via`. A closed typed API forbids the
+    defects it anticipated *and* the valid constructs it did not: with no
+    `imports`, it cannot express a multi-file Ilograph model at all.
+  - **The XD arc completes, and lands harder than it started.** The ninth
+    note read Ilograph's `id`/`instanceOf` as corroborating the XD pack
+    *"solved structurally by a tool that has a model"*; the 34th corrected
+    the mechanism (**it is linted**, and the vendor's own file fails the
+    lint 8 times); **this is the third and strongest data point — even a
+    typed authoring layer cannot make it structural.** Identity needs a
+    checker **necessarily**, not by accident of tooling. Annotated into
+    the ninth note in this turn.
+  - **The ecosystem record settles at four licence postures, not one.**
+    `validate-ilograph` **MIT**; `export-ilograph` **all rights
+    reserved**; the MCP server **MIT**; this one **no licence at all** —
+    no `LICENSE` file and no `license` field, reserving everything by
+    default. Ground (2) of the ninth note has been re-litigated four
+    times; **the accurate statement is that this ecosystem has no single
+    licence posture.**
+  - **And the vitality result completes: every third-party Ilograph tool
+    found is dead; only the vendor's tooling is alive.** All three
+    versions of this package were published on **2022-10-08** — idle
+    **1423 days (3.9 years)**, against the MCP server's 440 and the
+    vendor exporter's ~5 weeks. Two data points is not a law, but it
+    sharpens the 35th note's rule for this ecosystem: **the community
+    tooling here is archaeology.**
+  - **No fit, nothing queued.** Refused: a typed authoring layer for
+    PlantUML (the payoff is one rule class, and even that leaks at
+    serialization; it would also require a compiler between author and
+    diagram, against the zero-dependency constraint); anything depending
+    on this package (**no grant exists**, before liveness or artefact are
+    considered). **Second consecutive Ilograph note finding no pumllint
+    defect.**
+  - *Recorded, not queued*: the shape/value line as a lens for classifying
+    future rules; identity-needs-a-checker as settled; the four licence
+    postures, **annotated into the 36th note in this turn**. *Bound: its
+    GitHub repository was not read* — everything is from the published npm
+    tarball — *and the Ilograph editor was not run*, so "valid" here means
+    only that the vendor validator is silent.
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

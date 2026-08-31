@@ -106,6 +106,16 @@ ground (2) has now been re-litigated three times, and the accurate
 statement is narrow: *Ilograph is a commercial, closed product that has
 published exactly one permissively-licensed component.*
 
+> **EXTENDED 2026-08-31 by
+> [the `ilograph-typescript` evaluation](ilograph-typescript-package-evaluation.md).**
+> Counting the two community tools, this ecosystem has **four tools with
+> four distinct licence postures**: `validate-ilograph` **MIT**;
+> `export-ilograph` **all rights reserved**; the MCP server **MIT**;
+> `ilograph-typescript` **no licence at all** — no `LICENSE` file and no
+> `license` field, which reserves everything by default. **The accurate
+> statement is not that this ecosystem has one licence posture, but that
+> it has no single one.**
+
 ## 4. Demo mode ignores your diagram
 
 Run without `-k`, the CLI warns *"No API key provided. Exporting a demo

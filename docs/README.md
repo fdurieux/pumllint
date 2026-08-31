@@ -251,6 +251,26 @@ but they are a useful cross-check that no audience was forgotten.
   someone else's decisions. Also: the two vendor packages ship
   **divergent copies** of the same flagship sample (8 vs 7 fatal errors —
   both fail), and the free path **ignores your diagram entirely**.
+- [The `ilograph-typescript` package, evaluated](ilograph-typescript-package-evaluation.md)
+  — dated evaluation (2026-08-31), thirty-seventh in the series, and the
+  first to answer a standing objection to pumllint's premise with a
+  measurement. Diagrams-as-code in a **typed general-purpose language** —
+  the strongest available form of *make defects unrepresentable rather
+  than check for them*. Against a six-defect battery under `tsc --strict`
+  it rejected **five of six**, including **dangling references, which the
+  public API makes structurally impossible** (`Omit<…, 'from'|'to'>` —
+  you must pass a `Resource`, not a name). The sixth compiled clean:
+  **duplicate names**. **The dividing line is exact — a type system
+  catches what is a property of the program's *shape* and nothing that is
+  a property of its *values*.** A `--strict`-clean program emits YAML the
+  vendor's validator rejects with a **Fatal Error**, and two objects the
+  compiler knows to be distinct **collapse into one string** at
+  serialization. Mapped onto pumllint's rules, unrepresentability retires
+  the declared-vs-referenced class and leaves **identity, reachability,
+  ambiguity and density untouched** — where most of pumllint lives. Also:
+  third-party, **no licence at all**, and idle **1423 days**, completing
+  the record that this ecosystem has **four licence postures** and that
+  **every third-party tool in it is dead**.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence

@@ -314,7 +314,14 @@ structurally by a tool that has a model. **[MECHANISM CORRECTED
 validator reports "Duplicate name or id … used for two or more sibling
 resources" — and the vendor's own shipped model fails that check 8 times.
 The conclusion survives and is strengthened: identity needs a checker,
-exactly as the XD pack assumes.]** pumllint enforces it by
+exactly as the XD pack assumes.]** **[COMPLETED 2026-08-31 by
+[the `ilograph-typescript` evaluation](ilograph-typescript-package-evaluation.md):
+**even a typed authoring layer cannot make it structural.** A TypeScript
+library that makes *dangling references* unrepresentable (you must pass a
+`Resource` object, not a name) still compiles duplicate names clean under
+`--strict`, and emits YAML the vendor's validator rejects with a Fatal
+Error. Identity needs a checker **necessarily**, not by accident of
+tooling. Third and strongest data point on this claim.]** pumllint enforces it by
 inspection because PlantUML does not.
 
 ## 6. Nonsense — five moves to refuse
