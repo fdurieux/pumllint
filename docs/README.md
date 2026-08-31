@@ -288,6 +288,25 @@ but they are a useful cross-check that no audience was forgotten.
   (`ilograph-standard-libraries`, MIT, 2024-10-11) — **three copies, three
   checksums, all failing the vendor's own validator**, the canonical one
   for 22 months.
+- [The Ilograph Desktop app, evaluated](ilograph-desktop-app-evaluation.md)
+  — dated evaluation (2026-08-31), thirty-ninth in the series and the last
+  of six on this ecosystem. **The standing "paid and GUI-only" bound falls
+  — fifth time in six turns**: Desktop is a direct-download, no-account,
+  120 MB Linux **AppImage** that extracts and reads without a display.
+  **Desktop bundles the validator, in `editor.js`** — Ilograph validates
+  **live as you type**, a capability documented nowhere. That **falsifies
+  a claim this record made** (the 38th note, twice, and its ROADMAP
+  entry): *"surfaces it in no product at all."* The ninth note's careful
+  *"**documents** no validation"* survives exactly; the paraphrase
+  over-reached. Sharpest form of the thread: **the shipping app bundles a
+  validator that reports 7 Fatal Errors in a library the same app ships**
+  — and a fourth sample copy refines the drift to **two release
+  vintages**. Desktop has **no CLI and no headless mode**, which is why
+  `export-ilograph` exists. **Six surfaces, still zero combining checking
+  with gating** — now for a better reason: *the checking exists, is good,
+  and lives where builds cannot see it.* **Editor-time checking is not CI
+  checking**, argued with the concession that **pumllint has no
+  authoring-time story at all**.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence

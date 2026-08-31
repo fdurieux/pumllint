@@ -22,7 +22,12 @@ making it the **most recently updated artefact in the entire ecosystem**.
 for this app mentions validation, linting, error checking or
 diagnostics** — so the ninth note's *"Ilograph documents no validation"*
 holds on the fifth surface, and the vendor's npm validator is surfaced in
-**no product at all**. (4) The through-line of the last three notes
+**no product at all**. **[FALSE — corrected 2026-08-31 by
+[the Desktop evaluation](ilograph-desktop-app-evaluation.md), which
+extracted the shipped app: **Desktop bundles the validator in
+`electron/dist/editor.js`**, so Ilograph validates live as you type. The
+documentation finding stands; the leap from "undocumented" to "not in any
+product" was mine and was wrong.]** (4) The through-line of the last three notes
 completes: **this is a surface with no CI surface — there is nowhere for a
 gate to stand — and it is the surface where architecture documentation
 actually lives.** The most documentation gravity, the least checking.**
@@ -108,7 +113,11 @@ product — but it is the *same* absence the ninth note found, now on a
 fifth surface, and it supports something stronger than that note could
 claim:
 
-**The vendor ships a validator and surfaces it in none of its products.**
+~~**The vendor ships a validator and surfaces it in none of its
+products.**~~ **FALSE, corrected 2026-08-31 — it is in Desktop's editor
+bundle, undocumented but present. The accurate statement is: *the vendor
+ships a validator and documents it nowhere.* See
+[the Desktop evaluation §2](ilograph-desktop-app-evaluation.md).**
 `validate-ilograph` exists on npm, has ~40 diagnostics, and appears in no
 product documentation for the web app, the Desktop app, or this plugin.
 It is a CLI for a CI pipeline, in an ecosystem whose CI tool
@@ -161,6 +170,15 @@ All three run through the vendor's own validator:
 | `export-ilograph` npm (2026-07-26) | 1439 | 176 977 | **7** |
 
 **Three distinct checksums — no two identical. All three fail.**
+
+> **REFINED 2026-08-31 — a fourth copy, and the drift is tidier than this
+> makes it sound.** Desktop 2.4.4 ships `electron/lib/aws.ilograph`
+> **byte-identical to `export-ilograph`'s** (1439 resources, 7 Fatal
+> Errors). So the four published copies are **two release vintages** — the
+> older pair at 8 errors, the newer pair at 7 — not four-way divergence.
+> The finding underneath sharpens rather than softens: **the shipping
+> Desktop app bundles a validator that reports seven Fatal Errors in a
+> library the same app ships.**
 
 The 34th note found that the vendor's flagship sample fails the vendor's
 own validator. The 36th found a second, divergent copy that also fails.
