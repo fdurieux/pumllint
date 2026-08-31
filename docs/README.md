@@ -271,6 +271,23 @@ but they are a useful cross-check that no audience was forgotten.
   third-party, **no licence at all**, and idle **1423 days**, completing
   the record that this ecosystem has **four licence postures** and that
   **every third-party tool in it is dead**.
+- [The Ilograph Confluence Cloud plugin, evaluated](ilograph-confluence-plugin-evaluation.md)
+  — dated evaluation (2026-08-31), thirty-eighth in the series and the
+  **first Ilograph artefact in five that genuinely could not be
+  obtained**: Atlassian-hosted, no downloadable build, source not public,
+  and the only path to running it runs through creating a third-party
+  account and a commercial trial — **declined, and recorded as a choice
+  rather than an inability**. What the public record gives: **20
+  installs**, **1 review**, **v2.13.0 released 2026-08-29** (the most
+  recently updated artefact in the whole ecosystem), and **no validation
+  documented on this surface either**. **The surface table completes**:
+  five Ilograph surfaces, none combining checking with gating, and this
+  one has **no CI surface at all** — a wiki page has no build to fail.
+  **The most documentation gravity, the least checking.** Side-discovery:
+  a **third** published copy of the vendor's flagship sample
+  (`ilograph-standard-libraries`, MIT, 2024-10-11) — **three copies, three
+  checksums, all failing the vendor's own validator**, the canonical one
+  for 22 months.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence

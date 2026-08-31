@@ -64,6 +64,12 @@ postures**:
 | MCP server (community) | **MIT** |
 | **`ilograph-typescript`** (community) | **none stated** |
 
+> **A FIFTH POSTURE, added 2026-08-31 by
+> [the Confluence plugin evaluation](ilograph-confluence-plugin-evaluation.md):**
+> `ilograph/ilograph-standard-libraries` is **MIT but copyright an
+> individual** (`billy-pilger`), not Ilograph LLC — distinct again from
+> the four above.
+
 The ninth note's ground (2) claimed a uniformly closed ecosystem; the 34th
 corrected it to "not fully closed"; the 36th narrowed that to "one
 permissively-licensed component". **The accurate statement is that this

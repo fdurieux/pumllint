@@ -205,6 +205,16 @@ Run against the vendor's own validator:
 | shipped with `validate-ilograph` | **8** |
 | shipped with `export-ilograph` | **7** |
 
+> **A THIRD COPY, found 2026-08-31 by
+> [the Confluence plugin evaluation](ilograph-confluence-plugin-evaluation.md).**
+> `github.com/ilograph/ilograph-standard-libraries` — MIT, last commit
+> **2024-10-11** — ships the **canonical public** `aws.ilograph`: 1441
+> resources, and **8 Fatal Errors**. **Three published copies, three
+> distinct checksums, no two identical, and all three fail the vendor's
+> own validator** — the canonical one for **22 months**. *A validator that
+> cannot gate is a validator that does not run*, now measured across three
+> distribution channels.
+
 The 34th note found that the vendor's flagship sample fails the vendor's
 own validator. The fuller picture: **there are two divergent copies of it,
 in two packages, and both fail** — one having lost a single duplicate
