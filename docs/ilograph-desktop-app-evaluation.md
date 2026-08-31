@@ -14,7 +14,12 @@ ninth note; in fact Desktop is a **direct download, no account,
 (2) **Desktop bundles the validator, in the editor.**
 `electron/dist/editor.js` carries the same diagnostic templates as
 `validate-ilograph`, so Ilograph validates **live as you type** — a
-capability documented nowhere. (3) **That falsifies a claim I made in the
+capability documented nowhere. **[GENERALIZED 2026-08-31 by
+[the web app evaluation](ilograph-web-app-evaluation.md): the web app's
+`/dist/editor.js` is **byte-identical** to this one (`sha256 cddd923b…`),
+so this is not a fact about Desktop but about **the Ilograph editor,
+wherever it runs**. Desktop is an Electron shell around the same editor;
+what is Desktop-only is licensing, activation and export plumbing.]** (3) **That falsifies a claim I made in the
 38th note** — twice in that note, and again in its ROADMAP entry: *"the
 vendor ships a validator and surfaces it in no product at all."* It is in
 the product. The ninth note's careful
@@ -137,6 +142,14 @@ validator:
 | `validate-ilograph` npm (2025-12-03) | 1438 | 175 993 | **8** |
 | `export-ilograph` npm (2026-07-26) | 1439 | 176 977 | **7** |
 | **Desktop 2.4.4** (2026-08-29) | 1439 | 176 977 | **7** |
+| **web app** (fetched 2026-08-31) | **1441** | **177 156** | **8** |
+
+> **A FIFTH COPY, added 2026-08-31** — the **live web app** serves
+> `/lib/aws.ilograph`, distinct from all four above. **Five copies, four
+> checksums, and the production one is the worst of them.** See
+> [the web app evaluation §3](ilograph-web-app-evaluation.md). The
+> "two vintages" reading below still holds for the four npm/GitHub/Desktop
+> copies; the live web copy is a third.
 
 **Four copies, three distinct checksums** — and a refinement worth
 recording, because it is fairer than the 38th note's framing: **Desktop
