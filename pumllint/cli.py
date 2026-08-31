@@ -245,6 +245,15 @@ def _run_lsp(argv: list[str]) -> int:
     _add_version_argument(p)
     p.add_argument("--config", help="Path to a config file (default: auto-discover)")
     p.add_argument(
+        "--profile",
+        help="Activate a rule profile (e.g. codegen); overrides `profile:` in the config",
+    )
+    p.add_argument(
+        "--no-suppressions",
+        action="store_true",
+        help="Ignore inline \"' pumllint: disable\" comments",
+    )
+    p.add_argument(
         "--fail-on",
         default="major",
         choices=[s.value for s in _SEV_ORDER],
@@ -259,7 +268,12 @@ def _run_lsp(argv: list[str]) -> int:
     from .lsp import serve
 
     try:
-        return serve(config_path=args.config, fail_on=Severity(args.fail_on))
+        return serve(
+            config_path=args.config,
+            fail_on=Severity(args.fail_on),
+            profile=args.profile,
+            no_suppressions=args.no_suppressions,
+        )
     except KeyboardInterrupt:
         return 0
 

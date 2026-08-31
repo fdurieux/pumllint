@@ -67,6 +67,11 @@ class FileFixResult:
 
 def _derived_name(stem: str, ordinal: int) -> str:
     name = re.sub(r"[^\w.-]+", "-", stem).replace("_", "-").strip("-")
+    # A stem of "_", "-" or "___" reduces to nothing, and an empty name is
+    # not a fix: `@startuml ` still trips GEN002, so the finding survives and
+    # `pumllint fix` reports work it did not do. In an editor the same no-op
+    # is offered on every lightbulb, forever.
+    name = name or "diagram"
     return name if ordinal == 1 else f"{name}-{ordinal}"
 
 
