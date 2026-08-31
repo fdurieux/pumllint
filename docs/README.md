@@ -234,6 +234,23 @@ but they are a useful cross-check that no audience was forgotten.
   the stale community linter**. The yield is the delivery question: this
   is the series' first linter whose consumer is **a model, not a gate**,
   and it has **no exit code** because it does not need one.
+- [The `export-ilograph` package, evaluated](export-ilograph-package-evaluation.md)
+  — dated evaluation (2026-08-31), thirty-sixth in the series and the
+  third runnable tool from an ecosystem the ninth note recorded as having
+  none. **Not MIT**: the licence is the MIT *warranty disclaimer* with the
+  *permission grant removed* — so "Ilograph ships MIT" is false, one of
+  its two packages does. Its README documents it for **CI/CD**, and it
+  performs **zero semantic validation** — none of the validator's ~40
+  diagnostics appear in it, and it exports the vendor's own
+  7-fatal-error sample at **exit 0**. But it *does* exit 1 on a parse
+  failure, making it the first Ilograph tool with a usable exit code.
+  **So the vendor's validator checks but cannot gate, and its exporter
+  gates but does not check — neither has both, and the documented CI/CD
+  path never invokes the validator.** The sharpest positioning datum the
+  series has produced for pumllint's exit-code contract, arrived at by
+  someone else's decisions. Also: the two vendor packages ship
+  **divergent copies** of the same flagship sample (8 vs 7 fatal errors —
+  both fail), and the free path **ignores your diagram entirely**.
 - [The Graphviz / DOT ecosystem, evaluated](graphviz-dot-ecosystem-evaluation.md)
   — dated evaluation (2026-08-28), tenth and last obvious one in the
   series, and the **first refusal where the repository's own licence

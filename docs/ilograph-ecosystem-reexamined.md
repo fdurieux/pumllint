@@ -72,6 +72,23 @@ found by an outside request; none by the list.
 account publishes exactly two packages (registry search, `total: 2`):
 this and `export-ilograph@0.2.5`.
 
+> **SCOPE NOTE added 2026-08-31 by
+> [the `export-ilograph` evaluation](export-ilograph-package-evaluation.md),
+> which ran that second package.** Nothing in this note is corrected — the
+> MIT finding below is scoped to `validate-ilograph` by name throughout,
+> and correctly. **But the two packages carry two different licences.**
+> `export-ilograph` ships the MIT *warranty disclaimer* with the
+> *permission grant removed* — "All rights reserved", verified by direct
+> count: the grant string occurs once in the validator's licence and
+> **zero** times in the exporter's. **So "Ilograph ships MIT" is false;
+> one of its two packages does.** The accurate statement is narrow:
+> *a commercial, closed product that has published exactly one
+> permissively-licensed component.* That note also finds the exporter is
+> the vendor's **most-maintained** artefact — 23 releases over 4.6 years,
+> against this validator's single `0.0.1` — and that it performs **no
+> semantic validation at all** while being the tool the vendor documents
+> for **CI/CD**.
+
 ```
 $ validate-ilograph --help
 validate-ilograph [inputfile]
@@ -340,7 +357,9 @@ Scope: *pumllint's position relative to Ilograph*, revised.
 
 **Opportunities**
 
-- An MIT-licensed reference implementation of a validator for a
+- **[Scope, 2026-08-31: this applies to the validator only — the vendor's
+  other package is all rights reserved.]** An MIT-licensed reference
+  implementation of a validator for a
   model+perspectives format — readable, if minified — is available to
   study. Not a dependency, and not proposed as one.
 
