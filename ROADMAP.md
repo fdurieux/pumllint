@@ -4710,7 +4710,13 @@ list and license posture live in § Settled questions.
   - **No validation documented on the fifth surface either**, so the ninth
     note's *"Ilograph documents no validation"* holds across every product
     surface — and supports something stronger than that note could claim:
-    **the vendor ships a validator and surfaces it in no product at all.**
+    ~~**the vendor ships a validator and surfaces it in no product at
+    all.**~~ **[FALSE — corrected 2026-08-31 by the Desktop evaluation,
+    which extracted the shipped AppImage: Desktop bundles the validator in
+    `electron/dist/editor.js` and validates live as you type. The
+    documentation finding stands; widening it to products was an
+    over-reach of mine, and one `grep` over a public download would have
+    caught it the same day.]**
     *An absence in two documents, not a proof of absence in the product —
     the same hedge the ninth note used, and it is the right one.*
   - **The vitality record completes and inverts cleanly.** Confluence
@@ -4749,6 +4755,92 @@ list and license posture live in § Settled questions.
     whether the editor surfaces *any* diagnostics — that settles the one
     question this note could not answer. *Re-litigate on a concrete user
     with a Confluence-hosted PlantUML corpus, not on this plugin.*
+
+- **The Ilograph Desktop app, evaluated (2026-08-31) — the checking was in
+  the product all along, and this record said it wasn't.** Full note:
+  [docs/ilograph-desktop-app-evaluation.md](docs/ilograph-desktop-app-evaluation.md).
+  Sixth and last consecutive Ilograph note. The shipped AppImage was
+  **downloaded, extracted and read**.
+  - **The standing bound falls — fifth time in six turns.** Every Ilograph
+    note has carried *"the Desktop app remains unrun — paid and GUI-only"*.
+    Two of those three words were wrong: it is a **direct download, no
+    account, 120 MB Linux AppImage** (also Mac/Windows/arm64), which
+    `--appimage-extract` unpacks with no display involved, and whose
+    Electron `app.asar` is readable JavaScript. **"GUI-only" conflated
+    *running* it with *obtaining* it**; the GUI genuinely cannot run here,
+    and nothing this note found needed it. Ilograph run scoreboard: **five
+    bounds were debt, one was real** (Confluence).
+  - **SELF-CORRECTION — Desktop bundles the validator.**
+    `electron/dist/editor.js` carries the validator's signature
+    diagnostics (duplicate name or id, dangling references, circular
+    imports, context-tree cycles, reserved identifiers, "stopping
+    analysis") alongside renderer strings `Validate` / `validation` /
+    `Problems`. **So Ilograph validates live as you type — undocumented,
+    but present.** This **falsifies the 38th note's claim**, made twice
+    there and once in its ROADMAP entry, that *"the vendor ships a
+    validator and surfaces it in no product at all"*. **The ninth note's
+    original wording — "Ilograph *documents* no validation" — was right
+    all along**, and the 34th note even annotated the distinction
+    correctly; the widening into a claim about *products* was mine, four
+    notes later, and nobody had measured it. **Seventh instance of the
+    "sound premise, over-reaching conclusion" shape, and the most
+    instructive: downstream of a hedge I had written myself, and one
+    `grep` over a public download would have caught it the same day.**
+    *The 36th note was checked before writing and did NOT make the claim —
+    the first draft of this note said it did, which would have been a
+    fabricated self-correction, caught by going and reading it.*
+  - **Generalized: documentation is a bad oracle for capability.** The
+    ninth note inferred a product's capability from its docs and was right
+    about the docs and wrong about the product. **The rule this series
+    applies to other people's claims — run it or read it, don't read its
+    docs — applies to inferences from absence too.**
+  - **The sharpest form of the running thread.** Desktop ships a **fourth**
+    copy of `aws.ilograph`. Four copies, **three** distinct checksums —
+    and a refinement fairer than the 38th note's framing: **Desktop 2.4.4
+    and `export-ilograph` 0.2.5 ship the byte-identical file**, so this is
+    **two release vintages** (older pair 8 Fatal Errors, newer pair 7),
+    not four-way divergence. The finding underneath sharpens: **the
+    currently-shipping Desktop app bundles a validator that reports seven
+    Fatal Errors in a standard library the same app ships.** *The demo
+    file it opens on first run is clean.*
+  - **It checks and cannot gate: no CLI, no headless mode.** The `--`
+    switches in `main.js` belong to bundled updater libraries, not to
+    Ilograph. **Which is precisely why `export-ilograph` exists** — its
+    README says it is for exporting *"diagrams created with Ilograph
+    Desktop in CI/CD workflows"* — and that CLI does no semantic checking
+    at all. So the surface table takes its **most important correction**
+    and the bottom line does not move: **six Ilograph surfaces, still zero
+    combining checking with gating** — now for a better reason than
+    neglect. **The checking exists, is good, and lives where builds cannot
+    see it.**
+  - **THE RESULT — editor-time checking is not CI checking**, and this is
+    a better argument for the exit-code contract than any earlier note in
+    the run, because it is no longer about a vendor's neglect. Ilograph
+    checks *well*, at authoring time. **A defect flagged in the editor is
+    flagged to the person typing and to nobody else ever again**; ignore
+    it, save, commit, and nothing downstream knows — demonstrated by the
+    vendor's own library shipping with seven such errors. **That gap is
+    what exit codes 0/1/2 are for.**
+  - **Held honestly the other way: pumllint has NO authoring-time story at
+    all.** Nothing in it validates as you type. The 35th note found a
+    linter for a model with no exit code; the 38th, a surface with no
+    gate; this one finds a *good* editor-time checker that cannot gate —
+    and **pumllint is the mirror image, a good gate with nothing at
+    authoring time**. A real asymmetry, recorded as such rather than as a
+    win.
+  - **Recorded, not queued — the strongest unclaimed idea the Ilograph run
+    produced: an editor plugin or LSP.** Refused **for now, and not
+    because it is a bad idea**: it is a new product surface needing a
+    runtime pumllint does not have, and **nothing in the Arc E bar has
+    asked for it**. Re-litigate on a concrete user asking for
+    editor-time checking.
+  - *Corrected in this turn*: the 38th note inline, in both places and in
+    its ROADMAP entry; its `aws.ilograph` divergence framing, refined to
+    two vintages. *Bound: the GUI was never run* — every finding is from
+    reading the extracted bundle, so "validates live as you type" is a
+    strong inference from the validator's presence in `editor.js`, **not
+    observed**. Nothing was patched or bypassed; a public download was
+    read, exactly as the npm packages were.
 
 ## Working agreements (read before picking anything up)
 
