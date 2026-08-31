@@ -1,0 +1,442 @@
+"""LSP front-end tests (the authoring-time surface).
+
+Plain assert functions with no fixtures and no third-party imports, so the
+zero-dependency runner exercises them too. The load-bearing test is
+:func:`test_lsp_diagnostics_agree_with_the_engine`: the whole point of this
+surface is that the editor and the gate cannot disagree, so it is checked
+rather than assumed.
+"""
+
+import io
+import json
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+
+from pumllint.engine import Engine
+from pumllint.lsp import (
+    LspServer,
+    diagnostics_for,
+    lsp_severity,
+    read_message,
+    serve,
+    uri_to_path,
+    write_message,
+)
+from pumllint.model import Severity
+
+# No title (GEN001), no diagram name (GEN002), unlabelled message (SEQ005).
+_DOC = "@startuml\nparticipant A\nparticipant B\nA -> B\n@enduml\n"
+
+
+def _frame(obj: dict) -> bytes:
+    body = json.dumps(obj).encode("utf-8")
+    return b"Content-Length: %d\r\n\r\n" % len(body) + body
+
+
+def _decode_all(raw: bytes) -> list[dict]:
+    """Every framed message in *raw*, decoded."""
+    out, i = [], 0
+    while True:
+        j = raw.find(b"\r\n\r\n", i)
+        if j == -1:
+            return out
+        header = raw[i:j].decode("ascii")
+        length = int(
+            [l for l in header.split("\r\n") if l.lower().startswith("content-length")][0]
+            .split(":")[1]
+            .strip()
+        )
+        out.append(json.loads(raw[j + 4 : j + 4 + length].decode("utf-8")))
+        i = j + 4 + length
+
+
+def _drive(messages: list[dict]) -> tuple[int, list[dict]]:
+    """Run the server over *messages*, returning (exit code, replies).
+
+    An ``initialize`` carrying an empty temp directory as ``rootUri`` is
+    prepended unless the caller sent one, so config discovery finds nothing
+    and the defaults apply. Without it these tests would silently pick up the
+    repository's own ``pumllint.toml`` and assert against its severities —
+    the config contamination this project has been bitten by before.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        if not any(m.get("method") == "initialize" for m in messages):
+            messages = [
+                {
+                    "jsonrpc": "2.0",
+                    "id": 0,
+                    "method": "initialize",
+                    "params": {"rootUri": Path(tmp).as_uri()},
+                }
+            ] + messages
+        else:
+            messages = [
+                {**m, "params": {**(m.get("params") or {}), "rootUri": Path(tmp).as_uri()}}
+                if m.get("method") == "initialize"
+                else m
+                for m in messages
+            ]
+        out = io.BytesIO()
+        code = serve(io.BytesIO(b"".join(_frame(m) for m in messages)), out)
+    return code, _decode_all(out.getvalue())
+
+
+# -- URIs -------------------------------------------------------------------
+
+
+def test_lsp_uri_to_path_is_forward_slashed():
+    assert uri_to_path("file:///home/user/a/b.puml") == "/home/user/a/b.puml"
+
+
+def test_lsp_uri_to_path_strips_the_windows_drive_slash():
+    # file:///C:/x/y.puml — the leading slash before the drive must go, and the
+    # result stays forward-slashed on every platform (the reporting contract).
+    assert uri_to_path("file:///C:/x/y.puml") == "C:/x/y.puml"
+
+
+def test_lsp_uri_to_path_decodes_percent_escapes():
+    assert uri_to_path("file:///tmp/my%20diagrams/a.puml") == "/tmp/my diagrams/a.puml"
+
+
+def test_lsp_uri_to_path_passes_through_non_file_schemes():
+    # untitled: buffers have no filesystem path; they must not become "".
+    assert uri_to_path("untitled:Untitled-1") == "untitled:Untitled-1"
+
+
+# -- severity mapping -------------------------------------------------------
+
+
+def test_lsp_severity_maps_the_fail_threshold_to_error():
+    # Default threshold is major, matching `pumllint lint --fail-on`.
+    assert lsp_severity(Severity.BLOCKER) == 1
+    assert lsp_severity(Severity.CRITICAL) == 1
+    assert lsp_severity(Severity.MAJOR) == 1
+    assert lsp_severity(Severity.MINOR) == 2
+    assert lsp_severity(Severity.INFO) == 3
+
+
+def test_lsp_severity_follows_a_raised_threshold():
+    # Raising the gate must raise the squiggles with it, or the editor starts
+    # underlining things CI accepts — the divergence this surface prevents.
+    assert lsp_severity(Severity.MAJOR, fail_on=Severity.BLOCKER) == 2
+    assert lsp_severity(Severity.BLOCKER, fail_on=Severity.BLOCKER) == 1
+
+
+# -- diagnostics ------------------------------------------------------------
+
+
+def test_lsp_diagnostics_agree_with_the_engine():
+    """The editor reports exactly what the engine reports — same rule ids.
+
+    This is the contract the whole module exists for. If it ever fails, the
+    editor and the gate have diverged and the surface is worse than useless.
+    """
+    engine = Engine({})
+    from pumllint.parser import parse_source
+
+    expected = {v.rule_id for v in engine.lint_diagrams(parse_source(_DOC, "d.puml"))}
+    got = {d["code"] for d in diagnostics_for(_DOC, "d.puml", engine)}
+    assert got == expected, (got, expected)
+    assert expected, "fixture should produce findings"
+
+
+def test_lsp_diagnostics_carry_source_and_rule_id():
+    diags = diagnostics_for(_DOC, "d.puml", Engine({}))
+    assert all(d["source"] == "pumllint" for d in diags)
+    assert all(d["code"] and d["code"][:3].isalpha() for d in diags)
+
+
+def test_lsp_diagnostic_ranges_are_zero_based_and_span_the_line():
+    diags = diagnostics_for(_DOC, "d.puml", Engine({}))
+    gen001 = [d for d in diags if d["code"] == "GEN001"][0]
+    # Violation.line is 1-based; LSP is 0-based.
+    assert gen001["range"]["start"]["line"] == 0
+    # A zero-width range renders as an invisible squiggle — span the line.
+    assert gen001["range"]["end"]["character"] > gen001["range"]["start"]["character"]
+
+
+def test_lsp_no_startuml_yields_no_diagnostics():
+    # Matches the CLI, which reports such a file as not checked, not as clean.
+    assert diagnostics_for("just prose\n", "notes.md", Engine({})) == []
+
+
+def test_lsp_range_is_clamped_past_the_end_of_the_buffer():
+    # A diagnostic can race an edit that shortened the file; clamp, don't crash.
+    from pumllint.lsp import _range_for
+    from pumllint.model import Dimension, Violation
+
+    v = Violation("GEN001", "m", "d.puml", 999, Severity.MAJOR, Dimension.SEMANTIC)
+    r = _range_for(v, ["only one line"])
+    assert r["start"]["line"] == 0
+
+
+# -- framing ----------------------------------------------------------------
+
+
+def test_lsp_framing_round_trips():
+    buf = io.BytesIO()
+    write_message(buf, {"jsonrpc": "2.0", "id": 1, "result": None})
+    buf.seek(0)
+    assert read_message(buf) == {"jsonrpc": "2.0", "id": 1, "result": None}
+
+
+def test_lsp_read_message_returns_none_at_end_of_stream():
+    assert read_message(io.BytesIO(b"")) is None
+
+
+def test_lsp_read_message_survives_a_truncated_body():
+    # An editor that dies mid-write should stop the server, not crash it.
+    assert read_message(io.BytesIO(b"Content-Length: 999\r\n\r\n{}")) is None
+
+
+# -- lifecycle --------------------------------------------------------------
+
+
+def test_lsp_initialize_advertises_full_sync():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    init = [r for r in replies if r.get("id") == 1][0]
+    assert init["result"]["capabilities"]["textDocumentSync"] == 1
+    assert init["result"]["serverInfo"]["name"] == "pumllint"
+
+
+def test_lsp_did_open_publishes_diagnostics():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}},
+            },
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    published = [r for r in replies if r.get("method") == "textDocument/publishDiagnostics"]
+    assert len(published) == 1
+    assert published[0]["params"]["uri"] == "file:///d.puml"
+    assert published[0]["params"]["diagnostics"], "expected findings for the fixture"
+
+
+def test_lsp_did_change_republishes_from_the_unsaved_buffer():
+    """Editing to a clean diagram clears the findings without touching disk."""
+    clean = "@startuml d\ntitle T\nparticipant A\nparticipant B\nA -> B : go\n@enduml\n"
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}},
+            },
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didChange",
+                "params": {
+                    "textDocument": {"uri": "file:///d.puml"},
+                    "contentChanges": [{"text": clean}],
+                },
+            },
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    published = [r for r in replies if r.get("method") == "textDocument/publishDiagnostics"]
+    assert len(published) == 2
+    assert published[0]["params"]["diagnostics"]
+    assert published[1]["params"]["diagnostics"] == []
+
+
+def test_lsp_did_close_clears_the_clients_squiggles():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}},
+            },
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didClose",
+                "params": {"textDocument": {"uri": "file:///d.puml"}},
+            },
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    published = [r for r in replies if r.get("method") == "textDocument/publishDiagnostics"]
+    assert published[-1]["params"]["diagnostics"] == []
+
+
+def test_lsp_unknown_request_still_gets_a_reply():
+    # An unanswered request blocks the client forever.
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 7, "method": "textDocument/hover", "params": {}},
+            {"jsonrpc": "2.0", "id": 8, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    assert any(r.get("id") == 7 for r in replies)
+
+
+def test_lsp_unknown_notification_is_ignored_silently():
+    # Notifications have no id and must not draw a reply.
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "method": "$/setTrace", "params": {"value": "off"}},
+            {"jsonrpc": "2.0", "id": 1, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    assert [r for r in replies if r.get("id") == 1]
+    assert not any(r.get("method") == "$/setTrace" for r in replies)
+    # initialize (injected by _drive) + shutdown; the notification drew nothing.
+    assert len(replies) == 2
+
+
+# -- exit codes (the contract) ---------------------------------------------
+
+
+def test_lsp_shutdown_then_exit_is_zero():
+    code, _ = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    assert code == 0
+
+
+def test_lsp_exit_without_shutdown_is_one():
+    # The LSP specification's rule, and it keeps this long-running surface
+    # inside the repository's 0/1/2 exit-code contract.
+    code, _ = _drive([{"jsonrpc": "2.0", "method": "exit"}])
+    assert code == 1
+
+
+def test_lsp_broken_pipe_without_shutdown_is_one():
+    code, _ = _drive([])
+    assert code == 1
+
+
+# -- the stdout hazard ------------------------------------------------------
+
+
+def test_lsp_serve_rebinds_stdout_so_stray_prints_cannot_corrupt_the_stream():
+    """``cli._out`` prints to ``sys.stdout``; the protocol owns the real one.
+
+    Without the rebind a single stray print produces an unparseable stream and
+    the session dies naming nothing. Assert the rebind is in force *during*
+    serve and restored afterwards.
+    """
+    seen = {}
+
+    class Probe(io.BytesIO):
+        def write(self, b):  # first protocol write happens inside serve()
+            seen.setdefault("stdout_during", sys.stdout)
+            return super().write(b)
+
+    before = sys.stdout
+    serve(
+        io.BytesIO(
+            _frame({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+            + _frame({"jsonrpc": "2.0", "id": 2, "method": "shutdown"})
+            + _frame({"jsonrpc": "2.0", "method": "exit"})
+        ),
+        Probe(),
+    )
+    assert seen["stdout_during"] is sys.stderr, "stdout must be rebound during serve"
+    assert sys.stdout is before, "stdout must be restored after serve"
+
+
+def test_lsp_a_failing_rule_does_not_end_the_session():
+    """A rule that raises degrades to no diagnostics, not a dead editor."""
+
+    class Exploding(Engine):
+        def lint_diagrams(self, diagrams):
+            raise RuntimeError("boom")
+
+    out = io.BytesIO()
+    server = LspServer(out)
+    server._engine = Exploding({})
+    server.handle(
+        {
+            "jsonrpc": "2.0",
+            "method": "textDocument/didOpen",
+            "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}},
+        }
+    )
+    published = _decode_all(out.getvalue())
+    assert published[0]["params"]["diagnostics"] == []
+
+
+# -- end to end -------------------------------------------------------------
+
+
+def test_lsp_subcommand_rejects_a_bad_fail_on_with_exit_2():
+    """Usage errors keep the 0/1/2 contract even on the streaming subcommand."""
+    repo = str(Path(__file__).resolve().parent.parent)
+    proc = subprocess.run(
+        [sys.executable, "-m", "pumllint", "lsp", "--fail-on", "nonsense"],
+        input=b"",
+        capture_output=True,
+        env={**os.environ, "PYTHONPATH": repo},
+        timeout=120,
+    )
+    assert proc.returncode == 2, proc.stderr.decode()
+
+
+def test_lsp_subcommand_carries_the_version_flag():
+    repo = str(Path(__file__).resolve().parent.parent)
+    proc = subprocess.run(
+        [sys.executable, "-m", "pumllint", "lsp", "--version"],
+        input=b"",
+        capture_output=True,
+        env={**os.environ, "PYTHONPATH": repo},
+        timeout=120,
+    )
+    assert proc.returncode == 0
+    assert b"pumllint" in proc.stdout
+
+
+def test_lsp_subcommand_runs_as_a_real_process():
+    """`python -m pumllint lsp` speaks the protocol on real stdio."""
+    payload = b"".join(
+        _frame(m)
+        for m in (
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}},
+            },
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        )
+    )
+    repo = str(Path(__file__).resolve().parent.parent)
+    env = {**os.environ, "PYTHONPATH": repo}
+    with tempfile.TemporaryDirectory() as tmp:
+        proc = subprocess.run(
+            [sys.executable, "-m", "pumllint", "lsp"],
+            input=payload,
+            capture_output=True,
+            cwd=tmp,  # outside the repo: default config, GEN006/GEN007 dormant
+            env=env,
+            timeout=120,
+        )
+    assert proc.returncode == 0, proc.stderr.decode()
+    replies = _decode_all(proc.stdout)
+    published = [r for r in replies if r.get("method") == "textDocument/publishDiagnostics"]
+    assert published and published[0]["params"]["diagnostics"]

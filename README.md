@@ -23,6 +23,7 @@ pumllint --profile codegen diagrams/         # + codegen-readiness rules
 pumllint score diagrams/ --min-level 3       # maturity gate (see below)
 pumllint fix diagrams/                       # auto-fix mechanical findings
 pumllint trace diagrams/ --requirements reqs.txt   # requirement-coverage matrix
+pumllint lsp                                 # editor diagnostics over LSP (stdio)
 ```
 
 (`python -m pumllint` is equivalent wherever the console script is not on PATH.)
@@ -562,6 +563,7 @@ pumllint/
 │   ├── activity.py   #   new-style activity syntax (start/if/while/fork/…)
 │   ├── class_.py     #   class diagrams (classifiers, members, relations)
 │   └── state.py      #   state machines ([*], transitions, composites)
+├── lsp.py            # Language Server Protocol front-end (stdio, stdlib only)
 ├── rules/            # rule packs; auto-discovered via @register decorator
 │   ├── catalog.toml  #   declarative rule metadata (name/desc/severity/scope)
 │   ├── sequence/     #   SEQ*  (participants.py, flows.py, codegen.py)
@@ -624,6 +626,55 @@ class NoSelfMessage(Rule):
   how activity support (ACT001–004) was added in 0.2.0, class support
   (CLS001–005) in 0.9.0 and state support (STA001–003) in 0.10.0; component
   diagrams would follow the same pattern with `applies_to = ("component",)`.
+
+## Editor diagnostics (LSP)
+
+`pumllint lsp` speaks the Language Server Protocol on stdio, publishing the
+**same findings as `pumllint lint`** while you type — no new rules, no second
+implementation, no third-party dependency.
+
+```bash
+pumllint lsp                              # stdio; started by your editor
+pumllint lsp --config pumllint.toml       # explicit config (else auto-discovered)
+pumllint lsp --fail-on critical           # raise the red line (see below)
+```
+
+**Severity mapping is tied to the CI gate.** `--fail-on` is the same flag,
+with the same choices and the same default (`major`), as `pumllint lint`:
+
+| pumllint severity | LSP severity (default `--fail-on major`) |
+|---|---|
+| `blocker`, `critical`, `major` | **Error** — these fail CI |
+| `minor` | Warning |
+| `info` | Information |
+
+So an editor error means *CI will reject this*, and nothing CI rejects shows
+up as a hint. Point both at the same threshold and the two cannot disagree.
+
+Diagnostics are computed from the **unsaved buffer**, so findings update as you
+edit rather than on save. A buffer with no `@startuml` block yields no
+diagnostics, matching the CLI's treatment of such a file as *not checked*
+rather than clean.
+
+**Editor configuration.** Any LSP client works; the server needs no
+initialization options. For example, in Neovim:
+
+```lua
+vim.lsp.start({
+  name = 'pumllint',
+  cmd = { 'pumllint', 'lsp' },
+  root_dir = vim.fs.dirname(vim.fs.find({ 'pumllint.toml', '.git' }, { upward = true })[1]),
+})
+```
+
+For VS Code, point any generic LSP client extension at the command
+`pumllint lsp` for the `plantuml` language id.
+
+**One caveat worth knowing.** The protocol owns stdout, so `pumllint lsp` is
+the one subcommand that prints no report there; diagnostics travel as
+JSON-RPC and everything else goes to stderr. Exit codes still hold: `0` after
+a clean `shutdown`/`exit`, `1` if the client disappears or exits without
+shutting down.
 
 ## CI integration (GitHub Actions)
 
