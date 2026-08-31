@@ -637,6 +637,7 @@ implementation, no third-party dependency.
 pumllint lsp                              # stdio; started by your editor
 pumllint lsp --config pumllint.toml       # explicit config (else auto-discovered)
 pumllint lsp --fail-on critical           # raise the red line (see below)
+pumllint lsp --profile codegen            # same flags as `lint` and `fix`
 ```
 
 **Severity mapping is tied to the CI gate.** `--fail-on` is the same flag,
@@ -669,6 +670,44 @@ vim.lsp.start({
 
 For VS Code, point any generic LSP client extension at the command
 `pumllint lsp` for the `plantuml` language id.
+
+### Quick fixes
+
+The three mechanical fixes `pumllint fix` applies are offered as code actions
+on the lightbulb — GEN002 diagram name, GEN001 title, SEQ001/SEQ101
+participant declarations:
+
+| Action | Kind |
+|---|---|
+| `Named diagram 'credit-check'` | `quickfix` |
+| `Added title 'Credit check'` | `quickfix` |
+| `Declare 2 missing participants (B, C)` | `quickfix` |
+| `Fix all 3 pumllint findings` | `source.fixAll.pumllint` |
+
+**Applying them writes the same bytes as `pumllint fix`** — that equivalence
+is asserted by a differential test, because a lightbulb that disagrees with
+the CLI is worse than no lightbulb.
+
+Undeclared participants sharing one line are **one** action, not one per
+participant: they share a single anchor and a single edit, so separate
+entries would be a fiction.
+
+The fix-all kind is namespaced (`source.fixAll.pumllint`), so a generic
+`"source.fixAll": true` on-save setting does not silently author diagram
+names for someone who never named this tool — though `context.only` matching
+is hierarchical, so a client that *asks* for `source.fixAll` still gets it.
+To fix on save in VS Code:
+
+```jsonc
+"editor.codeActionsOnSave": { "source.fixAll.pumllint": "explicit" }
+```
+
+Two deliberate limits. A buffer containing a separator Python splits on but
+editors do not (a form feed, `U+2028`) gets **no** code actions — the line
+numbers would disagree and a `replace` could overwrite the wrong line.
+And unlike `pumllint fix`, a code action does not normalise line endings: the
+CLI rewrites a mixed-ending file to one style, an edit changes only the lines
+it touches.
 
 **One caveat worth knowing.** The protocol owns stdout, so `pumllint lsp` is
 the one subcommand that prints no report there; diagnostics travel as

@@ -10,21 +10,25 @@ rather than assumed.
 import io
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 from pumllint.engine import Engine
+from pumllint.fixer import apply_fixes, compute_fixes
 from pumllint.lsp import (
     LspServer,
     diagnostics_for,
     lsp_severity,
     read_message,
     serve,
+    text_edits_for,
     uri_to_path,
     write_message,
 )
+from pumllint.parser import parse_source
 from pumllint.model import Severity
 
 # No title (GEN001), no diagram name (GEN002), unlabelled message (SEQ005).
@@ -440,3 +444,320 @@ def test_lsp_subcommand_runs_as_a_real_process():
     replies = _decode_all(proc.stdout)
     published = [r for r in replies if r.get("method") == "textDocument/publishDiagnostics"]
     assert published and published[0]["params"]["diagnostics"]
+
+
+# -- code actions: the differential property --------------------------------
+#
+# The executable analogue of test_lsp_diagnostics_agree_with_the_engine. An
+# example test would pass while the edits were subtly wrong; only applying
+# them through a client that indexes the way a real editor does can show that
+# the lightbulb and `pumllint fix` write the same bytes.
+
+
+def _u16_to_index(line: str, units: int) -> int:
+    """Python index in *line* for a UTF-16 code-unit offset."""
+    i = seen = 0
+    while i < len(line) and seen < units:
+        seen += 2 if ord(line[i]) > 0xFFFF else 1
+        i += 1
+    return i
+
+
+def _apply_text_edits(text: str, edits: list[dict]) -> str:
+    """Apply LSP TextEdits the way an editor would.
+
+    Splits lines on exactly \r\n / \r / \n and treats ``character`` as
+    UTF-16 code units — the two things the server has to get right.
+    """
+    starts = [0] + [m.end() for m in re.finditer(r"\r\n|\r|\n", text)]
+    lines = re.split(r"\r\n|\r|\n", text)
+
+    def offset(pos: dict) -> int:
+        line = min(pos["line"], len(lines) - 1)
+        return starts[line] + _u16_to_index(lines[line], pos["character"])
+
+    # Descending, so each splice leaves earlier offsets valid.
+    for e in sorted(edits, key=lambda e: offset(e["range"]["start"]), reverse=True):
+        a, b = offset(e["range"]["start"]), offset(e["range"]["end"])
+        text = text[:a] + e["newText"] + text[b:]
+    return text
+
+
+def _differential(src: str, stem: str = "credit_check") -> None:
+    """Assert the LSP edits and `pumllint fix` produce identical bytes."""
+    diagrams = parse_source(src, f"{stem}.puml")
+    violations = Engine({}).lint_diagrams(diagrams)
+    fixes = compute_fixes(src, diagrams, violations, stem=stem)
+    assert fixes, f"fixture produced no fixes: {src!r}"
+    assert _apply_text_edits(src, text_edits_for(fixes, src)) == apply_fixes(src, fixes)
+
+
+def test_lsp_edits_match_pumllint_fix_on_a_plain_buffer():
+    _differential("@startuml\nparticipant A\nA -> B : go\n@enduml\n")
+
+
+def test_lsp_edits_match_pumllint_fix_with_crlf():
+    _differential("@startuml\r\nparticipant A\r\nA -> B : go\r\n@enduml\r\n")
+
+
+def test_lsp_edits_match_pumllint_fix_without_a_trailing_newline():
+    _differential("@startuml\nparticipant A\nA -> B : go\n@enduml")
+
+
+def test_lsp_edits_match_pumllint_fix_with_replace_and_insert_on_one_line():
+    # GEN002 replaces the @startuml line; GEN001 inserts a title after it.
+    # Both anchor on the same line, which is where a naive builder overlaps.
+    src = "@startuml\nparticipant A\nA -> A : x\n@enduml\n"
+    diagrams = parse_source(src, "credit_check.puml")
+    fixes = compute_fixes(src, diagrams, Engine({}).lint_diagrams(diagrams), stem="credit_check")
+    kinds = {(f.rule_id, f.kind, f.line) for f in fixes}
+    assert ("GEN002", "replace", 1) in kinds and ("GEN001", "insert_after", 1) in kinds
+    _differential(src)
+
+
+def test_lsp_edits_match_pumllint_fix_with_two_participants_on_one_line():
+    # Two inserts sharing one anchor line — the case where emitting separate
+    # same-position edits would leave the order to the client.
+    _differential("@startuml d\ntitle T\nparticipant A\nB -> C : hop\n@enduml\n")
+
+
+def test_lsp_edits_match_pumllint_fix_with_astral_characters():
+    """The astral character must sit on an *edited* line, or this is vacuous.
+
+    An emoji elsewhere in the buffer never crosses an edit offset, so the
+    test would pass with the code-point bug still in place — verified by
+    reintroducing it. Here the SEQ001 anchor *is* the participant line
+    carrying the emoji, whose end offset is 22 code points but 23 UTF-16
+    units, so a len()-based server splices one unit short.
+    """
+    _differential(
+        '@startuml d\ntitle T\nparticipant "🚀 A" as A\nA -> B : go\n@enduml\n', stem="d"
+    )
+
+
+def test_lsp_edits_are_utf16_indexed_not_codepoint_indexed():
+    """The end offset of a replaced line counts UTF-16 units."""
+    src = "@startuml\ntitle 🚀 T\nparticipant A\nA -> A : x\n@enduml\n"
+    diagrams = parse_source(src, "d.puml")
+    fixes = compute_fixes(src, diagrams, Engine({}).lint_diagrams(diagrams), stem="d")
+    replaces = [f for f in fixes if f.kind == "replace"]
+    assert replaces, "expected a GEN002 replace"
+    edit = [e for e in text_edits_for(fixes, src) if e["range"]["end"]["character"] > 0][0]
+    line = re.split(r"\r\n|\r|\n", src)[edit["range"]["start"]["line"]]
+    assert edit["range"]["end"]["character"] == len(line.encode("utf-16-le")) // 2
+
+
+def test_lsp_edits_for_no_fixes_is_empty():
+    assert text_edits_for([], "@startuml d\n@enduml\n") == []
+
+
+# -- code actions: protocol behaviour ---------------------------------------
+
+
+def _actions(doc: str = _DOC, uri: str = "file:///credit_check.puml", **ctx) -> list[dict]:
+    """Code actions for *doc*, driven through the real server."""
+    rng = ctx.pop("range", {"start": {"line": 0, "character": 0},
+                            "end": {"line": 20, "character": 0}})
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "method": "textDocument/didOpen",
+                "params": {"textDocument": {"uri": uri, "version": 1, "text": doc}},
+            },
+            {
+                "jsonrpc": "2.0",
+                "id": 2,
+                "method": "textDocument/codeAction",
+                "params": {
+                    "textDocument": {"uri": uri},
+                    "range": rng,
+                    "context": {"diagnostics": [], **ctx},
+                },
+            },
+            {"jsonrpc": "2.0", "id": 3, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    return [r for r in replies if r.get("id") == 2][0]["result"]
+
+
+def test_lsp_initialize_advertises_code_actions():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {"jsonrpc": "2.0", "id": 2, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    caps = [r for r in replies if r.get("id") == 1][0]["result"]["capabilities"]
+    kinds = caps["codeActionProvider"]["codeActionKinds"]
+    assert "quickfix" in kinds and "source.fixAll.pumllint" in kinds
+
+
+def test_lsp_offers_a_quickfix_per_finding_and_one_fix_all():
+    actions = _actions()
+    quick = [a for a in actions if a["kind"] == "quickfix"]
+    fix_all = [a for a in actions if a["kind"] == "source.fixAll.pumllint"]
+    assert len(fix_all) == 1
+    assert quick, "expected quick fixes for the fixture"
+    # Titles name what the edit does, taken from the fixer's own descriptions.
+    assert any("title" in a["title"].lower() for a in quick)
+
+
+def test_lsp_declares_all_participants_on_a_line_in_one_action():
+    """Two undeclared participants on one line is ONE offer, not two.
+
+    `compute_fixes` collapses its input to the set of lines carrying
+    undeclared participants, so asking about one participant returns the
+    fixes for every participant on that line. Two entries would carry
+    identical edits and contradictory titles.
+    """
+    doc = "@startuml d\ntitle T\nparticipant A\nB -> C : hop\n@enduml\n"
+    quick = [a for a in _actions(doc) if a["kind"] == "quickfix"]
+    declares = [a for a in quick if "articipant" in a["title"]]
+    assert len(declares) == 1, [a["title"] for a in declares]
+    assert "B" in declares[0]["title"] and "C" in declares[0]["title"]
+    # and it claims both diagnostics it resolves
+    assert len(declares[0]["diagnostics"]) == 2
+
+
+def test_lsp_fix_all_matches_a_generic_source_fixall_request():
+    """CodeActionKinds are hierarchical — `source.fixAll` must match ours.
+
+    String equality here would return nothing to the commonest fix-on-save
+    configuration there is.
+    """
+    actions = _actions(only=["source.fixAll"])
+    assert [a["kind"] for a in actions] == ["source.fixAll.pumllint"]
+
+
+def test_lsp_only_filter_can_select_quickfixes_alone():
+    actions = _actions(only=["quickfix"])
+    assert actions and all(a["kind"] == "quickfix" for a in actions)
+
+
+def test_lsp_offers_nothing_when_there_is_nothing_to_fix():
+    """A clean buffer must not offer an empty fix-all.
+
+    Otherwise `codeActionsOnSave` applies an empty WorkspaceEdit every save.
+    """
+    clean = "@startuml d\ntitle T\nparticipant A\nparticipant B\nA -> B : go\n@enduml\n"
+    assert _actions(clean) == []
+
+
+def test_lsp_code_action_response_is_a_list_not_null():
+    assert isinstance(_actions("no diagram here\n"), list)
+
+
+def test_lsp_quickfix_is_preferred_only_when_it_is_the_only_one():
+    # Several quick fixes: none may claim to be *the* auto-fix.
+    many = [a for a in _actions() if a["kind"] == "quickfix"]
+    assert len(many) > 1
+    assert not any(a.get("isPreferred") for a in many)
+
+
+def test_lsp_code_actions_respect_the_selected_range():
+    # A selection ending at character 0 does not include that line, so a
+    # selection of line 0 only must not offer the participant fix anchored
+    # further down.
+    doc = "@startuml d\ntitle T\nparticipant A\nB -> C : hop\n@enduml\n"
+    narrow = _actions(doc, range={"start": {"line": 0, "character": 0},
+                                  "end": {"line": 1, "character": 0}})
+    assert not [a for a in narrow if a["kind"] == "quickfix"]
+
+
+def test_lsp_code_actions_suppressed_on_exotic_line_separators():
+    """A form feed makes Python and the editor disagree about line numbers.
+
+    A misplaced squiggle is survivable; a misplaced `replace` overwrites a
+    line the user never touched, so offer nothing at all.
+    """
+    doc = "@startuml\nparticipant A\nnote over A\n  see\x0cspec\nend note\nA -> B : go\n@enduml\n"
+    assert _actions(doc) == []
+
+
+def test_lsp_code_actions_for_untitled_buffers_skip_name_derived_fixes():
+    """An untitled buffer has no file stem, so GEN002's name is meaningless."""
+    actions = _actions(uri="untitled:Untitled-1")
+    assert not any("Untitled" in a["title"] for a in actions)
+
+
+def test_lsp_code_action_falls_back_to_changes_without_documentChanges():
+    # _drive's initialize advertises no capabilities, so the server must not
+    # emit documentChanges (which carries a version the client can reject).
+    actions = _actions()
+    assert all("changes" in a["edit"] for a in actions)
+
+
+def test_lsp_a_failing_fixer_does_not_end_the_session():
+    out = io.BytesIO()
+    server = LspServer(out)
+    server._documents["file:///d.puml"] = _DOC
+
+    def boom(*a, **k):
+        raise RuntimeError("boom")
+
+    import pumllint.lsp as lsp_mod
+
+    original = lsp_mod.code_actions_for
+    lsp_mod.code_actions_for = boom
+    try:
+        server.handle(
+            {
+                "jsonrpc": "2.0",
+                "id": 9,
+                "method": "textDocument/codeAction",
+                "params": {"textDocument": {"uri": "file:///d.puml"}, "context": {}},
+            }
+        )
+    finally:
+        lsp_mod.code_actions_for = original
+    assert _decode_all(out.getvalue())[0]["result"] == []
+
+
+def test_lsp_code_action_after_close_responds_empty():
+    out = io.BytesIO()
+    server = LspServer(out)
+    server.handle(
+        {
+            "jsonrpc": "2.0",
+            "id": 4,
+            "method": "textDocument/codeAction",
+            "params": {"textDocument": {"uri": "file:///gone.puml"}, "context": {}},
+        }
+    )
+    assert _decode_all(out.getvalue())[0]["result"] == []
+
+
+def test_lsp_derived_name_never_empty():
+    """A stem reducing to nothing produced a fix that fixed nothing.
+
+    `@startuml ` still trips GEN002, so the finding survived its own fix and
+    the editor re-offered the same no-op forever.
+    """
+    from pumllint.fixer import _derived_name
+
+    assert _derived_name("_", 1) == "diagram"
+    assert _derived_name("___", 2) == "diagram-2"
+    assert _derived_name("credit_check", 1) == "credit-check"
+
+
+def test_lsp_honours_profile_and_no_suppressions_like_the_fix_command():
+    """The editor and `pumllint fix` must see the same rule set.
+
+    `pumllint fix --profile codegen` fixes SEQ101 findings; without these
+    flags the editor could never offer them, which is the divergence this
+    surface exists to prevent.
+    """
+    base = LspServer(io.BytesIO())
+    base._root = tempfile.gettempdir()
+    with_codegen = LspServer(io.BytesIO(), profile="codegen")
+    with_codegen._root = tempfile.gettempdir()
+    assert len(with_codegen._ensure_engine().rules) > len(base._ensure_engine().rules)
+    assert with_codegen._ensure_engine().profile == "codegen"
+
+    quiet = LspServer(io.BytesIO(), no_suppressions=True)
+    quiet._root = tempfile.gettempdir()
+    assert quiet._ensure_engine().config.get("suppressions") is False

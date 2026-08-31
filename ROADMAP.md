@@ -278,11 +278,13 @@ three items — full write-up in EVIDENCE.md §Deepening:
 - [x] **LSP server / IDE integration for inline findings — BUILT 2026-08-31**
   (`pumllint/lsp.py`, `pumllint lsp`). **The 2026-07-24 prediction held
   exactly**: a stdlib JSON-RPC/stdio server does fit the zero-dependency
-  promise — the module imports only `json`, `sys`, `pathlib`, `typing` and
-  `urllib`. **What was built is diagnostics only.** The same note's other
-  half — *"`pumllint fix` makes code-actions nearly free"* — is **NOT built**
-  and is not implied by this checkbox; `textDocument/codeAction` remains
-  open, and `pumllint fix` still makes it cheap. The "permanent maintenance
+  promise — the module imports only `json`, `re`, `sys`, `pathlib`, `typing`
+  and `urllib`. **Code actions followed on 2026-08-31**, and the same note's
+  other half — *"`pumllint fix` makes code-actions nearly free"* — held: the
+  fixer already returned per-finding line edits, so the server converts them
+  rather than reimplementing anything. *Nearly* free is right, not free: the
+  conversion surfaced two latent defects in the shipped diagnostics and three
+  in the fixer's edge cases. Still unbuilt: hover, completion, rename. The "permanent maintenance
   surface" caution stands and is now a cost the project has taken on. The
   GitHub `::error` annotations substitute was not needed: the ask was for the
   editor, not for PRs.
@@ -4987,9 +4989,95 @@ list and license posture live in § Settled questions.
     *"permanent maintenance surface"* stands. It is now a surface the project
     maintains. Suites: **527 stdlib / 649 pytest** (was 501 / 623).
   - *Recorded, not queued*: `textDocument/codeAction` backed by
-    `pumllint fix`; incremental sync if full-document reparse ever shows up
-    as latency on a large diagram (it has not been measured, and premature
-    incrementalism would risk the CLI-agreement property above).
+    `pumllint fix` — **DONE 2026-08-31, see the entry below**; incremental
+    sync if full-document reparse ever shows up as latency on a large diagram
+    — **now measured and declined**: parse+lint is ~4 ms and `compute_fixes`
+    ~7 ms on a 403-line diagram, far larger than a hand-authored one, so a
+    cache would buy that back at the price of a staleness bug class.
+
+- **Code actions backed by `pumllint fix` (2026-08-31) — the LSP surface's
+  other half, and the conversion found five defects.**
+  `pumllint/lsp.py`, `textDocument/codeAction`, 24 further tests.
+  - **The fixer needed no new fix logic**, exactly as the 2026-07-24 note
+    predicted. `Fix(rule_id, line, kind, content, description)` is already a
+    per-finding, line-numbered edit record with a UI-ready description, and
+    `compute_fixes` is pure and in-memory. The server converts; it does not
+    reimplement. **The property that matters — applying the edits writes the
+    bytes `pumllint fix` writes — is asserted by a DIFFERENTIAL test**, over
+    LF, CRLF, no-trailing-newline, fix-on-last-line, replace-plus-insert on
+    one line, astral characters on the edited line, and two undeclared
+    participants on one line. Verified end to end through the real protocol
+    against a real `pumllint fix` run: byte-identical.
+  - **TWO LATENT DEFECTS IN THE DIAGNOSTICS SHIPPED THE DAY BEFORE**, both
+    found by review and both verified before fixing. (1) `Position.character`
+    was `len()`; **LSP measures UTF-16 code units**, so every astral
+    character made the offset one short — cosmetic for a squiggle, but as an
+    edit end-offset it splices mid-character and writes a lone surrogate into
+    the file. (2) `str.splitlines()` splits on `\v \f \x1c-\x1e \x85
+    U+2028 U+2029`; **editors split on three separators only**, so one form
+    feed shifted every later line by one. As a diagnostic that is a misplaced
+    squiggle; as a `replace` it **overwrites a line the user never touched**.
+    Both now go through `_u16` and `_split_lines`, and a buffer whose two
+    splits still disagree is **refused code actions entirely** — a wrong
+    squiggle is survivable, a wrong `replace` is not.
+  - **A test that looked right and was vacuous.** The first astral-character
+    differential test passed *with the UTF-16 bug reintroduced*, because the
+    emoji sat on a line no edit touched, so no offset ever crossed it. Caught
+    by deliberately monkeypatching the bug back and checking the test failed.
+    **A differential test only tests what its fixture makes it cross** — the
+    fixture now puts the emoji on the SEQ001 anchor line (22 code points, 23
+    UTF-16 units).
+  - **Selection had to slice the fixer's OUTPUT, never its input.**
+    `compute_fixes` collapses its input to the *set of lines* carrying
+    undeclared participants, so asking it about one participant on a line
+    returns the fixes for **every** participant on that line — verified:
+    filtering on `B` and filtering on `C` produce byte-identical fix lists.
+    The obvious per-diagnostic design would have shown two menu entries with
+    identical edits and contradictory titles. **So SEQ declarations for one
+    diagram are ONE action naming all of them**, which is also the honest
+    description of a single shared-anchor edit. Related: `Fix.line` is the
+    *anchor*, never the violation's own line (3 vs 5 in the fixture), and
+    SEQ101-triggered fixes are stamped `rule_id="SEQ001"`, so neither line
+    nor code can be used for attribution.
+  - **`_derived_name` could return `""`** — a stem of `_`, `-` or `___`
+    reduced to nothing, producing `@startuml ` and `title `, which resolve
+    neither finding. `pumllint fix` reported work it had not done; in an
+    editor the same no-op would be offered on every lightbulb forever. Now
+    falls back to `diagram`. **A pre-existing `pumllint fix` bug that only
+    became visible because a second surface consumed the same fixer.**
+  - **Insert-only lines emit a zero-width edit at end of line**, not a
+    whole-line rewrite. A rewrite restates the original text, so a keystroke
+    landing on that line between the offer and the click would be silently
+    reverted. Documents also carry a `version` now, and edits use
+    `documentChanges` when the client advertises it, so a stale edit can be
+    rejected rather than applied.
+  - **`context.only` matching is hierarchical.** The fix-all kind is
+    namespaced `source.fixAll.pumllint` so a generic on-save setting does not
+    silently author diagram names for someone who never named this tool — but
+    a client that *asks* for `source.fixAll` must still be given it. String
+    equality would have returned nothing to the commonest fix-on-save
+    configuration there is.
+  - **CLI parity closed**: `pumllint lsp` now takes `--profile` and
+    `--no-suppressions`, which `pumllint fix` already had. Without them
+    `pumllint fix --profile codegen` fixes SEQ101 findings the editor could
+    never offer — the exact divergence this surface exists to prevent.
+  - **Premature optimisation declined, with a measurement.** Editors request
+    code actions on every selection change, so a per-request re-lint was the
+    obvious worry. Measured on a 403-line diagram: parse+lint ~4 ms,
+    `compute_fixes` ~7 ms. A cache keyed on buffer text would buy that back
+    at the price of a staleness bug class, so there is none, and the reason
+    is recorded in the code rather than left as an omission.
+  - **Documented divergence, not fixed here**: `apply_fixes` picks one
+    newline style and joins the *whole file*, so a mixed-ending buffer is
+    normalised wholesale; per-line edits cannot reproduce that. The code
+    action fixes locally, `pumllint fix` also normalises. Changing that is a
+    `pumllint fix` behaviour change and belongs in its own commit.
+  - Suites: **552 stdlib / 674 pytest** (was 529 / 651). Badge and HTML
+    report byte-identical, features in sync — the `_derived_name` change
+    touches no example.
+  - *Recorded, not queued*: hover, completion and rename remain unbuilt and
+    unrequested; `apply_fixes`'s whole-file newline normalisation as a
+    possible `pumllint fix` fix.
 
 ## Working agreements (read before picking anything up)
 
