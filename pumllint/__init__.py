@@ -5,6 +5,9 @@ Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`; build the
 requirement-coverage matrix with :mod:`pumllint.trace`. The JSON
 report shapes are pinned by :mod:`pumllint.schema` (:func:`load_schema`).
+Editors get the same findings at authoring time from :mod:`pumllint.lsp`
+(``pumllint lsp``), which is imported lazily by the CLI so it costs nothing
+to anyone not using it.
 """
 
 __version__ = "0.30.0"

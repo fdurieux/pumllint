@@ -275,12 +275,17 @@ three items — full write-up in EVIDENCE.md §Deepening:
   deliberately out of scope: those shapes are shields.io's and SonarQube's
   contracts. `diagramType` stays an open string (new parsers add values);
   gap `kind` is a closed enum anchored to `scoring.GAP_KINDS`.
-- [ ] LSP server / IDE integration for inline findings. Note (2026-07-24
-  re-evaluation): `pumllint fix` makes code-actions nearly free if this is
-  ever built, and a stdlib JSON-RPC/stdio server fits the zero-dependency
-  promise — but it is permanent maintenance surface; still strictly
-  wait-for-pull. If the underlying ask turns out to be "inline findings in
-  PRs", a GitHub `::error` annotations reporter is the cheap substitute.
+- [x] **LSP server / IDE integration for inline findings — BUILT 2026-08-31**
+  (`pumllint/lsp.py`, `pumllint lsp`). **The 2026-07-24 prediction held
+  exactly**: a stdlib JSON-RPC/stdio server does fit the zero-dependency
+  promise — the module imports only `json`, `sys`, `pathlib`, `typing` and
+  `urllib`. **What was built is diagnostics only.** The same note's other
+  half — *"`pumllint fix` makes code-actions nearly free"* — is **NOT built**
+  and is not implied by this checkbox; `textDocument/codeAction` remains
+  open, and `pumllint fix` still makes it cheap. The "permanent maintenance
+  surface" caution stands and is now a cost the project has taken on. The
+  GitHub `::error` annotations substitute was not needed: the ask was for the
+  editor, not for PRs.
 - [ ] Real SonarQube plugin with measures (replacing the synthetic-issue
   workaround in the sonar reporter). Bar raised (2026-07-24 re-evaluation):
   build only for a concrete Sonar-shop user whose need the generic-import
@@ -4833,7 +4838,11 @@ list and license posture live in § Settled questions.
     because it is a bad idea**: it is a new product surface needing a
     runtime pumllint does not have, and **nothing in the Arc E bar has
     asked for it**. Re-litigate on a concrete user asking for
-    editor-time checking.
+    editor-time checking. **[BUILT 2026-08-31 — the maintainer asked, which
+    is the concrete demand the Arc E bar names, so the gate opened rather
+    than was bypassed. `pumllint lsp`; see that turn's entry below. The
+    "runtime pumllint does not have" worry did not materialise: stdlib
+    JSON-RPC over stdio, zero third-party imports.]**
   - *Corrected in this turn*: the 38th note inline, in both places and in
     its ROADMAP entry; its `aws.ilograph` divergence framing, refined to
     two vintages. *Bound: the GUI was never run* — every finding is from
@@ -4909,9 +4918,78 @@ list and license posture live in § Settled questions.
     **carried forward unchanged — an editor plugin / LSP for pumllint**,
     the strongest unclaimed idea of the run, **unrequested and gated on
     the Arc E bar**. That is the only live thread the Ilograph run leaves
-    behind. *Bound: the app was never used, so "validates live as you
+    behind. **[CLAIMED AND BUILT 2026-08-31 — the maintainer requested it in
+    the next turn, which is exactly the trigger recorded here. The Ilograph
+    run's one open thread is now closed by code rather than by another
+    note.]** *Bound: the app was never used, so "validates live as you
     type" is inherited from the byte-identical bundle plus the 39th note's
     reading — strong, still not observed in a running editor.*
+
+- **The editor plugin / LSP, BUILT (2026-08-31) — the Ilograph run's one open
+  thread, closed by code.** `pumllint/lsp.py`, `pumllint lsp`, 26 tests.
+  - **The gate opened; it was not bypassed.** This item was recorded twice in
+    the Ilograph run as *"refused for now, and not because it is a bad
+    idea — nothing in the Arc E bar has asked for it"*, with the trigger
+    stated as **a concrete user asking for editor-time checking**. The
+    maintainer asked. That is the trigger, so the Arc E bar is satisfied on
+    its own terms. **The long-standing backlog item (2026-07-24) predicted
+    the shape exactly** — *"a stdlib JSON-RPC/stdio server fits the
+    zero-dependency promise"* — and it held: the module imports only `json`,
+    `sys`, `pathlib`, `typing` and `urllib`. **Zero third-party imports,
+    asserted by a test that walks the module's AST.**
+  - **THE DESIGN DECISION — the severity mapping is derived from the gate,
+    not invented.** `pumllint lsp --fail-on` takes the same flag, the same
+    choices and the same default (`major`) as `pumllint lint --fail-on`.
+    At or above the threshold → LSP **Error**; below it, `info` →
+    Information and everything else → Warning. **So an editor error means CI
+    will reject this, and nothing CI rejects appears as a hint.** This is the
+    direct product answer to the finding the Ilograph run closed on —
+    *editor-time checking is not CI checking* — and it is answered by making
+    one threshold drive both rather than by shipping a second checker.
+  - **`fail_on` is deliberately NOT a config-file key.** The first draft read
+    one; checking the codebase showed `fail_on` is a CLI flag everywhere else
+    and `_apply_cli_overrides` handles only `suppressions` and `profile`.
+    **Inventing a config key the lint path does not honour would have created
+    exactly the editor/gate divergence this surface exists to prevent.**
+    Replaced with the CLI flag before any of it shipped.
+  - **The stdout hazard is real and is handled.** LSP frames JSON-RPC on
+    stdout and `cli._out` prints there; one stray write corrupts the stream
+    and the session dies naming nothing — the same class of hazard CLAUDE.md
+    already flags for the Windows codec. `serve()` takes the real stdout
+    buffer once and **rebinds `sys.stdout` to stderr for the server's
+    lifetime**, so a stray `print` anywhere in the process degrades to a log
+    line. **Asserted by a test that checks the rebind is in force during
+    serve and restored after.**
+  - **The exit-code contract holds even on a long-running surface.** Per the
+    LSP specification, `exit` after `shutdown` is 0 and `exit` without one is
+    1 — which is also the repository's 0/1/2 contract, so the one subcommand
+    that never prints a report still obeys it. Both cases tested, plus a
+    dropped connection.
+  - **Diagnostics come from the unsaved buffer**, via the existing
+    `parse_source(text, file_path)` — **no engine change was needed**, and
+    full-document sync was chosen over incremental precisely to keep exact
+    agreement with the CLI. **The load-bearing test asserts that agreement
+    directly**: the same buffer through `diagnostics_for` and through
+    `Engine.lint_diagrams` yields the same rule ids. If that ever fails, the
+    editor and the gate have diverged and the surface is worse than useless.
+  - **Scope, stated so the checkbox does not overclaim: diagnostics only.**
+    The 2026-07-24 note's other half — *"`pumllint fix` makes code-actions
+    nearly free"* — is **not built**. `textDocument/codeAction` stays open,
+    and `pumllint fix` still makes it cheap. No hover, no completion. It is a
+    delivery surface for the existing engine, not a second product.
+  - **A test-isolation trap caught in writing.** The first draft of the suite
+    drove the server with `rootUri` unset, so config discovery found the
+    repository's own `pumllint.toml` and the "clean" fixture was not clean.
+    **The same config contamination this record has been bitten by before**
+    (the GEN006/GEN007 measurement discarded in the 34th note). `_drive` now
+    injects an empty temp directory as the root.
+  - **Cost taken on knowingly**: the 2026-07-24 caution that an LSP server is
+    *"permanent maintenance surface"* stands. It is now a surface the project
+    maintains. Suites: **527 stdlib / 649 pytest** (was 501 / 623).
+  - *Recorded, not queued*: `textDocument/codeAction` backed by
+    `pumllint fix`; incremental sync if full-document reparse ever shows up
+    as latency on a large diagram (it has not been measured, and premature
+    incrementalism would risk the CLI-agreement property above).
 
 ## Working agreements (read before picking anything up)
 

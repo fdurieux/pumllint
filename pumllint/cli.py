@@ -227,6 +227,43 @@ def build_schema_parser() -> argparse.ArgumentParser:
     return p
 
 
+def _run_lsp(argv: list[str]) -> int:
+    """Serve diagnostics over LSP on stdio.
+
+    The one subcommand that does not print a report: stdout carries the
+    JSON-RPC stream, so everything here that would normally go through
+    :func:`_out` goes to stderr instead, and :func:`pumllint.lsp.serve`
+    rebinds ``sys.stdout`` for the same reason.
+    """
+    p = argparse.ArgumentParser(
+        prog="pumllint lsp",
+        description=(
+            "Language Server Protocol front-end: publishes the same findings "
+            "as `pumllint lint`, in the editor, as you type."
+        ),
+    )
+    _add_version_argument(p)
+    p.add_argument("--config", help="Path to a config file (default: auto-discover)")
+    p.add_argument(
+        "--fail-on",
+        default="major",
+        choices=[s.value for s in _SEV_ORDER],
+        help=(
+            "Minimum severity shown as an LSP Error — the same threshold and "
+            "default as `pumllint lint --fail-on`, so the editor underlines "
+            "exactly what CI would reject (default: major)"
+        ),
+    )
+    args = p.parse_args(argv)
+
+    from .lsp import serve
+
+    try:
+        return serve(config_path=args.config, fail_on=Severity(args.fail_on))
+    except KeyboardInterrupt:
+        return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     argv = list(sys.argv[1:] if argv is None else argv)
     if argv and argv[0] == "score":
@@ -237,6 +274,8 @@ def main(argv: list[str] | None = None) -> int:
         return _run_trace(argv[1:])
     if argv and argv[0] == "schema":
         return _run_schema(argv[1:])
+    if argv and argv[0] == "lsp":
+        return _run_lsp(argv[1:])
     return _run_lint(argv)
 
 
