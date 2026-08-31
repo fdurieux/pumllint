@@ -5222,6 +5222,68 @@ list and license posture live in § Settled questions.
     after first use** produces no symbol at its declaration; that is a parser
     issue, not one this module can fix.
 
+- **The open queue, prioritised (2026-08-31): the next move is not a build —
+  and the reason is that this file no longer describes its own repository.**
+  Full note: [docs/roadmap-swot-prioritisation.md](docs/roadmap-swot-prioritisation.md).
+  A fan-out pass read the arcs, all 59 records above, the ten open issues, the
+  research charter, the pilot instruments and the parked work across ~70
+  `docs/` notes, then ranked the result by SWOT with dependencies and levers.
+  Recorded, not queued — every item below keeps its own trigger.
+  - **The finding that reorders the queue.** Issues #43 and #47 are the
+    capability-pull ledger the Arc E bar has waited for since 2026-07-24 — a
+    24-diagram production set under `profile = "codegen"`, ten asks, each
+    filed with its own measurement (30/30 on SEQ011's cap with no signal;
+    guard binding 0–100% across files all at 100/100; XD006 at 5
+    disagreements, 2 verified defects; 126/126 replies; 38 of 68 configured
+    verbs dead). **Neither issue is referenced in any of this repository's 101
+    markdown files**, while the *Working agreements* bullet below still reads
+    *"no committed follow-ups remain; everything is strictly demand-driven"*.
+    Verified at `dd9814c` by
+    `grep -rn 'capability pull\|production consumer' --include=*.md .` → no
+    output; this entry and the note are the first two references.
+  - **The same divergence, one file apart.** Arc E above marks the LSP
+    **BUILT 2026-08-31**; *Working agreements* still lists it under *"wait for
+    pull"*, 4,982 lines below the corrected checkbox — and that is the half a
+    work-selection turn reads first.
+  - **Seven ungated defect fixes rank above everything gated**, none needing a
+    trigger, a golden re-freeze or a schema bump: record integrity; the three
+    #37 config defects (a table-form `[rules.X]` with `enabled = false` falls
+    through as *options* and the rule stays armed — `engine.py:345-355`); the
+    `!include` disclosure's `bool(entities)` guard, which prevents it firing
+    on the case where the include hid *everything* (`cli.py:402`); the C7
+    guarantee sentence README retracts four lines later (`README.md:239-246`);
+    the census marker-by-source join; the `--help` epilog and the frozen
+    packaging tuple whose own docstring says it must name every command
+    (`cli.py:3`, `tests/test_packaging.py:85`); and SEQ006's advice to use a
+    construct the parser discards.
+  - **One question is left open on purpose.** Whether the #43/#47 consumer is
+    arm's-length decides at least eight items' gate status. The note declines
+    to assert it — the analysis pass reported the corpus unreachable, but that
+    could not be executed from the authoring environment (403 on both paths
+    against a 200 control). The in-repo hook needs no network:
+    docs/foreign-corpus-audit.md's own provenance row already reads *"asserted
+    there, not independently verified here"*. **Owner call.**
+  - **Two candidates dissolved under verification**, recorded so they are not
+    re-derived: *type-fallback disclosure* (the 159-file census found zero
+    non-UML forms; the proposed predicate would fire on ~1/8 of `aries-rfcs`'
+    honest sequence diagrams — measured wild prevalence zero) and *SEQ105
+    claim language* (already fixed — #40 prescribed it, PR #50 merged it; one
+    `catalog.toml` line remains).
+  - **Two prevalence numbers that gate the largest builds are gallery-borne.**
+    Under the 2026-08-27 exclusion guard the census's C4-macro figure goes
+    46% → 8.0%, and **0 of 39** in the only working-project corpus; `!include`
+    goes 118/159 → 47/88 → **0/39**. The C4 pack's motivation is real and its
+    demand is measured at zero.
+  - **The ROADMAP itself is flagged, and the cheap fix is preferred**:
+    *Settled questions* is 89.8% of this file (4,771 of 5,310 lines, 59
+    records against 15 open items) with the orientation layer at line 5225.
+    Hoist *Working agreements* and the open arcs above it **in this one
+    file** — do not split, because 16 citation sites across 11 files name the
+    section by file, none as anchors, with no link checker.
+  - *Documentation only; no product code, no test, no golden score and no
+    published artefact was touched. Suites at `dd9814c`: 584/584 stdlib, 706
+    pytest.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -862,6 +862,25 @@ but they are a useful cross-check that no audience was forgotten.
   equivalence, silent conflict resolution, and the survives-agency
   verdict — with the falsifier ledger and every published failure
   counted next to the confirmations.
+- [What is next — a SWOT prioritisation of the open roadmap](roadmap-swot-prioritisation.md)
+  — dated prioritisation note (2026-08-31): the whole open queue read at
+  once — arcs, the 59 settled records, the ten open issues, the research
+  charter and the parked work across ~70 notes — ranked by SWOT with
+  dependencies and levers. Verdict: the next move is not a build. The
+  record and the tracker have diverged — the capability-pull ledger of
+  issues #43/#47, ten asks each filed with its own measurement, appears
+  in none of the 101 markdown files, while *Working agreements* still
+  reads "everything is strictly demand-driven" and still lists the LSP
+  as unbuilt 4,982 lines below the checkbox marking it BUILT. Under that
+  sits a tier of seven ungated defect fixes needing no trigger, no golden
+  re-freeze and no schema bump, several of them single tokens: a
+  table-form `enabled = false` that leaves the rule armed, an `!include`
+  disclosure that cannot fire on the case it was written for, a `--help`
+  that omits a shipped command past a guard whose own docstring forbids
+  that, and a README guarantee its own next paragraph retracts. One
+  question is left open on purpose — whether the consumer behind
+  #43/#47 is arm's-length — because eight items' gate status turns on
+  it and only the owner can answer.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
