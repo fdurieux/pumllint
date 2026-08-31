@@ -5135,6 +5135,92 @@ list and license posture live in § Settled questions.
     unbuilt because **pumllint does not model what they would need**, not
     because nobody asked. Formatting in particular would mean owning a
     PlantUML layout opinion the linter deliberately does not have.
+    **[CORRECTED 2026-08-31 — this is WRONG for three of the four, and the
+    error was mine. The model carries `Block` spans with `else_branches`,
+    `ClassEntity.members` with lines, and `StateNode.container` nesting
+    arbitrarily deep; `_ident_spans` already located references for rename.
+    Document symbols were built the same day (see the entry below), and
+    references remain viable. Only the formatting half of the claim survives.
+    **Eighth instance of the sound-premise/over-reaching-conclusion shape**:
+    "formatting needs a layout opinion" is true, and I generalised it across
+    four features without checking the other three.]**
+
+- **Document symbols (2026-08-31) — a read-only outline, and the two design
+  decisions I got wrong were both overturned by measuring rather than
+  arguing.** `pumllint/lsp.py`, 11 further tests.
+  - **Messages are in the outline, against my stated design.** I argued a
+    1438-message diagram is not an outline and that participants and blocks
+    were enough. Measured on this repo's largest real diagram,
+    `docs/pumllint-lint-flow.puml` (93 lines): participants plus blocks gives
+    **12 rows, and over half the file's lines get no symbol at all** — the
+    editor breadcrumb reads "alt / —" for the ~70% of lines that are
+    messages. That is a legend, not a map. Cost of including them, measured
+    on a synthetic 1460-line diagram: ~19 ms and 384 KB per change, against a
+    server already shipping the whole buffer on every keystroke. Included as
+    leaves under a documented cap of 2000, surfaced in the root's `detail`.
+  - **The exotic-separator guard was dropped, and the reason is the shape of
+    the feature.** `code_actions_for` suppresses on a buffer holding a form
+    feed, a vertical tab or U+2028, because "a misplaced squiggle is
+    survivable; a misplaced `replace` overwrites a line the user did not
+    touch". documentSymbol writes nothing, so it belongs on the
+    **diagnostics** side of that line, and `diagnostics_for` deliberately
+    does not suppress. Keeping the guard would have erased the entire
+    outline for a buffer the clamp already handles. **The guard is about
+    edits, not about parsing** — I had generalised it to "anything the
+    parser reports".
+  - **Seven defects found by running the first draft over the corpus, not by
+    reading it.** Validating the LSP tree invariants over every `.puml` in
+    the repo found **36 violations, including in
+    `examples/shop_classes_good.puml`** — the file shipped as the good
+    example. Block spans **cross without nesting** (`if=[2,4]` with
+    `while=[3,5]`; `box=[3,5]` with `alt=[4,6]`), leaves carry only a line
+    so children fell outside their parents, an
+    unterminated `@startuml` swallowed the next diagram, activity `if` emits
+    **both** a `Block` and a `decision` node at the same line and label, two
+    implicit participants on one arrow share a range, empty names are routine
+    (`repeat`, `fork`, a bare `+` in a class body), and **`Diagram.classes`
+    dict order is not source order** (`A --|> B` / `class B` / `class A`
+    iterates `A(4), B(3)`, verified by running it).
+  - **One type-agnostic normalizer instead of five individually-correct
+    builders.** Sort siblings, clamp into the parent, re-parent or trim
+    overlaps, drop degenerate spans, widen `range` to cover `selectionRange`,
+    fill empty names. Five builders each correct today is five things to keep
+    correct; one pass over the finished tree is the invariant stated once.
+    Verified load-bearing: disabled, the corpus goes from 0 violations back
+    to 55.
+  - **The completeness gap — the find worth keeping from this whole task.**
+    Checking that both tests had teeth showed the normalizer mattered and the
+    descendant-envelope pass apparently did not: 0 violations either way. It
+    is in fact load-bearing — **with it disabled every class member is
+    silently dropped (14 symbols down to 6) and the tree stays perfectly
+    valid.** The invariant test passed while the outline was wrong.
+    **Well-formedness and completeness are different properties and both
+    need asserting**; a property test over structure says nothing about
+    content. **Fourth instance of *a cheap signal stood in for the expensive
+    check***, after registry presence, a wrong-version test failure and an
+    SPA's HTTP 200 — and the first where the cheap signal was one of my own
+    tests.
+  - **Type-fallback is labelled, not suppressed.** `component Api / Db /
+    Api --> Db` parses as a *sequence* with manufactured lifelines — the
+    standing type-fallback class in its plain-`component` form, adding no new
+    numbered instance (the enumeration counts ecosystems, and this is none).
+    Hiding the outline there would be incoherent when the engine already
+    puts SEQ009 squiggles on the same
+    buffer, and the only "detect it properly" fix is the keyword list this
+    module's docstring forbids. `detail` reads **`sequence (inferred)`** when
+    no participant in the diagram is `declared` — true of the component case,
+    false of `pumllint-lint-flow.puml`, which declares eight. A derived
+    signal, not an invented one.
+  - **Takes no `Engine`.** Parse-only, so it is strictly cheaper than
+    `diagnostics_for` on the same buffer — worth stating because it fires on
+    every change and the temptation is to reuse the lint the server just ran.
+  - Suites: **584 stdlib / 706 pytest** (was 573 / 695). No product code
+    outside `lsp.py` touched; badge and HTML report byte-identical.
+  - *Recorded, not queued*: **references** — viable on the same `_ident_spans`
+    machinery, declined here only to keep the change one feature wide.
+    `d.participants.setdefault` never overwrites, so a participant **declared
+    after first use** produces no symbol at its declaration; that is a parser
+    issue, not one this module can fix.
 
 ## Working agreements (read before picking anything up)
 

@@ -748,6 +748,31 @@ re-parsed, and the participant set must come back as the original with exactly
 one name swapped. Refusals arrive as a JSON-RPC error so the editor shows the
 reason, rather than as an empty edit that would read as "nothing to rename".
 
+### Outline
+
+`textDocument/documentSymbol` gives a navigable outline of what the parser
+understood — diagram roots, then participants, classes and members, states,
+control-flow blocks, and messages nested inside the block they belong to:
+
+```
+loan-decision-activity                  activity
+  start
+  Receive application                   action
+  if Complete dossier?
+    Run credit scoring                  action
+    if Score above threshold?
+      Generate offer                    action
+      else                              branch
+```
+
+The root of each diagram is backed by its `@startuml` line, which always
+parses; the children are backed by type-specific parsing, which may not have.
+So a diagram pumllint could not read still gets a **named, navigable row**
+with `detail: "unknown"` — six such roots is the most useful outline available
+for a C4-PlantUML file. And a diagram whose lifelines were all inferred from
+arrows (what a component diagram looks like to this parser) is labelled
+`sequence (inferred)` rather than silently presented as fact.
+
 **One caveat worth knowing.** The protocol owns stdout, so `pumllint lsp` is
 the one subcommand that prints no report there; diagnostics travel as
 JSON-RPC and everything else goes to stderr. Exit codes still hold: `0` after

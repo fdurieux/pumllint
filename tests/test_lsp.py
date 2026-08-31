@@ -977,3 +977,254 @@ def test_lsp_initialize_advertises_hover_completion_and_rename():
     assert caps["hoverProvider"] is True
     assert "completionProvider" in caps
     assert caps["renameProvider"]["prepareProvider"] is True
+
+
+# -- document symbols: the invariant property -------------------------------
+#
+# LSP requires selectionRange ⊆ range, and clients drop the WHOLE document's
+# outline on a malformed tree. The first draft of this feature produced 36
+# violations across the repo's own corpus — including on
+# examples/shop_classes_good.puml — so the invariants are asserted over every
+# .puml in the tree rather than on a hand-picked fixture.
+
+_ADVERSARIAL = {
+    # Blocks whose spans cross: the parser closes out of the middle of its
+    # stack, so neither contains the other.
+    "crossing if/while": "@startuml\nif (c?) then (yes)\nwhile (more)\nendif\nendwhile\nstop\n@enduml\n",
+    "crossing box/alt": '@startuml\nAlice -> Bob : x\nbox "Team"\nalt ok\nend box\nend\n@enduml\n',
+    # An unterminated diagram must not swallow the one after it.
+    "unterminated diagram": "@startuml First\nAlice -> Bob : one\n@startuml Second\nCarol -> Dan : two\n@enduml\n",
+    "unterminated block": "@startuml d\ntitle T\nparticipant A\nalt happy\nA -> A : again\n@enduml\n",
+    # container is set at first creation, so re-opening a composite can make
+    # two states siblings whose envelopes overlap.
+    "reopened composite": "@startuml\nstate Sub\nstate Top {\n  state Sub {\n    X --> Y\n  }\n}\n@enduml\n",
+    # Names the model leaves empty.
+    "empty member name": "@startuml\nclass Foo {\n  +\n}\n@enduml\n",
+    "bare repeat": "@startuml\nstart\nrepeat\n  :work;\nrepeat while (more?)\nstop\n@enduml\n",
+    "bare alt": "@startuml d\ntitle T\nparticipant A\nalt\nA -> A : x\nend\n@enduml\n",
+    # Two implicit participants sharing one line.
+    "two on one line": "@startuml\nAlice -> Bob : hi\n@enduml\n",
+    "astral name": "@startuml 🚀-rocket\nparticipant A\nA -> B : go\n@enduml\n",
+    "crlf": "@startuml d\r\ntitle T\r\nparticipant A\r\nA -> B : go\r\n@enduml\r\n",
+    "empty": "",
+    "no startuml": "just prose\nand more\n",
+    "exotic separator": "@startuml\nparticipant A\nnote over A\n  see\x0cspec\nend note\nA -> B : go\n@enduml\n",
+}
+
+
+def _walk(symbols, depth=0):
+    for sym in symbols:
+        yield depth, sym
+        yield from _walk(sym["children"], depth + 1)
+
+
+def _assert_tree_is_valid(symbols, lines, where):
+    """Every invariant LSP requires of a DocumentSymbol tree."""
+    seen = set()
+
+    def check(nodes, parent, path):
+        previous = None
+        for sym in nodes:
+            rng, sel = sym["range"], sym["selectionRange"]
+            assert id(sym) not in seen, f"{where}: cycle at {path}/{sym['name']}"
+            seen.add(id(sym))
+            assert sym["name"], f"{where}: empty name at {path}"
+            assert rng["start"]["line"] <= rng["end"]["line"], f"{where}: inverted range {sym['name']}"
+            assert 0 <= rng["start"]["line"] < max(1, len(lines)), f"{where}: range off buffer {sym['name']}"
+            assert rng["end"]["line"] < max(1, len(lines)), f"{where}: range past buffer {sym['name']}"
+            # The spec-mandatory one.
+            assert (
+                rng["start"]["line"] <= sel["start"]["line"]
+                and sel["end"]["line"] <= rng["end"]["line"]
+            ), f"{where}: selectionRange outside range at {path}/{sym['name']}"
+            if parent is not None:
+                assert (
+                    parent["start"]["line"] <= rng["start"]["line"]
+                    and rng["end"]["line"] <= parent["end"]["line"]
+                ), f"{where}: child outside parent at {path}/{sym['name']}"
+            if previous is not None:
+                assert rng["start"]["line"] > previous["end"]["line"], (
+                    f"{where}: siblings overlap at {path}/{sym['name']}"
+                )
+            previous = rng
+            check(sym["children"], rng, f"{path}/{sym['name']}")
+
+    check(symbols, None, "")
+
+
+def test_lsp_document_symbols_are_valid_over_the_whole_corpus():
+    """Every .puml in the repository, plus the adversarial buffers."""
+    from pumllint.lsp import document_symbols_for
+
+    root = Path(__file__).resolve().parent.parent
+    files = sorted(p for p in root.rglob("*.puml") if ".git" not in p.parts)
+    assert len(files) > 20, f"expected a real corpus, found {len(files)}"
+    for path in files:
+        text = path.read_text(encoding="utf-8", errors="replace")
+        _assert_tree_is_valid(
+            document_symbols_for(text, path.name), re.split(r"\r\n|\r|\n", text), path.name
+        )
+    for label, text in _ADVERSARIAL.items():
+        _assert_tree_is_valid(
+            document_symbols_for(text, "d.puml"), re.split(r"\r\n|\r|\n", text), label
+        )
+
+
+def test_lsp_document_symbols_outline_a_sequence_diagram():
+    from pumllint.lsp import document_symbols_for
+
+    doc = "@startuml d\ntitle T\nparticipant A\nparticipant B\nalt happy\nA -> B : go\nend\n@enduml\n"
+    roots = document_symbols_for(doc, "d.puml")
+    assert len(roots) == 1 and roots[0]["name"] == "d"
+    names = [s["name"] for _, s in _walk(roots)]
+    assert "A" in names and "B" in names and "alt happy" in names
+    # The message is nested inside the block it lives in, not a sibling.
+    alt = [s for _, s in _walk(roots) if s["name"] == "alt happy"][0]
+    assert [c["name"] for c in alt["children"]] == ["go"]
+
+
+def test_lsp_document_symbols_nest_class_members():
+    """Members sit on lines after the declaration, so the class range must be
+    the envelope of its descendants — the defect that broke the shipped
+    good-example file."""
+    from pumllint.lsp import document_symbols_for
+
+    doc = "@startuml\nclass Customer {\n  +name: String\n  +placeOrder(): Order\n}\n@enduml\n"
+    cls = [s for _, s in _walk(document_symbols_for(doc, "c.puml")) if s["name"] == "Customer"][0]
+    assert [c["name"] for c in cls["children"]] == ["name", "placeOrder"]
+    assert cls["range"]["end"]["line"] >= cls["children"][-1]["range"]["end"]["line"]
+
+
+def test_lsp_document_symbols_keep_a_root_for_an_unknown_diagram():
+    """The @startuml line always parses, so the name is real even when the
+    contents were not understood — six named roots is the most useful outline
+    available for a C4 file."""
+    from pumllint.lsp import document_symbols_for
+
+    doc = "@startuml loan_approved\n!include <C4/C4_Sequence>\nPerson(a, \"Applicant\")\n@enduml\n"
+    roots = document_symbols_for(doc, "c4.puml")
+    assert len(roots) == 1
+    assert roots[0]["name"] == "loan_approved"
+    assert roots[0]["detail"] == "unknown"
+    assert roots[0]["children"] == []
+
+
+def test_lsp_document_symbols_label_an_inferred_sequence_diagram():
+    """A component diagram types as *sequence* with manufactured lifelines.
+
+    Suppressing would be incoherent — the engine already reports findings on
+    this buffer as a sequence diagram — so the uncertainty goes in `detail`.
+    """
+    from pumllint.lsp import document_symbols_for
+
+    inferred = document_symbols_for("@startuml\ncomponent Api\ncomponent Db\nApi --> Db\n@enduml\n", "x.puml")
+    assert inferred[0]["detail"] == "sequence (inferred)"
+    declared = document_symbols_for("@startuml\nparticipant A\nA -> B : go\n@enduml\n", "y.puml")
+    assert declared[0]["detail"] == "sequence"
+
+
+def test_lsp_document_symbols_skip_the_duplicate_decision_node():
+    """An activity `if` emits both a Block and a decision ActivityNode with the
+    same label on the same line — two indistinguishable rows, one target."""
+    from pumllint.lsp import document_symbols_for
+
+    doc = "@startuml\nstart\nif (Ready?) then (yes)\n  :go;\nendif\nstop\n@enduml\n"
+    names = [s["name"] for _, s in _walk(document_symbols_for(doc, "a.puml"))]
+    assert names.count("if Ready?") == 1
+    assert "Ready?" not in names  # the bare decision node is not repeated
+
+
+def test_lsp_document_symbols_distinguish_two_participants_on_one_line():
+    """Whole-line selection ranges would give both the same jump target."""
+    from pumllint.lsp import document_symbols_for
+
+    roots = document_symbols_for("@startuml\nAlice -> Bob : hi\n@enduml\n", "d.puml")
+    people = [s for _, s in _walk(roots) if s["name"] in ("Alice", "Bob")]
+    assert len(people) == 2
+    assert people[0]["selectionRange"] != people[1]["selectionRange"]
+
+
+def test_lsp_document_symbols_are_offered_over_the_protocol():
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize",
+             "params": {"capabilities": {"textDocument": {"documentSymbol":
+                 {"hierarchicalDocumentSymbolSupport": True}}}}},
+            {"jsonrpc": "2.0", "method": "textDocument/didOpen",
+             "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}}},
+            {"jsonrpc": "2.0", "id": 2, "method": "textDocument/documentSymbol",
+             "params": {"textDocument": {"uri": "file:///d.puml"}}},
+            {"jsonrpc": "2.0", "id": 3, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    caps = [r for r in replies if r.get("id") == 1][0]["result"]["capabilities"]
+    assert caps["documentSymbolProvider"] is True
+    result = [r for r in replies if r.get("id") == 2][0]["result"]
+    assert result and "children" in result[0]  # hierarchical form
+
+
+def test_lsp_document_symbols_fall_back_to_flat_for_clients_without_hierarchy():
+    """A client that does not advertise hierarchical support gets
+    SymbolInformation[], which carries a location and a containerName."""
+    _, replies = _drive(
+        [
+            {"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}},
+            {"jsonrpc": "2.0", "method": "textDocument/didOpen",
+             "params": {"textDocument": {"uri": "file:///d.puml", "text": _DOC}}},
+            {"jsonrpc": "2.0", "id": 2, "method": "textDocument/documentSymbol",
+             "params": {"textDocument": {"uri": "file:///d.puml"}}},
+            {"jsonrpc": "2.0", "id": 3, "method": "shutdown"},
+            {"jsonrpc": "2.0", "method": "exit"},
+        ]
+    )
+    result = [r for r in replies if r.get("id") == 2][0]["result"]
+    assert result and "location" in result[0] and "children" not in result[0]
+    assert any("containerName" in s for s in result)
+
+
+def test_lsp_document_symbols_survive_a_parser_failure():
+    out = io.BytesIO()
+    server = LspServer(out)
+    server._documents["file:///d.puml"] = _DOC
+    import pumllint.lsp as lsp_mod
+
+    original = lsp_mod.document_symbols_for
+    lsp_mod.document_symbols_for = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom"))
+    try:
+        server.handle({"jsonrpc": "2.0", "id": 5, "method": "textDocument/documentSymbol",
+                       "params": {"textDocument": {"uri": "file:///d.puml"}}})
+    finally:
+        lsp_mod.document_symbols_for = original
+    assert _decode_all(out.getvalue())[0]["result"] == []
+
+
+def test_lsp_document_symbols_are_complete_not_merely_valid():
+    """The outline must contain what the parser modelled.
+
+    Caught a real gap: with the descendant-envelope pass disabled, every class
+    member was silently dropped (14 symbols to 6) and the tree stayed
+    perfectly *valid* — so the invariant test above passed while the outline
+    was wrong. Well-formedness and completeness are different properties and
+    both need asserting.
+    """
+    from pumllint.lsp import document_symbols_for
+    from pumllint.parser import parse_source
+
+    root = Path(__file__).resolve().parent.parent
+    for name in ("shop_classes_good.puml", "door_lock_state_good.puml",
+                 "webshop_usecase_good.puml", "insurance_claim_good.puml"):
+        path = root / "examples" / name
+        text = path.read_text(encoding="utf-8")
+        found = {s["name"] for _, s in _walk(document_symbols_for(text, name))}
+        for diagram in parse_source(text, name):
+            if diagram.diagram_type == "unknown":
+                continue
+            expected = set()
+            for entity in list(diagram.participants.values()) + list(diagram.states.values()):
+                expected.add(entity.display_name or entity.name)
+            for entity in diagram.classes.values():
+                expected.add(entity.display_name or entity.name)
+                expected.update(m.name for m in entity.members if m.name)
+            missing = expected - found
+            assert not missing, f"{name}: outline dropped {sorted(missing)}"

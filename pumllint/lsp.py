@@ -844,6 +844,443 @@ def _residual_mentions(text: str, old: str) -> list[int]:
 
 
 # ---------------------------------------------------------------------------
+# Document symbols
+# ---------------------------------------------------------------------------
+#
+# An outline of what the parser understood, and nothing else. The root of each
+# diagram is backed by its ``@startuml`` line, which always parses; the
+# children are backed by type-specific parsing, which may not have. That split
+# is why an ``unknown`` diagram still gets a named, navigable row: the six C4
+# diagrams in this repository's own `dynamics.puml` all type `unknown` and all
+# carry real names, and six named roots is the most useful outline available
+# for that file.
+#
+# Two structural facts drive the shape of the code below, and both were
+# measured rather than assumed:
+#
+# * **Blocks can cross.** `if / while / endif / endwhile` yields spans [2,4]
+#   and [3,5] — neither contains the other, because the parser closes blocks
+#   out of the middle of its stack. So nesting clamps rather than trusting
+#   containment, and `Block.contains_line` is deliberately unused (its
+#   ``None -> infinity`` makes one unterminated block swallow its siblings).
+# * **Leaves carry a line, never a span.** A class's members sit on lines
+#   after its declaration, so a parent's range has to be the envelope of its
+#   descendants or every child falls outside it.
+#
+# Rather than make five per-type builders individually correct, the tree is
+# built loosely and then put through one type-agnostic normalizer that
+# guarantees the invariants LSP requires. The property test over the whole
+# .puml corpus is what keeps that honest.
+
+# LSP SymbolKind. NOT the CompletionItemKind values used further up this file:
+# 21 is Constant there and Null here, 6 is Variable there and Method here.
+_SYM_MODULE = 2
+_SYM_NAMESPACE = 3
+_SYM_CLASS = 5
+_SYM_METHOD = 6
+_SYM_FIELD = 8
+_SYM_INTERFACE = 11
+_SYM_OBJECT = 19
+
+# Above this many symbols the leaves are dropped and the root says so. A
+# 1438-message diagram costs ~19 ms and 384 KB to serialise, which is fine;
+# this is a guard against a pathological buffer (an unterminated `class Foo {`
+# turns every following line into a member while you type), not a budget.
+_SYMBOL_CAP = 2000
+
+_FRAGMENT_KINDS = frozenset(
+    {"alt", "opt", "loop", "par", "break", "critical", "group",
+     "if", "while", "repeat", "fork", "switch"}
+)
+
+
+def _clamp_line(line: int, lines: Sequence[str]) -> int:
+    """A 1-based model line as a 0-based buffer index, clamped."""
+    return max(0, min(line - 1, max(0, len(lines) - 1)))
+
+
+def _whole_line(line: int, lines: Sequence[str]) -> dict:
+    index = _clamp_line(line, lines)
+    text = lines[index] if lines else ""
+    return {
+        "start": {"line": index, "character": 0},
+        "end": {"line": index, "character": _u16(text)},
+    }
+
+
+def _span(start_line: int, end_line: int, lines: Sequence[str]) -> dict:
+    a, b = _clamp_line(start_line, lines), _clamp_line(end_line, lines)
+    if b < a:
+        b = a
+    text = lines[b] if lines else ""
+    return {
+        "start": {"line": a, "character": 0},
+        "end": {"line": b, "character": _u16(text)},
+    }
+
+
+def _selection_for(name: str, line: int, lines: Sequence[str]) -> dict:
+    """The identifier's own span when the parser can locate it.
+
+    Two implicit participants on one arrow (``Alice -> Bob : hi``) share a
+    line, so whole-line selection ranges would make them indistinguishable —
+    two rows with the same jump target. ``_ident_spans`` already returns exact
+    per-identifier spans derived from the parser's own patterns.
+    """
+    index = _clamp_line(line, lines)
+    source = lines[index] if lines else ""
+    for start, end, found in _ident_spans(source):
+        if found == name:
+            return {
+                "start": {"line": index, "character": _u16(source[:start])},
+                "end": {"line": index, "character": _u16(source[:end])},
+            }
+    return _whole_line(line, lines)
+
+
+def _symbol(name: str, kind: int, rng: dict, selection: dict, detail: str = "") -> dict:
+    sym = {
+        "name": name or "(unnamed)",
+        "kind": kind,
+        "range": rng,
+        "selectionRange": selection,
+        "children": [],
+    }
+    if detail:
+        sym["detail"] = detail
+    return sym
+
+
+def _block_name(block) -> str:
+    """A block always gets a name — ``repeat`` and ``fork`` never have labels."""
+    label = (block.label or "").strip().strip('"')  # `box "Team"` keeps its quotes
+    return f"{block.kind} {label}".strip() if label else block.kind
+
+
+def _block_kind(block) -> int:
+    return _SYM_NAMESPACE if block.kind in ("box", "partition") else _SYM_OBJECT
+
+
+def _block_tree(blocks, floor: int, lines: Sequence[str]):
+    """``(roots, spans)`` for *blocks* — nested, with crossing spans clamped.
+
+    ``Diagram.blocks`` is one flat list in source order with no parent
+    pointers, already ascending by ``start_line``. A stack walk nests it, but
+    two corrections are needed and both are reachable:
+
+    * ``end_line`` is ``None`` for an unterminated block — permanent for a
+      real defect (SEQ004/ACT004) and the normal transient state while typing.
+      It is floored rather than treated as infinity, or one unclosed ``alt``
+      adopts every later sibling.
+    * Spans genuinely **cross**: the parser closes out of the middle of its
+      stack, so ``if/while/endif/endwhile`` gives [2,4] and [3,5]. A crossing
+      child is clamped into its parent instead of being allowed to stick out.
+    """
+    roots: list[dict] = []
+    spans: list[tuple[int, int, dict]] = []
+    stack: list[tuple[int, dict]] = []
+    for block in blocks:
+        end = min(block.end_line or floor, floor)
+        start = block.start_line
+        while stack and stack[-1][0] < start:
+            stack.pop()
+        if stack:
+            end = min(end, stack[-1][0])
+        if end < start:
+            end = start
+        node = _symbol(
+            _block_name(block),
+            _block_kind(block),
+            _span(start, end, lines),
+            _whole_line(start, lines),
+        )
+        (stack[-1][1]["children"] if stack else roots).append(node)
+        stack.append((end, node))
+        spans.append((start, end, node))
+    return roots, spans
+
+
+def _place(line: int, spans, roots: list[dict]) -> list[dict]:
+    """The child list for a leaf on *line* — innermost containing block, else root.
+
+    An implicit participant is created at its first use, which is often inside
+    a block, so leaves cannot simply be siblings of the block tree.
+    """
+    best: tuple[int, int, dict] | None = None
+    for start, end, node in spans:
+        if start <= line <= end and (best is None or start > best[0]):
+            best = (start, end, node)
+    return best[2]["children"] if best else roots
+
+
+def _entity_symbol(entity, kind: int, lines: Sequence[str], detail: str = "") -> dict:
+    name = entity.display_name or entity.name
+    bits = [detail or entity.kind]
+    if getattr(entity, "stereotype", None):
+        bits.append(f"<<{entity.stereotype}>>")
+    if not getattr(entity, "declared", True):
+        bits.append("(implicit)")
+    return _symbol(
+        name,
+        kind,
+        _whole_line(entity.line, lines),
+        _selection_for(entity.name, entity.line, lines),
+        " ".join(b for b in bits if b),
+    )
+
+
+def _state_children(diagram, lines: Sequence[str]) -> list[dict]:
+    """States nested by inverting ``StateNode.container``.
+
+    ``container`` is set at first creation only, so a state re-opened inside a
+    composite keeps its original parent — which can leave two siblings whose
+    envelopes overlap. Cycles and orphans are unreachable in the current
+    parser (the container is always an earlier, declared node), but the guard
+    costs three lines and a future parser change should degrade rather than
+    hang. **When the inverted tree is positionally inconsistent the states are
+    returned flat**: a flat correct list beats a nested wrong one.
+    """
+    states = sorted(diagram.states.values(), key=lambda s: (s.line, s.name))
+    nodes = {
+        s.name: _entity_symbol(
+            s, _SYM_NAMESPACE if s.composite else _SYM_CLASS, lines, "state"
+        )
+        for s in states
+    }
+    roots: list[dict] = []
+    for s in states:
+        parent = nodes.get(s.container) if s.container else None
+        if parent is None or parent is nodes[s.name]:
+            roots.append(nodes[s.name])
+        else:
+            parent["children"].append(nodes[s.name])
+    # Positional sanity: a parent declared after its child means the inversion
+    # disagrees with the source, so fall back to flat.
+    for s in states:
+        if s.container and s.container in diagram.states:
+            if diagram.states[s.container].line > s.line:
+                return [nodes[s.name] for s in states]
+    return roots
+
+
+def _diagram_children(diagram, lines: Sequence[str], floor: int) -> list[dict]:
+    """The outline under one diagram, by type."""
+    kind = diagram.diagram_type
+    if kind == "unknown":
+        return []  # nothing was modelled; the root alone is the honest answer
+
+    if kind == "class":
+        out: list[dict] = []
+        for entity in sorted(diagram.classes.values(), key=lambda c: (c.line, c.name)):
+            node = _entity_symbol(
+                entity,
+                _SYM_INTERFACE if entity.kind == "interface" else _SYM_CLASS,
+                lines,
+            )
+            for member in entity.members:
+                node["children"].append(
+                    _symbol(
+                        member.name or member.raw.strip(),
+                        _SYM_METHOD if member.is_method else _SYM_FIELD,
+                        _whole_line(member.line, lines),
+                        _whole_line(member.line, lines),
+                    )
+                )
+            out.append(node)
+        return out
+
+    if kind == "state":
+        return _state_children(diagram, lines)
+
+    roots, spans = _block_tree(diagram.blocks, floor, lines)
+
+    if kind == "activity":
+        # An `if` emits BOTH a Block and a `decision` ActivityNode with the
+        # same label on the same line; showing both is two indistinguishable
+        # rows with one jump target.
+        block_starts = {b.start_line for b in diagram.blocks}
+        for node in diagram.activity_nodes:
+            if node.kind == "decision" and node.line in block_starts:
+                continue
+            label = node.label or node.kind
+            _place(node.line, spans, roots).append(
+                _symbol(
+                    label,
+                    _SYM_OBJECT,
+                    _whole_line(node.line, lines),
+                    _whole_line(node.line, lines),
+                    node.kind,
+                )
+            )
+        return roots
+
+    # sequence / usecase
+    for participant in sorted(diagram.participants.values(), key=lambda p: (p.line, p.name)):
+        _place(participant.line, spans, roots).append(
+            _entity_symbol(participant, _SYM_CLASS, lines)
+        )
+    for message in diagram.messages:
+        arrow = f"{message.source or '['} → {message.target or ']'}"
+        _place(message.line, spans, roots).append(
+            _symbol(
+                message.label.strip() or arrow,
+                _SYM_METHOD,
+                _whole_line(message.line, lines),
+                _whole_line(message.line, lines),
+                arrow if message.label.strip() else "",
+            )
+        )
+    return roots
+
+
+def _normalise(symbols: list[dict], bounds: dict | None, lines: Sequence[str]) -> list[dict]:
+    """Enforce the invariants LSP requires, whatever the builders produced.
+
+    One type-agnostic pass is the safeguard: five per-type builders each
+    individually correct is a standard nobody sustains, and a malformed tree
+    costs the *whole* document's outline in most clients. Guarantees, in
+    order: siblings sorted and non-overlapping, every range inside its
+    parent's, no degenerate spans, ``selectionRange`` contained in ``range``,
+    and a non-empty name.
+    """
+    out: list[dict] = []
+    for sym in sorted(symbols, key=lambda s: (s["range"]["start"]["line"], s["range"]["end"]["line"])):
+        rng = sym["range"]
+        if bounds is not None:  # clamp into the parent
+            if rng["start"]["line"] < bounds["start"]["line"]:
+                rng["start"] = dict(bounds["start"])
+            if rng["end"]["line"] > bounds["end"]["line"]:
+                rng["end"] = dict(bounds["end"])
+        if rng["end"]["line"] < rng["start"]["line"]:
+            continue  # degenerate after clamping
+
+        if out:
+            previous = out[-1]["range"]
+            if rng["start"]["line"] <= previous["end"]["line"]:
+                if rng["end"]["line"] <= previous["end"]["line"]:
+                    # Fully inside the previous sibling — it belongs under it.
+                    out[-1]["children"] = _normalise(
+                        out[-1]["children"] + [sym], out[-1]["range"], lines
+                    )
+                    continue
+                # Merely crossing: trim the start so siblings stay disjoint.
+                rng["start"] = {"line": previous["end"]["line"] + 1, "character": 0}
+                if rng["end"]["line"] < rng["start"]["line"]:
+                    continue
+
+        selection = sym["selectionRange"]
+        if not (
+            rng["start"]["line"] <= selection["start"]["line"]
+            and selection["end"]["line"] <= rng["end"]["line"]
+        ):
+            # Widening beats dropping: the row still jumps to the right line.
+            rng["start"] = min(rng["start"], selection["start"], key=lambda p: p["line"])
+            rng["end"] = max(rng["end"], selection["end"], key=lambda p: p["line"])
+        if not sym["name"]:
+            sym["name"] = "(unnamed)"
+        sym["children"] = _normalise(sym["children"], rng, lines)
+        out.append(sym)
+    return out
+
+
+def _envelope(symbol: dict) -> None:
+    """Widen every range to cover its descendants, depth first.
+
+    Participants, classes, states and members carry a *line*, never a span, so
+    a parent whose range is its declaration line has every child outside it —
+    which breaks `examples/shop_classes_good.puml`, the file this project
+    ships as the good example.
+    """
+    for child in symbol["children"]:
+        _envelope(child)
+    for child in symbol["children"]:
+        rng, sub = symbol["range"], child["range"]
+        if sub["start"]["line"] < rng["start"]["line"]:
+            rng["start"] = dict(sub["start"])
+        if sub["end"]["line"] > rng["end"]["line"]:
+            rng["end"] = dict(sub["end"])
+
+
+def _count(symbols: Sequence[dict]) -> int:
+    return sum(1 + _count(s["children"]) for s in symbols)
+
+
+def document_symbols_for(text: str, path: str) -> list[dict]:
+    """An outline of *text* as LSP ``DocumentSymbol``\\u200bs.
+
+    Parse-only — it takes no :class:`~pumllint.engine.Engine`, so it is
+    strictly cheaper than :func:`diagnostics_for` and cannot be affected by
+    rule configuration. Unlike the code-action path this does **not** refuse a
+    buffer with exotic line separators: it is read-only navigation, so it sits
+    on the diagnostics side of that line, and clamping every index is enough
+    (a wrong squiggle or a wrong jump target costs a click; only a wrong
+    *edit* costs a file).
+    """
+    diagrams = parse_source(text, file_path=path)
+    if not diagrams:
+        return []
+    lines = _split_lines(text)
+    last = max(1, len(lines))
+
+    roots: list[dict] = []
+    for index, diagram in enumerate(diagrams):
+        following = diagrams[index + 1].start_line - 1 if index + 1 < len(diagrams) else last
+        floor = min(diagram.end_line or last, following, last)
+        floor = max(floor, diagram.start_line)
+
+        declared = [p for p in diagram.participants.values() if p.declared]
+        detail = diagram.diagram_type
+        if diagram.diagram_type == "sequence" and diagram.participants and not declared:
+            # Every lifeline was manufactured from an arrow — which is what a
+            # component diagram looks like after the type-fallback. Say so
+            # rather than suppress: the engine already reports findings on
+            # this buffer as a sequence diagram.
+            detail = "sequence (inferred)"
+
+        title = next(
+            (d.value for d in diagram.directives if d.kind == "title" and d.value), None
+        )
+        name = diagram.name or title or f"diagram {index + 1}"
+        node = _symbol(
+            name,
+            _SYM_MODULE,
+            _span(diagram.start_line, floor, lines),
+            _whole_line(diagram.start_line, lines),
+            detail,
+        )
+        node["children"] = _diagram_children(diagram, lines, floor)
+        roots.append(node)
+
+    for root in roots:
+        _envelope(root)
+    roots = _normalise(roots, None, lines)
+
+    if _count(roots) > _SYMBOL_CAP:
+        # A pathological buffer (an unterminated `class Foo {` turns every
+        # later line into a member while you type). Keep the roots, say why.
+        for root in roots:
+            root["children"] = []
+            root["detail"] = f"{root.get('detail', '')} — outline truncated".strip(" —")
+    return roots
+
+
+def _flatten(symbols: Sequence[dict], uri: str, container: str = "") -> list[dict]:
+    """``SymbolInformation[]`` for clients without hierarchical support."""
+    out: list[dict] = []
+    for sym in symbols:
+        entry = {
+            "name": sym["name"],
+            "kind": sym["kind"],
+            "location": {"uri": uri, "range": sym["range"]},
+        }
+        if container:
+            entry["containerName"] = container
+        out.append(entry)
+        out.extend(_flatten(sym["children"], uri, sym["name"]))
+    return out
+
+
+# ---------------------------------------------------------------------------
 # JSON-RPC framing
 # ---------------------------------------------------------------------------
 
@@ -899,7 +1336,8 @@ class LspServer:
 
     Deliberately narrow rather than small: full-document sync, diagnostics,
     the three mechanical fixes as code actions, rule documentation on hover,
-    completion over what the buffer already contains, and participant rename.
+    completion over what the buffer already contains, participant rename, and
+    a document outline of what the parser understood.
     Every one of those is backed by something the engine already knows — the
     rule catalogue, the parsed model, the fixer. Nothing completes PlantUML
     syntax and nothing renames a symbol the model does not track, because
@@ -923,6 +1361,7 @@ class LspServer:
         # Set from the client's initialize params; decides whether edits can
         # carry a document version for the client to reject if stale.
         self._document_changes = False
+        self._hierarchical_symbols = False
         self._engine: Engine | None = None
         # Deliberately no analysis cache. Editors request code actions on
         # every selection change, so re-linting per request was the obvious
@@ -1126,6 +1565,24 @@ class LspServer:
             }
         return {"changes": {uri: edits}}
 
+    def _document_symbols(self, params: dict) -> list[dict]:
+        """The outline for a document, hierarchical or flat as the client asked.
+
+        Fires on every change, so the happy path logs nothing.
+        """
+        uri = (params.get("textDocument") or {}).get("uri")
+        if not isinstance(uri, str):
+            return []
+        text = self._documents.get(uri)
+        if text is None:
+            return []
+        try:
+            symbols = document_symbols_for(text, uri_to_path(uri))
+        except Exception as exc:  # a parser bug must not end the session
+            print(f"pumllint-lsp: symbols failed for {uri}: {exc!r}", file=sys.stderr)
+            return []
+        return symbols if self._hierarchical_symbols else _flatten(symbols, uri)
+
     def handle(self, message: dict) -> None:
         """Dispatch one decoded message. Unknown methods are ignored.
 
@@ -1148,6 +1605,13 @@ class LspServer:
                     "documentChanges"
                 )
             )
+            # Clients without hierarchical support must be sent the flat
+            # SymbolInformation[] form, not a nested tree.
+            self._hierarchical_symbols = bool(
+                ((caps.get("textDocument") or {}).get("documentSymbol") or {}).get(
+                    "hierarchicalDocumentSymbolSupport"
+                )
+            )
             self._respond(
                 msg_id,
                 {
@@ -1159,6 +1623,7 @@ class LspServer:
                         "hoverProvider": True,
                         "completionProvider": {},
                         "renameProvider": {"prepareProvider": True},
+                        "documentSymbolProvider": True,
                     },
                     "serverInfo": {"name": "pumllint", "version": _version()},
                 },
@@ -1204,6 +1669,8 @@ class LspServer:
             self._respond(msg_id, self._prepare_rename(params))
         elif method == "textDocument/rename":
             self._respond(msg_id, self._rename(params))
+        elif method == "textDocument/documentSymbol":
+            self._respond(msg_id, self._document_symbols(params))
         elif method == "shutdown":
             self.shutdown_requested = True
             self._respond(msg_id, None)
