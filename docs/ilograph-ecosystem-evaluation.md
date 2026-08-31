@@ -123,7 +123,12 @@ Nothing here is queued.
 ### 1.1 What Ilograph is
 
 Ilograph is an **interactive** diagramming tool — web, desktop and a
-Confluence Cloud plugin — whose model is declared once and viewed through
+Confluence Cloud plugin **[the Confluence plugin is EXAMINED 2026-08-31 in
+[its own note](ilograph-confluence-plugin-evaluation.md) — 20 installs, 1
+review, v2.13.0 released two days before that note, and **no validation
+documented on that surface either**. It is the first Ilograph artefact in
+five that genuinely could not be obtained: Atlassian-hosted, no
+downloadable build, source not public.]** — whose model is declared once and viewed through
 multiple lenses. Its spec defines four top-level properties:
 
 - **`resources`** — "an array of resources (the resource tree)". Each has

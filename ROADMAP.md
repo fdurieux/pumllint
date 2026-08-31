@@ -4663,6 +4663,93 @@ list and license posture live in § Settled questions.
     tarball — *and the Ilograph editor was not run*, so "valid" here means
     only that the vendor validator is silent.
 
+- **The Ilograph Confluence Cloud plugin, evaluated (2026-08-31) — the
+  surface with the most documentation gravity has the least checking.**
+  Full note:
+  [docs/ilograph-confluence-plugin-evaluation.md](docs/ilograph-confluence-plugin-evaluation.md).
+  Fifth consecutive Ilograph note, and the **first of the five where the
+  artefact genuinely could not be obtained**.
+  - **The run/read streak breaks at four, and the distinction is recorded
+    precisely.** The four preceding notes each began with a bound the
+    record called a limitation and found it was debt — one `npm install`,
+    one clone, one command. This one is not: **no npm or PyPI package
+    exists, the source is not public, and "Runs on Atlassian" means there
+    is no downloadable build by construction.** The only path to running
+    it is an **Atlassian account + a Confluence Cloud site + a commercial
+    trial**, and **I declined that** — creating third-party accounts and
+    starting commercial trials is outside what evaluating a plugin
+    implies. **Recorded as a decision, not an inability**; someone with an
+    existing Confluence instance could close it in an afternoon, and the
+    note says what to measure.
+  - **THE SURFACE TABLE COMPLETES — the series' clearest statement of what
+    the exit-code contract is FOR.** Five Ilograph surfaces: the
+    **validator** checks but cannot gate (always exit 0); the **exporter**
+    gates but does not check (parse failures only); the **MCP server**
+    does neither (returns a dict); **`ilograph-typescript`** checks shape
+    at compile time only; and the **Confluence plugin has no CI surface at
+    all** — a diagram authored in a wiki macro and stored in the wiki
+    never passes through a build, so **there is nowhere for a gate to
+    stand**. pumllint is the only tool in the comparison with both, in one
+    tool, under a named contract. **And the wiki is where architecture
+    documentation actually lives** — so this ecosystem's checking
+    capability is furthest from where its artefacts most often are. *A
+    general observation about wiki-hosted description, not a fact about
+    Ilograph.*
+  - **"A validator that cannot gate is a validator that does not run" —
+    now measured across three channels and 22 months.** A side-discovery
+    turned up a **sixth vendor artefact**,
+    `github.com/ilograph/ilograph-standard-libraries` (MIT, copyright
+    *billy-pilger*, last commit 2024-10-11), holding the **canonical
+    public** `aws.ilograph`. That makes **three published copies** of the
+    vendor's flagship sample: GitHub **1441 resources / 8 Fatal Errors**,
+    `validate-ilograph` **1438 / 8**, `export-ilograph` **1439 / 7** —
+    **three distinct checksums, no two identical, all three failing the
+    vendor's own validator**, the canonical one for **22 months**. The
+    cleanest empirical argument in the series for why the exit-code
+    contract is a contract and not a convenience.
+  - **No validation documented on the fifth surface either**, so the ninth
+    note's *"Ilograph documents no validation"* holds across every product
+    surface — and supports something stronger than that note could claim:
+    **the vendor ships a validator and surfaces it in no product at all.**
+    *An absence in two documents, not a proof of absence in the product —
+    the same hedge the ninth note used, and it is the right one.*
+  - **The vitality record completes and inverts cleanly.** Confluence
+    plugin **v2.13.0, 2026-08-29 (2 days)**; `export-ilograph` ~5 weeks;
+    `validate-ilograph` ~9 months; `standard-libraries` ~22 months; MCP
+    server 440 days; `ilograph-typescript` 1423 days. **The vendor's
+    product surfaces are actively maintained, its validator is its
+    least-maintained code artefact, and every third-party tool is dead.**
+    Six artefacts' release histories now support the ninth note's instinct
+    that this ecosystem does not invest in checking — an instinct it had
+    inferred from an absence that was not there.
+  - **A demand signal for a question pumllint already answered, agreeing
+    with the answer.** **20 installs and 1 review** for the vendor's own
+    first-party wiki integration — the best available effort at
+    "diagrams-as-code inside a wiki". [The demand
+    scan](docs/demand-scan-embedded-plantuml.md) measured PlantUML-in-
+    markdown and returned *watch, don't build* against the Arc E bar;
+    **Confluence is the same question one surface over and the number
+    points the same way.** Worth recording because that scan never
+    considered Confluence — pumllint's docs mention it nowhere else.
+    *One marketplace, one uncorroborated number, and install counts are a
+    poor proxy for use: a signal cited with caveats, not a finding.*
+  - **Refused: a Confluence or wiki integration for pumllint, on two
+    independent grounds** — there is no gate on that surface and the
+    exit-code contract cannot be carried there; and the only demand signal
+    available points away, against a bar that is explicitly
+    build-only-for-a-concrete-user. **Held honestly alongside it:
+    pumllint's reach ends where version control does.** Wiki-hosted
+    description is structurally un-gateable by *any* CI-shaped tool — the
+    constraint is structural rather than a defect, but it is not costless.
+  - **Third consecutive Ilograph note finding no pumllint defect.**
+  - *Recorded, not queued*: the surface/gating table; the three-copy
+    result; "wiki-hosted description is un-gateable" — all **annotated
+    into notes 9, 36 and 37 in this turn**. **Open for anyone with a
+    Confluence Cloud instance**: install the 30-day trial and report
+    whether the editor surfaces *any* diagnostics — that settles the one
+    question this note could not answer. *Re-litigate on a concrete user
+    with a Confluence-hosted PlantUML corpus, not on this plugin.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
