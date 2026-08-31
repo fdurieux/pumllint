@@ -284,7 +284,10 @@ three items — full write-up in EVIDENCE.md §Deepening:
   fixer already returned per-finding line edits, so the server converts them
   rather than reimplementing anything. *Nearly* free is right, not free: the
   conversion surfaced two latent defects in the shipped diagnostics and three
-  in the fixer's edge cases. Still unbuilt: hover, completion, rename. The "permanent maintenance
+  in the fixer's edge cases. **Hover, completion and rename followed on
+  2026-08-31**, each backed by something the engine already knows. The LSP
+  surface is now complete for what pumllint models; what remains unbuilt is
+  unbuilt on purpose (see that entry). The "permanent maintenance
   surface" caution stands and is now a cost the project has taken on. The
   GitHub `::error` annotations substitute was not needed: the ask was for the
   editor, not for PRs.
@@ -5075,9 +5078,63 @@ list and license posture live in § Settled questions.
   - Suites: **552 stdlib / 674 pytest** (was 529 / 651). Badge and HTML
     report byte-identical, features in sync — the `_derived_name` change
     touches no example.
-  - *Recorded, not queued*: hover, completion and rename remain unbuilt and
-    unrequested; `apply_fixes`'s whole-file newline normalisation as a
-    possible `pumllint fix` fix.
+  - *Recorded, not queued*: **hover, completion and rename — BUILT the same
+    day, see the entry below**; `apply_fixes`'s whole-file newline
+    normalisation as a possible `pumllint fix` fix.
+
+- **Hover, completion and rename (2026-08-31) — three features, and the
+  interesting work was deciding where each one stops.** `pumllint/lsp.py`,
+  20 further tests.
+  - **The design question was not how to build them but what backs them.**
+    Code actions had `pumllint fix` behind them; these three had nothing, so
+    each was scoped to something the engine already knows and stopped there.
+    **Hover** surfaces `rules/catalog.toml` — id, kebab name, description,
+    severity, dimension, scope, profile gating — so it cannot drift from what
+    the linter enforces, and it also documents a rule key hovered inside a
+    `disable` comment. **Completion** offers the participants *this buffer*
+    contains (implicit lifelines marked) and the rule catalogue inside a
+    suppression comment. **Rename** renames a participant.
+  - **What was refused, and why it would have been invention.** Completion
+    offers **no PlantUML syntax**: the parser is deliberately partial and
+    line-oriented, so a keyword list would be composed rather than derived,
+    and would go stale against upstream every release. That is the same line
+    this series has been drawing for forty notes — *derive it or do not claim
+    it* — applied to this project's own product for once.
+  - **Rename is possible only because the parser's regexes expose named group
+    spans.** `RE_MESSAGE` captures `src`/`dst` separately from `label`, so an
+    identifier can be located without touching the prose beside it: the `A` in
+    `A -> B : notify A owner` is a word in a sentence and survives. Had the
+    model lacked that, rename would have been declined — the alternative is a
+    regex over whole lines, which corrupts labels.
+  - **The model does NOT record note or ref targets** — `note over A` is
+    parsed as prose — so a rename could silently half-rename a diagram and
+    leave PlantUML rendering a brand-new lifeline. **Rather than guess,
+    rename verifies its own work**: the edits are applied to a copy, the
+    result re-parsed, and the participant set must come back as the original
+    with exactly one name swapped; any surviving reference outside prose is a
+    refusal naming the line. Collisions, unknown participants and empty names
+    refuse too. **A refusal is a JSON-RPC error, not an empty edit** — an
+    editor given no edits says "nothing to rename", which hides the reason,
+    and the reason is the useful part.
+  - **A false positive caught in development, worth recording.** The first
+    residual-reference scan checked the whole line, so it refused
+    `A -> B : notify A owner` because the *label* mentioned `A`. That would
+    have refused almost every real rename. The scan now excludes prose —
+    message labels, declaration display text, note bodies — and checks only
+    the structural part, where a surviving identifier really is dangling.
+    **The failure mode of a safety check is refusing valid work**, and it is
+    as worth testing as the unsafe case it exists to catch.
+  - **A test assumption that was wrong about its own fixture**: the
+    completion test asserted an implicit lifeline in `_DOC`, which declares
+    both participants. The fixture was the bug, not the code — fixed by
+    giving that assertion its own fixture rather than weakening it.
+  - Suites: **573 stdlib / 695 pytest** (was 553 / 675). No product code
+    outside `lsp.py` touched; badge and HTML report byte-identical.
+  - *Recorded, not queued*: nothing further on this surface. What is unbuilt
+    now — document symbols, references, formatting, semantic tokens — is
+    unbuilt because **pumllint does not model what they would need**, not
+    because nobody asked. Formatting in particular would mean owning a
+    PlantUML layout opinion the linter deliberately does not have.
 
 ## Working agreements (read before picking anything up)
 
