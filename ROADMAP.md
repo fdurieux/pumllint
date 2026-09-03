@@ -21,8 +21,21 @@ completed Arc B with the architect-facing HTML report; **v0.16.0**
 (2026-07-24) opened Arc E with `pumllint fix`; **v0.17.0** (2026-07-24)
 completed Arc D's deepening (complexity-normalized evidence, third family,
 multi-model waves); **v0.18.0** (2026-07-24) pinned the JSON report shapes
-behind shipped schemas (`pumllint schema`). This file tracks what remains,
-grouped into arcs. Keep it updated as items land.
+behind shipped schemas (`pumllint schema`). *Versions 0.19.0 through 0.30.0
+are not narrated here; there is no changelog, and each release is recorded
+where it landed — in the arc it closed or the settled entry that motivated
+it (v0.25.0 at Arc G, v0.29.0 at the XD majority-vote record, v0.30.0 at
+the ecosystem series). README pins the current version.*
+
+**How this file is laid out** *(restated 2026-09-03, when the sections
+were reordered)*: the **arcs** come first and hold every open item as a
+`- [ ]` checkbox; **Working agreements** follows, and is the section to
+read before picking anything up; the **decision log** — *Settled questions*,
+sixty-odd dated records, roughly nine-tenths of the file by line — comes
+last. Open work is 8% of this document; the rest is the reasoning that
+closed the other 92%, kept so it is not re-derived. Keep it updated as
+items land, and annotate dated records in place rather than rewriting
+them.
 
 ## Arc A — Integrity (done)
 
@@ -31,6 +44,18 @@ grouped into arcs. Keep it updated as items land.
   element-weighted composite, SCORING.md §3); text and json reporters emit
   it. `--min-level` gates on the model-set level by construction (set level
   = worst diagram level).
+- [ ] **Level distribution is input-order dependent** *(found 2026-09-03,
+  re-deriving the pilot census)* — the same 159 wild-corpus files score
+  `{L4:30, L3:35, L2:9, L1:100}` when passed in `sources.json` order and
+  `{L4:30, L3:36, L2:8, L1:100}` in sorted order; each is deterministic on
+  repetition, and the diagram that moves is one aws-icons cognito example.
+  Cross-diagram rules are the plausible cause. *Scores are a public
+  contract*, so a score that depends on argument order is a defect to
+  investigate, not a feature to gate: reproduce on a minimal pair, find the
+  order-sensitive site, and either make it order-independent or document
+  the dependence as a contract term. No trigger — defects are never
+  demand-gated. Record: docs/pilot-census-first-contact.md, 2026-09-03
+  addition.
 
 ## Arc B — Trust & adoption (done)
 
@@ -151,8 +176,11 @@ grouped into arcs. Keep it updated as items land.
   false-positive risk on generic display names; Arc C bar in full.
   *Trigger: an adopter corpus using `as` aliases inconsistently.*
 - [ ] **`ref over` capture + declared diagram→diagram links (G6/O4)** — the
-  notation's one cross-diagram construct (recommended by SEQ006's own
-  message) is dropped whole by the parser, and the nearest declared-link
+  notation's one cross-diagram construct (recommended by SEQ011's and
+  GEN005's own messages, with a caveat since PR #120; SEQ006 no longer
+  recommends it — it was the one rule offering `ref over` as a same-file
+  substitute, and now names a note alone) is dropped whole by the parser,
+  and the nearest declared-link
   mechanism, `trace`, is untyped and undirected (same note, G6/§2.3).
   Candidate, built together if built: parse `ref over` into the model, and
   a link-integrity check (dangling target, orphan diagram) with
@@ -297,6 +325,22 @@ three items — full write-up in EVIDENCE.md §Deepening:
   route cannot meet — the plugin's sole delta is measures/quality-gate in
   Sonar's UI, which `--min-level` + baseline already provide in CI, and a
   Java artifact with its own release train cuts against the repo's ethos.
+- [ ] **Per-rule `option_keys` declaration** *(recorded 2026-09-03)* — the
+  one declaration two shipped-in-part features both stop at. Unknown
+  config keys now warn for top-level keys and rule ids (PR #121), but a
+  typo'd *option* key (`patern`, or `max` on a rule that takes
+  `max_nesting_depth`) is still accepted in silence, because nothing
+  enumerates a rule's legal options: `catalog.toml` has no `options` field,
+  the only list is the string literals at ~28 read sites, and
+  `codegen.py`'s lexicons generate names dynamically (`extra_<lexicon>`).
+  `--list-rules` now shows disabled/profile/severity state but cannot show
+  DORMANT for the same reason — dormancy is an early return inside five
+  `check()` bodies. Build both halves on the one declaration, or neither:
+  a validator that false-positives on a valid config is worse than none,
+  so the dynamic lexicon keys must be modelled, not guessed. *Trigger: the
+  moment either the DORMANT column or option-key validation is wanted.*
+  Residues folded in from the tracker: #37's `0`/`"yes"` scalar quirks,
+  #33's "every documented option is read" guard.
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -842,7 +886,14 @@ list and license posture live in § Settled questions.
     shelf without new evidence; conflicts with zero-dependency and
     parse-tolerance requirements; buys only unpulled LSP features.
     Reopen only for a concrete LSP adopter, and evaluate span-tracking
-    in the existing recognizer first.
+    in the existing recognizer first. *[Amended 2026-09-03: the reopen
+    condition fired — the LSP was built 2026-08-31 on a concrete ask —
+    and the ordered second clause was then executed and returned the
+    answer: span-tracking in the existing recognizer proved sufficient
+    (`lsp.py` extracts precise sub-ranges from the parser's own named
+    groups). The verdict stands, for that reason and not the recorded one;
+    "buys only unpulled LSP features" is no longer true, and column-precise
+    spans are now a shipped limitation rather than a hypothetical want.]*
   - *Keeper*: a **glossary/approved-term rule** — declared names
     resolved against a project term inventory (the trace-inventory
     pattern applied to names; dormant until configured, GEN006/GEN007
@@ -2510,7 +2561,10 @@ list and license posture live in § Settled questions.
     that `authoritative` cannot dissolve — identity without namespacing
     has no negative form. Also measured: **`ref over`** — the notation's
     one cross-diagram construct, recommended by SEQ006's own message —
-    is dropped whole by the parser.
+    is dropped whole by the parser. *[Amended 2026-09-03: SEQ006's message
+    was changed in PR #120 and no longer recommends `ref over`; SEQ011 and
+    GEN005 still do, with a caveat that it is not parsed. The finding
+    stands; its example rule does not.]*
   - *Never build*: RDF/OWL/SHACL as substrate (the 2026-08-26 N1/N3,
     verbatim); reified relationship resources smuggled through `.puml`
     comments (convention-manufacturing, and the correct product for that
@@ -2529,9 +2583,14 @@ list and license posture live in § Settled questions.
     stderr-warning precedent (exit codes untouched). Fixes a
     scoring-integrity defect independent of this question. Trigger: an
     adopter whose corpus uses `!include` for shared declarations and
-    whose scores are consequently inflated. (2) **Declared
-    diagram→diagram links** via `ref over` (externally-authored
-    convention — PlantUML's own, already recommended by SEQ006) and/or a
+    whose scores are consequently inflated. *[BUILT — shipped as
+    `_warn_hidden_declarations` in `cli.py` (docs/xd-identity-demo.md
+    reproduces its output), and its guard was fixed 2026-08-31 in PR #120
+    so it also fires when the include hid *everything*. Built as a
+    defect fix, not on the adopter trigger, which has still not fired.]*
+    (2) **Declared diagram→diagram links** via `ref over`
+    (externally-authored convention — PlantUML's own, still recommended
+    by SEQ011 and GEN005; SEQ006 stopped recommending it in PR #120) and/or a
     prose-carrier ID scheme extending `trace`: link-integrity checking
     (dangling target, orphan diagram) with `trace`-style gates. Same
     shape as the Linked.Archi `'!la-` candidate — if either is built,
@@ -3792,7 +3851,12 @@ list and license posture live in § Settled questions.
     **lexical tier and nothing above it**: SEQ105 vague terms, SEQ106 elision tokens,
     SEQ109 non-informative replies, SEQ103 arg stop-words, GEN008
     density are rung-1 shaped; SEQ001/SEQ101, ACT001/ACT002, SEQ011,
-    GEN005 and **the whole XD family** are rungs 2–4. **F2's honest form
+    GEN005 and **the whole XD family** are rungs 2–4. *[Corrected
+    2026-09-03: GEN008 is misfiled here. Its check divides the note count
+    by `diagram.element_count` — the scorer's structural denominator — so
+    it is a budget over parsed structure, the same shape as SEQ011 and
+    GEN005 which this sentence places at rungs 2–4. It belongs with
+    them.]* **F2's honest form
     is "author *lexicon and pattern* rules without a Python
     contribution"** — still possibly worth something (a team's own
     vague-term vocabulary is exactly what they want to own) but a
@@ -3902,7 +3966,9 @@ list and license posture live in § Settled questions.
     model — which we have (`diagram.participants`, `diagram.blocks`, the
     batch) — a declarative format can ask relational questions of it.**
   - *F2 re-scoped to THREE tiers, and still unsized.* **Lexical**
-    (SEQ103/105/106/109, GEN008) — expressible anywhere. **Relational**
+    (SEQ103/105/106/109, GEN008 *[GEN008 misfiled — structural, per the
+    2026-09-03 correction to the Semgrep note above]*) — expressible
+    anywhere. **Relational**
     (SEQ001/SEQ101 declaration-vs-use, orphan/unused-participant,
     plausibly parts of XD) — expressible over a resolved graph, on this
     evidence. **Ordering/structural** (ACT001/002 terminals, activation
@@ -5331,7 +5397,9 @@ list and license posture live in § Settled questions.
 
 - **The ungated tier completed, BUILT 2026-09-03 — ranks 2, 4 and 5, and two
   of the three were again larger than the note specified.** With ranks 3, 6
-  and 7 (2026-08-31) this closes every item that needed no trigger.
+  and 7 (2026-08-31) this closes every item that needed no trigger. *Issues:
+  this entry delivers most of **#37** and the claim-language half of
+  **#35**; **#30** is untouched and stays blocked on §6.5.*
   - **Config surface (rank 2).** A table-form `[rules.X]` with
     `enabled = false` left the rule **armed** — `enabled` was read nowhere in
     the codebase. Worse, the null-option crash is not one site but
@@ -5376,6 +5444,67 @@ list and license posture live in § Settled questions.
   - *Suites 587 → 601 stdlib, 709 → 723 pytest. Feature files in sync;
     published artefacts byte-identical; no golden, schema or scoring change.*
 
+- **Record integrity, BUILT 2026-09-03 — rank 1 of the prioritisation note,
+  plus the rank-12 hoist, and the tracker reconciled by issue number.**
+  Sized M in the note; it was L, because the record had drifted in every
+  direction the note diagnosed and three it had not. Nothing here is new
+  judgement — all of it is propagation of corrections already made.
+  Full account: docs/roadmap-swot-prioritisation.md, rank 1's BUILT block.
+  - **What was false, by class.** Six sentences in *Working agreements*
+    (the LSP under "wait for pull" while Arc E marks it BUILT; "no
+    committed follow-ups remain"; "(when built) tracing" for a command
+    shipped in v0.25.0; "next in line is Arc H"; "Arcs A–D are complete …
+    0.18.0"; and a 2026-07-30 "next action" whose census had run and
+    whose demand signals now read 0 of 39). Twenty-two "LSP unbuilt"
+    sentences across seven `docs/` notes — the ROADMAP mirrors were
+    annotated on 2026-08-31, the sources never were. Three RULES.md
+    summary rows contradicting their own sections (STA002, UC001, UC002 —
+    never synced, same import commit). Four catalog descriptions
+    (SEQ103/105/107/109) still carrying the overclaims #40 / PR #50 removed
+    from the *messages*. GEN008 filed as lexical in four places while it
+    divides by `element_count`. The `ref over`-recommended-by-SEQ006
+    premise in five places after PR #120 changed SEQ006. The `!include`
+    disclosure marked *Recorded, not queued* in two places after it shipped.
+    The Lark/ANTLR refusal resting on "unpulled LSP features" after the LSP
+    was pulled. And the previous two entries in this log citing ranks,
+    never issue numbers — the divergence PR #119 was written to fix,
+    reappearing one layer down.
+  - **The tracker, reconciled.** Every open issue now appears here by
+    number. **#33** (four documented-but-absent behaviours): all four
+    doc-corrected before PR #119; closed with carve-outs for UC001's
+    `p.kind` interpolation and the option-read guard (folded into Arc E's
+    `option_keys` item). **#37** (config surface): asks 1 and 3 delivered
+    in PR #121; closed with carve-outs for the `0`/`"yes"` scalar quirks,
+    option-key validation (declined pending `option_keys`) and the DORMANT
+    column (same). **#49** (rule-precision gaps): tier 1 of all three
+    shipped, the last residue — the STA002 table row — fixed in this pass;
+    closed with the three tier-2 items and the named test debt carved out.
+    **#44** (`trace`): items 1 and 2 shipped before PR #119
+    (`trace.py`'s comment split; README's source-asymmetry note); open on
+    item 3, `provisional`. **#30** (`syntaxOk`): the text-reporter half
+    shipped earlier; the JSON half is blocked on §6.5. **#35** (C7): the
+    claim language was repaired in PR #121 and the *defect* is intact by
+    design — open on §6.4. **#41** (SEQ10x outside the executable spec) and
+    **#42** (SEQ107's `_NEGATED`): untouched, correctly — #42 is blocked on
+    an audit its own text says must run first. **#43 / #47**: ledgers, open
+    as such; the one thing the record owed them — the provenance row — is
+    now split (licence vs arm's-length) with the second marked *not
+    establishable here*.
+  - **Two open items queued with no trigger**, because they are a defect
+    and its prerequisite: the input-order dependence of the level
+    distribution (Arc A) and the per-rule `option_keys` declaration
+    (Arc E).
+  - **The hoist.** *Working agreements* and the arcs now precede the
+    decision log in this file. Pure move, one commit, no citation site
+    affected — the 16 sites that name the section name it by file. It
+    addresses the cause rather than the symptom: the orientation layer sat
+    5,100 lines below the checkboxes it contradicted, which is why six of
+    its sentences went stale unread across three PRs that each corrected
+    the file elsewhere.
+  - *Product behaviour unchanged except the four catalog descriptions
+    `--list-rules` prints. No golden, schema or score movement. Suites
+    unchanged at 602 stdlib / 724 pytest.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be
@@ -5390,9 +5519,9 @@ list and license posture live in § Settled questions.
   ships inside pumllint itself: the forward leg of the requirements
   pipeline (prose → model authoring), k-fold generation, and judging
   live in `tools/` and docs/agents.md. What ships in the product —
-  linting, scoring, fixing, and (when built) tracing, verbalizing,
-  diffing — is deterministic code over the parsed model, byte-stable
-  where output contracts say so.
+  linting, scoring, fixing, tracing, the language server, and (when
+  built) verbalizing and diffing — is deterministic code over the parsed
+  model, byte-stable where output contracts say so.
 - **docs/sdlc-tooling-landscape.md is the source of truth, and a second
   rendering of it exists off-repo and is deliberately out of date.** A
   separately-authored HTML version (own layout, its own provenance line)
@@ -5407,7 +5536,30 @@ list and license posture live in § Settled questions.
   throwaway target and diff before touching the live one, and leave its
   audience-specific tag wording alone unless asked. Revise this doc
   freely in the meantime — the divergence is accepted, not a debt.
-- Recommended next: **Arcs A–D are complete** — including the
+- **Recommended next (2026-09-03): the ungated tier is closed; what
+  remains is gated or decision-blocked, and the gates are honest.** Every
+  item that needed no trigger — ranks 1–7 of
+  docs/roadmap-swot-prioritisation.md — shipped across PRs #119–#122.
+  Open work by arc: Arc C's four items and Arc D's foreign-corpus fixture
+  wait on an adopter or owner go; Arc E's SonarQube plugin waits for a
+  Sonar-shop user (its LSP half is **built**, 2026-08-31); Arc F waits on
+  the adopter yes that queues a rule pack; Arcs H–J keep their recorded
+  triggers. The one demand-backed build — rank 8, declarable convention
+  options from issues #43/#47 — is contingent on owner decision §6.1.
+  **Six owner decisions are open** (§6.1–6.3, 6.5, 6.7, 6.8 of the note;
+  §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
+  pinned JSON Schema inside 0.x, unblocks six parked items on one answer
+  and has precedent: `trace` already ships schema-pinned outside README's
+  stable list. Two open items were queued 2026-09-03 with no trigger,
+  because they are defects or their prerequisites: the input-order
+  dependence of the level distribution (Arc A) and the per-rule
+  `option_keys` declaration (Arc E). The open tracker: #30, #35, #41,
+  #42, #44 stay open on named residues; #43/#47 stay open as ledgers;
+  #33, #37, #49 closed with carve-outs in this pass.
+- *Superseded 2026-09-03 — kept as the 2026-07-24 state, since three of
+  its sentences were false by 2026-08-31 and this file's own record at the
+  2026-08-31 entry says which:* Recommended next: **Arcs A–D are
+  complete** — including the
   execution-oracle and cross-vendor waves (2026-07-26) and the
   agent-repair wave (2026-07-27) — and the report
   shapes are schema-pinned (0.18.0). No committed follow-ups remain;
@@ -5452,7 +5604,16 @@ list and license posture live in § Settled questions.
   while their composite is vacuously high). This was prevalence
   measurement, not adopter pull: the phase-0 census on the pilot
   organisation's real corpus — and every demand gate above — stays
-  open as recorded.*
+  open as recorded.* *Closed out 2026-09-03: this bullet is no longer
+  the next action. The census's two headline demand signals were
+  re-derived under the 2026-08-27 exclusion guard and both read **0 of
+  39** on the only working-project corpus (C4 macros 46% → 8.0% → 0/39;
+  `!include` 118/159 → 47/88 → 0/39 — see the 2026-09-03 entry); the
+  `!include`-evasion disclosure this bullet anticipated has shipped and
+  had its guard fixed in PR #120; the pilot itself is owner decision
+  §6.3, thirty-plus days unmoved with every charter role still a
+  placeholder. The remaining demand instruments named here keep their
+  gates as written.*
 - **Research track (accepted 2026-08-10): docs/research-charter.md is
   the source of truth for the measurement-wave program.** W0 shipped
   with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take

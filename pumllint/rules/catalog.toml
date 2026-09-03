@@ -240,7 +240,7 @@ profiles = ["codegen"]
 
 [SEQ103]
 name = "codegen-prose-message"
-description = "Call messages must be operation signatures (name(args)), not prose"
+description = "Call messages must be signature-shaped, name(args) — the accepted shape is the 'pattern' option"
 severity = "blocker"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
@@ -256,7 +256,7 @@ profiles = ["codegen"]
 
 [SEQ105]
 name = "codegen-vague-guard"
-description = "alt/opt/loop guards must be present and machine-evaluable"
+description = "alt/opt/loop guards must be present and not a known vague phrase (the 'vague_terms' lexicon)"
 severity = "blocker"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
@@ -272,7 +272,7 @@ profiles = ["codegen"]
 
 [SEQ107]
 name = "codegen-missing-failure-path"
-description = "Calls to <<external>>/database/queue participants must model a failure path"
+description = "Calls to <<external>>/database/queue participants need an enclosing error fragment, by label vocabulary (the 'failure_keywords' lexicon)"
 severity = "major"
 dimension = "DIM-CMP"
 applies_to = ["sequence"]
@@ -288,7 +288,7 @@ profiles = ["codegen"]
 
 [SEQ109]
 name = "codegen-uninformative-reply"
-description = "Replies must use reply arrows (-->) and name the returned value"
+description = "Replies must use reply arrows (-->) with a label that is not a known non-informative word (the 'non_informative' lexicon)"
 severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]

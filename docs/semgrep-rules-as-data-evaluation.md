@@ -238,7 +238,11 @@ This is the practical output.
 **A declarative rule layer for pumllint is viable for the lexical tier
 and nothing above it.** The lexicon rules — SEQ105's vague terms,
 SEQ106's elision tokens, SEQ109's non-informative replies, SEQ103's
-argument stop-words, GEN008's density budget — are rung-1 shaped and
+argument stop-words, GEN008's density budget *[misfiled — GEN008 divides
+the note count by the scorer's structural `element_count`; it is a budget
+over parsed structure, the same shape as SEQ011 and GEN005 two lines down,
+and belongs at rungs 2–4 with them; corrected 2026-09-03]* — are rung-1
+shaped and
 would express cleanly as data. The rules that distinguish this catalogue
 — SEQ001/SEQ101 declaration-versus-use, ACT001/ACT002 flow terminals,
 SEQ011 and GEN005 budgets over parsed structure, the whole XD family —

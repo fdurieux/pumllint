@@ -190,6 +190,37 @@ house discipline, not demand-gated work.
 repository it returns 21 findings and 0 defects, and would not have caught any
 of the four corrections it is offered to prevent.
 
+> **BUILT 2026-09-03 — and sized M, it was L.** The four bullets above were
+> the visible tip. Exploration found the record had drifted in every
+> direction the note itself diagnosed and in three it had not: **22 stale
+> "LSP unbuilt" sentences across seven `docs/` notes** (the ROADMAP mirrors
+> had been annotated on 2026-08-31; the sources never were); **six**, not
+> two, false sentences in *Working agreements*, including "(when built)
+> tracing" for a command that shipped in v0.25.0; four catalog descriptions
+> still carrying overclaims that issue #40 / PR #50 removed from the
+> *messages* (SEQ103/105/107/109 — visible in `--list-rules`); GEN008
+> mis-tiered as lexical in four places while its code divides by
+> `element_count`; the `ref over`-recommended-by-SEQ006 premise surviving in
+> five places after PR #120 changed SEQ006; the `!include` disclosure still
+> marked *Recorded, not queued* in two places after it shipped and was
+> fixed; and the Lark/ANTLR reason dead since the LSP shipped.
+>
+> **The uncomfortable one:** my own two ROADMAP entries from PRs #120 and
+> #121 cited prioritisation ranks and never issue numbers — the same
+> divergence PR #119 was written to fix, one layer down. Six of ten issues
+> were still unreferenced in ROADMAP; #41, #42 and #44 had no substantive
+> mention anywhere.
+>
+> Every correction is an in-place dated annotation, never a rewrite of a
+> dated record. The provenance row was **split in two**: it named the licence
+> while §6.1 leaned on it for arm's-length status, and the second is now
+> stated as *not establishable here*. Rank 12's hoist was folded in, because
+> the orientation layer sitting 5,100 lines below the checkboxes it
+> contradicts is *why* every one of the six Working-agreements sentences
+> went stale unread. Two open items were queued with no trigger — the
+> input-order dependence (Arc A, a defect) and the `option_keys` declaration
+> (Arc E) — and #33, #37 and #49 were closed with carve-out comments.
+
 **2. Config-surface integrity — the three verified #37 defects.** *(S,
 do-now.)* Make a table-valued `[rules.X]` honour `enabled = false`; warn on
 stderr for unknown top-level, rule and option keys; make `--list-rules`
@@ -650,7 +681,7 @@ pointers are the state at `dd9814c`, not at HEAD.** The rest still reproduce.
 | R7 | **a table-form `enabled = false` does not disable** | `sed -n '345,356p' pumllint/engine.py` |
 | R8 | **the `!include` disclosure cannot fire on zero-entity diagrams** | `sed -n '402p' pumllint/cli.py` |
 | R9 | **README's C7 guarantee is retracted four lines below it** | `sed -n '236,248p' README.md` |
-| R10 | RULES.md still summarises STA002 as reachability (issue #49) | `sed -n '2430p' RULES.md` |
+| R10 | RULES.md still summarises STA002 as reachability (issue #49) | `sed -n '2431p' RULES.md` at `dd9814c` (the note's original pointer was one line off). **Fixed 2026-09-03**: the row now matches its section, along with UC001's and UC002's. |
 | R11 | the audit record declines to vouch for corpus provenance | `sed -n '146p' docs/foreign-corpus-audit.md` |
 | R12 | egress could not settle repository visibility (403 vs 200 control) | `curl -o /dev/null -w '%{http_code}' https://github.com/akantai/J-F` |
 

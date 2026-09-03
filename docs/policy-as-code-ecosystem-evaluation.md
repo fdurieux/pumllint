@@ -250,7 +250,8 @@ The Spectral note's declarative-rule-layer candidate was narrowed one
 note ago to "lexical tier only". **That narrowing was wrong, and the
 honest position is between the two:**
 
-- The **lexical tier** (SEQ105/106/109/103 lexicons, GEN008) — expressible
+- The **lexical tier** (SEQ105/106/109/103 lexicons, GEN008 *[misfiled:
+  structural — see the Semgrep note's 2026-09-03 correction]*) — expressible
   in any of these formats.
 - The **relational tier** (SEQ001/SEQ101 declaration-versus-use, orphan
   and unused-participant checks, plausibly parts of XD) — expressible in

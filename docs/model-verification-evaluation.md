@@ -273,7 +273,14 @@ for this codebase, on grounds already in the records:**
    Column-precise spans and a CST for richer autofix are LSP-territory
    wants; Arc E's LSP item is itself strictly wait-for-pull. A grammar
    is a dependency of an unpulled feature, not an upgrade to the
-   shipped product.
+   shipped product. *[2026-09-03: the LSP was pulled and built
+   2026-08-31, so this premise is gone. The conclusion survives on a
+   different ground: the shipped server extracts precise sub-ranges from
+   the existing parser's named groups, so span-tracking in the recognizer
+   proved sufficient — exactly the "evaluate first" step the closing
+   bullet prescribes. Column-precise spans are now a shipped limitation
+   (`lsp.py` widens to end-of-line where a violation carries no column),
+   not a hypothetical want.]*
 5. **Parser fidelity is defect-class work, and the guards exist.** The
    v0.26.0 fixes (half-arrow direction, legend bodies, delay arrows)
    were found, fixed and frozen under the corpus + golden contract. A
@@ -348,4 +355,6 @@ changes.**
 - **Grammar question**: closed here; reopen only if a concrete LSP
   adopter makes column-precise spans load-bearing, and then evaluate
   span-tracking in the existing recognizer before any parser
-  generator.
+  generator. *[Reopen condition fired 2026-08-31; the ordered second
+  clause was executed and returned "sufficient". Still closed, for that
+  reason — see §4's annotation above.]*

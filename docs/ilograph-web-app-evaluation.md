@@ -238,6 +238,8 @@ Scope: *pumllint's position relative to the Ilograph web app*.
   **pumllint has no authoring-time story at all**, while Ilograph's is
   good and ships everywhere. An editor plugin / LSP remains the strongest
   unclaimed idea of the run, refused on demand rather than merit.
+  *[2026-09-03: claimed and built 2026-08-31 — `pumllint lsp`. The ROADMAP
+  mirror of this item was annotated at the time; this source was not.]*
 
 **Opportunities**
 
@@ -266,11 +268,12 @@ which survived every re-examination.
    cheap signal standing in for the expensive check*, and the first caught
    before publication.
 4. **An editor plugin / LSP for pumllint** — carried forward unchanged
-   from the 39th note. Unrequested; gated on the Arc E bar.
+   from the 39th note. Unrequested; gated on the Arc E bar. *[BUILT
+   2026-08-31.]*
 
 **Re-litigate on:** nothing in this ecosystem. A concrete user asking for
 editor-time checking re-opens item 4, and that is the only live thread
-left.
+left. *[It re-opened the same day this note landed, and closed as built.]*
 
 ## Related reading
 

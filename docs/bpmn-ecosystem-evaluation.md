@@ -141,7 +141,7 @@ structural:
 | Named presets | `bpmnlint:all`, `:recommended`, `:correctness` | default profile, `codegen` profile |
 | Severities | `off` / `warn` / `error` | `info` / `minor` / `major` / `critical` / `blocker`, `--fail-on` |
 | Extensibility | `bpmnlint-plugin-{NAME}` | `@register` + `catalog.toml` |
-| Editor integration | `bpmn-js-bpmnlint`, live in the modeler | none (LSP is Arc E, wait-for-pull) |
+| Editor integration | `bpmn-js-bpmnlint`, live in the modeler | none (LSP is Arc E, wait-for-pull) *[since 2026-08-31: `pumllint lsp`, stdlib JSON-RPC over stdio]* |
 | Terminal summary | `✖ 6 problems (6 errors, 0 warnings)` | `✖ 6 issue(s): 2 major, 4 minor` |
 | **Aggregate verdict** | **none** | levels, dimensions, gap report, ratchet, badge |
 

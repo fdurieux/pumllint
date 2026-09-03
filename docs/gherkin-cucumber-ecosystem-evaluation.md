@@ -44,7 +44,9 @@ editor.
 **The pattern, stated with its exception: a standalone linter CLI goes
 stale unless it is also the feedback where authoring happens.** pumllint
 is a standalone CLI with no editor integration — LSP is recorded as Arc
-E, wait-for-pull. **This note does not conclude that pumllint should
+E, wait-for-pull *[2026-09-03: pulled and built 2026-08-31, two days
+after this note; every "wait-for-pull" below reads as the 2026-08-29
+state]*. **This note does not conclude that pumllint should
 build one**; §7 explains why the inference does not go through. It
 records the pattern because the pattern is about this project, not about
 Gherkin.
@@ -285,7 +287,8 @@ LSP item is *for*. The pattern's claim is not "ship an LSP or die" — it
 is that **the point of authoring is where a checker's maintenance gets
 funded**. If the LSP item is ever picked up, this is the argument for it,
 and it is a better one than "editors are nice to have". Still Arc E,
-still wait-for-pull, still no constituency. §8 grades it.
+still wait-for-pull, still no constituency. §8 grades it. *[The
+constituency was the maintainer; built 2026-08-31.]*
 
 ## 8. Fit — graded
 
@@ -303,7 +306,8 @@ test that runs.
 ### F3 — an editor integration / LSP. **Unchanged: Arc E, wait-for-pull, no constituency.**
 
 §7 gives it a **better argument** than it had, and no more demand than it
-had. Recorded, not queued, exactly as before.
+had. Recorded, not queued, exactly as before. *[BUILT 2026-08-31 — the
+demand arrived after this note, not because of it.]*
 
 ### F4 — scenario-name uniqueness across the corpus. **No — and worth saying why.**
 
@@ -333,7 +337,8 @@ point of the per-rule layout.**
 
 **Weaknesses (internal, unfavourable)**
 
-- **No authoring-point feedback**, which §1.2's pattern identifies as the
+- **No authoring-point feedback** *[until 2026-08-31]*, which §1.2's
+  pattern identifies as the
   condition under which standalone checkers get maintained. §7 argues the
   pattern does not straightforwardly apply; it does not argue the
   weakness is imaginary.
@@ -372,7 +377,8 @@ dependency stands as it is, and is measured sound.**
    discriminator. Offered as a predictor to test; **not** a roadmap
    input (N3).
 2. **§7's argument for the LSP item** — if F3 is ever picked up, the
-   pattern is the argument. Does not change its gating.
+   pattern is the argument. Does not change its gating. *[Picked up
+   2026-08-31.]*
 3. **The cold-run gap (§9)** — no measurement exists of what pumllint's
    defaults report on a large, mature, third-party diagram corpus. §2
    suggests the number would be large and mostly conventional. Recorded
@@ -385,7 +391,7 @@ dependency stands as it is, and is measured sound.**
   and is the cleanest test of the pattern.
 - An adopter reporting the cold-run experience, which would turn
   candidate 3 into a real question about default profiles.
-- The LSP item's own trigger, unchanged.
+- The LSP item's own trigger, unchanged. *[Fired 2026-08-31.]*
 
 ## Related reading
 
