@@ -24,7 +24,9 @@ that the record repeatedly refuses its own convenient readings: the pilot
 census note pre-emptively disclaims itself as demand, and the 2026-08-27
 exclusion guard invalidates the project's own loudest prevalence figure.
 
-`ROADMAP.md:5256-5261` states the consequence: *"no committed follow-ups
+`ROADMAP.md:5256-5261` *(at `dd9814c`; the sentence now lives inside a
+superseded 2026-07-24 record at line 556, after the 2026-09-03 hoist)*
+states the consequence: *"no committed follow-ups
 remain; everything is strictly demand-driven."*
 
 **That sentence is not true of its own repository.** On 2026-08-24 ten issues
@@ -58,7 +60,7 @@ pull it has*. That is why record integrity ranks first: it is the input to
 every other judgement on this table, not housekeeping.
 
 **The same divergence has a second instance one file apart.** `ROADMAP.md:278`
-marks the LSP **BUILT 2026-08-31**; `ROADMAP.md:5260` — in *Working
+marks the LSP **BUILT 2026-08-31**; `ROADMAP.md:5260` *(at `dd9814c`)* — in *Working
 agreements*, the section headed *"read before picking anything up"* — still
 lists *"Arc E's LSP server and SonarQube plugin (wait for pull)"* (✔). The
 wrong half is the one a work-selection turn reads first, and it sits 4,982
@@ -465,6 +467,19 @@ licensing commitment and a frozen W3b pre-registration, none as anchors, with
 no link checker to catch the staleness. Write the rotation policy the file has
 never had. *Dependency: rank 1.*
 
+> **BUILT 2026-09-03, folded into rank 1 as its own commit.** Pure move: the
+> Working-agreements block (117 lines) now sits directly after Arc J, the
+> decision log follows, and the file's line count is unchanged. No citation
+> site moved — all 16 name the section by file. The self-measurement was
+> refreshed in place rather than the figure quietly changing: 89.8% → 89.1%,
+> 59 → 63 records, 15 → 17 open items, orientation 5225 → 498. **What the
+> hoist bought was verified before it was made**: exploration found six
+> stale sentences in Working agreements that three consecutive PRs had each
+> corrected the file *around* without touching — because the section headed
+> "read before picking anything up" was the last thing in a 5,600-line file.
+> The rotation policy is the one line now in the layout note at the top:
+> *annotate dated records in place rather than rewriting them.*
+
 **13. The pilot — decide, do not start.** *(XL, decide-then-do.)* Half the
 published 1.0 gate and the named trigger behind fourteen ROADMAP trigger
 lines, and the only item no session can start: all five charter roles are
@@ -673,9 +688,9 @@ pointers are the state at `dd9814c`, not at HEAD.** The rest still reproduce.
 | Probe | What it establishes | Command |
 |---|---|---|
 | R1 | **#43/#47 unreferenced across all 101 markdown files** | `git stash -u && grep -rn 'capability pull\|production consumer\|issues/43\|issues/47' --include=*.md .` → no output. *This note and its ROADMAP entry are the first two references; run the grep at `dd9814c` to see the state it describes.* |
-| R2 | ROADMAP contradicts itself on the LSP, 4,982 lines apart | `sed -n '278p;5260p' ROADMAP.md` |
-| R3 | Settled questions is 89.8% of the file; orientation at 5225/5310 | `grep -n 'Settled questions\|Working agreements' ROADMAP.md` |
-| R4 | 59 settled records against 15 open checkboxes | `grep -c '^- \[ \]' ROADMAP.md` |
+| R2 | ROADMAP contradicts itself on the LSP, 4,982 lines apart | `sed -n '278p;5260p' ROADMAP.md` at `dd9814c`. **Repaired 2026-09-03**: the false sentence is kept as a superseded 2026-07-24 record inside Working agreements — `grep -n "Arc E's LSP server and SonarQube" ROADMAP.md` finds it, now ~220 lines from the checkbox rather than 4,982. |
+| R3 | Settled questions is 89.8% of the file; orientation at 5225/5310 | `grep -n 'Settled questions\|Working agreements' ROADMAP.md`. **Hoisted 2026-09-03**: Working agreements at 498, Settled questions at 616 of 5,624; the settled block is 89.1% by line — the ratio was never the problem, the reading order was. |
+| R4 | 59 settled records against 15 open checkboxes | `grep -c '^- \[ \]' ROADMAP.md` → 15 at `dd9814c`; **17 as of 2026-09-03** (two queued without a trigger: the order-dependence defect, the `option_keys` declaration) against 63 records. |
 | R5 | **`--help` omits `lsp` and announces five commands** | `sed -n '3p' pumllint/cli.py` |
 | R6 | **the packaging guard is a frozen four-name tuple** | `sed -n '85p' tests/test_packaging.py` |
 | R7 | **a table-form `enabled = false` does not disable** | `sed -n '345,356p' pumllint/engine.py` |

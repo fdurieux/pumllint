@@ -495,6 +495,124 @@ list and license posture live in § Settled questions.
   Arcs H and I shipped — evidence measures them; costs recorded per
   wave, Arc D style.*
 
+## Working agreements (read before picking anything up)
+
+- Scores are a public contract: any change that shifts corpus scores must be
+  deliberate — the golden test enforces it; re-freeze consciously with
+  `python tools/calibrate.py --freeze tests/golden_scores.json`.
+- Claim language is settled (SCORING.md §9): Level 5 is "method-convention
+  complete", never "guaranteed generation-ready"; the evidence-backed pitch
+  is the correlation and the below-Level-2 cliff.
+- The zero-dependency promise holds: product code and its tests must run
+  under `python tests/run_tests.py` with the stdlib only.
+- **The product path is deterministic end-to-end.** No LLM call ever
+  ships inside pumllint itself: the forward leg of the requirements
+  pipeline (prose → model authoring), k-fold generation, and judging
+  live in `tools/` and docs/agents.md. What ships in the product —
+  linting, scoring, fixing, tracing, the language server, and (when
+  built) verbalizing and diffing — is deterministic code over the parsed
+  model, byte-stable where output contracts say so.
+- **docs/sdlc-tooling-landscape.md is the source of truth, and a second
+  rendering of it exists off-repo and is deliberately out of date.** A
+  separately-authored HTML version (own layout, its own provenance line)
+  was published for a management audience and sits at **rev. 2** — the
+  whole rev. 3 specification-quality stream and the rev. 4 caveats are
+  missing from it. Nothing in it is false; it under-claims. Verified and
+  decided 2026-07-27: **not synced**, because its source file is gone and
+  any redeploy means reconstructing the page from a fetched copy — the
+  inline Wardley SVG and the dark-mode blocks are what break. If it is
+  ever brought current: **graft the missing sections, never regenerate
+  from this markdown** (the two are not the same document), stage to a
+  throwaway target and diff before touching the live one, and leave its
+  audience-specific tag wording alone unless asked. Revise this doc
+  freely in the meantime — the divergence is accepted, not a debt.
+- **Recommended next (2026-09-03): the ungated tier is closed; what
+  remains is gated or decision-blocked, and the gates are honest.** Every
+  item that needed no trigger — ranks 1–7 of
+  docs/roadmap-swot-prioritisation.md — shipped across PRs #119–#122.
+  Open work by arc: Arc C's four items and Arc D's foreign-corpus fixture
+  wait on an adopter or owner go; Arc E's SonarQube plugin waits for a
+  Sonar-shop user (its LSP half is **built**, 2026-08-31); Arc F waits on
+  the adopter yes that queues a rule pack; Arcs H–J keep their recorded
+  triggers. The one demand-backed build — rank 8, declarable convention
+  options from issues #43/#47 — is contingent on owner decision §6.1.
+  **Six owner decisions are open** (§6.1–6.3, 6.5, 6.7, 6.8 of the note;
+  §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
+  pinned JSON Schema inside 0.x, unblocks six parked items on one answer
+  and has precedent: `trace` already ships schema-pinned outside README's
+  stable list. Two open items were queued 2026-09-03 with no trigger,
+  because they are defects or their prerequisites: the input-order
+  dependence of the level distribution (Arc A) and the per-rule
+  `option_keys` declaration (Arc E). The open tracker: #30, #35, #41,
+  #42, #44 stay open on named residues; #43/#47 stay open as ledgers;
+  #33, #37, #49 closed with carve-outs in this pass.
+- *Superseded 2026-09-03 — kept as the 2026-07-24 state, since three of
+  its sentences were false by 2026-08-31 and this file's own record at the
+  2026-08-31 entry says which:* Recommended next: **Arcs A–D are
+  complete** — including the
+  execution-oracle and cross-vendor waves (2026-07-26) and the
+  agent-repair wave (2026-07-27) — and the report
+  shapes are schema-pinned (0.18.0). No committed follow-ups remain;
+  everything is strictly demand-driven: Arc E's LSP server and SonarQube
+  plugin (wait for pull — see the re-evaluation notes on each item),
+  Arc F's AI-authored-rules safeguards (build when rule authoring becomes
+  a recurring pipeline). Auto-improvement is a settled question (see
+  *Settled questions*): measurement and evidence-dossier surfaces on
+  demand, never an unattended promote-on-delta loop. The adjacent
+  verifier categories from the tooling-landscape research
+  (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
+  build (see *Settled questions*) — as is markdown-embedded PlantUML
+  extraction, demand-tested 2026-07-26 and failed
+  (docs/demand-scan-embedded-plantuml.md), and the obligation/flow-checking
+  designs, recorded gated 2026-07-30 (see *Settled questions*). The
+  requirements-pipeline arcs (G–J, specified 2026-07-29 from the verified
+  reassessment — docs/prose-pipeline-evaluation.md) are the newest
+  thread: **Arc G shipped in v0.25.0** (`pumllint trace`, 2026-07-29,
+  owner go) — next in line is Arc H (verbalizer), strictly on its
+  trigger: a pilot/adopter asking for the review aid.
+- **Next action (2026-07-30): not code but measurement — run the pilot
+  census on the real corpus** (`tools/pilot_census.py`, read-only,
+  standalone-copyable; charter and phased gates in
+  docs/pilot-charter.md; kit verified end-to-end at v0.26.0 against the
+  wild tier). The census output is the demand instrument the gated
+  items wait for: C4 macro counts → the C4 pack; `!include` usage →
+  include resolution; a requirement-ID convention from the conventions
+  workshop → `pumllint trace` adoption (shipped, zero work); a
+  review-aid ask → Arc H; an architect iterating config in the
+  calibration week → `--shadow-config` (the one shelved
+  auto-improvement component whose trigger the pilot can fire); the
+  modelling-standard owner confirming an obligation table →
+  obligation/flow Phases 2–4 — in which case build the remaining Arc F
+  safeguards first (see Arc F's trigger note). *Dated note,
+  2026-08-11: the census ran end-to-end on a public wild corpus — 159
+  files / 174 diagrams from five public repositories (record:
+  docs/pilot-census-first-contact.md; data:
+  pilot_results/first_contact/). Instrument verified at scale (0.6 s,
+  zero hard parse failures); the dialect signals are loud on public
+  material (C4 macros in 73/159 files, `!include` in 118/159; 103/174
+  diagrams dialect-invisible, held at Level 1 by the zero-element cap
+  while their composite is vacuously high). This was prevalence
+  measurement, not adopter pull: the phase-0 census on the pilot
+  organisation's real corpus — and every demand gate above — stays
+  open as recorded.* *Closed out 2026-09-03: this bullet is no longer
+  the next action. The census's two headline demand signals were
+  re-derived under the 2026-08-27 exclusion guard and both read **0 of
+  39** on the only working-project corpus (C4 macros 46% → 8.0% → 0/39;
+  `!include` 118/159 → 47/88 → 0/39 — see the 2026-09-03 entry); the
+  `!include`-evasion disclosure this bullet anticipated has shipped and
+  had its guard fixed in PR #120; the pilot itself is owner decision
+  §6.3, thirty-plus days unmoved with every charter role still a
+  placeholder. The remaining demand instruments named here keep their
+  gates as written.*
+- **Research track (accepted 2026-08-10): docs/research-charter.md is
+  the source of truth for the measurement-wave program.** W0 shipped
+  with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take
+  their own owner go with a frozen pre-registration and per-wave
+  ceiling; W6/W7 keep their prior triggers above. The charter changes
+  no product behavior and queues no build; it is revised in place,
+  dated, as waves land. Acceptance was de facto at the 2026-08-06
+  merges (PRs #18/#19); recorded here per charter §10.
+
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
 - **Auto-improvement / self-tuning (2026-07-26): measurement yes,
@@ -5343,6 +5461,11 @@ list and license posture live in § Settled questions.
   - **The ROADMAP itself is flagged, and the cheap fix is preferred**:
     *Settled questions* is 89.8% of this file (4,771 of 5,310 lines, 59
     records against 15 open items) with the orientation layer at line 5225.
+    *[Hoisted 2026-09-03: Working agreements now begins at line 498,
+    directly after the arcs; Settled questions follows at 616 and is
+    5,010 of 5,624 lines (89.1%), 63 records against 17 open items. The
+    ratio is unchanged by design — the reorder moved the reading order,
+    not the record.]*
     Hoist *Working agreements* and the open arcs above it **in this one
     file** — do not split, because 16 citation sites across 11 files name the
     section by file, none as anchors, with no link checker.
@@ -5504,121 +5627,3 @@ list and license posture live in § Settled questions.
   - *Product behaviour unchanged except the four catalog descriptions
     `--list-rules` prints. No golden, schema or score movement. Suites
     unchanged at 602 stdlib / 724 pytest.*
-
-## Working agreements (read before picking anything up)
-
-- Scores are a public contract: any change that shifts corpus scores must be
-  deliberate — the golden test enforces it; re-freeze consciously with
-  `python tools/calibrate.py --freeze tests/golden_scores.json`.
-- Claim language is settled (SCORING.md §9): Level 5 is "method-convention
-  complete", never "guaranteed generation-ready"; the evidence-backed pitch
-  is the correlation and the below-Level-2 cliff.
-- The zero-dependency promise holds: product code and its tests must run
-  under `python tests/run_tests.py` with the stdlib only.
-- **The product path is deterministic end-to-end.** No LLM call ever
-  ships inside pumllint itself: the forward leg of the requirements
-  pipeline (prose → model authoring), k-fold generation, and judging
-  live in `tools/` and docs/agents.md. What ships in the product —
-  linting, scoring, fixing, tracing, the language server, and (when
-  built) verbalizing and diffing — is deterministic code over the parsed
-  model, byte-stable where output contracts say so.
-- **docs/sdlc-tooling-landscape.md is the source of truth, and a second
-  rendering of it exists off-repo and is deliberately out of date.** A
-  separately-authored HTML version (own layout, its own provenance line)
-  was published for a management audience and sits at **rev. 2** — the
-  whole rev. 3 specification-quality stream and the rev. 4 caveats are
-  missing from it. Nothing in it is false; it under-claims. Verified and
-  decided 2026-07-27: **not synced**, because its source file is gone and
-  any redeploy means reconstructing the page from a fetched copy — the
-  inline Wardley SVG and the dark-mode blocks are what break. If it is
-  ever brought current: **graft the missing sections, never regenerate
-  from this markdown** (the two are not the same document), stage to a
-  throwaway target and diff before touching the live one, and leave its
-  audience-specific tag wording alone unless asked. Revise this doc
-  freely in the meantime — the divergence is accepted, not a debt.
-- **Recommended next (2026-09-03): the ungated tier is closed; what
-  remains is gated or decision-blocked, and the gates are honest.** Every
-  item that needed no trigger — ranks 1–7 of
-  docs/roadmap-swot-prioritisation.md — shipped across PRs #119–#122.
-  Open work by arc: Arc C's four items and Arc D's foreign-corpus fixture
-  wait on an adopter or owner go; Arc E's SonarQube plugin waits for a
-  Sonar-shop user (its LSP half is **built**, 2026-08-31); Arc F waits on
-  the adopter yes that queues a rule pack; Arcs H–J keep their recorded
-  triggers. The one demand-backed build — rank 8, declarable convention
-  options from issues #43/#47 — is contingent on owner decision §6.1.
-  **Six owner decisions are open** (§6.1–6.3, 6.5, 6.7, 6.8 of the note;
-  §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
-  pinned JSON Schema inside 0.x, unblocks six parked items on one answer
-  and has precedent: `trace` already ships schema-pinned outside README's
-  stable list. Two open items were queued 2026-09-03 with no trigger,
-  because they are defects or their prerequisites: the input-order
-  dependence of the level distribution (Arc A) and the per-rule
-  `option_keys` declaration (Arc E). The open tracker: #30, #35, #41,
-  #42, #44 stay open on named residues; #43/#47 stay open as ledgers;
-  #33, #37, #49 closed with carve-outs in this pass.
-- *Superseded 2026-09-03 — kept as the 2026-07-24 state, since three of
-  its sentences were false by 2026-08-31 and this file's own record at the
-  2026-08-31 entry says which:* Recommended next: **Arcs A–D are
-  complete** — including the
-  execution-oracle and cross-vendor waves (2026-07-26) and the
-  agent-repair wave (2026-07-27) — and the report
-  shapes are schema-pinned (0.18.0). No committed follow-ups remain;
-  everything is strictly demand-driven: Arc E's LSP server and SonarQube
-  plugin (wait for pull — see the re-evaluation notes on each item),
-  Arc F's AI-authored-rules safeguards (build when rule authoring becomes
-  a recurring pipeline). Auto-improvement is a settled question (see
-  *Settled questions*): measurement and evidence-dossier surfaces on
-  demand, never an unattended promote-on-delta loop. The adjacent
-  verifier categories from the tooling-landscape research
-  (docs/sdlc-tooling-landscape.md) are likewise settled: watch, don't
-  build (see *Settled questions*) — as is markdown-embedded PlantUML
-  extraction, demand-tested 2026-07-26 and failed
-  (docs/demand-scan-embedded-plantuml.md), and the obligation/flow-checking
-  designs, recorded gated 2026-07-30 (see *Settled questions*). The
-  requirements-pipeline arcs (G–J, specified 2026-07-29 from the verified
-  reassessment — docs/prose-pipeline-evaluation.md) are the newest
-  thread: **Arc G shipped in v0.25.0** (`pumllint trace`, 2026-07-29,
-  owner go) — next in line is Arc H (verbalizer), strictly on its
-  trigger: a pilot/adopter asking for the review aid.
-- **Next action (2026-07-30): not code but measurement — run the pilot
-  census on the real corpus** (`tools/pilot_census.py`, read-only,
-  standalone-copyable; charter and phased gates in
-  docs/pilot-charter.md; kit verified end-to-end at v0.26.0 against the
-  wild tier). The census output is the demand instrument the gated
-  items wait for: C4 macro counts → the C4 pack; `!include` usage →
-  include resolution; a requirement-ID convention from the conventions
-  workshop → `pumllint trace` adoption (shipped, zero work); a
-  review-aid ask → Arc H; an architect iterating config in the
-  calibration week → `--shadow-config` (the one shelved
-  auto-improvement component whose trigger the pilot can fire); the
-  modelling-standard owner confirming an obligation table →
-  obligation/flow Phases 2–4 — in which case build the remaining Arc F
-  safeguards first (see Arc F's trigger note). *Dated note,
-  2026-08-11: the census ran end-to-end on a public wild corpus — 159
-  files / 174 diagrams from five public repositories (record:
-  docs/pilot-census-first-contact.md; data:
-  pilot_results/first_contact/). Instrument verified at scale (0.6 s,
-  zero hard parse failures); the dialect signals are loud on public
-  material (C4 macros in 73/159 files, `!include` in 118/159; 103/174
-  diagrams dialect-invisible, held at Level 1 by the zero-element cap
-  while their composite is vacuously high). This was prevalence
-  measurement, not adopter pull: the phase-0 census on the pilot
-  organisation's real corpus — and every demand gate above — stays
-  open as recorded.* *Closed out 2026-09-03: this bullet is no longer
-  the next action. The census's two headline demand signals were
-  re-derived under the 2026-08-27 exclusion guard and both read **0 of
-  39** on the only working-project corpus (C4 macros 46% → 8.0% → 0/39;
-  `!include` 118/159 → 47/88 → 0/39 — see the 2026-09-03 entry); the
-  `!include`-evasion disclosure this bullet anticipated has shipped and
-  had its guard fixed in PR #120; the pilot itself is owner decision
-  §6.3, thirty-plus days unmoved with every charter role still a
-  placeholder. The remaining demand instruments named here keep their
-  gates as written.*
-- **Research track (accepted 2026-08-10): docs/research-charter.md is
-  the source of truth for the measurement-wave program.** W0 shipped
-  with the charter (2026-08-06, `stack_experiment/`); W1–W5 each take
-  their own owner go with a frozen pre-registration and per-wave
-  ceiling; W6/W7 keep their prior triggers above. The charter changes
-  no product behavior and queues no build; it is revised in place,
-  dated, as waves land. Acceptance was de facto at the 2026-08-06
-  merges (PRs #18/#19); recorded here per charter §10.
