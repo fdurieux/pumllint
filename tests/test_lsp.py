@@ -285,9 +285,21 @@ def test_lsp_did_close_clears_the_clients_squiggles():
 
 def test_lsp_unknown_request_still_gets_a_reply():
     # An unanswered request blocks the client forever.
+    #
+    # The method has to be one the server genuinely does not handle. This
+    # test drove `textDocument/hover` until hover shipped, at which point it
+    # exercised the hover branch and the fallback it names went uncovered —
+    # green, and testing nothing it claimed to. `foldingRange` is unhandled;
+    # if it is ever implemented, pick another unhandled method rather than
+    # letting this go quiet again.
     _, replies = _drive(
         [
-            {"jsonrpc": "2.0", "id": 7, "method": "textDocument/hover", "params": {}},
+            {
+                "jsonrpc": "2.0",
+                "id": 7,
+                "method": "textDocument/foldingRange",
+                "params": {},
+            },
             {"jsonrpc": "2.0", "id": 8, "method": "shutdown"},
             {"jsonrpc": "2.0", "method": "exit"},
         ]

@@ -78,12 +78,18 @@ def _cli_options() -> set:
 def test_top_level_help_lists_all_commands():
     """`pumllint --help` is the only discovery surface for the subcommands —
     main() dispatches on argv[0] before argparse runs, so the epilog must
-    name every command and the exit-code contract."""
-    from pumllint.cli import build_parser
+    name every command and the exit-code contract.
+
+    Derived from `_SUBCOMMANDS`, never a list frozen here: this test asserted
+    "every command" against a hand-written four while `lsp` shipped, so the
+    guard could not see the very omission it exists to catch. Deriving it
+    covers each future command the moment it is dispatchable.
+    """
+    from pumllint.cli import _SUBCOMMANDS, build_parser
 
     text = build_parser().format_help()
-    for cmd in ("pumllint score", "pumllint fix", "pumllint trace", "pumllint schema"):
-        assert cmd in text, f"--help no longer mentions '{cmd}'"
+    for cmd in sorted(_SUBCOMMANDS):
+        assert f"pumllint {cmd}" in text, f"--help no longer mentions '{cmd}'"
     assert "Exit codes:" in text, "--help lost the exit-code contract"
 
 
@@ -100,9 +106,32 @@ def test_action_forwards_only_real_cli_flags():
 
 def test_action_dispatches_every_cli_command():
     """The action mirrors the CLI: every subcommand must appear in the
-    bash dispatch (schema was missing until 0.27.x)."""
-    for cmd in ("score", "fix", "trace", "schema"):
+    bash dispatch (schema was missing until 0.27.x).
+
+    Derived from `_SUBCOMMANDS` minus `_ACTION_EXCLUDED`, so a new command is
+    covered automatically and the one genuine exclusion has to be declared in
+    cli.py rather than looking like an oversight.
+    """
+    from pumllint.cli import _ACTION_EXCLUDED, _SUBCOMMANDS
+
+    for cmd in sorted(set(_SUBCOMMANDS) - _ACTION_EXCLUDED):
         assert f'"{cmd}"' in _ACTION, f"action.yml does not dispatch '{cmd}'"
+
+
+def test_action_rejects_the_commands_it_excludes():
+    """The exclusion must be real, not just declared.
+
+    `_ACTION_EXCLUDED` is only honest if action.yml genuinely does not accept
+    those commands — otherwise the guard above could be relaxed by adding a
+    name to a set in cli.py.
+    """
+    from pumllint.cli import _ACTION_EXCLUDED
+
+    for cmd in sorted(_ACTION_EXCLUDED):
+        assert f'"{cmd}"' not in _ACTION, (
+            f"action.yml dispatches '{cmd}', so it is not excluded — "
+            "remove it from _ACTION_EXCLUDED"
+        )
 
 
 def test_action_is_composite_and_installs_itself():

@@ -1,11 +1,12 @@
 """Command-line interface.
 
-Five commands:
+Six commands:
   pumllint <paths> [options]          lint (default; no subcommand keyword)
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
   pumllint fix <paths> [options]      auto-fix mechanical findings
   pumllint trace <paths> [options]    requirement-coverage matrix
   pumllint schema <report>            print the JSON Schema for a -f json report
+  pumllint lsp [options]              language server over stdio (editor use)
 
 Each command has its own --help (e.g. `pumllint score --help`).
 
@@ -279,17 +280,11 @@ def _run_lsp(argv: list[str]) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # _SUBCOMMANDS is defined at the foot of this module, once every handler
+    # exists; main() reads it at call time, so the order is not a problem.
     argv = list(sys.argv[1:] if argv is None else argv)
-    if argv and argv[0] == "score":
-        return _run_score(argv[1:])
-    if argv and argv[0] == "fix":
-        return _run_fix(argv[1:])
-    if argv and argv[0] == "trace":
-        return _run_trace(argv[1:])
-    if argv and argv[0] == "schema":
-        return _run_schema(argv[1:])
-    if argv and argv[0] == "lsp":
-        return _run_lsp(argv[1:])
+    if argv and argv[0] in _SUBCOMMANDS:
+        return _SUBCOMMANDS[argv[0]](argv[1:])
     return _run_lint(argv)
 
 
@@ -390,16 +385,33 @@ def _declares_nothing_behind_includes(d) -> bool:
     """True when this diagram's declarations may hide behind ``!include``.
 
     The predicate behind the disclosure below: the diagram carries at least
-    one include directive, names entities, and declares none of them — the
-    shape an ``!include``d shared-declaration file produces, since pumllint
-    never expands the preprocessor.
+    one include directive and declares no entity — the shape an ``!include``d
+    shared-declaration file produces, since pumllint never expands the
+    preprocessor.
+
+    Two shapes qualify, and the second is the severe one:
+
+    * the include hid *some* declarations — entities are named but every one
+      of them is implicit;
+    * the include hid *everything* — the diagram parses to no entity and no
+      modelled content at all, so even the implicit names are gone.
+
+    ``element_count`` is what separates that second shape from a diagram this
+    predicate must stay quiet about: activity and use-case diagrams carry
+    their content in nodes and links rather than in the participant/class/
+    state entities counted here, so an activity diagram that includes a theme
+    has no entities yet is fully modelled. Testing entities alone would call
+    it undeclared and warn on a file whose content pumllint can see perfectly
+    well.
     """
     if not any(x.kind == "include" for x in d.directives):
         return False
     entities = list(d.participants.values()) + list(d.classes.values()) + list(
         d.states.values()
     )
-    return bool(entities) and not any(e.declared for e in entities)
+    if any(e.declared for e in entities):
+        return False
+    return bool(entities) or d.element_count == 0
 
 
 def _warn_hidden_declarations(diagrams) -> None:
@@ -716,6 +728,32 @@ def _emit(report: str, output: str | None, fmt: str = "text") -> None:
         buffer.flush()
         return
     _out(report)
+
+
+# The subcommand keywords, mapped to their handlers — the single enumeration
+# of the command set. main() dispatches through it and the packaging guards
+# derive from it, rather than each freezing a list by hand: a hand-frozen
+# list is how `lsp` came to ship absent from --help despite two tests whose
+# docstrings promised the epilog "must name every command".
+#
+# Defined here, below every handler, so the table can name the functions
+# directly instead of deferring the lookup through thunks.
+#
+# `lint` is deliberately absent: it is the default, reached without a
+# keyword, so `pumllint lint x.puml` treats "lint" as a path.
+_SUBCOMMANDS = {
+    "score": _run_score,
+    "fix": _run_fix,
+    "trace": _run_trace,
+    "schema": _run_schema,
+    "lsp": _run_lsp,
+}
+
+# Commands the composite GitHub Action does not accept. A stdio language
+# server has no meaning as a CI step, so action.yml rejects it with exit 2;
+# naming the exclusion here keeps that deliberate and visible to the
+# packaging guard, instead of looking like the omission it resembles.
+_ACTION_EXCLUDED = frozenset({"lsp"})
 
 
 if __name__ == "__main__":

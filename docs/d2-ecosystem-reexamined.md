@@ -95,6 +95,13 @@ eq.puml:5: [SEQ006/minor] Self-message on 'a' — consider a note or 'ref over' 
 eq.puml:8: [SEQ005/minor] Message a -> b has no label
 ```
 
+*Transcript preserved as run. SEQ006's remediation text was amended
+2026-08-31 — it now reads "consider a note instead", because `ref over` is
+dropped whole by the parser and was the one remediation pointing at a
+same-file substitute no rule can see. The finding, its rule ID, severity and
+line are unchanged; only the advice after the dash differs from a run at
+HEAD.*
+
 **So the tooling D2 ships more of is *syntax and vocabulary* tooling. The
 semantic gap — the one that motivates this project — is not narrower in
 D2. It is the same size.** A D2 author gets better parse errors than a

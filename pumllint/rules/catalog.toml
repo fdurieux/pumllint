@@ -174,7 +174,7 @@ profiles = []
 
 [SEQ006]
 name = "no-self-message"
-description = "Self-message; internal logic belongs in a note or 'ref over'"
+description = "Self-message; internal logic belongs in a note"
 severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
