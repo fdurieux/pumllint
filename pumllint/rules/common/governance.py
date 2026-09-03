@@ -115,7 +115,10 @@ class MaxParticipants(Rule):
             advice = "consider splitting per actor goal or into packages"
         else:
             count = len(diagram.participants)
-            advice = "consider splitting per phase or using 'ref over'"
+            advice = (
+                "consider splitting per phase or using 'ref over' "
+                "(not parsed: lint the extracted file too)"
+            )
         if count > limit:
             yield self.violation(
                 diagram,

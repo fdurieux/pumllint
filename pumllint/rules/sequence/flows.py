@@ -104,10 +104,19 @@ class UnlabelledMessage(Rule):
 
 @register
 class NoSelfMessage(Rule):
-    """Self-messages usually hide logic that belongs in a note or 'ref over'.
+    """Self-messages usually hide logic that belongs in a note.
 
     Option ``allowed`` — list of participant names for which self-messages
     are tolerated (e.g. batch schedulers that legitimately self-trigger).
+
+    The remediation deliberately names a note and not ``ref over``. Both
+    satisfy this rule and both score identically, but the parser keeps a note
+    in the model — SEQ106 reads its text, GEN008 counts it — while ``ref
+    over`` is dropped whole: not a message, block, directive or participant.
+    Recommending it here would send the author to a *same-file* substitute
+    that no rule can see, in exchange for a finding. ``ref over`` remains
+    sound advice where the content genuinely moves to another file that gets
+    linted in its own right (SEQ011, GEN005).
     """
 
     id = "SEQ006"
@@ -119,7 +128,7 @@ class NoSelfMessage(Rule):
                 yield self.violation(
                     diagram,
                     m.line,
-                    f"Self-message on '{m.source}' — consider a note or 'ref over' instead",
+                    f"Self-message on '{m.source}' — consider a note instead",
                 )
 
 
@@ -227,5 +236,6 @@ class MaxMessages(Rule):
                 diagram,
                 diagram.messages[limit].line,
                 f"Diagram has {count} messages (max {limit}) — split per phase "
-                "or extract a 'ref over' sub-diagram",
+                "or extract a 'ref over' sub-diagram (not parsed: lint the "
+                "extracted file too)",
             )

@@ -5284,6 +5284,51 @@ list and license posture live in § Settled questions.
     published artefact was touched. Suites at `dd9814c`: 584/584 stdlib, 706
     pytest.*
 
+- **Three ungated defect fixes, BUILT 2026-08-31 — ranks 3, 6 and 7 of the
+  prioritisation note, and two of the three were mis-specified by it.**
+  Each was a case of shipped code not doing what shipped documentation said.
+  - **The `!include` disclosure now fires when the include hid *everything*.**
+    It required at least one parsed entity, so it warned when the include hid
+    *some* declarations and went silent exactly when it hid all of them. **The
+    note's "one token" fix was wrong**: deleting `bool(entities)` outright
+    warns on any activity diagram behind an `!include`, because the entity list
+    counts only participants, classes and states while an activity diagram
+    carries its content in nodes (measured: `entities=0`, `element_count=3`).
+    Shipped as two conditions — nothing declared **and** (entities exist **or**
+    `element_count == 0`). Four pre-existing fixtures unchanged; two tests added
+    where the guard previously had none.
+  - **`pumllint --help` names six commands, including `lsp`.** The epilog is
+    derived from the module docstring, so one edit fixed both. `main()` now
+    dispatches through a `_SUBCOMMANDS` table and **both packaging guards
+    derive from it** — they had promised in their own docstrings to name
+    "every command" while iterating a hand-frozen four, which is exactly how
+    `lsp` shipped undiscoverable. The Action guard derives from that table
+    minus a declared `_ACTION_EXCLUDED`, because `action.yml` legitimately
+    rejects `lsp` (a stdio language server is meaningless as a CI step); a
+    third test asserts that exclusion is real in `action.yml`, not merely
+    declared in `cli.py`. The "unknown request still gets a reply" LSP test
+    was repointed off `textDocument/hover`, supported since 2026-08-31, which
+    had left the branch it names uncovered while staying green.
+  - **Three rules stopped recommending a construct the parser discards** —
+    and the note was wrong twice here. Its mirror pointers were misidentified
+    (`RULES.md:220` is GEN005, not SEQ006), it named one rule where three
+    recommend `ref over` (SEQ006, SEQ011, GEN005), and **its score claim does
+    not hold**: measured on one diagram, self-message 8 elements / 96.88,
+    `ref over` 7 / 100.00, `note` 7 / **100.00** — a note scores identically,
+    so the rise is what happens when a finding is fixed, not a `ref over`
+    pathology. The real defect is narrower: a note stays in the model (SEQ106
+    reads it, GEN008 counts it) while `ref over` is in nothing, and it alone
+    makes a cross-diagram claim the tool silently drops. **Fixed
+    differentially**: SEQ006 now recommends a note alone — it was the only
+    rule offering `ref over` as a *same-file* substitute; SEQ011 and GEN005
+    keep it with a caveat, because there the content moves to another file
+    that pumllint lints in its own right. No `extract_features.py` run was
+    needed — the BDD step vocabulary has no step asserting message text, so
+    no Gherkin can pin a finding string.
+  - *Parsing `ref over` stays parked on its existing trigger; nothing here
+    pre-empts it. Published artefacts byte-identical; feature files in sync.
+    Suites 584 → 587 stdlib, 706 → 709 pytest.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

@@ -217,7 +217,8 @@ Feature: GEN004 participant naming convention
 **Rationale:** A diagram with too many elements on one canvas is doing too much and
 becomes unreadable. The threshold is **per diagram type**, because the elements
 being counted are not comparable: a sequence diagram counts *lifelines*
-(default 9, split per phase or use `ref over`), while a use-case diagram counts
+(default 9, split per phase or use `ref over` — which pumllint does not parse,
+so the extracted file must be linted in its own right), while a use-case diagram counts
 actors *plus* goals (default 15, split per actor goal or into packages). The two
 shared a budget until a third-party corpus met it on first contact — three
 actors with seven goals is a textbook-sized diagram, and 3 + 7 > 9 reported it.

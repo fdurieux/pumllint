@@ -210,6 +210,17 @@ Trigger: the recorded adopter trigger has **not** fired; frame this as a
 defect in shipped code, narrower than its own specification, not as a fired
 trigger.
 
+> **BUILT 2026-08-31 — and the "one token" framing above was wrong.** Deleting
+> `bool(entities)` outright introduces a *new* false positive: the entity list
+> counts only participants, classes and states, so an activity diagram with an
+> `!include` and real nodes has zero entities and would be told it "declares
+> nothing". Measured: activity + include + 3 nodes → `entities=0`,
+> `element_count=3`. The shipped predicate is therefore two conditions, not one
+> token — nothing declared **and** (entities exist **or** `element_count == 0`).
+> All four pre-existing fixtures behave identically; the two genuinely-hidden
+> shapes now warn; the activity case stays quiet. Two tests added, since the
+> guard had no test pinning either behaviour.
+
 **4. Claim-surface repair — the C7 sentence and the evidence paragraph.**
 *(S, do-now.)* Rewrite `README.md:238-245` so the guarantee sentence matches
 the opt-in flag four lines below it (✔), and bring the evidence sentence
@@ -243,13 +254,54 @@ module-level `_SUBCOMMANDS` that `main()` itself consumes. **Lever: the
 repaired guard covers every future command for free.** Trigger: fired against
 a self-declared invariant that is false today.
 
+> **BUILT 2026-08-31.** Two findings the build added. First, the epilog is
+> *derived* from the module docstring (`cli.py:43` slices it), so correcting
+> the docstring fixed `--help` with no second edit. Second, the two guards
+> want **different** sets: `action.yml` deliberately rejects `lsp` with exit 2,
+> because a stdio language server has no meaning as a CI step. Deriving both
+> from one list would have been wrong, so the Action guard derives from
+> `_SUBCOMMANDS` minus a declared `_ACTION_EXCLUDED`, with a third test
+> asserting the exclusion is real in `action.yml` and not merely declared in
+> `cli.py`. The fallback test was repointed: it drove `textDocument/hover`,
+> which became supported on 2026-08-31, so the "unknown request still gets a
+> reply" branch it names had gone uncovered while staying green.
+
 **7. SEQ006's remediation text.** *(S, do-now.)* The one fact in the
 `ref over` cluster that has actually fired: SEQ006 tells the author *"consider
-a note or 'ref over' instead"* (`rules/sequence/flows.py:122`, mirrored at
-`README.md:269` and `RULES.md:220`) and the parser drops `ref over` entirely,
-so taking the linter's own advice deletes behaviour from the model — and is
-rewarded for it: 85.45 → 98.89, Level 2 → Level 4, exit 1 → exit 0 under
-`--profile codegen`. Amend or gate the message and its two doc mirrors.
+a note or 'ref over' instead"* (`rules/sequence/flows.py:122`) and the parser
+drops `ref over` entirely, so taking the linter's own advice removes behaviour
+from the model that no rule can then see. Amend the message and its mirrors.
+
+> **Corrected 2026-08-31, when this item was built.** Three claims above were
+> wrong and are recorded here rather than quietly rewritten.
+>
+> 1. **The mirrors were misidentified.** `RULES.md:220` is GEN005's rationale,
+>    not SEQ006; SEQ006's section is `RULES.md:825-860` and contains no
+>    remediation text at all. `README.md:269` mirrors the *catalog
+>    description*, not the finding message.
+> 2. **The scope was one rule too narrow.** Three rules recommend the dropped
+>    construct: SEQ006, **SEQ011** (`flows.py:230`) and **GEN005**
+>    (`governance.py:118`).
+> 3. **The score claim does not hold as stated.** Measured on one diagram:
+>    self-message 8 elements / 96.88; `ref over` 7 / **100.00**; `note` 7 /
+>    **100.00**. A note scores *identically*, so the rise is simply what
+>    happens when a finding is fixed — it is not a `ref over` pathology. The
+>    real defect is narrower: a note stays in the model (SEQ106 reads it,
+>    GEN008 counts it) while `ref over` is in nothing, and it is the only one
+>    making a cross-diagram claim the tool silently drops.
+>
+> **Consequent fix, differentiated rather than uniform:** SEQ006 now
+> recommends a note alone — it was the only rule offering `ref over` as a
+> *same-file* substitute. SEQ011 and GEN005 keep it, because there the content
+> genuinely moves to another file that pumllint lints in its own right; they
+> gain a caveat that the reference is not resolved. Parsing `ref over`
+> (Option 4 of that analysis) stays parked on its existing trigger.
+>
+> **BUILT 2026-08-31.** No `extract_features.py` run was needed: the BDD step
+> vocabulary has no step that asserts message text at all, so no Gherkin
+> anywhere can pin a finding string. The captured transcript at
+> `d2-ecosystem-reexamined.md:94` was annotated rather than rewritten — it is
+> a dated record of a run.
 
 ### Tier 2 — the one demand-backed build
 
@@ -507,7 +559,9 @@ none was changed.
 
 ## 10. Reproduction
 
-All probes run from the repository root at `dd9814c` (v0.30.0).
+All probes run from the repository root at `dd9814c` (v0.30.0). **R5, R6 and
+R8 describe defects fixed on 2026-08-31 (ranks 3 and 6 above); their line
+pointers are the state at `dd9814c`, not at HEAD.** The rest still reproduce.
 
 | Probe | What it establishes | Command |
 |---|---|---|

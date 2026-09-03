@@ -23,6 +23,14 @@ _INLINE = (
     "Svc -> Peer : go()\n@enduml\n"
 )
 _IMPLICIT_ONLY = "@startuml a\ntitle A\nSvc -> Peer : go()\n@enduml\n"
+# The include hid *everything*: nothing is left to be implicit about.
+_INCLUDE_ONLY = "@startuml a\ntitle A\n!include _shared.iuml\n@enduml\n"
+# An activity diagram keeps its content in nodes, not in participant/class/
+# state entities — so "no entities" here means fully modelled, not hidden.
+_ACTIVITY_INCLUDE = (
+    "@startuml a\ntitle A\n!include theme.iuml\nstart\n:validate;\n"
+    ":persist;\nstop\n@enduml\n"
+)
 
 
 def _run(tmp: str, src: str, argv_head: list[str] | None = None):
@@ -71,6 +79,34 @@ def test_inline_declarations_do_not_warn():
 def test_implicit_without_include_does_not_warn():
     with tempfile.TemporaryDirectory() as tmp:
         _, err, _ = _run(tmp, _IMPLICIT_ONLY)
+        assert "declare nothing" not in err
+
+
+def test_include_that_hides_everything_warns_loudest_of_all():
+    """The severe case: the include hid the whole model, not just the names.
+
+    Guarded because the disclosure originally required at least one parsed
+    entity, so it fired when the include hid *some* declarations and went
+    silent exactly when it hid *all* of them — and the gap report then told
+    that author to "add elements", which is wrong advice for a file whose
+    content pumllint could not see.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        rc, err, _ = _run(tmp, _INCLUDE_ONLY)
+        assert "contain '!include' but declare nothing" in err
+        assert "d.puml" in err
+        assert rc == 0  # still a disclosure, never an exit-code change
+
+
+def test_activity_diagram_behind_an_include_is_not_called_undeclared():
+    """Content in nodes is content: the predicate must not read it as hidden.
+
+    An activity diagram has no participants, classes or states, so testing
+    those entities alone would call every themed activity diagram
+    "undeclared" — a false positive on a fully modelled file.
+    """
+    with tempfile.TemporaryDirectory() as tmp:
+        _, err, _ = _run(tmp, _ACTIVITY_INCLUDE)
         assert "declare nothing" not in err
 
 

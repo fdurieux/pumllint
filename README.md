@@ -266,12 +266,12 @@ profile rule that applies to the diagram's type) and `deduplicate_findings`
 | UC001 | orphan-actor-or-usecase | major | Use-case diagrams: actor or use case linked to nothing. |
 | UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist; dormant otherwise. |
 | UC003 | include-extend-direction | minor | `<<include>>`/`<<extend>>` arrow pointing the wrong way (judged via actor connectivity), or involving an actor. |
-| SEQ006 | no-self-message | minor | Self-message; internal logic belongs in a note or `ref over`. Option `allowed` whitelists participants. |
+| SEQ006 | no-self-message | minor | Self-message; internal logic belongs in a note. Option `allowed` whitelists participants. |
 | SEQ007 | unlabelled-block-condition | minor | `alt`/`opt`/`loop`/`break`/`critical` without a condition label. |
 | SEQ008 | fragment-nesting-depth | minor | Combined fragments nested past `max_nesting_depth` (default 3) — extract a sub-diagram. |
 | SEQ009 | unpaired-return | minor | Dashed return arrow (`-->`) that pairs with no preceding call. |
 | SEQ010 | explicit-participant-order | info | Participant introduced by first use. Opt-in via `require_explicit_order`. |
-| SEQ011 | max-messages | minor | More messages than `max` (default 30) — split per phase or `ref over`. |
+| SEQ011 | max-messages | minor | More messages than `max` (default 30) — split per phase or `ref over` (which pumllint does not parse: lint the extracted file too). |
 | ACT001 | missing-start | major | Activity diagram with actions but no `start` node. |
 | ACT002 | missing-stop | major | Activity flow never reaches `stop`/`end` (unterminated flow). |
 | ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label. |
@@ -599,7 +599,7 @@ Design choices for extensibility:
 # pumllint/rules/catalog.toml
 [SEQ006]
 name = "no-self-message"
-description = "Self-messages hide logic that belongs in a note or ref"
+description = "Self-messages hide logic that belongs in a note"
 severity = "minor"
 applies_to = ["sequence"]
 profiles = []
