@@ -106,8 +106,12 @@ Three honesty notes, deliberately part of the product's claim language:
   observed); the *ranking* is what is stable.
 - Level 5 means **method-convention complete** — the diagram-side
   preconditions for faithful generation are met. It is never marketed as
-  "guaranteed generation-ready", and Level 5 cannot even be claimed unless
-  the AI-readiness checks are actually running.
+  "guaranteed generation-ready". Claiming it requires the AI-readiness
+  profile to be **switched on**; note that this checks the profile in
+  effect, not that any of its rules examined the diagram. Teams that want
+  the stronger reading turn on the `c7_requires_applicable_rules` option,
+  which additionally requires the profile to carry a rule that applies to
+  the diagram's type.
 - The gate checks that decisions are **stated**, not that they are
   *right*: in the repair experiment, diagrams repaired with confident
   wrong guesses still passed it. That boundary was measured on purpose —

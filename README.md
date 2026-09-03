@@ -230,20 +230,31 @@ scored by the tool itself — lives at
 (`docs/example-maturity-report.html`, drift-guarded by
 `tests/test_pilot_example.py`).
 
-Why gate on it: in a measured experiment (75 generation runs, independent
-LLM judge — see [EVIDENCE.md](EVIDENCE.md)), maturity scores correlated with
-the fidelity of code generated from the diagrams (r ≈ 0.49), and diagrams
-below Level 2 degraded generation sharply — fidelity dropped by roughly a
-third and invented business logic doubled. The gate keeps those diagrams out.
+Why gate on it: **below Level 2, generated code measurably breaks** — 16–25
+percentage points of *executed* correctness, across three generators and two
+vendors, resistant to prompt scaffolding. That headline rests on running the
+generated code against hand-written acceptance suites frozen before any scored
+run, not on an AI's opinion of it: an earlier judged wave put the
+score↔fidelity correlation at r ≈ 0.49, but the same programme then measured
+that judged fidelity does **not** track executed correctness at artifact
+granularity, and collapses entirely across a vendor boundary. Both results are
+published, failures included, in [EVIDENCE.md](EVIDENCE.md). The gate keeps
+below-cliff diagrams out; it is an **input filter, not a content certifier** —
+a repaired diagram whose missing decisions were *guessed* still passes it, and
+generates worse code than leaving the diagram alone.
+
 Level 5 means *method-convention complete*: the diagram-side preconditions for
-faithful generation, bound to the `codegen` profile so it cannot be claimed
-without those rules running.
+faithful generation. It is bound to the `codegen` profile, which must be
+**active** for the claim — a check on the profile in effect, not on which rules
+fired. Because every shipped codegen rule is sequence-only, a non-sequence
+diagram can reach Level 5 under `--profile codegen` with no codegen rule having
+examined it; the opt-in `c7_requires_applicable_rules` flag closes that by also
+requiring the profile to carry a rule applying to the diagram's type.
 
 Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
 All knobs are configurable under the `scoring` key (see `pumllint.toml`),
-including two opt-in flags: `c7_requires_applicable_rules` (Level 5 needs a
-profile rule that applies to the diagram's type) and `deduplicate_findings`
-(a base finding restated by its codegen twin on the same line counts once).
+including that flag and `deduplicate_findings` (a base finding restated by its
+codegen twin on the same line counts once).
 
 ## Rules
 

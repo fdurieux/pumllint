@@ -201,6 +201,30 @@ indistinguishable from "findings were found" under the exit-code contract.
 behaviour on documented input, and the working agreements gate new
 capability, not defects.
 
+> **BUILT 2026-09-03, and the defect is larger than filed.** The line pointers
+> above are stale (`cli.py:443-448`, `load_config` at `:455`), and the crash is
+> not one site but **fourteen**, with a single root cause: `.get(option,
+> default)` at `rules/__init__.py:89-96` returns the *explicit* null, so the
+> sentinel wins and the declared default never applies. Five `pattern_option`
+> sites crash `AttributeError`; eight more crash `TypeError` on null int, list
+> and lexicon options; a list-rooted config adds one at `engine.py:19`. **All
+> exited 1** — indistinguishable from lint findings, which is precisely what
+> `rules/__init__.py:35-38` says must never happen. Fixed with one guard at
+> `Rule.__init__` rather than fourteen patches: *null is never a value; omit
+> the key.* Dormancy-by-omission is untouched, and TOML cannot express null, so
+> the blast radius is YAML/JSON only.
+>
+> Unknown-key checking ships for **top-level keys and rule ids only**. Option
+> keys have no declaration to check against — `catalog.toml` has no `options`
+> field, and `codegen.py` generates option names dynamically
+> (`extra_<lexicon>`) — so that is recorded rather than built, paired with the
+> `DORMANT` column, since both want the same missing declaration. Warnings, not
+> errors, per §6.6.
+>
+> `--list-rules` now loads the config and annotates each row with
+> disabled / profile-gated / severity-escalation state. It had **no test at all**
+> before this change.
+
 **3. Zero-element / dialect-invisible disclosure.** *(XS, do-now.)* Delete
 `bool(entities) and` from `cli.py:402` (✔). As written, the `!include`
 hidden-declarations warning cannot fire on the case where the include hid
@@ -232,6 +256,24 @@ vendors. **Fix the sentence, not the default** — see §6.4. Trigger: fired.
 (wording only; every build stays gated)"* — wording propagation is the one
 class the project licenses without pull.
 
+> **BUILT 2026-09-03 — three files, not one, and the paragraph was wrong in two
+> directions.** The load-bearing falsehood is precisely the clause *"so it
+> cannot be claimed without those rules running"*: the binding is string
+> equality on a profile **name**, and the substance half is the opt-in flag.
+> Verified by running — an activity diagram under `--profile codegen` scores
+> **Level 5, 99.1/100** with zero codegen rules applicable, since every SEQ10x
+> rule is sequence-only. `docs/case-for-pumllint.md:108-110` **repeated the same
+> overclaim** and is corrected too; `SCORING.md` §4 needed nothing — it was
+> already right.
+>
+> On the evidence: README under-sold *and* mis-sourced. It rested the whole case
+> on one 2026-07-22 judged wave (r ≈ 0.49) — the very leg XV1 refuted across a
+> vendor boundary (judged-vs-executed agreement **r = 0.002**) — while the
+> executed 16–25 pp cliff, which needs no judge, went unmentioned. Both are now
+> stated, failures included, and §9 carries a dated block for the three later
+> waves. The default was **not** flipped, and `tests/test_scoring.py` is
+> untouched: it pins today's behaviour and is the oracle the wording must match.
+
 **5. Census instrument fixes and the marker-by-source join.** *(S, do-now.)*
 C4 macros are 66 of 71 from C4-PlantUML's own `samples/` and `percy/` trees;
 under the 2026-08-27 exclusion guard the published 46% becomes 7 of 88 (8.0%)
@@ -243,6 +285,32 @@ the forward-slash contract, and `hit[:3]` taking the alphabetically-first
 three — which systematically hides the repository contributing 66 of 73 hits.
 **Lever: removes the one number a future session could read as partial warrant
 for the two largest builds.**
+
+> **BUILT 2026-09-03 — and §9's caveat on these figures can now be lifted.**
+> Every number this note carried from the analysis pass was **independently
+> re-derived**: all five marker totals reproduce exactly (118 / 73 / 102 / 0 /
+> 1), C4-PlantUML carries **66 of 73** C4-macro hits and 71 of 118 `!include`
+> hits, `aries-rfcs` carries **zero of both**, and the guard arithmetic is
+> 46% → 8.0% (7/88) → **0 of 39**. §8.4's bound of "at most 70" tightens to 66.
+>
+> Two defects were worse than filed. **(a)** is not just 104-vs-89: the whole
+> 15-row excess is *one* 16-diagram file, and since rows sort by ratio it
+> **monopolised all 15 slots of the default display** — one filename, sixteen
+> times. **(c)** is quantified: the three examples came from the two *smallest*
+> contributors (5 hits combined) while the repository holding 66 of 73 never
+> appeared, which is exactly why the overlap could only be bounded before.
+>
+> Three things are **recorded, not repaired**, because repairing them moves
+> published figures with no pre-registration: `census.json` is hand-post-processed
+> (it carries a `note` key the instrument never writes); its engine-dependent
+> figures have drifted at v0.30.0 (levels 31/35/8/100 → 30/36/8/100); and the
+> level distribution is **input-order dependent** — same 159 files, different
+> order, `L2:9` vs `L2:8`. That last one is new, and given "scores are a public
+> contract" it deserves its own investigation as a *scoring* question.
+>
+> Provenance, stated in the published note: the re-clones were scratch working
+> copies authorised by matching commit hashes, not repository material. The
+> join is reproducible by repeating the clone, not from this repo alone.
 
 **6. LSP seams — `--help`, the frozen tuples, the fallback test.** *(XS,
 do-now.)* `cli.py:3` says *"Five commands"* and omits `lsp` (✔). Both
@@ -551,6 +619,14 @@ none was changed.
   from the analysis pass. They are internally consistent and cite the code
   they rest on, but this note did not independently re-derive them. Treat them
   as reported, not as measured here.
+  - *Discharged 2026-09-03 for two of these.* The **census join figures** were
+    re-derived from re-clones at the `sources.json` pins and reproduce exactly
+    (rank 5's BUILT block); they are now measured, and published in
+    [§8.4](c4-ecosystem-evaluation.md). The **SEQ006 score deltas** were
+    re-measured when rank 7 was built and **did not survive** — a note scores
+    identically to `ref over`, so that claim was withdrawn rather than
+    confirmed (rank 7's correction block). The remaining three stand as
+    reported.
 - **The provenance question in §1 is explicitly unresolved**, and this note
   declines to assert it (see §1's contested exception). No claim about any
   external organisation's repository visibility is made.
