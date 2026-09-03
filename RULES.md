@@ -1824,7 +1824,7 @@ Feature: UC001 use cases connected to actors
     Then no "UC001" issue is reported
 ```
 
-### UC002 — Use case and actor naming
+### UC002 — Use case naming
 **Severity:** minor · **Status:** ✅ Implemented (v0.4.0)
 
 **Rationale:** Use cases as verb–object phrases ("Place order") is the standard
@@ -2428,10 +2428,10 @@ Feature: XD005 cross-type stereotype conflict
 | CLS004 | major | class | No inheritance cycles | ✅ v0.9.0 |
 | CLS005 | minor | class | Member count limit | ✅ v0.9.0 |
 | STA001 | blocker | state | Exactly one initial state | ✅ v0.10.0 |
-| STA002 | major | state | No unreachable states | ✅ v0.10.0 |
+| STA002 | major | state | No states without an incoming transition | ✅ v0.10.0 |
 | STA003 | minor | state | Transitions labelled | ✅ v0.10.0 |
-| UC001 | major | usecase | Use cases connected to actors | ✅ v0.1.0 |
-| UC002 | minor | usecase | Verb–object use cases, noun actors | ✅ v0.4.0 |
+| UC001 | major | usecase | No orphan actors or use cases | ✅ v0.1.0 |
+| UC002 | minor | usecase | Use-case naming (actors not checked) | ✅ v0.4.0 |
 | UC003 | minor | usecase | Include/extend direction | ✅ v0.11.0 |
 | XD001 | major | sequence (cross) | Conflicting participant kind | ✅ v0.5.0 |
 | XD002 | minor | sequence (cross) | Conflicting participant stereotype | ✅ v0.5.0 |

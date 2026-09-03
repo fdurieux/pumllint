@@ -140,7 +140,12 @@ The cells that decide the chart, argued:
   two numbers higher would contradict the project's own README. E3=4 is
   earned (GitHub Action, two pre-commit hooks, SonarQube generic import,
   five reporters); the missing point is editor-time integration, which
-  `bpmnlint` has and pumllint does not.
+  `bpmnlint` has and pumllint does not. *[2026-09-03: pumllint has had it
+  since 2026-08-31 (`pumllint lsp`). The E3 score was earned under the
+  earlier fact and is **not re-scored here** — the quadrant is a dated
+  figure, and re-scoring one axis without re-running the rubric for every
+  tool would be a worse record than a stale one. If the figure is ever
+  re-issued, this is the cell that moves.]*
 - **PlantUML `-checkonly` is the mirror image.** Its acceptance *defines*
   valid PlantUML (V1=5) and it runs wherever Java runs, at effectively
   total reach over the notation (E2=5) — and it checks nothing else, by

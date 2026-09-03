@@ -306,7 +306,8 @@ but they are a useful cross-check that no audience was forgotten.
   with gating** — now for a better reason: *the checking exists, is good,
   and lives where builds cannot see it.* **Editor-time checking is not CI
   checking**, argued with the concession that **pumllint has no
-  authoring-time story at all**.
+  authoring-time story at all** *(true when written; `pumllint lsp`
+  shipped 2026-08-31, and the note is annotated accordingly)*.
 - [The Ilograph web app, evaluated](ilograph-web-app-evaluation.md)
   — dated evaluation (2026-08-31), fortieth in the series and the
   **seventh and last** on this ecosystem; the surface inventory is now
@@ -832,7 +833,9 @@ but they are a useful cross-check that no audience was forgotten.
   silent); an `!include`d declaration blinds XD001/XD002 **and raises
   the score 72.5 → 87.5**; no namespace means "deliberately different"
   is inexpressible; and `ref over` — the notation's one cross-diagram
-  construct, recommended by SEQ006's own message — is dropped by the
+  construct, recommended by SEQ006's own message *(no longer: SEQ006
+  stopped recommending it 2026-08-31; SEQ011 and GEN005 still do, with a
+  caveat)* — is dropped by the
   parser. The RDF shape itself is refused on two standing settlements
   (that is Linked.Archi's job); the in-notation half is the already
   recorded Arc C edge-coherence item, which this note supplies with the
@@ -870,10 +873,14 @@ but they are a useful cross-check that no audience was forgotten.
   record and the tracker have diverged — the capability-pull ledger of
   issues #43/#47, ten asks each filed with its own measurement, appears
   in none of the 101 markdown files, while *Working agreements* still
-  reads "everything is strictly demand-driven" and still lists the LSP
-  as unbuilt 4,982 lines below the checkbox marking it BUILT. Under that
-  sits a tier of seven ungated defect fixes needing no trigger, no golden
-  re-freeze and no schema bump, several of them single tokens: a
+  read "everything is strictly demand-driven" and still listed the LSP
+  as unbuilt 4,982 lines below the checkbox marking it BUILT *(both
+  repaired 2026-09-03, and the section hoisted above the decision log so
+  it stops going stale unread)*. Under that
+  sat a tier of seven ungated defect fixes needing no trigger, no golden
+  re-freeze and no schema bump *(all seven shipped across PRs #120–#122;
+  four turned out to be mis-specified by the note, and each correction is
+  recorded beside the original claim)*, several of them single tokens: a
   table-form `enabled = false` that leaves the rule armed, an `!include`
   disclosure that cannot fire on the case it was written for, a `--help`
   that omits a shipped command past a guard whose own docstring forbids

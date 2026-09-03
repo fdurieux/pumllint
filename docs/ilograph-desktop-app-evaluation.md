@@ -229,6 +229,13 @@ a good editor-time checker that cannot gate — and pumllint is the mirror
 image, a good gate with nothing at authoring time. That is a real
 asymmetry, not a win, and it belongs in the record as such.
 
+*[2026-09-03: true when written, false since 2026-08-31 — `pumllint lsp`
+shipped that day (diagnostics, code actions, hover, completion, rename,
+document symbols), stdlib-only, on a concrete ask. The ROADMAP mirror of
+this note was annotated at the time; this source was not. Every sentence
+below that says "no editor-time story", "unrequested", "refused" or
+"different product" reads as the 2026-08-31 state.]*
+
 ## 6. Boundaries, overlap, sense, nonsense
 
 **Boundaries.** (1) **Artefact** — Ilograph YAML; pumllint reads PlantUML.
@@ -245,6 +252,8 @@ different artefact, in a different product shape.
 **S1. Editor-time checking is real and pumllint has none.** §5. Recorded
 as an asymmetry, not a gap to close: closing it would mean an LSP or
 editor plugin, which is a different product with different constraints.
+*[2026-09-03: the prediction failed in the informative direction — it was
+the same product, same constraints, zero third-party imports.]*
 
 **S2. "Documentation is a bad oracle for capability."** §2. The rule this
 series applies to other people's claims applies to its own inferences from
@@ -258,7 +267,9 @@ because it is a bad idea.** §5 makes the case that it is the missing half.
 But it is a new product surface, it would need a runtime pumllint does not
 have, and nothing in the Arc E bar has asked for it. **Recorded as the
 strongest unclaimed idea the Ilograph run produced**, gated on demand like
-everything else.
+everything else. *[BUILT 2026-08-31 — the maintainer asked, which is the
+demand the Arc E bar names, and the "runtime pumllint does not have" worry
+did not materialise: a stdlib JSON-RPC server was enough.]*
 
 **N2. Reading §3 as "the vendor is careless." Refused.** They ship a good
 checker in the editor; the library predates the current release and its
@@ -284,7 +295,7 @@ ground (1).
 | **Zero runtime dependencies** | Untouched — and the contrast is stark (120 MB Electron). |
 | **Deterministic product path, no LLM** | Untouched. |
 | **Exit codes 0/1/2** | **The operative one.** §5 — what it buys, stated against an ecosystem that checks well and cannot gate. |
-| **Demand-driven / Arc E bar** | **Gates N1.** The editor-plugin idea is real and unrequested. |
+| **Demand-driven / Arc E bar** | **Gates N1.** The editor-plugin idea is real and unrequested. *[Requested and built 2026-08-31.]* |
 | **Licence posture** | All rights reserved; not a dependency candidate. |
 
 ## 8. SWOT
@@ -299,7 +310,8 @@ Scope: *pumllint's position relative to Ilograph Desktop*.
 
 **Weaknesses**
 
-- **pumllint has no authoring-time story at all.** Ilograph's editor
+- **pumllint has no authoring-time story at all.** *[Until 2026-08-31;
+  see §5's annotation.]* Ilograph's editor
   checks identity, references and cycles as you type. This is the first
   note in the run where the other side clearly has something pumllint
   lacks (§5).
@@ -310,6 +322,7 @@ Scope: *pumllint's position relative to Ilograph Desktop*.
 
 - An editor plugin or LSP (N1) — recorded, refused for now, gated on
   demand. The strongest unclaimed idea the Ilograph run produced.
+  *[Claimed: built 2026-08-31.]*
 
 **Threats**
 
@@ -328,13 +341,13 @@ one recorded idea.**
    exit-code contract buys, argued against an ecosystem that checks
    *well*. Cite with its concession: pumllint has no authoring-time story.
 2. **An editor plugin / LSP** (N1) — the missing half, unrequested, gated
-   on the Arc E bar.
+   on the Arc E bar. *[BUILT 2026-08-31.]*
 3. **"Documentation is a bad oracle for capability"** (§2) — applies to
    this record's own inferences from absence, not only to other people's
    claims.
 
 **Re-litigate on:** a concrete user asking for editor-time checking. Not
-on Ilograph.
+on Ilograph. *[That user arrived; re-litigated and built 2026-08-31.]*
 
 **Corrected in this turn:** note 38, inline, in both places it claims the
 validator is surfaced in no product, and its ROADMAP entry; note 38's

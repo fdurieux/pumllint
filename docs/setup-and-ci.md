@@ -200,6 +200,12 @@ python -m pumllint schema lint    # shape of `pumllint -f json`
 python -m pumllint schema score   # shape of `pumllint score -f json`
 ```
 
+The sixth command, `pumllint lsp`, is the editor side of the same engine —
+a stdlib language server over stdio, so the squiggles in the editor and the
+findings in CI come from one rule set. It is not a CI step and the Action
+deliberately rejects it; setup and the one caveat worth knowing are in
+[README → Editor integration](../README.md#editor-integration-lsp).
+
 Point any draft-2020-12 validator at these when you script against the
 output; pumllint's own test suite guarantees every report it emits validates
 against them, so the shape cannot drift silently between versions. (The

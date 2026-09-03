@@ -143,7 +143,8 @@ The audit and this fix were separate sessions; this table keeps them apart.
 | 15 defects surviving a Level 5 100/100 gate | **Audit record** — that project's own audit ledger, read but not re-derived here |
 | ~73% false positives on the corpus's own code-aware checks | **Corpus record** — measured by that project, not by either session |
 | Negative-control battery (mutations fire cleanly, no false positives) | **Audit record** — measured that session on a scratch copy, not re-run here |
-| Corpus is public and licensed | **Audit record** — asserted there, not independently verified here |
+| Corpus is licensed for this use | **Audit record** — asserted there, not verified here |
+| Corpus authors are arm's-length from this project | **Not establishable here** *(row split out 2026-09-03; it was folded into the line above, which named only the licence while ROADMAP's gate reasoning leaned on this)*. Two sessions tried to verify and neither could execute the check: one reported the corpus unreachable; the other got HTTP 403 on both `akantai` paths against a 200 on a control — which separates an egress or visibility refusal from a missing repository but settles neither. Nothing in this repository can answer it at any effort. It is an owner call requiring out-of-band knowledge, and docs/roadmap-swot-prioritisation.md §6.1 turns eight items' gate status on that answer. |
 
 The audit session was scoped to the corpus repository and could not push
 here, which is why its findings arrived as a report rather than a patch.

@@ -60,7 +60,10 @@ participant, not a message, not a block, not a directive: `ref over
 PaymentService : see payment-detail.puml` is dropped whole. `SEQ006`'s own
 remediation text recommends `ref over`; the linter recommends a construct it
 cannot see, and it is the only construct in the notation that names another
-diagram.
+diagram. *[2026-09-03: SEQ006's message was amended 2026-08-31 and names a
+note alone; SEQ011 and GEN005 still recommend `ref over`, now with a caveat
+that it is not parsed. The finding — dropped whole, no model slot — stands
+unchanged.]*
 
 **And the fit is better than the gap suggests, in one specific direction:
 half of what the question asks for is already recorded in the roadmap and
@@ -338,7 +341,7 @@ same, never that they are different.**
   occupy without a schema change. Report shapes are a stated contract
   (CLAUDE.md), so this is a deliberate boundary, not an omission.
 
-### 3.6 G6. `ref over` is dropped, and the linter recommends it
+### 3.6 G6. `ref over` is dropped, and the linter recommends it *(SEQ011/GEN005 still do; SEQ006 stopped 2026-08-31)*
 
 ```plantuml
 @startuml caller
@@ -354,7 +357,10 @@ Parsed model: `participants: ['OrderService', 'PaymentService']`,
 `directives: [('title', 'Checkout')]`. The `ref over` line is gone.
 
 `SEQ006`'s message reads *"Self-message on 'X' — consider a note or 'ref
-over' instead"*. The tool recommends the notation's only cross-diagram
+over' instead"* *(read at `e989da8`; since 2026-08-31 it reads "consider a
+note instead" — measured, a note scores identically and stays in the model,
+so SEQ006 was the one rule offering `ref over` as a same-file substitute)*.
+The tool recommends the notation's only cross-diagram
 reference construct and has no model slot for it. If any single parser
 change would be the cheapest foothold for declared cross-diagram links, it is
 this one — the construct already exists, is idiomatic, is already recommended
@@ -495,7 +501,7 @@ config-trust boundary in SECURITY.md was written to avoid. G3 is real and its
 | | Option | Cost | Verdict |
 |---|---|---|---|
 | **O1** | **Do nothing; document the boundary.** Say plainly in README/RULES that the XD pack joins entity *identity* and does not compare relationships, and that the join is name-equality. | ~0 | **Recommended baseline.** The gap is currently discoverable only by reading `_entity_sites()`. |
-| **O2** | **Close G3 honestly.** Do not resolve includes (N5). Instead make the *evasion* visible: when a sequence diagram contains preprocessor lines and declares nothing, say so — an existing precedent exists in the "nothing was checked" stderr warning, which warns without changing exit codes (CLAUDE.md contract). | small, no new deps, no report-shape change | **Recorded.** Best value per unit of risk; fixes a scoring-integrity defect independent of this question. |
+| **O2** | **Close G3 honestly.** Do not resolve includes (N5). Instead make the *evasion* visible: when a sequence diagram contains preprocessor lines and declares nothing, say so — an existing precedent exists in the "nothing was checked" stderr warning, which warns without changing exit codes (CLAUDE.md contract). | small, no new deps, no report-shape change | **Recorded.** Best value per unit of risk; fixes a scoring-integrity defect independent of this question. *[BUILT — shipped as `_warn_hidden_declarations`; its guard was widened 2026-08-31 (PR #120) to fire when the include hid *everything*, the case this row was written for.]* |
 | **O3** | **The recorded Arc C item: XD member and relationship coherence.** Compare *declared members* and *relationship direction* for entities the symbol table already joins. In-notation, no new syntax, no new carrier. | Arc C bar in full: mutation ladders, clean probes, additive golden re-freeze, pilot regeneration | **Already recorded, already triggered on an adopter or a second corpus.** This note adds the probe (§11, M3); it does not fire the trigger. |
 | **O4** | **Declared links via `ref over` (G6) or a prose carrier.** Parse the construct, then either extend `trace` to diagram→diagram or add a link-integrity check (dangling target, orphan diagram) with `trace`-style gates. | medium; new model type, new report surface | **Recorded, adopter-triggered.** Convention is externally authored (PlantUML's own), which clears the bar the glossary rule failed. The prose-carrier variant is the same shape as the Linked.Archi note's recorded `'!la-` interop candidate — if either is ever built, build them together. |
 | **O5** | **Qualified relationships (asks C+D): edge identity, typing, provenance, per-edge ownership.** | large; new syntax, new schema, a vocabulary to curate | **Refused (N1, N2).** This is Linked.Archi's job, it is done well there, and the shipped fit is `pumllint` in the producer repo before the converter. |
