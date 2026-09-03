@@ -25,8 +25,8 @@ import sys
 from pathlib import Path
 
 from . import __version__
-from .config import load_config
-from .engine import PUML_EXTENSIONS, Engine, collect_files
+from .config import config_warnings, load_config
+from .engine import PUML_EXTENSIONS, Engine, _rule_config, collect_files
 from .model import SEVERITY_ORDER as _SEV_ORDER
 from .model import Severity
 from .parser import parse_file
@@ -437,22 +437,92 @@ def _warn_hidden_declarations(diagrams) -> None:
     )
 
 
+def _load_config(path: str | None) -> dict:
+    """``load_config`` plus the disclosure of keys nothing will read.
+
+    Warnings go to stderr and never touch the exit code — the same posture as
+    the "nothing was checked" and hidden-declarations disclosures. A config
+    that names a rule which does not exist is silent otherwise, and issue #37
+    records what that cost: a "rules disabled" control that was quietly
+    running every rule.
+    """
+    cfg = load_config(path)
+    known = {rid.lower() for rid in discover()} | {
+        cls.name.lower() for cls in discover().values()
+    }
+    for warning in config_warnings(cfg, known):
+        _err(warning)
+    return cfg
+
+
+def _list_rules(cfg: dict) -> int:
+    """The catalog, annotated with what *this* config does to each rule.
+
+    It used to print before the config was even loaded, so the output was
+    byte-identical with and without ``-c`` or ``--profile`` — the one command
+    whose job is "tell me what will run" could not answer the question. Each
+    row now carries the effective severity and, where the config changes
+    something, a state tag.
+
+    Not annotated: DORMANT. Whether a convention-gated rule will actually do
+    anything is decided by an early return inside its own ``check()`` body,
+    which nothing declares; surfacing it needs the per-rule option
+    declaration that config key-checking also wants, and the two belong in
+    one change.
+    """
+    rules_cfg = cfg.get("rules", {}) or {}
+    profile = cfg.get("profile")
+    profiles_map = cfg.get("profiles") or {}
+    profile_cfg = (profiles_map.get(profile) or {}) if profile else {}
+    enabled_ids = {str(k).lower() for k in (profile_cfg.get("enable") or [])}
+    escalate = {
+        str(k).lower(): str(v).lower()
+        for k, v in (profile_cfg.get("escalate") or {}).items()
+    }
+    for rid, cls in sorted(discover().items()):
+        rule_cfg = _rule_config(rules_cfg, rid, cls.name)
+        severity = cls.default_severity.value
+        tags = []
+        if rule_cfg is False:
+            tags.append("disabled")
+        elif cls.profiles and not (
+            profile in cls.profiles or rid.lower() in enabled_ids or cls.name.lower() in enabled_ids
+        ):
+            tags.append(f"off (needs profile: {','.join(cls.profiles)})")
+        override = (rule_cfg or {}).get("severity") if isinstance(rule_cfg, dict) else None
+        for key in (rid.lower(), cls.name.lower()):
+            if key in escalate:
+                override = escalate[key]
+        if override and str(override) != severity:
+            tags.append(f"severity {severity} -> {override}")
+            severity = str(override)
+        scope = ",".join(cls.applies_to)
+        prof = f" {{profile: {','.join(cls.profiles)}}}" if cls.profiles else ""
+        state = f" [{'; '.join(tags)}]" if tags else ""
+        _out(
+            f"{rid}  {cls.name:<30} [{severity:<8}] {cls.dimension.value} "
+            f"({scope}){prof}{state} {cls.description}"
+        )
+    return 0
+
+
 def _run_lint(argv: list[str]) -> int:
     args = build_parser().parse_args(argv)
 
     if args.list_rules:
-        for rid, cls in sorted(discover().items()):
-            scope = ",".join(cls.applies_to)
-            prof = f" {{profile: {','.join(cls.profiles)}}}" if cls.profiles else ""
-            _out(f"{rid}  {cls.name:<30} [{cls.default_severity.value:<8}] {cls.dimension.value} ({scope}){prof} {cls.description}")
-        return 0
+        try:
+            cfg = _apply_cli_overrides(_load_config(args.config), args)
+        except (FileNotFoundError, ValueError) as e:
+            _err(f"error: {e}")
+            return 2
+        return _list_rules(cfg)
 
     if not args.paths:
         _err("error: no paths given (or use --list-rules)")
         return 2
 
     try:
-        config = _apply_cli_overrides(load_config(args.config), args)
+        config = _apply_cli_overrides(_load_config(args.config), args)
         engine = Engine(config)
         violations = engine.lint_diagrams(_parse_input_files(_collect_input_files(args.paths)))
         report = get_reporter(args.format).render(violations)
@@ -490,7 +560,7 @@ def _run_score(argv: list[str]) -> int:
             return 2
 
     try:
-        config = _apply_cli_overrides(load_config(args.config), args)
+        config = _apply_cli_overrides(_load_config(args.config), args)
         scoring_cfg = config.get("scoring") or {}
         engine = Engine(config)
         files = _collect_input_files(args.paths)
@@ -545,7 +615,7 @@ def _run_fix(argv: list[str]) -> int:
         return 2
 
     try:
-        config = _apply_cli_overrides(load_config(args.config), args)
+        config = _apply_cli_overrides(_load_config(args.config), args)
         from .fixer import fix_paths
 
         results = fix_paths(_collect_input_files(args.paths), config)
@@ -612,7 +682,7 @@ def _run_trace(argv: list[str]) -> int:
     )
 
     try:
-        config = load_config(args.config)
+        config = _load_config(args.config)
         raw = args.pattern or pattern_from_config(config)
         if not raw:
             _err(

@@ -461,3 +461,23 @@ fidelity under a strict independent judge, because a sequence diagram
 underdetermines an implementation. The evidence-backed marketing claims are
 the correlation and the cliff: **low-maturity diagrams measurably poison
 generation, and the `--min-level` CI gate is the demonstrated mitigation.**
+
+**Evidence since (2026-07-26/27) — the paragraph above is the 2026-07-22
+state and is no longer the whole record.** Three later waves changed what may
+be claimed and on what basis; EVIDENCE.md carries them in full.
+
+- **The cliff no longer rests on a judge.** Hand-written acceptance suites,
+  frozen before any scored run, put the below-vs-above-composite-40 gap at
+  **16–25 pp of executed pass-rate** (21.9 pp pooled), reproduced across three
+  generators and two vendors. This is now the load-bearing measurement; the
+  correlation above is quoted as a judgment, never as the ground truth.
+- **Two pre-registered expectations failed, and are published as failures.**
+  X3: judged fidelity is *not* a per-run proxy for executed correctness
+  (r ≈ 0.25). XV1: across a vendor boundary the judge sees almost nothing —
+  judged-vs-executed agreement **r = 0.002**. Inter-judge reliability is not
+  validity; quote correlations and orderings, never absolute fidelity.
+- **The gate is an input filter, not a content certifier.** In the repair
+  waves, a diagram whose missing decisions were *invented* rather than asked
+  about generated worse code than leaving it alone — and still passed the
+  gate. The mitigation claim stands for *filtering*; it does not extend to
+  certifying content.

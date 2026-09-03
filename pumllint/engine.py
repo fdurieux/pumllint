@@ -346,10 +346,22 @@ def _rule_config(rules_cfg: dict, rule_id: str, rule_name: str):
     """Rule config may be keyed by id (SEQ001) or name (undeclared-participant).
 
     Value semantics: False/"off" disables; True/None -> defaults; dict -> options.
+
+    A table also disables, via ``enabled = false`` inside it. That spelling is
+    the natural one the moment a rule carries options — ``[rules.GEN001]`` with
+    ``enabled = false`` reads as a disable to anyone writing TOML — and it used
+    to fall through this function as *options*, leaving the rule armed while the
+    config said it was off. Silent, and it cost a real experiment: a "rules
+    disabled" control that was running every rule (issue #37). ``enabled`` is
+    consumed here and never reaches the rule, so it is not an option name any
+    rule can also use.
     """
     raw = rules_cfg.get(rule_id, rules_cfg.get(rule_name))
     if raw in (False, "off", "disabled"):
         return False
     if raw in (None, True, "on", "enabled"):
         return {}
+    if isinstance(raw, dict) and "enabled" in raw:
+        opts = {k: v for k, v in raw.items() if k != "enabled"}
+        return opts if raw["enabled"] else False
     return raw

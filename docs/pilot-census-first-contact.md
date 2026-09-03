@@ -135,3 +135,41 @@ which records the resulting trigger guard: exclude the notation's own
 repository and vendor sample galleries before reading a dialect marker as
 demand. The 46% stands as prevalence on this corpus; it is not a demand
 signal on its own.*
+
+*Dated addition, 2026-09-03 — the overlap measured, and three
+qualifications on this record.* The 2026-08-27 guard was applied by the
+method §8.4 proposed: re-clone the five repositories at the commits
+`sources.json` pins (all five HEADs verified), resolve all 159 recorded
+paths, re-run the marker regexes. **All five marker totals reproduce
+exactly** (118 / 73 / 102 / 0 / 1), and the per-source join is published in
+[§8.4](c4-ecosystem-evaluation.md). Headline: `plantuml-stdlib/C4-PlantUML`
+carries **66 of the 73** C4-macro hits and 71 of the 118 `!include` hits,
+and `hyperledger/aries-rfcs` — the only working-project corpus here —
+carries **none of either**. Under the guard, C4-macro prevalence reads
+46% → 8.0% (7 of 88) → **0 of 39**, and `!include` 118/159 → 47/88 →
+**0/39**. Every marker hit in this corpus comes from a notation or vendor
+sample tree.
+
+Three qualifications, recorded rather than repaired, because repairing any
+of them would move published figures without a pre-registration:
+
+- **`census.json` is not raw instrument output.** It carries a `note` key
+  the instrument never writes and flat `repo__dir__file.puml` names it
+  cannot produce; it was post-processed by hand after the run.
+- **The engine-dependent figures no longer reproduce.** Re-run at v0.30.0
+  the levels read 30/36/8/100 against the published 31/35/8/100, findings
+  1,335 against 1,329, model set 82.07 against 82.39. The marker and
+  inventory figures — everything above that carries a claim — are
+  engine-independent and unaffected.
+- **The level distribution is input-order dependent.** The same 159 files
+  passed in `sources.json` order give `{L4:30, L3:35, L2:9, L1:100}`; in
+  sorted order, `{L4:30, L3:36, L2:8, L1:100}`. Each is deterministic on
+  repetition, and the diagram that moves is one aws-icons example. Cross-diagram
+  rules are the plausible cause. Scores are a public contract, so this is
+  worth its own investigation; it is a scoring question, not a census one,
+  and nothing here depends on it.
+
+*The re-clones were scratch working copies authorised by their commit
+hashes, not repository material: `corpus/` is gitignored and the bundled
+`examples/` score zero on every marker. The join is reproducible by
+repeating the clone, not from this repository alone.*

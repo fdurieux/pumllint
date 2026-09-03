@@ -42,6 +42,34 @@ def compile_option_pattern(rule_id: str, option: str, pattern: str) -> re.Patter
             f"({e}): {pattern!r}"
         ) from e
 
+def _reject_null_options(rule_id: str, cfg: dict) -> None:
+    """An explicitly-null option value is a config error, never a default.
+
+    Every option in this codebase expresses "not set" by *omitting* the key —
+    ``options.get(name)`` then returns ``None`` and the rule takes its own
+    default or goes dormant. A key written with an explicit null (YAML
+    ``pattern:``, JSON ``"pattern": null``; TOML cannot express it at all)
+    looks identical at the read site but means the user tried to say
+    something. Left alone it reaches the rule body and crashes there —
+    ``AttributeError`` on a compiled-pattern deref, ``TypeError`` on an int
+    or list option — which escapes as **exit 1** and is indistinguishable
+    from "lint findings at or above --fail-on" under the exit-code contract.
+    Thirteen call sites had that shape; guarding here closes all of them at
+    once rather than teaching each one to re-check.
+
+    Raises ``ValueError``, which the CLI reports as exit 2 — the same clean
+    config error :func:`compile_option_pattern` already raises for a
+    malformed regex.
+    """
+    nulls = sorted(k for k, v in cfg.items() if v is None)
+    if nulls:
+        named = ", ".join(repr(k) for k in nulls)
+        raise ValueError(
+            f"rule {rule_id}: option(s) {named} are set to null — omit the "
+            "key to leave an option unset (null is never a valid value)"
+        )
+
+
 _CATALOG_PATH = Path(__file__).with_name("catalog.toml")
 
 
@@ -77,6 +105,7 @@ class Rule(ABC):
 
     def __init__(self, config: dict | None = None):
         cfg = dict(config or {})
+        _reject_null_options(self.id, cfg)
         sev = cfg.pop("severity", None)
         self.severity = Severity(sev) if sev else self.default_severity
         self.options = cfg

@@ -90,6 +90,44 @@ def test_non_string_pattern_is_a_config_error_too():
     )
 
 
+def test_explicitly_null_option_is_a_config_error_not_a_crash():
+    """A key written with an explicit null must not reach the rule body.
+
+    ``options.get(name)`` cannot tell "absent" from "present and null", so a
+    null reached the rule and crashed it — ``AttributeError`` on a pattern
+    deref, ``TypeError`` on an int or list option. Both escape as **exit 1**,
+    which CI reads as lint findings; issue #37's whole point is that a broken
+    config must be loud. Thirteen call sites had that shape, so the guard
+    lives in ``Rule.__init__`` and these cases span all three value kinds.
+    """
+    cases = [
+        ({"rules": {"CLS001": {"class_pattern": None}}}, _CLASS, "CLS001", "class_pattern"),
+        ({"rules": {"CLS001": {"member_pattern": None}}}, _CLASS, "CLS001", "member_pattern"),
+        ({"rules": {"participant-naming": {"pattern": None}}}, _SEQ, "GEN004", "pattern"),
+        ({"rules": {"ACT005": {"pattern": None}}}, _ACTIVITY, "ACT005", "pattern"),
+        ({"profile": "codegen", "rules": {"SEQ103": {"pattern": None}}}, _SEQ, "SEQ103", "pattern"),
+        ({"rules": {"GEN009": {"max": None}}}, _SEQ, "GEN009", "max"),
+        ({"rules": {"SEQ011": {"max": None}}}, _SEQ, "SEQ011", "max"),
+        ({"rules": {"GEN003": {"allowed": None}}}, _SEQ, "GEN003", "allowed"),
+        ({"rules": {"ACT006": {"verbs": None}}}, _ACTIVITY, "ACT006", "verbs"),
+    ]
+    for config, source, *needles in cases:
+        _expect_config_error(config, source, *needles)
+
+
+def test_omitting_an_option_still_means_unset():
+    """The guard must reject only *explicit* null, never a missing key.
+
+    GEN006/GEN007 go dormant when no `pattern` is configured, through the same
+    ``.get`` that returns None — so a guard that could not tell the two apart
+    would turn every unconfigured convention rule into a config error.
+    """
+    violations = Engine({"rules": {"GEN006": True, "GEN007": True}}).lint_diagrams(
+        parse_source(_SEQ, "t.puml")
+    )
+    assert not [v for v in violations if v.rule_id in ("GEN006", "GEN007")]
+
+
 def test_valid_custom_pattern_still_enforced():
     violations = Engine({"rules": {"participant-naming": {"pattern": "^[a-z]+$"}}}).lint_diagrams(
         parse_source(_SEQ, "t.puml")

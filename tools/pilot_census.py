@@ -57,6 +57,42 @@ MARKERS = {
 }
 
 
+def _by_file(suspects: list[dict]) -> list[dict]:
+    """One row per file — its worst — preserving the incoming ratio order.
+
+    A multi-diagram file otherwise contributes one identical row per diagram,
+    which both inflates the headline count and lets a single file monopolise
+    the display.
+    """
+    seen: set = set()
+    out = []
+    for s in suspects:
+        if s["file"] not in seen:
+            seen.add(s["file"])
+            out.append(s)
+    return out
+
+
+def _spread(hits: list[str], n: int) -> list[str]:
+    """*n* examples from as many distinct directories as possible.
+
+    `hits` is path-sorted, so a plain slice returns whichever source sorts
+    first — systematically hiding the largest contributor. Take one per
+    directory, then fill from what is left; sorted at the end so the result
+    is deterministic.
+    """
+    groups: dict[str, list[str]] = {}
+    for h in hits:
+        # Parent directory, not the leading segment: paths may be absolute, in
+        # which case every leading segment is the same empty string.
+        groups.setdefault(h.rsplit("/", 1)[0] if "/" in h else "", []).append(h)
+    picked = [g[0] for g in groups.values()][:n]
+    if len(picked) < n:
+        rest = [h for h in hits if h not in picked]
+        picked += rest[: n - len(picked)]
+    return sorted(picked)
+
+
 def discover(paths: list[str]) -> list[Path]:
     files: list[Path] = []
     for p in (Path(x) for x in paths):
@@ -124,6 +160,14 @@ def main(argv=None) -> int:
     unscored = [f for f in files if f.resolve() not in scored_files]
 
     # 2 — coverage suspects
+    #
+    # One row per *diagram*, but `lines` is the whole file's count, so a
+    # multi-diagram file contributes one identical row per diagram it holds.
+    # The 2026-08-11 wild corpus had a 16-diagram file that produced 16 rows
+    # at the same ratio: 104 rows over 89 files, and because rows sort by
+    # ratio that single file filled every slot of the default display. The
+    # headline counts files (what an operator acts on) and the display shows
+    # each file once, keeping its worst row.
     suspects = []
     for d in diagrams:
         f = Path(d["file"])
@@ -136,12 +180,21 @@ def main(argv=None) -> int:
                              "type": d.get("diagramType"),
                              "lines_per_element": round(ratio, 1)})
     suspects.sort(key=lambda s: -s["lines_per_element"])
+    suspect_files = _by_file(suspects)
 
     # 3 — dialect markers
+    #
+    # Examples are spread across distinct top-level directories rather than
+    # taken as `hit[:3]`. `files` arrives sorted, so the first three came from
+    # whichever repository sorts first: on the 2026-08-11 wild corpus that
+    # showed two repositories contributing 5 hits between them while the one
+    # contributing 66 of 73 never appeared, because it sorted last. The
+    # examples are the only per-file evidence the artefact keeps, so they have
+    # to be representative rather than alphabetical.
     marker_hits = {}
     for label, rx in MARKERS.items():
-        hit = [str(f) for f in files if rx.search(src[f])]
-        marker_hits[label] = {"files": len(hit), "examples": hit[:3]}
+        hit = [f.as_posix() for f in files if rx.search(src[f])]
+        marker_hits[label] = {"files": len(hit), "examples": _spread(hit, 3)}
 
     # 4 — maturity distribution
     levels = Counter(d["maturity"]["level"] for d in diagrams)
@@ -174,8 +227,10 @@ def main(argv=None) -> int:
         print("   every file yielded at least one scoreable diagram")
 
     print(f"\n2. COVERAGE SUSPECTS (big file, few recognized elements): "
-          f"{len(suspects)}")
-    for s in suspects[:args.top]:
+          f"{len(suspect_files)} of {len(files)} files"
+          + (f" ({len(suspects)} diagram rows)"
+             if len(suspects) != len(suspect_files) else ""))
+    for s in suspect_files[:args.top]:
         print(f"   {s['lines_per_element']:>6} l/el  {s['lines']:>4} lines "
               f"{s['elements']:>3} el  [{s['type']}] {s['file']}")
 
@@ -209,7 +264,8 @@ def main(argv=None) -> int:
             "files": len(files), "diagrams": len(diagrams),
             "profile": args.profile, "runtime_s": round(elapsed, 1),
             "types": Counter(d.get("diagramType") for d in diagrams),
-            "unscored_files": [str(f) for f in unscored],
+            "unscored_files": [f.as_posix() for f in unscored],
+            "coverage_suspect_files": len(suspect_files),
             "coverage_suspects": suspects,
             "dialect_markers": marker_hits,
             "levels": levels,

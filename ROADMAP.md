@@ -5329,6 +5329,53 @@ list and license posture live in § Settled questions.
     pre-empts it. Published artefacts byte-identical; feature files in sync.
     Suites 584 → 587 stdlib, 706 → 709 pytest.*
 
+- **The ungated tier completed, BUILT 2026-09-03 — ranks 2, 4 and 5, and two
+  of the three were again larger than the note specified.** With ranks 3, 6
+  and 7 (2026-08-31) this closes every item that needed no trigger.
+  - **Config surface (rank 2).** A table-form `[rules.X]` with
+    `enabled = false` left the rule **armed** — `enabled` was read nowhere in
+    the codebase. Worse, the null-option crash is not one site but
+    **fourteen**, with one root cause: `.get(option, default)` returns the
+    *explicit* null, so the sentinel wins and the declared default never
+    applies. Five pattern sites crashed `AttributeError`, eight more
+    `TypeError` on null int/list/lexicon options, and a list-rooted config
+    added one at `engine.py:19` — **all exiting 1**, indistinguishable from
+    lint findings, which is what `rules/__init__.py:35-38` exists to prevent.
+    One guard at `Rule.__init__` closes all fourteen: *null is never a value;
+    omit the key.* Unknown **top-level keys and rule ids** now warn on stderr;
+    option keys deliberately do not, because there is no declaration to check
+    them against (`catalog.toml` has no `options` field and the codegen
+    lexicons generate names dynamically) — recorded, paired with the `DORMANT`
+    column, since both need that same declaration. `--list-rules` finally
+    loads the config; it had **no test at all** before this.
+  - **Claim surface (rank 4).** The load-bearing falsehood was the clause
+    *"so it cannot be claimed without those rules running"* — the C7 binding
+    is string equality on a profile **name**, and the substance half is the
+    opt-in flag. Measured: an activity diagram under `--profile codegen`
+    scores **Level 5, 99.1/100** with zero codegen rules applicable.
+    `docs/case-for-pumllint.md` repeated the same overclaim; `SCORING.md` §4
+    was already correct. Separately, README rested the entire evidence case on
+    the one 2026-07-22 judged wave — the very leg **XV1 refuted** across a
+    vendor boundary (judged-vs-executed r = 0.002) — while omitting the
+    executed 16–25 pp cliff that needs no judge. Both fixed; §9 gained a dated
+    block for the three later waves. **The default was not flipped** (§6.4
+    stays open) and `tests/test_scoring.py` is untouched.
+  - **Census (rank 5).** Every prevalence figure the prioritisation note
+    declined to vouch for is now **independently re-derived and confirmed**:
+    all five marker totals reproduce exactly, `plantuml-stdlib/C4-PlantUML`
+    carries **66 of 73** C4-macro hits, and `hyperledger/aries-rfcs` — the only
+    working-project corpus — carries **zero**. Under the 2026-08-27 guard,
+    C4-macro prevalence reads 46% → 8.0% → **0 of 39**; §8.4's "at most 70"
+    tightens to 66. Instrument fixed (file-counted suspects, `as_posix`,
+    representative examples) and given its first test. **Recorded, not
+    repaired:** `census.json` is hand-post-processed, its engine-dependent
+    figures have drifted at v0.30.0, and — new — **the level distribution is
+    input-order dependent** (same 159 files, different order, `L2:9` vs
+    `L2:8`). That last is a scoring question worth its own look, given that
+    scores are a public contract.
+  - *Suites 587 → 601 stdlib, 709 → 723 pytest. Feature files in sync;
+    published artefacts byte-identical; no golden, schema or scoring change.*
+
 ## Working agreements (read before picking anything up)
 
 - Scores are a public contract: any change that shifts corpus scores must be

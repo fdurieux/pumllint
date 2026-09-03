@@ -522,11 +522,47 @@ dcasati/kubernetes-PlantUML       4
 
 45% of the corpus is the notation's own sample gallery, and 46% of the
 corpus calls C4 macros. The census does not record which files carry the
-marker, so the overlap cannot be computed exactly from the artefacts in
-this repo; the marker's own example list names at least three files from
-other repos, so C4-PlantUML's own examples account for **at most 70 of the
+marker, so the overlap could not be computed from the artefacts in this
+repo; the marker's own example list names at least three files from other
+repos, so C4-PlantUML's own examples accounted for **at most 70 of the
 73**, and — since its samples use the macros by construction — plausibly
 most of them.
+
+**Measured 2026-09-03, and the bound tightens to 66.** The method §8.4
+proposed below was run: re-clone the five repositories at the commits
+`sources.json` pins (all five HEADs verified against it), resolve all 159
+recorded paths, and re-run the marker regexes from `tools/pilot_census.py`
+over them. All five marker totals reproduce exactly (118 / 73 / 102 / 0 /
+1), which is what licenses reading the breakdown:
+
+| Source repository | files | C4-macro | `!include` | preprocessor |
+|---|---:|---:|---:|---:|
+| plantuml-stdlib/C4-PlantUML | 71 | **66** | **71** | 55 |
+| hyperledger/aries-rfcs | 39 | **0** | **0** | 0 |
+| awslabs/aws-icons-for-plantuml | 37 | 1 | 35 | 35 |
+| plantuml-stdlib/Azure-PlantUML | 8 | 2 | 8 | 8 |
+| dcasati/kubernetes-PlantUML | 4 | 4 | 4 | 4 |
+| **total** | **159** | **73** | **118** | **102** |
+
+The notation's own repository carries **66 of 73 C4-macro hits (90.4%)**
+and 71 of 118 `!include` hits. Applying the guard stated below:
+
+- exclude the notation's own repository → C4 macros **7 of 88 (8.0%)**,
+  `!include` **47 of 88**;
+- also exclude the three vendor sample galleries → **0 of 39** and **0 of
+  39**, where those 39 files are `hyperledger/aries-rfcs`, the only
+  working-project corpus in the census.
+
+**Every C4 macro and every `!include` in this corpus comes from a notation
+or vendor sample tree.** The prevalence figure is sound as prevalence; as a
+demand signal for a C4 pack it reads zero.
+
+*Provenance, stated because it bears on how far this travels:* the
+re-clones were scratch working copies, authorised by their commit hashes
+matching `sources.json`, not repository material — `corpus/` is gitignored
+and the bundled `examples/` score zero on every marker. The arithmetic is
+reproducible by anyone who repeats the clone; it is not reproducible from
+this repository alone.
 
 **Nothing here is undisclosed.** The composition table is in the census
 note; so is "the corpus skews toward sample galleries", and so is "a
