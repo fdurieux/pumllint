@@ -136,8 +136,9 @@ def _spelled(tmp: str, args):
 # never stressed the de-dup. Path equality collapses only what PurePath
 # normalises at construction (`./x`, doubled separators); identity is the
 # filesystem's. The spelling kept is the first given — it is what parse_file
-# reports, so the report and the baseline key follow argv, never a resolved
-# path.
+# reports, so the report follows argv, never a resolved path. The baseline
+# key is the deliberate exception: it is anchored to the baseline file's
+# directory (baseline.py) precisely so it does *not* follow argv.
 
 
 def test_absolute_and_relative_spellings_of_one_file_are_collected_once():
@@ -359,8 +360,9 @@ def test_expansion_globs_only_from_the_first_wildcard_component():
 
 
 def test_reported_paths_use_forward_slashes():
-    # Reports, baseline keys and the syntax gate all key off this string; a
-    # Windows-produced report must match a POSIX-produced one byte for byte.
+    # Reports and the syntax gate key off this string, and the baseline key
+    # is derived from it; a Windows-produced report must match a
+    # POSIX-produced one byte for byte.
     from pumllint.parser import parse_file
 
     with tempfile.TemporaryDirectory() as tmp:

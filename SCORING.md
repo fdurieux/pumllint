@@ -201,7 +201,11 @@ pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--upda
   against FILE and exit non-zero only on *regression* (a diagram below its
   recorded level). A missing FILE is recorded on the spot; diagrams new since
   the baseline pass. `--update-baseline` rewrites FILE with the current
-  levels. Makes the gate adoptable on brownfield model sets.
+  levels. Makes the gate adoptable on brownfield model sets. Keys are paths
+  relative to FILE's own directory (baseline file version 2), so the ratchet
+  is independent of the working directory and of how the paths are spelled;
+  keep FILE where it was recorded. Version-1 files are still read and are
+  rewritten in the new form by the next `--update-baseline`.
 - Trend/delta (0.7.0): ratchet-compare runs annotate the text report per
   diagram and for the model set — `(Level 3 → 4 since last baseline)`,
   `(new since baseline)` — and the json format adds a machine-readable

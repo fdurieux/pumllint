@@ -275,8 +275,9 @@ def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Pat
     through a symlink, or once by a directory sweep and once by name, is one
     file and one entry. The spelling given first is the one kept — and so
     the one reported, since ``parse_file`` stamps diagrams with the path as
-    given, and that string is the baseline key and the report's ``file``
-    field. The residual is a case-insensitive filesystem under a
+    given, and that string is the report's ``file`` field (the baseline key
+    is derived from the resolved path, relative to the baseline file — see
+    ``baseline.py``). The residual is a case-insensitive filesystem under a
     case-sensitive path flavour (macOS): ``Diagrams/x.puml`` and
     ``diagrams/x.puml`` resolve to two strings there and are collected
     twice.

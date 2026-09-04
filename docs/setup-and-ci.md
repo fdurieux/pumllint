@@ -140,7 +140,12 @@ git add maturity.json                               # commit the baseline
 
 From then on the same command **ratchets**: CI fails only when a diagram
 drops below its own recorded level (`regression: file::Diagram: Level 2
-(baseline 3)` on stderr, exit 1). Diagrams new since the baseline always pass
+(baseline 3)` on stderr, exit 1). The keys are paths relative to
+`maturity.json`'s own directory, so the runner's checkout path need not be
+the developer's and the paths may be spelled differently (the Action's
+`paths` input, an absolute path, a run from a subdirectory) — what must stay
+put is the file itself; a baseline that matches none of the scored diagrams
+is reported on stderr. Diagrams new since the baseline always pass
 the ratchet — combine with `--min-level` to hold new work to a floor. When a
 team deliberately accepts a lower level, refresh with `--update-baseline`
 (treat that flag like `--amend`: a reviewed, conscious act — the baseline

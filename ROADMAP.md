@@ -117,20 +117,63 @@ them.
   apart; there is no macOS job in the matrix. Exposure was the Action's
   `paths` input (word-split verbatim into argv), manifests, `xargs` and the
   API — not pre-commit, whose staged list is repo-relative and unique.
-- [ ] **`--baseline` is blind to a change of path spelling** *(found
-  2026-09-04, measuring the duplicate-spelling defect)* — baseline keys are
-  `file_path::name` and `file_path` is the spelling as given, so a baseline
-  recorded with relative paths and compared with absolute ones (a CI job
-  that switches `pumllint score src/` to `pumllint score "$PWD/src/"`, or
-  records in one working directory and checks in another) marks **every**
-  diagram *"new since baseline"* and passes real regressions silently:
-  measured, the same degraded file exits 1 compared relative and 0 compared
-  absolute against one baseline. The ratchet is the surface this hurts, and
-  the failure is silent by design (new and removed diagrams are ignored).
-  Baseline keys are persisted in committed files, so normalising them is a
-  contract change with a migration question — normalise on load, accept
-  both forms, or key on a repo-relative path — that needs its own SWOT
-  before a line is written. No trigger — a defect.
+- [x] **`--baseline` is blind to a change of path spelling — FIXED
+  2026-09-04, the same day it was queued.** *(Queued from the
+  duplicate-spelling measurement as: "baseline keys are `file_path::name`
+  and `file_path` is the spelling as given, so a baseline recorded with
+  relative paths and compared with absolute ones … marks every diagram
+  'new since baseline' and passes real regressions silently".)* Right in
+  substance, wrong in scope: it is an **anchor** dependency, not a string
+  dependency. The key followed the argv spelling while the baseline file
+  followed the cwd, and the two coincide only in the canonical invocation.
+  Measured on one recorded baseline and eight spellings of the same
+  degraded diagram: `./diagrams`, `diagrams/` and naming the file still
+  matched (by `PurePath` construction normalisation, not by design); an
+  absolute spelling, `.` from inside the tree with `--baseline
+  ../maturity.json`, `../diagrams` from there, and `proj/diagrams` from the
+  parent matched nothing — exit 0 on a real regression. **Two failures the
+  queue did not know:** `--update-baseline` rebuilds the file from the run
+  with no merge, so under a masking spelling it ratcheted the diagram down
+  *and* stored machine-local absolute keys in one command; and two working
+  directories writing into one baseline collided on `x.puml::name`, the
+  second write silently replacing the first. **Fix:** keys are paths
+  relative to the baseline file's own directory, forward slashes, `#n`
+  ordinals computed on the anchored path (`baseline.py` `anchored_keys`,
+  file version 2). The CLI re-keys the loaded file onto the run's own
+  `diagram_keys` once (`resolve_baseline`), so the reporters, the ratchet
+  functions and the `regression:` line keep the as-given spelling and none
+  of their signatures move; `find_regressions`/`compute_deltas` translate
+  for themselves, so the public `load_baseline → find_regressions` pattern
+  still works. Measured: all eight spellings match, the tree copied to
+  another prefix matches, and a version-1 file recorded the canonical way
+  matches under every spelling *before* it is rewritten (its keys already
+  are the anchored form). **Migration:** version-1 files are read —
+  anchored lookup first, as-given second — with one stderr line naming
+  `--update-baseline`; the next write is version 2; an older pumllint
+  refuses a version-2 file with exit 2 and a message, never silently.
+  A non-empty baseline that matches none of the scored diagrams now warns
+  on stderr (exit code unchanged: new diagrams pass by definition).
+  Residuals, recorded: the anchor is the file — moving it alone changes
+  every key (the warning catches it); a diagram outside the file's
+  directory keys with `../` segments; a file on another Windows drive keys
+  on its resolved absolute path; `resolve()` follows symlinks, so a tree
+  reached through a link keys on its target. Precedent: PHPStan writes
+  baseline paths relative to the baseline file's directory, after issue
+  #2703 reported this exact defect; the repo's own golden snapshot keys on
+  a corpus-relative path resolved against a root passed in per call.
+- [ ] **`--update-baseline` on a partial run drops every diagram not in the
+  run** *(found 2026-09-04, fixing the anchor defect)* — `write_baseline`
+  rebuilds the file from the current results with no merge, which is how
+  "removed diagrams are ignored" is realised: score one file (or
+  pre-commit's staged list) with `--update-baseline` and the committed
+  baseline shrinks to that file. The diff shows it, so it is not silent —
+  but a `pumllint-score` hook carrying `--update-baseline` would do it on
+  every commit. Two shapes: merge (keep entries for diagrams not scored
+  this run — then a deleted diagram's entry is immortal and the documented
+  semantic changes), or state that `--update-baseline` expects the full
+  set and refuse it when the run is a strict subset of the file's keys. A
+  decision, not a one-liner. No trigger — a defect on the pre-commit
+  surface.
 
 ## Arc B — Trust & adoption (done)
 
@@ -5887,3 +5930,75 @@ list and license posture live in § Settled questions.
     thing that reopens the format half of F2 above adjacency; an adopter
     supplying the first `[architecture]` rows (ARC001–003's trigger,
     unchanged since 2026-07-30).
+- **The baseline spelling defect, FIXED 2026-09-04 — an anchor, not a
+  string.** Queued that morning from the duplicate-spelling measurement;
+  three exploration strands measured it on eight spellings, measured five
+  candidate keys, mapped the contract surfaces and gathered precedent
+  before a line was written; a fourth validated the mechanics. The Arc A
+  item carries the mechanism, the two failures the queue did not know, the
+  fix and the residuals; this entry carries what was decided.
+  - **The scope was wrong in both directions.** Narrower: `./diagrams`,
+    `diagrams/` and naming the file never masked — `PurePath` normalises
+    them at construction — so "any change of spelling" was four cases of
+    eight, exactly the ones that move the anchor. Wider: `--update-baseline`
+    rebuilds the file from the run, so a masking spelling conceded the
+    regression and stored machine-local keys in the same command, and two
+    cwds writing one baseline collided silently. Masking loses a signal;
+    that corrupts stored state.
+  - **Five keys measured, one survived.** As given (today): five distinct
+    keys for one file. Resolved absolute: one key, and a baseline recorded
+    at `/home/u/proj` never matches at `/github/workspace`. Relative to
+    cwd: fixes one case of four. Relative to the config file: not
+    implementable — discovery is cwd-only with no parent walk, the path is
+    discarded, `-c` is optional. Relative to the git root: a subprocess on
+    the default path of a zero-dependency tool, nothing outside a checkout.
+    **Relative to the baseline file's own directory:** one key for every
+    spelling and cwd, portable when the tree moves as a whole, robust to
+    how the baseline path itself is typed (`maturity.json`,
+    `../maturity.json`, `proj/maturity.json` all resolve to one anchor).
+  - **Precedent had settled the anchor question elsewhere.** PHPStan:
+    `ParentDirectoryRelativePathHelper(dirname($generateBaselineFile))`,
+    after #2703. Psalm: `resolveFromConfigFile`. SonarQube: a declared
+    project base dir. detekt: no path in the key at all. ESLint's 2025 bulk
+    suppressions chose cwd and #19954 asks to undo it. In this repository
+    the golden snapshot keys on a manifest-declared corpus-relative path
+    resolved against a root supplied per call, which is why
+    `test_golden_scores.py` can regenerate into a temporary directory and
+    still match; and `tools/pilot_census.py` joins two path sources only
+    after resolving both.
+  - **Five options, one ruling.** (A) re-anchor on the baseline file's
+    directory, version 2; (B) keep the key and warn when nothing matched —
+    visible but fixes nothing; (C) resolved absolute keys — dead in CI; (D)
+    path-free keys, detekt-style — the right long-run shape, but unnamed
+    diagrams have no identity and names are unique per file, not per set;
+    (E) document the invariance. **A, with B's warning inside it** as the
+    guard for A's one residual, a relocated file. The contract surfaces
+    decided the *shape* of A: `diagram_keys` had to stay computable from
+    results alone because the reporters compute keys independently of the
+    CLI and `Reporter.render_maturity` carries no path, so the translation
+    is one function at the CLI seam and nothing downstream moves.
+  - **Five migrations, one ruling.** (M1) read version 1 as today plus an
+    upgrade line; (M2) refuse it with exit 2 — but the load precedes the
+    write, so `--update-baseline` is refused too and every Action consumer
+    goes red on upgrade day; (M3) read it through the anchored lookup
+    first, then as-given; (M4) anchored keys without a version bump — an
+    older pumllint would match nothing and pass everything, the silent
+    failure recreated across versions; (M5) rewrite in place automatically
+    — a committed file written unbidden, against the docs' "`--amend`, a
+    reviewed, conscious act". **M3**, on the measurement that decided it:
+    a version-1 file recorded the canonical way already carries the
+    anchored keys, so it is fixed on the first run of the new release
+    without a rewrite, and every other file behaves exactly as before
+    until its one `--update-baseline`.
+  - **Found alongside, recorded, not fixed.** `--update-baseline` on a
+    partial run (a named file, pre-commit's staged list) rewrites the file
+    with only the scored diagrams — queued above as an Arc A item, since
+    "merge" would make removed diagrams immortal and the trade-off is a
+    decision. The baseline file's own shape is pinned by nothing but
+    `load_baseline` (no JSON Schema; `SCHEMA_NAMES` is `lint|score|trace`)
+    — a fourth schema is its own decision. The LSP builds `file_path` from
+    URIs as absolute paths and reads no baseline; if it ever ratchets, the
+    anchored key is what makes that possible.
+  - *Suites 613 → 624 stdlib, 735 → 746 pytest; no
+    feature, schema, golden or artefact movement; baseline file version
+    1 → 2 (read both, write 2).*
