@@ -4,7 +4,7 @@
 ' are swimlanes, events ride on arrow labels and XOR branch labels, the AND
 ' connector is a fork, the process interface is an action with an aris: marker. The
 ' footer carries the governance tags GEN006/GEN007 look for.
-title Order to cash — order handling
+title Order to cash
 footer owner: Sales Operations — ARIS process PROC-0042
 
 |Sales|
@@ -15,8 +15,8 @@ start
 if (Order valid?) then (Order valid)
   |Credit Control|
   :Check credit limit;
-  |Warehouse & Logistics|
   fork
+    |Warehouse & Logistics|
     :Pick goods;
     :Ship goods;
   fork again
