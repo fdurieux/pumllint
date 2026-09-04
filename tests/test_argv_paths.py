@@ -122,6 +122,135 @@ def test_duplicate_arguments_are_collected_once():
         assert _in(tmp, [".", "a.puml", "*.puml"]) == ["a.puml"]
 
 
+def _spelled(tmp: str, args):
+    """collect_files(args) with the process cwd at *tmp*, spellings kept."""
+    old = os.getcwd()
+    os.chdir(tmp)
+    try:
+        return [Path(f).as_posix() for f in collect_files(args)]
+    finally:
+        os.chdir(old)
+
+
+# The three spellings above already collapse to one Path object, so that test
+# never stressed the de-dup. Path equality collapses only what PurePath
+# normalises at construction (`./x`, doubled separators); identity is the
+# filesystem's. The spelling kept is the first given — it is what parse_file
+# reports, so the report and the baseline key follow argv, never a resolved
+# path.
+
+
+def test_absolute_and_relative_spellings_of_one_file_are_collected_once():
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "x.puml")
+        absolute = str(Path(tmp) / "x.puml")
+        assert _spelled(tmp, ["x.puml", absolute]) == ["x.puml"]
+        assert _spelled(tmp, [absolute, "x.puml"]) == [Path(absolute).as_posix()]
+
+
+def test_a_parent_hop_spelling_is_the_same_file():
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "d/x.puml")
+        (Path(tmp) / "sub").mkdir()
+        assert _spelled(tmp, ["d/x.puml", "sub/../d/x.puml"]) == ["d/x.puml"]
+
+
+def test_a_symlink_and_its_target_are_collected_once():
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "d/x.puml")
+        try:
+            os.symlink(Path(tmp) / "d" / "x.puml", Path(tmp) / "link.puml")
+        except (OSError, NotImplementedError):
+            return  # symlinks need a privilege this platform withholds
+        assert _spelled(tmp, ["d/x.puml", "link.puml"]) == ["d/x.puml"]
+        assert _spelled(tmp, ["link.puml", "d/x.puml"]) == ["link.puml"]
+
+
+def test_a_sweep_and_an_absolute_spelling_inside_it_are_collected_once():
+    # The Action's `paths` input is word-split verbatim into argv, so
+    # "${{ github.workspace }}/diagrams diagrams/x.puml" is a live route.
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "d/x.puml", "d/y.puml")
+        absolute = str(Path(tmp) / "d" / "x.puml")
+        assert _spelled(tmp, [".", absolute]) == ["d/x.puml", "d/y.puml"]
+        assert _spelled(tmp, [absolute, "d"]) == [Path(absolute).as_posix(), "d/y.puml"]
+
+
+def test_score_reports_one_diagram_under_two_spellings():
+    # Before the identity key the report listed the diagram twice under two
+    # paths, the model set counted it twice, and the second copy was "new
+    # since baseline" — exempt from the ratchet by definition.
+    import json
+
+    from pumllint.cli import main
+
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "x.puml")
+        (Path(tmp) / "cfg.json").write_text("{}", encoding="utf-8")
+        absolute = str(Path(tmp) / "x.puml")
+        old = os.getcwd()
+        os.chdir(tmp)
+        try:
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out), contextlib.redirect_stderr(io.StringIO()):
+                main(["score", "x.puml", absolute, "-f", "json", "-c", "cfg.json"])
+        finally:
+            os.chdir(old)
+        report = json.loads(out.getvalue())
+        assert [d["file"] for d in report["diagrams"]] == ["x.puml"], report["diagrams"]
+        assert report["modelSet"]["diagramCount"] == 1, report["modelSet"]
+
+
+def test_a_one_file_run_stays_a_one_diagram_batch_under_two_spellings():
+    # The cross-diagram pack is dormant on a single diagram; a duplicate used
+    # to make it two, so a file whose own participants collide by case was
+    # compared with itself and XD003 fired on a one-file run.
+    from pumllint.engine import Engine
+
+    with tempfile.TemporaryDirectory() as tmp:
+        f = Path(tmp) / "c.puml"
+        f.write_text(
+            "@startuml checkout\nparticipant Api\nparticipant api\nApi -> api : call\n@enduml\n",
+            encoding="utf-8",
+        )
+        old = os.getcwd()
+        os.chdir(tmp)
+        try:
+            ids = {v.rule_id for v in Engine({}).lint_paths(["c.puml", str(f)])}
+        finally:
+            os.chdir(old)
+        assert ids, "the fixture should trip something"
+        assert "XD003" not in ids, ids
+
+
+def test_fix_applies_once_under_two_spellings():
+    # fix_paths computed a result per spelling: the same diff twice, doubled
+    # counts, and through a symlink two contradictory GEN002 names — the fix
+    # takes the diagram name from the spelling's stem — with the last
+    # spelling winning on disk.
+    from pumllint.fixer import fix_paths
+
+    with tempfile.TemporaryDirectory() as tmp:
+        _tree(tmp, "x.puml")
+        absolute = str(Path(tmp) / "x.puml")
+        old = os.getcwd()
+        os.chdir(tmp)
+        try:
+            results = fix_paths([absolute, "x.puml"])
+            assert [r.path for r in results] == [Path(absolute)], results
+            assert results[0].fixes, "the nameless fixture should draw a GEN002 fix"
+            try:
+                os.symlink(Path(tmp) / "x.puml", Path(tmp) / "link.puml")
+            except (OSError, NotImplementedError):
+                return  # symlinks need a privilege this platform withholds
+            results = fix_paths(["link.puml", "x.puml"])
+        finally:
+            os.chdir(old)
+        assert [r.path for r in results] == [Path("link.puml")], results
+        names = [f.description for f in results[0].fixes if f.rule_id == "GEN002"]
+        assert names and all("'link'" in n for n in names), names
+
+
 def test_missing_path_message_states_what_is_wrong():
     with tempfile.TemporaryDirectory() as tmp:
         try:

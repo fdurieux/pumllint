@@ -249,7 +249,7 @@ def _no_match_error(p: Path, filtered: int, suffixes: set[str]) -> str:
 
 
 def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Path]:
-    """Every diagram file under *paths*, de-duplicated, in stable order.
+    """Every diagram file under *paths*, once each, in stable order.
 
     Each argument resolves in this order, so nothing that already works
     changes meaning:
@@ -269,15 +269,32 @@ def collect_files(paths: Iterable[str | Path], exts=PUML_EXTENSIONS) -> list[Pat
 
     Every argument is checked before anything is reported, so one typo lists
     all the bad arguments at once rather than only the first.
+
+    "Once each" is by filesystem identity, not by spelling: a file reached
+    as ``x.puml`` and again as its absolute path, as ``sub/../x.puml``,
+    through a symlink, or once by a directory sweep and once by name, is one
+    file and one entry. The spelling given first is the one kept — and so
+    the one reported, since ``parse_file`` stamps diagrams with the path as
+    given, and that string is the baseline key and the report's ``file``
+    field. The residual is a case-insensitive filesystem under a
+    case-sensitive path flavour (macOS): ``Diagrams/x.puml`` and
+    ``diagrams/x.puml`` resolve to two strings there and are collected
+    twice.
     """
     suffixes = {str(e).lower() for e in exts}
     files: list[Path] = []
-    seen: set[Path] = set()
+    seen: set[Path] = set()  # resolved identities; *files* keeps the spellings
     problems: list[str] = []
 
     def _add(f: Path) -> None:
-        if f not in seen:
-            seen.add(f)
+        # Identity, not spelling. Path equality only collapses what PurePath
+        # normalises at construction (``./x``, doubled separators), so under
+        # it ``x.puml`` and ``/abs/x.puml`` were two entries: the file's
+        # diagrams entered the batch twice, woke the cross-diagram pack on a
+        # one-file run, double-weighted the model set, and were fixed twice.
+        key = f.resolve()
+        if key not in seen:
+            seen.add(key)
             files.append(f)
 
     def _recurse(d: Path) -> list[Path]:
