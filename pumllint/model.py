@@ -222,8 +222,9 @@ class UseCaseLink:
 class ActivityNode:
     """A node in an activity diagram (new-style syntax).
 
-    kind: start | stop | end | action | decision | branch | swimlane
-    For ``swimlane`` nodes ``label`` is the lane name (``|Lane|``).
+    kind: start | stop | end | action | backward | decision | branch | swimlane
+    For ``swimlane`` nodes ``label`` is the lane name (``|Lane|``); for
+    ``backward`` it is the action on a loop's return path.
     For decisions (``if``/``elseif``) ``label`` is the condition and
     ``branch_label`` the ``then (yes)`` annotation; for ``branch`` (``else``)
     ``branch_label`` is the ``(no)`` annotation.
