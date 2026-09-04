@@ -133,6 +133,15 @@ the same thing in context.
   - *Tail guard* (GEN008 `note-density`, GEN009): a sensible universal
     default that no reasonable diagram trips. GEN009 fits here — `max = 60`
     semantic elements is generous.
+- **List or regex?** Both, when a convention can be spelled either way, and
+  the composition is settled (2026-09-04): an **allow-list and an
+  allow-pattern are alternatives** — a name passes on either, either option
+  arms the rule, and adding a pattern never narrows an existing list
+  (ACT006/UC002 `verbs` + `verb_pattern`); a **deny-list and a pattern both
+  apply**, the deny verdict first and one finding per item (SEQ109
+  `non_informative` + `reply_pattern`). Patterns are matched at the start of
+  the label with `match`, like ACT005 and GEN004; an empty pattern is
+  "not configured", exactly as `Rule.dormant` reads it.
 
 ### Step 1 — Specify it in RULES.md
 

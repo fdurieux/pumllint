@@ -73,16 +73,37 @@ class ExplicitParticipants(_CodegenRule):
 
 @register
 class TypedParticipants(_CodegenRule):
+    """Declared participants carry a role type; optionally, a closed vocabulary.
+
+    The presence test is the rule: a bare ``participant X`` gives a generator
+    no mapping signal. Option ``allowed_stereotypes`` (a list, matched
+    case-insensitively) closes the stereotype vocabulary on top of it: any
+    declared participant — whatever its keyword — whose ``<<stereotype>>`` is
+    outside the list is reported at the same severity. Unset or empty, the
+    vocabulary is open and only the presence test runs.
+    """
+
     id = "SEQ102"
 
     def check(self, diagram: Diagram):
+        raw = self.options.get("allowed_stereotypes") or ()
+        allowed = {str(s).lower() for s in raw}
         for p in diagram.participants.values():
-            if p.declared and p.kind == "participant" and not p.stereotype:
+            if not p.declared:
+                continue
+            if p.kind == "participant" and not p.stereotype:
                 yield self.violation(
                     diagram,
                     p.line,
                     f"Participant '{p.name}' has no role type; use a typed keyword "
                     f"({', '.join(_TYPED_KINDS)}) or a <<stereotype>>",
+                )
+            elif allowed and p.stereotype and p.stereotype.lower() not in allowed:
+                yield self.violation(
+                    diagram,
+                    p.line,
+                    f"Participant '{p.name}' has stereotype <<{p.stereotype}>>, not in "
+                    f"'allowed_stereotypes' ({', '.join(sorted(str(s) for s in raw))})",
                 )
 
 
@@ -380,6 +401,11 @@ class InformativeReplies(_CodegenRule):
 
     def check(self, diagram: Diagram):
         noninf = self.lexicon("non_informative", self.DEFAULT_NON_INFORMATIVE)
+        # Option `reply_pattern` (regex, matched at the start of the label) pins
+        # the project's reply shape. A deny-list and a pattern both apply: the
+        # lexicon's verdict comes first, so 'ok' is a generic-label finding and
+        # never a shape finding; one finding per reply either way.
+        reply_pattern = self.pattern_option("reply_pattern")
 
         # (b) reply arrows must name the returned value
         for m in diagram.messages:
@@ -393,6 +419,13 @@ class InformativeReplies(_CodegenRule):
                     m.line,
                     f"Reply '{shown}' is empty or a generic label "
                     "('non_informative' option); name the returned value (e.g. 'order: Order')",
+                )
+            elif reply_pattern is not None and not reply_pattern.match(label):
+                yield self.violation(
+                    diagram,
+                    m.line,
+                    f"Reply '{label}' does not match 'reply_pattern' "
+                    f"({reply_pattern.pattern}); name the returned value in the project's shape",
                 )
 
         # (a) returns drawn with a solid arrow toward the caller of an open call

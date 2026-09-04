@@ -138,8 +138,12 @@ class VerbFirstActivity(Rule):
     """Activities should be phrased verb-first ("Validate order").
 
     The classic ARIS/EPC function convention keeps models action-oriented and
-    uniform. Option ``verbs`` supplies the accepted leading verbs; with no
-    whitelist the rule is dormant (there is no language-agnostic verb oracle).
+    uniform. Option ``verbs`` supplies the accepted leading verbs; option
+    ``verb_pattern`` (regex, matched at the start of the label) is the second
+    gate for shape-based conventions. An allow-list and an allow-pattern are
+    alternatives — a name passes on either — and either option arms the rule;
+    with neither configured it is dormant (there is no language-agnostic verb
+    oracle).
     """
 
     id = "ACT006"
@@ -147,15 +151,27 @@ class VerbFirstActivity(Rule):
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         if self.dormant:
             return
-        verbs = {v.lower() for v in self.options["verbs"]}
+        verbs = {v.lower() for v in self.options.get("verbs") or ()}
+        # An empty pattern is "not configured" (Rule.dormant's reading, too);
+        # compiled, "" would match every label and silently void the list.
+        verb_pattern = (
+            self.pattern_option("verb_pattern") if self.options.get("verb_pattern") else None
+        )
         for n in diagram.activity_nodes:
             if n.kind != "action" or not n.label:
                 continue
             first = n.label.split()[0].lower()
-            if first not in verbs:
-                yield self.violation(
-                    diagram,
-                    n.line,
-                    f"Activity '{n.label}' is not verb-first — name it "
-                    '"verb + object" (e.g. "Validate order")',
+            if first in verbs or (verb_pattern is not None and verb_pattern.match(n.label)):
+                continue
+            if verb_pattern is None:
+                why = 'name it "verb + object" (e.g. "Validate order")'
+            elif verbs:
+                why = (
+                    "first word not in 'verbs' and label does not match "
+                    f"'verb_pattern' ({verb_pattern.pattern})"
                 )
+            else:
+                why = f"label does not match 'verb_pattern' ({verb_pattern.pattern})"
+            yield self.violation(
+                diagram, n.line, f"Activity '{n.label}' is not verb-first — {why}"
+            )

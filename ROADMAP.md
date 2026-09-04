@@ -713,10 +713,12 @@ list and license posture live in § Settled questions.
   Sonar-shop user (its LSP half is **built**, 2026-08-31); Arc F waits on
   the adopter yes that queues a rule pack; Arcs H–J keep their recorded
   triggers. The one demand-backed build — rank 8, declarable convention
-  options from issues #43/#47 — is contingent on owner decision §6.1
-  *(its hard dependency, the option-key disclosure, shipped 2026-09-04)*.
-  **Six owner decisions are open** (§6.1–6.3, 6.5, 6.7, 6.8 of the note;
-  §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
+  options from issues #43/#47 — was contingent on owner decision §6.1
+  *(answered yes 2026-09-04, and **built the same day**; its hard
+  dependency, the option-key disclosure, shipped that morning)*.
+  **Four owner decisions are open** (§6.3, 6.5, 6.7, 6.8 of the note;
+  §6.1 and §6.2 were answered 2026-09-04 — yes, and all three option asks
+  built together; §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
   pinned JSON Schema inside 0.x, unblocks six parked items on one answer
   and has precedent: `trace` already ships schema-pinned outside README's
   stable list. Two open items were queued 2026-09-03 with no trigger,
@@ -724,7 +726,7 @@ list and license posture live in § Settled questions.
   dependence of the level distribution (Arc A) and the per-rule
   `option_keys` declaration (Arc E) *(both since built: 2026-09-03 and
   2026-09-04)*. The open tracker: #30, #35, #41,
-  #42, #44 stay open on named residues; #43/#47 stay open as ledgers;
+  #42, #44 stay open on named residues; #43/#47 stay open as ledgers *(#43.5, #47.1, #47.2 built 2026-09-04; set-style reporting split out)*;
   #33, #37, #49 closed with carve-outs in this pass.
 - *Superseded 2026-09-03 — kept as the 2026-07-24 state, since three of
   its sentences were false by 2026-08-31 and this file's own record at the
@@ -6292,3 +6294,68 @@ list and license posture live in § Settled questions.
   - *Suites 645 → 656 stdlib, 770 → 781 pytest;
     `tests/test_option_declarations.py` new; RULES.md, features, golden,
     artefacts untouched. Open checkboxes 16 → 15.*
+- **Rank 8 — declarable convention options, BUILT 2026-09-04: the one
+  demand-backed build, on the day its gate was answered.**
+  `allowed_stereotypes` on SEQ102 (#43.5), `reply_pattern` on SEQ109
+  (#47.1), `verb_pattern` on ACT006/UC002 (#47.2) — the three asks the
+  prioritisation note ranked as the only build with a per-item measurement
+  from a named consumer. Two read-only strands measured the four rules, the
+  corpora, the record and the precedent before a line was written; the
+  owner answered §6.1 the same afternoon.
+  - **§6.1 answered: yes.** The #43/#47 consumer is an arm's-length
+    adopter, so the Arc E bar is met as written. §6.2 is answered by the
+    build: all three asks together, and `allowed_stereotypes` was *not* the
+    right first one — the lever the note names is the list-or-regex shape
+    rule, and a plain list never touches it. The audit's provenance row
+    (`docs/foreign-corpus-audit.md`) is deliberately untouched: §6.1 spoke
+    to the consumer's standing, and the identification of that consumer
+    with the audit corpus is a fingerprint trace the note explicitly did
+    not adopt; §6.8 stays open.
+  - **The surface, measured.** Every one of the three conventions is the
+    consumer's, not the house's: 0 of 226 replies in this repository match
+    the `identifier: Type` shape the consumer holds at 126/126 (this
+    repo's replies are `camelCaseNoun`); the house corpora use 2 stereotype
+    tokens against the consumer's 18; `verbs` is configured nowhere here
+    and the corpora fit a 7-word list. All four rules fire zero times
+    across the 97 golden units under their own profiles. **Default-off is
+    measured necessity**: a default-on `reply_pattern` would give the good
+    calibration diagrams 3–6 new findings against the bad side's 1 and
+    shrink the ≥10 composite gap the corpus test pins. SEQ109's own
+    message already advertised `order: Order` — the shape nothing checked.
+  - **Precedent, verified.** stylelint treats a list entry wrapped in `/…/`
+    as a regex (one key, mixed list); typescript-eslint's naming rule keeps
+    a list `format` and a regex `custom` as separate keys, both required;
+    Spectral keeps `enumeration` and `pattern` as separate functions. No
+    evaluation note here had ever examined the question, and the repo
+    shipped both shapes for structurally identical convention rules (regex
+    for GEN006/GEN007, list for ACT006/UC002) without reconciling them.
+  - **Five options, one ruling.** (A) all three, default-off, separate
+    keys, the shape rule settled; (B) `allowed_stereotypes` only — the
+    weakest first on the measurements; (C) regex entries inside the
+    existing lists, stylelint's convention — a hidden micro-syntax the
+    option-key disclosure cannot see, and `reply_pattern` is a positive
+    shape no blocklist can carry; (D) the two pattern asks only — drops a
+    plain list for no measured reason; (E) settle the shape, build on pull
+    — the letter of the bar, had §6.1 been no. **A.** The composition rule,
+    now in writing-rules.md: an allow-list and an allow-pattern are
+    *alternatives* (a name passes on either; either option arms the rule;
+    a pattern never narrows a list); a deny-list and a pattern *both apply*
+    (the lexicon's verdict first, one finding per reply). Patterns match at
+    the start of the label, as ACT005 and GEN004 already do; an empty
+    pattern is "not configured", as `Rule.dormant` reads it — load-bearing,
+    since a compiled `""` would void a configured list. The stereotype
+    vocabulary covers every declared participant, whatever its keyword: a
+    closed vocabulary that admits `<<legacy>>` through `database` is not
+    closed.
+  - **Residues, recorded.** Set-style reporting (#47.2's second half) stays
+    split out: collapsing N findings into one moves DIM-CON density
+    invisibly and puts the LSP's squiggle on `@startuml`. Two of the three
+    options land on rules outside the executable spec — SEQ102/SEQ109 have
+    no RULES.md section (issue #41), so they are pinned by tests and README
+    prose, and #41 is two options wider. SEQ109 never looks at `return`
+    statements (only dotted arrows are replies). The other #43/#47 asks
+    keep their recorded, not-queued status; §6.1's yes changes what they
+    are (adopter pull), not whether they are queued.
+  - *Suites 656 → 671 stdlib, 781 → 800 pytest; `ACT006.feature` and
+    `UC002.feature` regenerated; golden, artefacts and dogfooding
+    unchanged.*

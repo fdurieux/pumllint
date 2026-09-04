@@ -1433,6 +1433,11 @@ Feature: ACT005 swimlane naming convention
 
 **Rationale:** The classic ARIS/EPC function convention: activities are named
 "verb + object" ("Validate order"), keeping models action-oriented and uniform.
+Option `verbs` lists the accepted leading verbs; option `verb_pattern` (regex,
+matched at the start of the label) is the second gate for shape-based
+conventions. A name passes when its first word is in `verbs` **or** the label
+matches `verb_pattern`, and either option arms the rule — with neither, it is
+dormant.
 
 ```gherkin
 Feature: ACT006 verb-first activity names
@@ -1474,6 +1479,53 @@ Feature: ACT006 verb-first activity names
       :Receive application;
       if (Complete?) then (yes)
       :Score applicant;
+      else (no)
+      :Request documents;
+      endif
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then no "ACT006" issue is reported
+
+  Scenario: a verb pattern arms the rule without a verbs list
+    Given the configuration:
+      """
+      [rules.ACT006]
+      verb_pattern = '^(Receive|Request|Score)\b'
+      """
+    And the diagram:
+      """
+      @startuml loan-decision
+      title Loan decision
+      start
+      :Receive application;
+      if (Complete?) then (yes)
+      :Order validation;
+      else (no)
+      :Request documents;
+      endif
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then an "ACT006" issue with severity "minor" is reported on line 6
+
+  Scenario: a listed verb passes beside a verb pattern
+    Given the configuration:
+      """
+      [rules.ACT006]
+      verbs = ["Order"]
+      verb_pattern = '^(Receive|Request|Score)\b'
+      """
+    And the diagram:
+      """
+      @startuml loan-decision
+      title Loan decision
+      start
+      :Receive application;
+      if (Complete?) then (yes)
+      :Order validation;
       else (no)
       :Request documents;
       endif
@@ -1911,9 +1963,11 @@ Feature: UC001 use cases connected to actors
 **Rationale:** Use cases as verb–object phrases ("Place order") is the standard
 method convention; mixing forms confuses reading. Only use-case names are
 checked — actor naming is a convention the rule does not enforce — and the
-rule is dormant until a `verbs` whitelist is configured. A use case declared
-with an alias (`usecase (Place order) as UC1`) is judged by its display
-label, never by the alias.
+rule is dormant until a `verbs` whitelist or a `verb_pattern` regex (matched
+at the start of the label) is configured — a name passes when its first word
+is in `verbs` **or** the label matches `verb_pattern`, and either option arms
+the rule. A use case declared with an alias (`usecase (Place order) as UC1`)
+is judged by its display label, never by the alias.
 
 ```gherkin
 Feature: UC002 use case and actor naming
@@ -1971,6 +2025,43 @@ Feature: UC002 use case and actor naming
       """
     When the linter runs
     Then a "UC002" issue with severity "minor" is reported on line 4
+
+  Scenario: a verb pattern arms the rule without a verbs list
+    Given the configuration:
+      """
+      [rules.UC002]
+      verb_pattern = '^(Place|Manage)\b'
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Order placement)
+      Customer --> (Order placement) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "UC002" issue with severity "minor" is reported on line 4
+
+  Scenario: a listed verb passes beside a verb pattern
+    Given the configuration:
+      """
+      [rules.UC002]
+      verbs = ["Order"]
+      verb_pattern = '^(Place|Manage)\b'
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Order placement)
+      Customer --> (Order placement) : does
+      @enduml
+      """
+    When the linter runs
+    Then no "UC002" issue is reported
 ```
 
 ### UC003 — Correct include/extend direction

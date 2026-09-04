@@ -181,7 +181,7 @@ def test_list_rules_tags_dormant_rules_until_the_config_wakes_them():
         tagged = {ln.split()[0]: ln for ln in lines if "dormant:" in ln}
         assert sorted(tagged) == ["ACT006", "GEN006", "GEN007", "SEQ010", "UC002"], sorted(tagged)
         assert "[dormant: needs pattern]" in tagged["GEN006"]
-        assert "[dormant: needs verbs]" in tagged["ACT006"]
+        assert "[dormant: needs verbs or verb_pattern]" in tagged["ACT006"]
         assert "[dormant: needs require_explicit_order]" in tagged["SEQ010"]
 
         # The repo config arms GEN006/GEN007 with a pattern: the tag must go.
@@ -191,16 +191,22 @@ def test_list_rules_tags_dormant_rules_until_the_config_wakes_them():
         by_id = {ln.split()[0]: ln for ln in lines}
         # (the description says "dormant until…" — the *tag* is what must go)
         assert "[dormant:" not in by_id["GEN006"] and "[dormant:" not in by_id["GEN007"]
-        assert "[dormant: needs verbs]" in by_id["ACT006"]
+        assert "[dormant: needs verbs or verb_pattern]" in by_id["ACT006"]
 
         # An empty pattern is "not configured" (test_hardening pins the rule
         # side); the listing must agree. A disabled rule is disabled, not dormant.
         cfg = Path(tmp) / "c.toml"
-        cfg.write_text('[rules]\nGEN006 = { pattern = "" }\nGEN007 = false\n', encoding="utf-8")
+        cfg.write_text(
+            '[rules]\nGEN006 = { pattern = "" }\nGEN007 = false\n'
+            'ACT006 = { verb_pattern = "^x" }\n',
+            encoding="utf-8",
+        )
         rc, lines, _ = _list_rules_lines(["--list-rules", "-c", str(cfg)])
         by_id = {ln.split()[0]: ln for ln in lines}
         assert "[dormant: needs pattern]" in by_id["GEN006"]
         assert "[disabled]" in by_id["GEN007"] and "[dormant:" not in by_id["GEN007"]
+        # Either gate arms ACT006: a pattern alone clears the tag.
+        assert "[dormant:" not in by_id["ACT006"]
 
 
 def test_list_rules_with_a_null_option_is_exit_2():

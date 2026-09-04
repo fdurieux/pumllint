@@ -289,7 +289,7 @@ codegen twin on the same line counts once).
 | GEN009 | max-elements | minor | More semantic elements than `max` (default 60), any diagram type. |
 | GEN010 | duplicate-diagram-name | minor | Two or more diagrams in one file share a name — PlantUML renders them to one output file, the last silently winning. |
 | UC001 | orphan-actor-or-usecase | major | Use-case diagrams: actor or use case linked to nothing. |
-| UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist; dormant otherwise. |
+| UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist or a `verb_pattern` regex — a name passes on either; dormant otherwise. |
 | UC003 | include-extend-direction | minor | `<<include>>`/`<<extend>>` arrow pointing the wrong way (judged via actor connectivity), or involving an actor. |
 | SEQ006 | no-self-message | minor | Self-message; internal logic belongs in a note. Option `allowed` whitelists participants. |
 | SEQ007 | unlabelled-block-condition | minor | `alt`/`opt`/`loop`/`break`/`critical` without a condition label. |
@@ -302,7 +302,7 @@ codegen twin on the same line counts once).
 | ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label. |
 | ACT004 | unterminated-construct | critical | `if`/`while`/`repeat`/`fork`/`switch`/`partition` never closed. |
 | ACT005 | swimlane-naming | minor | Swimlane (`|Lane|`) name violating a configurable `pattern`. |
-| ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist; dormant otherwise. |
+| ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist or a `verb_pattern` regex — a name passes on either; dormant otherwise. |
 | CLS001 | class-naming | minor | Class/member names violating configurable patterns (default PascalCase classes, camelCase members; enum members exempt). |
 | CLS002 | association-multiplicity | major | Association/aggregation/composition without a quoted multiplicity on both ends. |
 | CLS003 | unlabelled-association | minor | Plain association with no role/verb label (`: places`). |
@@ -352,19 +352,21 @@ config. Ids `SEQ100–SEQ199` are reserved for this range.
 | ID | Name | Default | What it catches |
 |----|------|---------|-----------------|
 | SEQ101 | codegen-implicit-participant | blocker | Lifeline created implicitly on first use — the generator must guess what `OrderSvc` is. |
-| SEQ102 | codegen-untyped-participant | major | Bare `participant X` with no typed keyword or `<<stereotype>>` — no mapping signal (actor → API boundary, `database` → repository, `<<external>>` → client stub). |
+| SEQ102 | codegen-untyped-participant | major | Bare `participant X` with no typed keyword or `<<stereotype>>` — no mapping signal (actor → API boundary, `database` → repository, `<<external>>` → client stub). Option `allowed_stereotypes` closes the stereotype vocabulary (case-insensitive, every declared participant). |
 | SEQ103 | codegen-prose-message | blocker | Call labels that aren't operation signatures: `fetch the order details` instead of `findOrderById(orderId)` — including prose hiding inside the parentheses (`handle(the payment stuff)`); `name: Type` params and quoted literals stay legal. |
 | SEQ104 | codegen-missing-return | major | Synchronous call (`->`) with no reply arrow or `return` — return type left undefined. Async `->>` is exempt. |
 | SEQ105 | codegen-vague-guard | blocker | `alt`/`opt`/`loop` with an empty or vague guard (`sometimes`, `if needed`, …). `else` must carry a guard, or literal `[else]` in a two-branch alt. |
 | SEQ106 | codegen-elision-marker | blocker | `...`, `TBD`, `TODO`, `etc`, `???`, `and so on` in labels, guards or notes — deliberately omitted behaviour the generator would fill with fiction. |
 | SEQ107 | codegen-missing-failure-path | major | Call to an `<<external>>`/`database`/`queue` participant with no failure branch (alt error branch, `break`, or `group error`). |
 | SEQ108 | codegen-activation-lifecycle | major | `activate`/`deactivate` not pairing as a well-formed per-lifeline stack — call nesting ambiguous. |
-| SEQ109 | codegen-uninformative-reply | minor | Return drawn with a solid arrow, or a reply labelled `ok`/`done`/`result` instead of naming the returned value — breaks data-dependency inference. |
+| SEQ109 | codegen-uninformative-reply | minor | Return drawn with a solid arrow, or a reply labelled `ok`/`done`/`result` instead of naming the returned value — breaks data-dependency inference. Option `reply_pattern` (regex) pins the reply shape, checked after the lexicon. |
 
 The lexicons and shape options are configurable per rule (`vague_terms`,
 `tokens`, `failure_keywords`, `non_informative`; SEQ103 also takes `pattern`,
 `arg_stop_words` and `max_arg_words`; SEQ106 also takes `kinds` — which of
-`message`, `guard`, `note` to scan, default all three).
+`message`, `guard`, `note` to scan, default all three; SEQ102 takes
+`allowed_stereotypes`, a closed vocabulary; SEQ109 also takes `reply_pattern`,
+a regex the reply label must match once the lexicon has passed it).
 
 Every lexicon takes two levers. Setting the key itself (`failure_keywords = [...]`)
 **replaces** the shipped list, which is how you narrow one; setting

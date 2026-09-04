@@ -40,6 +40,15 @@ class Foo {
 @enduml
 """
 
+_USECASE = """\
+@startuml uc
+title T
+actor A
+usecase (Do thing)
+A --> (Do thing) : does
+@enduml
+"""
+
 _ACTIVITY = """\
 @startuml flow
 title T
@@ -79,6 +88,14 @@ def test_bad_regex_is_a_config_error_not_a_traceback():
             "SEQ103",
             "pattern",
         ),
+        ({"rules": {"ACT006": {"verb_pattern": "("}}}, _ACTIVITY, "ACT006", "verb_pattern"),
+        ({"rules": {"UC002": {"verb_pattern": "("}}}, _USECASE, "UC002", "verb_pattern"),
+        (
+            {"profile": "codegen", "rules": {"SEQ109": {"reply_pattern": "("}}},
+            _SEQ,
+            "SEQ109",
+            "reply_pattern",
+        ),
     ]
     for config, source, *needles in cases:
         _expect_config_error(config, source, *needles)
@@ -110,6 +127,10 @@ def test_explicitly_null_option_is_a_config_error_not_a_crash():
         ({"rules": {"SEQ011": {"max": None}}}, _SEQ, "SEQ011", "max"),
         ({"rules": {"GEN003": {"allowed": None}}}, _SEQ, "GEN003", "allowed"),
         ({"rules": {"ACT006": {"verbs": None}}}, _ACTIVITY, "ACT006", "verbs"),
+        ({"rules": {"ACT006": {"verb_pattern": None}}}, _ACTIVITY, "ACT006", "verb_pattern"),
+        ({"rules": {"UC002": {"verb_pattern": None}}}, _USECASE, "UC002", "verb_pattern"),
+        ({"profile": "codegen", "rules": {"SEQ109": {"reply_pattern": None}}}, _SEQ, "SEQ109", "reply_pattern"),
+        ({"profile": "codegen", "rules": {"SEQ102": {"allowed_stereotypes": None}}}, _SEQ, "SEQ102", "allowed_stereotypes"),
     ]
     for config, source, *needles in cases:
         _expect_config_error(config, source, *needles)
@@ -145,20 +166,26 @@ def test_dormant_property_matches_the_early_return():
     from pumllint.rules import discover
 
     rules = discover()
-    gated = {
-        "GEN006": ("pattern", "", "(?i)owner"),
-        "GEN007": ("pattern", "", "REQ-\\d+"),
-        "UC002": ("verbs", [], ["place"]),
-        "ACT006": ("verbs", [], ["place"]),
-        "SEQ010": ("require_explicit_order", False, True),
-    }
-    for rid, (key, empty, armed) in gated.items():
+    gated = [
+        ("GEN006", "pattern", "", "(?i)owner"),
+        ("GEN007", "pattern", "", "REQ-\\d+"),
+        ("UC002", "verbs", [], ["place"]),
+        ("UC002", "verb_pattern", "", "^place"),
+        ("ACT006", "verbs", [], ["place"]),
+        ("ACT006", "verb_pattern", "", "^place"),
+        ("SEQ010", "require_explicit_order", False, True),
+    ]
+    for rid, key, empty, armed in gated:
         cls = rules[rid]
         assert cls({}).dormant is True, rid
-        assert cls({key: empty}).dormant is True, rid
-        assert cls({key: armed}).dormant is False, rid
+        assert cls({key: empty}).dormant is True, (rid, key)
+        assert cls({key: armed}).dormant is False, (rid, key)
+    # Both gates empty is still dormant; either one set arms the rule.
+    for rid in ("ACT006", "UC002"):
+        assert rules[rid]({"verbs": [], "verb_pattern": ""}).dormant is True, rid
+    gated_ids = {rid for rid, *_ in gated}
     for rid, cls in rules.items():
-        if rid not in gated:
+        if rid not in gated_ids:
             assert cls({}).dormant is False, rid
 
 

@@ -383,8 +383,11 @@ class UseCaseActorNaming(Rule):
     """Use cases as verb–object phrases ("Place order").
 
     Actor naming is not checked. Option ``verbs`` supplies the accepted leading
-    verbs for use-case names; with no whitelist the rule is dormant (there is no
-    language-agnostic verb oracle).
+    verbs for use-case names; option ``verb_pattern`` (regex, matched at the
+    start of the label) is the second gate for shape-based conventions. An
+    allow-list and an allow-pattern are alternatives — a name passes on either
+    — and either option arms the rule; with neither configured it is dormant
+    (there is no language-agnostic verb oracle).
     """
 
     id = "UC002"
@@ -392,7 +395,12 @@ class UseCaseActorNaming(Rule):
     def check(self, diagram: Diagram) -> Iterable[Violation]:
         if self.dormant:
             return
-        verbs = {v.lower() for v in self.options["verbs"]}
+        verbs = {v.lower() for v in self.options.get("verbs") or ()}
+        # An empty pattern is "not configured" (Rule.dormant's reading, too);
+        # compiled, "" would match every label and silently void the list.
+        verb_pattern = (
+            self.pattern_option("verb_pattern") if self.options.get("verb_pattern") else None
+        )
         for p in diagram.participants.values():
             if p.kind != "usecase" or not p.declared:
                 continue
@@ -402,10 +410,19 @@ class UseCaseActorNaming(Rule):
             parts = label.split()
             if not parts:
                 continue  # whitespace-only name: UC001/GEN004 territory, not a verb question
-            if parts[0].lower() not in verbs:
-                yield self.violation(
-                    diagram,
-                    p.line,
-                    f"Use case '{label}' is not verb-first — name it "
-                    '"verb + object" (e.g. "Place order")',
+            if parts[0].lower() in verbs or (
+                verb_pattern is not None and verb_pattern.match(label)
+            ):
+                continue
+            if verb_pattern is None:
+                why = 'name it "verb + object" (e.g. "Place order")'
+            elif verbs:
+                why = (
+                    "first word not in 'verbs' and label does not match "
+                    f"'verb_pattern' ({verb_pattern.pattern})"
                 )
+            else:
+                why = f"label does not match 'verb_pattern' ({verb_pattern.pattern})"
+            yield self.violation(
+                diagram, p.line, f"Use case '{label}' is not verb-first — {why}"
+            )
