@@ -5,6 +5,8 @@ pumllint.toml.
 """
 
 import json
+import os
+import shutil
 import tempfile
 from pathlib import Path
 
@@ -194,7 +196,9 @@ def test_baseline_bootstrap_records_current_levels_and_passes():
         rc, puml, _, _, base = _bootstrap_baseline(tmp)
         assert rc == 0
         data = json.loads(base.read_text(encoding="utf-8"))
-        assert data["version"] == 1
+        assert data["version"] == 2
+        # keyed relative to the baseline file's directory, forward slashes
+        assert list(data["diagrams"]) == ["d.puml::Order"], data
         (entry,) = data["diagrams"].values()
         assert entry["level"] == _expected_level(puml)
 
@@ -483,3 +487,128 @@ def test_json_score_report_is_unchanged_by_the_disclosure():
         main(["score", str(puml), "-f", "json", "-o", str(out)])
         data = json.loads(out.read_text(encoding="utf-8"))
         assert "syntaxGateRan" not in json.dumps(data)  # schema untouched
+
+
+# --- anchored baseline keys (2026-09-04) -------------------------------------
+#
+# The file keys on paths relative to its own directory, so the ratchet matches
+# from any working directory and under any spelling. The cases below are the
+# ones that used to match nothing and pass everything.
+
+
+def _project(tmp: str) -> Path:
+    """proj/diagrams/a.puml + proj/cfg.json — the README's shape."""
+    proj = Path(tmp) / "proj"
+    (proj / "diagrams").mkdir(parents=True)
+    (proj / "diagrams" / "a.puml").write_text(_SRC, encoding="utf-8")
+    (proj / "cfg.json").write_text("{}", encoding="utf-8")
+    return proj
+
+
+def _run_from(cwd: Path, argv: list[str]) -> tuple[int, str]:
+    old = os.getcwd()
+    os.chdir(cwd)
+    try:
+        return _main_quiet(argv)
+    finally:
+        os.chdir(old)  # before the temp dir goes: Windows cannot delete a cwd
+
+
+def _record(tmp: str, proj: Path) -> tuple[Path, list[str]]:
+    """Record the canonical way (from proj, relative paths); return the file
+    and the argv tail that pins config and report output to absolute paths."""
+    common = ["-c", str(proj / "cfg.json"), "-o", str(Path(tmp) / "r.txt")]
+    rc, err = _run_from(
+        proj, ["score", "diagrams", "--baseline", "maturity.json", *common]
+    )
+    assert rc == 0 and "baseline: recorded" in err, err
+    base = proj / "maturity.json"
+    data = json.loads(base.read_text(encoding="utf-8"))
+    assert data["version"] == 2, data
+    assert list(data["diagrams"]) == ["diagrams/a.puml::Order"], data
+    return base, common
+
+
+def test_ratchet_matches_under_every_spelling_and_cwd():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _project(tmp)
+        base, common = _record(tmp, proj)
+        _raise_baseline_levels(base)  # the diagram "used to" score higher
+        for cwd, paths, baseline in (
+            (proj, str(proj / "diagrams"), "maturity.json"),  # absolute
+            (proj / "diagrams", ".", "../maturity.json"),  # from inside the tree
+            (Path(tmp), "proj/diagrams", "proj/maturity.json"),  # from the parent
+            (proj, "./diagrams/", "maturity.json"),  # the always-safe spelling
+        ):
+            rc, err = _run_from(cwd, ["score", paths, "--baseline", baseline, *common])
+            assert rc == 1, (cwd, paths, err)
+            assert "regression:" in err and "warning" not in err, (cwd, paths, err)
+
+
+def test_ratchet_survives_the_tree_moving():
+    # Recorded on one machine, compared on another: the whole tree moves and
+    # the baseline moves with it.
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _project(tmp)
+        base, common = _record(tmp, proj)
+        _raise_baseline_levels(base)
+        moved = Path(tmp) / "elsewhere" / "checkout"
+        shutil.copytree(proj, moved)
+        rc, err = _run_from(
+            moved, ["score", "diagrams", "--baseline", "maturity.json", *common]
+        )
+        assert rc == 1 and "regression:" in err, err
+
+
+def test_version_1_baseline_still_ratchets_and_is_upgraded():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _project(tmp)
+        common = ["-c", str(proj / "cfg.json"), "-o", str(Path(tmp) / "r.txt")]
+        base = proj / "maturity.json"
+        level = _expected_level(proj / "diagrams" / "a.puml")
+        base.write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "diagrams": {
+                        "diagrams/a.puml::Order": {"level": level + 1, "composite": 0}
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+        # Recorded the canonical way, so its keys already are the anchored
+        # ones: it ratchets under the absolute spelling too, before any
+        # rewrite — and says how to upgrade.
+        for paths in ("diagrams", str(proj / "diagrams")):
+            rc, err = _run_from(
+                proj, ["score", paths, "--baseline", "maturity.json", *common]
+            )
+            assert rc == 1 and "regression:" in err, (paths, err)
+            assert "version 1" in err and "--update-baseline" in err, err
+        rc, err = _run_from(
+            proj,
+            ["score", "diagrams", "--baseline", "maturity.json", "--update-baseline", *common],
+        )
+        assert rc == 0 and "baseline: updated" in err, err
+        data = json.loads(base.read_text(encoding="utf-8"))
+        assert data["version"] == 2, data
+        assert list(data["diagrams"]) == ["diagrams/a.puml::Order"], data
+        rc, err = _run_from(
+            proj, ["score", "diagrams", "--baseline", "maturity.json", *common]
+        )
+        assert rc == 0 and err == "", err
+
+
+def test_moved_baseline_warns_that_nothing_matched():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _project(tmp)
+        base, common = _record(tmp, proj)
+        _raise_baseline_levels(base)
+        (proj / "sub").mkdir()
+        shutil.move(str(base), str(proj / "sub" / "maturity.json"))
+        rc, err = _run_from(
+            proj, ["score", "diagrams", "--baseline", "sub/maturity.json", *common]
+        )
+        assert rc == 0, err  # nothing matched, so nothing could regress
+        assert "has been moved" in err, err

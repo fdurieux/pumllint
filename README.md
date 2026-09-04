@@ -161,10 +161,17 @@ python -m pumllint score diagrams/ --baseline maturity.json --update-baseline
                                                               # accept the status quo
 ```
 
-Commit `maturity.json`. Diagrams new since the baseline always pass the
-ratchet (combine with `--min-level` to hold new work to a floor); regressions
-are listed on stderr as `regression: <file>::<diagram>: Level 2 (baseline 3)`
-and exit 1.
+Commit `maturity.json`. Its keys are paths relative to the file's own
+directory, so the ratchet matches from any working directory and under any
+spelling of the paths (`diagrams/`, an absolute path, `.` from inside
+`diagrams/`), and a checkout at another location still matches — keep the
+file where it is; moving it alone changes every key. Diagrams new since the
+baseline always pass the ratchet (combine with `--min-level` to hold new work
+to a floor); regressions are listed on stderr as
+`regression: <file>::<diagram>: Level 2 (baseline 3)` and exit 1. A
+version-1 file (pumllint ≤ 0.30.0 keyed on the recording run's own spelling)
+is still read, and the next `--update-baseline` rewrites it in the version-2
+form.
 
 Ratchet-compare runs also annotate the report with **trends** — per diagram
 and for the model set:

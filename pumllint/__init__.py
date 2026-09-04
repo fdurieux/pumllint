@@ -2,7 +2,8 @@
 
 Public API: lint with :class:`Engine` over parsed diagrams, score with
 :func:`score_groups` (aggregate with :func:`aggregate_scores`), render with
-:func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`; build the
+:func:`get_reporter`; ratchet CI with :mod:`pumllint.baseline`
+(``load_baseline`` → ``resolve_baseline`` → ``find_regressions``); build the
 requirement-coverage matrix with :mod:`pumllint.trace`. The JSON
 report shapes are pinned by :mod:`pumllint.schema` (:func:`load_schema`).
 Editors get the same findings at authoring time from :mod:`pumllint.lsp`
@@ -14,11 +15,13 @@ __version__ = "0.30.0"
 
 from .baseline import (
     BaselineEntry,
+    BaselineFile,
     Delta,
     Regression,
     compute_deltas,
     find_regressions,
     load_baseline,
+    resolve_baseline,
     write_baseline,
 )
 from .config import load_config
@@ -73,10 +76,12 @@ __all__ = [
     "load_inventory",
     "scan_inventory",
     "BaselineEntry",
+    "BaselineFile",
     "Delta",
     "Regression",
     "compute_deltas",
     "find_regressions",
     "load_baseline",
+    "resolve_baseline",
     "write_baseline",
 ]

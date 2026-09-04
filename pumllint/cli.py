@@ -549,15 +549,25 @@ def _run_score(argv: list[str]) -> int:
 
     # The old baseline is loaded up front: the reporters annotate the report
     # with trend/deltas against it, and the ratchet compares against it later.
+    # It is keyed the way the file stores keys (relative to the file's own
+    # directory); once the run is scored it is re-keyed onto the run's own
+    # keys, which is what every consumer looks up.
+    from .baseline import compute_deltas, load_baseline, resolve_baseline
+
     baseline_data = None
     if args.baseline and Path(args.baseline).exists():
         try:
-            from .baseline import load_baseline
-
             baseline_data = load_baseline(args.baseline)
         except (OSError, ValueError) as e:
             _err(f"error: {e}")
             return 2
+        if baseline_data.version == 1:
+            _err(
+                f"baseline: {args.baseline} is a version 1 file, keyed on the "
+                "path spellings of the run that recorded it; --update-baseline "
+                "(while the ratchet is green) rewrites it in the version 2 "
+                "form, keyed relative to the file itself"
+            )
 
     try:
         config = _apply_cli_overrides(_load_config(args.config), args)
@@ -577,9 +587,12 @@ def _run_score(argv: list[str]) -> int:
             syntax_results=syntax_results,
             engine=engine,
         )
+        baseline_view = (
+            resolve_baseline(baseline_data, results) if baseline_data is not None else None
+        )
         report = get_reporter(args.format).render_maturity(
             results,
-            baseline=baseline_data,
+            baseline=baseline_view,
             syntax_gate_ran=syntax_results is not None,
         )
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
@@ -596,10 +609,21 @@ def _run_score(argv: list[str]) -> int:
         )
         return 2
 
+    if baseline_data and results and not compute_deltas(baseline_view, results):
+        # A ratchet that matches nothing passes everything, by the "new
+        # diagrams pass" rule — say so, since the likelier reading is that
+        # the baseline was recorded elsewhere or has been moved.
+        _err(
+            f"warning: none of the {len(results)} scored diagram(s) has an entry "
+            f"in {args.baseline} — they pass the ratchet as new since baseline; "
+            "if they are not new, the baseline was recorded elsewhere or has "
+            "been moved (its keys are paths relative to the file's directory)"
+        )
+
     failed = False
     if args.baseline:
         try:
-            failed |= _apply_baseline(args, results, baseline_data)
+            failed |= _apply_baseline(args, results, baseline_view)
         except OSError as e:
             _err(f"error: {e}")
             return 2
@@ -751,22 +775,22 @@ def _run_schema(argv: list[str]) -> int:
     return 0
 
 
-def _apply_baseline(args: argparse.Namespace, results, baseline_data) -> bool:
+def _apply_baseline(args: argparse.Namespace, results, baseline_view) -> bool:
     """Record or ratchet against ``args.baseline``; True means regression.
 
-    ``baseline_data`` is the already-loaded old baseline (None when the file
-    did not exist) — with ``--update-baseline`` it fed the report's deltas
-    before being rewritten here.
+    ``baseline_view`` is the already-loaded old baseline re-keyed onto this
+    run's keys (None when the file did not exist) — with ``--update-baseline``
+    it fed the report's deltas before being rewritten here.
     """
     from .baseline import find_regressions, write_baseline
 
     path = Path(args.baseline)
-    if args.update_baseline or baseline_data is None:
+    if args.update_baseline or baseline_view is None:
         write_baseline(path, results)
         verb = "updated" if args.update_baseline else "recorded"
         _err(f"baseline: {verb} {len(results)} diagram level(s) in {path}")
         return False
-    regressions = find_regressions(baseline_data, results)
+    regressions = find_regressions(baseline_view, results)
     for reg in regressions:
         # reg.key embeds the diagram name (file content) — sanitize like the
         # text reporter does.
