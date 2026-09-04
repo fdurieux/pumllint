@@ -1,0 +1,39 @@
+@startuml order-to-cash
+' Hand-derived from an ARIS EPC "Order to cash" following the mapping table
+' in docs/business-processes.md: functions are verb-first actions, org units
+' are swimlanes, events ride on arrow labels and XOR branch labels, the AND
+' connector is a fork, the process interface is an action with an aris: marker. The
+' footer carries the governance tags GEN006/GEN007 look for.
+title Order to cash — order handling
+footer owner: Sales Operations — ARIS process PROC-0042
+
+|Sales|
+start
+-> Customer order received;
+:Receive order;
+:Validate order;
+if (Order valid?) then (Order valid)
+  |Credit Control|
+  :Check credit limit;
+  |Warehouse & Logistics|
+  fork
+    :Pick goods;
+    :Ship goods;
+  fork again
+    |Finance|
+    :Create invoice;
+    :Send invoice;
+  end fork
+  |Finance|
+  :Record payment;
+  -> Payment received;
+  stop
+else (Order invalid)
+  |Sales|
+  :Reject order;
+  ' aris: interface PROC-0051
+  :Handle customer enquiry;
+  -> Order rejected;
+  stop
+endif
+@enduml
