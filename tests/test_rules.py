@@ -458,6 +458,45 @@ def test_verb_first_activities_are_clean_for_act006():
     assert "ACT006" not in rule_ids(ACTIVITY_CLEAN, cfg)
 
 
+_ACT_NOUN = ACTIVITY_CLEAN.replace(":Score applicant;", ":Order validation;")
+_VERB_SHAPE = r"^(Receive|Score|Request)\b"
+
+
+def test_act006_verb_pattern_arms_the_rule_without_a_verbs_list():
+    """Issue #47.2: 68 configured verbs, 38 never used. A shape-based
+    convention takes a regex instead of a padded list."""
+    cfg = {"rules": {"ACT006": {"verb_pattern": _VERB_SHAPE}}}
+    findings = [v for v in lint(_ACT_NOUN, cfg) if v.rule_id == "ACT006"]
+    assert len(findings) == 1 and "'verb_pattern'" in findings[0].message
+    assert "ACT006" not in rule_ids(ACTIVITY_CLEAN, cfg)
+
+
+def test_act006_listed_verb_passes_beside_a_verb_pattern():
+    """An allow-list and an allow-pattern are alternatives: adding a pattern
+    never narrows a list, and a label failing both is told about both."""
+    cfg = {"rules": {"ACT006": {"verbs": ["Order"], "verb_pattern": _VERB_SHAPE}}}
+    assert "ACT006" not in rule_ids(_ACT_NOUN, cfg)
+    src = ACTIVITY_CLEAN.replace(":Score applicant;", ":Application review;")
+    findings = [v for v in lint(src, cfg) if v.rule_id == "ACT006"]
+    assert len(findings) == 1
+    assert "first word not in 'verbs' and label does not match 'verb_pattern'" in findings[0].message
+
+
+def test_act006_message_is_verbatim_when_only_verbs_is_set():
+    cfg = {"rules": {"ACT006": {"verbs": ["Receive", "Request"]}}}
+    findings = [v for v in lint(_ACT_NOUN, cfg) if v.rule_id == "ACT006"]
+    assert findings[0].message == (
+        "Activity 'Order validation' is not verb-first — name it "
+        '"verb + object" (e.g. "Validate order")'
+    )
+
+
+def test_act006_empty_verb_pattern_does_not_void_the_verbs_list():
+    """Compiled, "" matches every label; it must read as "not configured"."""
+    cfg = {"rules": {"ACT006": {"verbs": ["Receive", "Request"], "verb_pattern": ""}}}
+    assert "ACT006" in rule_ids(_ACT_NOUN, cfg)
+
+
 # --- UC002 use case / actor naming -------------------------------------------
 
 def test_given_noun_phrase_usecase_then_uc002_fires():
@@ -487,6 +526,24 @@ def test_aliased_usecase_is_judged_by_its_label_not_the_alias():
     findings = [v for v in lint(src, cfg) if v.rule_id == "UC002"]
     assert len(findings) == 1
     assert "'Order placement'" in findings[0].message
+
+
+_UC_NOUN = (
+    "@startuml uc\ntitle Use cases\nactor Customer\n"
+    "usecase (Order placement)\nCustomer --> (Order placement) : does\n@enduml\n"
+)
+
+
+def test_uc002_verb_pattern_arms_the_rule_without_a_verbs_list():
+    cfg = {"rules": {"UC002": {"verb_pattern": r"^(Place|Manage)\b"}}}
+    findings = [v for v in lint(_UC_NOUN, cfg) if v.rule_id == "UC002"]
+    assert len(findings) == 1 and "'verb_pattern'" in findings[0].message
+    assert "UC002" not in rule_ids(_UC_NOUN.replace("Order placement", "Place order"), cfg)
+
+
+def test_uc002_listed_verb_passes_beside_a_verb_pattern():
+    cfg = {"rules": {"UC002": {"verbs": ["Order"], "verb_pattern": r"^(Place|Manage)\b"}}}
+    assert "UC002" not in rule_ids(_UC_NOUN, cfg)
 
 
 def _usecase(actors: int, cases: int) -> str:

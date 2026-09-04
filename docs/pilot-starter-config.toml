@@ -32,6 +32,12 @@ suppressions = true
 # Participant naming. Default is PascalCase; per-kind overrides available.
 # participant-naming = { pattern = "^[A-Z][A-Za-z0-9]*$" }
 
+# Verb-first names for activities and use cases: a verb list, a regex for
+# shape-based conventions, or both (a name passes on either). Dormant until
+# one is set.
+# verb-first-activity  = { verbs = ["Validate", "Receive", "Request", "Score"] }
+# usecase-actor-naming = { verb_pattern = '^(Place|Manage|Browse)\b' }
+
 # ------------------------------------------------------- CALIBRATION WEEK
 # Expect some rules to misfire on your house dialect in week one. Triage in
 # this order, and have ONE named owner disposition every recurring finding:
@@ -59,6 +65,8 @@ suppressions = true
 # SEQ105 = { vague_terms = ["otherwise", "sometimes", "if needed", "maybe"] }
 # SEQ106 = { tokens = ["...", "…", "TBD", "TODO", "etc"] }
 # SEQ107 = { failure_keywords = ["error", "failure", "timeout", "exception"] }
+# SEQ102 = { allowed_stereotypes = ["service", "external", "controller"] }   # closed vocabulary
+# SEQ109 = { reply_pattern = '^\w+: \w+$' }   # replies read `value: Type`, checked after the lexicon
 
 # --------------------------------------------------------------- SCORING
 # Leave scoring defaults alone during the pilot: they are calibrated and

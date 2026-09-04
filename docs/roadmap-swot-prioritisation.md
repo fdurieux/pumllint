@@ -42,9 +42,9 @@ under `profile = "codegen"` at `--fail-on info`, gated at `score --min-level
 | Positive-coverage command (#43.2) | guard *binding* ranges **0% to 100%** per diagram across files that all score exactly 100/100 |
 | `--self-check` (#43.3) | hand-built negative control whose recorded counts later failed to reproduce, because the procedure lived in prose |
 | XD006 operation-owner consistency (#43.4) | **5 disagreements, 2 verified true defects**, base rate 1 disputed operation in 85 |
-| `allowed_stereotypes` on SEQ102 (#43.5) | a closed 18-token vocabulary enforced by a README table and review, nothing else |
-| `reply_pattern` on SEQ109 (#47.1) | the convention holds at **126 of 126** replies and is checked by nothing |
-| `verb_pattern` + set reporting on ACT006/UC002 (#47.2) | **68 configured verbs, 30 distinct first words used, 38 (56%) dead** |
+| `allowed_stereotypes` on SEQ102 (#43.5) | a closed 18-token vocabulary enforced by a README table and review, nothing else *(built 2026-09-04)* |
+| `reply_pattern` on SEQ109 (#47.1) | the convention holds at **126 of 126** replies and is checked by nothing *(built 2026-09-04)* |
+| `verb_pattern` + set reporting on ACT006/UC002 (#47.2) | **68 configured verbs, 30 distinct first words used, 38 (56%) dead** *(built 2026-09-04)* |
 | XD007 signature drift, advisory (#47.3) | 16 keys drawn twice, **8 diverge**, none unambiguously a defect — hence advisory |
 | Declared correspondence scope (#47.4) | met with a hand-built ~500-line manifest and resolver instead |
 | Note-prose advisory (#47.5) | notes carry **14.6% of corpus bytes**; **two recorded real defects lived in note prose**, at a perfect score |
@@ -429,6 +429,15 @@ provenance question (§6.1) is open. Contingent.
 moves DIM-CON density scores invisibly to CI and puts the LSP's squiggle on
 `@startuml`.
 
+> **BUILT 2026-09-04**, after §6.1 was answered yes and rank 2's option-key
+> disclosure shipped that morning. All three options, default-off; the
+> list-or-regex shape settled as a rule (allow-list ∪ allow-pattern,
+> deny-list ∩ pattern) in writing-rules.md. The measurements that made
+> dormancy a necessity rather than a courtesy — 0 of 226 replies here match
+> the consumer's shape, 2 stereotype tokens against 18, no verb list anywhere
+> — are in the ROADMAP entry of that date. Set-style reporting stays split
+> out, as this scope note asked.
+
 ### Tier 3 — decisions with work attached
 
 **9. Parser fidelity: `participants.setdefault`.** *(S+, decide-then-do.)*
@@ -579,10 +588,16 @@ Each is a yes/no that this note cannot answer.
 1. **Does the #43/#47 consumer count as third-party adopter pull for the Arc E
    bar?** At least eight items' gate status turns on this. See §1's contested
    exception — and note that `foreign-corpus-audit.md:146` already declines to
-   vouch for the corpus's provenance.
+   vouch for the corpus's provenance. *(Answered 2026-09-04: **yes**, an
+   arm's-length adopter. The audit row is left as it stands — the answer was
+   about the consumer, and this note never adopted the identification of the
+   consumer with the corpus.)*
 2. **Should any of the ten asks be queued now?** Both issues say *"Recorded,
    not queued… five entries in one ledger, not five work items."* If yes, is
-   `allowed_stereotypes` on SEQ102 the right first one?
+   `allowed_stereotypes` on SEQ102 the right first one? *(Answered
+   2026-09-04: the three option asks, built together — `allowed_stereotypes`
+   was not the right first one, since the lever is the shape rule and a plain
+   list never touches it; the other asks keep their recorded status.)*
 3. **Do you still intend to pursue a pilot organisation?** If no, should
    `README.md:86-89`'s 1.0 gate be reworded to drop the pilot half, and the
    fourteen dependent triggers re-based on something reachable?

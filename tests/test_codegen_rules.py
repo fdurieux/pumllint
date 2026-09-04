@@ -115,6 +115,48 @@ def test_seq102_typed_and_stereotyped_participants_pass():
     assert "SEQ102" not in rule_ids(src)
 
 
+_VOCAB = {"rules": {"SEQ102": {"allowed_stereotypes": ["service", "external"]}}}
+
+
+def test_seq102_stereotype_outside_the_allowed_vocabulary_is_reported():
+    """Issue #43.5: a closed stereotype vocabulary, enforced by nothing but
+    a README table and review. With the option set, an outsider is a
+    finding at the rule's own severity."""
+    src = puml(
+        "participant Billing <<Thing>>\nactor Customer\n"
+        "Customer -> Billing : requestInvoice(orderId)"
+    )
+    v = violations_for(src, "SEQ102", _VOCAB)
+    assert len(v) == 1 and v[0].severity == Severity.MAJOR
+    assert "<<Thing>>" in v[0].message and "'allowed_stereotypes'" in v[0].message
+
+
+def test_seq102_allowed_stereotypes_is_case_insensitive():
+    src = puml("participant Billing <<Service>>\nactor Customer\nCustomer -> Billing : ping()")
+    assert "SEQ102" not in rule_ids(src, _VOCAB)
+
+
+def test_seq102_empty_allowed_stereotypes_means_no_vocabulary_check():
+    src = puml("participant Billing <<Thing>>\nactor Customer\nCustomer -> Billing : ping()")
+    assert "SEQ102" not in rule_ids(src, {"rules": {"SEQ102": {"allowed_stereotypes": []}}})
+
+
+def test_seq102_presence_finding_is_unchanged_under_a_vocabulary():
+    src = puml("participant Billing\nactor Customer\nCustomer -> Billing : ping()")
+    v = violations_for(src, "SEQ102", _VOCAB)
+    assert len(v) == 1
+    assert "has no role type" in v[0].message and "allowed_stereotypes" not in v[0].message
+
+
+def test_seq102_vocabulary_covers_every_declared_participant_kind():
+    """A closed vocabulary that admits <<legacy>> through a `database`
+    keyword is not closed: the presence test is per-kind, the vocabulary is
+    not."""
+    src = puml("database InvoiceDB <<legacy>>\nactor Customer\nCustomer -> InvoiceDB : ping()")
+    v = violations_for(src, "SEQ102", _VOCAB)
+    assert len(v) == 1 and "<<legacy>>" in v[0].message
+
+
 # --- SEQ103 messages must be operation signatures ----------------------------
 
 def test_seq103_prose_message_is_reported_as_blocker():
@@ -578,6 +620,43 @@ def test_seq109_qualified_result_name_passes():
         "A -> B : validate(order)\nB --> A : validationResult"
     )
     assert "SEQ109" not in rule_ids(src)
+
+
+_SHAPE = {"rules": {"SEQ109": {"reply_pattern": r"^\w+: \w+$"}}}
+
+
+def _reply(label: str) -> str:
+    return puml(
+        "participant A <<service>>\nparticipant B <<service>>\n"
+        f"A -> B : findOrder(orderId)\nB --> A : {label}"
+    )
+
+
+def test_seq109_reply_pattern_rejects_a_reply_in_the_wrong_shape():
+    """Issue #47.1: the rule's own message advertises 'order: Order' and
+    nothing enforced it. A project that holds the shape at 126/126 can now
+    pin it; unset, this repository's camelCase replies stay untouched."""
+    v = violations_for(_reply("order"), "SEQ109", _SHAPE)
+    assert len(v) == 1 and v[0].severity == Severity.MINOR
+    assert "'reply_pattern'" in v[0].message and r"^\w+: \w+$" in v[0].message
+
+
+def test_seq109_reply_pattern_accepts_the_project_shape():
+    assert "SEQ109" not in rule_ids(_reply("order: Order"), _SHAPE)
+
+
+def test_seq109_lexicon_verdict_wins_over_reply_pattern():
+    """A deny-list and a pattern both apply, the lexicon first: 'ok' is a
+    generic-label finding, never a shape finding, and never two findings."""
+    v = violations_for(_reply("ok"), "SEQ109", _SHAPE)
+    assert len(v) == 1
+    assert "'non_informative'" in v[0].message and "reply_pattern" not in v[0].message
+
+
+def test_seq109_reply_pattern_is_anchored_at_the_start_only():
+    cfg = {"rules": {"SEQ109": {"reply_pattern": "^order"}}}
+    assert "SEQ109" not in rule_ids(_reply("order: Order"), cfg)
+    assert violations_for(_reply("theOrder"), "SEQ109", cfg)
 
 
 # --- spec's yaml wiring, end to end ------------------------------------------

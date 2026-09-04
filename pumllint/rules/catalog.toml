@@ -277,6 +277,7 @@ severity = "major"
 dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
+options = ["allowed_stereotypes"]
 
 [SEQ103]
 name = "codegen-prose-message"
@@ -340,6 +341,7 @@ severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
+options = ["reply_pattern"]
 lexicons = ["non_informative"]
 
 # --- ACT: activity base catalog --------------------------------------------
@@ -393,8 +395,8 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
-options = ["verbs"]
-dormant_unless = ["verbs"]
+options = ["verbs", "verb_pattern"]
+dormant_unless = ["verbs", "verb_pattern"]
 
 # --- CLS: class base catalog ------------------------------------------------
 
@@ -483,8 +485,8 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["usecase"]
 profiles = []
-options = ["verbs"]
-dormant_unless = ["verbs"]
+options = ["verbs", "verb_pattern"]
+dormant_unless = ["verbs", "verb_pattern"]
 
 [UC003]
 name = "include-extend-direction"

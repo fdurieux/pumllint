@@ -53,3 +53,40 @@ Feature: UC002 use case and actor naming
       """
     When the linter runs
     Then a "UC002" issue with severity "minor" is reported on line 4
+
+  Scenario: a verb pattern arms the rule without a verbs list
+    Given the configuration:
+      """
+      [rules.UC002]
+      verb_pattern = '^(Place|Manage)\b'
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Order placement)
+      Customer --> (Order placement) : does
+      @enduml
+      """
+    When the linter runs
+    Then a "UC002" issue with severity "minor" is reported on line 4
+
+  Scenario: a listed verb passes beside a verb pattern
+    Given the configuration:
+      """
+      [rules.UC002]
+      verbs = ["Order"]
+      verb_pattern = '^(Place|Manage)\b'
+      """
+    And the diagram:
+      """
+      @startuml uc
+      title Use cases
+      actor Customer
+      usecase (Order placement)
+      Customer --> (Order placement) : does
+      @enduml
+      """
+    When the linter runs
+    Then no "UC002" issue is reported
