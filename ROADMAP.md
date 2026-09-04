@@ -1695,6 +1695,18 @@ list and license posture live in § Settled questions.
     intuitions travel badly); or an adopter running PlantUML activity
     diagrams as process documentation of record and asking for flow rules
     beyond ACT001–006 — which would also make the DIM-AMB residual urgent.
+    *[Amended 2026-09-04: the positioning note above now has an artefact
+    that respects its gate — docs/business-processes.md, the ARIS/EPC →
+    activity-diagram recipe (mapping table, copy-ready conventions gate
+    over ACT005/ACT006/ACT003/GEN006/GEN007, a drift-guarded worked pair
+    under docs/process-demo/). It says "activity diagrams, not BPMN" in
+    the same breath, points BPMN holders at `bpmnlint`, and carries the
+    DIM-AMB residual as a stated caveat with the measured instance (the
+    draft process: nine findings open, Level 4, 84.9) rather than
+    addressing it. No flow rule beyond ACT001–006 is queued; the guide's
+    §8 tells the adopter this clause describes where to file the ask.
+    The converter half of that recipe (ARIS export → activity diagram)
+    lives outside this repository by design: `fdurieux/aris2puml`.]*
 
 - **UML ecosystem (2026-08-27): no — no conformance mode, no XMI reader, no
   repositioning; two inward-facing candidates recorded, neither queued.**

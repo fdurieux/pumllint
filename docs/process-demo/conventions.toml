@@ -1,0 +1,26 @@
+# Conventions gate for business processes drawn as PlantUML activity
+# diagrams (see docs/business-processes.md). Copy next to your diagrams as
+# `pumllint.toml`, or pass it with `-c`. Everything not listed keeps the
+# calibrated default.
+[rules]
+# Org units are swimlanes: Title Case words, "&" allowed as a word
+# ("Credit Control", "Warehouse & Logistics"); rejects "credit control",
+# "FIN". The shipped default (^[A-Z][A-Za-z ]+$) would let "FIN" through
+# and reject the ampersand.
+swimlane-naming = { pattern = '^[A-Z][a-z]+( [A-Z&][a-z]*)*$' }
+
+# Functions are named verb + object (the ARIS/EPC function convention).
+# `verbs` REPLACES the (empty) default, so list every verb your process
+# vocabulary allows; escalated to major so a noun-phrase function fails the
+# build under the default --fail-on.
+verb-first-activity = { severity = "major", verbs = [
+  "Receive", "Validate", "Check", "Approve", "Reject", "Notify", "Handle",
+  "Pick", "Ship", "Create", "Send", "Record", "Post", "Archive",
+] }
+
+# Every XOR outcome is an event and must be named — including the else leg.
+unlabelled-decision-branch = { require_else_label = true }
+
+# Governance: the process owner and the ARIS process ID, as comment lines.
+owner-tag        = { pattern = '(?i)owner\s*:' }
+requirement-link = { pattern = 'PROC-\d{4}' }

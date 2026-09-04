@@ -11,6 +11,7 @@ why you are here:
 | An architect reading the reports, or a modeller whose diagrams get checked | What the findings and maturity levels mean, and how to act on them | [Understanding findings and scores](findings-and-scores.md) |
 | A developer extending the linter | How to specify, implement, and test a new rule | [Writing rules](writing-rules.md) |
 | A coding agent implementing from diagrams — or the person wiring one up | The score → repair → re-score loop to run before generating code | [Using pumllint from a coding agent](agents.md) |
+| A process owner or BPM analyst whose processes live in ARIS | How to express a process as a PlantUML activity diagram and gate it on your naming conventions | [Linting business processes](business-processes.md) |
 
 The management shelf is three documents: the *case* (what the tool is, what
 it costs, what the evidence supports), the *SDLC assessment* (where the

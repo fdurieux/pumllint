@@ -1,0 +1,26 @@
+@startuml order-to-cash-draft
+' The same process as a first draft, before the conventions gate: noun-phrase
+' functions, lanes that ignore the naming convention, an unlabelled XOR
+' outcome, no end event, and no ownership or process-ID tag. Grammar-valid:
+' PlantUML renders it without complaint — that is the gap the gate closes.
+title Order to cash — first draft
+
+|Sales|
+start
+:Order intake;
+:Order validation;
+if (Valid?) then (yes)
+  |credit control|
+  :Credit check;
+  |Warehouse & Logistics|
+  :Pick goods;
+  :Ship goods;
+  |FIN|
+  :Create invoice;
+  :Send invoice;
+  :Record payment;
+else
+  |Sales|
+  :Reject order;
+endif
+@enduml

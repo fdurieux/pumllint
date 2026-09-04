@@ -116,7 +116,10 @@ Sonar, badge), [understanding findings & scores](docs/findings-and-scores.md)
 [writing rules](docs/writing-rules.md) (a step-by-step programming guide with
 an end-to-end example, including how the executable Gherkin spec works), and
 [using pumllint from a coding agent](docs/agents.md) (the score → repair →
-re-score loop for AI agents implementing from diagrams).
+re-score loop for AI agents implementing from diagrams), and
+[linting business processes](docs/business-processes.md) (ARIS/EPC processes
+expressed as activity diagrams — activity diagrams, not BPMN — with a
+copy-ready conventions gate and a worked example).
 
 ## Maturity scoring
 
@@ -302,7 +305,7 @@ codegen twin on the same line counts once).
 | ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label. |
 | ACT004 | unterminated-construct | critical | `if`/`while`/`repeat`/`fork`/`switch`/`partition` never closed. |
 | ACT005 | swimlane-naming | minor | Swimlane (`|Lane|`) name violating a configurable `pattern`. |
-| ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist or a `verb_pattern` regex — a name passes on either; dormant otherwise. |
+| ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist or a `verb_pattern` regex — a name passes on either; dormant otherwise. ACT005/ACT006 together are the conventions gate for business processes drawn as activity diagrams — recipe in [docs/business-processes.md](docs/business-processes.md). |
 | CLS001 | class-naming | minor | Class/member names violating configurable patterns (default PascalCase classes, camelCase members; enum members exempt). |
 | CLS002 | association-multiplicity | major | Association/aggregation/composition without a quoted multiplicity on both ends. |
 | CLS003 | unlabelled-association | minor | Plain association with no role/verb label (`: places`). |
