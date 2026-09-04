@@ -268,6 +268,21 @@ measurement it needs is unchanged and still does not exist — a per-rule
 classification of the catalogue — but it now needs **three** buckets
 rather than two, and this note deliberately does not guess the split.
 
+> *[2026-09-04: **sized** — see [Graph checks over diagrams](graph-checks-evaluation.md)
+> §2–§3. Read from checkov 3.3.16's solver source, `cond_type: connection`
+> is **undirected one-hop adjacency** (`exists` / `not_exists` /
+> `one_exists`; `is_associated_edge` is symmetric, the edge walk passes on
+> the first adjacent vertex, and nothing under `checks_infra/solvers/`
+> computes a path, a closure or an order). Six tiers over all 51 rules:
+> node-local 25, aggregate 7, adjacency 6, traversal 3, ordering 5,
+> cross-batch 5. A checkov-shaped format reaches **≤31 of 51** and
+> **three of the fourteen** rules the knowledge-graph note counted as
+> graph algorithms — the degree tests. So the "relational tier" above
+> holds for **adjacency** (SEQ001/SEQ101, SEQ002, UC001, STA002 minus its
+> direction) and not for **traversal** (CLS004, UC003, SEQ107); the
+> ordering bucket is closed for checkov's vocabulary and stays open for
+> reachability-capable formats that were not run.]*
+
 **None of this makes F2 a better idea, only a better-understood one.**
 Demand is still absent; the Spectral note's costs (a second authoring
 path to document and support) are untouched.

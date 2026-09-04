@@ -5702,3 +5702,98 @@ list and license posture live in § Settled questions.
     the permutation test now covers from the other side.
   - *Suites 602 → 606 stdlib, 724 → 728 pytest; features regenerated for
     XD003/XD004 only; artefacts byte-identical.*
+
+- **Graph checks over diagrams (2026-09-04): no checkov — engine, dependency
+  or rule format — no graph library, no new graph rule queued; and the
+  declarative-rule candidate F2 is finally SIZED.** Second in the
+  policy-as-code thread; full record: docs/graph-checks-evaluation.md;
+  pumllint executed at `2b2a805` (v0.30.0). **checkov 3.3.16 was downloaded
+  from PyPI as a wheel and READ, not run** (the thirtieth note ran it and
+  nothing here contradicts that run); **OPA/Rego and Cypher were not run**
+  and nothing here is a claim about them. No GitHub repository was read.
+  - **Three readings hide in "graph checks (checkov?)", three verdicts.**
+    (A) checkov as engine or dependency: **no, unchanged** — and now
+    measured: `Requires-Dist: networkx<2.7` and `rustworkx>=0.13` among 52
+    `Requires-Dist` lines, against the zero-dependency agreement. (B)
+    checkov's YAML vocabulary as a rule format: **no** — read from source,
+    its only multi-node primitive is **undirected one-hop adjacency**
+    (`is_associated_edge` is symmetric; `ConnectionExistsSolver` walks the
+    edge list once and follows at most one more edge through a module
+    `output`; a grep for reachab/transitiv/shortest/has_path/bfs/dfs over
+    `checks_infra/solvers/` matches nothing but `edge_dfs`, an edge
+    *iterator*). (C) new graph-shaped rules over the model that ships:
+    decidable, stdlib, no invented semantics — **and measured-zero**.
+  - **THE MEASUREMENT two notes asked for and declined to guess: all 51
+    rules by what they are evaluated against.** Node-local **25** ·
+    aggregate **7** · adjacency **6** · traversal **3** · ordering **5** ·
+    cross-batch group-by **5**. A checkov-shaped format reaches node-local +
+    adjacency = **≤31 of 51**, and **3 of the 14** rules the knowledge-graph
+    note counted as graph algorithms — STA002, UC001, SEQ002, the degree
+    tests. The nine intra-diagram graph rules split 3/3/3 across adjacency,
+    traversal and ordering and the format stops after the first group.
+    **The policy-as-code entry's open bucket — "can a graph-query format
+    express the ordering tier" — is CLOSED for checkov's vocabulary** (it
+    cannot, nor the traversal tier it had placed on the expressible side)
+    and left open for reachability-capable formats not run here. The
+    thirty rules it *could* carry are the least distinctive part of the
+    catalogue; the twenty it cannot are the budgets, every traversal and
+    ordering rule, and the whole XD pack.
+  - **Six candidate graph rules prototyped over 184 diagrams / 1,473
+    elements (87 repository diagrams + the 97-unit calibration corpus):
+    zero findings beyond shipped rules.** G1 traversal-STA002 adds **5**
+    states on exactly the **2** mutation units that have no initial
+    transition — where STA001 already fires at blocker — and **0**
+    elsewhere; G2 sink **0**; G3 orphan classifier **0** over 19 class
+    diagrams; G3′ dependency-edge cycle **0**; G4 split interaction **0**
+    over 91 sequence diagrams; G5/G6 use case or lifeline unreachable from
+    every actor **0** beyond UC001. *Design constraint found*: **a
+    traversal rule must be silent when STA001 fires**, or one defect
+    scores four times through the density formula — attaches to the TLA+
+    entry's F3. Scoped honestly, as the SEQ104 flip result was: *"nothing
+    in any corpus this repository holds"* — the corpora are single
+    mutations of clean diagrams and cannot produce an island; J-F and the
+    wild census are not on disk. And the zero is why the golden contract
+    could not guard these rules if they shipped.
+  - **THE REFRAME: the artefact class where graph checks pay is the one
+    not parsed.** `model.py` has no component, node or package type.
+    Measured under the neutral config: a hand-written **component
+    diagram** is typed `sequence` — **4× SEQ001 critical, 5× SEQ009,
+    Level 3 (78.5)** — with its planted orphan `[Reporting]` **invisible**
+    because declaration lines are never modelled; a **deployment diagram**
+    scores **Level 4 (92)** as a sequence diagram. Another instance of the
+    type-fallback class (ArchiMate candidate; the C4 pack note's sample C
+    in raw-component form) — recorded as an instance, not a candidate.
+    Graph checks on that class are the Arc C component/deployment
+    **parser first**, census-gated at **0 of 39**, and when it fires the
+    rules come with a published oracle (the C4 checklist, Structurizr's
+    inspections). **Activity diagrams have no edge relation in the model
+    at all** — `ActivityNode` is a flat node list — so no flow check is
+    possible there without parser work; no trigger on record.
+  - **"There is no CIS for diagrams."** checkov ships 7,973 defaults
+    because their oracle is external and published; a diagram's forbidden
+    connections are the adopter's architecture, so ARC001–003 and
+    SEQ110–113 are config-gated **by construction** — the 2026-07-30
+    obligation/flow settlement restated from the checkov side. The
+    sentence to cite when a policy-as-code analogy is next proposed.
+  - *Never build*: checkov as dependency, plugin host, runner or `.puml`
+    graph builder (this project's parser inside someone else's tool — the
+    Semgrep N2 again); a rule format whose multi-node vocabulary is one-hop
+    adjacency (it caps the catalogue below what ships); missing-edge
+    inference (twice refused); a default-on connection-policy pack.
+  - *Recorded, not queued*: **(1)** the F2 sizing — the Semgrep and
+    policy-as-code entries should be read with it attached (both notes
+    annotated in place); **(2)** the STA001 gate on any state-diagram
+    traversal rule (TLA+ note annotated); **(3)** G3/G3′ — orphan
+    classifier and dependency-edge cycle on class diagrams, new
+    candidates, measured-zero, same trigger class as F3; **(4)** G4–G6,
+    weakest of the set; **(5)** the raw-component probe as a type-fallback
+    instance; **(6)** the no-CIS sentence.
+  - Re-litigate on: an adopter reporting an island, a sink, an orphan
+    classifier or a split interaction that pumllint passed (the TLA+
+    trigger, now covering G3–G6); the C4/component census trigger firing —
+    graph checks arrive with the parser, not before it; a
+    reachability-capable declarative format (Rego's `graph.reachable`,
+    Cypher) run here against the traversal and ordering tiers — the only
+    thing that reopens the format half of F2 above adjacency; an adopter
+    supplying the first `[architecture]` rows (ARC001–003's trigger,
+    unchanged since 2026-07-30).

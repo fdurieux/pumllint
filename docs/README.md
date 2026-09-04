@@ -841,6 +841,29 @@ but they are a useful cross-check that no audience was forgotten.
   recorded Arc C edge-coherence item, which this note supplies with the
   reproducible probe it lacked. One defect found and fixed: RULES.md's
   XD preamble still described the pre-v0.29.0 majority vote.
+- [Graph checks over diagrams, evaluated](graph-checks-evaluation.md)
+  — dated evaluation (2026-09-04), second in the policy-as-code thread:
+  sense, nonsense and SWOT of extending validation with **graph checks
+  of diagrams** — "checkov?". Three readings, three verdicts. checkov as
+  engine: no, unchanged, and now measured — it needs `networkx` and
+  `rustworkx`. checkov's YAML as a rule format: no, and the candidate the
+  Semgrep and policy-as-code notes left unsized is finally **sized** —
+  read from its solver source, `cond_type: connection` is **undirected
+  one-hop adjacency** with no path, closure or order primitive, so a
+  checkov-shaped format reaches **≤31 of 51 rules and 3 of the 14** the
+  knowledge-graph note counted as graph algorithms. New graph rules over
+  the existing model: decidable, stdlib, no invented semantics — and a
+  prototype of six (state reachability, sinks, orphan classifiers,
+  dependency cycles, split interactions, actor-reachability) finds
+  **nothing** a shipped rule does not across 184 diagrams and 1,473
+  elements; the only firings pile onto diagrams STA001 already fails.
+  The reframe: the artefacts that *are* graphs — component, deployment,
+  C4 — are not parsed and are mistyped as sequence diagrams today (a
+  component diagram draws four false criticals at Level 3 with its
+  planted orphan invisible), so graph checks there are the census-gated
+  Arc C parser first. One sentence for the next policy-as-code analogy:
+  **there is no CIS for diagrams** — external oracles are why checkov
+  ships 7,973 defaults and why ARC001–003 cannot ship any.
 - [A foreign corpus reads back — the J-F audit](foreign-corpus-audit.md)
   — dated evidence note (2026-08-26): the first time a corpus this
   repository did not author was read for *semantics* rather than
