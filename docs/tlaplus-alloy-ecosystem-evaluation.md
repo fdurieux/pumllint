@@ -284,6 +284,16 @@ resolve them; a build on this evidence would be premature.
 the next person to ask "why doesn't it catch this?" finds the measurement
 and the arguments rather than re-deriving them.
 
+> *[2026-09-04: both prototyped over the repository's 87 diagrams and the
+> 97-unit calibration corpus — [Graph checks over diagrams](graph-checks-evaluation.md)
+> §4. F3 finds **no island beyond STA002** on any diagram that has an
+> initial transition, and F4 finds **no sink**; the only traversal-only
+> firings are five states on two mutation units with *no* initial
+> transition, where STA001 already fails at blocker. One constraint added
+> to F3: **a traversal rule must be silent when STA001 fires**, or one
+> defect scores four times through the density formula. Triggers
+> unchanged.]*
+
 ## 8. SWOT
 
 **Strengths**
