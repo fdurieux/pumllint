@@ -83,9 +83,8 @@ def test_unknown_top_level_and_rule_keys_are_disclosed():
     from pumllint.config import config_warnings
     from pumllint.rules import discover
 
-    known = {r.lower() for r in discover()} | {c.name.lower() for c in discover().values()}
     warnings = config_warnings(
-        {"rulez": {}, "rules": {"GEN999": False, "codegen-vaugue-guard": False}}, known
+        {"rulez": {}, "rules": {"GEN999": False, "codegen-vaugue-guard": False}}, discover()
     )
     joined = "\n".join(warnings)
     assert "rulez" in joined
@@ -97,9 +96,122 @@ def test_a_valid_config_warns_about_nothing():
     from pumllint.config import config_warnings
     from pumllint.rules import discover
 
-    known = {r.lower() for r in discover()} | {c.name.lower() for c in discover().values()}
-    repo_cfg = load_config(Path(__file__).resolve().parent.parent / "pumllint.toml")
-    assert config_warnings(repo_cfg, known) == []
+    root = Path(__file__).resolve().parent.parent
+    assert config_warnings(load_config(root / "pumllint.toml"), discover()) == []
+    assert config_warnings(load_config(root / "docs" / "pilot-starter-config.toml"), discover()) == []
+
+
+def test_unknown_option_keys_are_disclosed():
+    """Issue #37's second defect: `[rules.GEN009] maximum = 5` was accepted at
+    exit 0 and read as "the cap never binds". The declaration in catalog.toml
+    is what makes the typo sayable, and the message names the legal keys."""
+    from pumllint.config import config_warnings
+    from pumllint.rules import discover
+
+    warnings = config_warnings(
+        {"rules": {"GEN009": {"maximum": 3}, "missing-title": {"foo": 1}}}, discover()
+    )
+    assert len(warnings) == 2, warnings
+    gen009 = next(w for w in warnings if "GEN009" in w)
+    assert "'maximum'" in gen009 and "(max-elements)" in gen009 and "takes: max" in gen009
+    gen001 = next(w for w in warnings if "GEN001" in w)
+    assert "'foo'" in gen001 and "takes no options" in gen001
+
+
+def test_generic_keys_aliases_and_lexicon_extras_are_legal():
+    """`severity` and `enabled` on any rule, SEQ008's `max` alias, GEN005's
+    dict-valued `per_type`, and the codegen `extra_<lexicon>` twins are all
+    read somewhere — a disclosure on any of them would be a false positive,
+    which is worse than none."""
+    from pumllint.config import config_warnings
+    from pumllint.rules import discover
+
+    cfg = {
+        "rules": {
+            "GEN009": {"max": 5, "severity": "major", "enabled": True},
+            "SEQ008": {"max": 2},
+            "GEN005": {"per_type": {"usecase": 20}},
+            "SEQ107": {"extra_failure_keywords": ["boom"], "failure_keywords": ["fail"]},
+            "XD003": {"distinct": ["Order"], "authoritative": {"Order": "Order"}},
+            "GEN001": {"enabled": False},
+        }
+    }
+    assert config_warnings(cfg, discover()) == []
+
+
+def test_rule_keys_match_case_insensitively_in_engine_and_warning():
+    """`[rules.gen009]` passed the unknown-rule disclosure (lowercased) and was
+    then ignored by the engine (exact match) — the option-key disclosure would
+    have vouched for a table nothing read. Both lookups now agree; an exact
+    spelling still wins over a case variant."""
+    from pumllint.config import config_warnings
+    from pumllint.engine import Engine
+    from pumllint.rules import discover
+
+    assert config_warnings({"rules": {"gen009": {"max": 1}}}, discover()) == []
+    rule = next(r for r in Engine({"rules": {"gen009": {"max": 1}}}).rules if r.id == "GEN009")
+    assert rule.options == {"max": 1}
+    rule = next(r for r in Engine({"rules": {"Max-Elements": {"max": 1}}}).rules if r.id == "GEN009")
+    assert rule.options == {"max": 1}
+    both = {"rules": {"GEN009": {"max": 2}, "gen009": {"max": 1}}}
+    rule = next(r for r in Engine(both).rules if r.id == "GEN009")
+    assert rule.options == {"max": 2}
+
+
+def _list_rules_lines(argv):
+    import contextlib
+    import io
+
+    from pumllint.cli import main
+
+    out, err = io.StringIO(), io.StringIO()
+    with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+        rc = main(argv)
+    return rc, out.getvalue().splitlines(), err.getvalue()
+
+
+def test_list_rules_tags_dormant_rules_until_the_config_wakes_them():
+    """Issue #37's third defect, second half: five rules cannot fire without
+    configuration and the listing gave no hint. The tag names the key."""
+    with tempfile.TemporaryDirectory() as tmp:
+        empty = Path(tmp) / "empty.toml"
+        empty.write_text("", encoding="utf-8")
+        rc, lines, _ = _list_rules_lines(["--list-rules", "-c", str(empty)])
+        assert rc == 0
+        tagged = {ln.split()[0]: ln for ln in lines if "dormant:" in ln}
+        assert sorted(tagged) == ["ACT006", "GEN006", "GEN007", "SEQ010", "UC002"], sorted(tagged)
+        assert "[dormant: needs pattern]" in tagged["GEN006"]
+        assert "[dormant: needs verbs]" in tagged["ACT006"]
+        assert "[dormant: needs require_explicit_order]" in tagged["SEQ010"]
+
+        # The repo config arms GEN006/GEN007 with a pattern: the tag must go.
+        repo = Path(__file__).resolve().parent.parent / "pumllint.toml"
+        rc, lines, _ = _list_rules_lines(["--list-rules", "-c", str(repo)])
+        assert rc == 0
+        by_id = {ln.split()[0]: ln for ln in lines}
+        # (the description says "dormant until…" — the *tag* is what must go)
+        assert "[dormant:" not in by_id["GEN006"] and "[dormant:" not in by_id["GEN007"]
+        assert "[dormant: needs verbs]" in by_id["ACT006"]
+
+        # An empty pattern is "not configured" (test_hardening pins the rule
+        # side); the listing must agree. A disabled rule is disabled, not dormant.
+        cfg = Path(tmp) / "c.toml"
+        cfg.write_text('[rules]\nGEN006 = { pattern = "" }\nGEN007 = false\n', encoding="utf-8")
+        rc, lines, _ = _list_rules_lines(["--list-rules", "-c", str(cfg)])
+        by_id = {ln.split()[0]: ln for ln in lines}
+        assert "[dormant: needs pattern]" in by_id["GEN006"]
+        assert "[disabled]" in by_id["GEN007"] and "[dormant:" not in by_id["GEN007"]
+
+
+def test_list_rules_with_a_null_option_is_exit_2():
+    """The listing now builds the Engine, so a null option reaches the same
+    config-error path as a lint run — exit 2, never a traceback."""
+    with tempfile.TemporaryDirectory() as tmp:
+        cfg = Path(tmp) / "c.json"
+        cfg.write_text('{"rules": {"GEN009": {"max": null}}}', encoding="utf-8")
+        rc, lines, err = _list_rules_lines(["--list-rules", "-c", str(cfg)])
+    assert rc == 2 and not lines
+    assert "GEN009" in err and "null" in err
 
 
 def test_a_config_that_is_not_a_mapping_is_exit_2_material():

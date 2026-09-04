@@ -32,6 +32,14 @@ def test_catalog_entries_are_well_formed():
         assert meta["dimension"] != Dimension.SYNTAX.value, f"{rid}: DIM-SYN is a gate, not a rule dimension"
         assert isinstance(meta["applies_to"], list) and meta["applies_to"], f"{rid}: applies_to must be a non-empty list"
         assert isinstance(meta.get("profiles", []), list), f"{rid}: profiles must be a list"
+        for field in ("options", "lexicons", "dormant_unless"):
+            value = meta.get(field, [])
+            assert isinstance(value, list), f"{rid}: {field} must be a list"
+            assert all(isinstance(k, str) and k for k in value), f"{rid}: {field} holds a non-string"
+            assert len(value) == len(set(value)), f"{rid}: duplicate keys in {field}"
+        assert not (set(meta.get("options", ())) & {"severity", "enabled"}), (
+            f"{rid}: severity/enabled are generic keys, never declared"
+        )
 
 
 def test_catalog_metadata_is_stamped_onto_the_class():
@@ -43,6 +51,11 @@ def test_catalog_metadata_is_stamped_onto_the_class():
         assert cls.dimension == Dimension(meta["dimension"])
         assert cls.applies_to == tuple(meta["applies_to"])
         assert cls.profiles == tuple(meta.get("profiles", ()))
+        expected = set(meta.get("options", ())) | {
+            k for lx in meta.get("lexicons", ()) for k in (lx, f"extra_{lx}")
+        }
+        assert cls.option_keys == frozenset(expected), rid
+        assert cls.dormant_unless == tuple(meta.get("dormant_unless", ())), rid
 
 
 def test_rule_names_are_unique():

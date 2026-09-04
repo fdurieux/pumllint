@@ -500,22 +500,25 @@ three items — full write-up in EVIDENCE.md §Deepening:
   route cannot meet — the plugin's sole delta is measures/quality-gate in
   Sonar's UI, which `--min-level` + baseline already provide in CI, and a
   Java artifact with its own release train cuts against the repo's ethos.
-- [ ] **Per-rule `option_keys` declaration** *(recorded 2026-09-03)* — the
-  one declaration two shipped-in-part features both stop at. Unknown
-  config keys now warn for top-level keys and rule ids (PR #121), but a
-  typo'd *option* key (`patern`, or `max` on a rule that takes
-  `max_nesting_depth`) is still accepted in silence, because nothing
-  enumerates a rule's legal options: `catalog.toml` has no `options` field,
-  the only list is the string literals at ~28 read sites, and
-  `codegen.py`'s lexicons generate names dynamically (`extra_<lexicon>`).
-  `--list-rules` now shows disabled/profile/severity state but cannot show
-  DORMANT for the same reason — dormancy is an early return inside five
-  `check()` bodies. Build both halves on the one declaration, or neither:
-  a validator that false-positives on a valid config is worse than none,
-  so the dynamic lexicon keys must be modelled, not guessed. *Trigger: the
-  moment either the DORMANT column or option-key validation is wanted.*
-  Residues folded in from the tracker: #37's `0`/`"yes"` scalar quirks,
-  #33's "every documented option is read" guard.
+- [x] **Per-rule `option_keys` declaration — BUILT 2026-09-04** *(recorded
+  2026-09-03)* — three optional fields in `catalog.toml` (`options`;
+  `lexicons`, each `<k>` and `extra_<k>`; `dormant_unless`), stamped onto
+  every rule class as `option_keys`, `dormant_unless` and the
+  `Rule.dormant` property. `config_warnings` discloses an option a rule
+  does not take, naming the legal keys, on stderr with the exit code
+  untouched (§6.6 held); `--list-rules` tags `[dormant: needs pattern]`
+  off the rule objects the engine actually builds; the five
+  convention-gated rules test `self.dormant` instead of their own option;
+  an AST guard (`tests/test_option_declarations.py`) holds the declaration
+  to the reads in both directions — #33's "every documented option is
+  read" guard, from the declaration's side. The surface measured smaller
+  than the sentence above feared: 30 rules, 40 reads, 50 legal keys, and
+  the "dynamically generated" lexicon names are literals at five call
+  sites. Found alongside and fixed in the same change: a rule key in the
+  wrong case (`[rules.gen009]`) passed the unknown-rule disclosure and was
+  ignored by the engine. Residues: #37's `0`/`"yes"` scalar quirks stay (a
+  different site); the LSP is one call from publishing config warnings;
+  `trace.py` still reads GEN007's pattern raw. Settled entry below.
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -710,7 +713,8 @@ list and license posture live in § Settled questions.
   Sonar-shop user (its LSP half is **built**, 2026-08-31); Arc F waits on
   the adopter yes that queues a rule pack; Arcs H–J keep their recorded
   triggers. The one demand-backed build — rank 8, declarable convention
-  options from issues #43/#47 — is contingent on owner decision §6.1.
+  options from issues #43/#47 — is contingent on owner decision §6.1
+  *(its hard dependency, the option-key disclosure, shipped 2026-09-04)*.
   **Six owner decisions are open** (§6.1–6.3, 6.5, 6.7, 6.8 of the note;
   §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
   pinned JSON Schema inside 0.x, unblocks six parked items on one answer
@@ -718,7 +722,8 @@ list and license posture live in § Settled questions.
   stable list. Two open items were queued 2026-09-03 with no trigger,
   because they are defects or their prerequisites: the input-order
   dependence of the level distribution (Arc A) and the per-rule
-  `option_keys` declaration (Arc E). The open tracker: #30, #35, #41,
+  `option_keys` declaration (Arc E) *(both since built: 2026-09-03 and
+  2026-09-04)*. The open tracker: #30, #35, #41,
   #42, #44 stay open on named residues; #43/#47 stay open as ledgers;
   #33, #37, #49 closed with carve-outs in this pass.
 - *Superseded 2026-09-03 — kept as the 2026-07-24 state, since three of
@@ -5712,7 +5717,9 @@ list and license posture live in § Settled questions.
     option keys deliberately do not, because there is no declaration to check
     them against (`catalog.toml` has no `options` field and the codegen
     lexicons generate names dynamically) — recorded, paired with the `DORMANT`
-    column, since both need that same declaration. `--list-rules` finally
+    column, since both need that same declaration *(both built 2026-09-04
+    on the catalog declaration; the "dynamic" names measured as five
+    literals — see that entry)*. `--list-rules` finally
     loads the config; it had **no test at all** before this.
   - **Claim surface (rank 4).** The load-bearing falsehood was the clause
     *"so it cannot be claimed without those rules running"* — the C7 binding
@@ -5774,7 +5781,8 @@ list and license posture live in § Settled questions.
     `option_keys` item). **#37** (config surface): asks 1 and 3 delivered
     in PR #121; closed with carve-outs for the `0`/`"yes"` scalar quirks,
     option-key validation (declined pending `option_keys`) and the DORMANT
-    column (same). **#49** (rule-precision gaps): tier 1 of all three
+    column (same) *(the last two shipped 2026-09-04; the scalar quirks
+    remain)*. **#49** (rule-precision gaps): tier 1 of all three
     shipped, the last residue — the STA002 table row — fixed in this pass;
     closed with the three tier-2 items and the named test debt carved out.
     **#44** (`trace`): items 1 and 2 shipped before PR #119
@@ -5791,7 +5799,7 @@ list and license posture live in § Settled questions.
   - **Two open items queued with no trigger**, because they are a defect
     and its prerequisite: the input-order dependence of the level
     distribution (Arc A) and the per-rule `option_keys` declaration
-    (Arc E).
+    (Arc E). *(Both since built: 2026-09-03 and 2026-09-04.)*
   - **The hoist.** *Working agreements* and the arcs now precede the
     decision log in this file. Pure move, one commit, no citation site
     affected — the 16 sites that name the section name it by file. It
@@ -6218,3 +6226,69 @@ list and license posture live in § Settled questions.
   - *Suites 641 → 645 stdlib, 763 → 770 pytest;
     `tests/bdd/features/GEN010.feature` generated; golden, artefacts and
     dogfooding unchanged.*
+- **The per-rule `option_keys` declaration, BUILT 2026-09-04 — the
+  declaration two shipped-in-part features stopped at, and the surface was
+  smaller than the record feared.** Queued the day before without a
+  trigger, as a defect's prerequisite; two read-only exploration strands
+  measured the option surface, the record and the precedent before a line
+  was written.
+  - **The surface, measured.** 30 of 52 rules read options, through 40
+    reads on 39 lines, all under `pumllint/rules/`: 25 literal keys plus
+    the five codegen lexicons, each taking an `extra_<k>` twin. The
+    "dynamically generated" names the item feared are literals at five
+    `self.lexicon("…")` call sites — enumerable to the letter. Two generic
+    keys live outside the rule: `severity`, popped in `Rule.__init__`, and
+    `enabled`, consumed by `engine._rule_config` and documented nowhere
+    until now. One alias pair (SEQ008 `max_nesting_depth`/`max`). Dormancy
+    was five early returns on *falsiness* — an empty pattern stays dormant,
+    pinned since the hardening pass — so the property inherits that test.
+  - **The defect, reproduced in memory before the fix.** `GEN009 = {
+    maximum = 5 }` → no warning, the limit stays 60, zero findings on an
+    11-element diagram; `GEN006 = { patern = … }` → no warning, the rule
+    dormant, `--list-rules` silent. The worst case is the two halves
+    combined: a typo'd dormancy pattern that both escapes the disclosure
+    and keeps a governance rule off, while the listing that exists to
+    verify a config cannot say so. **Found alongside and fixed in the same
+    change:** a rule key in the wrong case (`[rules.gen009]`,
+    `Max-Elements`) passed the unknown-rule disclosure (lowercased) and
+    was then ignored by the engine (exact match) — the option-key
+    disclosure would have vouched for a table nothing read, so
+    `engine._rule_entry` resolves case-insensitively, the exact spelling
+    winning over a variant.
+  - **Precedent, verified.** ESLint requires `meta.schema` on any rule with
+    options and throws when options reach a rule without one (`schema:
+    false` opts out, "discouraged"); yamllint declares `CONF`/`DEFAULT`
+    per rule and errors on `unknown option "%s" for rule "%s"`; pylint has
+    errored on `unrecognized-option` (E0015) since 2.14 — "previously,
+    invalid options were silently ignored", this project's state until
+    today; markdownlint closes every rule object with
+    `additionalProperties: false`. No evaluation note in this repository
+    had ever examined option validation. The house precedent stayed
+    narrower: warnings, per §6.6.
+  - **Six options, one ruling.** (A) declare in `catalog.toml` —
+    `options`, `lexicons`, `dormant_unless` — warn on unknown keys, tag
+    DORMANT, hold the declaration to the reads with an AST guard; (B) a
+    class attribute per rule — a second metadata home beside the catalog
+    that already carries name, severity, dimension, scope and profiles;
+    (C) a pinned config JSON Schema generated from the declaration — needs
+    A first and is owner decision §6.5; (D) one half only — the
+    declaration is the whole cost, and the item said both or neither; (E)
+    exit 2, the pylint/yamllint/ESLint posture — the contract change §6.6
+    declined; (F) record and wait — against a record that had already
+    exempted the item from the demand gate. **A**, with the five early
+    returns routed through one `Rule.dormant` property so the engine and
+    the listing cannot disagree: `test_list_rules_agrees_with_the_engine_that_will_run`
+    was the constraint that decided the shape.
+  - **Residues, recorded.** The strings `"no"` and `"false"` as a rule's
+    scalar value silently *enable* it (the non-dict coercion in
+    `Engine.__init__`) — a different site, not touched. `trace.py` reads
+    GEN007's pattern from the raw config and could derive from the
+    declaration. The LSP loads the config and never calls
+    `config_warnings` — one call away. The two hand inventories in
+    `tests/test_hardening.py` (regex-taking and null-checked pairs) could
+    now be generated. C is the natural follow-on behind §6.5; E's
+    `--strict-config` if a consumer asks. Rank 8's hard dependency is met;
+    rank 8 itself stays under §6.1.
+  - *Suites 645 → 656 stdlib, 770 → 781 pytest;
+    `tests/test_option_declarations.py` new; RULES.md, features, golden,
+    artefacts untouched. Open checkboxes 16 → 15.*

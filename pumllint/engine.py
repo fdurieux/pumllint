@@ -360,6 +360,26 @@ def _is_suppressed(diagram: Diagram, rule: Rule, v: Violation) -> bool:
     return False
 
 
+def _rule_entry(rules_cfg: dict, rule_id: str, rule_name: str):
+    """The config value for a rule, keyed by id or kebab-case name in any case.
+
+    ``[rules.gen009]`` used to pass the unknown-rule disclosure (which compares
+    lowercased) and then be ignored here (which matched exactly) — a silent
+    no-op of the same class as the ``enabled`` one below, and one the
+    option-key disclosure would make worse by vouching for the options of a
+    table the engine never read. An exact spelling wins over a case variant,
+    so a config carrying both keeps its documented meaning.
+    """
+    for key in (rule_id, rule_name):
+        if key in rules_cfg:
+            return rules_cfg[key]
+    wanted = {rule_id.lower(), rule_name.lower()}
+    for key, value in rules_cfg.items():
+        if str(key).lower() in wanted:
+            return value
+    return None
+
+
 def _rule_config(rules_cfg: dict, rule_id: str, rule_name: str):
     """Rule config may be keyed by id (SEQ001) or name (undeclared-participant).
 
@@ -374,7 +394,7 @@ def _rule_config(rules_cfg: dict, rule_id: str, rule_name: str):
     consumed here and never reaches the rule, so it is not an option name any
     rule can also use.
     """
-    raw = rules_cfg.get(rule_id, rules_cfg.get(rule_name))
+    raw = _rule_entry(rules_cfg, rule_id, rule_name)
     if raw in (False, "off", "disabled"):
         return False
     if raw in (None, True, "on", "enabled"):

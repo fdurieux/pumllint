@@ -526,6 +526,18 @@ rules:
     pattern: "REQ-\\d+|ADR-\\d+"
 ```
 
+A key nothing will read is disclosed on stderr and never changes the exit
+code: an unknown top-level key, a rule id or name no rule carries, or an
+option a rule does not take — `maximum` on `max-elements`, which takes
+`max`, prints `warning: config sets unknown option(s) 'maximum' for GEN009
+(max-elements) — this rule takes: max`. Every rule declares its legal
+option keys in `catalog.toml`, and a test holds that declaration to what
+the rule actually reads. In table form (`[rules.GEN001]` in TOML) the
+disable spelling is `enabled = false`; `severity` and `enabled` are legal on
+every rule. `pumllint --list-rules` shows what *this* config does to each
+rule — disabled, profile-gated, escalated — and tags a convention rule that
+has not been given its convention yet: `[dormant: needs pattern]`.
+
 Treat the config file with code-level trust, like a Makefile or a
 pre-commit config: `scoring.syntax_command` names a command pumllint will
 execute for the opt-in syntax gate, so do not run pumllint with an

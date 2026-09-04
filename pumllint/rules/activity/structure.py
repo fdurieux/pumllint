@@ -145,9 +145,9 @@ class VerbFirstActivity(Rule):
     id = "ACT006"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        verbs = {v.lower() for v in self.options.get("verbs", [])}
-        if not verbs:
+        if self.dormant:
             return
+        verbs = {v.lower() for v in self.options["verbs"]}
         for n in diagram.activity_nodes:
             if n.kind != "action" or not n.label:
                 continue

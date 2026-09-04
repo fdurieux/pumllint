@@ -46,6 +46,12 @@ rules:
   requirement-link: { pattern: "REQ-\\d+|ADR-\\d+" }
 ```
 
+A typo — an unknown top-level key, a rule that does not exist, or an option
+a rule does not take — is disclosed on stderr with the legal keys named, and
+never changes the exit code; `pumllint --list-rules` shows the effective
+state of every rule under the config, including `[dormant: needs pattern]`
+for a convention rule you have not configured yet.
+
 The CLI `--profile` flag overrides the config's `profile:` key. To run the
 same diagram set under several setups (lenient local, strict CI, codegen),
 prefer named `profiles:` in one config, selected per run with `--profile`,

@@ -254,6 +254,12 @@ capability, not defects.
 > `DORMANT` column, since both want the same missing declaration. Warnings, not
 > errors, per §6.6.
 >
+> *Built 2026-09-04: the declaration landed as three optional `catalog.toml`
+> fields (`options`, `lexicons`, `dormant_unless`), the disclosure names the
+> legal keys, `--list-rules` tags `[dormant: needs …]`, and an AST guard holds
+> the declaration to the reads. The "dynamic" lexicon names measured as five
+> literals. Warnings still, per §6.6. ROADMAP, that date.*
+>
 > `--list-rules` now loads the config and annotates each row with
 > disabled / profile-gated / severity-escalation state. It had **no test at all**
 > before this change.
@@ -691,7 +697,7 @@ pointers are the state at `dd9814c`, not at HEAD.** The rest still reproduce.
 | R1 | **#43/#47 unreferenced across all 101 markdown files** | `git stash -u && grep -rn 'capability pull\|production consumer\|issues/43\|issues/47' --include=*.md .` → no output. *This note and its ROADMAP entry are the first two references; run the grep at `dd9814c` to see the state it describes.* |
 | R2 | ROADMAP contradicts itself on the LSP, 4,982 lines apart | `sed -n '278p;5260p' ROADMAP.md` at `dd9814c`. **Repaired 2026-09-03**: the false sentence is kept as a superseded 2026-07-24 record inside Working agreements — `grep -n "Arc E's LSP server and SonarQube" ROADMAP.md` finds it, now ~220 lines from the checkbox rather than 4,982. |
 | R3 | Settled questions is 89.8% of the file; orientation at 5225/5310 | `grep -n 'Settled questions\|Working agreements' ROADMAP.md`. **Hoisted 2026-09-03**: Working agreements at 498, Settled questions at 616 of 5,624; the settled block is 89.1% by line — the ratio was never the problem, the reading order was. |
-| R4 | 59 settled records against 15 open checkboxes | `grep -c '^- \[ \]' ROADMAP.md` → 15 at `dd9814c`; **17 as of 2026-09-03** (two queued without a trigger: the order-dependence defect, the `option_keys` declaration) against 63 records. |
+| R4 | 59 settled records against 15 open checkboxes | `grep -c '^- \[ \]' ROADMAP.md` → 15 at `dd9814c`; **17 as of 2026-09-03** (two queued without a trigger: the order-dependence defect, the `option_keys` declaration) against 63 records; **15 as of 2026-09-04**, both since built. |
 | R5 | **`--help` omits `lsp` and announces five commands** | `sed -n '3p' pumllint/cli.py` |
 | R6 | **the packaging guard is a frozen four-name tuple** | `sed -n '85p' tests/test_packaging.py` |
 | R7 | **a table-form `enabled = false` does not disable** | `sed -n '345,356p' pumllint/engine.py` |
