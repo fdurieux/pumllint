@@ -1978,8 +1978,11 @@ elected**: every conflicted site is reported symmetrically, each message
 listing every variant with counts, because electing a majority indicts the
 conforming sites once a drift has spread (issue #36, v0.29.0). The per-entity
 `authoritative` option pins the intended value; with it set, only the
-non-conforming sites are reported. XD003/XD004 flag later case-variants of
-the first-seen spelling. Every XD rule also accepts a `distinct` list — the
+non-conforming sites are reported. XD003/XD004 report every site of a
+case-variant group the same way, each message listing every spelling with its
+count, and take the pin case-insensitively (*until 2026-09-03 they flagged
+only later case-variants of the first-seen spelling, which made per-diagram
+scores depend on argument order*). Every XD rule also accepts a `distinct` list — the
 negative form of `authoritative`: names listed there are deliberately
 *different* entities that happen to share a spelling (a bounded-context
 `Order` here, a work-order `Order` there), so no cross-diagram comparison
@@ -2189,7 +2192,15 @@ Feature: XD002 conflicting participant stereotype
 **Rationale:** `OrderSvc` in one diagram and `Ordersvc` in another are almost
 certainly the same entity spelled differently — PlantUML treats them as two
 lifelines, so the model silently forks the entity's identity. Implicit
-participants are included: spelling drift usually enters via arrows.
+participants are included: spelling drift usually enters via arrows. Every
+site in a case-variant group is reported symmetrically, each message listing
+every spelling with its count, and no spelling is elected — the `authoritative`
+option pins the intended one (looked up case-insensitively, as this rule
+joins), after which only non-conforming sites are reported. *Until 2026-09-03
+the first spelling met was the reference and only later sites fired, so which
+diagram was blamed followed the order files were passed in — the same defect
+issue #36 had fixed for XD001/XD002/XD005 (v0.29.0); scores are a public
+contract and cannot depend on argument order.*
 
 ```gherkin
 Feature: XD003 participant name case collision
@@ -2209,7 +2220,8 @@ Feature: XD003 participant name case collision
       @enduml
       """
     When the linter runs
-    Then a "XD003" issue with severity "minor" is reported on line 8
+    Then a "XD003" issue with severity "minor" is reported on line 3
+    And a "XD003" issue with severity "minor" is reported on line 8
 
   Scenario: identical spelling across diagrams passes
     Given the diagram:
@@ -2253,9 +2265,16 @@ Feature: XD003 participant name case collision
 **Severity:** minor · **Status:** ✅ Implemented (v0.13.0)
 
 **Rationale:** A class `OrderService` next to a sequence lifeline `orderService`
-is almost certainly the same entity drifting apart across models. First-seen
-spelling is authoritative; pairs where both sites are sequence participants are
-XD003's territory and skipped here.
+is almost certainly the same entity drifting apart across models. Every site in
+a case-variant group is reported symmetrically (no spelling is elected; the
+`authoritative` option pins the intended one, looked up case-insensitively);
+groups confined to sequence diagrams are XD003's territory and skipped here —
+the same set-wise test XD005 applies for XD002. *Until 2026-09-03 the
+first-seen spelling was the reference and the sequence-internal skip was
+evaluated pairwise against it, so a group with one class site and two sequence
+sites produced one finding or two depending on which site the batch yielded
+first — a finding silently dropped by argument order. Same defect class as
+issue #36.*
 
 ```gherkin
 Feature: XD004 cross-type name collision
@@ -2277,7 +2296,8 @@ Feature: XD004 cross-type name collision
       @enduml
       """
     When the linter runs
-    Then a "XD004" issue with severity "minor" is reported on line 9
+    Then a "XD004" issue with severity "minor" is reported on line 3
+    And a "XD004" issue with severity "minor" is reported on line 9
 
   Scenario: consistent spelling across types passes
     Given the diagram:
