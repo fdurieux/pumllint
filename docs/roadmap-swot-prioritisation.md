@@ -624,7 +624,8 @@ adopter"*, and #47's own title says it is the *same* consumer as #43 — one
 anecdote counted twice); XD display-name identity (9 of 432 entity sites carry
 a display name, 0 cross-alias collisions); `ref over` capture and the `'!la-`
 carrier (zero annotations in any `.puml`); GEN010 declared correspondence
-scope (the consumer met the need with its own manifest and never asked to
+scope *(the GEN010 id went to `duplicate-diagram-name` on 2026-09-04; this
+candidate would take GEN011)* (the consumer met the need with its own manifest and never asked to
 replace it); SARIF, RDF/Turtle, a real SonarQube plugin and MCP (the ten
 recorded asks contain no format and no integration); the obligations pack;
 `--shadow-config`; the note-prose advisory (the asking consumer runs

@@ -53,9 +53,11 @@ hint) and skips rules whose scope does not match.
 
 ## GEN — Governance rules
 
-Cross-cutting governance checks. GEN001–GEN003 apply to every diagram type
-(`applies_to: *`); GEN004 is sequence-scoped (it reasons about lifelines), and
-GEN005 covers sequence and use-case diagrams.
+Cross-cutting governance checks. GEN001–GEN003 and GEN006–GEN010 apply to
+every diagram type (`applies_to: *`); GEN004 is sequence-scoped (it reasons
+about lifelines), and GEN005 covers sequence and use-case diagrams. GEN010 is
+the pack's one cross-diagram rule — it looks across the diagrams of a file, so
+a run over the file activates it by itself.
 
 ### GEN001 — Diagram must have a title
 **Severity:** minor · **Status:** ✅ Implemented (v0.1.0)
@@ -592,6 +594,85 @@ is participants + messages, so with ≤30 participants any diagram past 60
 elements already has more than 30 messages, and both findings are
 minor/DIM-RDB — the second carries no information the first did not. (The
 dominance is conditional: 61 participants and no messages fires GEN009 alone.)
+
+### GEN010 — Duplicate diagram name
+**Severity:** minor · **Status:** ✅ Implemented (v0.31.0)
+
+**Rationale:** PlantUML writes a named diagram to `<name>.png`, and its
+automatic `_001` sequence number applies only to *unnamed* blocks — so two
+`@startuml order` blocks in one file render to one file, the second silently
+overwriting the first (exit 0, "2 files generated", one image on disk; no flag
+warns, and the PlantUML docs promise the sequence number without saying it
+lapses once a name is given). GEN002's advice — name diagrams for stable export
+filenames — holds only while the names are distinct; this is the check that
+condition needs. Reported at every site, since the tool cannot know which
+diagram should keep the name. Scope is one file: two files sharing a name
+collide only when rendered into one output directory, which is not knowable
+here (and a name that matches an existing directory does not collide at all).
+Not auto-fixable — renaming a diagram invents an identity the author chose and
+breaks its baseline key and any requirement trace that names it.
+
+```gherkin
+Feature: GEN010 duplicate diagram name
+
+  Scenario: two diagrams in one file with the same name are both reported
+    Given the diagram:
+      """
+      @startuml order
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      @startuml order
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN010" issue with severity "minor" is reported on line 1
+    And a "GEN010" issue with severity "minor" is reported on line 7
+
+  Scenario: distinct names pass
+    Given the diagram:
+      """
+      @startuml order
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      @startuml shipment
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN010" issue is reported
+
+  Scenario: unnamed diagrams are GEN002's, not GEN010's
+    Given the diagram:
+      """
+      @startuml
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      @startuml
+      title Demo
+      participant A
+      participant B
+      A -> B : hi
+      @enduml
+      """
+    When the linter runs
+    Then no "GEN010" issue is reported
+```
 
 ---
 
@@ -2425,6 +2506,7 @@ Feature: XD005 cross-type stereotype conflict
 | GEN007 | minor | * | Requirement/ADR link (pattern-gated) | ✅ v0.12.0 |
 | GEN008 | minor | * | Note density | ✅ v0.12.0 |
 | GEN009 | minor | * | Element count limit | ✅ v0.12.0 |
+| GEN010 | minor | * (one file) | Duplicate diagram name | ✅ v0.31.0 |
 | SEQ001 | critical | sequence | No undeclared participants | ✅ v0.1.0 |
 | SEQ002 | minor | sequence | No unused participants | ✅ v0.1.0 |
 | SEQ003 | major | sequence | Balanced activate/deactivate | ✅ v0.1.0 |
@@ -2459,12 +2541,13 @@ Feature: XD005 cross-type stereotype conflict
 | XD004 | minor | * (cross) | Cross-type name collision | ✅ v0.13.0 |
 | XD005 | minor | * (cross) | Cross-type stereotype conflict | ✅ v0.13.0 |
 
-**Totals:** 42 base-catalog rules — **all 42 implemented** (SEQ008/009/010,
+**Totals:** 43 base-catalog rules — **all 43 implemented** (SEQ008/009/010,
 ACT005/006 and UC002 shipped in v0.4.0; XD001–003 cross-diagram consistency in
 v0.5.0; CLS001–005 class pack in v0.9.0; STA001–003 state pack in v0.10.0;
 UC003 in v0.11.0 closed the original catalog; GEN006–009 and SEQ011 thickened
 DIM-TRC/DIM-RDB in v0.12.0 — GEN006/007 are convention-gated and dormant until
-a pattern is configured; XD004–005 cross-*type* entity identity in v0.13.0).
+a pattern is configured; XD004–005 cross-*type* entity identity in v0.13.0;
+GEN010 duplicate-diagram-name in v0.31.0).
 Separately: SEQ101–SEQ109 codegen profile pack, ✅ v0.3.0.
 
 ## Implementation notes

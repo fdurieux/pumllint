@@ -501,3 +501,76 @@ def test_xd003_and_xd004_honour_the_authoritative_spelling():
     assert [v.line for v in hits] == [8] and "'OrderSvc' is the configured spelling" in hits[0].message
     hits = [v for v in _lint(_cls_seq("orderService"), config=cfg) if v.rule_id == "XD004"]
     assert [v.line for v in hits] == [9] and "'OrderService' is the configured spelling" in hits[0].message
+
+
+# --- GEN010 duplicate-diagram-name (2026-09-04) ------------------------------
+#
+# The governance pack's one cross-diagram rule, and a within-file one: two
+# diagrams in one file sharing a name both get the finding. The batch is the
+# file, so the engine's two-diagram gate is met by the file itself.
+
+_GEN010_BODY = "title T\nparticipant A\nparticipant B\nA -> B : hi\n"
+
+
+def _blocks(*names) -> str:
+    return "".join(
+        (f"@startuml {n}\n" if n else "@startuml\n") + _GEN010_BODY + "@enduml\n"
+        for n in names
+    )
+
+
+def _gen010(src: str, path: str = "f.puml"):
+    diagrams = parse_source(src, path)
+    return sorted(
+        (v.line, v.message)
+        for v in Engine({}).lint_diagrams(diagrams)
+        if v.rule_id == "GEN010"
+    )
+
+
+def test_gen010_reports_every_site_of_a_repeated_name():
+    found = _gen010(_blocks("order", "order"))
+    assert [line for line, _ in found] == [1, 7], found
+    assert all(
+        "'order' is used 2 times in this file (lines 1, 7)" in m for _, m in found
+    ), found
+
+
+def test_gen010_joins_neither_an_ordinal_looking_name_nor_the_unnamed():
+    assert [line for line, _ in _gen010(_blocks("Dup", "Dup", "Dup#1"))] == [1, 7]
+    assert _gen010(_blocks(None, None)) == []  # GEN002's territory
+    assert _gen010(_blocks("order", "shipment")) == []
+
+
+def test_gen010_is_scoped_to_one_file():
+    diagrams = parse_source(_blocks("order"), "a.puml") + parse_source(
+        _blocks("order"), "b.puml"
+    )
+    hits = [v for v in Engine({}).lint_diagrams(diagrams) if v.rule_id == "GEN010"]
+    assert hits == [], hits
+
+
+def test_gen010_does_not_depend_on_batch_order():
+    from itertools import permutations
+
+    diagrams = parse_source(_blocks("order", "other", "order"), "f.puml")
+
+    def fingerprint(batch):
+        engine = Engine({})
+        groups = engine.lint_diagrams_grouped(batch)
+        scored = score_groups(groups, engine=engine)
+        return {
+            d.start_line: (
+                sorted((v.rule_id, v.line) for v in vs),
+                r.level,
+                round(r.composite, 2),
+            )
+            for (d, vs), (_, r) in zip(groups, scored)
+        }
+
+    reference = fingerprint(diagrams)
+    flagged = [line for line, (fs, _, _) in reference.items() if ("GEN010", line) in fs]
+    assert flagged == [1, 13], reference
+    for perm in permutations(diagrams):
+        assert fingerprint(list(perm)) == reference, [d.start_line for d in perm]
+

@@ -287,6 +287,7 @@ codegen twin on the same line counts once).
 | GEN007 | requirement-link | minor | No requirement/ADR reference in name/title/notes. Needs a `pattern`; dormant otherwise. |
 | GEN008 | note-density | minor | Structure narrated in notes instead of modelled (≥ `min_notes`, > `max_ratio` notes/element). |
 | GEN009 | max-elements | minor | More semantic elements than `max` (default 60), any diagram type. |
+| GEN010 | duplicate-diagram-name | minor | Two or more diagrams in one file share a name — PlantUML renders them to one output file, the last silently winning. |
 | UC001 | orphan-actor-or-usecase | major | Use-case diagrams: actor or use case linked to nothing. |
 | UC002 | usecase-actor-naming | minor | Use case not phrased verb-first (verb–object). Needs a `verbs` whitelist; dormant otherwise. |
 | UC003 | include-extend-direction | minor | `<<include>>`/`<<extend>>` arrow pointing the wrong way (judged via actor connectivity), or involving an actor. |
