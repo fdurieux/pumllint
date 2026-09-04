@@ -743,3 +743,42 @@ def test_version_1_update_from_one_file_keeps_canonical_entries():
         assert rc == 0 and "1 kept" in err, err
         data = json.loads(base.read_text(encoding="utf-8"))
         assert data["version"] == 2 and list(data["diagrams"]) == _ALL[:2], data
+
+
+def test_ratchet_keeps_a_hash_name_apart_from_a_duplicate():
+    # `Dup`, `Dup`, `Dup#1` in one file used to record two entries for three
+    # diagrams (the second Dup and the diagram named Dup#1 shared a key):
+    # the next run showed a phantom regression, and a real one on the
+    # second Dup was masked.
+    good = "title T\nparticipant Alice\nparticipant Bob\nAlice -> Bob : hi\n"
+    trio = (
+        f"@startuml Dup\n{good}@enduml\n"
+        "@startuml Dup\nCarol -> Dave\n@enduml\n"
+        f"@startuml Dup#1\n{good}@enduml\n"
+    )
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = Path(tmp) / "proj"
+        (proj / "diagrams").mkdir(parents=True)
+        puml = proj / "diagrams" / "f.puml"
+        puml.write_text(trio, encoding="utf-8")
+        (proj / "cfg.json").write_text("{}", encoding="utf-8")
+        argv = [
+            "score", "diagrams", "--baseline", "maturity.json",
+            "-c", str(proj / "cfg.json"), "-o", str(Path(tmp) / "r.txt"),
+        ]
+        rc, err = _run_from(proj, argv)
+        assert rc == 0 and "recorded 3 diagram" in err, err
+        data = json.loads((proj / "maturity.json").read_text(encoding="utf-8"))
+        assert list(data["diagrams"]) == [
+            "diagrams/f.puml::Dup",
+            "diagrams/f.puml::Dup#1",
+            "diagrams/f.puml::Dup##1",
+        ], data
+        rc, err = _run_from(proj, argv)
+        assert rc == 0 and err == "", err  # idempotent: no phantom regression
+        puml.write_text(trio.replace("Carol -> Dave\n", ""), encoding="utf-8")
+        rc, err = _run_from(proj, argv)
+        assert rc == 1, err
+        assert "regression:" in err and "::Dup#1:" in err, err  # the second Dup
+        assert "Dup##1" not in err, err  # the diagram named Dup#1 did not move
+

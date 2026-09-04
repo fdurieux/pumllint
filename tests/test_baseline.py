@@ -467,3 +467,97 @@ def test_write_baseline_refuses_entries_keyed_elsewhere():
             assert "keyed relative to" in str(e)
         else:
             assert False, "expected ValueError for a baseline keyed elsewhere"
+
+
+# --- injective keys (2026-09-04) ---------------------------------------------
+#
+# A `#` in a name is doubled in the key, so a name can never be read as an
+# ordinal: `Dup`, `Dup`, `Dup#1` in one file key as `::Dup`, `::Dup#1`,
+# `::Dup##1`. Before, the last two collided: two entries for three diagrams,
+# a phantom regression on the next run, a real one masked.
+
+_GOOD = "title T\nparticipant Alice\nparticipant Bob\nAlice -> Bob : hi\n"  # Level 4
+_DEGRADED = "Carol -> Dave\n"  # Level 3
+_BROKEN = ""  # Level 1
+
+
+def _block(name: str, body: str = _GOOD) -> str:
+    head = f"@startuml {name}" if name else "@startuml"
+    return f"{head}\n{body}@enduml\n"
+
+
+_HASH_TRIO = _block("Dup") + _block("Dup", _DEGRADED) + _block("Dup#1")
+
+
+def test_a_hash_in_a_name_is_doubled_so_names_never_read_as_ordinals():
+    assert diagram_keys(parse_source(_HASH_TRIO, "f.puml")) == [
+        "f.puml::Dup",
+        "f.puml::Dup#1",
+        "f.puml::Dup##1",
+    ]
+    assert diagram_keys(parse_source(_block("") + _block("#0"), "f.puml")) == [
+        "f.puml::#0",
+        "f.puml::##0",
+    ]
+    assert diagram_keys(parse_source(_block("X") + _block("X#0"), "f.puml")) == [
+        "f.puml::X",
+        "f.puml::X##0",
+    ]
+
+
+def test_keys_are_injective_over_names_built_from_the_key_alphabet():
+    import itertools
+
+    names = [""] + [
+        "".join(p) for n in range(1, 5) for p in itertools.product("D#1", repeat=n)
+    ]
+    assert len(names) == 121  # the empty name is an unnamed diagram
+    src = "".join(_block(name) for name in names for _ in range(2))  # each twice
+    diagrams = parse_source(src, "f.puml")
+    assert len(diagrams) == 242
+    keys = diagram_keys(diagrams)
+    assert len(set(keys)) == len(keys)
+    anchored = anchored_keys(diagrams, Path("."))
+    assert len(set(anchored)) == len(anchored)
+
+
+def _key_of(src: str, name: str) -> list[str]:
+    diagrams = parse_source(src, "f.puml")
+    return [k for d, k in zip(diagrams, diagram_keys(diagrams)) if d.name == name]
+
+
+def test_a_hash_names_key_survives_its_neighbours_changing():
+    import itertools
+
+    renamed = _block("Dup") + _block("Other", _DEGRADED) + _block("Dup#1")
+    deleted = _block("Dup") + _block("Dup#1")
+    want = ["f.puml::Dup##1"]
+    assert _key_of(_HASH_TRIO, "Dup#1") == want
+    assert _key_of(renamed, "Dup#1") == want
+    assert _key_of(deleted, "Dup#1") == want
+    blocks = (_block("Dup"), _block("Dup", _DEGRADED), _block("Dup#1"))
+    for order in itertools.permutations(blocks):
+        assert _key_of("".join(order), "Dup#1") == want, order
+
+
+def test_baseline_with_a_hash_name_is_idempotent_and_masks_nothing():
+    with tempfile.TemporaryDirectory() as tmp:
+        root = Path(tmp).resolve()
+        puml = str(root / "f.puml")
+        results = _score(_HASH_TRIO, puml)
+        levels = [r.level for _, r in results]
+        assert levels[0] > levels[1], levels  # the second Dup is the degraded one
+        p = root / "b.json"
+        write_baseline(p, results)
+        loaded = load_baseline(p)
+        assert list(loaded) == ["f.puml::Dup", "f.puml::Dup#1", "f.puml::Dup##1"]
+        assert find_regressions(loaded, _score(_HASH_TRIO, puml)) == []  # idempotent
+        worse = _score(_block("Dup") + _block("Dup", _BROKEN) + _block("Dup#1"), puml)
+        keys = diagram_keys(d for d, _ in worse)
+        assert keys[1].endswith("::Dup#1")
+        regs = find_regressions(loaded, worse)
+        assert [(r.key, r.baseline_level) for r in regs] == [(keys[1], levels[1])], regs
+        deltas = compute_deltas(loaded, worse)
+        assert set(deltas) == set(keys)
+        assert [k for k, d in deltas.items() if d.delta < 0] == [keys[1]]
+
