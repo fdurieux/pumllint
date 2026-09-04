@@ -17,7 +17,8 @@ Feature: XD004 cross-type name collision
       @enduml
       """
     When the linter runs
-    Then a "XD004" issue with severity "minor" is reported on line 9
+    Then a "XD004" issue with severity "minor" is reported on line 3
+    And a "XD004" issue with severity "minor" is reported on line 9
 
   Scenario: consistent spelling across types passes
     Given the diagram:

@@ -67,14 +67,20 @@ def test_missing_stereotype_is_not_a_conflict():
     assert not [v for v in _lint(src) if v.rule_id == "XD002"]
 
 
-def test_case_collision_fires_including_implicit_participants():
+def test_case_collision_fires_at_every_site_including_implicit_participants():
+    # Both spellings are reported, each message carrying the whole variant
+    # set: no spelling is elected. Until 2026-09-03 only the site differing
+    # from the first-seen spelling fired — so which site that was, and hence
+    # which diagram's DIM-CON dropped, depended on batch order.
     src = (
         "@startuml one\nparticipant Client\nparticipant OrderSvc\nClient -> OrderSvc : run()\n@enduml\n"
         "@startuml two\nparticipant Client\nClient -> Ordersvc : query()\n@enduml\n"
     )
     hits = [v for v in _lint(src) if v.rule_id == "XD003"]
-    assert len(hits) == 1
-    assert "OrderSvc" in hits[0].message and "Ordersvc" in hits[0].message
+    assert [v.line for v in hits] == [3, 8]  # declared site and implicit site
+    for v in hits:
+        assert "'OrderSvc' ×1" in v.message and "'Ordersvc' ×1" in v.message
+        assert " but " not in v.message  # no site is told to conform to another
 
 
 def test_cross_rule_can_be_disabled_via_config():
@@ -250,11 +256,13 @@ def _cls_seq(participant="OrderService", stereotype=""):
     return _CLS_SEQ.replace("{P}", participant).replace("{ST}", stereotype)
 
 
-def test_cross_type_case_drift_fires_xd004_at_the_later_site():
+def test_cross_type_case_drift_fires_xd004_at_every_site():
     hits = [v for v in _lint(_cls_seq("orderService")) if v.rule_id == "XD004"]
-    assert len(hits) == 1
-    assert hits[0].line == 9
-    assert "t.puml:3" in hits[0].message  # cites the class site
+    assert [v.line for v in hits] == [3, 9]  # class site and participant site
+    assert hits[0].message.startswith("Class ")
+    assert hits[1].message.startswith("Participant ")
+    for v in hits:
+        assert "'OrderService' ×1" in v.message and "'orderService' ×1" in v.message
 
 
 def test_consistent_cross_type_spelling_is_clean_for_xd004():
@@ -268,7 +276,7 @@ def test_swimlane_vs_participant_drift_fires_xd004():
         "C -> Billing : invoice()\n@enduml\n"
     )
     hits = [v for v in _lint(src) if v.rule_id == "XD004"]
-    assert len(hits) == 1 and "swimlane" in hits[0].message
+    assert {v.message.split()[0] for v in hits} == {"Swimlane", "Participant"}
 
 
 def test_sequence_only_collisions_are_left_to_xd003():
@@ -355,7 +363,7 @@ def test_distinct_matches_case_insensitively_for_xd003():
         "@startuml one\nparticipant Ledger\nLedger -> Ledger : s()\n@enduml\n"
         "@startuml two\nparticipant ledger\nledger -> ledger : s()\n@enduml\n"
     )
-    assert [v.rule_id for v in _xd(_lint(src))] == ["XD003"]
+    assert [v.rule_id for v in _xd(_lint(src))] == ["XD003", "XD003"]  # both sites
     cfg = {"rules": {"XD003": {"distinct": ["LEDGER"]}}}
     assert not [v for v in _lint(src, cfg) if v.rule_id == "XD003"]
 
@@ -366,7 +374,7 @@ def test_distinct_matches_case_insensitively_for_xd004():
         "@startuml seq\nparticipant orderService\nparticipant B\n"
         "orderService -> B : x()\n@enduml\n"
     )
-    assert [v.rule_id for v in _xd(_lint(src)) if v.rule_id == "XD004"] == ["XD004"]
+    assert [v.rule_id for v in _xd(_lint(src)) if v.rule_id == "XD004"] == ["XD004", "XD004"]
     cfg = {"rules": {"XD004": {"distinct": ["orderservice"]}}}
     assert not [v for v in _lint(src, cfg) if v.rule_id == "XD004"]
 
@@ -393,3 +401,103 @@ def test_distinct_and_authoritative_compose():
 def test_distinct_tolerates_a_malformed_value():
     cfg = {"rules": {"XD001": {"distinct": "Svc"}}}  # not a list: ignored
     assert len([v for v in _lint(_STEREO_CONFLICT, cfg) if v.rule_id == "XD001"]) == 2
+
+
+# --- batch order is not an input --------------------------------------------
+#
+# Found 2026-09-03 re-deriving the pilot census: the same 159 files scored
+# {L2:9, L3:35} in one order and {L2:8, L3:36} in another. XD003 and XD004
+# kept the first spelling they met as the reference and flagged only the
+# sites that differed, so which diagram was blamed — and, through XD004's
+# pairwise sequence-internal skip, how many findings existed — followed argv
+# order. Directory sweeps sort, so this only surfaced on explicit file
+# lists: exactly what pre-commit hands the hooks. The golden snapshot cannot
+# see any of it, since it scores corpus units one diagram at a time and the
+# XD pack never runs under it. This is that guard.
+
+def _diagrams(*named):
+    return [parse_source(src, path)[0] for path, src in named]
+
+
+def _fingerprint(diagrams):
+    """Per-diagram (findings, level, composite), keyed by file — the things a
+    batch order must not be able to move."""
+    engine = Engine({})
+    groups = engine.lint_diagrams_grouped(diagrams)
+    scored = score_groups(groups, engine=engine)
+    out = {}
+    for (d, vs), (_, r) in zip(groups, scored):
+        out[d.file_path] = (
+            sorted((v.rule_id, v.line) for v in vs),
+            r.level,
+            round(r.composite, 2),
+        )
+    return out
+
+
+def _assert_order_invariant(*named):
+    from itertools import permutations
+
+    base = _diagrams(*named)
+    reference = _fingerprint(base)
+    for perm in permutations(base):
+        got = _fingerprint(list(perm))
+        assert got == reference, (
+            [d.file_path for d in perm], got, reference
+        )
+    total = sum(len(f) for f, _, _ in reference.values())
+    assert total > 0, "the fixture must actually trip a cross rule"
+    return reference
+
+
+def test_xd004_finding_count_does_not_depend_on_batch_order():
+    # The count-drop case: a sequence diagram whose own participants collide
+    # by case, plus a class of the same name. Pairwise, the sequence-internal
+    # pair was skipped when a sequence site was the reference (XD003 would
+    # own it — but XD003 needs two sequence diagrams and there is one) and
+    # reported when the class site was. 1 finding vs 2, by order.
+    ref = _assert_order_invariant(
+        ("a_seq.puml", "@startuml a\ntitle A\nparticipant Api\nApi -> api : ping()\n@enduml\n"),
+        ("b_class.puml", "@startuml b\ntitle B\nclass API\n@enduml\n"),
+    )
+    xd = {p: [f for f in fs if f[0] == "XD004"] for p, (fs, _, _) in ref.items()}
+    assert len(xd["a_seq.puml"]) == 2 and len(xd["b_class.puml"]) == 1
+
+
+def test_xd003_owner_does_not_depend_on_batch_order():
+    # The owner-flip case: two sequence diagrams, one `Api`, one `api`. The
+    # total was stable, so a model-set aggregate hid it, while every
+    # per-diagram score moved with whichever file was passed second.
+    ref = _assert_order_invariant(
+        ("one.puml", "@startuml a\ntitle A\nparticipant Api\nApi -> Db : get()\n@enduml\n"),
+        ("two.puml", "@startuml b\ntitle B\nparticipant api\napi -> Db : get()\n@enduml\n"),
+    )
+    assert all(any(f[0] == "XD003" for f in fs) for fs, _, _ in ref.values())
+
+
+def test_level_histogram_does_not_depend_on_batch_order():
+    # The census shape: a class and two sequence diagrams sharing one entity
+    # under two spellings. Pairwise this produced {L3:3} in one order and
+    # {L4:2, L3:1} in another.
+    ref = _assert_order_invariant(
+        ("k.puml", "@startuml k\ntitle K\nclass OrderService\n@enduml\n"),
+        ("b.puml", "@startuml b\ntitle B\nparticipant orderservice\nparticipant C\nC -> orderservice : x()\n@enduml\n"),
+        ("c.puml", "@startuml c\ntitle C\nparticipant orderservice\nparticipant C\nC -> orderservice : y()\n@enduml\n"),
+    )
+    assert len({lvl for _, lvl, _ in ref.values()}) >= 1  # shape asserted by invariance above
+
+
+def test_xd003_and_xd004_honour_the_authoritative_spelling():
+    # With a pin, only the non-conforming sites are reported — the same
+    # contract XD001/XD002/XD005 already offer. The pin is looked up
+    # case-insensitively, since that is how these two rules join.
+    cfg = {"rules": {"XD003": {"authoritative": {"ORDERSVC": "OrderSvc"}},
+                     "XD004": {"authoritative": {"orderservice": "OrderService"}}}}
+    src = (
+        "@startuml one\nparticipant Client\nparticipant OrderSvc\nClient -> OrderSvc : run()\n@enduml\n"
+        "@startuml two\nparticipant Client\nparticipant Ordersvc\nClient -> Ordersvc : query()\n@enduml\n"
+    )
+    hits = [v for v in _lint(src, config=cfg) if v.rule_id == "XD003"]
+    assert [v.line for v in hits] == [8] and "'OrderSvc' is the configured spelling" in hits[0].message
+    hits = [v for v in _lint(_cls_seq("orderService"), config=cfg) if v.rule_id == "XD004"]
+    assert [v.line for v in hits] == [9] and "'OrderService' is the configured spelling" in hits[0].message

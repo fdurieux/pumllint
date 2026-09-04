@@ -9,13 +9,25 @@ states are modes of an entity, not entities). Active only when more than one
 diagram is linted (see Engine); single-diagram runs score DIM-CON from
 naming rules alone (SCORING.md §6).
 
-Value conflicts (XD001/XD002/XD005) are reported symmetrically at every
-conflicted site — the tool cannot know which side is right, and electing a
-majority indicts the conforming sites once a drift has spread (issue #36).
-The per-entity ``authoritative`` option pins the intended value; with it set,
+Every conflict — value (XD001/XD002/XD005) and spelling (XD003/XD004) — is
+reported symmetrically at every conflicted site: the tool cannot know which
+side is right, and electing one indicts the conforming sites once a drift has
+spread (issue #36). XD003/XD004 elected the *first-seen* spelling until
+2026-09-03, which made per-diagram scores depend on the order files were
+passed in — pre-commit hands the hooks changed files in git's order, so the
+same content scored differently commit to commit. The per-entity
+``authoritative`` option pins the intended value (or spelling); with it set,
 only non-conforming sites are reported. The ``distinct`` option is its
 negative form: names listed there are deliberately different entities that
 happen to share a spelling (bounded contexts), so no XD rule joins them.
+
+Batch order must not change which findings exist or which diagram owns
+them. Every rule groups the whole batch before it yields anything, so the
+reference a site is compared against is the whole group, never whichever
+site came first; ``_variant_summary`` orders by count then alphabetically;
+emission order is normalised downstream by the engine's sort. The guard is
+``tests/test_crossfile.py``, which asserts per-diagram findings, levels and
+composites identical under every permutation of the batch.
 """
 
 from __future__ import annotations
@@ -35,16 +47,21 @@ def _variant_summary(values: list[str], fmt) -> str:
     return ", ".join(f"{fmt(v)} ×{values.count(v)}" for v in ranked)
 
 
-def _authoritative(options) -> dict[str, str]:
+def _authoritative(options, *, casefold: bool = False) -> dict[str, str]:
     """The per-entity ``authoritative`` pick: {entity name -> pinned value}.
 
     A conflict-resolution pin, not a vocabulary check: an entity whose sites
-    all agree is never compared against it.
+    all agree is never compared against it. XD003/XD004 join names
+    case-insensitively, so they look the pin up by the lowercased name
+    (``casefold=True``); the pinned *value* keeps its case, since for those
+    two rules the value is the spelling itself.
     """
     raw = options.get("authoritative", {})
     if not isinstance(raw, dict):
         return {}
-    return {str(k): str(v) for k, v in raw.items()}
+    return {
+        (str(k).lower() if casefold else str(k)): str(v) for k, v in raw.items()
+    }
 
 
 def _distinct(options) -> set[str]:
@@ -150,27 +167,54 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
 
 @register
 class ParticipantNameCaseCollision(CrossDiagramRule):
+    """One entity, one spelling — across sequence diagrams.
+
+    ``OrderSvc`` here and ``Ordersvc`` there are almost certainly one entity;
+    PlantUML treats them as two lifelines and the model silently forks. Every
+    site in a case-variant group is reported, each message listing every
+    spelling with its count. Implicit participants are included: spelling
+    drift usually enters via arrows.
+
+    Until 2026-09-03 this rule kept the first spelling it met as the reference
+    and flagged only the sites that differed from it — so which diagram was
+    blamed, and how many findings existed, depended on the order files were
+    passed in. Same defect class as issue #36, which had already made
+    XD001/XD002/XD005 symmetric and left these two "untouched".
+    """
+
     id = "XD003"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
-        # Implicit participants included: spelling drift usually enters via arrows.
         distinct = {v.lower() for v in _distinct(self.options)}
-        first: dict[str, tuple[str, Diagram, Participant]] = {}
+        authoritative = _authoritative(self.options, casefold=True)
+        groups: dict[str, list[tuple[str, Diagram, Participant]]] = {}
         for d in diagrams:
             for name, p in d.participants.items():
                 key = name.lower()
                 if key in distinct:
                     continue
-                if key not in first:
-                    first[key] = (name, d, p)
-                    continue
-                name0, d0, p0 = first[key]
-                if name != name0:
-                    yield self.violation(
-                        d, p.line,
-                        f"Participant '{name}' collides case-insensitively with '{name0}' "
-                        f"({d0.file_path}:{p0.line}) — likely the same entity spelled differently",
-                    )
+                groups.setdefault(key, []).append((name, d, p))
+        for key, occs in groups.items():
+            spellings = [name for name, _, _ in occs]
+            if len(set(spellings)) < 2:
+                continue
+            auth = authoritative.get(key)
+            if auth is not None:
+                for name, d, p in occs:
+                    if name != auth:
+                        yield self.violation(
+                            d, p.line,
+                            f"Participant '{name}' is spelled so here but '{auth}' "
+                            "is the configured spelling for this entity",
+                        )
+                continue
+            summary = _variant_summary(spellings, lambda v: f"'{v}'")
+            for name, d, p in occs:
+                yield self.violation(
+                    d, p.line,
+                    f"Participant '{name}' collides case-insensitively with the set "
+                    f"({summary}) — one entity, one spelling",
+                )
 
 
 # --- XD004/XD005: cross-*type* entity identity ------------------------------
@@ -208,31 +252,54 @@ class CrossTypeNameCollision(CrossDiagramRule):
     """One entity, one spelling — across diagram *types*.
 
     A class ``OrderService`` next to a sequence lifeline ``orderService`` is
-    almost certainly the same entity drifting apart. First-seen spelling is
-    authoritative (as in XD003); pairs where both sites are sequence
-    participants are XD003's territory and skipped here.
+    almost certainly the same entity drifting apart. Every site in a
+    case-variant group is reported symmetrically (no spelling is elected —
+    the ``authoritative`` option pins the intended one, as in XD001/XD002);
+    groups confined to sequence diagrams are XD003's territory and skipped
+    here, the same set-wise test XD005 applies for XD002.
+
+    Until 2026-09-03 the first-seen spelling was the reference and the
+    sequence-internal skip was evaluated pairwise against it — so a group
+    with a class site and two sequence sites produced one finding or two
+    depending on which site the batch happened to yield first. Same defect
+    class as issue #36.
     """
 
     id = "XD004"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
         distinct = {v.lower() for v in _distinct(self.options)}
-        first: dict[str, _Site] = {}
+        authoritative = _authoritative(self.options, casefold=True)
+        groups: dict[str, list[_Site]] = {}
         for site in _entity_sites(diagrams):
             key = site.name.lower()
             if key in distinct:
                 continue
-            ref = first.setdefault(key, site)
-            if site is ref or site.name == ref.name:
+            groups.setdefault(key, []).append(site)
+        for key, sites in groups.items():
+            spellings = [s.name for s in sites]
+            if len(set(spellings)) < 2:
                 continue
-            if site.diagram.diagram_type == ref.diagram.diagram_type == "sequence":
+            if all(s.diagram.diagram_type == "sequence" for s in sites):
                 continue  # XD003 reports sequence-internal collisions
-            yield self.violation(
-                site.diagram, site.line,
-                f"{site.role.capitalize()} '{site.name}' collides case-insensitively "
-                f"with {ref.role} '{ref.name}' ({ref.diagram.file_path}:{ref.line}) "
-                "— likely the same entity spelled differently",
-            )
+            auth = authoritative.get(key)
+            if auth is not None:
+                for s in sites:
+                    if s.name != auth:
+                        yield self.violation(
+                            s.diagram, s.line,
+                            f"{s.role.capitalize()} '{s.name}' is spelled so here but "
+                            f"'{auth}' is the configured spelling for this entity",
+                        )
+                continue
+            summary = _variant_summary(spellings, lambda v: f"'{v}'")
+            for s in sites:
+                yield self.violation(
+                    s.diagram, s.line,
+                    f"{s.role.capitalize()} '{s.name}' collides case-insensitively "
+                    f"across diagram types with the set ({summary}) — one entity, "
+                    "one spelling",
+                )
 
 
 @register

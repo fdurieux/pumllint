@@ -44,18 +44,48 @@ them.
   element-weighted composite, SCORING.md §3); text and json reporters emit
   it. `--min-level` gates on the model-set level by construction (set level
   = worst diagram level).
-- [ ] **Level distribution is input-order dependent** *(found 2026-09-03,
-  re-deriving the pilot census)* — the same 159 wild-corpus files score
-  `{L4:30, L3:35, L2:9, L1:100}` when passed in `sources.json` order and
-  `{L4:30, L3:36, L2:8, L1:100}` in sorted order; each is deterministic on
-  repetition, and the diagram that moves is one aws-icons cognito example.
-  Cross-diagram rules are the plausible cause. *Scores are a public
-  contract*, so a score that depends on argument order is a defect to
-  investigate, not a feature to gate: reproduce on a minimal pair, find the
-  order-sensitive site, and either make it order-independent or document
-  the dependence as a contract term. No trigger — defects are never
-  demand-gated. Record: docs/pilot-census-first-contact.md, 2026-09-03
-  addition.
+- [x] **Level distribution is input-order dependent — FIXED 2026-09-03,
+  same day it was queued.** *(Found re-deriving the pilot census: the same
+  159 wild-corpus files scored `{L2:9, L3:35}` in `sources.json` order and
+  `{L2:8, L3:36}` sorted.)* **Cause, localised and reproduced:** XD003 and
+  XD004 each kept the *first spelling they met* as the reference and flagged
+  only the sites that differed — so which diagram was blamed followed argv
+  order, and XD004's sequence-internal skip, evaluated pairwise against that
+  reference, made the *count* follow it too. Two diagrams suffice: a
+  sequence diagram with `Api`/`api` plus `class API` gave **one** XD004
+  finding in one order and **two** in the other (composites 80/85 vs
+  70/100); two sequence diagrams `Api`/`api` gave one XD003 finding on
+  whichever file was passed *second*. **This was issue #36, half-finished**:
+  commit `9f06672` (v0.29.0) fixed exactly this class for XD001/XD002/XD005
+  and said in its own message *"XD003/XD004 compare spellings, not values,
+  and are untouched."* Fixed the same way — every site in a case-variant
+  group is reported, messages list every spelling with its count via the
+  `_variant_summary` helper #36 added, the `authoritative` pin now applies
+  (looked up case-insensitively), and XD004's skip is the set-wise test
+  XD005 already uses. Exposure was explicit file lists only — directory
+  sweeps sort — which is precisely what pre-commit hands the hooks, so the
+  same content could score differently commit to commit and register or
+  hide a `--baseline` regression. **The guard that outlives it:**
+  `tests/test_crossfile.py` now asserts per-diagram findings, levels and
+  composites identical under *every permutation* of three fixtures; the
+  golden snapshot could never have caught this, since it scores corpus
+  units one diagram at a time and the XD pack never runs under it.
+  Spec (RULES.md XD003/XD004 Gherkin, one site → both sites) regenerated;
+  published artefacts byte-identical (no case-variant collision in
+  `examples/`). Score-contract note: XD003/XD004 counts rise on corpora
+  with case drift (1 → N sites per group); both are minor, so default exit
+  codes are unaffected, but an existing `--baseline` may show regressions
+  on upgrade — that is the tool becoming order-honest, not the diagrams
+  getting worse.
+- [ ] **A file named under two path spellings is parsed twice** *(found
+  2026-09-03, localising the order defect)* — `collect_files` de-dupes on
+  `Path` equality, so `x.puml` and its absolute spelling both survive
+  (`engine.py:275-281`). The file's diagrams enter the batch twice, which
+  doubles its XD sites, and the second copy is non-contiguous with the
+  first, which shifts the per-file `#n` ordinals `baseline.py` keys on and
+  can manufacture a phantom regression. Reachable from the same explicit-
+  argument surface as the order defect. Fix: de-dupe on `resolve()`. No
+  trigger — a defect.
 
 ## Arc B — Trust & adoption (done)
 
@@ -5627,3 +5657,48 @@ list and license posture live in § Settled questions.
   - *Product behaviour unchanged except the four catalog descriptions
     `--list-rules` prints. No golden, schema or score movement. Suites
     unchanged at 602 stdlib / 724 pytest.*
+- **Order-dependence in XD003/XD004, FIXED 2026-09-03 — and it was issue #36
+  with the last two rules left out.** Queued that morning as an Arc A defect
+  on a suspicion ("cross-diagram rules are the plausible cause"); three
+  exploration strands localised it, reproduced it on two-diagram pairs, and
+  established the contract position before a line was written. The Arc A
+  item carries the mechanism and the fix; this entry carries what was
+  decided and what was found alongside.
+  - **The contract position was the surprise.** Order-independence is
+    stated *nowhere* — not CLAUDE.md, not README, not SCORING.md — and the
+    spec contradicted it for exactly these two rules: RULES.md defined
+    XD003/XD004 by *"first-seen spelling is authoritative"*, and two tests
+    pinned *"fires at the later site"* at one order. The only permutation
+    test in the repository compared sorted message strings inside a single
+    file and could not see ownership. Meanwhile `9f06672` (v0.29.0) had
+    already named the failure — *"at an exact tie the verdict flipped with
+    filename order"* — and fixed it for the three value rules while leaving
+    the two spelling rules on first-seen. The record now says
+    order-independence in three places: the module docstring, the RULES.md
+    preamble, and the permutation test.
+  - **Three options, one ruling.** (A) make XD003/XD004 symmetric like their
+    siblings; (B) sort the batch by path before cross rules run; (C)
+    document the dependence as a contract term. B is three lines but trades
+    order-dependence for *name*-dependence (rename a file, change who is
+    blamed), keeps the election #36 rejected, and does not fix the
+    count-drop — the finding is still lost whenever the class file sorts
+    first. C leaves pre-commit and `--baseline` exposed on the surface they
+    exist to serve. **A**, because the measured blast radius was two Gherkin
+    blocks and two pinned tests with no golden or artefact movement.
+  - **Found alongside, recorded, not fixed.** (1) Duplicate path spellings
+    survive de-dup and parse a file twice — queued above as an Arc A item,
+    since it also breaks baseline ordinals. (2) Suppressed-finding counts
+    are keyed by `id(diagram)` and outlive the run, so a later object can
+    inherit a freed id's count (`engine.py:39,105`) — latent. (3) A
+    cross-diagram finding's suppression is evaluated against the *owner's*
+    inline disables (`engine.py:155`); now that owners are order-stable this
+    is well-defined, but it was a second way order used to leak. (4) A
+    single sequence diagram whose own participants collide by case, with
+    nothing else in the batch, has no rule — not cross-diagram; a candidate
+    single-diagram rule, not queued. (5) The model-set composite is a
+    floating-point sum and differs in the last ULP with order; reported to
+    two decimals, it cannot move a level. (6) The golden snapshot is
+    structurally blind to the whole XD pack — a calibration-design question
+    the permutation test now covers from the other side.
+  - *Suites 602 → 606 stdlib, 724 → 728 pytest; features regenerated for
+    XD003/XD004 only; artefacts byte-identical.*

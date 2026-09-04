@@ -167,7 +167,11 @@ of them would move published figures without a pre-registration:
   repetition, and the diagram that moves is one aws-icons example. Cross-diagram
   rules are the plausible cause. Scores are a public contract, so this is
   worth its own investigation; it is a scoring question, not a census one,
-  and nothing here depends on it.
+  and nothing here depends on it. *[Cause found and fixed the same day:
+  XD003/XD004 elected the first-seen spelling — issue #36's defect, left
+  unfinished for these two rules in v0.29.0. Both now report every site
+  symmetrically, and a permutation test guards per-diagram scores against
+  batch order. ROADMAP Arc A, 2026-09-03.]*
 
 *The re-clones were scratch working copies authorised by their commit
 hashes, not repository material: `corpus/` is gitignored and the bundled
