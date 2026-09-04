@@ -364,6 +364,57 @@ stop
     assert len(actions) == 2
 
 
+# --- backward: the action on a loop's return path ----------------------------
+
+BACKWARD_LOOP = """\
+@startuml rework
+title Rework
+start
+:Receive application;
+repeat
+  :Validate application;
+backward :{}
+repeat while (Application invalid?) is (Application invalid) not (Application valid)
+stop
+@enduml
+"""
+
+
+def test_backward_label_is_recorded_under_its_own_kind():
+    (d,) = parse_source(BACKWARD_LOOP.format("Request documents;"))
+    backward = [n for n in d.activity_nodes if n.kind == "backward"]
+    assert [n.label for n in backward] == ["Request documents"]
+
+
+def test_given_a_backward_action_not_verb_first_then_act006_fires():
+    cfg = {"rules": {"ACT006": {"verbs": ["Receive", "Validate", "Request"]}}}
+    bad = BACKWARD_LOOP.format("document request;")
+    findings = [v for v in lint(bad, cfg) if v.rule_id == "ACT006"]
+    assert [v.message for v in findings] == [
+        'Activity \'document request\' is not verb-first — name it "verb + object"'
+        ' (e.g. "Validate order")'
+    ]
+    assert "ACT006" not in rule_ids(BACKWARD_LOOP.format("Request documents;"), cfg)
+
+
+def test_a_backward_action_is_neither_the_start_nor_the_end_of_the_flow():
+    """ACT001 and ACT002 report on the first and last *action*. A trailing
+    backward line must not become the last one, or an existing ACT002 finding
+    silently moves to it."""
+    assert rule_ids(BACKWARD_LOOP.format("Request documents;")) == set()
+    lines = BACKWARD_LOOP.format("Request documents;").splitlines()
+    stopless = "\n".join(l for l in lines if l != "stop") + "\n"
+    (violation,) = [v for v in lint(stopless) if v.rule_id == "ACT002"]
+    assert violation.line == stopless.splitlines().index("  :Validate application;") + 1
+
+
+def test_multiline_backward_action_is_swallowed():
+    src = BACKWARD_LOOP.format("Request the missing\nsupporting documents;")
+    (d,) = parse_source(src)
+    backward = [n for n in d.activity_nodes if n.kind == "backward"]
+    assert [n.label for n in backward] == ["Request the missing"]
+
+
 # --- SEQ008 fragment nesting depth -------------------------------------------
 
 def test_given_fragments_nested_beyond_limit_then_seq008_fires():

@@ -158,7 +158,8 @@ class VerbFirstActivity(Rule):
             self.pattern_option("verb_pattern") if self.options.get("verb_pattern") else None
         )
         for n in diagram.activity_nodes:
-            if n.kind != "action" or not n.label:
+            # `backward` is an action too — the one on a loop's return path.
+            if n.kind not in ("action", "backward") or not n.label:
                 continue
             first = n.label.split()[0].lower()
             if first in verbs or (verb_pattern is not None and verb_pattern.match(n.label)):

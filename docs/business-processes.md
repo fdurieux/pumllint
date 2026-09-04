@@ -55,6 +55,8 @@ mapping keeps what the linter can check and drops what it cannot.
 | AND split and join | `fork` / `fork again` / `end fork` | ACT004 |
 | OR split and join | no faithful equivalent; emit a `fork` with a `' epc: OR` comment and remodel — see §7 | — |
 | Loop back to an earlier function | `repeat` … `repeat while (Event)` | ACT004 |
+| Loop whose XOR both merges the retry and decides on it | `while (Event?) is (Event)` … `endwhile (Exit event)` | ACT004 |
+| Loop with one function on the return path | `repeat` … `backward :Verb object;` … `repeat while (Event)` — the function runs **only** when the loop is taken | ACT006 (naming), ACT004 |
 | Process interface (link to another process) | `:Process name;` preceded by `' aris: interface PROC-nnnn` | ACT006 |
 | Information objects, documents, IT systems | dropped; optionally `note right` — sparingly, GEN008 counts notes | GEN008 |
 | Model name, process ID, owner | `@startuml <slug>`, `title …`, `footer owner: … — ARIS process PROC-nnnn` | GEN001, GEN002, GEN006, GEN007 |
@@ -67,10 +69,12 @@ Three consequences of the parser worth knowing before you draw:
   rendered by PlantUML but not parsed by pumllint, so nothing checks
   event names. The XOR outcomes are the exception: as branch labels they
   are checked for presence (ACT003), not for wording.
-- **Use the structured constructs only.** `if`/`switch`/`fork`/`repeat`
-  are recognised; `split`, arrow-to-label jumps and the legacy `(*)`
-  syntax are not, and a diagram built from them may be typed as something
-  other than an activity diagram and lose the ACT rules entirely.
+- **Use the structured constructs only.** `if`/`switch`/`fork`/`repeat`/
+  `while`/`partition` are recognised, and `backward` for the single action
+  on a loop's return path; `split`, arrow-to-label jumps and the legacy
+  `(*)` syntax are not, and a diagram built from them may be typed as
+  something other than an activity diagram and lose the ACT rules
+  entirely.
 
 For **BPMN modelled in ARIS**, the same table applies with tasks in place
 of functions, lanes in place of org units, exclusive gateways as

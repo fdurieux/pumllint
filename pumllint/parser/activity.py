@@ -37,7 +37,9 @@ RE_ACT_REPEAT = re.compile(r"^repeat\s*$", re.IGNORECASE)
 RE_ACT_REPEAT_WHILE = re.compile(
     r"^repeat\s*while\s*\((?P<cond>[^)]*)\).*$", re.IGNORECASE
 )
-RE_ACT_BACKWARD = re.compile(r"^backward\s*:", re.IGNORECASE)
+RE_ACT_BACKWARD = re.compile(
+    r"^backward\s*:(?P<label>.*?)(?P<term>[;|<>/\]}]?)\s*$", re.IGNORECASE
+)
 RE_ACT_FORK = re.compile(r"^fork\s*$", re.IGNORECASE)
 RE_ACT_FORK_AGAIN = re.compile(r"^fork\s+again\s*$", re.IGNORECASE)
 RE_ACT_END_FORK = re.compile(r"^(?:end\s*fork|end\s*merge)\s*$", re.IGNORECASE)
@@ -170,8 +172,17 @@ def try_parse(d: Diagram, act_stack: list[Block], lineno: int, line: str):
         d.blocks.append(b)
         act_stack.append(b)
         return "handled"
-    if RE_ACT_BACKWARD.match(line) and is_activity:
-        return "handled" if line.rstrip().endswith(";") else "action_open"
+    # --- backward :label;  the action on a loop's return path -------------
+    m = RE_ACT_BACKWARD.match(line)
+    if m and is_activity:
+        # Recorded under its own kind, not "action": ACT001 and ACT002 pick
+        # the first and last *action* to report on, and a backward line is
+        # neither the start nor the end of the flow. `backward` is not a type
+        # marker either, so it never types an unknown diagram.
+        d.activity_nodes.append(
+            ActivityNode(kind="backward", label=m.group("label").strip(), line=lineno)
+        )
+        return "handled" if m.group("term") else "action_open"
 
     if RE_ACT_FORK_AGAIN.match(line) and is_activity:
         return "handled"
