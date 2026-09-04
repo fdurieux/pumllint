@@ -13,7 +13,9 @@ file has one key from any working directory and under any argv spelling —
 checked out somewhere else. The anchor is the file itself: keep it where it
 is (moving the file alone changes every key — re-record with
 ``--update-baseline``). Unnamed diagrams fall back to their per-file ordinal
-(``::#0``) so the key survives edits elsewhere in the file. Diagrams new
+(``::#0``) so the key survives edits elsewhere in the file. A ``#`` in a
+name is doubled in the key (``Dup#1`` → ``::Dup##1``), so a name can never
+be read as an ordinal and no two diagrams share a key. Diagrams new
 since the baseline pass by definition (they can be gated with
 ``--min-level``); diagrams removed from the set are ignored by the ratchet.
 ``--update-baseline`` merges by file (:func:`carry_over`): the run's entries
@@ -97,10 +99,18 @@ class BaselineFile(dict):
 
 
 def _keys(diagrams: Iterable[Diagram], path_of: Callable[[Diagram], str]) -> list[str]:
+    """``<path>::<name with every # doubled>``, then ``#<n>`` when the name
+    is empty or repeats an earlier one in the same file.
+
+    Doubling leaves a name with only even runs of ``#``, so a trailing odd
+    run of ``#`` followed by digits can only be the ordinal: distinct
+    (path, name, occurrence) triples never share a key. A name without
+    ``#`` — every name in every corpus measured — keys exactly as before.
+    """
     counters: dict[str, int] = {}
     keys = []
     for d in diagrams:
-        base = f"{path_of(d)}::{d.name or ''}"
+        base = f"{path_of(d)}::{(d.name or '').replace('#', '##')}"
         n = counters.get(base, 0)
         counters[base] = n + 1
         keys.append(base if d.name and n == 0 else f"{base}#{n}")
@@ -111,11 +121,23 @@ def diagram_keys(diagrams: Iterable[Diagram]) -> list[str]:
     """Identity per diagram as this run spells it: file path + name, ordinal
     when unnamed.
 
-    Ordinals count unnamed diagrams per file in document order, so renaming or
-    editing one diagram never shifts another's key; duplicate names in one
-    file (already a GEN002 finding) get an ordinal suffix to stay unique.
-    These are the keys the reporters and the ratchet look up; the keys a
-    baseline *file* stores are :func:`anchored_keys`.
+    Grammar: ``<path>::<name>`` with every ``#`` in the name doubled, and
+    ``#<n>`` appended when the name is empty (``::#0``, ``::#1`` — n counts
+    the file's unnamed diagrams in document order) or repeats an earlier
+    name in the same file (``::Dup``, ``::Dup#1``; no rule flags a
+    duplicate name — GEN002 is *unnamed*-diagram). The doubling keeps the
+    grammar injective: a diagram literally named ``Dup#1`` keys as
+    ``::Dup##1`` and can neither collide with the second ``Dup`` nor be
+    mistaken for it; the ordinal is always the trailing odd run of ``#``.
+
+    Stability: a uniquely named diagram's key depends on nothing but its
+    file and name; an unnamed or repeated name keys on its rank among the
+    file's earlier unnamed or same-named diagrams, so only removing or
+    renaming one of *those* shifts it — editing, renaming, adding or
+    removing anything else never does. These are the keys the reporters,
+    the ratchet and the ``regression:`` line use (a ``#`` in a name shows
+    doubled there); the keys a baseline *file* stores are
+    :func:`anchored_keys`.
     """
     return _keys(diagrams, lambda d: d.file_path)
 

@@ -6083,7 +6083,66 @@ list and license posture live in § Settled questions.
     status quo" and stays; the caveat says what it means in a hook. The
     baseline key grammar is not injective (`Dup`×2 collides with `Dup#1`;
     an unnamed diagram collides with one named `#0`) — an oddity a merge
-    by file never touches; recorded, not queued.
+    by file never touches; recorded, not queued. *[Fixed the same
+    afternoon — see the next entry: not an oddity, and the GEN002 claim
+    this sentence rested on was false.]*
   - *Suites 624 → 636 stdlib, 746 → 758 pytest; no
+    feature, schema, golden or artefact movement; baseline file version
+    unchanged (2).*
+- **The baseline key grammar collision, FIXED 2026-09-04 — a `#` in a name
+  is doubled.** Recorded that afternoon as "an oddity a merge by file never
+  touches; recorded, not queued"; two exploration strands measured it on
+  the real code paths, prototyped three grammars against the whole suite,
+  mapped the contract surfaces and gathered precedent; a third validated
+  the mechanics. Two premises fell.
+  - **Not an oddity.** `Dup`, `Dup`, `Dup#1` in one file keyed the last two
+    identically. Measured: three diagrams scored, two entries stored (last
+    wins); record, change nothing, run again → a phantom regression while
+    the report says "no change"; the second `Dup` drops a level while
+    `Dup#1` stays → `find_regressions == []`, exit 0; the text report's
+    header says Level 3 beside an annotation reading "Level 5 → 4". The
+    merge by file was untouched, as recorded; the damage lived in the
+    write, `resolve_baseline`, `find_regressions` and `compute_deltas`.
+  - **The mitigation was false.** The docstring said duplicate names were
+    "already a GEN002 finding". GEN002 is `unnamed-diagram`; across all 51
+    rules and the `codegen` profile nothing fires on a duplicate name, and
+    nothing flags `#`, `::` or spaces in one. Corrected in the docstring;
+    `duplicate-diagram-name` recorded as a candidate rule beside
+    XD003/XD004's lineage (PlantUML renders both diagrams to one output
+    filename) — Arc C, on pull.
+  - **Prevalence zero, measured.** 117 repository files, all single-diagram,
+    no `#` in any name; 263 fixture `@startuml`s, none with `#`; the
+    174-diagram wild census holds one multi-diagram file, its 16 diagrams
+    all unnamed (`::#0`…`::#15` in live use), no `#` anywhere. The plausible
+    wild shape is a ticket suffix (`checkout-#1234`), which collides only
+    among same-named diagrams in one file; pumllint's own fixer cannot
+    produce a `#` name.
+  - **Three grammars measured, one survived.** Over the alphabet `{D, #, 1}`
+    to length 5, each name twice in one file (728 pairs): the current
+    grammar loses 40 identities; "unique by retry" loses none but is
+    order-dependent and breaks the documented promise that editing one
+    diagram never shifts another's key — deleting or renaming the second
+    `Dup` moved the untouched `Dup#1` diagram's key, a worse bug than the
+    one it fixes; "ordinal always" is injective and stable but rewrites
+    every key and 19 tests; **doubling `#` in the name half** is injective
+    and decodable (escaped names carry only even `#` runs, so a trailing odd
+    run plus digits is always the ordinal), order-independent, stable,
+    moves zero measured keys and breaks zero of 758 tests.
+  - **The version fact that made it free.** The latest release is v0.30.0
+    (2026-08-28); the version-2 baseline format landed that morning (PR
+    #126) and had not shipped, so no released pumllint reads or writes
+    version 2 and its grammar could still be *defined* with the escape — no
+    bump, no compatibility read. Six options weighed: (A) escape; (B) retry;
+    (C) ordinal always; (D) warn on collision; (E) a rule; (F) document.
+    **A, with F's correction inside it and E recorded.** Precedent offered
+    nothing to copy: ESLint, PHPStan and Psalm degrade to per-file counts,
+    detekt accepts a lossy `$`-joined signature, SARIF adds structured
+    fingerprint fields — none escapes a composite key.
+  - **Residuals, recorded.** The `regression:` line prints the key, so a
+    `#`-name shows doubled there (`::Dup##1`). A version-1 file recorded by
+    a released pumllint for a `#`-name reads as "new since baseline" until
+    its one `--update-baseline`, which the upgrade line already asks for;
+    measured population zero.
+  - *Suites 636 → 641 stdlib, 758 → 763 pytest; no
     feature, schema, golden or artefact movement; baseline file version
     unchanged (2).*
