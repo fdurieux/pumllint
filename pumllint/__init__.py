@@ -13,7 +13,7 @@ Editors get the same findings at authoring time from :mod:`pumllint.lsp`
 to anyone not using it.
 """
 
-__version__ = "0.31.0"
+__version__ = "0.32.0"
 
 from .baseline import (
     BaselineEntry,
