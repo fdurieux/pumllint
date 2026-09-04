@@ -69,7 +69,7 @@ class ExplicitParticipantOrdering(Rule):
     id = "SEQ010"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        if not self.options.get("require_explicit_order", False):
+        if self.dormant:
             return
         for p in diagram.participants.values():
             if not p.declared:

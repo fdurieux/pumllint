@@ -185,10 +185,9 @@ class OwnerTag(Rule):
     id = "GEN006"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        raw = self.options.get("pattern")
-        if not raw:
+        if self.dormant:
             return
-        pattern = compile_option_pattern(self.id, "pattern", raw)
+        pattern = compile_option_pattern(self.id, "pattern", self.options["pattern"])
         if any(pattern.search(d.value) for d in _prose_directives(diagram)):
             return
         yield self.violation(
@@ -211,10 +210,9 @@ class RequirementLink(Rule):
     id = "GEN007"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        raw = self.options.get("pattern")
-        if not raw:
+        if self.dormant:
             return
-        pattern = compile_option_pattern(self.id, "pattern", raw)
+        pattern = compile_option_pattern(self.id, "pattern", self.options["pattern"])
         haystacks = [d.value for d in _prose_directives(diagram)]
         if diagram.name:
             haystacks.append(diagram.name)
@@ -392,9 +390,9 @@ class UseCaseActorNaming(Rule):
     id = "UC002"
 
     def check(self, diagram: Diagram) -> Iterable[Violation]:
-        verbs = {v.lower() for v in self.options.get("verbs", [])}
-        if not verbs:
+        if self.dormant:
             return
+        verbs = {v.lower() for v in self.options["verbs"]}
         for p in diagram.participants.values():
             if p.kind != "usecase" or not p.declared:
                 continue

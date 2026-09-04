@@ -6,8 +6,9 @@ containing a class decorated with ``@register``, plus an entry in
 under the rules package so decorators run.
 
 A rule class carries only its ``id`` and its ``check()`` algorithm; the
-declarative metadata (name, description, severity, scope, profiles) lives in
-:data:`catalog.toml` and is stamped onto the class by ``@register``. A rule
+declarative metadata (name, description, severity, scope, profiles, the legal
+option keys and the dormancy gate) lives in :data:`catalog.toml` and is
+stamped onto the class by ``@register``. A rule
 receives a parsed :class:`~pumllint.model.Diagram` plus its (already merged)
 configuration dict, and yields :class:`~pumllint.model.Violation`s.
 """
@@ -102,6 +103,13 @@ class Rule(ABC):
     dimension: Dimension = Dimension.SEMANTIC  # maturity-scoring bucket (SCORING.md)
     applies_to: tuple[str, ...] = ("sequence",)  # diagram types, or ("*",)
     profiles: tuple[str, ...] = ()
+    # The config keys check() may read (catalog `options`, plus each `lexicons`
+    # entry as `<k>` and `extra_<k>`) and the keys whose absence keeps a
+    # convention-gated rule dormant (catalog `dormant_unless`). Nothing else is
+    # a legal option name: config.config_warnings discloses any other key, and
+    # tests/test_option_declarations.py holds the declaration to the reads.
+    option_keys: frozenset[str] = frozenset()
+    dormant_unless: tuple[str, ...] = ()
 
     def __init__(self, config: dict | None = None):
         cfg = dict(config or {})
@@ -109,6 +117,20 @@ class Rule(ABC):
         sev = cfg.pop("severity", None)
         self.severity = Severity(sev) if sev else self.default_severity
         self.options = cfg
+
+    @property
+    def dormant(self) -> bool:
+        """``check()`` would return before looking at the diagram.
+
+        A convention-gated rule (``dormant_unless`` non-empty) is dormant while
+        every listed key is unset or empty — an empty ``pattern`` or verb list
+        counts as "not configured", exactly as the rule bodies always read it.
+        The five gated rules test this property rather than their own option,
+        so the engine and ``--list-rules`` cannot disagree about it.
+        """
+        return bool(self.dormant_unless) and not any(
+            self.options.get(k) for k in self.dormant_unless
+        )
 
     @abstractmethod
     def check(self, diagram: Diagram) -> Iterable[Violation]:
@@ -166,6 +188,11 @@ def register(cls: Type[Rule]) -> Type[Rule]:
     cls.dimension = Dimension(meta["dimension"])
     cls.applies_to = tuple(meta["applies_to"])
     cls.profiles = tuple(meta.get("profiles", ()))
+    lexicons = meta.get("lexicons", ())
+    cls.option_keys = frozenset(meta.get("options", ())) | frozenset(
+        k for lx in lexicons for k in (lx, f"extra_{lx}")
+    )
+    cls.dormant_unless = tuple(meta.get("dormant_unless", ()))
     _REGISTRY[cls.id] = cls
     return cls
 

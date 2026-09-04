@@ -54,6 +54,14 @@ What the base class gives you:
   `dimension`, `applies_to`, `profiles`. The engine uses `applies_to` to skip
   your rule on other diagram types, and keeps profile-gated rules dormant
   until their profile is selected.
+- `option_keys` and `dormant_unless`, also from the catalog: declare every
+  key your `check()` reads under `options` (or `lexicons`, for a codegen
+  word list that takes `<k>` and `extra_<k>`) — `tests/test_option_declarations.py`
+  fails on a key read but not declared, or declared but never read, and
+  `config_warnings` discloses any other key a user sets. A convention-gated
+  rule lists its gate under `dormant_unless` and opens `check()` with
+  `if self.dormant: return`; `--list-rules` then tags it
+  `[dormant: needs <key>]` until the key is configured.
 
 For rules that reason **across** diagrams (the XD pack), subclass
 `CrossDiagramRule` and implement `check_all(diagrams)` instead; the engine

@@ -446,13 +446,12 @@ def _load_config(path: str | None) -> dict:
     the "nothing was checked" and hidden-declarations disclosures. A config
     that names a rule which does not exist is silent otherwise, and issue #37
     records what that cost: a "rules disabled" control that was quietly
-    running every rule.
+    running every rule. The same issue's other half — an option key the rule
+    does not take, accepted at exit 0 — is disclosed against the declaration
+    every rule carries from ``catalog.toml``.
     """
     cfg = load_config(path)
-    known = {rid.lower() for rid in discover()} | {
-        cls.name.lower() for cls in discover().values()
-    }
-    for warning in config_warnings(cfg, known):
+    for warning in config_warnings(cfg, discover()):
         _err(warning)
     return cfg
 
@@ -466,12 +465,15 @@ def _list_rules(cfg: dict) -> int:
     row now carries the effective severity and, where the config changes
     something, a state tag.
 
-    Not annotated: DORMANT. Whether a convention-gated rule will actually do
-    anything is decided by an early return inside its own ``check()`` body,
-    which nothing declares; surfacing it needs the per-rule option
-    declaration that config key-checking also wants, and the two belong in
-    one change.
+    DORMANT is read off the rule objects the Engine actually builds for this
+    config — ``Rule.dormant``, the same property the five convention-gated
+    rules test at the top of their ``check()`` — so the listing cannot claim a
+    state the engine would contradict. A dormant rule is armed, not disabled:
+    it runs and finds nothing until its ``dormant_unless`` key is configured,
+    and the tag names that key.
     """
+    engine = Engine(cfg)  # a null option is a config error here too (exit 2)
+    armed = {r.id: r for r in (*engine.rules, *engine.cross_rules)}
     rules_cfg = cfg.get("rules", {}) or {}
     profile = cfg.get("profile")
     profiles_map = cfg.get("profiles") or {}
@@ -498,6 +500,8 @@ def _list_rules(cfg: dict) -> int:
         if override and str(override) != severity:
             tags.append(f"severity {severity} -> {override}")
             severity = str(override)
+        if rid in armed and armed[rid].dormant:
+            tags.append(f"dormant: needs {' or '.join(cls.dormant_unless)}")
         scope = ",".join(cls.applies_to)
         prof = f" {{profile: {','.join(cls.profiles)}}}" if cls.profiles else ""
         state = f" [{'; '.join(tags)}]" if tags else ""
@@ -514,10 +518,10 @@ def _run_lint(argv: list[str]) -> int:
     if args.list_rules:
         try:
             cfg = _apply_cli_overrides(_load_config(args.config), args)
+            return _list_rules(cfg)
         except (FileNotFoundError, ValueError) as e:
             _err(f"error: {e}")
             return 2
-        return _list_rules(cfg)
 
     if not args.paths:
         _err("error: no paths given (or use --list-rules)")

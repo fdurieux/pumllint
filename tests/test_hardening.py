@@ -137,6 +137,31 @@ def test_valid_custom_pattern_still_enforced():
     assert "^[a-z]+$" in gen004[0].message
 
 
+def test_dormant_property_matches_the_early_return():
+    """The five gated rules now test ``self.dormant`` instead of their own
+    option, so the listing and the engine share one notion. Pin the notion:
+    unset *and* empty both mean dormant; a configured value arms the rule;
+    no other rule is ever dormant."""
+    from pumllint.rules import discover
+
+    rules = discover()
+    gated = {
+        "GEN006": ("pattern", "", "(?i)owner"),
+        "GEN007": ("pattern", "", "REQ-\\d+"),
+        "UC002": ("verbs", [], ["place"]),
+        "ACT006": ("verbs", [], ["place"]),
+        "SEQ010": ("require_explicit_order", False, True),
+    }
+    for rid, (key, empty, armed) in gated.items():
+        cls = rules[rid]
+        assert cls({}).dormant is True, rid
+        assert cls({key: empty}).dormant is True, rid
+        assert cls({key: armed}).dormant is False, rid
+    for rid, cls in rules.items():
+        if rid not in gated:
+            assert cls({}).dormant is False, rid
+
+
 def test_empty_pattern_keeps_dormant_rules_dormant():
     # GEN006/GEN007 treat a missing/empty pattern as "not configured".
     violations = Engine({"rules": {"owner-tag": {"pattern": ""}}}).lint_diagrams(
