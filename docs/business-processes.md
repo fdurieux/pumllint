@@ -234,7 +234,7 @@ spelled `Credit Control` in one process and `Credit control` in another.
 
 Redrawing by hand is fine for a pilot and unsustainable for a repository
 of processes. The companion converter
-[`aris2puml`](https://github.com/fdurieux/aris2puml) (in preparation)
+[`aris2puml`](https://github.com/fdurieux/aris2puml)
 mechanises the mapping in §2:
 
 - **Input** is a small JSON document — process, lanes, nodes (function,
