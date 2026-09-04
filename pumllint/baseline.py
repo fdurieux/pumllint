@@ -15,7 +15,12 @@ is (moving the file alone changes every key — re-record with
 ``--update-baseline``). Unnamed diagrams fall back to their per-file ordinal
 (``::#0``) so the key survives edits elsewhere in the file. Diagrams new
 since the baseline pass by definition (they can be gated with
-``--min-level``); diagrams removed from the set are ignored.
+``--min-level``); diagrams removed from the set are ignored by the ratchet.
+``--update-baseline`` merges by file (:func:`carry_over`): the run's entries
+replace those of every file it scored, entries of files it did not score
+stay while the file exists and go once it is gone — so updating from one
+file, or from pre-commit's staged list, does not shrink the file, and a
+deleted file's entries leave on the next update.
 
 Version 1 files (through 0.30.0) keyed on the recording run's own path
 spelling, so the ratchet only matched from the same directory with the same
@@ -28,7 +33,9 @@ Reading: :func:`load_baseline` returns the file's entries under the keys it
 stores; :func:`resolve_baseline` re-keys them onto a run's
 :func:`diagram_keys`, which is what :func:`find_regressions`,
 :func:`compute_deltas` and the reporters look up (the two functions do the
-translation themselves when handed a loaded file).
+translation themselves when handed a loaded file). Writing:
+:func:`write_baseline` records a run; handed the loaded file as ``previous``
+it updates it in place, by file.
 """
 
 from __future__ import annotations
@@ -37,7 +44,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path, PurePath
-from typing import Callable, Iterable
+from typing import Callable, Iterable, Mapping
 
 from .model import Diagram
 from .textio import read_text_file
@@ -113,6 +120,16 @@ def diagram_keys(diagrams: Iterable[Diagram]) -> list[str]:
     return _keys(diagrams, lambda d: d.file_path)
 
 
+def _anchored_path(resolved: Path, root: Path) -> str:
+    """*resolved* spelled relative to *root* with forward slashes — the path
+    part of a stored key; the resolved absolute path when no relative
+    spelling exists (a file on another Windows drive)."""
+    try:
+        return PurePath(os.path.relpath(resolved, root)).as_posix()
+    except ValueError:
+        return resolved.as_posix()
+
+
 def anchored_keys(diagrams: Iterable[Diagram], anchor: str | Path) -> list[str]:
     """The keys a baseline file in directory *anchor* stores.
 
@@ -123,15 +140,7 @@ def anchored_keys(diagrams: Iterable[Diagram], anchor: str | Path) -> list[str]:
     absolute path instead (portable only as far as that path is).
     """
     root = Path(anchor).resolve()
-
-    def rel(d: Diagram) -> str:
-        resolved = Path(d.file_path).resolve()
-        try:
-            return PurePath(os.path.relpath(resolved, root)).as_posix()
-        except ValueError:
-            return resolved.as_posix()
-
-    return _keys(diagrams, rel)
+    return _keys(diagrams, lambda d: _anchored_path(Path(d.file_path).resolve(), root))
 
 
 def load_baseline(path: str | Path) -> BaselineFile:
@@ -157,17 +166,103 @@ def load_baseline(path: str | Path) -> BaselineFile:
     return BaselineFile(entries, version=version, anchor=Path(path).resolve().parent)
 
 
+def carry_over(
+    previous: Mapping[str, BaselineEntry],
+    results: list[tuple[Diagram, MaturityResult]],
+    anchor: str | Path,
+) -> tuple[dict[str, BaselineEntry], list[str]]:
+    """What an update keeps of *previous* beside this run's own entries.
+
+    The rule is per file: the run's entries replace every entry of a file it
+    scored (a diagram removed from that file goes with them); entries of
+    files it did not score are kept while the file still exists and dropped
+    once it is gone. Returns ``(kept, dropped)`` — the kept entries in
+    *previous*'s order, and the keys dropped.
+
+    *previous* is keyed as a baseline file in directory *anchor* stores keys
+    (:func:`anchored_keys`); a key's path part is what precedes its first
+    ``::`` — diagram names may contain ``::``, paths do not (outside a POSIX
+    name chosen to defeat this). Whether a file was scored is decided by
+    identity, not spelling: an entry for a scored file under another
+    spelling — the resolved absolute form a cross-drive Windows run stores,
+    a version-1 key recorded as ``sub/../x.puml`` — resolves to that file
+    and is superseded, not kept beside the run's entry. A version-1 key
+    recorded from another directory names no file relative to *anchor* and
+    is dropped, as a rewrite always dropped it.
+    """
+    root = Path(anchor).resolve()
+    scored_parts: set[str] = set()  # anchored path parts: matched without I/O
+    scored_files: set[str] = set()  # resolved identities: for other spellings
+    for d, _ in results:
+        resolved = Path(d.file_path).resolve()
+        scored_parts.add(_anchored_path(resolved, root))
+        scored_files.add(resolved.as_posix())
+    kept: dict[str, BaselineEntry] = {}
+    dropped: list[str] = []
+    identity: dict[str, str | None] = {}  # path part -> resolved; None when gone
+    for key, entry in previous.items():
+        part = key.split("::", 1)[0]
+        if part in scored_parts:
+            continue  # superseded by the run's entries for that file
+        if part not in identity:
+            try:
+                identity[part] = (root / part).resolve(strict=True).as_posix()
+            except (OSError, RuntimeError):  # missing; a symlink loop before 3.13
+                identity[part] = None
+        if identity[part] is None:
+            dropped.append(key)
+        elif identity[part] not in scored_files:
+            kept[key] = entry
+    return kept, dropped
+
+
 def write_baseline(
-    path: str | Path, results: list[tuple[Diagram, MaturityResult]]
-) -> None:
+    path: str | Path,
+    results: list[tuple[Diagram, MaturityResult]],
+    *,
+    previous: Mapping[str, BaselineEntry] | None = None,
+) -> tuple[dict[str, BaselineEntry], list[str]]:
+    """Record *results* in *path* (version 2 form).
+
+    Without *previous* the file holds exactly this run's entries — a caller
+    that scored a subset writes a subset. With *previous* — the file's
+    current entries as :func:`load_baseline` returns them — the write is a
+    merge by file (:func:`carry_over`): the run's entries replace those of
+    every file scored, entries of files not scored are kept while the file
+    exists. Entries keep the file's own order, so a partial update refreshes
+    an entry where it stands and appends only what is new to the file — the
+    diff shows what moved and nothing else. Returns what :func:`carry_over`
+    returned; ``({}, [])`` without *previous*.
+    """
     anchor = Path(path).resolve().parent
+    current = {
+        key: BaselineEntry(level=r.level, composite=round(r.composite, 2))
+        for key, (_, r) in zip(anchored_keys((d for d, _ in results), anchor), results)
+    }
+    kept: dict[str, BaselineEntry] = {}
+    dropped: list[str] = []
+    entries = current
+    if previous is not None:
+        previous_anchor = getattr(previous, "anchor", anchor)
+        if previous_anchor != anchor:
+            raise ValueError(
+                f"baseline entries are keyed relative to {previous_anchor}, not "
+                f"{anchor}: an update writes the file where it was recorded"
+            )
+        kept, dropped = carry_over(previous, results, anchor)
+        entries = {}
+        for key in previous:
+            if key in kept:
+                entries[key] = kept[key]
+            elif key in current:
+                entries[key] = current[key]
+        for key, entry in current.items():
+            entries.setdefault(key, entry)
     payload = {
         "version": BASELINE_VERSION,
         "diagrams": {
-            key: {"level": r.level, "composite": round(r.composite, 2)}
-            for key, (_, r) in zip(
-                anchored_keys((d for d, _ in results), anchor), results
-            )
+            key: {"level": e.level, "composite": e.composite}
+            for key, e in entries.items()
         },
     }
     # newline="": a baseline is committed and diffed across machines, so it
@@ -175,6 +270,7 @@ def write_baseline(
     Path(path).write_text(
         json.dumps(payload, indent=2) + "\n", encoding="utf-8", newline=""
     )
+    return kept, dropped
 
 
 def resolve_baseline(

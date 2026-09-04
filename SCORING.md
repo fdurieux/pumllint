@@ -201,7 +201,11 @@ pumllint score <paths> [--min-level N] [--check-syntax] [--baseline FILE [--upda
   against FILE and exit non-zero only on *regression* (a diagram below its
   recorded level). A missing FILE is recorded on the spot; diagrams new since
   the baseline pass. `--update-baseline` rewrites FILE with the current
-  levels. Makes the gate adoptable on brownfield model sets. Keys are paths
+  levels, merged by file: entries of files scored this run are replaced,
+  entries of files not scored are kept while the file exists (a partial run
+  does not shrink FILE; a deleted file's entries go on the next update). It
+  accepts every regression in the run and never gates. Makes the gate
+  adoptable on brownfield model sets. Keys are paths
   relative to FILE's own directory (baseline file version 2), so the ratchet
   is independent of the working directory and of how the paths are spelled;
   keep FILE where it was recorded. Version-1 files are still read and are

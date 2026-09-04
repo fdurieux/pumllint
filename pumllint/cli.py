@@ -116,7 +116,9 @@ def build_score_parser() -> argparse.ArgumentParser:
     p.add_argument(
         "--update-baseline",
         action="store_true",
-        help="Rewrite --baseline FILE with the current levels (accept the status quo)",
+        help="Rewrite --baseline FILE with the current levels (accept the status "
+        "quo); entries of files not scored this run are kept while the file "
+        "exists, so a partial run does not shrink FILE",
     )
     return p
 
@@ -623,7 +625,7 @@ def _run_score(argv: list[str]) -> int:
     failed = False
     if args.baseline:
         try:
-            failed |= _apply_baseline(args, results, baseline_view)
+            failed |= _apply_baseline(args, results, baseline_view, baseline_data)
         except OSError as e:
             _err(f"error: {e}")
             return 2
@@ -775,20 +777,32 @@ def _run_schema(argv: list[str]) -> int:
     return 0
 
 
-def _apply_baseline(args: argparse.Namespace, results, baseline_view) -> bool:
+def _apply_baseline(args: argparse.Namespace, results, baseline_view, previous) -> bool:
     """Record or ratchet against ``args.baseline``; True means regression.
 
-    ``baseline_view`` is the already-loaded old baseline re-keyed onto this
-    run's keys (None when the file did not exist) — with ``--update-baseline``
-    it fed the report's deltas before being rewritten here.
+    ``previous`` is the old baseline as loaded — keyed as the file keys
+    itself, None when the file did not exist — and ``baseline_view`` the
+    same re-keyed onto this run's keys, which fed the report's deltas. With
+    ``--update-baseline`` the file is rewritten from the run merged into
+    ``previous`` (``write_baseline``): files scored this run are replaced,
+    files not scored are kept while they exist.
     """
     from .baseline import find_regressions, write_baseline
 
     path = Path(args.baseline)
-    if args.update_baseline or baseline_view is None:
+    if previous is None:
         write_baseline(path, results)
-        verb = "updated" if args.update_baseline else "recorded"
-        _err(f"baseline: {verb} {len(results)} diagram level(s) in {path}")
+        _err(f"baseline: recorded {len(results)} diagram level(s) in {path}")
+        return False
+    if args.update_baseline:
+        kept, dropped = write_baseline(path, results, previous=previous)
+        notes = []
+        if kept:
+            notes.append(f"{len(kept)} kept for files not scored this run")
+        if dropped:
+            notes.append(f"{len(dropped)} dropped for files not found relative to {path}")
+        detail = f" ({', '.join(notes)})" if notes else ""
+        _err(f"baseline: updated {len(results)} diagram level(s) in {path}{detail}")
         return False
     regressions = find_regressions(baseline_view, results)
     for reg in regressions:

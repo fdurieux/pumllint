@@ -161,19 +161,55 @@ them.
   baseline paths relative to the baseline file's directory, after issue
   #2703 reported this exact defect; the repo's own golden snapshot keys on
   a corpus-relative path resolved against a root passed in per call.
-- [ ] **`--update-baseline` on a partial run drops every diagram not in the
-  run** *(found 2026-09-04, fixing the anchor defect)* — `write_baseline`
-  rebuilds the file from the current results with no merge, which is how
-  "removed diagrams are ignored" is realised: score one file (or
-  pre-commit's staged list) with `--update-baseline` and the committed
-  baseline shrinks to that file. The diff shows it, so it is not silent —
-  but a `pumllint-score` hook carrying `--update-baseline` would do it on
-  every commit. Two shapes: merge (keep entries for diagrams not scored
-  this run — then a deleted diagram's entry is immortal and the documented
-  semantic changes), or state that `--update-baseline` expects the full
-  set and refuse it when the run is a strict subset of the file's keys. A
-  decision, not a one-liner. No trigger — a defect on the pre-commit
-  surface.
+- [x] **`--update-baseline` on a partial run drops every diagram not in the
+  run — FIXED 2026-09-04, the same day it was queued.** *(Queued from the
+  anchor fix as: "score one file (or pre-commit's staged list) with
+  `--update-baseline` and the committed baseline shrinks to that file …
+  Two shapes: merge (keep entries for diagrams not scored this run — then
+  a deleted diagram's entry is immortal and the documented semantic
+  changes), or state that `--update-baseline` expects the full set and
+  refuse it when the run is a strict subset of the file's keys.")* The
+  objection to the merge held for a merge *by key*; a merge *by file* with
+  an existence check has no immortal entries, and it is what the newest
+  analogue ships. Measured on `examples/` (14 files, anchor `examples/`):
+  a one-file update wrote **1 of 14** entries, pre-commit's two staged
+  files **2 of 14**; a zero-diagram update was already refused (exit 2
+  before the write). The update path returns before the regression check —
+  documented as "accept the status quo" — so a hook carrying
+  `--update-baseline` both shrank the file and accepted every staged
+  regression, on every commit; and the hooks file invited `--baseline
+  FILE` into hook `args` two lines after saying the hook receives the
+  staged files. **Fix:** `write_baseline(path, results, previous=…)`
+  merges by file (`carry_over`): the run's entries replace those of every
+  file it scored (a diagram removed from that file goes with them);
+  entries of files it did not score are kept while the file still exists
+  and dropped once it is gone; whether a file was scored is decided by
+  resolved identity, so a stale entry under another spelling (the
+  cross-drive absolute form, a version-1 `sub/../x.puml`) is superseded
+  rather than duplicated; entries keep the file's own order, so the diff
+  shows only what moved. Measured on six shapes: a one-file update keeps
+  14 with one refreshed; a gone file's entry drops; a stale `::Ghost` in a
+  scored file drops; a version-1 key recorded from another directory drops
+  (today's behaviour, now counted); an absolute-form entry is superseded;
+  `Order::Checkout` and `#0` parse correctly (the path part ends at the
+  *first* `::`). Cost: one strict resolve per distinct unscored file. The
+  update line now says what happened — `baseline: updated 1 diagram
+  level(s) in maturity.json (13 kept for files not scored this run, 1
+  dropped for files not found relative to maturity.json)` — and a first
+  record made with `--update-baseline` says "recorded", not "updated".
+  The docs and the hooks file now say what was never said:
+  `--update-baseline` never belongs in a hook — it accepts every staged
+  regression and gates nothing. Residuals, recorded: a POSIX path
+  containing `::` mis-parses (pathological; Windows forbids it); an
+  unscored file that improved keeps its lower floor until it is next
+  scored — the merge never raises or lowers a bar it did not measure, so
+  an unscored file that regressed keeps its higher floor and the next full
+  run fails (measured); a version-1 key recorded from another directory
+  cannot be rescued and drops as it always did. Precedent: ESLint's bulk
+  suppressions prune by existence (v9.29.0, PR #19825 — entries for files
+  not linted are kept, files absent from disk are deleted); Psalm refuses
+  both baseline flags when specific files are named, after #1566 emptied
+  a 23,964-entry baseline.
 
 ## Arc B — Trust & adoption (done)
 
@@ -6002,3 +6038,52 @@ list and license posture live in § Settled questions.
   - *Suites 613 → 624 stdlib, 735 → 746 pytest; no
     feature, schema, golden or artefact movement; baseline file version
     1 → 2 (read both, write 2).*
+- **The partial-run `--update-baseline` defect, FIXED 2026-09-04 — merge by
+  file, prune by existence.** Queued that day from the anchor fix; three
+  exploration strands measured it on `examples/`, prototyped both shapes
+  the queue named, mapped the contract surfaces and gathered precedent; a
+  fourth validated the mechanics. The Arc A item carries the measurement,
+  the fix and the residuals; this entry carries what was decided.
+  - **The queue's objection was to the wrong merge.** "A deleted diagram's
+    entry is immortal" is true of a merge by *key*. A merge by *file* drops
+    a removed diagram when its file is next scored (the file's entries are
+    replaced wholesale) and drops a deleted file's entries once the path is
+    gone (one strict resolve per unscored file). Nothing is immortal, and
+    "removed diagrams are ignored" stays true of the ratchet.
+  - **Five options, one ruling.** (A) merge by file, prune by existence —
+    ESLint's shape; (B) refuse a partial update with exit 2 — Psalm's
+    shape, and the purer reading of the docs' "`--amend`, a reviewed,
+    conscious act", but it closes the hook surface this repo advertises
+    and turns a one-file concession into a full-run chore, for the same
+    existence machinery A needs anyway; (C) warn and write as today — says
+    what the git diff already says, and the hook still shrinks the file;
+    (D) document only — documentation had already failed here, the hooks
+    file invites `--baseline` into `args` two lines after saying hooks get
+    the staged files; (E) separate additive and destructive flags — real
+    precedent, but a new flag surface that `test_packaging.py` pins across
+    CLI, Action and hooks, for what A gives for free. **A, with D's hook
+    caveat inside it.** The one threat A carries — a hook with
+    `--update-baseline` becomes survivable instead of obviously broken —
+    is what the caveat is for, and the diff still shows every conceded
+    level, which is the review artefact the docs promise.
+  - **Four mechanics settled on the way.** Scored-or-not is decided by
+    resolved identity, not by enumerating spellings, so the absolute
+    cross-drive form and a version-1 `sub/../x.puml` are superseded and
+    never duplicated; the write returns the kept and dropped sets so the
+    counts cost one pass; entries keep the file's own order so a partial
+    update's diff is minimal and partial and full updates never oscillate
+    the file; the drop count is worded "not found relative to FILE", which
+    is true for a deleted file and for a version-1 key recorded elsewhere
+    alike. `write_baseline(path, results)` without `previous` is unchanged
+    — an API caller who passes a subset writes a subset, and the docstring
+    says so.
+  - **Found alongside, recorded, not fixed.** A first record made with
+    `--update-baseline` said "updated" — fixed in passing; no test pinned
+    it. The update path's regression-skip is the documented "accept the
+    status quo" and stays; the caveat says what it means in a hook. The
+    baseline key grammar is not injective (`Dup`×2 collides with `Dup#1`;
+    an unnamed diagram collides with one named `#0`) — an oddity a merge
+    by file never touches; recorded, not queued.
+  - *Suites 624 → 636 stdlib, 746 → 758 pytest; no
+    feature, schema, golden or artefact movement; baseline file version
+    unchanged (2).*

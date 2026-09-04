@@ -612,3 +612,134 @@ def test_moved_baseline_warns_that_nothing_matched():
         )
         assert rc == 0, err  # nothing matched, so nothing could regress
         assert "has been moved" in err, err
+
+
+# --- update merges by file (2026-09-04) ---------------------------------------
+#
+# --update-baseline replaces the entries of every file the run scored and
+# keeps the entries of files it did not score while they exist: a one-file
+# or staged-list update no longer shrinks the baseline to the run.
+
+_ALL = ["diagrams/a.puml::Order", "diagrams/b.puml::Ship", "diagrams/c.puml::Bill"]
+
+
+def _three_file_project(tmp: str) -> Path:
+    proj = Path(tmp) / "proj"
+    (proj / "diagrams").mkdir(parents=True)
+    for stem, name in (("a", "Order"), ("b", "Ship"), ("c", "Bill")):
+        (proj / "diagrams" / f"{stem}.puml").write_text(
+            _SRC.replace("Order", name), encoding="utf-8"
+        )
+    (proj / "cfg.json").write_text("{}", encoding="utf-8")
+    return proj
+
+
+def _record_all(tmp: str, proj: Path) -> tuple[Path, list[str]]:
+    common = ["-c", str(proj / "cfg.json"), "-o", str(Path(tmp) / "r.txt")]
+    rc, err = _run_from(
+        proj, ["score", "diagrams", "--baseline", "maturity.json", *common]
+    )
+    assert rc == 0 and "baseline: recorded 3 diagram" in err, err
+    base = proj / "maturity.json"
+    assert list(json.loads(base.read_text(encoding="utf-8"))["diagrams"]) == _ALL
+    return base, common
+
+
+def _stored(base: Path) -> dict:
+    return json.loads(base.read_text(encoding="utf-8"))["diagrams"]
+
+
+def test_update_from_one_file_keeps_the_rest():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _three_file_project(tmp)
+        base, common = _record_all(tmp, proj)
+        _raise_baseline_levels(base)  # every diagram "used to" score higher
+        rc, err = _run_from(
+            proj,
+            ["score", "diagrams/b.puml", "--baseline", "maturity.json", "--update-baseline", *common],
+        )
+        assert rc == 0, err
+        assert "baseline: updated 1 diagram level(s)" in err, err
+        assert "2 kept for files not scored this run" in err and "dropped" not in err, err
+        data = _stored(base)
+        assert list(data) == _ALL, list(data)  # order intact
+        level = _expected_level(proj / "diagrams" / "b.puml")
+        assert data[_ALL[1]]["level"] == level, data  # refreshed
+        assert data[_ALL[0]]["level"] == level + 1 and data[_ALL[2]]["level"] == level + 1, data
+        # the rest still ratchet: a full run names the two untouched files only
+        rc, err = _run_from(proj, ["score", "diagrams", "--baseline", "maturity.json", *common])
+        assert rc == 1, err
+        assert "diagrams/a.puml::Order" in err and "diagrams/c.puml::Bill" in err, err
+        assert "b.puml" not in err, err
+
+
+def test_update_drops_entries_of_deleted_files():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _three_file_project(tmp)
+        base, common = _record_all(tmp, proj)
+        (proj / "diagrams" / "c.puml").unlink()
+        rc, err = _run_from(
+            proj, ["score", "diagrams", "--baseline", "maturity.json", "--update-baseline", *common]
+        )
+        assert rc == 0, err
+        assert "1 dropped for files not found relative to maturity.json" in err, err
+        assert "kept" not in err, err
+        assert list(_stored(base)) == _ALL[:2]
+        rc, err = _run_from(proj, ["score", "diagrams", "--baseline", "maturity.json", *common])
+        assert rc == 0 and err == "", err
+
+
+def test_update_from_the_staged_list_keeps_the_unstaged_file():
+    # pre-commit hands the score hook the staged files only
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _three_file_project(tmp)
+        base, common = _record_all(tmp, proj)
+        rc, err = _run_from(
+            proj,
+            ["score", "diagrams/a.puml", "diagrams/b.puml", "--baseline", "maturity.json",
+             "--update-baseline", *common],
+        )
+        assert rc == 0, err
+        assert "baseline: updated 2 diagram level(s)" in err and "1 kept" in err, err
+        assert list(_stored(base)) == _ALL
+
+
+def test_update_baseline_on_a_missing_file_says_recorded():
+    with tempfile.TemporaryDirectory() as tmp:
+        puml, cfg = _fixture(tmp)
+        out = Path(tmp) / "r.txt"
+        base = Path(tmp) / "maturity.json"
+        rc, err = _main_quiet(
+            ["score", str(puml), "-c", str(cfg), "--baseline", str(base),
+             "--update-baseline", "-o", str(out)]
+        )
+        assert rc == 0, err
+        assert "baseline: recorded 1 diagram" in err and "updated" not in err, err
+        assert base.exists()
+
+
+def test_version_1_update_from_one_file_keeps_canonical_entries():
+    with tempfile.TemporaryDirectory() as tmp:
+        proj = _three_file_project(tmp)
+        common = ["-c", str(proj / "cfg.json"), "-o", str(Path(tmp) / "r.txt")]
+        base = proj / "maturity.json"
+        level = _expected_level(proj / "diagrams" / "a.puml")
+        base.write_text(
+            json.dumps(
+                {
+                    "version": 1,
+                    "diagrams": {
+                        _ALL[0]: {"level": level, "composite": 0},
+                        _ALL[1]: {"level": level, "composite": 0},
+                    },
+                }
+            ),
+            encoding="utf-8",
+        )
+        rc, err = _run_from(
+            proj,
+            ["score", "diagrams/a.puml", "--baseline", "maturity.json", "--update-baseline", *common],
+        )
+        assert rc == 0 and "1 kept" in err, err
+        data = json.loads(base.read_text(encoding="utf-8"))
+        assert data["version"] == 2 and list(data["diagrams"]) == _ALL[:2], data

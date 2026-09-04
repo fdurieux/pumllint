@@ -149,7 +149,11 @@ is reported on stderr. Diagrams new since the baseline always pass
 the ratchet — combine with `--min-level` to hold new work to a floor. When a
 team deliberately accepts a lower level, refresh with `--update-baseline`
 (treat that flag like `--amend`: a reviewed, conscious act — the baseline
-diff shows exactly what was conceded).
+diff shows exactly what was conceded). The update merges by file — files
+scored this run are replaced, files not scored are kept while they exist —
+so `--update-baseline` on one file or on a staged list leaves the rest
+intact. It never belongs in a hook: it accepts every staged regression and
+gates nothing.
 
 ### Pre-commit hooks
 
