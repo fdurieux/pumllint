@@ -171,7 +171,13 @@ to a floor); regressions are listed on stderr as
 `regression: <file>::<diagram>: Level 2 (baseline 3)` and exit 1. A
 version-1 file (pumllint ≤ 0.30.0 keyed on the recording run's own spelling)
 is still read, and the next `--update-baseline` rewrites it in the version-2
-form.
+form. `--update-baseline` merges by file: the entries of every file scored
+this run are replaced, entries of files not scored are kept while the file
+still exists and dropped once it is gone — so updating from one file, or
+from pre-commit's staged list, does not shrink the baseline; a deleted
+file's entries leave on the next update, a diagram removed from a file when
+that file is next scored. It never gates — it accepts every regression in
+the run — so keep it out of hooks and CI gates.
 
 Ratchet-compare runs also annotate the report with **trends** — per diagram
 and for the model set:

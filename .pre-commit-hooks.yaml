@@ -10,7 +10,8 @@
 #
 # Both hooks receive the staged PlantUML files as arguments. `pumllint-score`
 # is a no-op gate without args — give it --min-level N and/or
-# --baseline FILE to make it fail commits.
+# --baseline FILE to make it fail commits. Never --update-baseline here: it
+# accepts every staged regression and gates nothing.
 #
 # Hook environments are isolated: if your repo uses a pumllint.yaml config,
 # add `additional_dependencies: [PyYAML]` to the hook (toml/json configs

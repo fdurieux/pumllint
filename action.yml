@@ -39,7 +39,7 @@ inputs:
     description: "score: ratchet against this baseline file (see README)"
     default: ""
   update-baseline:
-    description: "score: rewrite the baseline with current levels (true/false)"
+    description: "score: update the baseline with current levels — files scored are replaced, files not scored are kept while they exist; accepts every regression, so not a gate (true/false)"
     default: "false"
   report:
     description: "schema: which report schema to print — lint | score | trace"
