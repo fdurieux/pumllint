@@ -21,11 +21,12 @@ completed Arc B with the architect-facing HTML report; **v0.16.0**
 (2026-07-24) opened Arc E with `pumllint fix`; **v0.17.0** (2026-07-24)
 completed Arc D's deepening (complexity-normalized evidence, third family,
 multi-model waves); **v0.18.0** (2026-07-24) pinned the JSON report shapes
-behind shipped schemas (`pumllint schema`). *Versions 0.19.0 through 0.30.0
+behind shipped schemas (`pumllint schema`). *Versions 0.19.0 through 0.31.0
 are not narrated here; there is no changelog, and each release is recorded
 where it landed — in the arc it closed or the settled entry that motivated
 it (v0.25.0 at Arc G, v0.29.0 at the XD majority-vote record, v0.30.0 at
-the ecosystem series). README pins the current version.*
+the ecosystem series, v0.31.0 at Arc E's language-server entry and Arc A's
+2026-09-04 baseline records). README pins the current version.*
 
 **How this file is laid out** *(restated 2026-09-03, when the sections
 were reordered)*: the **arcs** come first and hold every open item as a
@@ -6213,7 +6214,7 @@ list and license posture live in § Settled questions.
     pencil in the prioritisation note (an Arc F candidate) annotated to
     GEN011. The stale GEN preamble (it described five rules) corrected on
     the way. Status stamped `v0.31.0`, the next minor, to be confirmed at
-    release.
+    release. *(Confirmed: v0.31.0 cut 2026-09-04, the same day.)*
   - *Suites 641 → 645 stdlib, 763 → 770 pytest;
     `tests/bdd/features/GEN010.feature` generated; golden, artefacts and
     dogfooding unchanged.*
