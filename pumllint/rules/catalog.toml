@@ -88,6 +88,14 @@ dimension = "DIM-RDB"
 applies_to = ["*"]
 profiles = []
 
+[GEN010]
+name = "duplicate-diagram-name"
+description = "Two or more diagrams in one file share a @startuml name"
+severity = "minor"
+dimension = "DIM-TRC"
+applies_to = ["*"]
+profiles = []
+
 # --- XD: cross-diagram consistency (CrossDiagramRule; active for >1 diagram) -
 
 [XD001]

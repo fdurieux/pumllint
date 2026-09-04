@@ -283,8 +283,28 @@ them.
   conflicts stay XD002/XD003's territory — no double reporting. Golden is
   structurally immune (corpus units score one diagram at a time; cross rules
   need ≥ 2).
+- [x] **GEN010 duplicate-diagram-name** *(2026-09-04)* — the one governance
+  check GEN002's own advice needed: two `@startuml` blocks in one file with
+  the same name render, in PlantUML, to one output file, the second
+  silently overwriting the first (verified in `SourceFileReader.java` /
+  `FileFormat.java`: the `_001` sequence number is hard-wired to unnamed
+  blocks; exit 0, "2 files generated", no flag warns; the docs promise the
+  number without saying it lapses once a name is given). `minor`, DIM-TRC,
+  a `CrossDiagramRule` grouping by `(file, name)` and reporting at every
+  site — within one file only; non-fixable, no options. Built without an
+  external trigger, and the record says why: the pull is internal (the
+  tool recommends the condition it did not check) and the corroboration is
+  the ecosystem's most-installed editor shipping the same check at Error.
+  Prevalence measured zero on every corpus at hand (every repository file
+  single-diagram; the wild census's one multi-diagram file all unnamed).
+  Golden, artefacts and dogfooding structurally untouched. *Cross-file
+  duplicates deferred — trigger: an adopter rendering a tree into one `-o`
+  directory with a name shared across files. Measured obstacles: 52 false
+  positives on this repository's own mutation corpus, and a name matching
+  an existing directory does not collide.*
 - [ ] **Further coverage (demand-driven; wait for pull).** The base catalog
-  is done — five diagram types parsed, 42 rules, every type under the
+  is done — five diagram types parsed, 42 rules *(43 since GEN010,
+  2026-09-04)*, every type under the
   golden contract — and no further pack is queued. Candidate directions if
   a concrete user pulls: **new type packs** (component and deployment
   first, the common architecture-documentation forms — for the C4-PlantUML
@@ -6146,3 +6166,54 @@ list and license posture live in § Settled questions.
   - *Suites 636 → 641 stdlib, 758 → 763 pytest; no
     feature, schema, golden or artefact movement; baseline file version
     unchanged (2).*
+- **`duplicate-diagram-name`, BUILT 2026-09-04 as GEN010 — the first rule
+  since v0.13.0, and the first without an external trigger.** Recorded that
+  afternoon as a candidate "Arc C, on pull"; three exploration strands
+  measured the mechanism in PlantUML's source, the firing rate on every
+  corpus, the scoring impact, the machinery cost and the precedent.
+  - **The harm, verified from source rather than docs.** With two
+    `@startuml same` blocks in one file both resolve to `same.png` with the
+    sequence counter hard-wired to zero on the named path, so the second
+    write overwrites the first — exit 0, "2 files generated", one file on
+    disk; `-checkmetadata` never stabilises; no flag or verbosity produces
+    a diagnostic; and https://plantuml.com/sources promises the sequence
+    number without saying it lapses once a name is given. The candidate's
+    recorded claim ("renders both to one output filename") was right.
+  - **The demand argument, stated not dodged.** Arc C gates coverage growth
+    — packs, types, entity kinds. This is the missing half of advice the
+    tool already gives: GEN002 says name diagrams for stable export
+    filenames, which is true only while the names are distinct. A tool that
+    recommends the condition owes the check; that pull is internal, and the
+    external corroboration is vscode-plantuml shipping the same check at
+    Error, one of its only two lint diagnostics (the other being unnamed).
+    Prevalence is zero everywhere measured — 117 repository files all
+    single-diagram, the wild census's one multi-diagram file all unnamed —
+    the honest weakness, recorded beside the build.
+  - **Five options, one ruling.** (A) build within-file; (B) record with a
+    sharpened trigger — the letter of Arc C and fully defensible, but the
+    census cannot see names, so the trigger fires only after an adopter
+    loses a diagram silently; (C) within-file and set-wide — 52 false
+    positives on this repository alone (49% of the mutation corpus), an
+    opt-out on day one, and no way to know which files share an `-o`
+    directory; (D) fold into GEN002 — a shipped rule's name, description and
+    Gherkin are a contract; (E) a stderr warning at the CLI seam — a diagram
+    defect belongs in the findings vocabulary. **A**, severity `minor` (the
+    harm is a lost artifact, above GEN002's churn; the editor precedent
+    ranks it above unnamed; on the real corpora zero diagrams demoted at
+    either severity), non-fixable (renaming invents an identity the author
+    chose, breaks the baseline key and any trace reference, and elects a
+    survivor the way the XD pack stopped doing), no options.
+  - **Shape.** A GEN-numbered `CrossDiagramRule` — new to the codebase:
+    every other cross rule is XD and joins across files; this one joins
+    within a file and needs neither `authoritative` nor `distinct`, the
+    names being identical. The engine's two-diagram gate is met by the file
+    itself; the existing Gherkin vocabulary expresses it with no new step.
+  - **Counts moved.** 42 base rules → 43, 51 → 52 in total; the "51 rules"
+    figures in dated research notes keep their measurement dates. GEN010's
+    pencil in the prioritisation note (an Arc F candidate) annotated to
+    GEN011. The stale GEN preamble (it described five rules) corrected on
+    the way. Status stamped `v0.31.0`, the next minor, to be confirmed at
+    release.
+  - *Suites 641 → 645 stdlib, 763 → 770 pytest;
+    `tests/bdd/features/GEN010.feature` generated; golden, artefacts and
+    dogfooding unchanged.*

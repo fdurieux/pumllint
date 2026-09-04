@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Iterable
+from typing import Iterable, Sequence
 
 from ...model import Diagram, Violation, prose_directives
-from .. import Rule, compile_option_pattern, register
+from .. import CrossDiagramRule, Rule, compile_option_pattern, register
 
 
 @register
@@ -28,6 +28,46 @@ class UnnamedDiagram(Rule):
                 diagram.start_line,
                 "@startuml has no name (use '@startuml my-diagram-name' for stable export filenames)",
             )
+
+
+@register
+class DuplicateDiagramName(CrossDiagramRule):
+    """Two or more diagrams in one file share a ``@startuml`` name.
+
+    PlantUML writes a named diagram to ``<name>.png``; its automatic ``_001``
+    sequence number applies only to *unnamed* blocks, so a repeated name in
+    one file makes the later render silently overwrite the earlier one —
+    exit 0, "2 files generated", one image on disk. GEN002's advice ("name
+    diagrams for stable export filenames") holds only while the names are
+    distinct; this is the check that condition needs. Reported at every
+    site, since the tool cannot know which diagram should keep the name.
+
+    The pack's one cross-diagram rule, and a within-file one: the batch is
+    grouped by ``(file, name)``, so a run over the file meets the engine's
+    two-diagram gate by itself. Two *files* sharing a name collide only when
+    rendered into one output directory, which is not knowable here — out of
+    scope by design.
+    """
+
+    id = "GEN010"
+
+    def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
+        groups: dict[tuple[str, str], list[Diagram]] = {}
+        for d in diagrams:
+            if d.name:
+                groups.setdefault((d.file_path, d.name), []).append(d)
+        for (_, name), members in groups.items():
+            if len(members) < 2:
+                continue
+            lines = ", ".join(str(m.start_line) for m in sorted(members, key=lambda m: m.start_line))
+            for m in members:
+                yield self.violation(
+                    m,
+                    m.start_line,
+                    f"Diagram name '{name}' is used {len(members)} times in this file "
+                    f"(lines {lines}) — PlantUML writes every one of them to the same "
+                    "output file; one name, one diagram",
+                )
 
 
 @register
