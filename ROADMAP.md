@@ -77,15 +77,60 @@ them.
   codes are unaffected, but an existing `--baseline` may show regressions
   on upgrade — that is the tool becoming order-honest, not the diagrams
   getting worse.
-- [ ] **A file named under two path spellings is parsed twice** *(found
-  2026-09-03, localising the order defect)* — `collect_files` de-dupes on
-  `Path` equality, so `x.puml` and its absolute spelling both survive
-  (`engine.py:275-281`). The file's diagrams enter the batch twice, which
-  doubles its XD sites, and the second copy is non-contiguous with the
-  first, which shifts the per-file `#n` ordinals `baseline.py` keys on and
-  can manufacture a phantom regression. Reachable from the same explicit-
-  argument surface as the order defect. Fix: de-dupe on `resolve()`. No
-  trigger — a defect.
+- [x] **A file named under two path spellings is parsed twice — FIXED
+  2026-09-04.** *(Found 2026-09-03 localising the order defect, and queued
+  as: "`collect_files` de-dupes on `Path` equality, so `x.puml` and its
+  absolute spelling both survive (`engine.py:275-281`). The file's diagrams
+  enter the batch twice, which doubles its XD sites, and the second copy is
+  non-contiguous with the first, which shifts the per-file `#n` ordinals
+  `baseline.py` keys on and can manufacture a phantom regression.")* The
+  mechanism clause held; the consequence clause was **wrong**, and stands
+  annotated rather than rewritten: `diagram_keys` counts on a dict keyed by
+  the full `file_path::name` string, so contiguity is irrelevant by
+  construction, and `parse_file` stamps `file_path` with the spelling *as
+  given* (`parser/sequence.py:541`), so two surviving spellings never share
+  a key — measured `['a.puml::#0', 'a.puml::#1', '/abs/a.puml::#0',
+  '/abs/a.puml::#1']`: disjoint namespaces, nothing shifts. **What a
+  duplicate actually did, measured on five surfaces:** `lint`/`score`
+  reported every diagram of the file twice under two paths, `diagramCount`
+  and `elementCount` doubled for it, and the model-set composite
+  re-weighted toward it (up to ±1.8 points on `examples/`); a one-file run
+  became a two-diagram batch, waking the XD pack on a file compared with
+  itself and inflating the `×N` spelling census in XD003/XD004 messages
+  with copies that do not exist on disk; under `--baseline` the second
+  spelling was *"new since baseline"* on every block — exempt from the
+  ratchet by definition — and `--update-baseline` baked machine-local
+  absolute keys into the committed file for good; `fix` printed the same
+  diff twice, doubled its counts and, through a symlink, was
+  **order-dependent** — GEN002 takes the name from the spelling's stem, so
+  `fix x.puml link.puml` logged both names and the last spelling won on
+  disk; `trace` doubled `diagramCount` and listed one site twice under a
+  requirement. Per-diagram levels and composites never moved. **Fix:**
+  `collect_files` keys its de-dup on `Path.resolve()` and keeps the *first
+  spelling given* — identity is the filesystem's, the reported path is
+  still the caller's, so no report, baseline key or artefact byte changes.
+  Measured: relative + absolute, `sub/../x`, a symlink and its target, and
+  a sweep plus an absolute spelling inside it all collect once. Cost ≈40 µs
+  per file (196 ms on 5,000 files, against ≈4 ms per file to parse).
+  Residual, recorded: a case-insensitive filesystem under a case-sensitive
+  path flavour (macOS) still keeps `Diagrams/x.puml` and `diagrams/x.puml`
+  apart; there is no macOS job in the matrix. Exposure was the Action's
+  `paths` input (word-split verbatim into argv), manifests, `xargs` and the
+  API — not pre-commit, whose staged list is repo-relative and unique.
+- [ ] **`--baseline` is blind to a change of path spelling** *(found
+  2026-09-04, measuring the duplicate-spelling defect)* — baseline keys are
+  `file_path::name` and `file_path` is the spelling as given, so a baseline
+  recorded with relative paths and compared with absolute ones (a CI job
+  that switches `pumllint score src/` to `pumllint score "$PWD/src/"`, or
+  records in one working directory and checks in another) marks **every**
+  diagram *"new since baseline"* and passes real regressions silently:
+  measured, the same degraded file exits 1 compared relative and 0 compared
+  absolute against one baseline. The ratchet is the surface this hurts, and
+  the failure is silent by design (new and removed diagrams are ignored).
+  Baseline keys are persisted in committed files, so normalising them is a
+  contract change with a migration question — normalise on load, accept
+  both forms, or key on a repo-relative path — that needs its own SWOT
+  before a line is written. No trigger — a defect.
 
 ## Arc B — Trust & adoption (done)
 
@@ -5702,3 +5747,48 @@ list and license posture live in § Settled questions.
     the permutation test now covers from the other side.
   - *Suites 602 → 606 stdlib, 724 → 728 pytest; features regenerated for
     XD003/XD004 only; artefacts byte-identical.*
+- **Duplicate path spellings, FIXED 2026-09-04 — the queued sentence was
+  half right.** Queued the day before from one side-finding of the order
+  investigation; three exploration strands measured it before a line was
+  written. The Arc A item carries the mechanism, the refuted clause and the
+  five surfaces; this entry carries what was decided.
+  - **The consequence clause was wrong.** "Shifts the per-file `#n`
+    ordinals … phantom regression" cannot happen: the ordinal counter is
+    keyed on the full path string, and two spellings never share one. What
+    does happen is quieter and more durable — phantom *new* entries, a
+    polluted committed baseline, a re-weighted model set, a falsified `×N`
+    census, and a `fix` that races itself through a symlink. The lesson
+    already on this record held again: a queued item's consequence is a
+    claim to measure, not a premise to build on.
+  - **The contract position.** CLAUDE.md's path contract is about
+    separators only; identity is stated in one place, the `collect_files`
+    docstring — *"de-duplicated"* — pinned by one test whose three
+    spellings already collapse to the same `Path`, so the promise had never
+    been stressed. What a fix had to preserve was the *returned* spelling:
+    `parse_file` reports it, the baseline keys on it, the JSON `file` field
+    carries it, and `test_reported_paths_use_forward_slashes` pins it on an
+    absolute `mkdtemp()` path that `resolve()` would rewrite on macOS
+    (`/var` → `/private/var`). So the fix is the *key* of the `seen` set,
+    and nothing else.
+  - **Four options, one ruling.** (A) key on `Path.resolve()`, keep the
+    first spelling; (B) inode identity — Python's own `samefile` — which
+    also catches macOS case and hard links and is an order of magnitude
+    cheaper, but a filesystem reporting `st_ino == 0` would collapse
+    *every* file into one and exit 0 on a single diagram, so B needs a
+    fallback branch no runner on ext4 or NTFS can exercise; (C) A plus a
+    stderr warning per dropped spelling — but sweep-plus-named already
+    drops silently, a library function is the wrong layer for stderr, and
+    a warning for a non-event becomes something scripts grep for; (D)
+    document spellings as identities — contradicts the docstring and leaves
+    the `fix` corruption in place. **A**: the measured blast radius was one
+    function and zero published bytes; B's only gain is a residual no
+    runner can witness, bought with a branch none can test. B is the key a
+    macOS job would justify, when there is one.
+  - **Found alongside, recorded, not fixed.** The baseline's blindness to a
+    change of spelling — queued above as an Arc A item; it needs its own
+    SWOT because baseline keys are a persisted contract. Also visible: a
+    symlink and its target inside one *sweep* now collapse to the first in
+    sorted order where both were reported before — the docstring's promise
+    kept, but a change for anyone who links one diagram into two trees.
+  - *Suites 606 → 613 stdlib, 728 → 735 pytest; no
+    feature, schema, golden or artefact movement.*
