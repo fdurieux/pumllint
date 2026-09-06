@@ -29,6 +29,19 @@ then merge it — no need to ask.** Wait for the whole matrix, including the
 `windows` job, which is the only one that exercises PowerShell's argument
 handling and the Windows console codec. Do not merge on a red or pending run.
 
+Merged branches are not deleted automatically (the repository setting is
+off), and a hosted session cannot delete them: the git proxy answers a
+branch-deleting push (`git push origin :refs/heads/<branch>`) with
+`HTTP 403` and then prints `Everything up-to-date`, so read the whole
+output, never the last line; no MCP tool deletes a ref. Verify with
+`git ls-remote origin 'refs/heads/*'`; deleting is the owner's, via
+`gh api -X DELETE repos/fdurieux/pumllint/git/refs/heads/<branch>` or the
+Branches page. `main`'s history was restarted on 2026-08-29 (two roots,
+`a92c24f` and `1089a99`): a branch from the old line (root `71f70a6`)
+shares no ancestor with `main`, reads as hundreds of commits "ahead", and
+is superseded once its PRs are merged — compare trees, not commit counts,
+before calling such a branch unmerged.
+
 ## Audiences and register
 
 Every document here is written for one of two readers, and the register
