@@ -215,7 +215,7 @@ The composite action and the pre-commit hooks in
 
 ```yaml
 - name: Process conventions gate
-  uses: fdurieux/pumllint@v0.32.0
+  uses: fdurieux/pumllint@v0.33.0
   with:
     paths: processes
     config: processes/conventions.toml
@@ -225,7 +225,7 @@ The composite action and the pre-commit hooks in
 ```yaml
 repos:
   - repo: https://github.com/fdurieux/pumllint
-    rev: v0.32.0
+    rev: v0.33.0
     hooks:
       - id: pumllint
         args: [-c, processes/conventions.toml]
