@@ -57,9 +57,9 @@ mapping keeps what the linter can check and drops what it cannot.
 | Loop back to an earlier function | `repeat` … `repeat while (Event?) is (Event) not (Exit event)` — the two outcomes are the labels | ACT003, ACT004 |
 | Loop whose XOR both merges the retry and decides on it | `while (Event?) is (Event)` … `endwhile (Exit event)` | ACT003, ACT004 |
 | Loop with one function on the return path | `repeat` … `backward :Verb object;` … `repeat while (Event?) is (Event) not (Exit event)` — the function runs **only** when the loop is taken | ACT006 (naming), ACT003, ACT004 |
-| Process interface (link to another process) | `:Process name;` preceded by `' aris: interface PROC-nnnn` | ACT006 |
+| Process interface (link to another process) | `:Process name;` preceded by `' aris: interface PROC-nnnn`, and the linked ID in the footer: `— interfaces: PROC-nnnn, …` — a comment is invisible to every rule, the footer is what `pumllint trace` reads | ACT006; GEN007, `trace` |
 | Information objects, documents, IT systems | dropped; optionally `note right` — sparingly, GEN008 counts notes | GEN008 |
-| Model name, process ID, owner | `@startuml <slug>`, `title …`, `footer owner: … — ARIS process PROC-nnnn` | GEN001, GEN002, GEN006, GEN007 |
+| Model name, process ID, owner | `@startuml <slug>`, `title …`, `footer owner: … — ARIS process PROC-nnnn` (then `— interfaces: …` when the process has any) | GEN001, GEN002, GEN006, GEN007 |
 
 Three consequences of the parser worth knowing before you draw:
 
@@ -257,6 +257,16 @@ mechanises the mapping in §2:
   first; the converter will not invent structure that is not there.
 - **Warned**: OR connectors, which have no activity-diagram equivalent
   and are emitted as `fork` with an `' epc: OR` marker.
+- **Linked**: `--manifest manifest.json` writes the converted processes
+  with their interface references as a JSON array `pumllint trace`
+  accepts as an inventory. Each diagram's footer cites its own ID and
+  every process its interfaces link to, so
+  `pumllint trace out/ --requirements manifest.json -c conventions.toml
+  --fail-on-unknown-ref` fails on a process interface whose target has
+  no diagram in the batch — the process-hierarchy check, with no rule
+  behind it. Pass the ARIS process landscape as the inventory instead
+  and `--fail-on-uncovered` names the landscape entries no diagram
+  realises.
 
 ## 8. Known limits
 
