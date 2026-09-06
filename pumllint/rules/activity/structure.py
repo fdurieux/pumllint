@@ -54,10 +54,15 @@ class MissingStop(Rule):
 
 @register
 class UnlabelledDecisionBranch(Rule):
-    """``if (...) then`` / ``else`` without a branch label like ``(yes)``.
+    """``if (...) then`` / ``else`` without a branch label like ``(yes)``,
+    and a loop whose outcomes carry none: ``repeat while (...)`` without
+    ``is (yes)`` / ``not (no)``, ``while (...)`` without ``is (yes)``,
+    ``endwhile`` without ``(no)``.
 
-    Unlabelled branches force the reader to guess which side is which.
-    Option ``require_else_label`` (default True) also flags bare ``else``.
+    Unlabelled branches force the reader to guess which side is which; a
+    loop's looping and exit outcomes are the same two branches. Option
+    ``require_else_label`` (default True) also flags bare ``else`` — and,
+    as the same "other branch", an unlabelled loop exit.
     """
 
     id = "ACT003"
@@ -76,6 +81,24 @@ class UnlabelledDecisionBranch(Rule):
                     diagram,
                     n.line,
                     "Unlabelled 'else' branch — write \"else (no)\"",
+                )
+            elif n.kind in ("while", "repeat_while") and not n.branch_label:
+                yield self.violation(
+                    diagram,
+                    n.line,
+                    f"Loop '({n.label})' has an unlabelled looping outcome — write \"is (yes)\"",
+                )
+            if n.kind == "repeat_while" and require_else and not n.exit_label:
+                yield self.violation(
+                    diagram,
+                    n.line,
+                    f"Loop '({n.label})' has an unlabelled exit — write \"not (no)\"",
+                )
+            elif n.kind == "endwhile" and require_else and not n.branch_label:
+                yield self.violation(
+                    diagram,
+                    n.line,
+                    "Unlabelled loop exit — write \"endwhile (no)\"",
                 )
 
 

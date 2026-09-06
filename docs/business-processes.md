@@ -54,9 +54,9 @@ mapping keeps what the linter can check and drops what it cannot.
 | XOR split with more outcomes | `switch (…)` / `case (Event A)` … `endswitch` | ACT003 |
 | AND split and join | `fork` / `fork again` / `end fork` | ACT004 |
 | OR split and join | no faithful equivalent; emit a `fork` with a `' epc: OR` comment and remodel — see §7 | — |
-| Loop back to an earlier function | `repeat` … `repeat while (Event)` | ACT004 |
-| Loop whose XOR both merges the retry and decides on it | `while (Event?) is (Event)` … `endwhile (Exit event)` | ACT004 |
-| Loop with one function on the return path | `repeat` … `backward :Verb object;` … `repeat while (Event)` — the function runs **only** when the loop is taken | ACT006 (naming), ACT004 |
+| Loop back to an earlier function | `repeat` … `repeat while (Event?) is (Event) not (Exit event)` — the two outcomes are the labels | ACT003, ACT004 |
+| Loop whose XOR both merges the retry and decides on it | `while (Event?) is (Event)` … `endwhile (Exit event)` | ACT003, ACT004 |
+| Loop with one function on the return path | `repeat` … `backward :Verb object;` … `repeat while (Event?) is (Event) not (Exit event)` — the function runs **only** when the loop is taken | ACT006 (naming), ACT003, ACT004 |
 | Process interface (link to another process) | `:Process name;` preceded by `' aris: interface PROC-nnnn` | ACT006 |
 | Information objects, documents, IT systems | dropped; optionally `note right` — sparingly, GEN008 counts notes | GEN008 |
 | Model name, process ID, owner | `@startuml <slug>`, `title …`, `footer owner: … — ARIS process PROC-nnnn` | GEN001, GEN002, GEN006, GEN007 |
@@ -67,8 +67,9 @@ Three consequences of the parser worth knowing before you draw:
   multi-line `:action;` label. Fold long function names onto one line.
 - **Events on arrows are invisible to rules.** `-> Event text;` is
   rendered by PlantUML but not parsed by pumllint, so nothing checks
-  event names. The XOR outcomes are the exception: as branch labels they
-  are checked for presence (ACT003), not for wording.
+  event names. The XOR outcomes are the exception: as branch labels —
+  `then`/`else`, and a loop's `is`/`not`/`endwhile` — they are checked
+  for presence (ACT003), not for wording.
 - **Use the structured constructs only.** `if`/`switch`/`fork`/`repeat`/
   `while`/`partition` are recognised, and `backward` for the single action
   on a loop's return path; `split`, arrow-to-label jumps and the legacy

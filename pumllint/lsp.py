@@ -1097,10 +1097,14 @@ def _diagram_children(diagram, lines: Sequence[str], floor: int) -> list[dict]:
     if kind == "activity":
         # An `if` emits BOTH a Block and a `decision` ActivityNode with the
         # same label on the same line; showing both is two indistinguishable
-        # rows with one jump target.
+        # rows with one jump target. A `while` does the same at its block's
+        # start, a `repeat while` at its block's end.
         block_starts = {b.start_line for b in diagram.blocks}
+        block_ends = {b.end_line for b in diagram.blocks}
         for node in diagram.activity_nodes:
-            if node.kind == "decision" and node.line in block_starts:
+            if node.kind in ("decision", "while") and node.line in block_starts:
+                continue
+            if node.kind in ("repeat_while", "endwhile") and node.line in block_ends:
                 continue
             label = node.label or node.kind
             _place(node.line, spans, roots).append(
