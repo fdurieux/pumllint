@@ -29,6 +29,30 @@ then merge it — no need to ask.** Wait for the whole matrix, including the
 `windows` job, which is the only one that exercises PowerShell's argument
 handling and the Windows console codec. Do not merge on a red or pending run.
 
+## Audiences and register
+
+Every document here is written for one of two readers, and the register
+follows the reader, not the topic:
+
+- **Adopter-facing** — `README.md`, `docs/business-processes.md` and the
+  other guides under `docs/`: assume no prior knowledge of PlantUML,
+  linters or the modelling tool the reader comes from. Name a concept
+  before using it, say what a flag does and what the reader gets back,
+  and keep a plain-English walkthrough beside any command sequence a
+  guide recommends (the model is aris2puml's README §"The two commands,
+  in plain English").
+- **Maintainer-facing** — `RULES.md` (the executable spec), `ROADMAP.md`,
+  `EVIDENCE.md`, `SCORING.md`, this file, commit messages, PR bodies and
+  chat replies: assume all of it. Terse, dense, symbols cited by name.
+
+"Explain in plain English" is therefore the adopter register, not a
+verbosity setting: apply it when the reader is an adopter, or when asked.
+A prose walkthrough has no golden behind it, so `tests/test_docs_flags.py`
+is its gate: every `--<name>` option that `README.md` or `docs/business-processes.md`
+mentions must be an option of one of the CLI's parsers, the one foreign
+flag (`--manifest`, aris2puml's) being listed there on purpose. Rename or
+drop an option and the suite is red until the prose moves with it.
+
 ## Things that are contracts, not details
 
 - **Exit codes** `0` / `1` / `2`. The composite action (`action.yml`) and both
