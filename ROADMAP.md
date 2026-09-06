@@ -6371,3 +6371,53 @@ list and license posture live in § Settled questions.
   - *Suites 656 → 671 stdlib, 781 → 800 pytest; `ACT006.feature` and
     `UC002.feature` regenerated; golden, artefacts and dogfooding
     unchanged.*
+- **Process-architecture brief, two loops (2026-09-06): nothing queued —
+  four asks, each already gated on record; two hazards written down.**
+  An adoption brief for a regulated bank — two documents: a SAFe-CDP ×
+  APQC taxonomy design with an artefact ledger and two-state artefact
+  lifecycles, and a toolchain assessment placing aris2puml → pumllint as
+  "Loop A, commit-time" against process-mining conformance as "Loop B,
+  run-time" — was read against this roadmap and aris2puml's. The
+  reconciliation, twenty-one claim checks with file and line, is
+  published beside the documents (https://claude.ai/code/artifact/c3e39034-e727-430b-8170-8ca152ea9b80);
+  aris2puml's A1, B4 and D2 carry the converter side. What the brief asks
+  of this repository, and where each ask already sits:
+  - *Component and deployment parsers.* Map 2 marks both "no parser", off
+    the PCF axis. Arc C's first candidate, census-gated at 0 of 39;
+    unchanged. Hazard recorded for the brief's ledger: an off-axis diagram
+    put through the gate is not un-levelled but **mistyped** — a component
+    diagram with one `database … as` line is a sequence diagram scoring
+    Level 3–4 (Linked.Archi and graph-checks records). Keep them out of
+    the gate until the parser exists.
+  - *Typed process relations* (variant-of, realises) — the brief's
+    traceability spine and its capability-variant lifecycle. `trace` is
+    bipartite, untyped and undirected (SysML record); the typed form is
+    Arc C's `ref over` / declared diagram→diagram links item, trigger
+    unchanged: an adopter running `trace` asking for them. aris2puml's
+    manifest is the carrier once the JSON contract grows the relation.
+  - *A declarative house-rule layer.* The brief's SWOT called the
+    catalogue "declarative data"; corrected in the document. Rules are
+    code; house conventions are the declared options shipped 2026-09-04
+    plus config; the declarative authoring layer is the Spectral record's
+    candidate 1, demand-gated, and F2's sizing (≤ 31 of 51) bounds it.
+  - *Sonar.* The generic import is what the brief names and what ships;
+    the plugin's trigger (a Sonar-shop user the generic route cannot
+    serve) is unchanged.
+  - *Model-based test generation from state machines*, tagged hypothesis
+    "not wired" — corrected to "on no roadmap": the product path is
+    deterministic (working agreements) and generation stays in `tools/`.
+  Second hazard, for any process-documentation adopter: the brief's "the
+  score measures the drawing, not the design" is weaker than this
+  record's own caveat — for activity diagrams DIM-AMB is 100 by
+  construction (BPMN record, 2026-08-29 measurement) — so the guide's
+  "gate on the linter, not the level" is the sentence to circulate. The
+  brief's containment condition for suppression drift (the count reported
+  as a metric) is already met by the score's disclosure channel.
+  Record-integrity note: the 2026-09-06 work the brief leans on — #137
+  (ACT003 reads loop labels, released as 0.33.0) and #139 (interface refs
+  in the footer, the §2 mapping row moved with them) — landed in commits
+  and in aris2puml's ROADMAP (B1, B4) and had no line here until this
+  one. *Re-litigate on:* the bank's corpus arriving — in one delivery it
+  is the census the component parser waits on, the foreign fixture Arc D
+  waits on, and the process-documentation adopter the DIM-AMB residual's
+  trigger names.
