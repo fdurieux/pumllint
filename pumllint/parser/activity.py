@@ -35,7 +35,9 @@ RE_ACT_WHILE = re.compile(
 RE_ACT_ENDWHILE = re.compile(r"^endwhile(?:\s*\((?P<branch>[^)]*)\))?\s*$", re.IGNORECASE)
 RE_ACT_REPEAT = re.compile(r"^repeat\s*$", re.IGNORECASE)
 RE_ACT_REPEAT_WHILE = re.compile(
-    r"^repeat\s*while\s*\((?P<cond>[^)]*)\).*$", re.IGNORECASE
+    r"^repeat\s*while\s*\((?P<cond>[^)]*)\)"
+    r"(?:\s*is\s*\((?P<branch>[^)]*)\))?(?:\s*not\s*\((?P<exit>[^)]*)\))?.*$",
+    re.IGNORECASE,
 )
 RE_ACT_BACKWARD = re.compile(
     r"^backward\s*:(?P<label>.*?)(?P<term>[;|<>/\]}]?)\s*$", re.IGNORECASE
@@ -153,19 +155,50 @@ def try_parse(d: Diagram, act_stack: list[Block], lineno: int, line: str):
         _close(act_stack, ("if",), lineno)
         return "handled"
 
+    # Loops carry their outcomes where a decision carries its branches: the
+    # `is (…)` label is the looping outcome, `not (…)` / `endwhile (…)` the
+    # exit. They land as nodes so ACT003 can read them, next to the Block
+    # that ACT004 closes.
     m = RE_ACT_WHILE.match(line)
     if m:
         d.diagram_type = "activity"
         b = Block(kind="while", label=m.group("cond").strip(), start_line=lineno)
         d.blocks.append(b)
         act_stack.append(b)
+        d.activity_nodes.append(
+            ActivityNode(
+                kind="while",
+                label=m.group("cond").strip(),
+                line=lineno,
+                branch_label=(m.group("branch") or "").strip() or None,
+            )
+        )
         return "handled"
-    if RE_ACT_ENDWHILE.match(line) and is_activity:
+    m = RE_ACT_ENDWHILE.match(line)
+    if m and is_activity:
         _close(act_stack, ("while",), lineno)
+        d.activity_nodes.append(
+            ActivityNode(
+                kind="endwhile",
+                label="",
+                line=lineno,
+                branch_label=(m.group("branch") or "").strip() or None,
+            )
+        )
         return "handled"
 
-    if RE_ACT_REPEAT_WHILE.match(line) and is_activity:  # before bare 'repeat'
+    m = RE_ACT_REPEAT_WHILE.match(line)
+    if m and is_activity:  # before bare 'repeat'
         _close(act_stack, ("repeat",), lineno)
+        d.activity_nodes.append(
+            ActivityNode(
+                kind="repeat_while",
+                label=m.group("cond").strip(),
+                line=lineno,
+                branch_label=(m.group("branch") or "").strip() or None,
+                exit_label=(m.group("exit") or "").strip() or None,
+            )
+        )
         return "handled"
     if RE_ACT_REPEAT.match(line) and is_activity:
         b = Block(kind="repeat", label="", start_line=lineno)

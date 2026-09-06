@@ -302,7 +302,7 @@ codegen twin on the same line counts once).
 | SEQ011 | max-messages | minor | More messages than `max` (default 30) — split per phase or `ref over` (which pumllint does not parse: lint the extracted file too). |
 | ACT001 | missing-start | major | Activity diagram with actions but no `start` node. |
 | ACT002 | missing-stop | major | Activity flow never reaches `stop`/`end` (unterminated flow). |
-| ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label. |
+| ACT003 | unlabelled-decision-branch | minor | `if (...) then` / `else` without a `(yes)`/`(no)` branch label; a loop (`repeat while`, `while`/`endwhile`) whose looping or exit outcome is unlabelled. |
 | ACT004 | unterminated-construct | critical | `if`/`while`/`repeat`/`fork`/`switch`/`partition` never closed. |
 | ACT005 | swimlane-naming | minor | Swimlane (`|Lane|`) name violating a configurable `pattern`. |
 | ACT006 | verb-first-activity | minor | Activity not phrased verb-first. Needs a `verbs` whitelist or a `verb_pattern` regex — a name passes on either; dormant otherwise. ACT005/ACT006 together are the conventions gate for business processes drawn as activity diagrams — recipe in [docs/business-processes.md](docs/business-processes.md). |

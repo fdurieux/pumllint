@@ -223,17 +223,23 @@ class ActivityNode:
     """A node in an activity diagram (new-style syntax).
 
     kind: start | stop | end | action | backward | decision | branch | swimlane
+          | while | endwhile | repeat_while
     For ``swimlane`` nodes ``label`` is the lane name (``|Lane|``); for
     ``backward`` it is the action on a loop's return path.
     For decisions (``if``/``elseif``) ``label`` is the condition and
     ``branch_label`` the ``then (yes)`` annotation; for ``branch`` (``else``)
     ``branch_label`` is the ``(no)`` annotation.
+    Loops mirror that: for ``while`` and ``repeat_while`` ``label`` is the
+    condition and ``branch_label`` the ``is (…)`` looping outcome; the exit
+    outcome is ``exit_label`` (``not (…)``) on ``repeat_while`` and
+    ``branch_label`` on ``endwhile``.
     """
 
     kind: str
     label: str
     line: int
     branch_label: Optional[str] = None
+    exit_label: Optional[str] = None
 
 
 @dataclass

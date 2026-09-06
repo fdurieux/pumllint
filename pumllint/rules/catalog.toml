@@ -364,7 +364,7 @@ profiles = []
 
 [ACT003]
 name = "unlabelled-decision-branch"
-description = "Decision branch ('then'/'else') has no (label)"
+description = "Decision branch ('then'/'else') or loop outcome ('is'/'not'/'endwhile') has no (label)"
 severity = "minor"
 dimension = "DIM-CMP"
 applies_to = ["activity"]

@@ -318,6 +318,52 @@ def test_given_unlabelled_else_then_act003_fires_unless_configured():
     assert "ACT003" not in rule_ids(src, cfg)
 
 
+LOOPS_CLEAN = """\
+@startuml dossier-check
+title Dossier check
+start
+repeat
+:Check dossier;
+repeat while (Document missing?) is (Document missing) not (Dossier complete)
+while (Signature missing?) is (Signature missing)
+:Request signature;
+endwhile (Signed)
+:Approve dossier;
+stop
+@enduml
+"""
+
+
+def test_given_fully_labelled_loops_then_act003_is_quiet():
+    assert "ACT003" not in rule_ids(LOOPS_CLEAN)
+
+
+def test_given_repeat_while_without_is_then_act003_fires_on_the_looping_outcome():
+    src = LOOPS_CLEAN.replace(" is (Document missing) not", " not")
+    issues = [i for i in lint(src) if i.rule_id == "ACT003"]
+    assert [(i.line, "looping outcome" in i.message) for i in issues] == [(6, True)]
+
+
+def test_given_repeat_while_without_not_then_act003_fires_unless_configured():
+    src = LOOPS_CLEAN.replace(" not (Dossier complete)", "")
+    issues = [i for i in lint(src) if i.rule_id == "ACT003"]
+    assert [(i.line, "exit" in i.message) for i in issues] == [(6, True)]
+    cfg = {"rules": {"unlabelled-decision-branch": {"require_else_label": False}}}
+    assert "ACT003" not in rule_ids(src, cfg)
+
+
+def test_given_while_without_is_and_bare_endwhile_then_act003_fires_twice():
+    src = LOOPS_CLEAN.replace(" is (Signature missing)", "").replace("endwhile (Signed)", "endwhile")
+    lines = sorted(i.line for i in lint(src) if i.rule_id == "ACT003")
+    assert lines == [7, 9]
+
+
+def test_every_partial_repeat_while_form_parses_and_closes_its_block():
+    for tail in ("", " is (A)", " not (B)", " is (A) not (B)"):
+        src = LOOPS_CLEAN.replace(" is (Document missing) not (Dossier complete)", tail)
+        assert "ACT004" not in rule_ids(src)
+
+
 def test_given_unclosed_while_then_act004_fires():
     src = ACTIVITY_CLEAN.replace("stop\n", "while (More items?) is (yes)\n:Process item;\nstop\n")
     assert "ACT004" in rule_ids(src)

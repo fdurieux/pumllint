@@ -1279,7 +1279,11 @@ Feature: ACT002 flow terminates
 
 **Rationale:** An `if`/`else` without branch labels ("yes"/"no" or guard text) does
 not specify the decision logic — the core information an activity diagram carries.
-Option `require_else_label` (default true) also flags a bare `else`.
+A loop's two outcomes are the same two branches: `repeat while (…) is (yes) not (no)`
+and `while (…) is (yes) … endwhile (no)` carry them, and a loop without them leaves
+the reader guessing which way is round and which way is out.
+Option `require_else_label` (default true) also flags a bare `else` — and, as the same
+"other branch", an unlabelled loop exit (`not`/`endwhile`).
 
 ```gherkin
 Feature: ACT003 labelled decision branches
@@ -1314,6 +1318,74 @@ Feature: ACT003 labelled decision branches
       else (no)
       :Request documents;
       endif
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then no "ACT003" issue is reported
+
+  Scenario: loop whose looping outcome is unlabelled is reported
+    Given the diagram:
+      """
+      @startuml dossier-check
+      title Dossier check
+      start
+      repeat
+      :Check dossier;
+      repeat while (Document missing?) not (Dossier complete)
+      :Approve dossier;
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then an "ACT003" issue with severity "minor" is reported on line 6
+
+  Scenario: loop whose exit is unlabelled is reported unless the else option is off
+    Given the diagram:
+      """
+      @startuml dossier-check
+      title Dossier check
+      start
+      repeat
+      :Check dossier;
+      repeat while (Document missing?) is (Document missing)
+      :Approve dossier;
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then an "ACT003" issue with severity "minor" is reported on line 6
+
+  Scenario: while loop without an is label is reported
+    Given the diagram:
+      """
+      @startuml dossier-check
+      title Dossier check
+      start
+      :Check dossier;
+      while (Document missing?)
+      :Contact customer;
+      endwhile (Dossier complete)
+      :Approve dossier;
+      stop
+      @enduml
+      """
+    When the linter runs
+    Then an "ACT003" issue with severity "minor" is reported on line 5
+
+  Scenario: fully labelled loops pass
+    Given the diagram:
+      """
+      @startuml dossier-check
+      title Dossier check
+      start
+      repeat
+      :Check dossier;
+      repeat while (Document missing?) is (Document missing) not (Dossier complete)
+      while (Signature missing?) is (Signature missing)
+      :Request signature;
+      endwhile (Signed)
+      :Approve dossier;
       stop
       @enduml
       """
