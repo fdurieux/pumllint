@@ -1707,6 +1707,26 @@ list and license posture live in § Settled questions.
     §8 tells the adopter this clause describes where to file the ask.
     The converter half of that recipe (ARIS export → activity diagram)
     lives outside this repository by design: `fdurieux/aris2puml`.]*
+    *[Amended 2026-09-06: two changes landed on this guide and its pack
+    that day, recorded here rather than only in aris2puml's ROADMAP. #137
+    — ACT003 reads a loop's outcomes: the `repeat while` regex kept only
+    the condition, the `while` label sat in a Block no rule reads and the
+    `endwhile` label was dropped, so an eventless loop outcome — the
+    defect ACT003 exists for — passed the gate. Loops now land as activity
+    nodes beside decisions (`while` and `repeat_while` carry the condition
+    and the looping label, `endwhile` and a new `exit_label` the exit);
+    ACT003 reports an unlabelled looping outcome, and an unlabelled exit
+    under the existing `require_else_label` option; a loop counts as one
+    element like a decision, so the pilot report moved 87.2 → 87.0 over
+    111 elements (regenerated). Released as 0.33.0 (#138); aris2puml's
+    floor is `pumllint>=0.33`. #139 — the §2 row for a process interface
+    kept the linked ID only in an `' aris: interface` comment, which no
+    rule and not `trace` ever sees; the row now also puts it in the
+    footer (`— interfaces: …`), the demo carries it, and §7 documents the
+    aris2puml `--manifest` plus `trace --fail-on-unknown-ref` pair that
+    reports a referenced process with no diagram — the hierarchy check
+    with no rule behind it. Docs only. The ACT pack is still ACT001–006;
+    no flow rule is queued.]*
 
 - **UML ecosystem (2026-08-27): no — no conformance mode, no XMI reader, no
   repositioning; two inward-facing candidates recorded, neither queued.**
