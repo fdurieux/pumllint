@@ -587,8 +587,10 @@ Each is a yes/no that this note cannot answer.
 
 1. **Does the #43/#47 consumer count as third-party adopter pull for the Arc E
    bar?** At least eight items' gate status turns on this. See §1's contested
-   exception — and note that `foreign-corpus-audit.md:146` already declines to
-   vouch for the corpus's provenance. *(Answered 2026-09-04: **yes**, an
+   exception — and note that `foreign-corpus-audit.md:147` already declines to
+   vouch for the corpus's provenance *(pointer corrected 2026-09-07: since
+   the 2026-09-03 row split, :146 is the licence row and :147 the arm's-length
+   one)*. *(Answered 2026-09-04: **yes**, an
    arm's-length adopter. The audit row is left as it stands — the answer was
    about the consumer, and this note never adopted the identification of the
    consumer with the corpus.)*
@@ -600,7 +602,13 @@ Each is a yes/no that this note cannot answer.
    list never touches it; the other asks keep their recorded status.)*
 3. **Do you still intend to pursue a pilot organisation?** If no, should
    `README.md:86-89`'s 1.0 gate be reworded to drop the pilot half, and the
-   fourteen dependent triggers re-based on something reachable?
+   fourteen dependent triggers re-based on something reachable? *(Answered
+   2026-09-07: **yes**, still pursuing a pilot — with the maintainer's own
+   caveat that the consistency and quality of the processes documented in
+   ARIS are in doubt. README's 1.0 gate and the pilot-shaped triggers stay as
+   written; the doubt is recorded on the process-architecture brief's
+   re-litigation clause in ROADMAP, since that corpus is the one in prospect,
+   and it changes what the pilot measures, not whether it runs.)*
 4. **Should `c7_requires_applicable_rules` become the default?** It closes
    #35's substance bypass, but as a bare flip it breaks the documented
    `l5_requires_profile` retarget for any house profile and ships with zero
@@ -609,16 +617,39 @@ Each is a yes/no that this note cannot answer.
    settles #30's `syntaxOk` tri-state, headroom reporting, the positive-
    coverage command, unmodelled-content disclosure, `verbalize` and the k-way
    diff — all currently blocked by `additionalProperties: false` on the three
-   shipped schemas.
+   shipped schemas. *(Answered 2026-09-07: **yes**, a fourth pinned schema may
+   be added inside 0.x, and — asked separately the same day — an additive
+   field in an existing pinned shape is inside the yes too. What that settles,
+   checked item by item: #30's JSON half is a new key in `score`, not a fourth
+   file, and is now ungated; the config schema (option C of the `option_keys`
+   record) is the literal fourth file, unblocked and waiting for pull by the
+   maintainer's choice; #43.1 and #43.2 keep "recorded, not queued";
+   unmodelled-content tracking builds with Arc H; `verbalize` and the k-way
+   diff stay on their own triggers. This list over-reached as written: the
+   dependency graph in §4 draws §6.5 into three items, not six.)*
 6. **Should unknown config keys stay a stderr warning?** A no means
    `--strict-config` or exit 2, which is a change on the hardest contract in
    CLAUDE.md and is not requested by anyone.
 7. **Should `Participant.declared` split into "declared at all" and "declared
    before first use"?** SEQ001 wants the first and SEQ010's own docstring
    wants the second, so a bare fix trades one false negative for another.
+   *(Answered 2026-09-07: **one meaning — declared before it is used**, no
+   split. Measured the same day: that is what `parser/sequence.py:319` already
+   computes, so SEQ001 and SEQ010 report exactly the right set today and
+   Tier 3 item 9 — copying the class parser's upgrade — is dropped, since it
+   would have moved the meaning to "declared at all" and silenced SEQ010 on
+   its own case. What remains is not a false negative but a false sentence and
+   a data loss: SEQ001 says "never declared" of a participant declared late,
+   and a late declaration's kind, alias and stereotype are discarded. Fixed
+   under the ROADMAP record of that date without touching `declared`.)*
 8. **Should `foreign-corpus-audit.md:146` be sharpened, and are you willing to
    retire README's third-party standing-fixture caveat using a corpus whose
-   arm's-length status the record does not vouch for?**
+   arm's-length status the record does not vouch for?** *(Answered
+   2026-09-07: **no**, the corpus is not trusted sufficiently. The row —
+   `:147` since the 2026-09-03 split, not `:146` — carries the answer as a
+   dated sentence rather than a sharpening; README's caveat stays; Arc D's
+   item stays open with its trigger re-based on a corpus the owner can vouch
+   for, the bank's being the one in prospect.)*
 
 ## 7. What is deliberately not recommended
 
