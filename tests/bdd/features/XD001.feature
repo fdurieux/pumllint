@@ -18,6 +18,24 @@ Feature: XD001 conflicting participant kind
     Then a "XD001" issue with severity "major" is reported on line 3
     And a "XD001" issue with severity "major" is reported on line 8
 
+  Scenario: a kind declared after first use still conflicts
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      Client -> OrderSvc : run()
+      database OrderSvc
+      @enduml
+      @startuml two
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD001" issue with severity "major" is reported on line 4
+    And a "XD001" issue with severity "major" is reported on line 8
+
   Scenario: an authoritative kind reports only the non-conforming site
     Given the configuration:
       """

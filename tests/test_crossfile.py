@@ -67,6 +67,62 @@ def test_missing_stereotype_is_not_a_conflict():
     assert not [v for v in _lint(src) if v.rule_id == "XD002"]
 
 
+# --- a declaration after first use still authored a kind (§6.7 follow-up,
+# 2026-09-07): XD001/XD002 compare authored kinds, reported where written ---
+
+_LATE_KIND = """\
+@startuml one
+participant Client
+Client -> Pay : charge()
+actor Pay
+@enduml
+@startuml two
+participant Client
+participant Pay
+Client -> Pay : refund()
+@enduml
+"""
+
+
+def test_a_kind_declared_after_first_use_still_conflicts():
+    hits = [v for v in _lint(_LATE_KIND) if v.rule_id == "XD001"]
+    # the late site is reported at its declaration line (4), not at first use (3)
+    assert [v.line for v in hits] == [4, 8]
+    assert all("'actor' ×1" in v.message and "'participant' ×1" in v.message for v in hits)
+
+
+def test_an_authoritative_kind_reports_only_the_late_non_conforming_site():
+    cfg = {"rules": {"XD001": {"authoritative": {"Pay": "participant"}}}}
+    hits = [v for v in _lint(_LATE_KIND, cfg) if v.rule_id == "XD001"]
+    assert [(v.line, v.message) for v in hits] == [
+        (4, "Participant 'Pay' is declared 'actor' here but 'participant' is the "
+            "configured kind for this entity"),
+    ]
+
+
+def test_a_stereotype_declared_after_first_use_still_conflicts():
+    src = (
+        "@startuml one\nparticipant C\nC -> Pay : x()\nparticipant Pay <<store>>\n@enduml\n"
+        "@startuml two\nparticipant Pay <<external>>\nparticipant C\nC -> Pay : y()\n@enduml\n"
+    )
+    hits = [v for v in _lint(src) if v.rule_id == "XD002"]
+    assert [v.line for v in hits] == [4, 7]
+    assert all("<<store>> ×1" in v.message and "<<external>> ×1" in v.message for v in hits)
+
+
+def test_a_late_bare_declaration_is_still_not_a_stereotype_conflict():
+    src = (
+        "@startuml one\nparticipant C\nC -> Pay : x()\nparticipant Pay\n@enduml\n"
+        "@startuml two\nparticipant Pay <<external>>\nparticipant C\nC -> Pay : y()\n@enduml\n"
+    )
+    assert not [v for v in _lint(src) if v.rule_id == "XD002"]
+
+
+def test_a_never_declared_lifeline_still_has_no_kind_to_conflict():
+    src = _LATE_KIND.replace("actor Pay\n", "")
+    assert not [v for v in _lint(src) if v.rule_id in ("XD001", "XD002")]
+
+
 def test_case_collision_fires_at_every_site_including_implicit_participants():
     # Both spellings are reported, each message carrying the whole variant
     # set: no spelling is elected. Until 2026-09-03 only the site differing

@@ -234,3 +234,18 @@ def test_create_is_not_a_declaration():
     d = _one("@startuml\nparticipant A\ncreate B\nA -> B : x\n@enduml\n")
     b = d.participants["B"]
     assert b.declared is False and b.declared_line is None and b.kind == "implicit"
+
+
+def test_authored_is_declared_before_or_after_first_use():
+    """``authored`` is "the modeller wrote a kind", whichever side of first
+    use the declaration sits; ``authored_line`` is where it was written."""
+    d = _one("@startuml\nparticipant A\nA -> B : x\nactor B\nB -> C : y\n@enduml\n")
+    a, b, c = (d.participants[k] for k in "ABC")
+    assert (a.authored, a.authored_line) == (True, 2)  # declared first
+    assert (b.authored, b.authored_line) == (True, 4)  # declared late: the declaration
+    assert (c.authored, c.authored_line) == (False, 5)  # never declared: first use
+    # a use-case endpoint's kind is inferred from its brackets, not written
+    u = _one("@startuml\nusecase (Pay)\n:Bob: --> (Pay)\n:Bob: --> (Ship)\n@enduml\n")
+    assert [(p.kind, p.declared, p.authored) for p in u.participants.values()] == [
+        ("usecase", True, True), ("actor", False, False), ("usecase", False, False)
+    ]

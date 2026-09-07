@@ -18,6 +18,24 @@ Feature: XD002 conflicting participant stereotype
     Then a "XD002" issue with severity "minor" is reported on line 2
     And a "XD002" issue with severity "minor" is reported on line 7
 
+  Scenario: a stereotype declared after first use still conflicts
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      Client -> Payments : pay()
+      participant Payments <<service>>
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD002" issue with severity "minor" is reported on line 4
+    And a "XD002" issue with severity "minor" is reported on line 7
+
   Scenario: an authoritative stereotype reports only the non-conforming site
     Given the configuration:
       """
