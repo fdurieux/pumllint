@@ -99,6 +99,18 @@ def test_bad_regex_is_a_config_error_not_a_traceback():
     ]
     for config, source, *needles in cases:
         _expect_config_error(config, source, *needles)
+    # The hand list above is exactly the catalog's regex-typed options: a new
+    # `regex` / `map-regex` declaration needs a case here, and vice versa.
+    from pumllint.rules import discover
+
+    declared = {
+        (rid, key)
+        for rid, cls in discover().items()
+        for key, kind in cls.option_types.items()
+        if kind in ("regex", "map-regex")
+    }
+    listed = {(rid, needle.split(".")[0]) for _, _, rid, needle in cases}
+    assert listed == declared, {"unlisted": declared - listed, "untyped": listed - declared}
 
 
 def test_non_string_pattern_is_a_config_error_too():

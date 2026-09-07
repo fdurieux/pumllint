@@ -215,16 +215,18 @@ def build_trace_parser() -> argparse.ArgumentParser:
 def build_schema_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="pumllint schema",
-        description="Print the JSON Schema (draft 2020-12) for a machine-readable "
-        "report — the contract for `-f json` output. The badge and sonar formats "
+        description="Print a pinned JSON Schema (draft 2020-12): the contract for "
+        "a machine-readable report (`-f json` output) or for the configuration "
+        "file (pumllint.toml / .yaml / .json). The badge and sonar formats "
         "follow shields.io's and SonarQube's own schemas and are not covered.",
     )
     _add_version_argument(p)
     p.add_argument(
         "report",
         choices=list(SCHEMA_NAMES),
-        help="Which report: 'lint' (pumllint -f json), 'score' (pumllint "
-        "score -f json) or 'trace' (pumllint trace -f json)",
+        help="Which shape: 'lint' (pumllint -f json), 'score' (pumllint "
+        "score -f json), 'trace' (pumllint trace -f json) or 'config' (the "
+        "configuration file: pumllint.toml / .yaml / .json)",
     )
     p.add_argument("-o", "--output", help="Write the schema to a file instead of stdout")
     return p

@@ -1,0 +1,2584 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/config.schema.json",
+  "title": "pumllint configuration",
+  "description": "The shape of pumllint.toml / pumllint.yaml / pumllint.json (README § Configuration). Generated from the rule catalog by tools/generate_config_schema.py; a public contract, changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Rules are keyed by canonical id or kebab-case name — pumllint itself also accepts other letter cases, and reports an unknown key as a warning rather than an error; this schema is stricter on both counts by design. Null is never a legal option value.",
+  "type": "object",
+  "properties": {
+    "profile": {
+      "type": "string",
+      "description": "The active profile (built-in: codegen); --profile overrides"
+    },
+    "profiles": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/profile"
+      }
+    },
+    "rules": {
+      "type": "object",
+      "description": "One entry per rule, by id or kebab-case name: false/off, true/on, or a table of options",
+      "properties": {
+        "ACT001": {
+          "$ref": "#/$defs/ACT001"
+        },
+        "missing-start": {
+          "$ref": "#/$defs/ACT001"
+        },
+        "ACT002": {
+          "$ref": "#/$defs/ACT002"
+        },
+        "missing-stop": {
+          "$ref": "#/$defs/ACT002"
+        },
+        "ACT003": {
+          "$ref": "#/$defs/ACT003"
+        },
+        "unlabelled-decision-branch": {
+          "$ref": "#/$defs/ACT003"
+        },
+        "ACT004": {
+          "$ref": "#/$defs/ACT004"
+        },
+        "unterminated-construct": {
+          "$ref": "#/$defs/ACT004"
+        },
+        "ACT005": {
+          "$ref": "#/$defs/ACT005"
+        },
+        "swimlane-naming": {
+          "$ref": "#/$defs/ACT005"
+        },
+        "ACT006": {
+          "$ref": "#/$defs/ACT006"
+        },
+        "verb-first-activity": {
+          "$ref": "#/$defs/ACT006"
+        },
+        "CLS001": {
+          "$ref": "#/$defs/CLS001"
+        },
+        "class-naming": {
+          "$ref": "#/$defs/CLS001"
+        },
+        "CLS002": {
+          "$ref": "#/$defs/CLS002"
+        },
+        "association-multiplicity": {
+          "$ref": "#/$defs/CLS002"
+        },
+        "CLS003": {
+          "$ref": "#/$defs/CLS003"
+        },
+        "unlabelled-association": {
+          "$ref": "#/$defs/CLS003"
+        },
+        "CLS004": {
+          "$ref": "#/$defs/CLS004"
+        },
+        "inheritance-cycle": {
+          "$ref": "#/$defs/CLS004"
+        },
+        "CLS005": {
+          "$ref": "#/$defs/CLS005"
+        },
+        "max-members-per-class": {
+          "$ref": "#/$defs/CLS005"
+        },
+        "GEN001": {
+          "$ref": "#/$defs/GEN001"
+        },
+        "missing-title": {
+          "$ref": "#/$defs/GEN001"
+        },
+        "GEN002": {
+          "$ref": "#/$defs/GEN002"
+        },
+        "unnamed-diagram": {
+          "$ref": "#/$defs/GEN002"
+        },
+        "GEN003": {
+          "$ref": "#/$defs/GEN003"
+        },
+        "inline-skinparam": {
+          "$ref": "#/$defs/GEN003"
+        },
+        "GEN004": {
+          "$ref": "#/$defs/GEN004"
+        },
+        "participant-naming": {
+          "$ref": "#/$defs/GEN004"
+        },
+        "GEN005": {
+          "$ref": "#/$defs/GEN005"
+        },
+        "max-participants": {
+          "$ref": "#/$defs/GEN005"
+        },
+        "GEN006": {
+          "$ref": "#/$defs/GEN006"
+        },
+        "owner-tag": {
+          "$ref": "#/$defs/GEN006"
+        },
+        "GEN007": {
+          "$ref": "#/$defs/GEN007"
+        },
+        "requirement-link": {
+          "$ref": "#/$defs/GEN007"
+        },
+        "GEN008": {
+          "$ref": "#/$defs/GEN008"
+        },
+        "note-density": {
+          "$ref": "#/$defs/GEN008"
+        },
+        "GEN009": {
+          "$ref": "#/$defs/GEN009"
+        },
+        "max-elements": {
+          "$ref": "#/$defs/GEN009"
+        },
+        "GEN010": {
+          "$ref": "#/$defs/GEN010"
+        },
+        "duplicate-diagram-name": {
+          "$ref": "#/$defs/GEN010"
+        },
+        "SEQ001": {
+          "$ref": "#/$defs/SEQ001"
+        },
+        "undeclared-participant": {
+          "$ref": "#/$defs/SEQ001"
+        },
+        "SEQ002": {
+          "$ref": "#/$defs/SEQ002"
+        },
+        "unused-participant": {
+          "$ref": "#/$defs/SEQ002"
+        },
+        "SEQ003": {
+          "$ref": "#/$defs/SEQ003"
+        },
+        "unbalanced-activation": {
+          "$ref": "#/$defs/SEQ003"
+        },
+        "SEQ004": {
+          "$ref": "#/$defs/SEQ004"
+        },
+        "unterminated-block": {
+          "$ref": "#/$defs/SEQ004"
+        },
+        "SEQ005": {
+          "$ref": "#/$defs/SEQ005"
+        },
+        "unlabelled-message": {
+          "$ref": "#/$defs/SEQ005"
+        },
+        "SEQ006": {
+          "$ref": "#/$defs/SEQ006"
+        },
+        "no-self-message": {
+          "$ref": "#/$defs/SEQ006"
+        },
+        "SEQ007": {
+          "$ref": "#/$defs/SEQ007"
+        },
+        "unlabelled-block-condition": {
+          "$ref": "#/$defs/SEQ007"
+        },
+        "SEQ008": {
+          "$ref": "#/$defs/SEQ008"
+        },
+        "fragment-nesting-depth": {
+          "$ref": "#/$defs/SEQ008"
+        },
+        "SEQ009": {
+          "$ref": "#/$defs/SEQ009"
+        },
+        "unpaired-return": {
+          "$ref": "#/$defs/SEQ009"
+        },
+        "SEQ010": {
+          "$ref": "#/$defs/SEQ010"
+        },
+        "explicit-participant-order": {
+          "$ref": "#/$defs/SEQ010"
+        },
+        "SEQ011": {
+          "$ref": "#/$defs/SEQ011"
+        },
+        "max-messages": {
+          "$ref": "#/$defs/SEQ011"
+        },
+        "SEQ101": {
+          "$ref": "#/$defs/SEQ101"
+        },
+        "codegen-implicit-participant": {
+          "$ref": "#/$defs/SEQ101"
+        },
+        "SEQ102": {
+          "$ref": "#/$defs/SEQ102"
+        },
+        "codegen-untyped-participant": {
+          "$ref": "#/$defs/SEQ102"
+        },
+        "SEQ103": {
+          "$ref": "#/$defs/SEQ103"
+        },
+        "codegen-prose-message": {
+          "$ref": "#/$defs/SEQ103"
+        },
+        "SEQ104": {
+          "$ref": "#/$defs/SEQ104"
+        },
+        "codegen-missing-return": {
+          "$ref": "#/$defs/SEQ104"
+        },
+        "SEQ105": {
+          "$ref": "#/$defs/SEQ105"
+        },
+        "codegen-vague-guard": {
+          "$ref": "#/$defs/SEQ105"
+        },
+        "SEQ106": {
+          "$ref": "#/$defs/SEQ106"
+        },
+        "codegen-elision-marker": {
+          "$ref": "#/$defs/SEQ106"
+        },
+        "SEQ107": {
+          "$ref": "#/$defs/SEQ107"
+        },
+        "codegen-missing-failure-path": {
+          "$ref": "#/$defs/SEQ107"
+        },
+        "SEQ108": {
+          "$ref": "#/$defs/SEQ108"
+        },
+        "codegen-activation-lifecycle": {
+          "$ref": "#/$defs/SEQ108"
+        },
+        "SEQ109": {
+          "$ref": "#/$defs/SEQ109"
+        },
+        "codegen-uninformative-reply": {
+          "$ref": "#/$defs/SEQ109"
+        },
+        "STA001": {
+          "$ref": "#/$defs/STA001"
+        },
+        "single-initial-state": {
+          "$ref": "#/$defs/STA001"
+        },
+        "STA002": {
+          "$ref": "#/$defs/STA002"
+        },
+        "unreachable-state": {
+          "$ref": "#/$defs/STA002"
+        },
+        "STA003": {
+          "$ref": "#/$defs/STA003"
+        },
+        "unlabelled-transition": {
+          "$ref": "#/$defs/STA003"
+        },
+        "UC001": {
+          "$ref": "#/$defs/UC001"
+        },
+        "orphan-actor-or-usecase": {
+          "$ref": "#/$defs/UC001"
+        },
+        "UC002": {
+          "$ref": "#/$defs/UC002"
+        },
+        "usecase-actor-naming": {
+          "$ref": "#/$defs/UC002"
+        },
+        "UC003": {
+          "$ref": "#/$defs/UC003"
+        },
+        "include-extend-direction": {
+          "$ref": "#/$defs/UC003"
+        },
+        "XD001": {
+          "$ref": "#/$defs/XD001"
+        },
+        "conflicting-participant-kind": {
+          "$ref": "#/$defs/XD001"
+        },
+        "XD002": {
+          "$ref": "#/$defs/XD002"
+        },
+        "conflicting-participant-stereotype": {
+          "$ref": "#/$defs/XD002"
+        },
+        "XD003": {
+          "$ref": "#/$defs/XD003"
+        },
+        "participant-name-case-collision": {
+          "$ref": "#/$defs/XD003"
+        },
+        "XD004": {
+          "$ref": "#/$defs/XD004"
+        },
+        "cross-type-name-collision": {
+          "$ref": "#/$defs/XD004"
+        },
+        "XD005": {
+          "$ref": "#/$defs/XD005"
+        },
+        "cross-type-stereotype-conflict": {
+          "$ref": "#/$defs/XD005"
+        }
+      },
+      "additionalProperties": false
+    },
+    "scoring": {
+      "$ref": "#/$defs/scoring"
+    },
+    "suppressions": {
+      "type": "boolean",
+      "description": "Honour inline ' pumllint: disable comments (default true); --no-suppressions overrides"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "minor",
+        "major",
+        "critical",
+        "blocker"
+      ]
+    },
+    "profile": {
+      "type": "object",
+      "description": "A named profile: which gated rules it pulls in and which severities it raises",
+      "properties": {
+        "enable": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Rule ids or kebab-case names to enable under this profile"
+        },
+        "escalate": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/severity"
+          },
+          "description": "Rule id or name → severity; wins over the rule's own severity"
+        }
+      },
+      "additionalProperties": false
+    },
+    "scoring": {
+      "type": "object",
+      "description": "Settings read by `pumllint score` only (SCORING.md)",
+      "properties": {
+        "syntax_gate": {
+          "type": "boolean",
+          "description": "Run the DIM-SYN syntax gate on every score run, as --check-syntax does"
+        },
+        "syntax_command": {
+          "type": "string",
+          "description": "The command the syntax gate executes (default 'plantuml'). pumllint runs it: do not run pumllint with an auto-detected config inside a checkout you do not trust"
+        },
+        "k": {
+          "type": "number",
+          "description": "The composite's saturation constant (default 50)"
+        },
+        "severity_weights": {
+          "type": "object",
+          "properties": {
+            "info": {
+              "type": "number"
+            },
+            "minor": {
+              "type": "number"
+            },
+            "major": {
+              "type": "number"
+            },
+            "critical": {
+              "type": "number"
+            },
+            "blocker": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "dimension_weights": {
+          "type": "object",
+          "description": "Must sum to 1.0 (checked at run time, not here)",
+          "properties": {
+            "DIM-SEM": {
+              "type": "number"
+            },
+            "DIM-CMP": {
+              "type": "number"
+            },
+            "DIM-CON": {
+              "type": "number"
+            },
+            "DIM-TRC": {
+              "type": "number"
+            },
+            "DIM-RDB": {
+              "type": "number"
+            },
+            "DIM-AMB": {
+              "type": "number"
+            }
+          },
+          "additionalProperties": false
+        },
+        "thresholds": {
+          "type": "object",
+          "properties": {
+            "l2_composite": {
+              "type": "number"
+            },
+            "l3_composite": {
+              "type": "number"
+            },
+            "l4_composite": {
+              "type": "number"
+            },
+            "l4_dim_min": {
+              "type": "number"
+            },
+            "l5_composite": {
+              "type": "number"
+            },
+            "l5_dim_min": {
+              "type": "number"
+            },
+            "c3_dim_floor": {
+              "type": "number"
+            },
+            "l4_min_elements": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "l5_requires_profile": {
+          "type": [
+            "string",
+            "boolean"
+          ],
+          "description": "The profile Level 5 requires (default 'codegen'); false disables the requirement"
+        },
+        "c7_requires_applicable_rules": {
+          "type": "boolean"
+        },
+        "deduplicate_findings": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "ACT001": {
+      "description": "ACT001 missing-start: Activity diagram has actions but no 'start' node",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ACT002": {
+      "description": "ACT002 missing-stop: Activity diagram has no 'stop'/'end' terminal node",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ACT003": {
+      "description": "ACT003 unlabelled-decision-branch: Decision branch ('then'/'else') or loop outcome ('is'/'not'/'endwhile') has no (label)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "require_else_label": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ACT004": {
+      "description": "ACT004 unterminated-construct: Activity construct (if/while/repeat/fork/switch/partition) is never closed",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ACT005": {
+      "description": "ACT005 swimlane-naming: Swimlane name violates the naming convention",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ACT006": {
+      "description": "ACT006 verb-first-activity: Activity name is not phrased verb-first",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "verb_pattern": {
+              "type": "string",
+              "description": "A Python regular expression — the rule is dormant until this (or a sibling gate key) is set"
+            },
+            "verbs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "the rule is dormant until this (or a sibling gate key) is set"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CLS001": {
+      "description": "CLS001 class-naming: Class or member name violates the naming convention",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "class_pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            },
+            "member_pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CLS002": {
+      "description": "CLS002 association-multiplicity: Association does not declare multiplicities on both ends",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CLS003": {
+      "description": "CLS003 unlabelled-association: Plain association has no role/verb label",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CLS004": {
+      "description": "CLS004 inheritance-cycle: Generalization/realization hierarchy contains a cycle",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CLS005": {
+      "description": "CLS005 max-members-per-class: Class has more members than the configured maximum",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN001": {
+      "description": "GEN001 missing-title: Diagram has no title",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN002": {
+      "description": "GEN002 unnamed-diagram: @startuml has no diagram name",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN003": {
+      "description": "GEN003 inline-skinparam: Inline skinparam found; prefer a central !include theme",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "allowed": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN004": {
+      "description": "GEN004 participant-naming: Participant name violates naming convention",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            },
+            "per_kind": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string",
+                "description": "A Python regular expression"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN005": {
+      "description": "GEN005 max-participants: Diagram has more participants than the configured maximum",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max": {
+              "type": "integer"
+            },
+            "per_type": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN006": {
+      "description": "GEN006 owner-tag: Diagram declares no ownership tag (dormant until a pattern is configured)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "A Python regular expression — the rule is dormant until this (or a sibling gate key) is set"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN007": {
+      "description": "GEN007 requirement-link: Diagram references no requirement/ADR (dormant until a pattern is configured)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "A Python regular expression — the rule is dormant until this (or a sibling gate key) is set"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN008": {
+      "description": "GEN008 note-density: Too many notes for the diagram's size — structure narrated instead of modelled",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max_chars_per_element": {
+              "type": "integer"
+            },
+            "max_ratio": {
+              "type": "number"
+            },
+            "min_notes": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN009": {
+      "description": "GEN009 max-elements: Diagram has more semantic elements than the configured maximum",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "GEN010": {
+      "description": "GEN010 duplicate-diagram-name: Two or more diagrams in one file share a @startuml name",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ001": {
+      "description": "SEQ001 undeclared-participant: Participant used in a message but not declared with participant/actor/…",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "only_if_any_declared": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ002": {
+      "description": "SEQ002 unused-participant: Declared participant never appears in a message",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ003": {
+      "description": "SEQ003 unbalanced-activation: activate/deactivate pairs do not balance for a lifeline",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ004": {
+      "description": "SEQ004 unterminated-block: Grouping block (alt/opt/loop/par/…/box) is never closed with 'end'",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ005": {
+      "description": "SEQ005 unlabelled-message: Message has no label text after the colon",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "allow_unlabelled_returns": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ006": {
+      "description": "SEQ006 no-self-message: Self-message; internal logic belongs in a note",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "allowed": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ007": {
+      "description": "SEQ007 unlabelled-block-condition: Grouping block has no condition/label text",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "kinds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ008": {
+      "description": "SEQ008 fragment-nesting-depth: Combined fragments nested beyond the configured maximum depth",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max": {
+              "type": "integer"
+            },
+            "max_nesting_depth": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ009": {
+      "description": "SEQ009 unpaired-return: Dashed return message does not pair with a preceding call",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ010": {
+      "description": "SEQ010 explicit-participant-order: Participant introduced by first use instead of an explicit declaration",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "require_explicit_order": {
+              "type": "boolean",
+              "description": "the rule is dormant until this (or a sibling gate key) is set"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ011": {
+      "description": "SEQ011 max-messages: Diagram has more messages than the configured maximum",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "max": {
+              "type": "integer"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ101": {
+      "description": "SEQ101 codegen-implicit-participant: Participants must be explicitly declared, not created on first use (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ102": {
+      "description": "SEQ102 codegen-untyped-participant: Participant declarations must carry a role type or stereotype (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "allowed_stereotypes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ103": {
+      "description": "SEQ103 codegen-prose-message: Call messages must be signature-shaped, name(args) — the accepted shape is the 'pattern' option (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "arg_stop_words": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Replaces the shipped list"
+            },
+            "extra_arg_stop_words": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Extends the shipped 'arg_stop_words' list"
+            },
+            "max_arg_words": {
+              "type": "integer"
+            },
+            "pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ104": {
+      "description": "SEQ104 codegen-missing-return: Synchronous calls must have an explicit return message (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ105": {
+      "description": "SEQ105 codegen-vague-guard: alt/opt/loop guards must be present and not a known vague phrase (the 'vague_terms' lexicon) (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "extra_vague_terms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Extends the shipped 'vague_terms' list"
+            },
+            "kinds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "vague_terms": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Replaces the shipped list"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ106": {
+      "description": "SEQ106 codegen-elision-marker: No placeholder/elision markers (…, TBD, etc.) in labels, guards or notes (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "extra_tokens": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Extends the shipped 'tokens' list"
+            },
+            "kinds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "tokens": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Replaces the shipped list"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ107": {
+      "description": "SEQ107 codegen-missing-failure-path: Calls to <<external>>/database/queue participants need an enclosing error fragment, by label vocabulary (the 'failure_keywords' lexicon) (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "extra_failure_keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Extends the shipped 'failure_keywords' list"
+            },
+            "failure_keywords": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Replaces the shipped list"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ108": {
+      "description": "SEQ108 codegen-activation-lifecycle: activate/deactivate must pair as a well-formed stack per lifeline (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "SEQ109": {
+      "description": "SEQ109 codegen-uninformative-reply: Replies must use reply arrows (-->) with a label that is not a known non-informative word (the 'non_informative' lexicon) (profile: codegen)",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "extra_non_informative": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Extends the shipped 'non_informative' list"
+            },
+            "non_informative": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Replaces the shipped list"
+            },
+            "reply_pattern": {
+              "type": "string",
+              "description": "A Python regular expression"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "STA001": {
+      "description": "STA001 single-initial-state: State machine must have exactly one top-level '[*] -->' initial transition",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "STA002": {
+      "description": "STA002 unreachable-state: State has no incoming transition",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "STA003": {
+      "description": "STA003 unlabelled-transition: State-to-state transition has no event/guard/action label",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "UC001": {
+      "description": "UC001 orphan-actor-or-usecase: Actor or use case has no relationships",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "UC002": {
+      "description": "UC002 usecase-actor-naming: Use case is not phrased as a verb–object phrase",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "verb_pattern": {
+              "type": "string",
+              "description": "A Python regular expression — the rule is dormant until this (or a sibling gate key) is set"
+            },
+            "verbs": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "the rule is dormant until this (or a sibling gate key) is set"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "UC003": {
+      "description": "UC003 include-extend-direction: <<include>>/<<extend>> arrow points the wrong way or involves an actor",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "XD001": {
+      "description": "XD001 conflicting-participant-kind: Same participant declared with different kinds across diagrams",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "authoritative": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "distinct": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "XD002": {
+      "description": "XD002 conflicting-participant-stereotype: Same participant carries different stereotypes across diagrams",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "authoritative": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "distinct": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "XD003": {
+      "description": "XD003 participant-name-case-collision: Participant names differing only by case across diagrams",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "authoritative": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "distinct": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "XD004": {
+      "description": "XD004 cross-type-name-collision: Entity names differing only by case across diagram types",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "authoritative": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "distinct": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "XD005": {
+      "description": "XD005 cross-type-stereotype-conflict: Entity carries different stereotypes across diagram types",
+      "anyOf": [
+        {
+          "type": "boolean",
+          "description": "true = defaults, false = off"
+        },
+        {
+          "type": "null",
+          "description": "Same as true (a YAML/JSON key with no value)"
+        },
+        {
+          "type": "string",
+          "enum": [
+            "on",
+            "off",
+            "enabled",
+            "disabled"
+          ]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "description": "false switches the rule off; the other keys are then ignored"
+            },
+            "severity": {
+              "$ref": "#/$defs/severity"
+            },
+            "authoritative": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "distinct": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

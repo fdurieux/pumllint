@@ -497,6 +497,7 @@ The machine-readable reports are a public contract, pinned by JSON Schemas
 python -m pumllint schema lint    # the shape of `pumllint -f json`
 python -m pumllint schema score   # the shape of `pumllint score -f json`
 python -m pumllint schema trace   # the shape of `pumllint trace -f json`
+python -m pumllint schema config  # the shape of pumllint.toml / .yaml / .json
 ```
 
 Point any standard validator at them when building tooling on top of the
@@ -511,8 +512,26 @@ schema will reject the new key — refresh it with `python -m pumllint schema
 score`. The badge and sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
-In GitHub Actions, use `command: schema` with `report: lint | score | trace`
-(paths and format inputs are ignored; `output:` writes the schema to a file).
+The fourth schema describes the configuration file rather than a report:
+every section it may contain, every rule by its id and kebab-case name, and
+for each rule the options it takes with their types. It exists so that a
+mistake in the file is caught while you type it, not at run time: point your
+editor at it and a misspelled option, a number written as text, or a section
+that does not exist gets a squiggle. For `pumllint.json` the editor picks the
+schema up directly (VS Code: the `json.schemas` setting, or `"$schema"` at
+the top of the file). For `pumllint.toml` or `pumllint.yaml` the editor's
+TOML or YAML extension maps a file name to a JSON Schema in the same way
+(Even Better TOML and the YAML extension both do). Any standard validator
+can check the file in CI as well. The schema is stricter than pumllint
+itself on purpose: pumllint accepts a rule key in any letter case and reports
+an unknown key as a warning, while the schema lists the canonical spellings
+only and rejects what it does not know. Save the schema with `-o` and refresh
+it after upgrading, because a new release may add options. Configuration
+itself is described in the next section.
+
+In GitHub Actions, use `command: schema` with `report: lint | score | trace |
+config` (paths and format inputs are ignored; `output:` writes the schema to
+a file).
 
 ## Configuration
 

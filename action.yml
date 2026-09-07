@@ -42,7 +42,7 @@ inputs:
     description: "score: update the baseline with current levels — files scored are replaced, files not scored are kept while they exist; accepts every regression, so not a gate (true/false)"
     default: "false"
   report:
-    description: "schema: which report schema to print — lint | score | trace"
+    description: "schema: which pinned schema to print — lint | score | trace (the reports) | config (the configuration file)"
     default: "lint"
   extra-args:
     description: "Extra CLI arguments appended verbatim (space-separated)"

@@ -14,6 +14,10 @@ no fixtures and no third-party imports.
 After changing RULES.md, regenerate the Gherkin features or CI fails:
 `python tools/extract_features.py`.
 
+After changing a rule's `options` in `pumllint/rules/catalog.toml` (a
+`name = "type"` table), regenerate the config schema or CI fails:
+`python tools/generate_config_schema.py`.
+
 After a deliberate scoring or reporter change, regenerate the published pilot
 artefacts — `tests/test_pilot_example.py` compares them byte for byte:
 
