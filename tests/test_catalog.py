@@ -7,7 +7,7 @@ metadata.
 """
 
 from pumllint.model import Dimension, Severity
-from pumllint.rules import _CATALOG, discover
+from pumllint.rules import OPTION_TYPES, _CATALOG, discover
 
 _REQUIRED_FIELDS = {"name", "description", "severity", "dimension", "applies_to"}
 _VALID_SEVERITIES = {s.value for s in Severity}
@@ -32,11 +32,15 @@ def test_catalog_entries_are_well_formed():
         assert meta["dimension"] != Dimension.SYNTAX.value, f"{rid}: DIM-SYN is a gate, not a rule dimension"
         assert isinstance(meta["applies_to"], list) and meta["applies_to"], f"{rid}: applies_to must be a non-empty list"
         assert isinstance(meta.get("profiles", []), list), f"{rid}: profiles must be a list"
-        for field in ("options", "lexicons", "dormant_unless"):
+        for field in ("lexicons", "dormant_unless"):
             value = meta.get(field, [])
             assert isinstance(value, list), f"{rid}: {field} must be a list"
             assert all(isinstance(k, str) and k for k in value), f"{rid}: {field} holds a non-string"
             assert len(value) == len(set(value)), f"{rid}: duplicate keys in {field}"
+        options = meta.get("options", {})
+        assert isinstance(options, dict), f"{rid}: options must be a `name = \"type\"` table"
+        assert all(isinstance(k, str) and k for k in options), f"{rid}: options holds a non-string key"
+        assert all(v in OPTION_TYPES for v in options.values()), f"{rid}: options holds an unknown type"
         assert not (set(meta.get("options", ())) & {"severity", "enabled"}), (
             f"{rid}: severity/enabled are generic keys, never declared"
         )

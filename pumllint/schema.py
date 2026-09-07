@@ -1,11 +1,18 @@
-"""JSON Schemas for the machine-readable report formats.
+"""JSON Schemas for the machine-readable report formats and the config file.
 
 The ``-f json`` outputs of the lint, score and trace commands are public
 contracts — CI scripts and integrations parse them — and the schemas under
 ``schemas/`` pin those shapes the way ``tests/golden_scores.json`` pins the
 scores: changes must be deliberate. The files are shipped as package data,
-printed by ``pumllint schema {lint,score,trace}``, and drift-guarded by
-tests/test_schema.py, which validates real reporter output against them.
+printed by ``pumllint schema {lint,score,trace,config}``, and drift-guarded
+by tests/test_schema.py, which validates real reporter output against them.
+
+``config`` is the one input schema: what ``pumllint.toml`` / ``.yaml`` /
+``.json`` may contain, generated from the rule catalog by
+``tools/generate_config_schema.py`` (regenerate after changing a rule's
+declared options; the drift guard fails otherwise). It is for editors and
+external validators — pumllint's own loader keeps warning on unknown keys
+rather than failing.
 
 The badge and sonar formats are deliberately not covered: those shapes are
 shields.io's and SonarQube's contracts, not pumllint's.
@@ -23,7 +30,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-SCHEMA_NAMES = ("lint", "score", "trace")
+SCHEMA_NAMES = ("lint", "score", "trace", "config")
 
 _SCHEMA_DIR = Path(__file__).parent / "schemas"
 
@@ -31,6 +38,7 @@ _SCHEMA_DIR = Path(__file__).parent / "schemas"
 # plain data-valued keywords, vs. annotations carrying no constraints.
 _MAP_OF_SCHEMAS = {"properties", "$defs"}
 _SINGLE_SCHEMA = {"items", "additionalProperties"}
+_LIST_OF_SCHEMAS = {"anyOf"}
 _DATA_KEYWORDS = {"$ref", "type", "enum", "const", "required", "minimum", "maximum"}
 _ANNOTATIONS = {"$schema", "$id", "title", "description", "examples", "default"}
 
@@ -68,6 +76,9 @@ def _assert_supported(node: Any) -> None:
                 _assert_supported(sub)
         elif key in _SINGLE_SCHEMA:
             _assert_supported(value)
+        elif key in _LIST_OF_SCHEMAS:
+            for sub in value:
+                _assert_supported(sub)
         elif key not in _DATA_KEYWORDS and key not in _ANNOTATIONS:
             raise ValueError(
                 f"unsupported JSON Schema keyword '{key}' — extend "
@@ -109,6 +120,10 @@ def _validate(value: Any, schema: dict, root: dict, path: str, errors: list[str]
         _validate(value, _resolve(schema["$ref"], root), root, path, errors)
         return
 
+    if "anyOf" in schema:
+        _validate_any_of(value, schema["anyOf"], root, path, errors)
+        return
+
     if "type" in schema:
         types = schema["type"] if isinstance(schema["type"], list) else [schema["type"]]
         if not any(_type_ok(value, t) for t in types):
@@ -145,3 +160,38 @@ def _validate(value: Any, schema: dict, root: dict, path: str, errors: list[str]
     if isinstance(value, list) and "items" in schema:
         for i, item in enumerate(value):
             _validate(item, schema["items"], root, f"{path}[{i}]", errors)
+
+
+def _declared_types(schema: dict, root: dict) -> list[str]:
+    if "$ref" in schema:
+        schema = _resolve(schema["$ref"], root)
+    t = schema.get("type", [])
+    return t if isinstance(t, list) else [t]
+
+
+def _validate_any_of(
+    value: Any, alternatives: list[dict], root: dict, path: str, errors: list[str]
+) -> None:
+    """``anyOf``: valid when at least one alternative accepts ``value``.
+
+    When exactly one alternative declares the value's JSON type, its errors
+    are reported verbatim — that is the branch the author meant, and "expected
+    integer, got string" under it beats "matches none of the forms". Otherwise
+    the single error names the allowed forms.
+    """
+    for alt in alternatives:
+        branch: list[str] = []
+        _validate(value, alt, root, path, branch)
+        if not branch:
+            return
+    typed = [
+        alt for alt in alternatives
+        if any(_type_ok(value, t) for t in _declared_types(alt, root))
+    ]
+    if len(typed) == 1:
+        _validate(value, typed[0], root, path, errors)
+        return
+    forms = " | ".join(
+        " | ".join(_declared_types(alt, root)) or "any" for alt in alternatives
+    )
+    errors.append(f"{path}: {value!r} matches none of the allowed forms ({forms})")

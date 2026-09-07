@@ -26,7 +26,7 @@ import sys
 from pathlib import Path
 
 from pumllint.config import GENERIC_RULE_KEYS
-from pumllint.rules import _CATALOG, discover
+from pumllint.rules import _CATALOG, OPTION_TYPES, discover
 
 _TREES: dict[str, ast.Module] = {}
 
@@ -167,6 +167,75 @@ def test_the_ast_walk_is_not_vacuous():
     assert reads["CLS001"] == {"class_pattern", "member_pattern"}  # pattern_option
     assert reads["XD001"] == {"authoritative", "distinct"}  # module-level helpers
     assert reads["GEN001"] == set()  # takes no options
+
+
+# --- types (2026-09-07: `options` became a `name = "type"` table, the source
+# of pumllint/schemas/config.schema.json) ---------------------------------------
+
+_LITERAL_TYPES = {
+    bool: {"boolean"},
+    int: {"integer", "number"},
+    float: {"number"},
+    str: {"string", "regex"},
+    list: {"list"},
+    tuple: {"list"},
+    dict: {"map", "map-integer", "map-regex"},
+}
+
+
+def _default_literals(cls) -> dict[str, object]:
+    """``self.options.get("k", <literal>)`` / ``self.pattern_option("k", <literal>)``
+    defaults that are plain literals — the code's own word on the option's type."""
+    found: dict[str, object] = {}
+    for base in cls.__mro__:
+        if not base.__module__.startswith("pumllint.rules"):
+            continue
+        node = _class_def(_tree(base.__module__), base.__name__)
+        if node is None:
+            continue
+        for call in ast.walk(node):
+            if not (isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)):
+                continue
+            is_get = call.func.attr == "get" and _self_options(call.func.value)
+            is_helper = (
+                call.func.attr == "pattern_option"
+                and isinstance(call.func.value, ast.Name)
+                and call.func.value.id == "self"
+            )
+            if not (is_get or is_helper) or len(call.args) < 2:
+                continue
+            key = _literal(call.args[0])
+            if key is None:
+                continue
+            try:
+                found.setdefault(key, ast.literal_eval(call.args[1]))
+            except ValueError:
+                pass  # a name (DEFAULT_MAX, _SIGNATURE.pattern): no literal to check
+    return found
+
+
+def test_every_declared_option_has_a_type_from_the_vocabulary():
+    for rid, cls in discover().items():
+        assert set(cls.option_types) == cls.option_keys, rid
+        for key, kind in cls.option_types.items():
+            assert kind in OPTION_TYPES, (rid, key, kind)
+        for lx in _CATALOG[rid].get("lexicons", ()):
+            assert cls.option_types[lx] == cls.option_types[f"extra_{lx}"] == "list"
+
+
+def test_declared_types_agree_with_the_code_defaults():
+    """Where a rule spells its default as a literal, the catalog's type must be
+    the literal's — a wrong type would make the config schema validate a
+    config wrongly, the one way this declaration can lie."""
+    checked = 0
+    for rid, cls in discover().items():
+        for key, default in _default_literals(cls).items():
+            if default is None:
+                continue  # "unset" carries no type
+            kind = cls.option_types[key]
+            assert kind in _LITERAL_TYPES[type(default)], (rid, key, kind, default)
+            checked += 1
+    assert checked >= 10, checked
 
 
 def test_dormant_unless_keys_are_declared_options():

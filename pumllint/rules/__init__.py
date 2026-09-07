@@ -82,6 +82,23 @@ def _load_catalog() -> dict[str, dict]:
 
 _CATALOG: dict[str, dict] = _load_catalog()
 
+# The closed type vocabulary a catalog `options` entry may use. Each name is
+# what tools/generate_config_schema.py turns into a JSON Schema fragment for
+# pumllint/schemas/config.schema.json; tests/test_option_declarations.py holds
+# every declared type to the rule's code default where that default is a
+# literal.
+OPTION_TYPES = frozenset({
+    "boolean",      # true / false
+    "integer",      # whole number
+    "number",       # any number
+    "string",       # free text
+    "regex",        # a string holding a regular expression
+    "list",         # array of strings
+    "map",          # object of string values
+    "map-integer",  # object of integer values
+    "map-regex",    # object of regular-expression strings
+})
+
 
 class Rule(ABC):
     """Base class for all lint rules.
@@ -109,6 +126,7 @@ class Rule(ABC):
     # a legal option name: config.config_warnings discloses any other key, and
     # tests/test_option_declarations.py holds the declaration to the reads.
     option_keys: frozenset[str] = frozenset()
+    option_types: dict[str, str] = {}  # key -> one of OPTION_TYPES
     dormant_unless: tuple[str, ...] = ()
 
     def __init__(self, config: dict | None = None):
@@ -188,10 +206,23 @@ def register(cls: Type[Rule]) -> Type[Rule]:
     cls.dimension = Dimension(meta["dimension"])
     cls.applies_to = tuple(meta["applies_to"])
     cls.profiles = tuple(meta.get("profiles", ()))
-    lexicons = meta.get("lexicons", ())
-    cls.option_keys = frozenset(meta.get("options", ())) | frozenset(
-        k for lx in lexicons for k in (lx, f"extra_{lx}")
-    )
+    declared = meta.get("options", {})
+    if not isinstance(declared, dict):
+        raise ValueError(
+            f"Rule {cls.id}: catalog `options` must map each key to its type"
+        )
+    option_types = dict(declared)
+    for lx in meta.get("lexicons", ()):
+        option_types[lx] = "list"
+        option_types[f"extra_{lx}"] = "list"
+    for key, kind in option_types.items():
+        if kind not in OPTION_TYPES:
+            raise ValueError(
+                f"Rule {cls.id}: option {key!r} has unknown type {kind!r} "
+                f"(one of {', '.join(sorted(OPTION_TYPES))})"
+            )
+    cls.option_types = option_types
+    cls.option_keys = frozenset(option_types)
     cls.dormant_unless = tuple(meta.get("dormant_unless", ()))
     _REGISTRY[cls.id] = cls
     return cls

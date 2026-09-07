@@ -213,7 +213,14 @@ JSON Schemas shipped in the package:
 ```bash
 python -m pumllint schema lint    # shape of `pumllint -f json`
 python -m pumllint schema score   # shape of `pumllint score -f json`
+python -m pumllint schema trace   # shape of `pumllint trace -f json`
+python -m pumllint schema config  # shape of the configuration file itself
 ```
+
+The last one is not a report: it is the shape of `pumllint.toml` (or `.yaml`
+/ `.json`), so an editor or a CI validator can flag a misspelled option
+before pumllint runs — see README § Report schemas for how to point an
+editor at it.
 
 The sixth command, `pumllint lsp`, is the editor side of the same engine —
 a stdlib language server over stdio, so the squiggles in the editor and the

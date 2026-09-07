@@ -10,6 +10,9 @@ import json
 import tempfile
 from pathlib import Path
 
+import importlib.util
+
+from pumllint.config import load_config
 from pumllint.engine import Engine
 from pumllint.model import Dimension, Severity
 from pumllint.parser import parse_source
@@ -174,6 +177,36 @@ def test_validator_refuses_unsupported_keywords():
         assert False, "unknown keywords must fail loudly, not pass silently"
 
 
+def test_validator_supports_anyof():
+    schema = {
+        "anyOf": [
+            {"type": "boolean"},
+            {"type": "string", "enum": ["on", "off"]},
+            {"type": "object", "properties": {"max": {"type": "integer"}},
+             "additionalProperties": False},
+        ]
+    }
+    assert not validate(True, schema)
+    assert not validate("off", schema)
+    assert not validate({"max": 3}, schema)
+    # one alternative declares the value's type: its errors come through verbatim
+    assert validate("no", schema) == ["$: 'no' is not one of ['on', 'off']"]
+    assert validate({"max": "3"}, schema) == ["$.max: expected integer, got str"]
+    assert validate({"mx": 3}, schema) == ["$: unexpected property 'mx'"]
+    # no alternative declares the type: one error naming the forms
+    assert validate(3, schema) == [
+        "$: 3 matches none of the allowed forms (boolean | string | object)"
+    ]
+    # anyOf is recursed into by the keyword guard, so an unsupported keyword
+    # inside a branch still fails loudly
+    try:
+        validate({}, {"anyOf": [{"oneOf": []}]})
+    except ValueError as e:
+        assert "oneOf" in str(e)
+    else:
+        assert False, "unsupported keywords inside anyOf must fail loudly"
+
+
 def test_validator_type_semantics():
     # bool is not a JSON integer/number, even though Python says otherwise
     assert validate(True, {"type": "integer"})
@@ -245,3 +278,107 @@ def test_score_report_with_suppressed_findings_validates():
     instance = _assert_valid(payload, "score")
     assert instance["diagrams"][0]["maturity"]["suppressedCount"] == 1
     assert instance["modelSet"]["suppressedCount"] == 1
+
+
+# --- the config schema (2026-09-07) ------------------------------------------------
+#
+# The one *input* schema: what pumllint.toml / .yaml / .json may contain.
+# Generated from the rule catalog by tools/generate_config_schema.py and pinned
+# here the way the Gherkin features are pinned to RULES.md — the committed file
+# must equal what the generator derives now.
+
+_GENERATOR = _ROOT / "tools" / "generate_config_schema.py"
+_REPO_CONFIGS = (
+    "pumllint.toml",
+    "docs/pilot-starter-config.toml",
+    "docs/xd-demo/lint.toml",
+    "docs/xd-demo/distinct.toml",
+    "docs/process-demo/conventions.toml",
+)
+
+
+def _load_generator():
+    spec = importlib.util.spec_from_file_location("generate_config_schema", _GENERATOR)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def test_committed_config_schema_matches_the_catalog():
+    generator = _load_generator()
+    on_disk = (_ROOT / "pumllint" / "schemas" / "config.schema.json").read_text(
+        encoding="utf-8"
+    )
+    assert on_disk == generator.render(), (
+        "config.schema.json is stale — run: python tools/generate_config_schema.py"
+    )
+    assert load_schema("config") == generator.build_schema()
+
+
+def test_config_schema_covers_every_rule_by_id_and_name():
+    from pumllint.rules import discover
+
+    rules_props = load_schema("config")["properties"]["rules"]["properties"]
+    for rule_id, cls in discover().items():
+        assert rules_props[rule_id] == {"$ref": f"#/$defs/{rule_id}"}
+        assert rules_props[cls.name] == {"$ref": f"#/$defs/{rule_id}"}
+        options = load_schema("config")["$defs"][rule_id]["anyOf"][-1]["properties"]
+        assert set(options) == cls.option_keys | {"enabled", "severity"}, rule_id
+    assert len(rules_props) == 2 * len(discover())
+
+
+def test_every_repository_config_validates():
+    schema = load_schema("config")
+    for rel in _REPO_CONFIGS:
+        errors = validate(load_config(_ROOT / rel), schema)
+        assert not errors, (rel, errors)
+
+
+def test_config_schema_accepts_every_rule_value_form():
+    schema = load_schema("config")
+    for value in (True, False, None, "on", "off", "enabled", "disabled", {},
+                  {"enabled": False}, {"severity": "minor", "max": 3}):
+        assert not validate({"rules": {"GEN005": value}}, schema), value
+    assert not validate({"rules": {"max-elements": {"max": 40}}}, schema)
+    assert not validate({"rules": {"GEN005": {"per_type": {"class": 40}}}}, schema)
+    assert not validate({"profile": "codegen", "profiles": {"house": {
+        "enable": ["SEQ102"], "escalate": {"undeclared-participant": "blocker"}}},
+        "suppressions": False}, schema)
+
+
+def test_config_schema_rejects_what_the_loader_only_warns_about():
+    """Each rejection names the path — the editor's squiggle lands on the key."""
+    schema = load_schema("config")
+    cases = {
+        ("$.rules.SEQ001", "only_if_any_declred"):
+            {"rules": {"SEQ001": {"only_if_any_declred": True}}},
+        ("$", "rulez"): {"rulez": {}},
+        ("$.scoring", "mn_level"): {"scoring": {"mn_level": 2}},
+        ("$.scoring.thresholds", "l9_composite"):
+            {"scoring": {"thresholds": {"l9_composite": 1}}},
+        ("$.rules.GEN005.max", "expected integer, got str"):
+            {"rules": {"GEN005": {"max": "9"}}},
+        ("$.rules.GEN005.max", "got NoneType"): {"rules": {"GEN005": {"max": None}}},
+        ("$.rules.SEQ001", "'no' is not one of"): {"rules": {"SEQ001": "no"}},
+        ("$.rules", "gen009"): {"rules": {"gen009": False}},  # canonical spellings only
+        ("$.profiles.x", "enabel"): {"profiles": {"x": {"enabel": []}}},
+        ("$.profiles.x.escalate.GEN001", "'huge' is not one of"):
+            {"profiles": {"x": {"escalate": {"GEN001": "huge"}}}},
+        ("$.rules.GEN004.per_kind.actor", "expected string"):
+            {"rules": {"GEN004": {"per_kind": {"actor": 1}}}},
+    }
+    for (path, needle), instance in cases.items():
+        errors = validate(instance, schema)
+        assert len(errors) == 1, (instance, errors)
+        assert errors[0].startswith(path + ":") and needle in errors[0], errors
+
+
+def test_config_schema_enums_match_the_code():
+    from pumllint.config import KNOWN_TOP_LEVEL
+
+    schema = load_schema("config")
+    assert set(schema["properties"]) == set(KNOWN_TOP_LEVEL)
+    assert set(schema["$defs"]["severity"]["enum"]) == {s.value for s in Severity}
+    scored = {d.value for d in Dimension} - {Dimension.SYNTAX.value}
+    weights = schema["$defs"]["scoring"]["properties"]["dimension_weights"]
+    assert set(weights["properties"]) == scored

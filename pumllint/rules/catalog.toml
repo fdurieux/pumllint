@@ -14,15 +14,21 @@
 # the maturity scorer (see SCORING.md). `profiles = []` means the base catalog
 # (always active); a non-empty list gates the rule behind a profile.
 #
-# Three optional fields declare a rule's configuration surface. `options` lists
-# the literal config keys its check() reads; `lexicons` lists the codegen word
-# lists, each of which takes two keys (`<k>` replaces the shipped list,
-# `extra_<k>` extends it); `dormant_unless` names the keys a convention-gated
-# rule needs — while every one of them is unset or empty the rule is dormant,
-# and `--list-rules` says so. `severity` and `enabled` are legal on every rule
-# and are never listed. A key a rule reads but does not declare, or declares
-# but never reads, fails tests/test_option_declarations.py; a config that sets
-# a key a rule does not take is disclosed on stderr (config.config_warnings).
+# Three optional fields declare a rule's configuration surface. `options` maps
+# each literal config key its check() reads to its type — one of `boolean`,
+# `integer`, `number`, `string`, `regex` (a string holding a Python regular
+# expression), `list` (of strings), `map` (of strings), `map-integer`,
+# `map-regex`; `lexicons` lists the codegen word lists, each of which takes two
+# keys (`<k>` replaces the shipped list, `extra_<k>` extends it), both lists of
+# strings; `dormant_unless` names the keys a convention-gated rule needs — while
+# every one of them is unset or empty the rule is dormant, and `--list-rules`
+# says so. `severity` and `enabled` are legal on every rule and are never
+# listed. A key a rule reads but does not declare, or declares but never
+# reads, fails tests/test_option_declarations.py, as does a type the code's
+# default contradicts; a config that sets a key a rule does not take is
+# disclosed on stderr (config.config_warnings); and the whole declaration is
+# what tools/generate_config_schema.py turns into schemas/config.schema.json,
+# the pinned shape of pumllint.toml — regenerate it when this file changes.
 
 # --- GEN: cross-cutting governance -----------------------------------------
 
@@ -49,7 +55,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["*"]
 profiles = []
-options = ["allowed"]
+options = { allowed = "list" }
 
 [GEN004]
 name = "participant-naming"
@@ -58,7 +64,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
-options = ["pattern", "per_kind"]
+options = { pattern = "regex", per_kind = "map-regex" }
 
 [GEN005]
 name = "max-participants"
@@ -67,7 +73,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["sequence", "usecase"]
 profiles = []
-options = ["max", "per_type"]
+options = { max = "integer", per_type = "map-integer" }
 
 [GEN006]
 name = "owner-tag"
@@ -76,7 +82,7 @@ severity = "minor"
 dimension = "DIM-TRC"
 applies_to = ["*"]
 profiles = []
-options = ["pattern"]
+options = { pattern = "regex" }
 dormant_unless = ["pattern"]
 
 [GEN007]
@@ -86,7 +92,7 @@ severity = "minor"
 dimension = "DIM-TRC"
 applies_to = ["*"]
 profiles = []
-options = ["pattern"]
+options = { pattern = "regex" }
 dormant_unless = ["pattern"]
 
 [GEN008]
@@ -96,7 +102,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["*"]
 profiles = []
-options = ["min_notes", "max_ratio", "max_chars_per_element"]
+options = { min_notes = "integer", max_ratio = "number", max_chars_per_element = "integer" }
 
 [GEN009]
 name = "max-elements"
@@ -105,7 +111,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["*"]
 profiles = []
-options = ["max"]
+options = { max = "integer" }
 
 [GEN010]
 name = "duplicate-diagram-name"
@@ -124,7 +130,7 @@ severity = "major"
 dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
-options = ["authoritative", "distinct"]
+options = { authoritative = "map", distinct = "list" }
 
 [XD002]
 name = "conflicting-participant-stereotype"
@@ -133,7 +139,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
-options = ["authoritative", "distinct"]
+options = { authoritative = "map", distinct = "list" }
 
 [XD003]
 name = "participant-name-case-collision"
@@ -142,7 +148,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["sequence"]
 profiles = []
-options = ["authoritative", "distinct"]
+options = { authoritative = "map", distinct = "list" }
 
 [XD004]
 name = "cross-type-name-collision"
@@ -151,7 +157,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["*"]
 profiles = []
-options = ["authoritative", "distinct"]
+options = { authoritative = "map", distinct = "list" }
 
 [XD005]
 name = "cross-type-stereotype-conflict"
@@ -160,7 +166,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["*"]
 profiles = []
-options = ["authoritative", "distinct"]
+options = { authoritative = "map", distinct = "list" }
 
 # --- SEQ: sequence base catalog --------------------------------------------
 
@@ -171,7 +177,7 @@ severity = "critical"
 dimension = "DIM-SEM"
 applies_to = ["sequence"]
 profiles = []
-options = ["only_if_any_declared"]
+options = { only_if_any_declared = "boolean" }
 
 [SEQ002]
 name = "unused-participant"
@@ -204,7 +210,7 @@ severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = []
-options = ["allow_unlabelled_returns"]
+options = { allow_unlabelled_returns = "boolean" }
 
 [SEQ006]
 name = "no-self-message"
@@ -213,7 +219,7 @@ severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = []
-options = ["allowed"]
+options = { allowed = "list" }
 
 [SEQ007]
 name = "unlabelled-block-condition"
@@ -222,7 +228,7 @@ severity = "minor"
 dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = []
-options = ["kinds"]
+options = { kinds = "list" }
 
 [SEQ008]
 name = "fragment-nesting-depth"
@@ -231,7 +237,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["sequence"]
 profiles = []
-options = ["max_nesting_depth", "max"]
+options = { max_nesting_depth = "integer", max = "integer" }
 
 [SEQ009]
 name = "unpaired-return"
@@ -248,7 +254,7 @@ severity = "info"
 dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = []
-options = ["require_explicit_order"]
+options = { require_explicit_order = "boolean" }
 dormant_unless = ["require_explicit_order"]
 
 [SEQ011]
@@ -258,7 +264,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["sequence"]
 profiles = []
-options = ["max"]
+options = { max = "integer" }
 
 # --- SEQ1xx: codegen-readiness profile pack --------------------------------
 
@@ -277,7 +283,7 @@ severity = "major"
 dimension = "DIM-CMP"
 applies_to = ["sequence"]
 profiles = ["codegen"]
-options = ["allowed_stereotypes"]
+options = { allowed_stereotypes = "list" }
 
 [SEQ103]
 name = "codegen-prose-message"
@@ -286,7 +292,7 @@ severity = "blocker"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
-options = ["pattern", "max_arg_words"]
+options = { pattern = "regex", max_arg_words = "integer" }
 lexicons = ["arg_stop_words"]
 
 [SEQ104]
@@ -304,7 +310,7 @@ severity = "blocker"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
-options = ["kinds"]
+options = { kinds = "list" }
 lexicons = ["vague_terms"]
 
 [SEQ106]
@@ -314,7 +320,7 @@ severity = "blocker"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
-options = ["kinds"]
+options = { kinds = "list" }
 lexicons = ["tokens"]
 
 [SEQ107]
@@ -341,7 +347,7 @@ severity = "minor"
 dimension = "DIM-AMB"
 applies_to = ["sequence"]
 profiles = ["codegen"]
-options = ["reply_pattern"]
+options = { reply_pattern = "regex" }
 lexicons = ["non_informative"]
 
 # --- ACT: activity base catalog --------------------------------------------
@@ -369,7 +375,7 @@ severity = "minor"
 dimension = "DIM-CMP"
 applies_to = ["activity"]
 profiles = []
-options = ["require_else_label"]
+options = { require_else_label = "boolean" }
 
 [ACT004]
 name = "unterminated-construct"
@@ -386,7 +392,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
-options = ["pattern"]
+options = { pattern = "regex" }
 
 [ACT006]
 name = "verb-first-activity"
@@ -395,7 +401,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["activity"]
 profiles = []
-options = ["verbs", "verb_pattern"]
+options = { verbs = "list", verb_pattern = "regex" }
 dormant_unless = ["verbs", "verb_pattern"]
 
 # --- CLS: class base catalog ------------------------------------------------
@@ -407,7 +413,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["class"]
 profiles = []
-options = ["class_pattern", "member_pattern"]
+options = { class_pattern = "regex", member_pattern = "regex" }
 
 [CLS002]
 name = "association-multiplicity"
@@ -440,7 +446,7 @@ severity = "minor"
 dimension = "DIM-RDB"
 applies_to = ["class"]
 profiles = []
-options = ["max"]
+options = { max = "integer" }
 
 # --- STA: state base catalog -------------------------------------------------
 
@@ -485,7 +491,7 @@ severity = "minor"
 dimension = "DIM-CON"
 applies_to = ["usecase"]
 profiles = []
-options = ["verbs", "verb_pattern"]
+options = { verbs = "list", verb_pattern = "regex" }
 dormant_unless = ["verbs", "verb_pattern"]
 
 [UC003]

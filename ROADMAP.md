@@ -528,6 +528,19 @@ three items — full write-up in EVIDENCE.md §Deepening:
   ignored by the engine. Residues: #37's `0`/`"yes"` scalar quirks stay (a
   different site); the LSP is one call from publishing config warnings;
   `trace.py` still reads GEN007's pattern raw. Settled entry below.
+- [x] **Config JSON Schema — BUILT 2026-09-07** *(option C of the item
+  above; owner decision §6.5 answered yes that morning, built the same
+  evening on the maintainer's go after a plain-English explanation)* —
+  `pumllint schema config` prints the fourth pinned schema,
+  `pumllint/schemas/config.schema.json`: every top-level key, every rule by
+  id and kebab-case name as `false | "off" | true | null | { enabled,
+  severity, …typed options }`, `profiles`, `scoring` to the key. Generated
+  from the catalog by `tools/generate_config_schema.py` — `options` became
+  a `name = "type"` table over a closed nine-word vocabulary
+  (`OPTION_TYPES`) — and drift-guarded like the features. The validator
+  gained `anyOf`. Stricter than the loader by design: canonical spellings
+  only, and a rejection where the loader warns. Nothing pumllint checks or
+  scores moves. Settled entry below.
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -6336,7 +6349,10 @@ list and license posture live in § Settled questions.
     declaration. The LSP loads the config and never calls
     `config_warnings` — one call away. The two hand inventories in
     `tests/test_hardening.py` (regex-taking and null-checked pairs) could
-    now be generated. C is the natural follow-on behind §6.5; E's
+    now be generated. C is the natural follow-on behind §6.5 *(C built
+    2026-09-07, its own record below; the regex inventory in
+    `test_hardening.py` now derives from the declared types, the
+    null-checked one stays hand-listed)*; E's
     `--strict-config` if a consumer asks. Rank 8's hard dependency is met;
     rank 8 itself stays under §6.1.
   - *Suites 645 → 656 stdlib, 770 → 781 pytest;
@@ -6485,7 +6501,9 @@ list and license posture live in § Settled questions.
     not a fourth file, and it is now **ungated** — built under its own record
     below. The **config schema** (option C of the `option_keys` record, its
     prerequisite shipped 2026-09-04) is the literal fourth file: unblocked,
-    and by the maintainer's choice waiting for pull. **#43.1 and #43.2** keep
+    and by the maintainer's choice waiting for pull *(pulled the same
+    evening: "go ahead and build it" after a plain-English explanation of
+    its purpose; built, its own record below)*. **#43.1 and #43.2** keep
     "recorded, not queued" — the schema was never their only blocker.
     **Unmodelled-content tracking** builds with Arc H. **`verbalize`** and the
     **k-way diff** stay on their own triggers (review-aid pull; a k-generation
@@ -6567,3 +6585,76 @@ list and license posture live in § Settled questions.
   Stable-listed shape inside 0.x, and the precedent for the next: announce
   it in README's Report schemas section, in the schema's own description,
   and here.
+- **Config schema built (2026-09-07): `pumllint schema config`, the
+  fourth pinned shape and the first that describes an input.** Option C of
+  the `option_keys` record, gated on §6.5; the maintainer answered yes that
+  morning, chose "unblocked, wait for pull", and pulled the same evening
+  after asking for the schema's purpose in plain English — the purpose being
+  that a misspelled option, a wrong type or a section that does not exist is
+  caught in the editor or a CI validator *before* pumllint runs, where
+  `config_warnings` reports it on stderr at run time. Four alternatives
+  weighed by SWOT before the first edit:
+  - **Static generated file, not built at runtime.** The same shipping and
+    loading path as the three report schemas (the package-data glob needs
+    no change), a `$id` that resolves, a file to review in a diff; the
+    cost — regenerate after a catalog change — is the features' cost, and
+    the same drift guard makes forgetting impossible
+    (`test_committed_config_schema_matches_the_catalog`). Runtime
+    generation would special-case one name and point `$id` at nothing.
+  - **Types declared in the catalog, not in a hand table or from the AST.**
+    `options = [names]` became `options = { name = "type" }` over a closed
+    vocabulary in `pumllint.rules.OPTION_TYPES` (`boolean`, `integer`,
+    `number`, `string`, `regex`, `list`, `map`, `map-integer`,
+    `map-regex`; lexicon keys are `list`), stamped as `cls.option_types`
+    beside `option_keys`. One declaration home — option A's whole point — and
+    the generator reads the catalog only. A hand table in the generator would
+    be the third hand inventory beside the two the record wanted generated;
+    deriving from AST defaults fails on the names (`DEFAULT_MAX`,
+    `_SIGNATURE.pattern`) and the dormant options that have none. The threat
+    — a wrong type validates a config wrongly — is held by
+    `test_declared_types_agree_with_the_code_defaults`: every literal default
+    a rule spells (12 of them) must be of the declared type.
+  - **`anyOf` added to the validator, rather than a loose union or an open
+    `rules` table.** A rule's value is `false | "off" | "disabled" | true |
+    null | "on" | "enabled" | {enabled, severity, options}`, and only `anyOf`
+    says so; `type: [boolean, string, object]` without the enum would pass
+    `"no"` — the exact typo the `option_keys` record left as a residue — and
+    `additionalProperties: true` would drop the unknown-option check, the
+    schema's reason to exist. ~40 lines in `schema.py`: when exactly one
+    alternative declares the value's JSON type its errors are reported
+    verbatim (`$.rules.GEN005.max: expected integer, got str` beats "matches
+    none of the forms"); the keyword guard recurses into the branches, so
+    `oneOf` inside one still fails loudly. The three report schemas are
+    untouched.
+  - **`SCHEMA_NAMES` and the CLI shape kept; the five hand-written "report"
+    strings reworded.** `pumllint schema config`, `report: config` in the
+    Action (the input keeps its name for compatibility, its description says
+    what it now accepts). A separate subcommand would touch `_SUBCOMMANDS`,
+    both packaging guards and the Action whitelist for no adopter benefit.
+  - **What the schema says that the loader does not, on purpose.** Rules are
+    keyed by canonical id and kebab-case name — 104 properties, generated;
+    `gen009` is rejected where `engine._rule_entry` accepts it. An unknown
+    key anywhere (top level, a rule table, `scoring`, `thresholds`, a
+    profile) is an error where the loader warns or, under `scoring` and a
+    profile table, says nothing. Null is listed as a rule value (YAML's bare
+    key; `_rule_config` reads it as defaults) and never as an option value
+    (`_reject_null_options`). README's Report schemas section says all of
+    this in the adopter register, with where an editor maps the schema for
+    `.json` directly and for `.toml`/`.yaml` through the editor's extension.
+  - **Residues, recorded.** Case-insensitive rule keys, the dimension
+    weights' sum to 1.0 and option defaults are not expressible and are not
+    claimed. `--strict-config` (§6.6) is still nobody's ask — the schema is
+    the strict path for whoever wants one, outside the exit-code contract.
+    The baseline file's shape is still pinned by `load_baseline` alone (the
+    2026-09-03 note above): a fifth schema is its own decision. The
+    null-checked inventory in `test_hardening.py` stays hand-listed (it spans
+    non-regex options); the regex inventory now asserts equality with the
+    catalog's `regex`/`map-regex` declarations, closing that half of the
+    residue. `trace.py` still reads GEN007's pattern raw.
+  - *Measured: the five repository configs (`pumllint.toml`, the pilot
+    starter, both xd-demo files, the process-demo conventions) validate;
+    eleven rejection cases each produce one error naming the path; the
+    generator is idempotent and `pumllint schema config` round-trips through
+    `json.load`. Stdlib runner 693 → 702, pytest 828 → 837; features, RULES.md,
+    golden scores and pilot artefacts untouched (no scoring or reporter
+    change). Open checkboxes unchanged by count: the item was added ticked.*

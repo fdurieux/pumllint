@@ -623,7 +623,8 @@ Each is a yes/no that this note cannot answer.
    checked item by item: #30's JSON half is a new key in `score`, not a fourth
    file, and is now ungated; the config schema (option C of the `option_keys`
    record) is the literal fourth file, unblocked and waiting for pull by the
-   maintainer's choice; #43.1 and #43.2 keep "recorded, not queued";
+   maintainer's choice — pulled and built the same evening, `pumllint schema
+   config`; #43.1 and #43.2 keep "recorded, not queued";
    unmodelled-content tracking builds with Arc H; `verbalize` and the k-way
    diff stay on their own triggers. This list over-reached as written: the
    dependency graph in §4 draws §6.5 into three items, not six.)*
