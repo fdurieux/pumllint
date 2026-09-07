@@ -167,6 +167,42 @@ def _strip_ident(raw: Optional[str]) -> Optional[str]:
     return raw.strip().strip('"')
 
 
+def _declare(
+    d: Diagram,
+    name: str,
+    lineno: int,
+    kind: str,
+    display_name: Optional[str] = None,
+    stereotype: Optional[str] = None,
+) -> None:
+    """Record a declaration line for ``name``.
+
+    A first declaration creates the participant as declared. A declaration
+    that arrives *after* the participant was created by a message keeps
+    ``declared`` False — the model's meaning is "declared before first use"
+    (owner decision §6.7, 2026-09-07) — but no longer discards what the line
+    says: the kind, alias and stereotype are filled in and the line is kept
+    as ``declared_line``. A second declaration of an already-declared name is
+    ignored, as before.
+    """
+    existing = d.participants.get(name)
+    if existing is None:
+        d.participants[name] = Participant(
+            name=name,
+            kind=kind,
+            line=lineno,
+            declared=True,
+            display_name=display_name,
+            stereotype=stereotype,
+            declared_line=lineno,
+        )
+    elif not existing.declared and existing.declared_line is None:
+        existing.kind = kind
+        existing.display_name = display_name
+        existing.stereotype = stereotype
+        existing.declared_line = lineno
+
+
 def _iter_logical_lines(text: str) -> Iterator[tuple[int, str]]:
     """Yield (line_number, stripped_line), skipping comments/preprocessor.
 
@@ -316,16 +352,13 @@ def _parse_statement(
         alias = _strip_ident(m.group("alias"))
         name = alias or first
         st = RE_STEREOTYPE.search(m.group("rest") or "")
-        d.participants.setdefault(
+        _declare(
+            d,
             name,
-            Participant(
-                name=name,
-                kind=m.group("kw").lower(),
-                line=lineno,
-                declared=True,
-                display_name=first if alias else None,
-                stereotype=st.group("st") if st else None,
-            ),
+            lineno,
+            kind=m.group("kw").lower(),
+            display_name=first if alias else None,
+            stereotype=st.group("st") if st else None,
         )
         if d.diagram_type == "unknown" and m.group("kw").lower() != "actor":
             d.diagram_type = "sequence"
@@ -337,15 +370,12 @@ def _parse_statement(
         label = _strip_ident(m.group("first"))
         raw = alias or label
         name = raw.strip("()") if raw else raw
-        d.participants.setdefault(
+        _declare(
+            d,
             name,
-            Participant(
-                name=name,
-                kind="usecase",
-                line=lineno,
-                declared=True,
-                display_name=label.strip("()") if alias and label else None,
-            ),
+            lineno,
+            kind="usecase",
+            display_name=label.strip("()") if alias and label else None,
         )
         d.diagram_type = "usecase"
         return
@@ -355,16 +385,7 @@ def _parse_statement(
         alias = _strip_ident(m.group("alias"))
         label = m.group("name").strip()
         name = alias or label
-        d.participants.setdefault(
-            name,
-            Participant(
-                name=name,
-                kind="actor",
-                line=lineno,
-                declared=True,
-                display_name=label if alias else None,
-            ),
-        )
+        _declare(d, name, lineno, kind="actor", display_name=label if alias else None)
         d.diagram_type = "usecase"
         return
 

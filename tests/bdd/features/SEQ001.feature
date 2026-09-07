@@ -23,3 +23,15 @@ Feature: SEQ001 undeclared participants
       """
     When the linter runs
     Then no "SEQ001" issue is reported
+
+  Scenario: a participant declared only after its first use is still reported
+    Given the diagram:
+      """
+      @startuml demo
+      participant A
+      A -> B : ping
+      participant B
+      @enduml
+      """
+    When the linter runs
+    Then a "SEQ001" issue with severity "critical" is reported on line 3

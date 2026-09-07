@@ -276,7 +276,7 @@ codegen twin on the same line counts once).
 
 | ID | Name | Default | What it catches |
 |----|------|---------|-----------------|
-| SEQ001 | undeclared-participant | critical | Participant used but never declared. **Typo detector**: PlantUML silently creates a phantom lifeline for `Custmer -> Bank`. |
+| SEQ001 | undeclared-participant | critical | Participant used before it is declared, or never. **Typo detector**: PlantUML silently creates a phantom lifeline for `Custmer -> Bank`; a declaration that comes after the first use is reported naming both lines. |
 | SEQ002 | unused-participant | minor | Declared participant that appears in no message. |
 | SEQ003 | unbalanced-activation | major | `activate` never closed by `deactivate`/`return` (unterminated flow), or `deactivate` without prior `activate`. Understands `++`/`--` arrow shortcuts and `destroy`. |
 | SEQ004 | unterminated-block | critical | `alt`/`opt`/`loop`/`par`/`group`/`box` without `end`. |
@@ -395,7 +395,7 @@ deterministic and semantics-preserving, where nothing has to be invented:
 |---------|-----|
 | GEN002 unnamed-diagram | `@startuml <name>` derived from the file stem (ordinal suffix for multiple diagrams per file) |
 | GEN001 missing-title | `title <Humanized>` inserted after `@startuml` |
-| SEQ001/SEQ101 undeclared-participant | `participant X` declarations in first-use order, anchored after the existing declarations |
+| SEQ001/SEQ101 undeclared-participant | `participant X` declarations in first-use order, anchored after the existing declarations; a participant declared only after its first use is left for you to move |
 
 ```bash
 python -m pumllint fix diagrams/            # apply fixes in place

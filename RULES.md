@@ -686,7 +686,10 @@ selected.
 **Severity:** critical · **Status:** ✅ Implemented (v0.1.0)
 
 **Rationale:** Implicit participant creation hides typos (a misspelled participant
-silently becomes a new lifeline) and defeats declaration-order control. Option
+silently becomes a new lifeline) and defeats declaration-order control. A
+declaration that comes after the participant's first use is the same defect —
+PlantUML has already created the lifeline by then — so "declared" means declared
+before first use, and a late declaration is reported naming both lines. Option
 `only_if_any_declared` (default true) keeps the rule quiet in files that declare
 nothing, so ad-hoc sketches aren't punished.
 
@@ -716,6 +719,18 @@ Feature: SEQ001 undeclared participants
       """
     When the linter runs
     Then no "SEQ001" issue is reported
+
+  Scenario: a participant declared only after its first use is still reported
+    Given the diagram:
+      """
+      @startuml demo
+      participant A
+      A -> B : ping
+      participant B
+      @enduml
+      """
+    When the linter runs
+    Then a "SEQ001" issue with severity "critical" is reported on line 3
 ```
 
 ### SEQ002 — No unused participants
@@ -1127,6 +1142,24 @@ Feature: SEQ010 explicit participant ordering
       """
     When the linter runs
     Then no "SEQ010" issue is reported
+
+  Scenario: a declaration after first use does not pin the order
+    Given the configuration:
+      """
+      [rules.SEQ010]
+      require_explicit_order = true
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      A -> B : go
+      participant B
+      @enduml
+      """
+    When the linter runs
+    Then a "SEQ010" issue with severity "info" is reported on line 4
 ```
 
 ### SEQ011 — Message count limit

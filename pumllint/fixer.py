@@ -10,7 +10,10 @@ touched — nothing is ever invented:
   just assigned).
 - **SEQ001 / SEQ101** (undeclared participants) — insert ``participant X``
   declarations in first-use order, anchored after the last existing
-  declaration (or the title, or ``@startuml``).
+  declaration (or the title, or ``@startuml``). A participant that *is*
+  declared, but only after its first use, is left alone: moving a line is
+  not a safe mechanical edit (it may sit inside a ``box``), and inserting
+  one would duplicate the declaration. That finding stays for the author.
 
 Fixes are computed from the engine's *violations*, not from the raw model:
 a suppressed finding or a disabled rule is never "fixed", and the fixer
@@ -18,8 +21,8 @@ inherits every judgment call the linter makes about what deserves flagging.
 The visible consequence: SEQ001 defaults to ``only_if_any_declared`` (an
 ad-hoc sketch that declares nothing is deliberately not punished), so such a
 sketch also gets no declaration fixes — by design, not omission. Applying
-the fixes removes exactly the triggering findings, so a second run is a
-no-op.
+the fixes removes exactly the triggering findings it can fix, so a second
+run is a no-op; the one it leaves is the declared-late participant above.
 """
 
 from __future__ import annotations
@@ -154,7 +157,11 @@ def compute_fixes(
         if declared:
             anchor = max(anchor, max(declared))
         for p in sorted(
-            (p for p in d.participants.values() if not p.declared and p.line == line),
+            (
+                p
+                for p in d.participants.values()
+                if not p.declared and p.declared_line is None and p.line == line
+            ),
             key=lambda p: p.name,
         ):
             key = (id(d), p.name)

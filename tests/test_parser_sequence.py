@@ -194,3 +194,43 @@ def test_include_inside_a_note_body_stays_note_text():
     assert not [x for x in d.directives if x.kind == "include"]
     note = next(x for x in d.directives if x.kind == "note")
     assert "!include not-an-include" in note.value
+
+
+# --- declaration after first use -------------------------------------------
+
+
+def _one(src: str):
+    (d,) = parse_source(src, "t.puml")
+    return d
+
+
+def test_participant_declared_after_first_use_keeps_declared_false():
+    """``declared`` means declared before first use (owner decision §6.7)."""
+    d = _one("@startuml\nparticipant A\nA -> B : x\nparticipant B\n@enduml\n")
+    b = d.participants["B"]
+    assert b.declared is False
+    assert b.line == 3  # first use
+    assert b.declared_line == 4
+    assert d.participants["A"].declared is True
+    assert d.participants["A"].declared_line == 2
+
+
+def test_late_declaration_fills_kind_alias_and_stereotype():
+    d = _one(
+        "@startuml\nparticipant A\nA -> B : x\n"
+        'actor "Big Bob" as B <<svc>>\n@enduml\n'
+    )
+    b = d.participants["B"]
+    assert (b.declared, b.kind, b.display_name, b.stereotype) == (False, "actor", "Big Bob", "svc")
+
+
+def test_second_declaration_of_a_declared_participant_is_ignored():
+    d = _one("@startuml\nparticipant A\nactor A\nA -> A : x\n@enduml\n")
+    a = d.participants["A"]
+    assert (a.declared, a.kind, a.declared_line) == (True, "participant", 2)
+
+
+def test_create_is_not_a_declaration():
+    d = _one("@startuml\nparticipant A\ncreate B\nA -> B : x\n@enduml\n")
+    b = d.participants["B"]
+    assert b.declared is False and b.declared_line is None and b.kind == "implicit"
