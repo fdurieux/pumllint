@@ -5631,7 +5631,10 @@ list and license posture live in § Settled questions.
     machinery, declined here only to keep the change one feature wide.
     `d.participants.setdefault` never overwrites, so a participant **declared
     after first use** produces no symbol at its declaration; that is a parser
-    issue, not one this module can fix.
+    issue, not one this module can fix. *[2026-09-07: the parser now keeps the
+    declaration's line as `Participant.declared_line` (owner decision §6.7
+    record); symbols still anchor on `line`, and references remain unbuilt
+    on purpose.]*
 
 - **The open queue, prioritised (2026-08-31): the next move is not a build —
   and the reason is that this file no longer describes its own repository.**
@@ -6518,3 +6521,31 @@ list and license posture live in § Settled questions.
     published figures, which never retires the caveat.
   *Re-litigate on:* a new owner decision, by the maintainer; nothing here
   reopens on evidence alone.
+- **§6.7 built (2026-09-07): `declared_line`, the late-declaration merge,
+  SEQ001's message, the fixer guard — `declared` untouched.** The four
+  residues the owner-decisions record names, closed in one change with
+  nothing frozen moving. `Participant` gains `declared_line: Optional[int]`
+  (last, defaulted; `declared` is documented as "declared before first
+  use"). `parser/sequence.py`'s three `setdefault` declaration sites become
+  one `_declare()`: a first declaration creates the participant as before;
+  a declaration after first use keeps `declared=False` and now fills in the
+  kind, alias and stereotype it used to discard, recording its line —
+  `actor "Big Bob" as B <<svc>>` after `A -> B` reads back as
+  `(False, "actor", "Big Bob", "svc")` where it read `(False, "implicit",
+  None, None)`; a second declaration of a declared name is still ignored;
+  `create` is still not a declaration. SEQ001 says which case it found:
+  *used on line 4 before it is declared on line 6 (move the declaration
+  up)* for the late case, the "never declared" sentence unchanged for the
+  other, and the firing set is identical on the three probes (declared-first
+  quiet; used-then-declared and never-declared fire on the use line). SEQ010
+  unchanged. The fixer skips a participant with a `declared_line` — moving a
+  line is not a safe mechanical edit and inserting one duplicated the
+  declaration — and its docstring and README's fix table say so; `fix
+  --dry-run` on the late probe reports nothing to fix. RULES.md gains the
+  declared-late scenario under SEQ001 and SEQ010 (features regenerated).
+  Measured: the 97 golden units and the pilot artefacts byte-identical
+  (corpus incidence of declared-after-use is 0); stdlib runner 687 → 693,
+  pytest 828. Not done, on purpose: XD001/XD002 still read `p.kind if
+  p.declared else None`, so a late-declared `actor` is invisible to the
+  cross-file kind check — the "authored kind" reading is the recorded
+  follow-up; the LSP references item stays unbuilt (its annotation above).
