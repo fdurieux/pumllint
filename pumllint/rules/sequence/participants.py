@@ -10,11 +10,14 @@ from .. import Rule, register
 
 @register
 class UndeclaredParticipant(Rule):
-    """Participant used in a message but never declared.
+    """Participant used in a message before it is declared, or never declared.
 
     PlantUML silently auto-creates lifelines on first mention, so a typo
     (``Custmer -> Bank``) renders a phantom participant instead of failing.
-    Requiring explicit declaration turns typos into lint errors.
+    Requiring explicit declaration turns typos into lint errors. A declaration
+    that comes *after* the first use is the same defect for PlantUML — the
+    lifeline already exists by then — so it is reported too, naming both
+    lines (``declared`` means declared before first use; §6.7, 2026-09-07).
 
     Option ``only_if_any_declared`` (default True): stay quiet in files that
     declare nothing at all, so quick ad-hoc sketches aren't punished.
@@ -28,13 +31,19 @@ class UndeclaredParticipant(Rule):
         if only_if_any and not declared:
             return
         for p in diagram.participants.values():
-            if not p.declared:
-                yield self.violation(
-                    diagram,
-                    p.line,
-                    f"Participant '{p.name}' is used but never declared "
-                    f"(possible typo — PlantUML silently creates a new lifeline)",
+            if p.declared:
+                continue
+            if p.declared_line is not None:
+                message = (
+                    f"Participant '{p.name}' is used on line {p.line} before it is "
+                    f"declared on line {p.declared_line} (move the declaration up)"
                 )
+            else:
+                message = (
+                    f"Participant '{p.name}' is used but never declared "
+                    f"(possible typo — PlantUML silently creates a new lifeline)"
+                )
+            yield self.violation(diagram, p.line, message)
 
 
 @register

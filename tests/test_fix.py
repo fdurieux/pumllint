@@ -192,3 +192,13 @@ def test_sketches_declaring_nothing_get_no_declaration_fixes_by_default():
     cfg = {"rules": {"SEQ001": {"only_if_any_declared": False}}}
     out = _fixed(sketch, stem="quick", config=cfg)
     assert "participant Alice" in out and "participant Bob" in out
+
+
+def test_declared_late_participant_is_not_duplicated_by_the_fixer():
+    src = (
+        "@startuml late\ntitle Late\nparticipant A\n"
+        "A -> B : x\nparticipant B\n@enduml\n"
+    )
+    out = _fixed(src, stem="late")
+    assert out.count("participant B") == 1  # nothing inserted, nothing moved
+    assert out == src

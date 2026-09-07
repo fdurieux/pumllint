@@ -88,14 +88,22 @@ GROUP_KEYWORDS = ("alt", "opt", "loop", "par", "break", "critical", "group")
 
 @dataclass
 class Participant:
-    """A lifeline: declared explicitly, or implicitly created by first use."""
+    """A lifeline: declared explicitly, or implicitly created by first use.
+
+    ``declared`` means declared *before* first use (owner decision §6.7,
+    2026-09-07). A ``participant`` line that follows a message naming the
+    same lifeline leaves ``declared`` False — SEQ001 and SEQ010 read it as
+    "introduced by first use" — but is not discarded: its kind, alias and
+    stereotype are kept, and its line is ``declared_line``.
+    """
 
     name: str  # canonical identifier used in arrows
     kind: str  # participant / actor / ... / "implicit"
     line: int  # line of declaration, or of first use if implicit
-    declared: bool
+    declared: bool  # declared before first use
     display_name: Optional[str] = None  # long name when `as` alias is used
     stereotype: Optional[str] = None  # e.g. "service" for <<service>>
+    declared_line: Optional[int] = None  # the declaration's line, when one exists
 
 
 @dataclass

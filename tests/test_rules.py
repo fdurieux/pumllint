@@ -72,6 +72,17 @@ def test_seq001_stays_quiet_when_nothing_is_declared():
     assert "SEQ001" not in rule_ids(src)
 
 
+def test_seq001_reports_a_declaration_that_comes_after_first_use():
+    src = "@startuml x\ntitle T\nparticipant A\nA -> B : hi\nparticipant B\n@enduml\n"
+    (d,) = parse_source(src)
+    hits = [v for v in Engine({}).lint_diagrams([d]) if v.rule_id == "SEQ001"]
+    assert [v.line for v in hits] == [4]
+    assert "used on line 4 before it is declared on line 5" in hits[0].message
+    never = [v for v in Engine({}).lint_diagrams(list(parse_source(
+        "@startuml x\ntitle T\nparticipant A\nA -> B : hi\n@enduml\n"))) if v.rule_id == "SEQ001"]
+    assert "never declared" in never[0].message
+
+
 # --- SEQ002 unused participant ----------------------------------------------
 
 def test_given_declared_but_unused_participant_then_seq002_fires():

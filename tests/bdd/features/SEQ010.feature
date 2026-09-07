@@ -34,3 +34,21 @@ Feature: SEQ010 explicit participant ordering
       """
     When the linter runs
     Then no "SEQ010" issue is reported
+
+  Scenario: a declaration after first use does not pin the order
+    Given the configuration:
+      """
+      [rules.SEQ010]
+      require_explicit_order = true
+      """
+    And the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      A -> B : go
+      participant B
+      @enduml
+      """
+    When the linter runs
+    Then a "SEQ010" issue with severity "info" is reported on line 4
