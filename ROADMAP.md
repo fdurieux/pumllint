@@ -5838,7 +5838,7 @@ list and license posture live in § Settled questions.
     **#44** (`trace`): items 1 and 2 shipped before PR #119
     (`trace.py`'s comment split; README's source-asymmetry note); open on
     item 3, `provisional`. **#30** (`syntaxOk`): the text-reporter half
-    shipped earlier; the JSON half is blocked on §6.5. **#35** (C7): the
+    shipped earlier; the JSON half is blocked on §6.5. *[2026-09-07: §6.5 answered yes, the JSON half built — `syntaxGateRan` at the score report's root; #30 closed.]* **#35** (C7): the
     claim language was repaired in PR #121 and the *defect* is intact by
     design — open on §6.4. **#41** (SEQ10x outside the executable spec) and
     **#42** (SEQ107's `_NEGATED`): untouched, correctly — #42 is blocked on
@@ -6549,3 +6549,21 @@ list and license posture live in § Settled questions.
   p.declared else None`, so a late-declared `actor` is invisible to the
   cross-file kind check — the "authored kind" reading is the recorded
   follow-up; the LSP references item stays unbuilt (its annotation above).
+- **#30 built (2026-09-07): `syntaxGateRan` at the root of the score
+  report — `syntaxOk` stops meaning two things.** The text half had shipped
+  as the "Syntax gate: not run" line; the JSON half waited on owner decision
+  §6.5, answered yes that morning with additive keys in pinned shapes
+  included. One boolean at the report's root, run-level, because the gate
+  runs once per run — a per-diagram key would repeat one fact N times, and
+  making `syntaxOk` nullable would change an existing key's type and break
+  `if report.syntaxOk` silently; both weighed, both rejected. `syntaxOk`
+  keeps its value, so nothing a consumer computes moves; a validator holding
+  an older copy of `score.schema.json` rejects the new key, which README's
+  Report schemas section now says and tells the reader to refresh with
+  `pumllint schema score`. The negative pin in `tests/test_cli_score.py`
+  ("`syntaxGateRan` not in the report") became the positive one; three
+  key-set equalities moved by one key. Measured: 693/693 stdlib, 828 pytest,
+  pilot artefacts byte-identical. This is the first additive change to a
+  Stable-listed shape inside 0.x, and the precedent for the next: announce
+  it in README's Report schemas section, in the schema's own description,
+  and here.

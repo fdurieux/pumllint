@@ -116,7 +116,7 @@ def test_score_report_new_since_baseline_matches_schema():
 
 def test_empty_score_report_matches_schema():
     payload = _assert_valid(get_reporter("json").render_maturity([]), "score")
-    assert payload == {"diagrams": [], "modelSet": None}
+    assert payload == {"diagrams": [], "modelSet": None, "syntaxGateRan": False}
 
 
 # --- the schema has teeth ----------------------------------------------------

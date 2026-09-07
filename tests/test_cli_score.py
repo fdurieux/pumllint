@@ -480,13 +480,26 @@ def test_score_with_syntax_gate_run_omits_the_disclosure():
         assert "Syntax gate: not run" not in out.read_text(encoding="utf-8")
 
 
-def test_json_score_report_is_unchanged_by_the_disclosure():
+def test_json_score_report_discloses_whether_the_syntax_gate_ran():
+    """#30's JSON half (owner decision §6.5, 2026-09-07): ``syntaxOk`` stays a
+    boolean and the root gains ``syntaxGateRan``, so a consumer can tell
+    'valid' from 'never checked'."""
+    import sys
+
     with tempfile.TemporaryDirectory() as tmp:
         puml, _ = _fixture(tmp)
         out = Path(tmp) / "r.json"
         main(["score", str(puml), "-f", "json", "-o", str(out)])
         data = json.loads(out.read_text(encoding="utf-8"))
-        assert "syntaxGateRan" not in json.dumps(data)  # schema untouched
+        assert data["syntaxGateRan"] is False
+        assert data["diagrams"][0]["maturity"]["syntaxOk"] is True  # unchecked, not valid
+        cfg = Path(tmp) / "gate.json"
+        cfg.write_text(json.dumps({
+            "scoring": {"syntax_command": [sys.executable, "-c", "import sys; sys.exit(0)"]}
+        }), encoding="utf-8")
+        main(["score", str(puml), "-c", str(cfg), "--check-syntax", "-f", "json", "-o", str(out)])
+        data = json.loads(out.read_text(encoding="utf-8"))
+        assert data["syntaxGateRan"] is True
 
 
 # --- anchored baseline keys (2026-09-04) -------------------------------------

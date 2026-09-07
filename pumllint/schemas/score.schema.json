@@ -4,12 +4,16 @@
   "title": "pumllint maturity report",
   "description": "The output of `pumllint score <paths> -f json`: per-diagram maturity results plus the model-set aggregate (SCORING.md). This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py).",
   "type": "object",
-  "required": ["diagrams", "modelSet"],
+  "required": ["diagrams", "modelSet", "syntaxGateRan"],
   "additionalProperties": false,
   "properties": {
     "diagrams": {
       "type": "array",
       "items": { "$ref": "#/$defs/diagram" }
+    },
+    "syntaxGateRan": {
+      "type": "boolean",
+      "description": "Whether the DIM-SYN syntax gate executed for this run (--check-syntax or scoring.syntax_gate). When false, every diagram's syntaxOk is true by default and means 'not checked', not 'valid' — the same disclosure the text report makes as 'Syntax gate: not run'. Added 2026-09-07 (additive, issue #30)."
     },
     "modelSet": {
       "type": ["object", "null"],
@@ -74,7 +78,7 @@
         "level": { "$ref": "#/$defs/level" },
         "levelName": { "$ref": "#/$defs/levelName" },
         "score": { "$ref": "#/$defs/score" },
-        "syntaxOk": { "type": "boolean", "description": "DIM-SYN gate result; true unless --check-syntax (or the config gate) found a failure" },
+        "syntaxOk": { "type": "boolean", "description": "DIM-SYN gate result; true unless --check-syntax (or the config gate) found a failure. Read together with the root's syntaxGateRan: when that is false this value was never checked." },
         "elementCount": { "type": "integer", "minimum": 0 },
         "suppressedCount": { "type": "integer", "minimum": 0, "description": "Findings hidden by inline ' pumllint: disable comments — excluded from the score and every dimension, so a suppressed-clean diagram is distinguishable from a clean one. Audit them with --no-suppressions." },
         "dimensions": {
