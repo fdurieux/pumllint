@@ -46,7 +46,8 @@ whatever the author typed after `as`.
 only one teams actually use to share entity declarations — makes the XD pack
 blind, and *raises* the maturity score.** The parser skips every line
 starting with `!`, so an included declaration never lands in the model and
-its participant becomes implicit; XD001/XD002 read only `declared` sites. The
+its participant becomes implicit; XD001/XD002 read only authored sites
+(declared before or, since 2026-09-07, after first use — never implicit). The
 same conflicting pair scores **72.5/100 with both declarations inline (DIM-CON
 0, four XD findings) and 87.5/100 with one moved into an `!include` (DIM-CON
 100, zero XD findings)** — **+15.0 points and a whole dimension, for the same
@@ -277,7 +278,7 @@ renaming an alias**, which is a rename that changes nothing a reader sees.
 The parser skips every preprocessor line (`_iter_logical_lines`,
 `pumllint/parser/sequence.py:175`), so a participant whose declaration lives
 in an included file arrives as **implicit**, and XD001/XD002 read only
-`p.declared` sites.
+authored sites (`p.authored`: a declaration on either side of first use).
 
 The same conflicting pair, differing only in where one declaration lives:
 

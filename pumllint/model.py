@@ -105,6 +105,23 @@ class Participant:
     stereotype: Optional[str] = None  # e.g. "service" for <<service>>
     declared_line: Optional[int] = None  # the declaration's line, when one exists
 
+    @property
+    def authored(self) -> bool:
+        """True when the modeller wrote a kind for this lifeline: declared
+        before first use, or declared after it (``declared_line`` set).
+
+        False for a lifeline a message alone created, including the use-case
+        ``:X:`` / ``(X)`` endpoints, whose kind is inferred from the brackets
+        rather than written. XD001/XD002 compare authored kinds and
+        stereotypes across diagrams; SEQ001/SEQ010 keep reading ``declared``.
+        """
+        return self.declared or self.declared_line is not None
+
+    @property
+    def authored_line(self) -> int:
+        """The line where the kind was written when one was, else first use."""
+        return self.declared_line if self.declared_line is not None else self.line
+
 
 @dataclass
 class Message:

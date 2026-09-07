@@ -6528,7 +6528,9 @@ list and license posture live in § Settled questions.
     declared-after-use: 0 in all 97 golden units and all 74 repository
     diagrams, so nothing frozen moves. Does not settle: XD001/XD002 read
     `p.kind if p.declared else None` and want "has an authored kind" — left
-    as is, recorded here as the follow-up.
+    as is, recorded here as the follow-up *(built the same day on the
+    maintainer's go, after a plain-English explanation: `Participant.authored`,
+    its own record below)*.
   - **§6.8 — the foreign corpus: no**, not trusted sufficiently. Arc D's item
     stays open, annotated in place with its trigger re-based on a corpus the
     owner can vouch for; the J-F corpus is declined; README's beta caveat
@@ -6566,7 +6568,8 @@ list and license posture live in § Settled questions.
   pytest 828. Not done, on purpose: XD001/XD002 still read `p.kind if
   p.declared else None`, so a late-declared `actor` is invisible to the
   cross-file kind check — the "authored kind" reading is the recorded
-  follow-up; the LSP references item stays unbuilt (its annotation above).
+  follow-up *(built later the same day, record below)*; the LSP references
+  item stays unbuilt (its annotation above).
 - **#30 built (2026-09-07): `syntaxGateRan` at the root of the score
   report — `syntaxOk` stops meaning two things.** The text half had shipped
   as the "Syntax gate: not run" line; the JSON half waited on owner decision
@@ -6658,3 +6661,52 @@ list and license posture live in § Settled questions.
     `json.load`. Stdlib runner 693 → 702, pytest 828 → 837; features, RULES.md,
     golden scores and pilot artefacts untouched (no scoring or reporter
     change). Open checkboxes unchanged by count: the item was added ticked.*
+- **XD001/XD002 read the authored kind (2026-09-07): the §6.7 follow-up,
+  built on the maintainer's go after a plain-English explanation.** PR #146
+  kept a declaration that follows first use (kind, alias, stereotype,
+  `declared_line`) while `declared` stayed False, and left the two
+  cross-file rules on `p.kind if p.declared else None` — so a kind or
+  stereotype the modeller wrote below the first arrow was invisible to the
+  cross-file check, and a real conflict between two files went unreported.
+  Three alternatives weighed by SWOT before the first edit:
+  - **The predicate lives on the model.** `Participant.authored` =
+    `declared or declared_line is not None`, with `authored_line` (the
+    declaration's line when one exists, else first use) beside it — one
+    definition next to the field it interprets, the `Message` property
+    precedent, reusable by the readers that will want it next. Inlining the
+    expression in the two lambdas duplicates it; a helper in
+    `consistency.py` is invisible to the LSP. Measured before choosing the
+    test: `kind != "implicit"` would be wrong — use-case `:X:` / `(X)`
+    endpoints carry an inferred `actor`/`usecase` kind with no declaration,
+    and stay unauthored (pinned in the parser test).
+  - **Scope: the two rules the record names.** SEQ102 (skips `not
+    p.declared` before its stereotype check), GEN004 (per-kind naming skips
+    undeclared) and the LSP completion detail (`actor (implicit)` for a
+    late-declared actor) ask the same question and keep the old proxy: each
+    has a RULES.md rationale that says "declared", and widening is a
+    decision per rule, not a side effect. Zero golden risk, the follow-up as
+    written.
+  - **Reported at the line the kind was written.** The message says "is
+    declared 'actor' here", so the finding lands on the declaration
+    (`authored_line`), where the fix goes, not on the first arrow. For a
+    declared-first participant the two lines are one, so nothing existing
+    moves; XD003's `p.line` convention concerns implicit sites, which have
+    no declaration line.
+  - **What moved.** Two lambdas and four report lines in
+    `rules/common/consistency.py`; two properties in `model.py`. Absent
+    stereotypes stay SEQ102's (a late bare `participant` against a
+    stereotyped one is silent), a never-declared lifeline still has no kind
+    to compare, an `authoritative` pin reports only the late non-conforming
+    site at its declaration line. RULES.md gains one scenario under each
+    rule (features regenerated) and the rationale sentences say a
+    declaration after first use counts; the cross-diagram evaluation note's
+    two "read only `declared` sites" sentences now say authored. XD004/XD005
+    read `p.kind` into `_Site.role` regardless of `declared` and needed
+    nothing.
+  - *Measured: stdlib runner 702 → 708, pytest 837 → 845; golden scores and
+    pilot artefacts byte-identical (corpus incidence of declared-after-use
+    is 0); `--list-rules` output unchanged. The hand probe — `Client -> Pay`
+    then `actor Pay` in one file, `database Pay` in the other — reports
+    XD001 twice, the late site at the `actor` line. Residues: SEQ102, GEN004
+    and the LSP `(implicit)` detail still read `declared`, each its own
+    decision; the LSP references item stays unbuilt.*

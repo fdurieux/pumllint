@@ -2275,7 +2275,9 @@ warning (stderr, exit codes untouched) says so per run.
 **Rationale:** The same entity declared as `participant` in one diagram and
 `database` (or `actor`, `queue`, …) in another has no single identity; readers
 and code generators cannot tell which role is authoritative. Implicit
-lifelines are ignored — they have no authored kind to conflict. A conflict is
+lifelines are ignored — they have no authored kind to conflict; a declaration
+that comes after the participant's first use still authored one, and is
+compared and reported at the line it was written on. A conflict is
 symmetric evidence: every conflicted site is reported, each message listing
 all variants with counts, and no side is elected — a majority vote indicts
 the conforming sites once a drift has spread. The per-entity `authoritative`
@@ -2302,6 +2304,24 @@ Feature: XD001 conflicting participant kind
       """
     When the linter runs
     Then a "XD001" issue with severity "major" is reported on line 3
+    And a "XD001" issue with severity "major" is reported on line 8
+
+  Scenario: a kind declared after first use still conflicts
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      Client -> OrderSvc : run()
+      database OrderSvc
+      @enduml
+      @startuml two
+      participant Client
+      participant OrderSvc
+      Client -> OrderSvc : query()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD001" issue with severity "major" is reported on line 4
     And a "XD001" issue with severity "major" is reported on line 8
 
   Scenario: an authoritative kind reports only the non-conforming site
@@ -2373,7 +2393,8 @@ Feature: XD001 conflicting participant kind
 **Rationale:** Stereotypes carry semantic weight (SEQ107 keys failure-path
 requirements off `<<external>>`); the same entity stereotyped `<<service>>`
 here and `<<external>>` there splits its identity. A missing stereotype is not
-a conflict — that is SEQ102's concern under the codegen profile. As in XD001,
+a conflict — that is SEQ102's concern under the codegen profile — and a
+stereotype on a declaration that follows first use counts as in XD001. As in XD001,
 every conflicted site is reported symmetrically (all variants with counts, no
 side elected), and the per-entity `authoritative` option
 (`authoritative = {Payments = "service"}`) pins the intended stereotype so
@@ -2398,6 +2419,24 @@ Feature: XD002 conflicting participant stereotype
       """
     When the linter runs
     Then a "XD002" issue with severity "minor" is reported on line 2
+    And a "XD002" issue with severity "minor" is reported on line 7
+
+  Scenario: a stereotype declared after first use still conflicts
+    Given the diagram:
+      """
+      @startuml one
+      participant Client
+      Client -> Payments : pay()
+      participant Payments <<service>>
+      @enduml
+      @startuml two
+      participant Payments <<external>>
+      participant Client
+      Client -> Payments : refund()
+      @enduml
+      """
+    When the linter runs
+    Then a "XD002" issue with severity "minor" is reported on line 4
     And a "XD002" issue with severity "minor" is reported on line 7
 
   Scenario: an authoritative stereotype reports only the non-conforming site

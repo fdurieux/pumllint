@@ -111,8 +111,9 @@ class ConflictingParticipantKind(CrossDiagramRule):
     id = "XD001"
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
-        # implicit lifelines have no authored kind
-        value_of = lambda p: p.kind if p.declared else None  # noqa: E731
+        # implicit lifelines have no authored kind; a declaration after first
+        # use still authored one (owner decision §6.7, 2026-09-07)
+        value_of = lambda p: p.kind if p.authored else None  # noqa: E731
         authoritative = _authoritative(self.options)
         for name, occs in _conflict_sets(diagrams, value_of, _distinct(self.options)):
             auth = authoritative.get(name)
@@ -120,7 +121,7 @@ class ConflictingParticipantKind(CrossDiagramRule):
                 for d, p in occs:
                     if p.kind != auth:
                         yield self.violation(
-                            d, p.line,
+                            d, p.authored_line,
                             f"Participant '{name}' is declared '{p.kind}' here but "
                             f"'{auth}' is the configured kind for this entity",
                         )
@@ -128,7 +129,7 @@ class ConflictingParticipantKind(CrossDiagramRule):
             summary = _variant_summary([p.kind for _, p in occs], lambda v: f"'{v}'")
             for d, p in occs:
                 yield self.violation(
-                    d, p.line,
+                    d, p.authored_line,
                     f"Participant '{name}' is declared '{p.kind}' here and the set "
                     f"disagrees ({summary}) — one entity, one kind",
                 )
@@ -140,7 +141,7 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
 
     def check_all(self, diagrams: Sequence[Diagram]) -> Iterable[Violation]:
         # absent stereotypes are SEQ102's concern, not a conflict
-        value_of = lambda p: (p.stereotype or None) if p.declared else None  # noqa: E731
+        value_of = lambda p: (p.stereotype or None) if p.authored else None  # noqa: E731
         authoritative = _authoritative(self.options)
         for name, occs in _conflict_sets(diagrams, value_of, _distinct(self.options)):
             auth = authoritative.get(name)
@@ -148,7 +149,7 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
                 for d, p in occs:
                     if p.stereotype != auth:
                         yield self.violation(
-                            d, p.line,
+                            d, p.authored_line,
                             f"Participant '{name}' is stereotyped <<{p.stereotype}>> "
                             f"here but <<{auth}>> is the configured stereotype for "
                             "this entity",
@@ -159,7 +160,7 @@ class ConflictingParticipantStereotype(CrossDiagramRule):
             )
             for d, p in occs:
                 yield self.violation(
-                    d, p.line,
+                    d, p.authored_line,
                     f"Participant '{name}' is stereotyped <<{p.stereotype}>> here "
                     f"and the set disagrees ({summary}) — one entity, one stereotype",
                 )
