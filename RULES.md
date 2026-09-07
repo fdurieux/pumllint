@@ -182,6 +182,9 @@ Feature: GEN003 inline skinparam
 **Rationale:** Declared participant names that disagree with the project convention
 create friction between the model and the code it describes. Options: `pattern` (regex,
 default PascalCase-with-dots) and `per_kind` (per participant-kind regex overrides).
+A declaration that comes after the participant's first use still declares its kind,
+so the name is checked and reported on the declaration line; a lifeline a message
+alone created has no kind and is SEQ001's, not this rule's.
 
 ```gherkin
 Feature: GEN004 participant naming convention
@@ -198,6 +201,19 @@ Feature: GEN004 participant naming convention
       """
     When the linter runs
     Then a "GEN004" issue with severity "minor" is reported on line 4
+
+  Scenario: a name declared after first use is still checked
+    Given the diagram:
+      """
+      @startuml demo
+      title Demo
+      participant A
+      A -> front_office : hi
+      participant front_office
+      @enduml
+      """
+    When the linter runs
+    Then a "GEN004" issue with severity "minor" is reported on line 5
 
   Scenario: conforming name passes
     Given the diagram:
