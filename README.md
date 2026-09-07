@@ -502,7 +502,13 @@ python -m pumllint schema trace   # the shape of `pumllint trace -f json`
 Point any standard validator at them when building tooling on top of the
 output. pumllint's own test suite validates every report shape it can emit
 against these schemas — like the golden scores, the shape cannot drift
-silently. The badge and sonar formats are deliberately not covered: those
+silently. Inside `0.x` a shape may gain a key, announced here: on
+2026-09-07 the score report's root gained `syntaxGateRan`, so a reader can
+tell a diagram whose syntax was checked and passed from one that was never
+checked (`syntaxOk` is `true` in both cases; the text report says "Syntax
+gate: not run" for the second). A validator holding an older copy of the
+schema will reject the new key — refresh it with `python -m pumllint schema
+score`. The badge and sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
 In GitHub Actions, use `command: schema` with `report: lint | score | trace`

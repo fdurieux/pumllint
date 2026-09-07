@@ -69,7 +69,8 @@ def test_text_reporter_clean_diagram_has_no_gap_section():
 def test_json_reporter_emits_maturity_object():
     results = _results()
     payload = json.loads(get_reporter("json").render_maturity(results))
-    assert set(payload) == {"diagrams", "modelSet"}
+    assert set(payload) == {"diagrams", "modelSet", "syntaxGateRan"}
+    assert payload["syntaxGateRan"] is False  # run-level, default: the gate did not run
     assert len(payload["diagrams"]) == 1
     entry = payload["diagrams"][0]
     assert entry["file"] == "order.puml"
@@ -177,7 +178,7 @@ def test_suppression_annotation_does_not_change_the_score():
 def test_empty_results_render_gracefully():
     assert get_reporter("text").render_maturity([]) == "No diagrams to score."
     payload = json.loads(get_reporter("json").render_maturity([]))
-    assert payload == {"diagrams": [], "modelSet": None}
+    assert payload == {"diagrams": [], "modelSet": None, "syntaxGateRan": False}
     assert json.loads(get_reporter("sonar").render_maturity([]))["issues"] == []
 
 

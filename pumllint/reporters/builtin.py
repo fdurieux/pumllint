@@ -270,6 +270,11 @@ class JsonReporter(Reporter):
                     for (diagram, r), key in zip(results, keys)
                 ],
                 "modelSet": model_set,
+                # Run-level: whether the DIM-SYN gate executed at all. With it,
+                # every syntaxOk above is a tri-state — true/false when the
+                # gate ran, "not checked" when it did not — which is what the
+                # text report's "Syntax gate: not run" line says (issue #30).
+                "syntaxGateRan": syntax_gate_ran,
             },
             indent=2,
         )
