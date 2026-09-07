@@ -141,6 +141,27 @@ def test_seq102_empty_allowed_stereotypes_means_no_vocabulary_check():
     assert "SEQ102" not in rule_ids(src, {"rules": {"SEQ102": {"allowed_stereotypes": []}}})
 
 
+def test_seq102_reports_a_bare_participant_declared_after_first_use():
+    """A late declaration still declares the kind (Participant.authored):
+    the presence test applies, reported on the declaration line. SEQ101
+    keeps reporting the same lifeline as not declared up front."""
+    src = puml("actor Customer\nCustomer -> Billing : ping()\nparticipant Billing")
+    v = violations_for(src, "SEQ102")
+    assert [(x.line, "Billing" in x.message) for x in v] == [(4, True)]
+    assert "SEQ101" in rule_ids(src)
+    # typed or stereotyped late declarations pass the presence test
+    assert "SEQ102" not in rule_ids(puml("actor C\nC -> B : ping()\ndatabase B"))
+    assert "SEQ102" not in rule_ids(puml("actor C\nC -> B : ping()\nparticipant B <<service>>"))
+    # never declared: SEQ101's, not SEQ102's
+    assert "SEQ102" not in rule_ids(puml("actor C\nC -> B : ping()"))
+
+
+def test_seq102_vocabulary_applies_to_a_late_declaration_too():
+    src = puml("actor Customer\nCustomer -> Billing : ping()\nparticipant Billing <<Thing>>")
+    v = violations_for(src, "SEQ102", _VOCAB)
+    assert len(v) == 1 and v[0].line == 4 and "<<Thing>>" in v[0].message
+
+
 def test_seq102_presence_finding_is_unchanged_under_a_vocabulary():
     src = puml("participant Billing\nactor Customer\nCustomer -> Billing : ping()")
     v = violations_for(src, "SEQ102", _VOCAB)

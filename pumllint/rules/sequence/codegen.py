@@ -81,6 +81,10 @@ class TypedParticipants(_CodegenRule):
     declared participant — whatever its keyword — whose ``<<stereotype>>`` is
     outside the list is reported at the same severity. Unset or empty, the
     vocabulary is open and only the presence test runs.
+
+    "Declared" here is ``Participant.authored``: before or after first use,
+    reported at the declaration's line. A lifeline a message alone created
+    is SEQ101's.
     """
 
     id = "SEQ102"
@@ -89,19 +93,19 @@ class TypedParticipants(_CodegenRule):
         raw = self.options.get("allowed_stereotypes") or ()
         allowed = {str(s).lower() for s in raw}
         for p in diagram.participants.values():
-            if not p.declared:
+            if not p.authored:
                 continue
             if p.kind == "participant" and not p.stereotype:
                 yield self.violation(
                     diagram,
-                    p.line,
+                    p.authored_line,
                     f"Participant '{p.name}' has no role type; use a typed keyword "
                     f"({', '.join(_TYPED_KINDS)}) or a <<stereotype>>",
                 )
             elif allowed and p.stereotype and p.stereotype.lower() not in allowed:
                 yield self.violation(
                     diagram,
-                    p.line,
+                    p.authored_line,
                     f"Participant '{p.name}' has stereotype <<{p.stereotype}>>, not in "
                     f"'allowed_stereotypes' ({', '.join(sorted(str(s) for s in raw))})",
                 )

@@ -163,6 +163,23 @@ def test_naming_convention_configurable():
     assert "GEN004" not in rule_ids(src, cfg)
 
 
+def test_naming_convention_checks_a_name_declared_after_first_use():
+    """The kind was written, so the pattern applies — reported on the
+    declaration line, with the per-kind override keyed on the written kind."""
+    from pumllint.engine import Engine
+    from pumllint.parser import parse_source
+
+    src = "@startuml demo\ntitle Demo\nparticipant A\nA -> front_office : hi\nactor front_office\n@enduml\n"
+    hits = [v for v in Engine({}).lint_diagrams(parse_source(src, "t.puml")) if v.rule_id == "GEN004"]
+    assert [(v.line, v.message.split(" does not match")[0]) for v in hits] == [
+        (5, "Actor name 'front_office'"),  # the written kind, the declaration line
+    ]
+    cfg = {"rules": {"participant-naming": {"per_kind": {"actor": "^[a-z_]+$"}}}}
+    assert "GEN004" not in rule_ids(src, cfg)
+    # never declared: no kind to pick a pattern by — SEQ001's, not GEN004's
+    assert "GEN004" not in rule_ids(src.replace("actor front_office\n", ""))
+
+
 def test_max_participants_threshold():
     body = "\n".join(f"participant P{i}" for i in range(6))
     src = f"@startuml x\ntitle T\n{body}\nP0 -> P1 : hi\n@enduml\n"

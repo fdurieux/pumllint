@@ -93,7 +93,9 @@ class InlineSkinparam(Rule):
 
 @register
 class ParticipantNaming(Rule):
-    """Declared participant names must match a configurable pattern.
+    """Participant names must match a configurable pattern, once a kind was
+    written for them (declared before or after first use); a lifeline a
+    message alone created is SEQ001's, and has no kind to pick a pattern by.
 
     Options: ``pattern`` (regex, default PascalCase-with-dots),
     ``per_kind`` (dict of kind -> regex overriding the default).
@@ -110,13 +112,13 @@ class ParticipantNaming(Rule):
             for kind, pat in (self.options.get("per_kind") or {}).items()
         }
         for p in diagram.participants.values():
-            if not p.declared:
+            if not p.authored:
                 continue
             pattern = per_kind.get(p.kind, default)
             if not pattern.match(p.name):
                 yield self.violation(
                     diagram,
-                    p.line,
+                    p.authored_line,
                     f"{p.kind.capitalize()} name '{p.name}' does not match pattern {pattern.pattern!r}",
                 )
 

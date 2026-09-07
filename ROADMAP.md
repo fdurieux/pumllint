@@ -6709,4 +6709,38 @@ list and license posture live in § Settled questions.
     then `actor Pay` in one file, `database Pay` in the other — reports
     XD001 twice, the late site at the `actor` line. Residues: SEQ102, GEN004
     and the LSP `(implicit)` detail still read `declared`, each its own
-    decision; the LSP references item stays unbuilt.*
+    decision *(SEQ102 and GEN004 built later the same day on the
+    maintainer's go, record below; the LSP detail stays)*; the LSP references item stays unbuilt.*
+- **SEQ102 and GEN004 read the authored kind (2026-09-07): the two rule
+  residues of the XD record, built on the maintainer's go after a
+  plain-English explanation.** Both skipped `not p.declared`, so a
+  participant declared below its first use was invisible to the naming
+  convention (GEN004) and to the codegen presence and vocabulary tests
+  (SEQ102) — a bare `participant X` written late gave a generator no
+  mapping signal and no finding. One decision, taken by the XD record's
+  three SWOTs, which apply unchanged: the model's `authored` predicate (not
+  an inline expression), reported at `authored_line` (the declaration, where
+  the fix goes; identical to `line` for a declared-first participant, so
+  nothing existing moves), scope exactly the two rules named.
+  - **What moved.** One conditional and one report line in each rule; the
+    per-kind override in GEN004 keys on the written kind (`actor
+    front_office` after `A -> front_office` is an actor-pattern miss on the
+    declaration line, and passes under `per_kind.actor`). A never-declared
+    lifeline stays out of both — no kind to pick a pattern by, no role type
+    to demand — and stays SEQ001's / SEQ101's. RULES.md gains the "declared
+    after first use is still checked" scenario under GEN004 (features
+    regenerated); SEQ102 has no RULES.md section (the codegen pack is
+    "documented separately", i.e. README's table, whose row needed no
+    change), so its pins are `tests/test_codegen_rules.py`'s two new cases.
+  - **Found alongside, recorded, not fixed.** SEQ101 reports a late-declared
+    participant as "created implicitly on first use" — the codegen analogue
+    of the SEQ001 sentence #146 corrected; the firing set is right (it is
+    not declared up front), the sentence is not. The LSP completion detail
+    still appends "(implicit)" to a late-declared kind. Both are wording,
+    each its own one-line change with a scenario; neither touched here.
+  - *Measured: stdlib runner 708 → 711, pytest 845 → 849; golden scores and
+    pilot artefacts byte-identical (corpus incidence of declared-after-use
+    is 0); `--list-rules` output unchanged. No reader of `declared` other
+    than SEQ001, SEQ002, SEQ010, SEQ101, GEN005, the UC rules, the fixer,
+    the CLI's include disclosure and the LSP remains, and each of those
+    means "declared before first use" on purpose.*
