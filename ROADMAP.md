@@ -450,6 +450,15 @@ three items — full write-up in EVIDENCE.md §Deepening:
   the wild tier and the pilot census both settled on metadata-only, and this
   would be the first departure from that. Retiring the caveat needs the
   fixture, not the audit. *Trigger: owner go on vendoring.*
+  *2026-09-07, owner decision §6.8: **no** — this corpus is not trusted
+  sufficiently (its arm's-length status is the row the record could not
+  establish, `docs/foreign-corpus-audit.md:147`). The J-F corpus is declined;
+  the slot stays open. Trigger re-based: a corpus whose arm's-length status
+  the owner vouches for — the bank's corpus of the 2026-09-06 brief is the
+  one in prospect, and since a private corpus cannot be vendored its
+  standing-fixture form is a private run plus published figures, which does
+  not retire README's caveat. The caveat stays until a vendorable corpus
+  exists.*
 
 ## Arc E — Ecosystem (demand-driven; wait for pull)
 
@@ -718,7 +727,11 @@ list and license posture live in § Settled questions.
   dependency, the option-key disclosure, shipped that morning)*.
   **Four owner decisions are open** (§6.3, 6.5, 6.7, 6.8 of the note;
   §6.1 and §6.2 were answered 2026-09-04 — yes, and all three option asks
-  built together; §6.4 and §6.6 were exercised conservatively in PR #121). §6.5, a fourth
+  built together; §6.4 and §6.6 were exercised conservatively in PR #121) *(all four answered
+  2026-09-07 — §6.3 yes with a caveat on ARIS process quality, §6.5 yes
+  including additive fields in existing shapes, §6.7 one meaning: declared
+  before first use, §6.8 no; the Settled record of that date carries the
+  consequences, and no owner decision is open)*. §6.5, a fourth
   pinned JSON Schema inside 0.x, unblocks six parked items on one answer
   and has precedent: `trace` already ships schema-pinned outside README's
   stable list. Two open items were queued 2026-09-03 with no trigger,
@@ -6440,4 +6453,68 @@ list and license posture live in § Settled questions.
   one. *Re-litigate on:* the bank's corpus arriving — in one delivery it
   is the census the component parser waits on, the foreign fixture Arc D
   waits on, and the process-documentation adopter the DIM-AMB residual's
-  trigger names.
+  trigger names. *[Qualified 2026-09-07, owner decision §6.3: the pilot
+  stands, and the maintainer doubts the consistency and quality of the
+  processes documented in ARIS. So the corpus, when it arrives, is a
+  quality-uncertain input: aris2puml's conversion rate and this tool's
+  findings over it are the measurement of exactly that doubt, a low rate or
+  a high finding count is a result about the models, and neither is a reason
+  to soften a gate or a rule. The two hazards above stand unchanged.]*
+- **Owner decisions §6.3, §6.5, §6.7, §6.8 (2026-09-07): all four answered —
+  one defect ungated, one fix redirected, one corpus declined, one pilot
+  confirmed with a caveat.** The four questions left open by the 2026-08-31
+  prioritisation note and the 2026-09-03 record were answered by the
+  maintainer on 2026-09-07; each answer is written into the note's §6 in the
+  §6.1 format, and this record carries the consequences. No owner decision
+  is open after it.
+  - **§6.3 — pilot: yes**, with the caveat that the consistency and quality
+    of the processes documented in ARIS are in doubt. README's 1.0 gate
+    (`README.md:86-89`) and every pilot-shaped trigger line stay as written.
+    The doubt is recorded where the corpus is named — the process-architecture
+    brief's re-litigation clause, above — as a qualifier on the input, not on
+    any gate. Does not settle: which organisation; the charter's roles are
+    still placeholders.
+  - **§6.5 — a fourth pinned JSON Schema inside 0.x: yes**, and asked
+    separately the same day, an additive field in an existing pinned shape is
+    inside the yes. Checked against the six items the note claimed: **#30's
+    JSON half** needs a new key in `score.schema.json` (`syntaxOk` stays a
+    boolean; `syntaxGateRan` beside it), so it is a bump of an existing shape,
+    not a fourth file, and it is now **ungated** — built under its own record
+    below. The **config schema** (option C of the `option_keys` record, its
+    prerequisite shipped 2026-09-04) is the literal fourth file: unblocked,
+    and by the maintainer's choice waiting for pull. **#43.1 and #43.2** keep
+    "recorded, not queued" — the schema was never their only blocker.
+    **Unmodelled-content tracking** builds with Arc H. **`verbalize`** and the
+    **k-way diff** stay on their own triggers (review-aid pull; a k-generation
+    workflow or owner go). Correction to the note: its six-item claim
+    over-reached; the §4 graph draws three. Does not settle: the Stable list
+    wording in README — the additive key is announced there when it lands.
+  - **§6.7 — `Participant.declared`: one meaning, declared before first use.**
+    Measured before acting: `parser/sequence.py:319` uses `setdefault`, so a
+    participant first met in a message keeps `declared=False` even when a
+    `participant` line follows — the chosen meaning is what the parser already
+    computes, SEQ001 and SEQ010 already report exactly the right set (three
+    probes: declared-first quiet, used-then-declared fires, never-declared
+    fires), and the note's Tier 3 item 9 (copy `class_.py:142-152`) is
+    **dropped**: it would have flipped the meaning to "declared at all" and
+    silenced SEQ010 on its own case. What is actually wrong, and fixed under
+    the next record without touching `declared`: SEQ001's message and docs
+    say "never declared" of a participant that is declared, later; a late
+    declaration's kind, alias and stereotype are discarded (the class and
+    state parsers upgrade in place; sequence alone did not); the fixer
+    inserts a duplicate declaration for that case; and one `line` slot cannot
+    hold both the first use and the declaration. Corpus incidence of
+    declared-after-use: 0 in all 97 golden units and all 74 repository
+    diagrams, so nothing frozen moves. Does not settle: XD001/XD002 read
+    `p.kind if p.declared else None` and want "has an authored kind" — left
+    as is, recorded here as the follow-up.
+  - **§6.8 — the foreign corpus: no**, not trusted sufficiently. Arc D's item
+    stays open, annotated in place with its trigger re-based on a corpus the
+    owner can vouch for; the J-F corpus is declined; README's beta caveat
+    stays; `docs/foreign-corpus-audit.md:147` carries the answer as a dated
+    sentence. Pointer corrected in the note: §6.1 and §6.8 cited `:146`,
+    which since the 2026-09-03 row split is the licence row. Does not settle:
+    the standing-fixture form for a private corpus — a private run plus
+    published figures, which never retires the caveat.
+  *Re-litigate on:* a new owner decision, by the maintainer; nothing here
+  reopens on evidence alone.
