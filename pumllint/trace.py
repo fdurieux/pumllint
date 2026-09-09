@@ -107,14 +107,41 @@ class ScenarioRef:
 
 @dataclass
 class FeatureFile:
-    """One scanned feature file: its heading, how many scenarios it declares
-    and every ID it references — per ID, one :class:`ScenarioRef` per
-    scenario (first line wins), in file order."""
+    """One scanned feature file: its heading, the scenarios it declares as
+    ``(title, heading line)`` in file order, and every ID it references —
+    per ID, one :class:`ScenarioRef` per scenario (first line wins), in
+    file order."""
 
     file: str
     name: str | None
     references: dict[str, tuple[ScenarioRef, ...]] = field(default_factory=dict)
-    scenario_count: int = 0
+    scenarios: tuple[tuple[str, int], ...] = ()
+
+    @property
+    def scenario_count(self) -> int:
+        return len(self.scenarios)
+
+    @property
+    def unlinked_scenarios(self) -> tuple[tuple[str, int], ...]:
+        """Scenarios no reference is attributed to, in file order.
+
+        Follows the attribution rules and never re-reads them: a Feature or
+        Rule tag reaches every scenario under it, so those files have none;
+        a file-level reference (the file name, the header, the Background)
+        reaches no scenario, so its scenarios are all here — tag the
+        Feature if that is not the intent. A file with no reference at all
+        is the ``unlinked_features`` row, and its scenarios are not listed
+        again: one gap, one row.
+        """
+        if not self.references:
+            return ()
+        linked = {
+            (a.scenario, a.scenario_line)
+            for refs in self.references.values()
+            for a in refs
+            if a.scenario is not None
+        }
+        return tuple(scn for scn in self.scenarios if scn not in linked)
 
 
 @dataclass(frozen=True)
@@ -173,6 +200,9 @@ class TraceResult:
     )
     unlinked_features: list[FeatureRef] = field(default_factory=list)
     scenario_count: int = 0
+    # Scenarios no reference is attributed to, in files that have one
+    # (FeatureFile.unlinked_scenarios); ``line`` is the heading line.
+    unlinked_scenarios: list[FeatureRef] = field(default_factory=list)
 
     @property
     def uncovered(self) -> list[RequirementRow]:
@@ -491,14 +521,22 @@ def attribute_lines(lines: list[str]) -> list[list[tuple[str | None, int]]]:
     return owners
 
 
-def scenario_count(text: str) -> int:
-    """How many scenarios the file declares — distinct headings in
-    :func:`attribute_lines`, so an outline counts once whatever its
-    ``Examples`` expand to, and a non-English dialect counts none."""
-    seen: set[tuple[str | None, int]] = set()
+def scenario_headings(text: str) -> tuple[tuple[str, int], ...]:
+    """The scenarios the file declares as ``(title, heading line)``, in
+    file order — distinct headings in :func:`attribute_lines`, so an
+    outline counts once whatever its ``Examples`` expand to, and a
+    non-English dialect declares none."""
+    seen: dict[tuple[str, int], None] = {}
     for owner in attribute_lines(text.splitlines()):
-        seen.update(o for o in owner if o[0] is not None)
-    return len(seen)
+        for scn, line in owner:
+            if scn is not None:
+                seen.setdefault((scn, line), None)
+    return tuple(sorted(seen, key=lambda h: h[1]))
+
+
+def scenario_count(text: str) -> int:
+    """How many scenarios the file declares (:func:`scenario_headings`)."""
+    return len(scenario_headings(text))
 
 
 def feature_name(text: str) -> str | None:
@@ -533,7 +571,7 @@ def scan_features(path: str | Path, pattern: re.Pattern[str]) -> list[FeatureFil
                 f.as_posix(),
                 feature_name(text),
                 feature_references(text, f.name, pattern),
-                scenario_count(text),
+                scenario_headings(text),
             )
         )
     return out
@@ -592,6 +630,7 @@ def build_matrix(
     unlinked_features: list[FeatureRef] = []
     feature_count: int | None = None
     scenarios = 0
+    unlinked_scenarios: list[FeatureRef] = []
     if features is not None:
         features = list(features)
         feature_count = len(features)
@@ -600,6 +639,9 @@ def build_matrix(
             if not f.references:
                 unlinked_features.append(FeatureRef(f.file, f.name, 0))
                 continue
+            unlinked_scenarios.extend(
+                FeatureRef(f.file, f.name, line, scn, line) for scn, line in f.unlinked_scenarios
+            )
             for rid, attributions in f.references.items():
                 bucket = verified_by[rid] if rid in known else unknown_feature.setdefault(rid, [])
                 for a in attributions:
@@ -621,4 +663,5 @@ def build_matrix(
         ],
         unlinked_features=unlinked_features,
         scenario_count=scenarios,
+        unlinked_scenarios=unlinked_scenarios,
     )

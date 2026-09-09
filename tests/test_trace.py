@@ -512,6 +512,7 @@ from pumllint.trace import (  # noqa: E402  (grouped with the tests they serve)
     feature_references,
     scan_features,
     scenario_count,
+    scenario_headings,
 )
 
 _ORDER_FEATURE = (
@@ -581,10 +582,10 @@ def test_matrix_without_features_leaves_the_verification_side_unrun():
 def test_matrix_with_features_reports_every_verification_direction():
     diagrams = _diagrams(_LINKED, "linked.puml")  # realizes REQ-1, REQ-2, REQ-3
     features = [
-        FeatureFile("t/order.feature", "Order", {"REQ-1": (ScenarioRef(1, "happy", 2), ScenarioRef(1, "sad", 6))}, 2),
-        FeatureFile("t/REQ-4.feature", "By name", {"REQ-4": (ScenarioRef(0),)}, 1),  # tested, not modelled
-        FeatureFile("t/pay.feature", "Pay", {"REQ-99": (ScenarioRef(3, "charge", 2),)}, 1),  # unknown
-        FeatureFile("t/smoke.feature", None, {}, 1),  # unlinked
+        FeatureFile("t/order.feature", "Order", {"REQ-1": (ScenarioRef(1, "happy", 2), ScenarioRef(1, "sad", 6))}, (("happy", 2), ("sad", 6))),
+        FeatureFile("t/REQ-4.feature", "By name", {"REQ-4": (ScenarioRef(0),)}, (("r", 2),)),  # tested, not modelled
+        FeatureFile("t/pay.feature", "Pay", {"REQ-99": (ScenarioRef(3, "charge", 2),)}, (("charge", 2),)),  # unknown
+        FeatureFile("t/smoke.feature", None, {}, (("boots", 2),)),  # unlinked
     ]
     result = build_matrix(diagrams, ["REQ-1", "REQ-2", "REQ-4"], _PATTERN, features)
     assert result.feature_count == 4 and result.scenario_count == 5 and result.verification_ran
@@ -631,6 +632,11 @@ def test_cli_trace_features_text_report():
         assert "1/2 modelled requirement(s) referenced by a feature file" in out
         assert "1 unverified, 1 unknown feature reference(s), 1 unlinked feature file(s)" in out
         assert "across 4 feature file(s), 4 scenario(s)" in out
+        # REQ-4.feature's reference is the file name, which reaches no
+        # scenario: its one scenario is unlinked; smoke.feature's is not
+        # listed again (the file itself is the row).
+        assert "Unlinked scenarios (no requirement reference, in a file that has one):" in out
+        assert "1 unlinked scenario(s)" in out and "REQ-4.feature [Refund] (r:2)" in out
         # per file, the scenarios in brackets at their heading line
         assert "REQ-1  ← " in out and "✔ " in out and "order.feature [Order placement] (happy path:3)" in out
         assert "REQ-2  ← " in out and "✖ unverified" in out
@@ -657,6 +663,10 @@ def test_cli_trace_features_json_validates_and_counts_add_up():
         assert s["featureCount"] == 4
         assert s["verifiedCount"] + s["unverifiedCount"] == s["coveredCount"] == 2
         assert s["unknownFeatureReferenceCount"] == 1 and s["unlinkedFeatureCount"] == 1
+        assert s["unlinkedScenarioCount"] == 1
+        assert payload["unlinkedScenarios"] == [
+            {"file": (td / "features" / "sub" / "REQ-4.feature").as_posix(), "name": "Refund", "scenario": "r", "scenarioLine": 2}
+        ]
         rows = {r["id"]: r for r in payload["requirements"]}
         assert s["scenarioCount"] == 4
         site = rows["REQ-1"]["verifiedBy"][0]
@@ -681,6 +691,9 @@ def test_cli_trace_features_json_validates_and_counts_add_up():
         extra = json.loads(out)
         extra["unknownReferences"] = [{"id": "X", "citedBy": [{"file": "f", "name": None, "line": 1, "scenario": "s", "scenarioLine": 1}]}]
         assert any("scenario" in e for e in validate(extra, schema))  # diagram sites carry no scenario
+        extra = json.loads(out)
+        extra["unlinkedScenarios"][0]["scenarioLine"] = 0  # a heading always has a line
+        assert any("scenarioLine" in e for e in validate(extra, schema))
 
 
 def test_cli_trace_unverified_gate():
@@ -818,3 +831,48 @@ def test_cli_trace_text_groups_scenarios_per_file():
         assert "REQ-1.feature [By name], " in out  # file-name site: no line, no brackets
         assert "order.feature [Orders] (place:3, cancel:5)" in out
         assert "across 2 feature file(s), 3 scenario(s)" in out
+
+
+# --- unlinked scenarios --------------------------------------------------------
+
+def test_unlinked_scenarios_follow_the_attribution_rules():
+    # A Feature tag reaches every scenario: none unlinked.
+    tagged = "@REQ-1\nFeature: F\n  Scenario: a\n  Scenario: b\n"
+    f = FeatureFile("t.feature", "F", feature_references(tagged, "t.feature", _PATTERN), scenario_headings(tagged))
+    assert f.unlinked_scenarios == ()
+    # A Rule tag reaches the scenarios under it only.
+    ruled = "Feature: F\n  Scenario: a\n  @REQ-1\n  Rule: R\n    Scenario: b\n"
+    f = FeatureFile("t.feature", "F", feature_references(ruled, "t.feature", _PATTERN), scenario_headings(ruled))
+    assert f.unlinked_scenarios == (("a", 2),)
+    # A file-level reference (the file name, the header) reaches no scenario.
+    named = "Feature: F about REQ-1\n  Scenario: a\n  @REQ-2\n  Scenario: b\n"
+    f = FeatureFile("REQ-1.feature", "F", feature_references(named, "REQ-1.feature", _PATTERN), scenario_headings(named))
+    assert f.unlinked_scenarios == (("a", 2),)
+    # A file with no reference at all lists none: it is the unlinked-file row.
+    none = "Feature: F\n  Scenario: a\n"
+    f = FeatureFile("t.feature", "F", feature_references(none, "t.feature", _PATTERN), scenario_headings(none))
+    assert f.unlinked_scenarios == () and f.scenario_count == 1
+
+
+def test_scenario_headings_are_in_file_order_and_count_an_outline_once():
+    text = "Feature: F\n  Scenario: z\n  Scenario Outline: a <n>\n    Examples:\n      | n |\n  Example: m\n"
+    assert scenario_headings(text) == (("z", 2), ("a <n>", 3), ("m", 6))
+    assert scenario_headings("# language: de\nFunktionalität: F\n  Szenario: a\n") == ()
+
+
+def test_matrix_lists_unlinked_scenarios_with_their_heading_line():
+    features = [
+        FeatureFile("t/a.feature", "A", {"REQ-1": (ScenarioRef(2, "one", 2),)}, (("one", 2), ("two", 5))),
+        FeatureFile("t/b.feature", "B", {}, (("lonely", 2),)),  # the file is the row
+    ]
+    result = build_matrix([], ["REQ-1"], _PATTERN, features)
+    assert [(u.file, u.scenario, u.line, u.scenario_line) for u in result.unlinked_scenarios] == [
+        ("t/a.feature", "two", 5, 5)
+    ]
+    assert [f.file for f in result.unlinked_features] == ["t/b.feature"]
+    payload = json.loads(get_reporter("json").render_trace(result))
+    assert payload["unlinkedScenarios"] == [{"file": "t/a.feature", "name": "A", "scenario": "two", "scenarioLine": 5}]
+    assert payload["summary"]["unlinkedScenarioCount"] == 1
+    assert validate(payload, load_schema("trace")) == []
+    # Without features the key is absent, as every verification key is.
+    assert "unlinkedScenarios" not in json.loads(get_reporter("json").render_trace(build_matrix([], ["REQ-1"], _PATTERN)))
