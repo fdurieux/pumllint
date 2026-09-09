@@ -6885,6 +6885,14 @@ list and license posture live in § Settled questions.
     `TraceResult.scenario_count`), both `render_trace`s, the schema, the
     README paragraph that had said "not reported" (rewritten to state the
     rules), this record. No CLI flag, no gate, no rule.
+  - **Found by the windows job, fixed in the same PR.** `sorted()` over
+    `Path` objects is case-insensitive on Windows, so `scan_features`
+    (and `scan_inventory`, the pattern it copied) walked
+    `order.feature` before `REQ-1.feature` there and after it on POSIX —
+    site order in the report, and inventory order for a scanned docs
+    tree, differed by platform, against the byte-identical contract. Both
+    now sort on `Path.as_posix()`; the new grouping test is what caught
+    it.
   - **Residues.** Unlinked *scenarios* (a scenario referencing nothing
     while its file does) is the next granularity of the unlinked
     direction, not built; the unknown-feature-reference and

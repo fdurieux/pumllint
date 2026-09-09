@@ -342,7 +342,13 @@ def scan_inventory(path: str | Path, pattern: re.Pattern[str]) -> list[str]:
     """
     p = Path(path)
     if p.is_dir():
-        files = sorted(f for f in p.rglob("*") if f.suffix.lower() in SCAN_SUFFIXES)
+        # Sort on the POSIX string, not the Path: Path ordering is
+        # case-insensitive on Windows, and a report must be byte-identical
+        # across platforms (CLAUDE.md).
+        files = sorted(
+            (f for f in p.rglob("*") if f.suffix.lower() in SCAN_SUFFIXES),
+            key=lambda f: f.as_posix(),
+        )
     elif p.exists():
         files = [p]
     else:
@@ -511,7 +517,10 @@ def scan_features(path: str | Path, pattern: re.Pattern[str]) -> list[FeatureFil
     """
     p = Path(path)
     if p.is_dir():
-        files = sorted(f for f in p.rglob("*") if f.suffix.lower() in FEATURE_SUFFIXES)
+        files = sorted(  # POSIX-string order, same reason as scan_inventory
+            (f for f in p.rglob("*") if f.suffix.lower() in FEATURE_SUFFIXES),
+            key=lambda f: f.as_posix(),
+        )
     elif p.exists():
         files = [p]
     else:
