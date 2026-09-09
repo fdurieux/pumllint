@@ -488,6 +488,69 @@ pumllint trace diagrams/ --requirements reqs.txt \
 (`pumllint schema trace`). In GitHub Actions, use `command: trace` with
 the inventory flags in `extra-args`.
 
+### Test coverage of the model: Gherkin feature files
+
+A *feature file* is a plain-text test written in Gherkin — the
+`Feature:` / `Scenario:` / `Given … When … Then` format that Cucumber,
+Behave, SpecFlow and pytest-bdd execute. If your acceptance tests carry
+the same requirement IDs as your diagrams — as a tag (`@REQ-101` above a
+Feature or Scenario), in a step's text, or in the file name
+(`REQ-101.feature`) — `pumllint trace` can tell you which modelled
+requirements have a test and which do not:
+
+```bash
+pumllint trace diagrams/ --requirements reqs.txt --features tests/features/
+```
+
+`--features` takes one feature file or a folder (searched for `*.feature`,
+sub-folders included), and scans it with the same ID pattern as the
+diagrams. The report gains a second summary line and a third column:
+
+```text
+Requirement coverage: 3/4 covered — 1 uncovered — across 3 diagram(s)
+Verification: 2/3 modelled requirement(s) referenced by a feature file — 1 unverified, 1 unknown feature reference(s), 1 unlinked feature file(s) — across 4 feature file(s)
+
+REQ-101  ← orders/order_flow.puml [OrderFlow]:2  ✔ tests/features/order.feature [Order placement]:1
+REQ-102  ← orders/refund.puml:2  ✔ tests/features/REQ-102.feature [Refund]
+REQ-103  ← orders/cancel.puml:2  ✖ unverified
+REQ-104  ✖ uncovered (tested, not modelled: tests/features/returns.feature [Returns]:3)
+
+Unknown feature references (not in the inventory — a typo, or the inventory is stale):
+  REQ-113  ← tests/features/pay.feature [Payment]:4
+
+Unlinked feature files (no requirement reference):
+  tests/features/smoke.feature [Smoke]
+```
+
+Read it like this. Every requirement a diagram realises is either
+**verified** (some feature file references its ID — the file, its
+`Feature:` heading and the line are printed, no line when the ID sits in
+the file name) or **unverified**: modelled, but no test names it. That
+second word is the finding this side exists for, and
+`--fail-on-unverified` turns it into a CI gate (exit 1). The
+"2/3" counts only *modelled* requirements: a requirement no diagram
+realises is already reported as uncovered on the line above, and one gap
+is not counted twice — if a feature file does reference it, the row says
+so in brackets. Below the rows, an ID a feature file cites that the
+inventory does not know is listed as an unknown feature reference (a typo
+in the test, or a stale inventory), and a feature file that references no
+requirement at all is listed as unlinked. Those two are report-only for
+now; ask if you need a gate on them.
+
+Coverage here is *per requirement*, at the granularity of a diagram and a
+feature file: it answers "does this modelled requirement have a test?",
+not "is every branch of this process exercised?". Which scenario inside
+the feature file carries the reference is not reported — a tag on a
+`Feature:` applies to every scenario under it, and honouring that needs
+a Gherkin parser, which pumllint deliberately does not carry — so the site
+is the file and the line. If no feature file matches the pattern at all,
+a stderr warning names the path and the pattern (every modelled
+requirement would otherwise read as unverified) without changing the exit
+code. With `-f json`, the verification fields — `verified` and
+`verifiedBy` on each requirement row, `unknownFeatureReferences`,
+`unlinkedFeatures` and five summary counts — appear only when
+`--features` is given; without it the report is exactly the shape it was.
+
 ## Report schemas
 
 The machine-readable reports are a public contract, pinned by JSON Schemas
@@ -509,7 +572,11 @@ tell a diagram whose syntax was checked and passed from one that was never
 checked (`syntaxOk` is `true` in both cases; the text report says "Syntax
 gate: not run" for the second). A validator holding an older copy of the
 schema will reject the new key — refresh it with `python -m pumllint schema
-score`. The badge and sonar formats are deliberately not covered: those
+score`. On 2026-09-09 the trace report gained its verification column
+(`verified`/`verifiedBy` on each requirement row, `unknownFeatureReferences`,
+`unlinkedFeatures` and five summary counts), present only when `--features`
+is given, so a report produced without the flag is unchanged. The badge and
+sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
 The fourth schema describes the configuration file rather than a report:

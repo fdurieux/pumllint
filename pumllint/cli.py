@@ -4,7 +4,7 @@ Six commands:
   pumllint <paths> [options]          lint (default; no subcommand keyword)
   pumllint score <paths> [options]    maturity scoring (see SCORING.md)
   pumllint fix <paths> [options]      auto-fix mechanical findings
-  pumllint trace <paths> [options]    requirement-coverage matrix
+  pumllint trace <paths> [options]    requirement-coverage matrix (+ feature-file verification)
   pumllint schema <report>            print the JSON Schema for a -f json report
   pumllint lsp [options]              language server over stdio (editor use)
 
@@ -165,7 +165,9 @@ def build_trace_parser() -> argparse.ArgumentParser:
         "diagrams realize, which IDs no diagram references, which diagrams "
         "reference nothing — plus references to IDs the inventory does not "
         "know. References are read from exactly the carriers GEN007 checks: "
-        "the diagram name plus title/header/footer/caption/notes.",
+        "the diagram name plus title/header/footer/caption/notes. With "
+        "--features, the verification side: which modelled requirements a "
+        "Gherkin feature file references, and which none does.",
     )
     _add_version_argument(p)
     p.add_argument("paths", nargs="*", help=".puml files or directories (recursed)")
@@ -190,6 +192,14 @@ def build_trace_parser() -> argparse.ArgumentParser:
         "matched as well as its text, so filename-carried IDs are found",
     )
     p.add_argument(
+        "--features",
+        metavar="PATH",
+        help="Verification side: scan a Gherkin feature file or tree "
+        "(*.feature) with the pattern — file name, tags and text — and "
+        "report which modelled requirements a feature references and which "
+        "none does (modelled but untested)",
+    )
+    p.add_argument(
         "-f", "--format", default="text", choices=formats_supporting("render_trace"),
         help="Output format (default: text)",
     )
@@ -208,6 +218,12 @@ def build_trace_parser() -> argparse.ArgumentParser:
         "--fail-on-unknown-ref",
         action="store_true",
         help="Exit 1 if any diagram references an ID missing from the inventory",
+    )
+    p.add_argument(
+        "--fail-on-unverified",
+        action="store_true",
+        help="Exit 1 if any requirement a diagram realizes is referenced by no "
+        "feature file (requires --features)",
     )
     return p
 
@@ -703,6 +719,11 @@ def _run_trace(argv: list[str]) -> int:
             "--requirements-scan PATH"
         )
         return 2
+    if args.fail_on_unverified and not args.features:
+        # A gate with nothing to gate on would pass silently; same rule as a
+        # glob that matches nothing: an error, never a silent pass.
+        _err("error: --fail-on-unverified needs --features PATH")
+        return 2
 
     from .parser import parse_file
     from .trace import (
@@ -710,6 +731,7 @@ def _run_trace(argv: list[str]) -> int:
         compile_pattern,
         load_inventory,
         pattern_from_config,
+        scan_features,
         scan_inventory,
     )
 
@@ -739,7 +761,8 @@ def _run_trace(argv: list[str]) -> int:
             inventory.extend(scan_inventory(args.requirements_scan, pattern))
         inventory = list(dict.fromkeys(inventory))  # union, first-seen order
         diagrams = _parse_input_files(_collect_input_files(args.paths))
-        result = build_matrix(diagrams, inventory, pattern)
+        features = scan_features(args.features, pattern) if args.features else None
+        result = build_matrix(diagrams, inventory, pattern, features)
         if not inventory:
             # Same contract as the lint path's "nothing was checked": an input
             # that yielded nothing is said out loud, on stderr, without moving
@@ -762,6 +785,15 @@ def _run_trace(argv: list[str]) -> int:
                 f"{len(result.unknown_references)} diagram reference(s) were "
                 f"compared against nothing"
             )
+        if features is not None and not any(f.references for f in features):
+            # The verification side's "nothing was checked": every modelled
+            # requirement would read as unverified, which is an accusation
+            # against the diagrams when the tree or the pattern is the cause.
+            _err(
+                f"warning: no feature file references an ID (--features "
+                f"{args.features} yielded {len(features)} file(s), none matching "
+                f"{pattern.pattern!r}) — every modelled requirement reads as unverified"
+            )
         report = get_reporter(args.format).render_trace(result)
     except (FileNotFoundError, ValueError, NotImplementedError) as e:
         _err(f"error: {e}")
@@ -773,6 +805,7 @@ def _run_trace(argv: list[str]) -> int:
         (args.fail_on_uncovered and any(not r.covered for r in result.requirements))
         or (args.fail_on_unlinked and bool(result.unlinked_diagrams))
         or (args.fail_on_unknown_ref and bool(result.unknown_references))
+        or (args.fail_on_unverified and bool(result.unverified))
     )
     return 1 if failed else 0
 

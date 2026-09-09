@@ -500,3 +500,206 @@ def test_cli_trace_whitespace_id_warns_on_stderr_without_changing_exit():
             )
         assert code == 0
         assert "warning:" in err.getvalue() and "REQ 1" in err.getvalue()
+
+
+# --- the verification side (feature files) -----------------------------------
+
+from pumllint.trace import (  # noqa: E402  (grouped with the tests they serve)
+    FeatureFile,
+    feature_name,
+    feature_references,
+    scan_features,
+)
+
+_ORDER_FEATURE = (
+    "@REQ-1 @smoke\n"
+    "Feature: Order placement\n"
+    "  Scenario: happy path\n"
+    "    Given REQ-1 applies again\n"
+)
+
+
+def test_feature_references_match_name_then_text_first_line_wins():
+    refs = feature_references(_ORDER_FEATURE, "REQ-3.feature", _PATTERN)
+    assert refs == {"REQ-3": 0, "REQ-1": 1}, refs  # file name is line 0; the tag, not the step
+
+
+def test_feature_name_reads_the_first_heading_or_none():
+    assert feature_name(_ORDER_FEATURE) == "Order placement"
+    assert feature_name("Feature:   spaced   \nFeature: second\n") == "spaced"
+    assert feature_name("# no heading\n") is None
+
+
+def test_scan_features_walks_feature_suffix_only_and_explicit_file_regardless():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        (td / "b.feature").write_text("Feature: B\n  Scenario: REQ-2\n", encoding="utf-8")
+        (td / "sub").mkdir()
+        (td / "sub" / "a.feature").write_text("Feature: A\n", encoding="utf-8")
+        (td / "notes.md").write_text("REQ-9 is not a feature file\n", encoding="utf-8")
+        files = scan_features(td, _PATTERN)
+        assert [f.file.rsplit("/", 1)[-1] for f in files] == ["b.feature", "a.feature"]  # sorted walk
+        assert files[0].name == "B" and files[0].references == {"REQ-2": 2}
+        assert files[1].references == {}  # unlinked
+        assert "\\" not in files[0].file  # forward slashes, every platform
+        explicit = scan_features(td / "notes.md", _PATTERN)
+        assert explicit[0].references == {"REQ-9": 1}  # explicit file: suffix not filtered
+        try:
+            scan_features(td / "nope", _PATTERN)
+        except FileNotFoundError:
+            pass
+        else:
+            raise AssertionError("missing --features path must be an error")
+
+
+def test_matrix_without_features_leaves_the_verification_side_unrun():
+    result = build_matrix(_diagrams(_LINKED), ["REQ-1"], _PATTERN)
+    assert result.feature_count is None and not result.verification_ran
+    assert result.requirements[0].verified_by == () and not result.requirements[0].verified
+    assert result.unknown_feature_references == [] and result.unlinked_features == []
+    assert result.verified == [] and result.unverified == []
+    payload = json.loads(get_reporter("json").render_trace(result))
+    # The v1 shape, key for key: nothing appears until --features is given.
+    assert set(payload) == {"requirements", "unknownReferences", "unlinkedDiagrams", "summary"}
+    assert set(payload["requirements"][0]) == {"id", "covered", "coveredBy"}
+    assert set(payload["summary"]) == {
+        "requirementCount", "coveredCount", "uncoveredCount",
+        "unknownReferenceCount", "unlinkedDiagramCount", "diagramCount",
+    }
+
+
+def test_matrix_with_features_reports_every_verification_direction():
+    diagrams = _diagrams(_LINKED, "linked.puml")  # realizes REQ-1, REQ-2, REQ-3
+    features = [
+        FeatureFile("t/order.feature", "Order", {"REQ-1": 1}),
+        FeatureFile("t/REQ-4.feature", "By name", {"REQ-4": 0}),  # tested, not modelled
+        FeatureFile("t/pay.feature", "Pay", {"REQ-99": 3}),  # unknown
+        FeatureFile("t/smoke.feature", None, {}),  # unlinked
+    ]
+    result = build_matrix(diagrams, ["REQ-1", "REQ-2", "REQ-4"], _PATTERN, features)
+    assert result.feature_count == 4 and result.verification_ran
+    by_id = {r.id: r for r in result.requirements}
+    assert by_id["REQ-1"].verified and by_id["REQ-1"].verified_by[0].file == "t/order.feature"
+    assert not by_id["REQ-2"].verified
+    assert by_id["REQ-4"].verified and not by_id["REQ-4"].covered
+    # The buckets measure the model: REQ-4 (unmodelled) is in neither.
+    assert [r.id for r in result.verified] == ["REQ-1"]
+    assert [r.id for r in result.unverified] == ["REQ-2"]
+    assert [(u.id, u.cited_by[0].line) for u in result.unknown_feature_references] == [("REQ-99", 3)]
+    assert [(f.file, f.name) for f in result.unlinked_features] == [("t/smoke.feature", None)]
+    # Diagram-side lists are untouched by the feature side.
+    assert {u.id for u in result.unknown_references} == {"REQ-3"}
+
+
+def _feature_workspace(td: Path) -> Path:
+    """The CLI workspace plus a features tree: REQ-1 tagged, REQ-4 tested
+    but never modelled, REQ-77 a typo, one file linking nothing."""
+    reqs = _workspace(td)
+    feats = td / "features"
+    (feats / "sub").mkdir(parents=True)
+    (feats / "order.feature").write_text(_ORDER_FEATURE, encoding="utf-8")
+    (feats / "sub" / "REQ-4.feature").write_text("Feature: Refund\n  Scenario: r\n", encoding="utf-8")
+    (feats / "pay.feature").write_text("Feature: Pay\n  Scenario: REQ-77\n", encoding="utf-8")
+    (feats / "smoke.feature").write_text("Feature: Smoke\n  Scenario: boots\n", encoding="utf-8")
+    return reqs
+
+
+def test_cli_trace_features_text_report():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _feature_workspace(td)
+        reqs.write_text("REQ-1\nREQ-2\nREQ-4\n", encoding="utf-8")
+        code, out, err = _run(
+            ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+",
+             "--features", str(td / "features")]
+        )
+        assert code == 0 and "warning" not in err
+        assert "1/2 modelled requirement(s) referenced by a feature file" in out
+        assert "1 unverified, 1 unknown feature reference(s), 1 unlinked feature file(s)" in out
+        assert "across 4 feature file(s)" in out
+        assert "REQ-1  ← " in out and "✔ " in out and "order.feature [Order placement]:1" in out
+        assert "REQ-2  ← " in out and "✖ unverified" in out
+        assert "REQ-4  ✖ uncovered (tested, not modelled: " in out
+        assert "REQ-4.feature [Refund])" in out  # file-name site: no line printed
+        assert "Unknown feature references" in out and "REQ-77" in out
+        assert "Unlinked feature files" in out and "smoke.feature [Smoke]" in out
+
+
+def test_cli_trace_features_json_validates_and_counts_add_up():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _feature_workspace(td)
+        reqs.write_text("REQ-1\nREQ-2\nREQ-4\n", encoding="utf-8")
+        code, out, _ = _run(
+            ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+",
+             "--features", str(td / "features"), "-f", "json"]
+        )
+        assert code == 0
+        payload = json.loads(out)
+        schema = load_schema("trace")
+        assert validate(payload, schema) == []
+        s = payload["summary"]
+        assert s["featureCount"] == 4
+        assert s["verifiedCount"] + s["unverifiedCount"] == s["coveredCount"] == 2
+        assert s["unknownFeatureReferenceCount"] == 1 and s["unlinkedFeatureCount"] == 1
+        rows = {r["id"]: r for r in payload["requirements"]}
+        assert rows["REQ-1"]["verified"] and rows["REQ-1"]["verifiedBy"][0]["line"] == 1
+        assert rows["REQ-4"]["verified"] and not rows["REQ-4"]["covered"]
+        assert rows["REQ-4"]["verifiedBy"][0]["line"] == 0  # carried by the file name
+        assert payload["unlinkedFeatures"] == [
+            {"file": (td / "features" / "smoke.feature").as_posix(), "name": "Smoke"}
+        ]
+        # Schema teeth on the new shapes.
+        extra = json.loads(out)
+        extra["unlinkedFeatures"][0]["scenario"] = "not a column"
+        assert any("scenario" in e for e in validate(extra, schema))
+        extra = json.loads(out)
+        extra["summary"]["verifiedCount"] = -1
+        assert any("verifiedCount" in e for e in validate(extra, schema))
+
+
+def test_cli_trace_unverified_gate():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _feature_workspace(td)
+        reqs.write_text("REQ-1\nREQ-2\n", encoding="utf-8")
+        base = ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+"]
+        feats = ["--features", str(td / "features")]
+        assert _run(base + feats + ["--fail-on-unverified"])[0] == 1  # REQ-2 modelled, untested
+        (td / "features" / "refund.feature").write_text(
+            "@REQ-2\nFeature: Refund\n", encoding="utf-8"
+        )
+        assert _run(base + feats + ["--fail-on-unverified"])[0] == 0
+        # The gate without its input is a usage error, never a silent pass.
+        code, _, err = _run(base + ["--fail-on-unverified"])
+        assert code == 2 and "--features" in err
+        # A missing features path is a config error, like a missing inventory.
+        assert _run(base + ["--features", str(td / "nope")])[0] == 2
+
+
+def test_cli_trace_warns_when_no_feature_references_an_id_without_changing_exit():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _feature_workspace(td)
+        base = ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+"]
+        code, out, err = _run(base + ["--features", str(td / "features" / "smoke.feature")])
+        assert code == 0
+        assert "warning: no feature file references an ID" in err and "1 file(s)" in err
+        assert "0/1 modelled requirement(s)" in out
+        # ... and the gate still trips on the merits, warning or not.
+        code, _, err = _run(
+            base + ["--features", str(td / "features" / "smoke.feature"), "--fail-on-unverified"]
+        )
+        assert code == 1 and "warning" in err
+        # A tree with references draws no warning.
+        _, _, err = _run(base + ["--features", str(td / "features")])
+        assert "warning" not in err
+
+
+def test_cli_trace_with_features_is_deterministic():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _feature_workspace(td)
+        argv = ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+",
+                "--features", str(td / "features"), "-f", "json"]
+        assert _run(argv)[1] == _run(argv)[1]

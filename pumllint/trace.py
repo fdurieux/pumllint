@@ -16,6 +16,16 @@ a docs file/tree with the pattern. The matrix reports both directions plus
 the dangling third: requirements no diagram realizes, diagrams referencing
 nothing, and references to IDs the inventory does not know (typo
 detector — the SEQ001 instinct applied to requirement IDs).
+
+The optional verification side (``--features``) adds the column the Arc G
+spec reserved: Gherkin feature files are scanned with the same pattern —
+file name first, then text, so a ``@REQ-101`` tag, a step that names the
+ID and a ``REQ-101.feature`` file all count — and each inventory row
+records which feature files reference it. The new direction is
+*modelled but untested*: a requirement some diagram realizes that no
+feature file references. Regex only, no Gherkin parser: a tag on a
+``Feature:`` applies to every scenario under it, which is the parser's
+semantics, so sites are file + line, never scenario.
 """
 
 from __future__ import annotations
@@ -32,6 +42,13 @@ from .textio import read_text_file
 # Suffixes scanned when --requirements-scan points at a directory.
 SCAN_SUFFIXES = (".md", ".txt", ".adoc", ".rst")
 
+# Suffixes scanned when --features points at a directory. Deliberately not
+# part of SCAN_SUFFIXES: the inventory is the universe of what must be
+# modelled, and a test must never define it.
+FEATURE_SUFFIXES = (".feature",)
+
+_FEATURE_HEADING = re.compile(r"^\s*Feature:\s*(.*\S)\s*$", re.MULTILINE)
+
 
 @dataclass(frozen=True)
 class DiagramRef:
@@ -44,15 +61,42 @@ class DiagramRef:
 
 
 @dataclass(frozen=True)
+class FeatureRef:
+    """One feature-file reference site: which file, its ``Feature:`` heading
+    (None when the file has none) and the line of the first text carrying
+    the ID — 0 when the ID is carried by the file name."""
+
+    file: str
+    name: str | None
+    line: int
+
+
+@dataclass
+class FeatureFile:
+    """One scanned feature file: its heading and every ID it references,
+    each with the line of its first occurrence (0 = the file name)."""
+
+    file: str
+    name: str | None
+    references: dict[str, int] = field(default_factory=dict)
+
+
+@dataclass(frozen=True)
 class RequirementRow:
-    """One inventory ID and the diagrams that reference it (may be none)."""
+    """One inventory ID, the diagrams that reference it (may be none) and,
+    when the verification side ran, the feature files that reference it."""
 
     id: str
     covered_by: tuple[DiagramRef, ...] = ()
+    verified_by: tuple[FeatureRef, ...] = ()
 
     @property
     def covered(self) -> bool:
         return bool(self.covered_by)
+
+    @property
+    def verified(self) -> bool:
+        return bool(self.verified_by)
 
 
 @dataclass(frozen=True)
@@ -61,6 +105,17 @@ class UnknownReference:
 
     id: str
     cited_by: tuple[DiagramRef, ...] = ()
+
+
+@dataclass(frozen=True)
+class UnknownFeatureReference:
+    """A feature-cited ID the inventory does not contain — the same typo
+    detector, applied to the test side. Kept apart from
+    :class:`UnknownReference` so that list keeps meaning "a diagram said
+    it": its sites are diagrams, these are feature files."""
+
+    id: str
+    cited_by: tuple[FeatureRef, ...] = ()
 
 
 @dataclass
@@ -74,10 +129,43 @@ class TraceResult:
     unknown_references: list[UnknownReference] = field(default_factory=list)
     unlinked_diagrams: list[DiagramRef] = field(default_factory=list)
     diagram_count: int = 0
+    # The verification side. ``feature_count`` is None when it did not run
+    # (no --features), and the reporters then emit exactly the v1 shape.
+    feature_count: int | None = None
+    unknown_feature_references: list[UnknownFeatureReference] = field(
+        default_factory=list
+    )
+    unlinked_features: list[FeatureRef] = field(default_factory=list)
 
     @property
     def uncovered(self) -> list[RequirementRow]:
         return [r for r in self.requirements if not r.covered]
+
+    @property
+    def verification_ran(self) -> bool:
+        return self.feature_count is not None
+
+    @property
+    def verified(self) -> list[RequirementRow]:
+        """Modelled *and* tested: covered rows some feature file references.
+
+        The verification side measures the model, so an unmodelled
+        requirement a feature happens to cite is neither here nor in
+        :attr:`unverified` — it is already the ``uncovered`` direction, and
+        one gap must not trip two gates.
+        """
+        return [r for r in self.requirements if r.covered and r.verified]
+
+    @property
+    def unverified(self) -> list[RequirementRow]:
+        """Modelled but untested: covered rows no feature file references.
+
+        Empty when the side did not run — a check that never happened
+        reports nothing, the same reason the JSON omits its keys.
+        """
+        if not self.verification_ran:
+            return []
+        return [r for r in self.requirements if r.covered and not r.verified]
 
 
 def compile_pattern(raw: str, origin: str) -> re.Pattern[str]:
@@ -240,6 +328,57 @@ def _dedupe(ids: Iterable[str]) -> list[str]:
     return out
 
 
+# -- feature files (the verification side) -----------------------------------
+
+
+def feature_references(text: str, file_name: str, pattern: re.Pattern[str]) -> dict[str, int]:
+    """IDs a feature file references → line of the first carrying text.
+
+    The file's **name** is matched first (line 0), then each line of text
+    in order — the same two haystacks and the same whole-match rule as
+    :func:`scan_inventory`, so a ``REQ-123.feature`` file, a ``@REQ-123``
+    tag and a step that names the ID are all found by one mechanism. A tag
+    is text: nothing here knows Gherkin, on purpose (module docstring).
+    """
+    refs: dict[str, int] = {}
+    for m in pattern.finditer(file_name):
+        refs.setdefault(m.group(0), 0)
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        for m in pattern.finditer(line):
+            refs.setdefault(m.group(0), lineno)
+    return refs
+
+
+def feature_name(text: str) -> str | None:
+    """The first ``Feature:`` heading's title, or None — the feature-file
+    counterpart of a diagram's ``@startuml`` name."""
+    m = _FEATURE_HEADING.search(text)
+    return m.group(1) if m else None
+
+
+def scan_features(path: str | Path, pattern: re.Pattern[str]) -> list[FeatureFile]:
+    """Every feature file under ``path`` with the IDs it references.
+
+    A directory is walked for ``*.feature`` files in sorted order; an
+    explicit file is scanned regardless of suffix — both exactly as
+    :func:`scan_inventory` does. Paths are reported with forward slashes.
+    """
+    p = Path(path)
+    if p.is_dir():
+        files = sorted(f for f in p.rglob("*") if f.suffix.lower() in FEATURE_SUFFIXES)
+    elif p.exists():
+        files = [p]
+    else:
+        raise FileNotFoundError(p)
+    out: list[FeatureFile] = []
+    for f in files:
+        text = f.read_text(encoding="utf-8", errors="replace")
+        out.append(
+            FeatureFile(f.as_posix(), feature_name(text), feature_references(text, f.name, pattern))
+        )
+    return out
+
+
 # -- the matrix ---------------------------------------------------------------
 
 
@@ -264,8 +403,14 @@ def build_matrix(
     diagrams: Iterable[Diagram],
     inventory: list[str],
     pattern: re.Pattern[str],
+    features: Iterable[FeatureFile] | None = None,
 ) -> TraceResult:
-    """Fold per-diagram references and the inventory into the coverage matrix."""
+    """Fold per-diagram references and the inventory into the coverage matrix.
+
+    ``features`` (from :func:`scan_features`) adds the verification side;
+    None — the default, and the v1 call — leaves every verification field
+    at its "did not run" value.
+    """
     diagrams = list(diagrams)
     known = set(inventory)
     covered_by: dict[str, list[DiagramRef]] = {i: [] for i in inventory}
@@ -281,13 +426,37 @@ def build_matrix(
         for rid, line in refs.items():
             site = DiagramRef(d.file_path, d.name, line, d.diagram_type)
             (covered_by[rid] if rid in known else unknown.setdefault(rid, [])).append(site)
+
+    verified_by: dict[str, list[FeatureRef]] = {i: [] for i in inventory}
+    unknown_feature: dict[str, list[FeatureRef]] = {}
+    unlinked_features: list[FeatureRef] = []
+    feature_count: int | None = None
+    if features is not None:
+        features = list(features)
+        feature_count = len(features)
+        for f in features:
+            if not f.references:
+                unlinked_features.append(FeatureRef(f.file, f.name, 0))
+                continue
+            for rid, line in f.references.items():
+                site = FeatureRef(f.file, f.name, line)
+                (
+                    verified_by[rid] if rid in known else unknown_feature.setdefault(rid, [])
+                ).append(site)
+
     return TraceResult(
         requirements=[
-            RequirementRow(i, tuple(covered_by[i])) for i in inventory
+            RequirementRow(i, tuple(covered_by[i]), tuple(verified_by[i])) for i in inventory
         ],
         unknown_references=[
             UnknownReference(rid, tuple(sites)) for rid, sites in unknown.items()
         ],
         unlinked_diagrams=unlinked,
         diagram_count=len(diagrams),
+        feature_count=feature_count,
+        unknown_feature_references=[
+            UnknownFeatureReference(rid, tuple(sites))
+            for rid, sites in unknown_feature.items()
+        ],
+        unlinked_features=unlinked_features,
     )
