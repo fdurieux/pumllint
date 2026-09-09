@@ -6826,7 +6826,8 @@ list and license posture live in § Settled questions.
     pilot artefact moved.
   - **Residues, recorded, not built.** (1) Scenario-level attribution
     (needs a Gherkin parser — re-litigate if `@cucumber/gherkin`'s
-    semantics are ever wanted for tag inheritance); (2) per-branch coverage
+    semantics are ever wanted for tag inheritance) *[built later the same
+    day on the maintainer's go, without the parser — record below]*; (2) per-branch coverage
     of a process (needs model content as carriers, which GEN007 forbids by
     contract — a different design); (3) gates on unknown feature
     references and unlinked feature files, and a repeatable `--features`;
@@ -6837,3 +6838,57 @@ list and license posture live in § Settled questions.
     six-file scratch tree (tag, step, file-name ID, tested-not-modelled,
     typo, two unlinked) reports every direction and `-f json` validates
     against the shipped schema.*
+- **`trace --features`: scenario-level attribution (2026-09-09, second
+  PR of the day), built on the maintainer's go from the first residue of
+  the verification-column record.** That residue said "needs a Gherkin
+  parser", and the reasoning was that tag inheritance is the parser's
+  semantics. Re-read for the build, the semantics are four sentences —
+  a tag above `Feature:` belongs to every scenario in the file, above
+  `Rule:` to every scenario under it, directly above a scenario to that
+  scenario, above `Examples:` to the enclosing outline — over a fixed
+  keyword set. What they need is a keyword-level reader, not a grammar;
+  the Gherkin note's N1 refused a *dependency*, and this adds none.
+  Decisions and grounds:
+  - **A line reader over the English keywords, no AST.**
+    `attribute_lines` walks the file once, tracks pending tag lines, the
+    Feature's and the current Rule's tags, the open scenario, and
+    doc-string fences (so a `Scenario:` inside `"""` is text). Every
+    other line inside a scenario is that scenario's; the feature header,
+    a Rule description and the `Background:` are the file's. Grounds:
+    zero dependencies (README contract), and the reader is 60 lines whose
+    every rule is quoted from the Gherkin reference.
+  - **Degrade, never guess, on a foreign dialect.** A `# language:` first
+    line naming anything but English switches recognition off: IDs are
+    still found, every site is file-level, `scenarioCount` is 0. Ground:
+    the project's own features are English; a wrong attribution would be
+    a silent lie, a file-level one is the previous day's truth.
+  - **One site per (file, scenario), first line wins.** A Feature tag
+    inherited by three scenarios is three sites at the tag's line, each
+    naming its scenario and heading line; the same ID tagged again on a
+    scenario does not add a fourth. Verified/unverified sets are
+    unchanged by construction — attribution adds a column to a site, it
+    finds no new references — so every summary count of the first PR
+    holds and one, `scenarioCount`, is added.
+  - **The shape.** Feature-side sites become `featureSite` (`site` +
+    `scenario` string|null + `scenarioLine`), required keys, on
+    `verifiedBy` and on `unknownFeatureReferences[].citedBy` (its own
+    `$defs` entry now); diagram sites are untouched and the schema
+    rejects `scenario` on them. Additive on keys that appeared the same
+    day, still absent without `--features`.
+  - **The text report groups per file**: `file [Feature] (scenario:line,
+    …)`, the line being the scenario heading — where the reader opens —
+    with a file-level site printed as before. `across N feature file(s),
+    M scenario(s)`.
+  - **What moved.** `trace.py` (`ScenarioRef`, `FeatureRef.scenario` /
+    `scenario_line`, `FeatureFile.references` now id → tuple of
+    `ScenarioRef`, `attribute_lines`, `scenario_count`,
+    `TraceResult.scenario_count`), both `render_trace`s, the schema, the
+    README paragraph that had said "not reported" (rewritten to state the
+    rules), this record. No CLI flag, no gate, no rule.
+  - **Residues.** Unlinked *scenarios* (a scenario referencing nothing
+    while its file does) is the next granularity of the unlinked
+    direction, not built; the unknown-feature-reference and
+    unlinked-feature gates and a repeatable `--features` stay as recorded.
+  - *Measured: stdlib runner 721 → 726, pytest 859 → 864; golden scores
+    and pilot artefacts byte-identical; the first PR's scratch tree
+    reports the same verified/unverified sets with scenarios named.*

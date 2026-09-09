@@ -23,9 +23,20 @@ file name first, then text, so a ``@REQ-101`` tag, a step that names the
 ID and a ``REQ-101.feature`` file all count — and each inventory row
 records which feature files reference it. The new direction is
 *modelled but untested*: a requirement some diagram realizes that no
-feature file references. Regex only, no Gherkin parser: a tag on a
-``Feature:`` applies to every scenario under it, which is the parser's
-semantics, so sites are file + line, never scenario.
+feature file references.
+
+Sites are attributed to scenarios by a keyword-level reader, not a
+Gherkin parser: the file is read line by line for the fixed English
+keywords (``Feature:``, ``Rule:``, ``Background:``, ``Scenario:``,
+``Scenario Outline:``, ``Example:``, ``Examples:``) and tag lines, and
+Gherkin's own tag-inheritance rules are applied — a tag on the Feature
+belongs to every scenario in the file, a tag on a Rule to every scenario
+under it, a tag line directly above a scenario to that scenario, tags
+above ``Examples:`` to the enclosing outline. Text inside a scenario
+(steps, tables, doc strings, comments) is that scenario's; text in the
+feature header, a Rule description or the Background is the file's, with
+no scenario. No grammar, no AST, no dependency; a ``# language:`` other
+than English degrades to file-level attribution.
 """
 
 from __future__ import annotations
@@ -49,6 +60,14 @@ FEATURE_SUFFIXES = (".feature",)
 
 _FEATURE_HEADING = re.compile(r"^\s*Feature:\s*(.*\S)\s*$", re.MULTILINE)
 
+# The Gherkin keywords the attribution reader recognises (English, the
+# default dialect). Scenario-opening keywords name a scenario; the others
+# open a container or a block whose text belongs to the file.
+_SCENARIO_KEYWORDS = ("Scenario Outline:", "Scenario Template:", "Scenario:", "Example:")
+_EXAMPLES_KEYWORDS = ("Examples:", "Scenarios:")
+_LANGUAGE_HEADER = re.compile(r"^\s*#\s*language\s*:\s*([\w-]+)")
+_DOCSTRING_FENCES = ('"""', "```")
+
 
 @dataclass(frozen=True)
 class DiagramRef:
@@ -63,22 +82,39 @@ class DiagramRef:
 @dataclass(frozen=True)
 class FeatureRef:
     """One feature-file reference site: which file, its ``Feature:`` heading
-    (None when the file has none) and the line of the first text carrying
-    the ID — 0 when the ID is carried by the file name."""
+    (None when the file has none), the line of the first text carrying the
+    ID — 0 when the ID is carried by the file name — and the scenario the
+    reference is attributed to (None = the file itself: its name, the
+    feature header, a Rule description or the Background), with the line
+    of that scenario's heading (0 when there is none)."""
 
     file: str
     name: str | None
     line: int
+    scenario: str | None = None
+    scenario_line: int = 0
+
+
+@dataclass(frozen=True)
+class ScenarioRef:
+    """One attribution inside a feature file: the line of the reference and
+    the scenario it belongs to (None = the file itself)."""
+
+    line: int
+    scenario: str | None = None
+    scenario_line: int = 0
 
 
 @dataclass
 class FeatureFile:
-    """One scanned feature file: its heading and every ID it references,
-    each with the line of its first occurrence (0 = the file name)."""
+    """One scanned feature file: its heading, how many scenarios it declares
+    and every ID it references — per ID, one :class:`ScenarioRef` per
+    scenario (first line wins), in file order."""
 
     file: str
     name: str | None
-    references: dict[str, int] = field(default_factory=dict)
+    references: dict[str, tuple[ScenarioRef, ...]] = field(default_factory=dict)
+    scenario_count: int = 0
 
 
 @dataclass(frozen=True)
@@ -136,6 +172,7 @@ class TraceResult:
         default_factory=list
     )
     unlinked_features: list[FeatureRef] = field(default_factory=list)
+    scenario_count: int = 0
 
     @property
     def uncovered(self) -> list[RequirementRow]:
@@ -331,22 +368,131 @@ def _dedupe(ids: Iterable[str]) -> list[str]:
 # -- feature files (the verification side) -----------------------------------
 
 
-def feature_references(text: str, file_name: str, pattern: re.Pattern[str]) -> dict[str, int]:
-    """IDs a feature file references → line of the first carrying text.
+def feature_references(
+    text: str, file_name: str, pattern: re.Pattern[str]
+) -> dict[str, tuple[ScenarioRef, ...]]:
+    """IDs a feature file references → the scenarios each is attributed to.
 
-    The file's **name** is matched first (line 0), then each line of text
-    in order — the same two haystacks and the same whole-match rule as
-    :func:`scan_inventory`, so a ``REQ-123.feature`` file, a ``@REQ-123``
-    tag and a step that names the ID are all found by one mechanism. A tag
-    is text: nothing here knows Gherkin, on purpose (module docstring).
+    The file's **name** is matched first (line 0, the file's own), then
+    each line of text in order — the same two haystacks and the same
+    whole-match rule as :func:`scan_inventory`, so a ``REQ-123.feature``
+    file, a ``@REQ-123`` tag and a step that names the ID are all found
+    by one mechanism. Attribution follows Gherkin's tag rules (module
+    docstring) via :func:`attribute_lines`; per ID and scenario the first
+    carrying line wins, and the tuple is in file order.
     """
-    refs: dict[str, int] = {}
+    refs: dict[str, dict[str | None, ScenarioRef]] = {}
+
+    def _add(rid: str, ref: ScenarioRef) -> None:
+        refs.setdefault(rid, {}).setdefault(ref.scenario, ref)
+
     for m in pattern.finditer(file_name):
-        refs.setdefault(m.group(0), 0)
-    for lineno, line in enumerate(text.splitlines(), start=1):
-        for m in pattern.finditer(line):
-            refs.setdefault(m.group(0), lineno)
-    return refs
+        _add(m.group(0), ScenarioRef(0))
+    lines = text.splitlines()
+    owners = attribute_lines(lines)
+    for lineno, line in enumerate(lines, start=1):
+        ids = [m.group(0) for m in pattern.finditer(line)]
+        if not ids:
+            continue
+        for scenario, scenario_line in owners[lineno - 1]:
+            for rid in ids:
+                _add(rid, ScenarioRef(lineno, scenario, scenario_line))
+    return {rid: tuple(by_scn.values()) for rid, by_scn in refs.items()}
+
+
+def _keyword(line: str, keywords: tuple[str, ...]) -> str | None:
+    return next((k for k in keywords if line.startswith(k)), None)
+
+
+def attribute_lines(lines: list[str]) -> list[list[tuple[str | None, int]]]:
+    """For each line, the scenarios a reference on it belongs to.
+
+    One entry per line: a list of ``(scenario, heading_line)`` pairs —
+    ``(None, 0)`` for the file itself. A line belongs to several scenarios
+    only through inheritance: a tag line above ``Feature:`` or ``Rule:``
+    is attributed to every scenario under that container, resolved once
+    the whole file has been read. Doc-string fences suppress keyword
+    recognition inside them. A ``# language:`` header naming a dialect
+    other than English disables recognition altogether, and every line is
+    the file's.
+    """
+    file_owner: list[tuple[str | None, int]] = [(None, 0)]
+    owners: list[list[tuple[str | None, int]]] = [list(file_owner) for _ in lines]
+    if lines:
+        m = _LANGUAGE_HEADER.match(lines[0])
+        if m and not m.group(1).lower().startswith("en"):
+            return owners
+
+    pending: list[int] = []  # tag lines since the last keyword
+    feature_tags: list[int] = []  # tag lines above Feature: (whole file)
+    rule_tags: list[int] = []  # tag lines above the current Rule:
+    current: tuple[str, int] | None = None  # the open scenario
+    scenarios: list[tuple[tuple[str, int], list[int], list[int]]] = []
+    in_docstring: str | None = None
+
+    for i, raw in enumerate(lines):
+        line = raw.strip()
+        if in_docstring:
+            if line.startswith(in_docstring):
+                in_docstring = None
+            if current:
+                owners[i] = [current]
+            continue
+        if line.startswith(_DOCSTRING_FENCES):
+            in_docstring = line[:3]
+            if current:
+                owners[i] = [current]
+            continue
+        if line.startswith("@"):
+            pending.append(i)
+            continue
+        if line.startswith("Feature:"):
+            feature_tags, pending, current = pending, [], None
+            continue
+        if line.startswith("Rule:"):
+            rule_tags, pending, current = pending, [], None
+            continue
+        if line.startswith("Background:"):
+            pending, current = [], None  # its tags (invalid Gherkin) stay the file's
+            continue
+        kw = _keyword(line, _SCENARIO_KEYWORDS)
+        if kw:
+            current = (line[len(kw):].strip() or "(unnamed)", i + 1)
+            scenarios.append((current, feature_tags, rule_tags))
+            for t in pending:
+                owners[t] = [current]
+            pending = []
+            owners[i] = [current]
+            continue
+        if _keyword(line, _EXAMPLES_KEYWORDS):
+            # Examples tags apply to the pickles the enclosing outline
+            # derives — to the outline itself, here.
+            for t in pending:
+                owners[t] = [current] if current else list(file_owner)
+            pending = []
+        if current:
+            owners[i] = [current]
+        # else: feature header, description, Background or Rule text — the file's.
+
+    # Inheritance, resolved at the end: a Feature tag line belongs to every
+    # scenario, a Rule tag line to the scenarios declared under that Rule.
+    inherited: dict[int, list[tuple[str | None, int]]] = {}
+    for scn, ftags, rtags in scenarios:
+        for t in ftags + rtags:
+            inherited.setdefault(t, []).append(scn)
+    for t, scns in inherited.items():
+        owners[t] = scns
+    return owners
+
+
+def scenario_count(text: str) -> int:
+    """How many scenarios the file declares — distinct headings in
+    :func:`attribute_lines`, so an outline counts once whatever its
+    ``Examples`` expand to, and a non-English dialect counts none."""
+    seen: set[tuple[str | None, int]] = set()
+    for owner in attribute_lines(text.splitlines()):
+        seen.update(o for o in owner if o[0] is not None)
+    return len(seen)
 
 
 def feature_name(text: str) -> str | None:
@@ -374,7 +520,12 @@ def scan_features(path: str | Path, pattern: re.Pattern[str]) -> list[FeatureFil
     for f in files:
         text = f.read_text(encoding="utf-8", errors="replace")
         out.append(
-            FeatureFile(f.as_posix(), feature_name(text), feature_references(text, f.name, pattern))
+            FeatureFile(
+                f.as_posix(),
+                feature_name(text),
+                feature_references(text, f.name, pattern),
+                scenario_count(text),
+            )
         )
     return out
 
@@ -431,18 +582,19 @@ def build_matrix(
     unknown_feature: dict[str, list[FeatureRef]] = {}
     unlinked_features: list[FeatureRef] = []
     feature_count: int | None = None
+    scenarios = 0
     if features is not None:
         features = list(features)
         feature_count = len(features)
         for f in features:
+            scenarios += f.scenario_count
             if not f.references:
                 unlinked_features.append(FeatureRef(f.file, f.name, 0))
                 continue
-            for rid, line in f.references.items():
-                site = FeatureRef(f.file, f.name, line)
-                (
-                    verified_by[rid] if rid in known else unknown_feature.setdefault(rid, [])
-                ).append(site)
+            for rid, attributions in f.references.items():
+                bucket = verified_by[rid] if rid in known else unknown_feature.setdefault(rid, [])
+                for a in attributions:
+                    bucket.append(FeatureRef(f.file, f.name, a.line, a.scenario, a.scenario_line))
 
     return TraceResult(
         requirements=[
@@ -459,4 +611,5 @@ def build_matrix(
             for rid, sites in unknown_feature.items()
         ],
         unlinked_features=unlinked_features,
+        scenario_count=scenarios,
     )

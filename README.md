@@ -523,9 +523,13 @@ Unlinked feature files (no requirement reference):
 ```
 
 Read it like this. Every requirement a diagram realises is either
-**verified** (some feature file references its ID — the file, its
-`Feature:` heading and the line are printed, no line when the ID sits in
-the file name) or **unverified**: modelled, but no test names it. That
+**verified** (some feature file references its ID — the file and its
+`Feature:` heading are printed, then in brackets each scenario the
+reference belongs to with the line of its heading, so `(place:3,
+cancel:5)` means two scenarios test it; a reference that belongs to the
+file rather than a scenario, such as an ID in the file name or the
+feature's description, is printed as the file alone, with its line when
+it has one) or **unverified**: modelled, but no test names it. That
 second word is the finding this side exists for, and
 `--fail-on-unverified` turns it into a CI gate (exit 1). The
 "2/3" counts only *modelled* requirements: a requirement no diagram
@@ -538,17 +542,25 @@ requirement at all is listed as unlinked. Those two are report-only for
 now; ask if you need a gate on them.
 
 Coverage here is *per requirement*, at the granularity of a diagram and a
-feature file: it answers "does this modelled requirement have a test?",
-not "is every branch of this process exercised?". Which scenario inside
-the feature file carries the reference is not reported — a tag on a
-`Feature:` applies to every scenario under it, and honouring that needs
-a Gherkin parser, which pumllint deliberately does not carry — so the site
-is the file and the line. If no feature file matches the pattern at all,
+scenario: it answers "does this modelled requirement have a test, and
+which scenarios?", not "is every branch of this process exercised?".
+Which scenario a reference belongs to follows Gherkin's own tag rules,
+read without a Gherkin parser: a tag above `Feature:` belongs to every
+scenario in the file, a tag above `Rule:` to every scenario under that
+rule, a tag line directly above a `Scenario:`, `Scenario Outline:` or
+`Example:` to that scenario, tags above `Examples:` to the outline they
+sit in, and any text inside a scenario (steps, tables, doc strings,
+comments) to that scenario. Text in the feature's header or description,
+in a rule's description or in the `Background:` belongs to the file, and
+so does the file name. The keywords are the English ones; a file whose
+first line declares another `# language:` is still scanned for IDs, but
+every reference is reported at file level. If no feature file matches the pattern at all,
 a stderr warning names the path and the pattern (every modelled
 requirement would otherwise read as unverified) without changing the exit
 code. With `-f json`, the verification fields — `verified` and
-`verifiedBy` on each requirement row, `unknownFeatureReferences`,
-`unlinkedFeatures` and five summary counts — appear only when
+`verifiedBy` on each requirement row, each site carrying `scenario` and
+`scenarioLine`, `unknownFeatureReferences`, `unlinkedFeatures` and six
+summary counts including `scenarioCount` — appear only when
 `--features` is given; without it the report is exactly the shape it was.
 
 ## Report schemas
@@ -575,7 +587,9 @@ schema will reject the new key — refresh it with `python -m pumllint schema
 score`. On 2026-09-09 the trace report gained its verification column
 (`verified`/`verifiedBy` on each requirement row, `unknownFeatureReferences`,
 `unlinkedFeatures` and five summary counts), present only when `--features`
-is given, so a report produced without the flag is unchanged. The badge and
+is given, so a report produced without the flag is unchanged; later that
+day each feature-side site gained `scenario` and `scenarioLine` and the
+summary `scenarioCount`, under the same condition. The badge and
 sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
