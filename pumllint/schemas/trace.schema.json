@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/trace.schema.json",
   "title": "pumllint requirement-traceability report",
-  "description": "The output of `pumllint trace <paths> -f json`: the coverage matrix between a requirements inventory and the diagrams that reference them, both directions plus unknown references. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Requirement `id` values are stable identifiers: future matrix columns (process step, component, contract) will arrive as additive optional properties on the requirement row, never by reshaping v1. The verification column arrived on 2026-09-09 exactly that way: `verified`/`verifiedBy` on the row, `unknownFeatureReferences`, `unlinkedFeatures` and five summary counts, all present only when `--features` was given — without it the payload is the v1 shape. Later the same day feature-side sites gained `scenario`/`scenarioLine` and the summary `scenarioCount`, the same way.",
+  "description": "The output of `pumllint trace <paths> -f json`: the coverage matrix between a requirements inventory and the diagrams that reference them, both directions plus unknown references. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Requirement `id` values are stable identifiers: future matrix columns (process step, component, contract) will arrive as additive optional properties on the requirement row, never by reshaping v1. The verification column arrived on 2026-09-09 exactly that way: `verified`/`verifiedBy` on the row, `unknownFeatureReferences`, `unlinkedFeatures` and five summary counts, all present only when `--features` was given — without it the payload is the v1 shape. Later the same day feature-side sites gained `scenario`/`scenarioLine` and the summary `scenarioCount`, then `unlinkedScenarios` and `unlinkedScenarioCount`, the same way.",
   "type": "object",
   "required": ["requirements", "unknownReferences", "unlinkedDiagrams", "summary"],
   "additionalProperties": false,
@@ -32,6 +32,11 @@
       "description": "Verification side, present only when --features was given: feature files (name and text) that reference no requirement ID.",
       "items": { "$ref": "#/$defs/unlinkedFeature" }
     },
+    "unlinkedScenarios": {
+      "type": "array",
+      "description": "Verification side, present only when --features was given: scenarios no reference is attributed to, in files that reference at least one ID. Derived from the attribution rules: a Feature or Rule tag reaches every scenario under it, a file-level reference (file name, header, Background) reaches none. A file with no reference at all is an unlinkedFeatures row and its scenarios are not repeated here.",
+      "items": { "$ref": "#/$defs/unlinkedScenario" }
+    },
     "summary": {
       "type": "object",
       "required": ["requirementCount", "coveredCount", "uncoveredCount", "unknownReferenceCount", "unlinkedDiagramCount", "diagramCount"],
@@ -48,7 +53,8 @@
         "verifiedCount": { "type": "integer", "minimum": 0, "description": "Verification side: inventory IDs realized by a diagram AND referenced by a feature file. The denominator is coveredCount, never requirementCount — an unmodelled requirement is already uncoveredCount, and one gap must not count twice." },
         "unverifiedCount": { "type": "integer", "minimum": 0, "description": "Verification side: inventory IDs realized by a diagram but referenced by no feature file — modelled but untested, the --fail-on-unverified set. verifiedCount + unverifiedCount = coveredCount." },
         "unknownFeatureReferenceCount": { "type": "integer", "minimum": 0 },
-        "unlinkedFeatureCount": { "type": "integer", "minimum": 0 }
+        "unlinkedFeatureCount": { "type": "integer", "minimum": 0 },
+        "unlinkedScenarioCount": { "type": "integer", "minimum": 0 }
       }
     }
   },
@@ -118,6 +124,17 @@
         "line": { "type": "integer", "minimum": 0 },
         "scenario": { "type": ["string", "null"], "description": "The scenario's title as written after Scenario:/Scenario Outline:/Example: ('(unnamed)' when empty), or null for a file-level site." },
         "scenarioLine": { "type": "integer", "minimum": 0, "description": "The line of that scenario's heading, where the reader opens; 0 for a file-level site." }
+      }
+    },
+    "unlinkedScenario": {
+      "type": "object",
+      "required": ["file", "name", "scenario", "scenarioLine"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "name": { "type": ["string", "null"], "description": "The Feature: heading, null when the file has none." },
+        "scenario": { "type": "string", "description": "The scenario's title ('(unnamed)' when empty)." },
+        "scenarioLine": { "type": "integer", "minimum": 1, "description": "The line of the scenario's heading." }
       }
     },
     "unlinkedFeature": {

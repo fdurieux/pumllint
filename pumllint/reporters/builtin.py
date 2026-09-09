@@ -270,6 +270,12 @@ class TextReporter(Reporter):
             lines.append("Unlinked feature files (no requirement reference):")
             for f in result.unlinked_features:
                 lines.append(sanitize_terminal(f"  {_site_label(f)}"))
+        if result.unlinked_scenarios:
+            lines.append("")
+            lines.append(
+                "Unlinked scenarios (no requirement reference, in a file that has one):"
+            )
+            lines.append(sanitize_terminal(f"  {_feature_sites_label(result.unlinked_scenarios)}"))
         return "\n".join(lines)
 
     @staticmethod
@@ -291,6 +297,8 @@ class TextReporter(Reporter):
             )
         if result.unlinked_features:
             parts.append(f"{len(result.unlinked_features)} unlinked feature file(s)")
+        if result.unlinked_scenarios:
+            parts.append(f"{len(result.unlinked_scenarios)} unlinked scenario(s)")
         head = f"Verification: {verified}/{modelled} modelled requirement(s) referenced by a feature file"
         tail = (
             f"across {result.feature_count} feature file(s), "
@@ -413,6 +421,10 @@ class JsonReporter(Reporter):
             payload["unlinkedFeatures"] = [
                 {"file": f.file, "name": f.name} for f in result.unlinked_features
             ]
+            payload["unlinkedScenarios"] = [
+                {"file": f.file, "name": f.name, "scenario": f.scenario, "scenarioLine": f.scenario_line}
+                for f in result.unlinked_scenarios
+            ]
             summary.update(
                 {
                     "featureCount": result.feature_count,
@@ -421,6 +433,7 @@ class JsonReporter(Reporter):
                     "unverifiedCount": len(result.unverified),
                     "unknownFeatureReferenceCount": len(result.unknown_feature_references),
                     "unlinkedFeatureCount": len(result.unlinked_features),
+                    "unlinkedScenarioCount": len(result.unlinked_scenarios),
                 }
             )
         return json.dumps(payload, indent=2)

@@ -6914,7 +6914,8 @@ list and license posture live in § Settled questions.
     it.
   - **Residues.** Unlinked *scenarios* (a scenario referencing nothing
     while its file does) is the next granularity of the unlinked
-    direction, not built; the unknown-feature-reference and
+    direction, not built *[built later the same day on the maintainer's
+    go — record below]*; the unknown-feature-reference and
     unlinked-feature gates and a repeatable `--features` stay as recorded.
   - *Measured: stdlib runner 721 → 726, pytest 859 → 864; golden scores
     and pilot artefacts byte-identical; the first PR's scratch tree
@@ -6994,3 +6995,35 @@ list and license posture live in § Settled questions.
     executing the scripts. Re-litigate on either gate firing, or on an
     adopter reporting that the identity join alone let a wrong scenario
     pass as verification.
+- **`trace --features`: unlinked scenarios (2026-09-09, third code PR
+  of the day), built on the maintainer's go from the residue of the
+  attribution record.** The direction: in a feature file that references
+  at least one ID, the scenarios no reference is attributed to. One
+  decision carries it, and it is a refusal to decide anything new:
+  - **Derived from the attribution rules, never a re-reading of them.**
+    A Feature or Rule tag reaches every scenario under it, so those files
+    list none. A file-level reference — the file name, the header, the
+    Background — reaches no scenario (#153's rule), so all of that file's
+    scenarios are listed: a `REQ-102.feature` with untagged scenarios
+    reports every one of them, which is the report saying "tag the
+    Feature if you mean all of them". The alternative, propagating
+    file-level references to scenarios for this direction only, would
+    make one line of Gherkin mean two things in two lists; refused.
+  - **One gap, one row.** A file with no reference at all is already the
+    `unlinkedFeatures` row; its scenarios are not listed again, the same
+    principle that keeps a tested-but-unmodelled requirement out of both
+    verification buckets.
+  - **Shape.** `FeatureFile.scenarios` (title, heading line; the count is
+    now a property), `FeatureFile.unlinked_scenarios`,
+    `TraceResult.unlinked_scenarios` as `FeatureRef`s whose `line` is the
+    heading line; JSON `unlinkedScenarios` (`unlinkedScenario` def:
+    file, name, scenario, scenarioLine ≥ 1 — a heading always has a
+    line) and `unlinkedScenarioCount`; text section "Unlinked scenarios
+    (no requirement reference, in a file that has one)" grouped per file
+    like the other feature-side lists. Report-only, like the two lists
+    beside it; still absent without `--features`; v1 byte-identical.
+  - *Measured: stdlib runner 726 → 729, pytest 864 → 867; golden scores
+    and pilot artefacts byte-identical. The residue list of the
+    verification column is now: gates on the three report-only lists, a
+    repeatable `--features`, per-branch coverage (the Arc G candidate,
+    gated on the owner decision and a corpus).*

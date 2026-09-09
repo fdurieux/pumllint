@@ -538,8 +538,16 @@ is not counted twice — if a feature file does reference it, the row says
 so in brackets. Below the rows, an ID a feature file cites that the
 inventory does not know is listed as an unknown feature reference (a typo
 in the test, or a stale inventory), and a feature file that references no
-requirement at all is listed as unlinked. Those two are report-only for
-now; ask if you need a gate on them.
+requirement at all is listed as unlinked. Below that, **unlinked
+scenarios**: in a file that does reference a requirement, the scenarios
+no reference reaches. This follows the attribution rules above and
+nothing else: a tag above `Feature:` or `Rule:` reaches every scenario
+under it, so such files have none; an ID carried only by the file name,
+the header or the `Background:` reaches no scenario, so all of that
+file's scenarios are listed, which is the report's way of saying "tag the
+Feature if you mean all of them". A file with no reference at all is
+already the unlinked-file row and its scenarios are not repeated. These
+three lists are report-only for now; ask if you need a gate on them.
 
 Coverage here is *per requirement*, at the granularity of a diagram and a
 scenario: it answers "does this modelled requirement have a test, and
@@ -559,8 +567,9 @@ a stderr warning names the path and the pattern (every modelled
 requirement would otherwise read as unverified) without changing the exit
 code. With `-f json`, the verification fields — `verified` and
 `verifiedBy` on each requirement row, each site carrying `scenario` and
-`scenarioLine`, `unknownFeatureReferences`, `unlinkedFeatures` and six
-summary counts including `scenarioCount` — appear only when
+`scenarioLine`, `unknownFeatureReferences`, `unlinkedFeatures`,
+`unlinkedScenarios` and seven summary counts including `scenarioCount`
+and `unlinkedScenarioCount` — appear only when
 `--features` is given; without it the report is exactly the shape it was.
 
 ## Report schemas
@@ -589,7 +598,8 @@ score`. On 2026-09-09 the trace report gained its verification column
 `unlinkedFeatures` and five summary counts), present only when `--features`
 is given, so a report produced without the flag is unchanged; later that
 day each feature-side site gained `scenario` and `scenarioLine` and the
-summary `scenarioCount`, under the same condition. The badge and
+summary `scenarioCount`, then `unlinkedScenarios` with its count, under
+the same condition. The badge and
 sonar formats are deliberately not covered: those
 shapes are shields.io's and SonarQube's contracts, not pumllint's.
 
