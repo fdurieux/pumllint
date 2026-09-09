@@ -28,6 +28,34 @@ def _site_to_dict(s: "DiagramRef | FeatureRef") -> dict:
     return {"file": s.file, "name": s.name, "line": s.line}
 
 
+def _feature_site_to_dict(s: FeatureRef) -> dict:
+    return {
+        "file": s.file,
+        "name": s.name,
+        "line": s.line,
+        "scenario": s.scenario,
+        "scenarioLine": s.scenario_line,
+    }
+
+
+def _feature_sites_label(sites: Iterable[FeatureRef]) -> str:
+    """Feature-side sites grouped per file: the file-level site as
+    ``file [name]:line`` (no line for a file-name ID), then the scenarios
+    in brackets as ``scenario:heading-line`` — where the reader opens."""
+    groups: dict[tuple[str, Optional[str]], list[FeatureRef]] = {}
+    for s in sites:
+        groups.setdefault((s.file, s.name), []).append(s)
+    parts = []
+    for (file, name), refs in groups.items():
+        base = f"{file} [{name}]" if name else file
+        file_level = [r for r in refs if r.scenario is None]
+        if file_level and file_level[0].line:
+            base += f":{file_level[0].line}"
+        scns = [f"{r.scenario}:{r.scenario_line}" for r in refs if r.scenario is not None]
+        parts.append(f"{base} ({', '.join(scns)})" if scns else base)
+    return ", ".join(parts)
+
+
 def _result_keys(results: list[tuple[Diagram, MaturityResult]], baseline: _Baseline) -> list:
     """Baseline lookup key per result, or Nones when not in ratchet mode."""
     if baseline is None:
@@ -206,8 +234,7 @@ class TextReporter(Reporter):
                 row = f"{r.id}  ← {sites}"
                 if result.verification_ran:
                     if r.verified:
-                        tests = ", ".join(_site_label(s) for s in r.verified_by)
-                        row += f"  ✔ {tests}"
+                        row += f"  ✔ {_feature_sites_label(r.verified_by)}"
                     else:
                         row += "  ✖ unverified"
             else:
@@ -215,8 +242,7 @@ class TextReporter(Reporter):
                 if r.verified:
                     # Tested but not modelled: said on the row, counted in
                     # neither verification bucket (TraceResult.verified).
-                    tests = ", ".join(_site_label(s) for s in r.verified_by)
-                    row += f" (tested, not modelled: {tests})"
+                    row += f" (tested, not modelled: {_feature_sites_label(r.verified_by)})"
             lines.append(sanitize_terminal(row))
         if result.unknown_references:
             lines.append("")
@@ -238,8 +264,7 @@ class TextReporter(Reporter):
                 "Unknown feature references (not in the inventory — a typo, or the inventory is stale):"
             )
             for u in result.unknown_feature_references:
-                sites = ", ".join(_site_label(s) for s in u.cited_by)
-                lines.append(sanitize_terminal(f"  {u.id}  ← {sites}"))
+                lines.append(sanitize_terminal(f"  {u.id}  ← {_feature_sites_label(u.cited_by)}"))
         if result.unlinked_features:
             lines.append("")
             lines.append("Unlinked feature files (no requirement reference):")
@@ -267,7 +292,10 @@ class TextReporter(Reporter):
         if result.unlinked_features:
             parts.append(f"{len(result.unlinked_features)} unlinked feature file(s)")
         head = f"Verification: {verified}/{modelled} modelled requirement(s) referenced by a feature file"
-        tail = f"across {result.feature_count} feature file(s)"
+        tail = (
+            f"across {result.feature_count} feature file(s), "
+            f"{result.scenario_count} scenario(s)"
+        )
         if not parts:
             return f"✔ {head} {tail}"
         return f"{head} — {', '.join(parts)} — {tail}"
@@ -346,7 +374,7 @@ class JsonReporter(Reporter):
             }
             if ran:
                 row["verified"] = r.verified
-                row["verifiedBy"] = [_site_to_dict(s) for s in r.verified_by]
+                row["verifiedBy"] = [_feature_site_to_dict(s) for s in r.verified_by]
             return row
 
         summary = {
@@ -378,7 +406,7 @@ class JsonReporter(Reporter):
             payload["unknownFeatureReferences"] = [
                 {
                     "id": u.id,
-                    "citedBy": [_site_to_dict(s) for s in u.cited_by],
+                    "citedBy": [_feature_site_to_dict(s) for s in u.cited_by],
                 }
                 for u in result.unknown_feature_references
             ]
@@ -388,6 +416,7 @@ class JsonReporter(Reporter):
             summary.update(
                 {
                     "featureCount": result.feature_count,
+                    "scenarioCount": result.scenario_count,
                     "verifiedCount": len(result.verified),
                     "unverifiedCount": len(result.unverified),
                     "unknownFeatureReferenceCount": len(result.unknown_feature_references),

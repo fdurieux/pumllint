@@ -506,9 +506,12 @@ def test_cli_trace_whitespace_id_warns_on_stderr_without_changing_exit():
 
 from pumllint.trace import (  # noqa: E402  (grouped with the tests they serve)
     FeatureFile,
+    ScenarioRef,
+    attribute_lines,
     feature_name,
     feature_references,
     scan_features,
+    scenario_count,
 )
 
 _ORDER_FEATURE = (
@@ -519,9 +522,15 @@ _ORDER_FEATURE = (
 )
 
 
+def _flat(refs):
+    return {rid: [(r.line, r.scenario, r.scenario_line) for r in v] for rid, v in refs.items()}
+
+
 def test_feature_references_match_name_then_text_first_line_wins():
-    refs = feature_references(_ORDER_FEATURE, "REQ-3.feature", _PATTERN)
-    assert refs == {"REQ-3": 0, "REQ-1": 1}, refs  # file name is line 0; the tag, not the step
+    refs = _flat(feature_references(_ORDER_FEATURE, "REQ-3.feature", _PATTERN))
+    # file name is line 0 and the file's own; the Feature tag (line 1), not
+    # the step (line 4), and attributed to the one scenario under it
+    assert refs == {"REQ-3": [(0, None, 0)], "REQ-1": [(1, "happy path", 3)]}, refs
 
 
 def test_feature_name_reads_the_first_heading_or_none():
@@ -539,11 +548,12 @@ def test_scan_features_walks_feature_suffix_only_and_explicit_file_regardless():
         (td / "notes.md").write_text("REQ-9 is not a feature file\n", encoding="utf-8")
         files = scan_features(td, _PATTERN)
         assert [f.file.rsplit("/", 1)[-1] for f in files] == ["b.feature", "a.feature"]  # sorted walk
-        assert files[0].name == "B" and files[0].references == {"REQ-2": 2}
-        assert files[1].references == {}  # unlinked
+        assert files[0].name == "B" and _flat(files[0].references) == {"REQ-2": [(2, "REQ-2", 2)]}
+        assert files[0].scenario_count == 1
+        assert files[1].references == {} and files[1].scenario_count == 0  # unlinked
         assert "\\" not in files[0].file  # forward slashes, every platform
         explicit = scan_features(td / "notes.md", _PATTERN)
-        assert explicit[0].references == {"REQ-9": 1}  # explicit file: suffix not filtered
+        assert _flat(explicit[0].references) == {"REQ-9": [(1, None, 0)]}  # explicit file: suffix not filtered
         try:
             scan_features(td / "nope", _PATTERN)
         except FileNotFoundError:
@@ -571,15 +581,19 @@ def test_matrix_without_features_leaves_the_verification_side_unrun():
 def test_matrix_with_features_reports_every_verification_direction():
     diagrams = _diagrams(_LINKED, "linked.puml")  # realizes REQ-1, REQ-2, REQ-3
     features = [
-        FeatureFile("t/order.feature", "Order", {"REQ-1": 1}),
-        FeatureFile("t/REQ-4.feature", "By name", {"REQ-4": 0}),  # tested, not modelled
-        FeatureFile("t/pay.feature", "Pay", {"REQ-99": 3}),  # unknown
-        FeatureFile("t/smoke.feature", None, {}),  # unlinked
+        FeatureFile("t/order.feature", "Order", {"REQ-1": (ScenarioRef(1, "happy", 2), ScenarioRef(1, "sad", 6))}, 2),
+        FeatureFile("t/REQ-4.feature", "By name", {"REQ-4": (ScenarioRef(0),)}, 1),  # tested, not modelled
+        FeatureFile("t/pay.feature", "Pay", {"REQ-99": (ScenarioRef(3, "charge", 2),)}, 1),  # unknown
+        FeatureFile("t/smoke.feature", None, {}, 1),  # unlinked
     ]
     result = build_matrix(diagrams, ["REQ-1", "REQ-2", "REQ-4"], _PATTERN, features)
-    assert result.feature_count == 4 and result.verification_ran
+    assert result.feature_count == 4 and result.scenario_count == 5 and result.verification_ran
     by_id = {r.id: r for r in result.requirements}
-    assert by_id["REQ-1"].verified and by_id["REQ-1"].verified_by[0].file == "t/order.feature"
+    assert by_id["REQ-1"].verified
+    # One site per (file, scenario): the inherited tag is two sites, same line.
+    assert [(s.file, s.line, s.scenario, s.scenario_line) for s in by_id["REQ-1"].verified_by] == [
+        ("t/order.feature", 1, "happy", 2), ("t/order.feature", 1, "sad", 6)
+    ]
     assert not by_id["REQ-2"].verified
     assert by_id["REQ-4"].verified and not by_id["REQ-4"].covered
     # The buckets measure the model: REQ-4 (unmodelled) is in neither.
@@ -616,8 +630,9 @@ def test_cli_trace_features_text_report():
         assert code == 0 and "warning" not in err
         assert "1/2 modelled requirement(s) referenced by a feature file" in out
         assert "1 unverified, 1 unknown feature reference(s), 1 unlinked feature file(s)" in out
-        assert "across 4 feature file(s)" in out
-        assert "REQ-1  ← " in out and "✔ " in out and "order.feature [Order placement]:1" in out
+        assert "across 4 feature file(s), 4 scenario(s)" in out
+        # per file, the scenarios in brackets at their heading line
+        assert "REQ-1  ← " in out and "✔ " in out and "order.feature [Order placement] (happy path:3)" in out
         assert "REQ-2  ← " in out and "✖ unverified" in out
         assert "REQ-4  ✖ uncovered (tested, not modelled: " in out
         assert "REQ-4.feature [Refund])" in out  # file-name site: no line printed
@@ -643,9 +658,13 @@ def test_cli_trace_features_json_validates_and_counts_add_up():
         assert s["verifiedCount"] + s["unverifiedCount"] == s["coveredCount"] == 2
         assert s["unknownFeatureReferenceCount"] == 1 and s["unlinkedFeatureCount"] == 1
         rows = {r["id"]: r for r in payload["requirements"]}
-        assert rows["REQ-1"]["verified"] and rows["REQ-1"]["verifiedBy"][0]["line"] == 1
+        assert s["scenarioCount"] == 4
+        site = rows["REQ-1"]["verifiedBy"][0]
+        assert rows["REQ-1"]["verified"] and site["line"] == 1
+        assert site["scenario"] == "happy path" and site["scenarioLine"] == 3
         assert rows["REQ-4"]["verified"] and not rows["REQ-4"]["covered"]
-        assert rows["REQ-4"]["verifiedBy"][0]["line"] == 0  # carried by the file name
+        site = rows["REQ-4"]["verifiedBy"][0]
+        assert site["line"] == 0 and site["scenario"] is None and site["scenarioLine"] == 0  # file name
         assert payload["unlinkedFeatures"] == [
             {"file": (td / "features" / "smoke.feature").as_posix(), "name": "Smoke"}
         ]
@@ -656,6 +675,12 @@ def test_cli_trace_features_json_validates_and_counts_add_up():
         extra = json.loads(out)
         extra["summary"]["verifiedCount"] = -1
         assert any("verifiedCount" in e for e in validate(extra, schema))
+        extra = json.loads(out)
+        del extra["requirements"][0]["verifiedBy"][0]["scenario"]
+        assert any("scenario" in e for e in validate(extra, schema))
+        extra = json.loads(out)
+        extra["unknownReferences"] = [{"id": "X", "citedBy": [{"file": "f", "name": None, "line": 1, "scenario": "s", "scenarioLine": 1}]}]
+        assert any("scenario" in e for e in validate(extra, schema))  # diagram sites carry no scenario
 
 
 def test_cli_trace_unverified_gate():
@@ -703,3 +728,93 @@ def test_cli_trace_with_features_is_deterministic():
         argv = ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+",
                 "--features", str(td / "features"), "-f", "json"]
         assert _run(argv)[1] == _run(argv)[1]
+
+
+# --- scenario attribution (Gherkin's tag rules, no parser) ------------------
+
+_GHERKIN = """@REQ-1
+Feature: Orders — REQ-9 in the header
+  Background:
+    Given REQ-8 in the background
+
+  @REQ-2
+  Scenario: happy path
+    Given REQ-3 in a step
+    \"\"\"
+    Scenario: not a heading — REQ-4 inside a doc string
+    \"\"\"
+
+  @REQ-10
+  Rule: refunds
+    @REQ-5
+    Scenario Outline: refund <x>
+      Given x
+      @REQ-6
+      Examples:
+        | x |
+
+    @REQ-7
+    Scenario:
+      Given nothing
+"""
+
+
+def test_attribution_follows_gherkin_tag_rules():
+    refs = _flat(feature_references(_GHERKIN, "REQ-0.feature", _PATTERN))
+    assert refs["REQ-0"] == [(0, None, 0)]  # the file name
+    # A Feature tag belongs to every scenario in the file, at the tag's line.
+    assert refs["REQ-1"] == [(1, "happy path", 7), (1, "refund <x>", 16), (1, "(unnamed)", 23)]
+    # Header text and Background text are the file's, not a scenario's.
+    assert refs["REQ-9"] == [(2, None, 0)] and refs["REQ-8"] == [(4, None, 0)]
+    # A tag above a scenario, a step inside it, and a doc string inside it.
+    assert refs["REQ-2"] == [(6, "happy path", 7)]
+    assert refs["REQ-3"] == [(8, "happy path", 7)]
+    assert refs["REQ-4"] == [(10, "happy path", 7)]  # the fenced "Scenario:" is text
+    # A Rule tag belongs to the scenarios under that Rule only.
+    assert refs["REQ-10"] == [(13, "refund <x>", 16), (13, "(unnamed)", 23)]
+    # Examples tags belong to the enclosing outline; an empty title is "(unnamed)".
+    assert refs["REQ-5"] == [(15, "refund <x>", 16)]
+    assert refs["REQ-6"] == [(18, "refund <x>", 16)]
+    assert refs["REQ-7"] == [(22, "(unnamed)", 23)]
+    assert scenario_count(_GHERKIN) == 3  # the outline counts once
+
+
+def test_attribution_dedupes_per_scenario_first_line_wins():
+    text = "@REQ-1\nFeature: F\n  @REQ-1\n  Scenario: s\n    Given REQ-1\n"
+    assert _flat(feature_references(text, "f.feature", _PATTERN)) == {"REQ-1": [(1, "s", 4)]}
+
+
+def test_attribution_degrades_to_file_level_for_a_non_english_dialect():
+    text = "# language: fr\nFonctionnalité: F\n  @REQ-1\n  Scénario: s\n    Soit REQ-2\n"
+    refs = _flat(feature_references(text, "f.feature", _PATTERN))
+    assert refs == {"REQ-1": [(3, None, 0)], "REQ-2": [(5, None, 0)]}
+    assert scenario_count(text) == 0
+    # "# language: en" keeps recognition on.
+    assert attribute_lines(["# language: en", "Feature: F", "Scenario: s"])[2] == [("s", 3)]
+
+
+def test_attribution_of_a_tag_that_meets_no_keyword_stays_the_files():
+    text = "Feature: F\n  Scenario: s\n    Given x\n@REQ-1\n"
+    assert _flat(feature_references(text, "f.feature", _PATTERN)) == {"REQ-1": [(4, None, 0)]}
+
+
+def test_cli_trace_text_groups_scenarios_per_file():
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        reqs = _workspace(td)
+        reqs.write_text("REQ-1\n", encoding="utf-8")
+        feats = td / "features"
+        feats.mkdir()
+        (feats / "order.feature").write_text(
+            "@REQ-1\nFeature: Orders\n  Scenario: place\n    Given x\n  Scenario: cancel\n    Given y\n",
+            encoding="utf-8",
+        )
+        (feats / "REQ-1.feature").write_text("Feature: By name\n  Scenario: one\n", encoding="utf-8")
+        code, out, _ = _run(
+            ["trace", str(td), "--requirements", str(reqs), "--pattern", r"REQ-\d+",
+             "--features", str(feats)]
+        )
+        assert code == 0
+        assert "REQ-1.feature [By name], " in out  # file-name site: no line, no brackets
+        assert "order.feature [Orders] (place:3, cancel:5)" in out
+        assert "across 2 feature file(s), 3 scenario(s)" in out
