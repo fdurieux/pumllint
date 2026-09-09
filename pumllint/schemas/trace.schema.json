@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/fdurieux/pumllint/main/pumllint/schemas/trace.schema.json",
   "title": "pumllint requirement-traceability report",
-  "description": "The output of `pumllint trace <paths> -f json`: the coverage matrix between a requirements inventory and the diagrams that reference them, both directions plus unknown references. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Requirement `id` values are stable identifiers: future matrix columns (process step, component, contract, verification) will arrive as additive optional properties on the requirement row, never by reshaping v1.",
+  "description": "The output of `pumllint trace <paths> -f json`: the coverage matrix between a requirements inventory and the diagrams that reference them, both directions plus unknown references. This shape is a public contract; changes are deliberate and release-noted (drift-guarded by tests/test_schema.py). Requirement `id` values are stable identifiers: future matrix columns (process step, component, contract) will arrive as additive optional properties on the requirement row, never by reshaping v1. The verification column arrived on 2026-09-09 exactly that way: `verified`/`verifiedBy` on the row, `unknownFeatureReferences`, `unlinkedFeatures` and five summary counts, all present only when `--features` was given — without it the payload is the v1 shape.",
   "type": "object",
   "required": ["requirements", "unknownReferences", "unlinkedDiagrams", "summary"],
   "additionalProperties": false,
@@ -22,6 +22,16 @@
       "description": "Diagrams whose reference carriers (name, title, header, footer, caption, notes) contain no requirement ID.",
       "items": { "$ref": "#/$defs/unlinkedDiagram" }
     },
+    "unknownFeatureReferences": {
+      "type": "array",
+      "description": "Verification side, present only when --features was given: IDs referenced by feature files but absent from the inventory — the same typo detector as unknownReferences, applied to the tests. Kept apart so unknownReferences keeps meaning 'a diagram said it'.",
+      "items": { "$ref": "#/$defs/unknownReference" }
+    },
+    "unlinkedFeatures": {
+      "type": "array",
+      "description": "Verification side, present only when --features was given: feature files (name and text) that reference no requirement ID.",
+      "items": { "$ref": "#/$defs/unlinkedFeature" }
+    },
     "summary": {
       "type": "object",
       "required": ["requirementCount", "coveredCount", "uncoveredCount", "unknownReferenceCount", "unlinkedDiagramCount", "diagramCount"],
@@ -32,7 +42,12 @@
         "uncoveredCount": { "type": "integer", "minimum": 0 },
         "unknownReferenceCount": { "type": "integer", "minimum": 0 },
         "unlinkedDiagramCount": { "type": "integer", "minimum": 0 },
-        "diagramCount": { "type": "integer", "minimum": 0 }
+        "diagramCount": { "type": "integer", "minimum": 0 },
+        "featureCount": { "type": "integer", "minimum": 0, "description": "Verification side (only with --features): feature files scanned." },
+        "verifiedCount": { "type": "integer", "minimum": 0, "description": "Verification side: inventory IDs realized by a diagram AND referenced by a feature file. The denominator is coveredCount, never requirementCount — an unmodelled requirement is already uncoveredCount, and one gap must not count twice." },
+        "unverifiedCount": { "type": "integer", "minimum": 0, "description": "Verification side: inventory IDs realized by a diagram but referenced by no feature file — modelled but untested, the --fail-on-unverified set. verifiedCount + unverifiedCount = coveredCount." },
+        "unknownFeatureReferenceCount": { "type": "integer", "minimum": 0 },
+        "unlinkedFeatureCount": { "type": "integer", "minimum": 0 }
       }
     }
   },
@@ -46,6 +61,12 @@
         "covered": { "type": "boolean" },
         "coveredBy": {
           "type": "array",
+          "items": { "$ref": "#/$defs/site" }
+        },
+        "verified": { "type": "boolean", "description": "Verification column, present (together with verifiedBy) only when --features was given: at least one feature file references this ID. A row fact — true on an uncovered row means tested but not modelled." },
+        "verifiedBy": {
+          "type": "array",
+          "description": "Verification column: the feature files referencing this ID, one site per file at the line of its first occurrence (0 when the ID is carried by the file name).",
           "items": { "$ref": "#/$defs/site" }
         }
       }
@@ -64,13 +85,22 @@
     },
     "site": {
       "type": "object",
-      "description": "A diagram-side reference site: the diagram, and the line of the first carrier text containing the ID.",
+      "description": "A reference site: the file (a diagram, or on the verification side a feature file), its declared name (the diagram name, or the Feature: heading; null when absent) and the line of the first text containing the ID — 0 when a feature-side ID is carried by the file name.",
       "required": ["file", "name", "line"],
       "additionalProperties": false,
       "properties": {
         "file": { "type": "string" },
         "name": { "type": ["string", "null"] },
         "line": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "unlinkedFeature": {
+      "type": "object",
+      "required": ["file", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "file": { "type": "string" },
+        "name": { "type": ["string", "null"], "description": "The Feature: heading, null when the file has none." }
       }
     },
     "unlinkedDiagram": {

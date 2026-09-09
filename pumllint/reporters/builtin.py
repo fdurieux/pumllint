@@ -11,18 +11,20 @@ from ..baseline import BaselineEntry, compute_deltas, diagram_keys
 from ..model import Diagram, Severity, Violation
 from ..rules import discover
 from ..scoring import LEVEL_NAMES, MaturityResult, aggregate_scores
-from ..trace import DiagramRef, TraceResult
+from ..trace import DiagramRef, FeatureRef, TraceResult
 from .base import Reporter, format_score, reporter, sanitize_terminal
 
 _Baseline = Optional[dict[str, BaselineEntry]]
 
 
-def _site_label(s: DiagramRef) -> str:
+def _site_label(s: "DiagramRef | FeatureRef") -> str:
     base = f"{s.file} [{s.name}]" if s.name else s.file
-    return f"{base}:{s.line}"
+    # Line 0 is a feature-side site carried by the file name: there is no
+    # line to open, so none is printed.
+    return f"{base}:{s.line}" if s.line else base
 
 
-def _site_to_dict(s: DiagramRef) -> dict:
+def _site_to_dict(s: "DiagramRef | FeatureRef") -> dict:
     return {"file": s.file, "name": s.name, "line": s.line}
 
 
@@ -194,13 +196,28 @@ class TextReporter(Reporter):
                 f"Requirement coverage: {covered}/{total} covered — "
                 f"{', '.join(parts)} — across {result.diagram_count} diagram(s)"
             )
-        lines = [sanitize_terminal(summary), ""]
+        lines = [sanitize_terminal(summary)]
+        if result.verification_ran:
+            lines.append(sanitize_terminal(self._verification_summary(result)))
+        lines.append("")
         for r in result.requirements:
             if r.covered:
                 sites = ", ".join(_site_label(s) for s in r.covered_by)
-                lines.append(sanitize_terminal(f"{r.id}  ← {sites}"))
+                row = f"{r.id}  ← {sites}"
+                if result.verification_ran:
+                    if r.verified:
+                        tests = ", ".join(_site_label(s) for s in r.verified_by)
+                        row += f"  ✔ {tests}"
+                    else:
+                        row += "  ✖ unverified"
             else:
-                lines.append(sanitize_terminal(f"{r.id}  ✖ uncovered"))
+                row = f"{r.id}  ✖ uncovered"
+                if r.verified:
+                    # Tested but not modelled: said on the row, counted in
+                    # neither verification bucket (TraceResult.verified).
+                    tests = ", ".join(_site_label(s) for s in r.verified_by)
+                    row += f" (tested, not modelled: {tests})"
+            lines.append(sanitize_terminal(row))
         if result.unknown_references:
             lines.append("")
             lines.append(
@@ -215,7 +232,45 @@ class TextReporter(Reporter):
             for d in result.unlinked_diagrams:
                 label = f"{d.file} [{d.name}]" if d.name else d.file
                 lines.append(sanitize_terminal(f"  {label} ({d.diagram_type})"))
+        if result.unknown_feature_references:
+            lines.append("")
+            lines.append(
+                "Unknown feature references (not in the inventory — a typo, or the inventory is stale):"
+            )
+            for u in result.unknown_feature_references:
+                sites = ", ".join(_site_label(s) for s in u.cited_by)
+                lines.append(sanitize_terminal(f"  {u.id}  ← {sites}"))
+        if result.unlinked_features:
+            lines.append("")
+            lines.append("Unlinked feature files (no requirement reference):")
+            for f in result.unlinked_features:
+                lines.append(sanitize_terminal(f"  {_site_label(f)}"))
         return "\n".join(lines)
+
+    @staticmethod
+    def _verification_summary(result: TraceResult) -> str:
+        """The second summary line: the model measured against the tests.
+
+        The denominator is the modelled requirements (covered rows), never
+        the inventory — an unmodelled requirement is already the
+        ``uncovered`` direction on the line above.
+        """
+        verified = len(result.verified)
+        modelled = sum(1 for r in result.requirements if r.covered)
+        parts = []
+        if result.unverified:
+            parts.append(f"{len(result.unverified)} unverified")
+        if result.unknown_feature_references:
+            parts.append(
+                f"{len(result.unknown_feature_references)} unknown feature reference(s)"
+            )
+        if result.unlinked_features:
+            parts.append(f"{len(result.unlinked_features)} unlinked feature file(s)")
+        head = f"Verification: {verified}/{modelled} modelled requirement(s) referenced by a feature file"
+        tail = f"across {result.feature_count} feature file(s)"
+        if not parts:
+            return f"✔ {head} {tail}"
+        return f"{head} — {', '.join(parts)} — {tail}"
 
 
 @reporter
@@ -281,38 +336,65 @@ class JsonReporter(Reporter):
 
     def render_trace(self, result: TraceResult) -> str:
         covered = sum(1 for r in result.requirements if r.covered)
-        return json.dumps(
-            {
-                "requirements": [
-                    {
-                        "id": r.id,
-                        "covered": r.covered,
-                        "coveredBy": [_site_to_dict(s) for s in r.covered_by],
-                    }
-                    for r in result.requirements
-                ],
-                "unknownReferences": [
-                    {
-                        "id": u.id,
-                        "citedBy": [_site_to_dict(s) for s in u.cited_by],
-                    }
-                    for u in result.unknown_references
-                ],
-                "unlinkedDiagrams": [
-                    {"file": d.file, "name": d.name, "diagramType": d.diagram_type}
-                    for d in result.unlinked_diagrams
-                ],
-                "summary": {
-                    "requirementCount": len(result.requirements),
-                    "coveredCount": covered,
-                    "uncoveredCount": len(result.requirements) - covered,
-                    "unknownReferenceCount": len(result.unknown_references),
-                    "unlinkedDiagramCount": len(result.unlinked_diagrams),
-                    "diagramCount": result.diagram_count,
-                },
-            },
-            indent=2,
-        )
+        ran = result.verification_ran
+
+        def _row(r) -> dict:
+            row = {
+                "id": r.id,
+                "covered": r.covered,
+                "coveredBy": [_site_to_dict(s) for s in r.covered_by],
+            }
+            if ran:
+                row["verified"] = r.verified
+                row["verifiedBy"] = [_site_to_dict(s) for s in r.verified_by]
+            return row
+
+        summary = {
+            "requirementCount": len(result.requirements),
+            "coveredCount": covered,
+            "uncoveredCount": len(result.requirements) - covered,
+            "unknownReferenceCount": len(result.unknown_references),
+            "unlinkedDiagramCount": len(result.unlinked_diagrams),
+            "diagramCount": result.diagram_count,
+        }
+        payload = {
+            "requirements": [_row(r) for r in result.requirements],
+            "unknownReferences": [
+                {
+                    "id": u.id,
+                    "citedBy": [_site_to_dict(s) for s in u.cited_by],
+                }
+                for u in result.unknown_references
+            ],
+            "unlinkedDiagrams": [
+                {"file": d.file, "name": d.name, "diagramType": d.diagram_type}
+                for d in result.unlinked_diagrams
+            ],
+            "summary": summary,
+        }
+        if ran:
+            # Additive, and only when the side ran: without --features the
+            # payload is byte-identical to the v1 shape.
+            payload["unknownFeatureReferences"] = [
+                {
+                    "id": u.id,
+                    "citedBy": [_site_to_dict(s) for s in u.cited_by],
+                }
+                for u in result.unknown_feature_references
+            ]
+            payload["unlinkedFeatures"] = [
+                {"file": f.file, "name": f.name} for f in result.unlinked_features
+            ]
+            summary.update(
+                {
+                    "featureCount": result.feature_count,
+                    "verifiedCount": len(result.verified),
+                    "unverifiedCount": len(result.unverified),
+                    "unknownFeatureReferenceCount": len(result.unknown_feature_references),
+                    "unlinkedFeatureCount": len(result.unlinked_features),
+                }
+            )
+        return json.dumps(payload, indent=2)
 
 
 # --- SonarQube -------------------------------------------------------------

@@ -48,6 +48,7 @@ from .trace import (
     TraceResult,
     build_matrix,
     load_inventory,
+    scan_features,
     scan_inventory,
 )
 
@@ -77,6 +78,7 @@ __all__ = [
     "TraceResult",
     "build_matrix",
     "load_inventory",
+    "scan_features",
     "scan_inventory",
     "BaselineEntry",
     "BaselineFile",

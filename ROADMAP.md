@@ -639,6 +639,16 @@ list and license posture live in § Settled questions.
   aggregation. Deterministic, zero new dependencies. *Trigger: a
   requirement-ID convention actually configured — the pilot's
   conventions workshop is where one appears — or owner go.*
+- [x] **Verification column** *(built 2026-09-09 on the maintainer's
+  go, from the question "could pumllint measure test coverage from the
+  related Gherkin scripts")* — `pumllint trace --features PATH` scans
+  Gherkin feature files with the same pattern and adds the column the
+  spec above reserved: `verified`/`verifiedBy` per requirement row, the
+  *modelled but untested* direction with its gate
+  (`--fail-on-unverified`), unknown feature references and unlinked
+  feature files (report-only). Additive and absent without the flag: the
+  v1 payload is byte-identical. Record and grounds in the decision log
+  below (2026-09-09).
 
 ## Arc H — Verbalizer (gated on Arc G + review-aid pull)
 
@@ -6744,3 +6754,86 @@ list and license posture live in § Settled questions.
     than SEQ001, SEQ002, SEQ010, SEQ101, GEN005, the UC rules, the fixer,
     the CLI's include disclosure and the LSP remains, and each of those
     means "declared before first use" on purpose.*
+- **`trace --features`: the verification column (2026-09-09), built on
+  the maintainer's go after the question "could pumllint measure test
+  coverage from the related Gherkin scripts".** The honest answer was
+  "backwards, and only per file": an explicit `.feature` passed to
+  `--requirements-scan` already worked (an explicit file is scanned
+  regardless of suffix), but it made the *tests* the inventory, so the
+  diagram-side "unknown references" list was the real answer and
+  `--fail-on-uncovered` fired on the wrong side; a features *tree* yielded
+  the empty-inventory warning (`.feature` is not in `SCAN_SUFFIXES`). Nine
+  decisions, each with its ground:
+  - **A third side, not an inversion.** Arc G's spec reserved the shape
+    ("extend toward the full requirement → … → verification matrix without
+    breaking v1") and `trace.schema.json` promised the column would arrive
+    "as additive optional properties on the requirement row". Built as
+    exactly that.
+  - **`--features PATH`, not `.feature` in `SCAN_SUFFIXES`.** The
+    inventory is the universe of what must be modelled; a test must never
+    define it. Same walk rule as `scan_inventory` (sorted `*.feature`
+    under a directory, an explicit file regardless of suffix), one path
+    like `--requirements-scan`; repeatability is additive when asked for.
+  - **Regex only, file name first, then text; sites are file + line,
+    never scenario.** Zero-dependency contract, and the Gherkin note
+    (2026-08-29, F1/N1) refused a Gherkin dependency. A tag on a
+    `Feature:` applies to every scenario under it — that is the parser's
+    semantics, so scenario attribution needs the parser. Tags are text,
+    so `@REQ-101`, a step naming the ID and `REQ-101.feature` are found by
+    one mechanism; the file-name site is line 0 (the schema's `site.line`
+    already had `minimum: 0`) and the text reporter prints no line for it.
+    The `Feature:` heading is read as the file's name — one regex, the
+    counterpart of `@startuml`'s name.
+  - **The side measures the model.** `verifiedCount` and `unverifiedCount`
+    partition `coveredCount`; an unmodelled requirement a feature cites is
+    already the `uncovered` direction and one gap must not trip two gates
+    — the row says "(tested, not modelled: …)" instead. `verified` on the
+    row stays a row fact (true on an uncovered row = tested, not
+    modelled).
+  - **One new gate, `--fail-on-unverified`; the three existing gates keep
+    their exact sets.** Exit codes are a contract (CLAUDE.md). Unknown
+    feature references and unlinked feature files are report-only — gates
+    on them are additive and demand-driven, like the rest of the roadmap.
+    Extending `--fail-on-unknown-ref` to feature-side typos was considered
+    and refused: it would move an existing gate's set whenever
+    `--features` is present, with no way to keep the diagram-only gate
+    *and* the verification report.
+  - **Gate without input = exit 2; empty scan = stderr warning, exit
+    unchanged; missing path = exit 2.** "A pattern that matches nothing is
+    an error, never a silent pass" (README); the "nothing was checked"
+    contract (CLAUDE.md); parity with the inventory's `FileNotFoundError`.
+  - **Absent without the flag.** `TraceResult.feature_count is None` means
+    the side did not run; then the JSON emits the v1 keys only (pinned
+    key-for-key by a test, and verified byte-identical on a scratch corpus
+    against `main`), the text report is unchanged, and `unverified` is
+    empty. A consumer holding the old schema sees nothing new until it
+    passes `--features`.
+  - **`UnknownFeatureReference` is its own list.** `unknownReferences`
+    keeps meaning "a diagram said it"; its `citedBy` sites are diagrams.
+  - **No version bump in the PR.** Releases are their own commits
+    (`Release 0.33.0`).
+  - **What moved.** `trace.py` (+`FeatureRef`, `FeatureFile`,
+    `feature_references`, `feature_name`, `scan_features`;
+    `build_matrix(…, features=None)`; three `TraceResult` fields and three
+    properties), both `render_trace`s, the trace schema (two `$defs`
+    touched, one added, five summary counts), the CLI (flag, gate, usage
+    error, warning), `pumllint.scan_features` exported. README gains
+    "Test coverage of the model: Gherkin feature files" (adopter register:
+    what a feature file is, what the flag does, what comes back, how to
+    read it) and the 0.x shape-gained-a-key announcement; the
+    business-process guide's `trace` bullet gains the `--features`
+    sentence. No rule, no RULES.md, no Gherkin regenerated, no golden or
+    pilot artefact moved.
+  - **Residues, recorded, not built.** (1) Scenario-level attribution
+    (needs a Gherkin parser — re-litigate if `@cucumber/gherkin`'s
+    semantics are ever wanted for tag inheritance); (2) per-branch coverage
+    of a process (needs model content as carriers, which GEN007 forbids by
+    contract — a different design); (3) gates on unknown feature
+    references and unlinked feature files, and a repeatable `--features`;
+    (4) the mirror question, "diagrams as the universe with no inventory",
+    stays refused — the inventory is the record.
+  - *Measured: stdlib runner 711 → 721, pytest 849 → 859; golden scores
+    and pilot artefacts byte-identical; `--list-rules` unchanged; a
+    six-file scratch tree (tag, step, file-name ID, tested-not-modelled,
+    typo, two unlinked) reports every direction and `-f json` validates
+    against the shipped schema.*

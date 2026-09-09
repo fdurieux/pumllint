@@ -266,7 +266,12 @@ mechanises the mapping in §2:
   no diagram in the batch — the process-hierarchy check, with no rule
   behind it. Pass the ARIS process landscape as the inventory instead
   and `--fail-on-uncovered` names the landscape entries no diagram
-  realises.
+  realises. If the acceptance tests are Gherkin feature files that carry
+  the same process IDs (a `@PROC-0042` tag, or the ID in a step), add
+  `--features tests/features/` and the same report says which converted
+  processes a scenario references and which none does;
+  `--fail-on-unverified` fails the build on a modelled process no feature
+  file names (README § Test coverage of the model).
 
 ## 8. Known limits
 
