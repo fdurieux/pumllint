@@ -648,7 +648,26 @@ list and license posture live in § Settled questions.
   (`--fail-on-unverified`), unknown feature references and unlinked
   feature files (report-only). Additive and absent without the flag: the
   v1 payload is byte-identical. Record and grounds in the decision log
-  below (2026-09-09).
+  below (2026-09-09). Scenario-level attribution followed the same
+  morning (#153).
+- [ ] **Step-to-model verification** *(candidate, recorded 2026-09-09
+  after the maintainer asked whether the Gherkin scripts are checked
+  against the diagram for semantic correctness; the answer was no, and
+  the fit/gap/SWOT is in the decision log under that date)* — given
+  the identity join above pairs one scenario with one diagram, compare
+  the scenario's steps with the diagram's content: **presence** in both
+  directions (a step naming no element of the diagram; an element, and
+  in particular a decision branch, no scenario names), then **order** on
+  sequence diagrams (step order against message order), then order on
+  activity diagrams behind a refusal for unstructured shapes.
+  Deterministic, zero dependencies, no meaning judgement, no execution.
+  *Two gates, both named: (1) an owner decision that model content
+  (action labels, decision conditions and branch annotations, message
+  labels, state names) may be a trace carrier under a declared step
+  convention — today GEN007's carrier contract says no; (2) a corpus
+  holding both a modelled process and its acceptance features, which
+  the repository does not have and only an adopter can supply. Not
+  queued while either stands.*
 
 ## Arc H — Verbalizer (gated on Arc G + review-aid pull)
 
@@ -6900,3 +6919,78 @@ list and license posture live in § Settled questions.
   - *Measured: stdlib runner 721 → 726, pytest 859 → 864; golden scores
     and pilot artefacts byte-identical; the first PR's scratch tree
     reports the same verified/unverified sets with scenarios named.*
+- **Step-to-model verification: fit, gap, SWOT (2026-09-09), recorded as
+  a candidate on the maintainer's instruction after the question "are
+  the Gherkin scripts checked against the related diagram on their
+  semantic correctness".** The answer is no. #152 and #153 are an
+  identity join: a requirement ID in a diagram's carriers, the same ID
+  in a feature file, and the matrix says the two are linked. A scenario
+  tagged with the right ID that tests the wrong behaviour, tests nothing
+  or contradicts the process verifies it exactly as a correct one does.
+  No step is read for meaning; the scripts themselves are not checked
+  either (the Gherkin note declined even hygiene linting, the test run
+  being the check). The join is nonetheless the precondition of any
+  comparison: it is what pairs one scenario with one diagram.
+  - **Fit, graded against what the model already carries.** *F1 presence
+    join, step → element*: fits given one decision. Every element a step
+    could name is parsed with a label and a line — action labels,
+    decision conditions with their `then (…)`/`else (…)` annotations
+    (`ActivityNode.label` / `branch_label`), message labels and
+    participants, state names and transition labels. *F2 branch
+    inventory*: fits today — the set of branches is enumerable from the
+    node list with no edge relation; "which branch a scenario walks"
+    needs F1, "which branches exist" needs nothing. *F3 order on
+    sequence diagrams*: reachable — messages are ordered and `Block`
+    carries alt/else. *F4 order on activity diagrams*: partial — no
+    edge relation, but for single-entry single-exit diagrams source
+    order plus nesting is the structure, and aris2puml emits only that
+    shape; a reconstruction pass is small, sound there, and unsound on
+    hand-drawn unstructured diagrams, which must be refused, not walked.
+    *F5 Gherkin side*: fits — #153's keyword reader attributes lines to
+    scenarios; Given/When/Then/And/But is one more keyword set. *F6
+    judgement*: never — the deterministic product path is a working
+    agreement, and whether a scenario is a good test is not a linter's
+    to decide.
+  - **Gap.** *G1 the carrier contract*: trace and GEN007 read the prose
+    directives and the name; message labels are excluded on purpose and
+    README states it — a decision, the owner's. *G2 the join
+    convention*: no rule says how a step names an element; verbatim
+    quoting is exact and ugly, token normalisation is friendly and
+    produces false joins; the 562 → 0 lesson applies — declared, never
+    defaulted. *G3 the graph*: a structure pass with refusal, or
+    sequence-only. *G4 directions and gates*: "branch no scenario
+    walks" and "step naming nothing" are two new directions, two gates,
+    additive keys. *G5 where meaning lives*: step definitions are code
+    and pumllint reads the feature file, so a check on step prose is a
+    check on the prose. *G6 cross-diagram paths*: no join; XD is
+    identity, not flow. *G7 evidence*: no corpus in the repository
+    holds both artefacts (the project's own features test the linter),
+    so nothing is measurable before an adopter supplies one — Arc D's
+    pattern.
+  - **SWOT.** *Strengths*: deterministic, zero-dependency, on parsers
+    and a reader that exist; branches enumerable now; the trace shape
+    was designed to grow toward verification; gate and schema patterns
+    in place; no checker in the positioning field does test-to-model
+    presence. *Weaknesses*: prose matching is brittle; the convention is
+    a second syntax the adopter maintains; a miss reads as an accusation
+    against the diagram; on most corpora the check scores clean by
+    construction (the DIM-AMB vacuity precedent); activity order needs
+    the structure pass first. *Opportunities*: the question itself is
+    the first "trace user asking"; the aris2puml corpus is structured by
+    construction, so F4 is sound exactly where the chain runs; the
+    pilot's L3 processes with their acceptance features would be the
+    first measurable corpus; F1 report-only in both directions is a
+    day's build once G1/G2 are decided. *Threats*: Goodhart twice —
+    scenarios per branch as a KPI, and step text rewritten to match
+    labels rather than to test; scope creep toward a BDD tool or toward
+    conformance (kept out by the Loop B decision); label drift between
+    diagram and steps is both the value and the nuisance, reported as a
+    finding at every rewording.
+  - **Decision.** Candidate, not queued, recorded under Arc G with two
+    named gates: the owner decision on G1 and G2, and a corpus holding
+    both artefacts. If both fire, build in the order F5, F1 as presence
+    in both directions report-only, F3, then F4 behind a refusal for
+    unstructured diagrams. *Never*: meaning judgement, a language model,
+    executing the scripts. Re-litigate on either gate firing, or on an
+    adopter reporting that the identity join alone let a wrong scenario
+    pass as verification.
