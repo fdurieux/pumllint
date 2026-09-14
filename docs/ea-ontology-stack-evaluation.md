@@ -1053,6 +1053,18 @@ work here.
 
 ## Related reading
 
+- [The EA ontology stack in the SDLC](ea-stack-in-the-sdlc.md) — the
+  companion assessment, and the one written for the adopter rather than
+  for this roadmap. Where this note asks *does either tool belong in
+  these flows* (no), that one asks **where in a delivery value stream
+  the approach itself pays**, on the method of
+  [pumllint in the SDLC](value-in-the-sdlc.md): SAFe CDP aspects, claim
+  tags, sixteen practice domains, costs and a staged pilot. Its finding
+  is the distribution — strong in Continuous Exploration and in
+  Continuous Deployment, **nothing at all in Continuous Integration**,
+  since the deck's deliverable is a report and not a gate — and its
+  first recommendation is that the programme's first number be the
+  import's coverage, not its principle count.
 - [Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md) —
   the ecosystem this deck instantiates; its §2 seam, §3 overlap table
   and §4 boundaries are the load-bearing prior and are not repeated

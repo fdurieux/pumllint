@@ -6,7 +6,7 @@ why you are here:
 | You are… | You want to know… | Read |
 |----------|-------------------|------|
 | New to all of this — no technical background | What the evidence actually established, from first principles, every term defined | [The evidence, explained from scratch](evidence-explained.md) |
-| An IT manager, architecture lead, or sponsor | Why this tool is worth mandating; what the measurable payoff is | [The case for pumllint](case-for-pumllint.md), then [pumllint in the SDLC](value-in-the-sdlc.md), then [Where tooling pays](sdlc-tooling-landscape.md) |
+| An IT manager, architecture lead, or sponsor | Why this tool is worth mandating; what the measurable payoff is | [The case for pumllint](case-for-pumllint.md), then [pumllint in the SDLC](value-in-the-sdlc.md), then [Where tooling pays](sdlc-tooling-landscape.md). Assessing an enterprise-architecture ontology/knowledge-graph programme instead? [The EA ontology stack in the SDLC](ea-stack-in-the-sdlc.md) applies the same method to that approach, and is about someone else's architecture rather than this tool |
 | A DevOps / platform engineer | How to install it and wire it into the pipeline | [Setup and CI integration](setup-and-ci.md) |
 | An architect reading the reports, or a modeller whose diagrams get checked | What the findings and maturity levels mean, and how to act on them | [Understanding findings and scores](findings-and-scores.md) |
 | A developer extending the linter | How to specify, implement, and test a new rule | [Writing rules](writing-rules.md) |
@@ -821,6 +821,27 @@ but they are a useful cross-check that no audience was forgotten.
   component diagram's zero-element honesty cap turns on a single
   participant keyword. One attractive claim withdrawn — the two
   products' notions of *type* are not commensurable.
+- [The EA ontology stack in the SDLC](ea-stack-in-the-sdlc.md)
+  — a value-stream assessment (2026-09-14) of the *adopter's* enterprise
+  architecture approach, not of this tool: ArchiMate models lifted into a
+  knowledge graph, principles as machine-checkable constraints, the whole
+  queried and offered to domain experts through a language model. Same
+  method as [pumllint in the SDLC](value-in-the-sdlc.md) — SAFe CDP
+  aspects, claim tags, sixteen practice domains, costs, staged pilot —
+  and written for an EA lead or sponsor, assuming no semantic-web
+  background. Findings: value concentrates in **Continuous Exploration**
+  (legality over the whole estate, decidable principles, derivation) and
+  **Continuous Deployment** (impact analysis, root-cause traversal —
+  where a graph genuinely beats a document), with **nothing at all in
+  Continuous Integration**, because the approach's deliverable is a
+  report rather than a gate; that hole is the cheapest fix in the
+  document. The risk that outranks the others is the **coverage
+  denominator** — every transformation drops what it cannot represent, a
+  dropped element and an unmodelled one are indistinguishable downstream,
+  and no slide measures it — so the pilot's first phase validates nothing
+  and publishes coverage instead. No claim in it is [measured] *of that
+  architecture*; where a measurement appears it is from a comparable
+  pipeline and says what does and does not transfer.
 - [The ontology/graph EA stack, evaluated](ea-ontology-stack-evaluation.md)
   — dated evaluation (2026-09-14), third in the Linked.Archi thread and the
   second adopter brief: an EA function's five-slide stack (ArchiMate →
