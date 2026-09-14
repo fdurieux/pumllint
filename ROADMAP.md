@@ -7131,3 +7131,45 @@ list and license posture live in § Settled questions.
   slide 1); or a principle the EA function needs enforced at commit time
   that the conventions file cannot express, which is the honest shape of
   a pumllint ask out of this deck.
+  *[Extended 2026-09-14, later — three further slides of the same deck,
+  and one correction to this repository's record. **ArchiMate 4 was
+  published in April 2026**, so the ArchiMate note's §1.1 "current at
+  3.2 (October 2022)" was **wrong when written** on 2026-08-27;
+  corrected in place with a dated bracket, and the viewpoints note
+  bracketed twice (its bounds are now two editions behind, and its
+  "3.2 becoming readable" trigger is re-based to 4, still behind Open
+  Group SSO). The 3.2→4 delta, characterized from the release
+  discussion and a published primer: **61 element types → 40**, the
+  per-layer behavioural duplicates merged into cross-domain `Process`,
+  `Function`, `Event`, `Service`, six elements removed, layers become
+  domains, **11 relationship types unchanged**. Both ArchiMate refusals
+  are version-independent (N1 and N2 say nothing about an edition), and
+  aris2puml's new `Never` holds a fortiori — a release that removes
+  elements cannot add the XOR junction the refusal turns on — with the
+  gap named: **ArchiMate 4's junction text could not be read**, so that
+  is an argument from the published delta, not a reading. Three further
+  additions, none queued: (a) the deck's own two halves are on different
+  editions — the format slide asks "ArchiMate 4.0 Compliant?" while the
+  use-cases slide ships an OWL/RDF formalization of **3.2** with all 61
+  element types, and the merged behavioural elements are exactly the
+  vocabulary its viewpoint panel is drawn from; (b) Appendix B's size is
+  now on file — **3 800+ element-relationship-element rules**, DR1–DR8
+  and PDR1–PDR12 — which makes N2's "unrepresentable rather than
+  checkable" a measurement, and the same formalization states this
+  project's N3 from the outside ("using OWL restrictions for validation
+  is technically possible but semantically wrong"); (c) a
+  vendor-neutrality collision inside the deck — its format slide demands
+  RDF/OWL/SPARQL and vendor neutrality, its context slide shows Fabric
+  IQ, whose Microsoft Learn overview names none of them and queries
+  through a natural-language layer. The viewpoint half needed no new
+  work: the 2026-08-28 controlled experiment already measured conformant
+  and violating ArchiMate views as **byte-identical** (both `sequence`,
+  Level 4, 90.00, 8 elements, 4 false SEQ009), profile-independent. The
+  format slide's "Querable" and "Machine Readable" bullets were checked
+  against what the chain emits — four records per run, three validating
+  against their shipped JSON Schemas, four questions answered in four
+  stdlib one-liners. "Federated?" is the knowledge-graph settlement's
+  cross-repository-identity trigger and is **not fired**: a question
+  mark on a slide is not an ask. Re-litigate §11 on ArchiMate 4 becoming
+  readable without SSO, or on Fabric IQ documenting an RDF/OWL import or
+  a SPARQL surface.]*

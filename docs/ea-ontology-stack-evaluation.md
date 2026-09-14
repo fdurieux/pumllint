@@ -2,12 +2,15 @@
 
 *Dated evaluation, 2026-09-14, written against `6ce6760` (v0.33.0) and
 aris2puml `c355b96`. The question as posed: an adopter's EA function
-circulated five slides — an ArchiMate→ontology/graph transformation map,
-an ArchiMate-at-the-centre standards star, a five-stage reporting
-pipeline, an inputs-for-automated-validation sketch, and a use-case
-list — with the question "investigate if/how pumllint and aris2puml fit
-in these flows". Second adopter brief read against both roadmaps, after
-the process-architecture brief of 2026-09-06.*
+circulated slides — an ArchiMate→ontology/graph transformation map, an
+ArchiMate-at-the-centre standards star, a five-stage reporting pipeline,
+an inputs-for-automated-validation sketch, and a use-case list — with
+the question "investigate if/how pumllint and aris2puml fit in these
+flows". Second adopter brief read against both roadmaps, after the
+process-architecture brief of 2026-09-06. **Three further slides of the
+same deck arrived the same day and are §11**, which is where the one
+correction this note forced is recorded: sections 0–10 are the first
+five slides and are left as written.*
 
 **Verdict up front: neither tool is in these flows, neither should be,
 and that is the useful answer rather than a refusal — because the deck
@@ -609,6 +612,252 @@ here in the deck's vocabulary so the next proposal lands on it):
   rate or a high finding count is a result about the models and not a
   reason to soften a gate.
 
+## 11. Three further slides, same deck, same day
+
+*Read 2026-09-14, later: a cartography-KB format slide, a Microsoft IQ
+context slide, and an ArchiMate use-cases slide pairing a public
+OWL+SHACL formalization with a viewpoint-to-element allocation. Nothing
+in them changes §10's decision. Two of the three land on measurements
+already on file; the first forces a correction to the record, and it is
+the most decision-relevant thing on this page.*
+
+### 11.1 The correction: ArchiMate 4 shipped in April 2026, and the record said 3.2
+
+The format slide's sixth bullet is **"Archimate 4.0 Compliant ?"** — and
+checking it found that this repository's own ArchiMate note
+([2026-08-27](archimate-ecosystem-evaluation.md)) opens its §1.1 with
+"current at **3.2** (October 2022)". **That was wrong when written**:
+ArchiMate 4 was published in April 2026, four months earlier. Corrected
+in place with a dated bracket, per the log discipline, and called out in
+the commit.
+
+What changed, characterized from The Open Group's release discussion and
+a published 4.0 primer (the specification itself is behind Open Group
+SSO — the same wall the viewpoints note hit):
+
+| | 3.2 | 4 |
+|---|---|---|
+| Element types | 61 | **40** |
+| Behavioural elements | per layer — `BusinessProcess`, `ApplicationProcess`, `TechnologyProcess`, and the same for function, event, service | **merged** into single cross-domain `Process`, `Function`, `Event`, `Service` |
+| Removed | — | `Interaction`, `Contract`, `Representation`, `Gap`, `ImplementationEvent`, `Constraint` |
+| Structure | layers | **domains** (Common, Business, Application, Technology, Strategy, Motivation, Implementation & Migration) |
+| Relationship types | 11 | **11, unchanged** |
+
+Three consequences, in descending order of how much they matter:
+
+**(a) The deck's own two halves are on different editions.** The format
+slide asks for 4.0 compliance; the use-cases slide ships an OWL/RDF
+formalization of **ArchiMate 3.2** — its author's own account says "all
+61 element types". Against its own artefact the answer to the slide's
+question is measurably *no*, and the gap is not cosmetic: it is ~21
+element types plus the layer→domain restructuring, and the merged
+behavioural elements are **exactly the vocabulary the slide's
+viewpoint-allocation panel is drawn from** (Business Process,
+Application Process, Application Function, Technology Service). This is
+the single most useful thing this note can hand back, and it is a
+question for the EA function, not a finding about either tool.
+
+**(b) Nothing in either repository's ArchiMate refusals depends on the
+version.** pumllint's two grounds (N1, the `.puml` is a rendering of a
+model held elsewhere; N2, the rule spec is a legality metamodel enforced
+upstream at authoring time) are version-independent — and a release that
+removes six elements and merges the behavioural ones makes the legality
+metamodel *smaller*, not differently shaped.
+
+**(c) aris2puml's new `Never` holds a fortiori, with its verification
+gap stated.** §4's refusal rests on one fact: **there is no XOR
+junction**, so a reader would have to infer exclusivity from a
+human-chosen label. ArchiMate 4's published delta is a *reduction* — six
+elements removed, behavioural duplicates merged, **the 11 relationship
+types unchanged** — and a reduction cannot introduce a connector the
+language did not have. **But the junction section of ArchiMate 4 could
+not be read** (SSO), so this is an argument from the published delta,
+not a reading of the text. Recorded in aris2puml's ROADMAP beside the
+`Never` in exactly those terms: the refusal is stated about 3.2, argued
+to 4, and the gap is named rather than papered over.
+
+### 11.2 The format slide, against what the chain already emits
+
+Seven criteria. Five are ordinary properties of a machine-readable
+report contract, and it is worth being concrete about which of them this
+chain already meets — at a scope three orders of magnitude below a
+cartography KB, which is the point rather than a caveat.
+
+| Slide criterion | This chain, measured |
+|---|---|
+| **Vendor Neutral** | GPL-3.0-or-later, zero runtime dependencies, no server, run-not-linked; a non-relicensing commitment on record (2026-07-29). |
+| **ISO 42010 Standard** | Partly, and honestly so: XD001–005 implement the *cheap half* of 42010 correspondence rules, independently arrived at; the correspondence **requirement** is absent — two disjoint diagrams score Level 4, 100/100 ([42010 note](iso42010-viewpoint-ecosystem-evaluation.md), 2026-08-28). §1 records where the missing oracle now lives. |
+| **Machine Readable** | Four records per run — `lint`, `score`, `trace`, and aris2puml's `--report` sidecar. |
+| **Querable** *(sic)* | Executed: the four records answer "which rules fired", "worst diagram and its level", "which interfaces point nowhere", "what fraction converted" in four stdlib one-liners, with no store, no schema language and no query engine. |
+| **Formal language with grammar** | `RULES.md` is an **executable** specification: 43 rule sections, 44 generated Gherkin feature files under `tests/bdd/`, regenerated by `tools/extract_features.py` or CI fails. |
+| **ArchiMate 4.0 Compliant ?** | Not applicable and never will be — §3, §4, and the 2026-08-27 refusal. |
+| **Federated ?** | Out of scope by settlement; see below. |
+
+The "machine readable" and "querable" rows are pinned rather than
+asserted, which is the part worth keeping:
+
+```
+$ pumllint … -f json > lint.json ; pumllint score … -f json > score.json
+$ pumllint trace … -f json > trace.json
+$ python -c 'jsonschema-validate each against pumllint/schemas/<name>.schema.json'
+  lint   -> VALID against lint.schema.json
+  score  -> VALID against score.schema.json
+  trace  -> VALID against trace.schema.json
+
+  which rules fired, by count : {'GEN006': 2, 'GEN007': 2, 'ACT006': 20,
+                                 'ACT005': 14, 'ACT003': 1}
+  worst diagram + its level   : ('epk-kreditantrag.puml', 3)
+  interfaces pointing nowhere : ['PROC-0051']
+  conversion denominator      : 60.0 %
+```
+
+Three shipped JSON Schemas (`pumllint schema lint|score|trace`, plus
+`config`) are the contract; the sidecar carries its own version. *(The
+`jsonschema` library is a lab dependency for this check only — the
+product path stays stdlib-only.)*
+
+**"Federated ?" is the one bullet with a settlement behind it.** The
+knowledge-graph note's second re-litigation trigger is "a concrete
+cross-repository identity ask — diagrams here, contracts there,
+requirements in a tracker — that the recorded sequence↔contract and
+`trace` items cannot serve". A federated cartography KB is that shape.
+It is **not fired**, for the same reason the emitter clause is not: a
+question mark on a slide is not an ask. If it fires, the answer starts
+at `trace`'s radius, not at a store — pumllint resolves identity inside
+a batch, the aggregator resolves it across repositories, and the
+2026-08-27 overlap table already assigns each.
+
+*One reading of the slide, for the record: the storage half is a
+layered RDF stack — OWL and SHACL over RDF, SKOS for vocabulary, SPARQL
+across the edge — whose instance-data row names `metaphactory` and
+`metaphacts`, so it is that platform's own diagram rather than a design.
+Nothing in this note turns on it.*
+
+### 11.3 The Microsoft IQ slide: a second semantic backbone, and a collision with the first
+
+The context slide is Microsoft IQ — Work IQ (context and memory over
+M365), **Fabric IQ (the semantic foundation)**, Foundry IQ (managed
+knowledge bases and agentic retrieval), feeding a unified enterprise
+agent. It touches neither repository: there is no artefact, no gate and
+no seam. Three things are worth handing back anyway, all of them read
+from Microsoft's own documentation on 2026-09-14.
+
+**(1) It collides with the format slide's first bullet.** Fabric IQ's
+ontology item defines "entity types, relationships, properties, and
+rules", is generated from Power BI semantic models, and is queried
+through a natural-language layer ("NL2Ontology … converts business
+questions into structured queries"); its Graph item stores "nodes,
+edges, and traversals". **RDF, OWL, SHACL and SPARQL appear nowhere in
+the overview**, and no import or export of W3C semantic-web formats is
+documented. So the deck asks for *vendor neutrality, RDF and SPARQL* on
+one slide and shows a *vendor semantic layer with a proprietary query
+surface* on the next. Those are two different knowledge bases, and
+which one is the cartography KB is undecided on the slides as given.
+That is the EA function's decision, and it is upstream of everything in
+this note.
+
+**(2) Its freshness is worth checking before it is quoted.** Microsoft's
+own overview now lists a fourth member, **Web IQ**, beside Work, Fabric
+and Foundry; the slide shows three.
+
+**(3) Where it meets a settlement, it is the harmless side of it.**
+Agentic retrieval over a managed knowledge base is a *consumer* of
+governed artefacts. The refusals it comes near — N2 (no LLM-driven graph
+extraction anywhere on the product path) and the deterministic-path
+working agreement — are about what may run **inside** pumllint, not
+about what may read its output. `docs/agents.md`'s score → repair →
+re-score loop is the shipped form of that relationship, and the caution
+attached to it is measured, not theoretical: the agent-repair wave cost
+−6 pp pooled executed correctness against unrepaired originals and −53
+pp on one diagram from a single invented guard. An agent consuming a
+Level-3 verdict is fine; an agent supplying model content upstream of
+the gate is the failure the gate exists to catch.
+
+### 11.4 The ArchiMate use-cases slide: the legality metamodel, now executable
+
+The left half is a public repository's README — an **OWL/RDF
+formalization of the ArchiMate 3.2 Specification** shipping an OWL
+ontology, a SKOS vocabulary published as HTML, **SHACL constraints that
+enforce the ArchiMate metamodel**, profile support and **derivation
+rules**, and stating that it "models the language itself, not a specific
+tool implementation". The right half allocates elements to three
+viewpoints (BSD, AAD, TAD).
+
+**This is the strongest confirmation the 2026-08-27 refusal has
+received, and it arrives from the far side.** That note called
+ArchiMate's rule spec "a legality metamodel … explicitly intended for
+tool implementation", and said most of it is *unrepresentable rather
+than checkable* here. The numbers now exist: Appendix B encodes **over
+3 800 element-relationship-element rules** (58–61 element types × 11
+relationship types), plus **DR1–DR8** for valid derived relationships
+and **PDR1–PDR12** for potential ones. A linter over a tolerant
+projection of a *rendering* cannot see one of them — not because it
+declines to, but because it never reads the types they are stated over.
+
+The author's own OWL/SHACL division states this project's N3 from the
+outside, independently: *OWL "was designed for inference under the
+open-world assumption … using OWL restrictions for validation is
+technically possible but semantically wrong"*, while SHACL "was designed
+specifically for validation … a constraint violation is a violation, not
+an inference gap". N3's refusal of OWL/SHACL as **pumllint's** rule
+engine rests on the mirror of that sentence — closed-world shape
+validation over an open-world *projection* reports absence of parse as
+absence of fact. Two people reasoning about the same pair of
+formalisms, from opposite ends, reaching compatible conclusions about
+where each belongs. Nothing to build; a citation to keep.
+
+**The right half is already measured, and the measurement is the
+sharpest in the series.** Viewpoint conformance — which element belongs
+in which diagram — was tested on 2026-08-28 with the first controlled
+experiment in these notes: two ArchiMate views identical in structure,
+arrow glyphs and element count, one conformant to its declared
+viewpoint and one violating it with elements that viewpoint excludes.
+
+| | type | level | score | elements | findings |
+|---|---|---|---|---|---|
+| conformant | `sequence` | 4 | 90.00 | 8 | 4× false SEQ009 |
+| violating | `sequence` | 4 | 90.00 | 8 | 4× false SEQ009 |
+
+**Byte-identical**, profile-independent, and unchanged when the declared
+viewpoint is replaced by a fictitious one. Viewpoint conformance is not
+partially visible to pumllint; it is **exactly invisible** — and the
+2026-08-28 note also established that ArchiMate itself does not make
+view-to-viewpoint conformance normative, and that Archi handles it
+upstream as a graded discouragement (palette filter, ghosting, an opt-in
+warning) while hard-blocking relationship legality at authoring time.
+The ecosystem has already decided where this check lives. So has this
+repository.
+
+### 11.5 What §10 gains
+
+Nothing queued, no settlement disturbed, and the *Never* list is
+unchanged. Three additions to §10's recorded list:
+
+6. **The record's ArchiMate version was stale and is corrected** —
+   "current at 3.2" was false when written (ArchiMate 4, April 2026).
+   The ArchiMate note carries the dated bracket, the viewpoints note two
+   more (its bounds are now two editions behind; its "3.2 becoming
+   readable" trigger is re-based to 4 and still walled). **Maintainer
+   self-demand with a measured defect behind it** — the link-integrity
+   label, and the first time this series has caught itself citing a
+   superseded edition of an external standard.
+7. **The Appendix-B size, on file** — 3 800+ legality rules, DR1–DR8 and
+   PDR1–PDR12. The 2026-08-27 N2 asserted the shape of the legality
+   metamodel; this is its magnitude, from a public formalization of it,
+   and it is what makes "unrepresentable rather than checkable" a
+   measurement rather than a judgement.
+8. **The vendor-neutrality collision** — the deck's format slide demands
+   RDF/OWL/SPARQL and vendor neutrality; its context slide shows a
+   vendor semantic layer whose documentation names none of them. Not
+   either repository's decision, recorded so it is not re-derived, and
+   the first thing to settle before any of the deck's stages is built.
+
+**Re-litigate §11 on:** ArchiMate 4's text becoming readable without SSO
+(which would let 11.1(c)'s argument-from-delta become a reading, and the
+viewpoints note's trigger fire or close); or Fabric IQ documenting an
+RDF/OWL import or a SPARQL surface, which would collapse 11.3(1)'s
+collision and make the two knowledge bases one.
+
 ## Related reading
 
 - [Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md) —
@@ -639,3 +888,10 @@ here in the deck's vocabulary so the next proposal lands on it):
 [Linked.Archi on ArchiMEO](https://meta.linked.archi/docs/practice/related-work/archimeo-enterprise-ontology/) ·
 [ArchiMate 3.2, relationship connectors](https://pubs.opengroup.org/architecture/archimate3-doc/ch-Relationships-and-Relationship-Connectors.html) ·
 [TypeQL releases (the Graql rename)](https://github.com/vaticle/typeql/releases)
+
+*Added for §11 (read 2026-09-14, characterization only):*
+[The Open Group announces ArchiMate 4](https://www.opengroup.org/The-Open-Group-Announces-ArchiMate%C2%AE-4-Specification) ·
+[Discussing the release of ArchiMate 4](https://blog.opengroup.org/2026/05/20/discussing-the-release-of-the-archimate-4-specification/) ·
+[ArchiMate 4.0 primer (element-set delta)](https://meta.linked.archi/docs/guide/archimate/archimate-4.0-modeling-guide/) ·
+[What is Fabric IQ? (Microsoft Learn)](https://learn.microsoft.com/en-us/fabric/iq/overview) ·
+[ArchiMate 3.2 as an RDF ontology (Appendix-B counts, OWL vs SHACL, DR/PDR)](https://albertodmendoza.net/2026/03/01/archimate-3-2-as-an-rdf-ontology-beyond-the-drawing-board/)

@@ -88,6 +88,30 @@ ArchiMate is an [Open Group standard](https://pubs.opengroup.org/architecture/ar
 current at **3.2** (October 2022 — a refinement release over 3.1, not a
 concept expansion). Its structure matters here more than its content:
 
+> **Corrected 2026-09-14 — this sentence was wrong when written.**
+> **ArchiMate 4 was published in April 2026**, four months before this
+> note was dated, so "current at 3.2" was already false on 2026-08-27.
+> The correction is recorded rather than rewritten, per the log
+> discipline. What changed in 4, from The Open Group's own release
+> discussion and a published 4.0 primer: the element set drops from
+> **60-odd types to 40**; the per-layer behavioural duplicates
+> (`BusinessProcess`/`ApplicationProcess`/`TechnologyProcess`, and the
+> same for function, event and service) **merge into single cross-domain
+> elements**; `Interaction`, `Contract`, `Representation`, `Gap`,
+> `ImplementationEvent` and `Constraint` are **removed**; and layers
+> become domains (Common, Business, Application, Technology, Strategy,
+> Motivation, Implementation & Migration). The **11 relationship types
+> are unchanged**. *Nothing below depends on the version*: both refusal
+> grounds (N1, the `.puml` is a rendering of a model held elsewhere; N2,
+> the rule spec is a legality metamodel enforced upstream at authoring
+> time) are version-independent, and a release that removes six elements
+> and merges the behavioural ones makes the legality metamodel smaller,
+> not differently-shaped. The figures in this section's Appendix-B
+> discussion are 3.2 figures and are now labelled as such. See
+> [the EA-stack evaluation §11](ea-ontology-stack-evaluation.md), which
+> found this while reading an adopter's deck that asks for 4.0
+> compliance while shipping a 3.2 ontology.*
+
 - Layers (business, application, technology, physical) crossed with
   aspects (active structure, behaviour, passive structure), plus
   motivation, strategy and implementation extensions.
