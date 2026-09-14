@@ -854,7 +854,17 @@ but they are a useful cross-check that no audience was forgotten.
   2026-08-28 controlled experiment, where conformant and violating views
   are **byte-identical**; and a vendor-neutrality collision between the
   deck's own two slides, Fabric IQ's documentation naming no RDF, OWL,
-  SHACL or SPARQL.
+  SHACL or SPARQL. **§12** closes the deck on its one slide that draws
+  the chain's own position — a knowledge pyramid whose DATA layer is fed
+  by a "Declarative" and a "Running" digital twin, which are Loop A and
+  Loop B in the EA function's own words. Loop C is relocated from third
+  feed to *the ascent*. The slide's Decision Risk gradient (red at data,
+  green at wisdom) is read carefully and turns out to be the deck's
+  strongest argument for the gate: the gradient is earned only if the
+  ascent is faithful, and three measured cases show a defect at the red
+  end arriving at the green end wearing green. Against that, the six
+  machine-readable channels by which this chain carries its own
+  uncertainty upward — which telemetry structurally cannot.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

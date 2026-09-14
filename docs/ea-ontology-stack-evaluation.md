@@ -7,10 +7,11 @@ ArchiMate-at-the-centre standards star, a five-stage reporting pipeline,
 an inputs-for-automated-validation sketch, and a use-case list — with
 the question "investigate if/how pumllint and aris2puml fit in these
 flows". Second adopter brief read against both roadmaps, after the
-process-architecture brief of 2026-09-06. **Three further slides of the
-same deck arrived the same day and are §11**, which is where the one
-correction this note forced is recorded: sections 0–10 are the first
-five slides and are left as written.*
+process-architecture brief of 2026-09-06. **The deck arrived in three
+parts the same day: sections 0–10 are the first five slides and are left
+as written; §11 is the three that followed, and holds the one correction
+this note forced; §12 is the ninth and last, which is the only one that
+places the chain on a diagram of the adopter's own.*
 
 **Verdict up front: neither tool is in these flows, neither should be,
 and that is the useful answer rather than a refusal — because the deck
@@ -858,6 +859,198 @@ viewpoints note's trigger fire or close); or Fabric IQ documenting an
 RDF/OWL import or a SPARQL surface, which would collapse 11.3(1)'s
 collision and make the two knowledge bases one.
 
+## 12. The platform slide: the chain at the base of their own pyramid
+
+*Read 2026-09-14, last of the deck. A platform slide — five expert
+personas (BIAN, Architect, Security, SNOW/ITIL, DevOps) around an
+LLM-as-a-service offering "trustable conversation in their own
+terminology with vocabulary alignment", beside a Knowledge Management
+Cognitive Pyramid (DATA → INFORMATION → KNOWLEDGE → WISDOM, with
+Processing, Cognition and Judgment as the ascending arrows, Know What /
+Know How / Know Why bracketed alongside, and a **Decision Risk** gradient
+running red at the base to green at the apex). Feeding the DATA layer:
+**"Declarative" Digital Twin**, **"Running" Digital Twin**, and
+**Operational Data**.*
+
+**This is the only slide in the deck that draws the chain's own position,
+and it draws it correctly.** Nothing queued, nothing disturbed. What it
+yields is a terminology bridge, a boundary restated in the adopter's
+vocabulary, and one careful reading of their risk gradient that turns out
+to be the strongest argument for the gate anywhere in the deck — theirs,
+not ours.
+
+### 12.1 The bridge: "Declarative" and "Running" are Loop A and Loop B
+
+The two twins at the base of the pyramid are the two loops the
+2026-09-06 process-architecture brief named, in the EA function's own
+words rather than the brief's. The deck is internally consistent about
+it: its use-case slide already read "Gap Analysis — **Declarative versus
+Running** — Architecture Alignment" (§7). The mapping, recorded so the
+two adopter documents and the two roadmaps stop using three vocabularies
+for two things:
+
+| The pyramid's feed | The brief's name | What produces it |
+|---|---|---|
+| **"Declarative" Digital Twin** | **Loop A**, commit-time | ARIS EPC → aris2puml → pumllint. This chain, entire. |
+| **"Running" Digital Twin** | **Loop B**, run-time | Process mining / conformance to an event log. Neither repository's, by the *one direction, one target* clause and by its trigger never having fired. |
+| **Operational Data** | — | Telemetry. Neither loop's, and named separately on the slide, correctly. |
+
+**And Loop C is not a fourth feed.** The ontology validation of slides
+1–4 does not sit beside these three at the base: it is the *ascent* —
+the Cognition and Judgment arrows, the mechanism that turns the feeds
+into Knowledge and Shared Understanding. That is a better placement for
+it than "third loop" gave it in §7, and it is the deck's own diagram that
+supplies it. §7's row stands; this refines where the third term sits.
+
+### 12.2 Where the chain stops, in the pyramid's vocabulary
+
+The **Processing** arrow, DATA → INFORMATION, is exactly what this chain
+is. `structure()` either finds the block structure or refuses naming the
+node; the emitter writes the mapping table; pumllint returns findings,
+six dimensions and a level. Everything above that arrow is somebody
+else's, and the records already say why — now restated in the slide's
+own brackets:
+
+- **Know What** — the most the chain certifies. A diagram is
+  well-formed, its names follow the conventions, its interfaces resolve.
+- **Know How** — partly, and only where a convention encodes it
+  (ACT006's verb-first vocabulary, ACT003's named outcomes).
+- **Know Why** — **never, and this is the load-bearing line.** The score
+  certifies that a model is well-formed; it cannot certify that it is
+  *true*. For activity diagrams specifically, DIM-AMB is 100 by
+  construction, so a `:Do stuff;` process outscores a careful one on that
+  quarter of the composite. And the standing Gartner headwind on file
+  says architecture documentation fails on **relevance, not
+  incoherence — and pumllint measures incoherence**. A level presented as
+  Know Why is exactly the Goodhart failure N5 refuses, and the sentence
+  to circulate is unchanged: **gate on the linter, not the level.**
+
+### 12.3 The Decision Risk gradient, read carefully
+
+The bar runs red at DATA and green at WISDOM: decisions taken on raw data
+carry high risk, decisions taken with shared understanding carry low
+risk. That is the conventional reading and it is fine as far as it goes.
+
+**It is only earned if the ascent is faithful — and every step upward
+removes qualification.** Processing discards what it could not read,
+cognition summarises, judgment commits. So a defect introduced at the red
+end does not stay at the red end: it arrives at the green end *wearing
+green*, and by then nothing in the diagram distinguishes a conclusion
+drawn from a model that was read from one drawn from a model that was
+not. Three instances, all measured, all on file:
+
+1. **An ArchiMate `.puml` at Level 4 (Precise), 90.4/100, exit 0 — on a
+   file the parser did not read** (§3, re-measured at v0.33.0). Nine
+   modelled things in, nine elements counted, not one of them the kind it
+   is. Feed that verdict into the DATA layer and the pyramid ascends
+   from nothing with full marks.
+2. **An unstructured EPC "repaired" into plausible structure.** This is
+   why the converter refuses instead, naming the connector — the Iron
+   rule with no re-litigation clause. A repaired model is *more* linear
+   and so more likely to convert, more likely to score well, and more
+   likely to be believed, which is the failure in its purest form.
+3. **An agent supplying content the diagram does not contain** —
+   measured at **−6 pp** pooled executed correctness against unrepaired
+   originals and **−53 pp** on a single diagram from one invented guard.
+
+**So the gradient is an argument for the gate, not a reason to skip
+it.** The cheapest place to spend on decision risk is the red end, which
+is where both of these tools live; the green end is where spending is
+most expensive and least recoverable, because by then the qualification
+has been discarded. The deck supplies this argument itself, in its own
+diagram, without drawing the conclusion.
+
+### 12.4 What rises with the data, measured
+
+The corollary, and it is the one thing the chain does that a telemetry
+feed structurally cannot: **its output carries its own uncertainty
+upward, in machine-readable form.** Six channels, executed over the demo
+plus the four public corpus models:
+
+| # | Channel | This run |
+|---|---|---|
+| 1 | Fidelity account (`--report`) | `converted 3/5 · refused 2 · approximated 0 · dropped 3 · flagged 13 · 60.0 %` |
+| 2 | Refusals, named per process | `BPMAI-1525267023: join sid-77F83F6C-… reached without passing through its split (unstructured)` (+1) |
+| 3 | Syntax-gate disclosure | `syntaxGateRan: false` — the verdict says it assumes valid syntax |
+| 4 | Suppression disclosure | `suppressedCount: [0, 0, 0]` |
+| 5 | Honesty caps on the level | `epk-kreditantrag 3 · finanzierung-soll 3 · order-to-cash 4` — C6 holds an unreadable file at 1 |
+| 6 | Coverage (`trace`) | `requirements 3 · covered 1 · uncovered 2 · unknownReferences 1 · unlinkedDiagrams 2` |
+
+Two of the five processes never reach the DATA layer at all, by design,
+and the sidecar says so with the connector named. **`converted_percent`
+is the honest denominator under any process-coverage figure the pyramid
+later reports**, and it is the number a programme building on the
+declarative twin should quote before any other. Operational data has no
+equivalent by construction: telemetry does not know what it failed to
+observe.
+
+### 12.5 The persona layer, the third neutrality tension, and BIAN
+
+**The personas are the consumer side of a settled boundary.** Five
+domain experts conversing with an LLM in their own terminology, with
+vocabulary alignment, is a *reader* of governed artefacts. N2 (no
+LLM-driven extraction anywhere on the product path) and the
+deterministic-path working agreement govern what runs **inside**
+pumllint, not what reads its output; `docs/agents.md`'s score → repair →
+re-score loop is the shipped form of that relationship, with §12.3's
+third measurement as its standing caution. Nothing to build, no
+objection, no trigger.
+
+**The third neutrality tension, and now it is a pattern worth naming
+once.** The slide is titled *"Platform - LLM independent"* and names
+**Azure OpenAI** in its body. That is the third instance in nine slides:
+*Vendor Neutral* beside Fabric IQ, whose documentation names no RDF, OWL,
+SHACL or SPARQL (§11.3); *ArchiMate 4.0 Compliant?* beside an ontology
+that formalizes 3.2 (§11.1); *LLM independent* beside a named model
+service. **The pattern is that the deck asserts a neutrality property
+and names a specific stack beside it**, three times, without saying how
+the property is preserved. That is the EA function's design question, not
+a criticism of any of the three choices, and it is recorded because a
+programme that discovers it late discovers it expensively.
+
+**BIAN is new vocabulary and a settled question.** Neither repository
+mentions it, nor DIKW, digital twins, ITIL or ServiceNow — checked, zero
+hits. BIAN is a *reference model*: a Service Landscape of business areas
+containing business domains containing service domains, all modelled as
+capabilities, with 322 completed service domains at Service Landscape
+v11.0 and a published expression in ArchiMate. So it is a **vocabulary,
+not an artefact class** — there is nothing in it to lint, the same
+finding Zachman produced ("the purest 'nothing to lint' case"). And a
+BIAN service-domain reference attached to a process is not a new
+question either: it is the recorded answer for variant, capability,
+product, segment and channel, unchanged since 2026-09-06 — *an additive
+change to the version-1 JSON contract plus the report script, not an
+emitter tweak*, adopter-gated, with `--manifest` as the carrier if the
+relation is process-to-process.
+
+### 12.6 What §10 gains, and the note closes
+
+Nothing queued; the *Never* lists are unchanged; no trigger fires. The
+DIM-AMB residual's trigger — "an adopter running activity diagrams as
+process documentation of record **and asking for flow rules beyond
+ACT001–006**" — is the closest this slide comes, since a declarative
+digital twin feeding a knowledge pyramid *is* documentation of record.
+It is **named, not fired**: there is no ask. That is now true of every
+trigger this deck has come near, which is itself the finding.
+
+Three additions to §10's recorded list:
+
+9. **The Loop A / Loop B ↔ Declarative / Running bridge**, with Loop C
+   relocated from "third feed" to "the ascent". A naming and placement
+   decision only; no item changes, and §7's row stands.
+10. **"What rises with the data" — the six disclosure channels**, as the
+    positive case for the chain's placement at the base of someone else's
+    pyramid. Already shipped, never before assembled as one list; the
+    argument it supports is §12.3's, and that argument is the adopter's
+    own diagram read carefully.
+11. **The neutrality pattern**, three instances in nine slides, recorded
+    once so it is not re-derived slide by slide.
+
+**Re-litigate §12 on:** an ask for flow rules beyond ACT001–006 from a
+process-documentation adopter, which fires the DIM-AMB residual's
+standing trigger and is the one thing on this slide that could become
+work here.
+
 ## Related reading
 
 - [Linked.Archi and pumllint, evaluated](linked-archi-evaluation.md) —
@@ -895,3 +1088,7 @@ collision and make the two knowledge bases one.
 [ArchiMate 4.0 primer (element-set delta)](https://meta.linked.archi/docs/guide/archimate/archimate-4.0-modeling-guide/) ·
 [What is Fabric IQ? (Microsoft Learn)](https://learn.microsoft.com/en-us/fabric/iq/overview) ·
 [ArchiMate 3.2 as an RDF ontology (Appendix-B counts, OWL vs SHACL, DR/PDR)](https://albertodmendoza.net/2026/03/01/archimate-3-2-as-an-rdf-ontology-beyond-the-drawing-board/)
+
+*Added for §12:*
+[BIAN Service Landscape (service-domain counts and structure)](https://en.wikipedia.org/wiki/Banking_Industry_Architecture_Network) ·
+[Expressing the BIAN reference model in ArchiMate (The Open Group)](https://blog.opengroup.org/2020/04/09/expressing-the-bian-reference-model-for-the-banking-industry-in-the-archimate-modeling-language/)

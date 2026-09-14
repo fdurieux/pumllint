@@ -7173,3 +7173,57 @@ list and license posture live in § Settled questions.
   mark on a slide is not an ask. Re-litigate §11 on ArchiMate 4 becoming
   readable without SSO, or on Fabric IQ documenting an RDF/OWL import or
   a SPARQL surface.]*
+  *[Closed 2026-09-14, ninth and last slide — a platform slide with five
+  expert personas around an LLM service and a Knowledge Management
+  Cognitive Pyramid (DATA → INFORMATION → KNOWLEDGE → WISDOM, Know What
+  / How / Why, a Decision Risk gradient red at the base and green at the
+  apex), its DATA layer fed by a **"Declarative" Digital Twin**, a
+  **"Running" Digital Twin** and **Operational Data**. The only slide in
+  the deck that draws this chain's own position, and it draws it
+  correctly. Nothing queued; no trigger fires. Three things recorded.
+  **(a) A terminology bridge**: the two twins are the 2026-09-06 brief's
+  Loop A (commit-time, this chain) and Loop B (run-time, process
+  mining), in the EA function's own words — the deck is consistent about
+  it, its use-case slide already reading "Gap Analysis — Declarative
+  versus Running". And **Loop C is relocated**: the ontology validation
+  of slides 1–4 is not a fourth feed at the base but *the ascent* — the
+  Cognition and Judgment arrows. The §7 row stands; this refines where
+  the third term sits. **(b) The Decision Risk gradient, read
+  carefully, is the deck's strongest argument for the gate, and it is
+  theirs rather than ours**: the gradient is earned only if the ascent
+  is faithful, and every step upward removes qualification, so a defect
+  at the red end arrives at the green end wearing green. Three measured
+  instances: an ArchiMate `.puml` at Level 4 / 90.4 / exit 0 on a file
+  the parser did not read; a "repaired" unstructured EPC, which is more
+  linear and so more likely to convert, score well and be believed —
+  the Iron rule with no clause; and the agent-repair wave's −6 pp pooled
+  and −53 pp single-diagram cost. Against that, **what rises with the
+  data**: six machine-readable uncertainty channels, assembled as one
+  list for the first time and executed over the demo plus the four
+  corpus models — the sidecar's `converted 3/5 · refused 2 ·
+  approximated 0 · dropped 3 · flagged 13 · 60.0 %`, refusals named per
+  process, `syntaxGateRan: false`, `suppressedCount`, the honesty caps
+  on the level, and `trace`'s `covered 1 / uncovered 2 / unknownRefs 1 /
+  unlinkedDiagrams 2`. Telemetry has no equivalent by construction: it
+  does not know what it failed to observe. **(c) The neutrality pattern,
+  named once**: "Platform — LLM independent" beside Azure OpenAI is the
+  third instance in nine slides, after "Vendor Neutral" beside Fabric IQ
+  and "ArchiMate 4.0 Compliant?" beside a 3.2 ontology — the deck
+  asserts a neutrality property and names a specific stack beside it,
+  without saying how the property is preserved. The EA function's design
+  question, recorded because discovering it late is expensive. Also:
+  **BIAN, DIKW, digital twin, ITIL and ServiceNow are absent from both
+  repositories** (checked, zero hits); BIAN is a reference model — a
+  Service Landscape of capabilities, 322 service domains at v11.0, with
+  a published ArchiMate expression — so it is a vocabulary, not an
+  artefact class (Zachman's "nothing to lint" result), and a BIAN
+  service-domain reference on a process is the settled variant/capability
+  answer: an additive version-1 JSON contract change plus the report
+  script, adopter-gated. The pyramid's own brackets restate the standing
+  caveat exactly: this chain certifies **Know What**, partly Know How,
+  and **never Know Why** — DIM-AMB is 100 by construction for activity
+  diagrams and the Gartner headwind says documentation fails on
+  relevance, not incoherence. *Re-litigate on:* an ask for flow rules
+  beyond ACT001–006 from a process-documentation adopter — the DIM-AMB
+  residual's standing trigger, named by this slide and not fired, as
+  with every trigger this deck came near.]*
