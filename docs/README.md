@@ -841,7 +841,20 @@ but they are a useful cross-check that no audience was forgotten.
   has no XOR junction, so an ArchiMate front-end would infer exclusivity
   from a label — invented structure. And the 42010 correspondence gap's
   missing oracle located in a named artefact (ArchiMEO's
-  CorrespondenceRule) for the first time, changing no item.
+  CorrespondenceRule) for the first time, changing no item. **§11, the
+  same day:** three further slides of the deck — a cartography-KB format
+  list, Microsoft IQ, and an ArchiMate use-cases slide — force the one
+  correction on this page. **ArchiMate 4 shipped in April 2026**, so the
+  ArchiMate note's "current at 3.2" was false when written; corrected in
+  place, with the 61→40 element delta (per-layer behavioural duplicates
+  merged) recorded and both ArchiMate refusals shown to be
+  version-independent. Also on file: Appendix B's **3 800+ legality
+  rules** plus DR1–DR8/PDR1–PDR12, which turn "unrepresentable rather
+  than checkable" into a measurement; the viewpoint half re-cited to the
+  2026-08-28 controlled experiment, where conformant and violating views
+  are **byte-identical**; and a vendor-neutrality collision between the
+  deck's own two slides, Fabric IQ's documentation naming no RDF, OWL,
+  SHACL or SPARQL.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

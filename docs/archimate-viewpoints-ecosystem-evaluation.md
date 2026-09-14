@@ -83,8 +83,17 @@ Specification (Open Group C197, 2019)**, obtained as the Personal PDF
 Edition and text-extracted, so **every verbatim quotation below is 3.1**,
 and whether 3.2 renumbered or changed any viewpoint's element list is
 **not established**. Section numbers, viewpoint counts and the four
-basic-viewpoint categories are 3.1 figures. **No ArchiMate tool was
-executed**; Archi's behaviour is characterized from its shipped help,
+basic-viewpoint categories are 3.1 figures. *(Bracketed 2026-09-14: the
+gap is now **two** editions, not one — **ArchiMate 4 shipped in April
+2026**, before this note was dated, and cuts the element set from 60-odd
+types to 40 by merging the per-layer behavioural duplicates. The Open
+Group hosts still redirect to SSO, so 4's viewpoint catalogue is as
+unreadable here as 3.2's was. The note's load-bearing negative is about
+the **viewpoint mechanism**, which 4 keeps, and §8.3's controlled
+experiment is a measurement of pumllint, not of the standard — so
+neither moves. What is now unverifiable in both directions is the
+element-list detail, which was already declared unestablished.)* **No
+ArchiMate tool was executed**; Archi's behaviour is characterized from its shipped help,
 5.9.0 user guide and source, read by research agents, not run — and one
 claim about it was corrected by the adversarial pass (§5.2). Per session scope **no
 GitHub repository was read by me**; research agents fetched public files.
@@ -529,10 +538,18 @@ nothing queued.**
 **Re-litigate on:**
 
 - **ArchiMate 3.2 becoming readable**, which would let §1.1's negative be
-  checked against the current edition rather than 3.1.
+  checked against the current edition rather than 3.1. *(Re-based
+  2026-09-14: the edition to check against is now **ArchiMate 4**, April
+  2026. Still behind SSO, so the trigger is live and uncheckable rather
+  than fired.)*
 - ArchiMate making view-to-viewpoint conformance normative in a future
   edition — the single change that would reopen §5.1, and there is no
-  sign of it.
+  sign of it. *(2026-09-14: a future edition has now shipped and whether
+  it did this is **not established** — the SSO wall again. One piece of
+  indirect evidence that it did not: the most complete public OWL+SHACL
+  formalization of the language, which encodes Appendix B's 3 800-odd
+  legality rules as shapes, formalizes **3.2** and treats viewpoints as
+  outside the metamodel it enforces.)*
 - **Not** on Archi's Validator gaining strength: it warning more loudly
   is the ecosystem doing its own job upstream, which is the reason for
   the refusal, not an opening.
