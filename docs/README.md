@@ -821,6 +821,27 @@ but they are a useful cross-check that no audience was forgotten.
   component diagram's zero-element honesty cap turns on a single
   participant keyword. One attractive claim withdrawn — the two
   products' notions of *type* are not commensurable.
+- [The ontology/graph EA stack, evaluated](ea-ontology-stack-evaluation.md)
+  — dated evaluation (2026-09-14), third in the Linked.Archi thread and the
+  second adopter brief: an EA function's five-slide stack (ArchiMate →
+  Open Exchange Format → OWL2/RDF + Datalog and a graph store; principles
+  grounded in an enterprise ontology, validated, reported) asked where
+  pumllint and aris2puml fit. Verdict: neither is in those flows and
+  neither should be — the pipeline is the Linked.Archi design one
+  generation upstream (its own related-work page credits the ArchiMEO
+  SHACL principle-validation paper), so the 2026-08-27 settlement
+  transfers and the seam is unchanged: pumllint before stage 1, in the
+  producer repo, on the file a human wrote. Three new things. The
+  native-ArchiMate mistyping re-measured at v0.33.0 — **exit 0 and Level 4
+  (Precise), 90.4/100**, five SEQ101 blockers under codegen telling the
+  author to declare participants the file declares — while the *sprite*
+  dialect is now honest (the 2026-08-31 `!include` disclosure), so the two
+  dialects have diverged and the recorded type-marker candidate is
+  narrower than it reads. An independent aris2puml refusal: ArchiMate 3.2
+  has no XOR junction, so an ArchiMate front-end would infer exclusivity
+  from a label — invented structure. And the 42010 correspondence gap's
+  missing oracle located in a named artefact (ArchiMEO's
+  CorrespondenceRule) for the first time, changing no item.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

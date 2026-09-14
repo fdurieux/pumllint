@@ -7027,3 +7027,107 @@ list and license posture live in § Settled questions.
     verification column is now: gates on the three report-only lists, a
     repeatable `--features`, per-branch coverage (the Arc G candidate,
     gated on the owner decision and a corpus).*
+- **EA ontology/graph stack, second adopter brief (2026-09-14): nothing
+  queued — one settlement transferred, one hazard re-measured, one
+  refusal recorded on the converter's side, one candidate narrowed.**
+  An adopter's EA function circulated five slides — an
+  ArchiMate→Open-Exchange→OWL2/RDF+Datalog+graph-store transformation map,
+  an ArchiMate-at-the-centre standards star (TOGAF, Zachman, BMM, BPMN,
+  DMN, UML), a five-stage reporting pipeline (models and principles →
+  ontology grounding → derivation → validation → report), the same
+  pipeline reduced to its inputs, and a six-row use-case list — asking
+  where pumllint and aris2puml fit. Read against both roadmaps;
+  evaluation at [docs/ea-ontology-stack-evaluation.md](docs/ea-ontology-stack-evaluation.md).
+  - **The deck is the Linked.Archi ecosystem one generation upstream, so
+    the 2026-08-27 settlement covers it without re-derivation.** Slide 3
+    names an enterprise ontology and SBVR-grounded principles;
+    Linked.Archi's own related-work page states that the **ArchiMEO**
+    SHACL principle-validation paper "directly inspired" its twenty
+    governance shapes. Verdict transfers intact: adjacent,
+    complementary, zero build, one seam — pumllint in the producer repo,
+    before stage 1, on the artefact a human wrote; the reasoner at stage
+    4, on triples a machine emitted. Neither tool goes inside the deck's
+    boxes, and the four boundary arguments (report vs reject, source vs
+    projection, author-time vs integration-time, name *content* vs label
+    presence) are why.
+  - **The generated-`.puml` hazard, re-measured at v0.33.0 and now
+    dialect-split.** Native ArchiMate (`archimate … as x`, `--`, `..>`):
+    five elements and four typed relationships read as five implicit
+    lifelines and four unlabelled messages, typed `sequence`, **6 issues
+    / exit 0** under the default gate and **Level 4 (Precise) —
+    90.4/100**; under `--profile codegen`, **15 issues, 5 blockers, exit
+    1**, the blockers being SEQ101 telling the author to declare five
+    participants the file declares. The *sprite* dialect (`!include
+    <archimate/Archimate>`, what the jArchi exports and the ArchiMate MCP
+    servers emit) is now **honest**: the `!include` disclosure's second
+    condition, shipped 2026-08-31 — four days after the ArchiMate note
+    and so not in it — fires, and the file holds **Level 1, 0 elements,
+    typed `unknown`**, with a warning naming why. Consequence for the
+    ArchiMate note's candidate 1 (type-marker widening / fallback-typing
+    cap): the circulating population is covered, and **the native
+    `archimate` keyword is the sole remaining dialect reporting Level 4
+    on a file the parser cannot read**. Candidate narrowed, not queued —
+    still a scoring change needing its own decision and a golden
+    re-freeze. Operational line for the adopter, matching the
+    component/deployment hazard of 2026-09-06: **keep exported ArchiMate
+    `.puml` out of the gate.**
+  - **aris2puml refuses an ArchiMate front-end on the artefact, not the
+    gate** — arrived at independently of this repository's N1. ArchiMate
+    3.2 has an And Junction and an Or Junction and **no XOR**, the
+    exclusive reading being conveyed by *naming* the junction; the
+    version-1 JSON has `xor`/`and`/`or` as distinct kinds and the
+    structuring pass treats them differently (XOR → `if`/`switch`/
+    `while`; AND/OR → `fork`; a loop must leave an XOR split and re-enter
+    an XOR join). Inferring `xor` from a label is invented structure —
+    the Iron rule with no re-litigation clause. Recorded in that
+    repository's ROADMAP the same day.
+  - **Nothing fires N3 or N5.** The deck proposes a separate validator
+    over a different artefact, not OWL/SHACL as *this* rule engine, so it
+    is compatible with the knowledge-graph settlement rather than a
+    challenge to it; none of that settlement's four re-litigation
+    triggers fires. Slide 5's derivation row lands on the 2026-08-02
+    well-formedness-as-a-type anti-goal (a statement about a linter, not
+    about a reasoner, where derivation is the right design); its
+    metrics row lands on N5, and the sentence to circulate is the
+    guide's "gate on the linter, not the level", with the DIM-AMB-100
+    caveat for activity diagrams attached.
+  - **The one thing the deck supplies that this repository lacks.**
+    ArchiMEO carries ISO 42010 `Correspondence` / `CorrespondenceRule`
+    classes. The 42010 note (2026-08-28) measured that XD001–005 are the
+    cheap half of correspondence rules, independently arrived at, and
+    that the *correspondence requirement* is absent — two disjoint
+    diagrams score Level 4, 100/100 — with the missing half on the
+    never-build list as missing-edge inference, refused for want of an
+    oracle. A declared correspondence rule **is** that oracle. This does
+    not re-open the refusal (the check stays the graph's, at the deck's
+    stage 4); it is the first time the missing oracle has been located in
+    a named artefact rather than hypothesised.
+  - **Loop C.** The 2026-09-06 brief's Loop A (commit-time, this chain) /
+    Loop B (run-time, process mining) gains a third term:
+    **declared-versus-ontology**. Three artefacts, three clocks; the
+    failure mode to name for the adopter is a programme that funds one
+    and books the benefit of all three.
+  - **SBVR, narrowly.** Slide 3 grounds principles via SBVR; the
+    prose-pipeline record (2026-07-29) found SBVR Structured English
+    failed as a controlled natural language — no grammar, no tooling —
+    where EARS succeeded. That objection applies to SBVR *as the written
+    form a human reads*, not to ArchiMEO's shapes, which have both a
+    grammar and a validator. One sentence, not a position.
+  - *Measured end to end, so the seam claim is not rhetorical: five
+    processes (the demo plus the four public corpus models) through
+    `aris2puml … --report --manifest` → 3 converted, 2 refused with the
+    connector named, `converted_percent` 60.0; `pumllint -c conventions.toml`
+    → 39 issues, 20 major, exit 1; `score` → model set **Level 3
+    (Disciplined), 88.3/100**, worst member named; `trace --requirements
+    manifest.json --fail-on-unknown-ref` → **1/3 covered, 2 uncovered, 1
+    unknown reference, 2 unlinked**, exit 1. None of those four outputs
+    is expressible as binary conformance, and none survives being asked
+    after the grounding step. No product code changed; suites untouched.*
+  *Re-litigate on:* a named ask for the process layer in the adopter's
+  knowledge base (fires aris2puml's emitter clause, whose answer is
+  already written — the JSON, not an emitter); an adopter whose ArchiMate
+  models live in PlantUML only (the one case where the 2026-08-27 N1
+  premise fails — this deck does not fire it, Archi sits at the top of
+  slide 1); or a principle the EA function needs enforced at commit time
+  that the conventions file cannot express, which is the honest shape of
+  a pumllint ask out of this deck.
