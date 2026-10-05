@@ -23,8 +23,8 @@ Gherkin block, regenerate with `python tools/extract_features.py`.
 
 | Severity | Meaning |
 |----------|---------|
-| `blocker` | Diagram is semantically broken or misleading; must fail the build |
-| `critical` | Structural error: the diagram does not say what it appears to (a phantom participant, an unclosed block) |
+| `blocker` | Unusable as a specification: vague, incomplete or contradictory where it matters; must fail the build |
+| `critical` | Broken structure: the diagram contains an element or block the author did not intend (a phantom participant from a typo, a block that is never closed) |
 | `major`   | Violates a mandatory modelling standard |
 | `minor`   | Violates a recommended convention |
 | `info`    | Advisory; improves maintainability |

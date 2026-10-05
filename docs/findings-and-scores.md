@@ -19,11 +19,11 @@ Severities and what they oblige you to do:
 
 | Severity | Meaning | Typical CI effect |
 |----------|---------|-------------------|
-| `blocker` | Diagram is semantically broken or misleading | Fails the build; caps maturity at Level 2 |
-| `critical` | Structural error: the diagram does not say what it appears to (a phantom participant, an unclosed block) | Fails the build; blocks Level 5 |
-| `major` | Violates a mandatory modelling standard | Fails the build at the default `--fail-on major` |
-| `minor` | Violates a recommended convention | Reported, doesn't fail lint |
-| `info` | Advisory; improves maintainability | Reported only |
+| `blocker` | Unusable as a specification: vague, incomplete or contradictory where it matters | Fails the build; the diagram cannot rise above Level 2 |
+| `critical` | Broken structure: the diagram contains an element or block the author did not intend (a phantom participant from a typo, a block that is never closed) | Fails the build; blocks Level 5 |
+| `major` | Violates a mandatory modelling standard | Fails the build at the default `--fail-on major`; blocks Level 5 |
+| `minor` | Violates a recommended convention | Reported; doesn't fail lint or block a level, but lowers the score |
+| `info` | Advisory; improves maintainability | Reported; lowers the score only slightly |
 
 These map 1:1 to SonarQube severities, so the same finding reads the same in
 a Sonar dashboard.
@@ -38,11 +38,19 @@ the one-line summary table is in the [README](../README.md#rules).
 
 | Level | Name | Read it as |
 |-------|------|-----------|
-| 1 | Sketchy | A drawing. Don't build, review, or generate from it. Below Level 2 the measured code-generation cliff applies: fidelity drops ~⅓, invented logic doubles. |
-| 2 | Structured | Syntactically sound and minimally coherent. A starting point. |
-| 3 | Disciplined | No blockers; house conventions largely followed. Reviewable. |
-| 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). Implementable by a human without guessing. |
+| 1 | Sketchy | A sketch. Don't build on it: don't detail it further, don't treat it as a specification, don't generate from it. Where it feeds code generation, the measured cliff applies (on sequence diagrams: fidelity drops ~⅓, invented logic doubles). |
+| 2 | Structured | A draft: coherent enough to work on, but may still contain blockers. |
+| 3 | Disciplined | No blockers; house conventions largely followed. Ready for review, not yet for hand-off. |
+| 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). Ready for hand-off: the next step — a more detailed diagram, or code — can be derived from it without guessing. |
 | 5 | Method-complete | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
+
+The levels read the same wherever a diagram sits in the chain from customer
+journey to code: the question is always what the next step — a more detailed
+diagram, or code — can safely do with it. One exception today: no ambiguity
+rule applies to activity diagrams yet, so for business processes a high level
+does not show that the process is unambiguous. Gate processes on their
+findings, not their level
+([business-processes.md §5](business-processes.md#5-what-the-maturity-score-means-here--and-what-it-does-not)).
 
 Behind the composite score are seven dimensions (completeness, ambiguity,
 consistency, traceability, readability, logical correctness, plus the
