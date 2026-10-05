@@ -44,7 +44,7 @@ the one-line summary table is in the [README](../README.md#rules).
 | 5 | Method-complete | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
 
 Behind the composite score are seven dimensions (completeness, ambiguity,
-consistency, traceability, readability, semantic correctness, plus the
+consistency, traceability, readability, logical correctness, plus the
 external syntax gate). [The 360° rule map](rule-map.md) lists which
 rules feed each dimension, with a worked example for every rule. Two things worth knowing as a reader:
 
