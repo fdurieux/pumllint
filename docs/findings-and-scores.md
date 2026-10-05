@@ -39,7 +39,7 @@ the one-line summary table is in the [README](../README.md#rules).
 | Level | Name | Read it as |
 |-------|------|-----------|
 | 1 | Sketchy | A sketch. Don't build on it: don't detail it further, don't treat it as a specification, don't generate from it. Where it feeds code generation, the measured cliff applies (on sequence diagrams: fidelity drops ~⅓, invented logic doubles). |
-| 2 | Structured | Syntactically sound and minimally coherent. A starting point. |
+| 2 | Structured | A draft: coherent enough to work on, but may still contain blockers. |
 | 3 | Disciplined | No blockers; house conventions largely followed. Ready for review. |
 | 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). The next step — a more detailed diagram, or code — can be derived from it without guessing. |
 | 5 | Method-complete | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
