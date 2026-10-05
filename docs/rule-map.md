@@ -1753,7 +1753,7 @@ P1 -> P9 : call9
 P1 -> P10 : call10
 ```
 
-Ten lifelines (shown abridged), one over the default of 9. Split the scenario by phase.
+Ten lifelines, one over the default of 9. Split the scenario by phase.
 
 **More complex example — flagged**
 
@@ -1792,7 +1792,7 @@ A1 --> G12
 
 </details>
 
-A use-case diagram counts actors *plus* use cases: 4 + 12 = 16, over 15. (Shown abridged.)
+A use-case diagram counts actors *plus* use cases: 4 + 12 = 16, over 15.
 
 ### GEN008 note-density
 
@@ -1911,7 +1911,7 @@ C21 "1" -- "*" C22 : next
 
 </details>
 
-40 classes and 21 associations: 61 elements. (Shown abridged.) Split by subdomain or package.
+40 classes and 21 associations: 61 elements. Split by subdomain or package.
 
 **More complex example — flagged**
 
@@ -1984,7 +1984,7 @@ S30 --> S31 : e30
 
 </details>
 
-The same cap applies to a long state machine: 31 states and 31 transitions. (Shown abridged.) On ordinary sequence diagrams, SEQ011's message cap fires first.
+The same cap applies to a long state machine: 31 states and 31 transitions. On ordinary sequence diagrams, SEQ011's message cap fires first.
 
 ### SEQ008 fragment-nesting-depth
 
@@ -2076,7 +2076,7 @@ Shop -> Bank : step31
 
 </details>
 
-31 messages. (Shown abridged.)
+31 messages.
 
 **More complex example — passes**
 
@@ -2158,7 +2158,7 @@ class Customer {
 }
 ```
 
-16 members. (Shown abridged.)
+16 members.
 
 **More complex example — flagged**
 
@@ -2183,4 +2183,4 @@ class Order {
 }
 ```
 
-Attributes and operations count together: 8 + 8 = 16. (Shown abridged.)
+Attributes and operations count together: 8 + 8 = 16.
