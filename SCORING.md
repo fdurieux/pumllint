@@ -23,7 +23,7 @@ per pack, overridable per rule). Seven dimensions:
 | ID      | Dimension              | Source of signal                                            | Default weight |
 |---------|------------------------|-------------------------------------------------------------|----------------|
 | DIM-SYN | Syntactic validity     | `plantuml -checkonly` exit code (external gate, pass/fail)  | gate           |
-| DIM-SEM | Semantic correctness   | All pack findings not claimed by a more specific dimension  | 0.20           |
+| DIM-SEM | Logical correctness    | All pack findings not claimed by a more specific dimension  | 0.20           |
 | DIM-CMP | Completeness           | Typed params/returns, multiplicities, guards, alt/error paths, orphan elements | 0.30 |
 | DIM-CON | Consistency            | Naming conventions; cross-diagram entity identity           | 0.15           |
 | DIM-TRC | Traceability           | Title, ID, ownership, requirement/ADR links (GEN pack)      | 0.05           |

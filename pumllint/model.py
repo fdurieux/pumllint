@@ -43,7 +43,7 @@ class Dimension(Enum):
     """
 
     SYNTAX = "DIM-SYN"  # gate: plantuml -checkonly (no rules carry this)
-    SEMANTIC = "DIM-SEM"  # semantic correctness; default bucket
+    SEMANTIC = "DIM-SEM"  # logical correctness; default bucket
     COMPLETENESS = "DIM-CMP"  # typed params/returns, guards, error paths, orphans
     CONSISTENCY = "DIM-CON"  # naming conventions; cross-diagram identity
     TRACEABILITY = "DIM-TRC"  # title, id, ownership, requirement/ADR links

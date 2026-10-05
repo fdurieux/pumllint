@@ -23,7 +23,7 @@ into one score with these weights:
 
 | Dimension | Weight | Rules | The question it asks |
 |-----------|-------:|------:|----------------------|
-| [Semantic correctness](#semantic-correctness-dim-sem) | 20% | 9 | Is the diagram logically sound? |
+| [Logical correctness](#logical-correctness-dim-sem) | 20% | 9 | Is the diagram logically sound? |
 | [Completeness](#completeness-dim-cmp) | 30% | 13 | Is everything that should be there actually there? |
 | [Ambiguity](#ambiguity-dim-amb) | 25% | 8 | Could two readers take it two different ways? |
 | [Consistency](#consistency-dim-con) | 15% | 11 | Does it follow one convention, here and across the model set? |
@@ -68,7 +68,7 @@ several diagrams.
 
 | Dimension | sequence | activity | class | state | use case | all types |
 |-----------|---|---|---|---|---|---|
-| Semantic correctness | SEQ001 SEQ003 SEQ004 SEQ009 SEQ108 | ACT004 | CLS004 | STA001 | UC003 | — |
+| Logical correctness | SEQ001 SEQ003 SEQ004 SEQ009 SEQ108 | ACT004 | CLS004 | STA001 | UC003 | — |
 | Completeness | SEQ002 SEQ007 SEQ010 SEQ101 SEQ102 SEQ104 SEQ107 | ACT001 ACT002 ACT003 | CLS002 | STA002 | UC001 | — |
 | Ambiguity | SEQ005 SEQ006 SEQ103 SEQ105 SEQ106 SEQ109 | — | CLS003 | STA003 | — | — |
 | Consistency | GEN004 XD001 XD002 XD003 | ACT005 ACT006 | CLS001 | — | UC002 | GEN003 XD004 XD005 |
@@ -92,7 +92,7 @@ Every example on this page is run through pumllint by the test suite
 (`tests/test_rule_map.py`). If a rule changes and an example stops behaving
 as described, the tests fail until this page is updated.
 
-## Semantic correctness (DIM-SEM)
+## Logical correctness (DIM-SEM)
 
 **Weight 20% · 9 rules.** *Is the diagram logically sound?*
 

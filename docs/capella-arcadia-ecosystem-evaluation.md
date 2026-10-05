@@ -110,7 +110,7 @@ fixes where possible. Set against pumllint's dimensions:
 
 | Capella category | pumllint dimension |
 |---|---|
-| Integrity | DIM-SEM (semantic correctness) |
+| Integrity | DIM-SEM (logical correctness) |
 | design | — |
 | **completeness** | **DIM-CMP — completeness** |
 | **traceability** | **DIM-TRC — traceability** |
