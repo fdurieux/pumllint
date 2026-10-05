@@ -19,11 +19,11 @@ Severities and what they oblige you to do:
 
 | Severity | Meaning | Typical CI effect |
 |----------|---------|-------------------|
-| `blocker` | Unusable as a specification: vague, incomplete or contradictory where it matters | Fails the build; caps maturity at Level 2 |
+| `blocker` | Unusable as a specification: vague, incomplete or contradictory where it matters | Fails the build; the diagram cannot rise above Level 2 |
 | `critical` | Broken structure: the diagram contains an element or block the author did not intend (a phantom participant from a typo, a block that is never closed) | Fails the build; blocks Level 5 |
-| `major` | Violates a mandatory modelling standard | Fails the build at the default `--fail-on major` |
-| `minor` | Violates a recommended convention | Reported, doesn't fail lint |
-| `info` | Advisory; improves maintainability | Reported only |
+| `major` | Violates a mandatory modelling standard | Fails the build at the default `--fail-on major`; blocks Level 5 |
+| `minor` | Violates a recommended convention | Reported; doesn't fail lint or block a level, but lowers the score |
+| `info` | Advisory; improves maintainability | Reported; lowers the score only slightly |
 
 These map 1:1 to SonarQube severities, so the same finding reads the same in
 a Sonar dashboard.
