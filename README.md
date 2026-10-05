@@ -112,7 +112,9 @@ evidence), [where the value lands in the SDLC](docs/value-in-the-sdlc.md)
 (a value-stream assessment across the SAFe Continuous Delivery Pipeline),
 [setup & CI integration](docs/setup-and-ci.md) (pipelines, ratchet,
 Sonar, badge), [understanding findings & scores](docs/findings-and-scores.md)
-(for report readers and diagram authors),
+(for report readers and diagram authors), [the 360° rule map](docs/rule-map.md)
+(every rule behind the maturity level, sorted by dimension, each with a simple
+and a harder example),
 [writing rules](docs/writing-rules.md) (a step-by-step programming guide with
 an end-to-end example, including how the executable Gherkin spec works), and
 [using pumllint from a coding agent](docs/agents.md) (the score → repair →
@@ -268,6 +270,8 @@ examined it; the opt-in `c7_requires_applicable_rules` flag closes that by also
 requiring the profile to carry a rule applying to the diagram's type.
 
 Scoring model, dimensions, thresholds, and calibration notes: [SCORING.md](SCORING.md).
+Which rules feed which dimension, in plain English with worked examples:
+[the 360° rule map](docs/rule-map.md).
 All knobs are configurable under the `scoring` key (see `pumllint.toml`),
 including that flag and `deduplicate_findings` (a base finding restated by its
 codegen twin on the same line counts once).
