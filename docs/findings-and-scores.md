@@ -19,8 +19,8 @@ Severities and what they oblige you to do:
 
 | Severity | Meaning | Typical CI effect |
 |----------|---------|-------------------|
-| `blocker` | Diagram is semantically broken or misleading | Fails the build; caps maturity at Level 2 |
-| `critical` | Structural error: the diagram does not say what it appears to (a phantom participant, an unclosed block) | Fails the build; blocks Level 5 |
+| `blocker` | Unusable as a specification: vague, incomplete or contradictory where it matters | Fails the build; caps maturity at Level 2 |
+| `critical` | Broken structure: the diagram contains an element or block the author did not intend (a phantom participant from a typo, a block that is never closed) | Fails the build; blocks Level 5 |
 | `major` | Violates a mandatory modelling standard | Fails the build at the default `--fail-on major` |
 | `minor` | Violates a recommended convention | Reported, doesn't fail lint |
 | `info` | Advisory; improves maintainability | Reported only |

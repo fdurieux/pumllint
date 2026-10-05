@@ -12,7 +12,7 @@ explains how to read the reports themselves.*
 **Rules are the tests.** pumllint reads a PlantUML diagram and runs a set of
 *rules* over it. Each rule looks for one specific problem. When it finds one,
 it reports a *finding* with a severity, from `info` (advice) up to `blocker`
-(the diagram is broken or misleading).
+(the diagram is unusable as a specification).
 
 **Every rule belongs to exactly one dimension.** A *dimension* is one angle on
 quality, such as completeness or ambiguity. `pumllint score` turns each
