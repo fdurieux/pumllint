@@ -38,11 +38,19 @@ the one-line summary table is in the [README](../README.md#rules).
 
 | Level | Name | Read it as |
 |-------|------|-----------|
-| 1 | Sketchy | A drawing. Don't build, review, or generate from it. Below Level 2 the measured code-generation cliff applies: fidelity drops ~⅓, invented logic doubles. |
+| 1 | Sketchy | A sketch. Don't build on it: don't detail it further, don't treat it as a specification, don't generate from it. Where it feeds code generation, the measured cliff applies (on sequence diagrams: fidelity drops ~⅓, invented logic doubles). |
 | 2 | Structured | Syntactically sound and minimally coherent. A starting point. |
-| 3 | Disciplined | No blockers; house conventions largely followed. Reviewable. |
-| 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). Implementable by a human without guessing. |
+| 3 | Disciplined | No blockers; house conventions largely followed. Ready for review. |
+| 4 | Precise | Complete and unambiguous where it matters (typed participants, guards, labels). The next step — a more detailed diagram, or code — can be derived from it without guessing. |
 | 5 | Method-complete | *Method-convention complete*: every dimension strong, no majors, and the codegen rule pack actually ran. The diagram-side preconditions for faithful generation — not a guarantee of it. |
+
+The levels read the same wherever a diagram sits in the chain from customer
+journey to code: the question is always what the next step — a more detailed
+diagram, or code — can safely do with it. One exception today: no ambiguity
+rule applies to activity diagrams yet, so for business processes a high level
+does not show that the process is unambiguous. Gate processes on their
+findings, not their level
+([business-processes.md §5](business-processes.md#5-what-the-maturity-score-means-here--and-what-it-does-not)).
 
 Behind the composite score are seven dimensions (completeness, ambiguity,
 consistency, traceability, readability, logical correctness, plus the
