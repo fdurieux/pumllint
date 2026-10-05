@@ -47,20 +47,22 @@ in the reconciliation's Record section. The ROADMAP entry lands first and
 the pages quote it: they are views, never the record. A session that cannot
 reach the pages says so in its reply and leaves the ROADMAP as the record.
 
-Merged branches were not deleted automatically until the 2026-09-06
-hygiene pass (twelve stale branches, deleted by the owner that day), and
-a hosted session cannot delete them: the git proxy answers a
+Merged branches are deleted automatically: the owner turned on
+"Automatically delete head branches" on 2026-10-05, and
+`delete_branch_on_merge` reads `true` from the public repository API. A
+merged PR's branch vanishing is therefore expected and needs no cleanup
+step; a session that keeps its branch name after a merge pushes it anew
+from `main`. Before that date merged branches piled up (twelve stale ones
+deleted by the owner in the 2026-09-06 hygiene pass). A hosted session
+still cannot delete a ref itself: the git proxy answers a
 branch-deleting push (`git push origin :refs/heads/<branch>`) with
 `HTTP 403` and then prints `Everything up-to-date`, so read the whole
 output, never the last line; no MCP tool deletes a ref, and a direct API
 write to the repository settings is denied by the session's permission
-gate (reading `delete_branch_on_merge` works). The setting is the
-owner's — `gh repo edit` with its delete-branch-on-merge option, or
-Settings → General → "Automatically delete head branches" — and a merged
-PR's branch vanishing is the sign it is on. Verify a ref with
-`git ls-remote origin 'refs/heads/*'`; deleting one is the owner's, via
-`gh api -X DELETE repos/fdurieux/pumllint/git/refs/heads/<branch>` or the
-Branches page. `main`'s history was restarted on 2026-08-29 (two roots,
+gate (reading `delete_branch_on_merge` works). A branch that outlives its
+PR — one closed unmerged, or never opened as one — is the owner's to
+delete, via `gh api -X DELETE repos/fdurieux/pumllint/git/refs/heads/<branch>`
+or the Branches page. Verify a ref with `git ls-remote origin 'refs/heads/*'`. `main`'s history was restarted on 2026-08-29 (two roots,
 `a92c24f` and `1089a99`): a branch from the old line (root `71f70a6`)
 shares no ancestor with `main`, reads as hundreds of commits "ahead", and
 is superseded once its PRs are merged — compare trees, not commit counts,
