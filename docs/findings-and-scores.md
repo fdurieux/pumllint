@@ -45,7 +45,8 @@ the one-line summary table is in the [README](../README.md#rules).
 
 Behind the composite score are seven dimensions (completeness, ambiguity,
 consistency, traceability, readability, semantic correctness, plus the
-external syntax gate). Two things worth knowing as a reader:
+external syntax gate). [The 360° rule map](rule-map.md) lists which
+rules feed each dimension, with a worked example for every rule. Two things worth knowing as a reader:
 
 - **Caps prevent gaming.** A single blocker caps a diagram at Level 2 no
   matter how high its composite; a single very weak dimension caps it at
