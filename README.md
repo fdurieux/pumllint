@@ -123,6 +123,12 @@ re-score loop for AI agents implementing from diagrams), and
 expressed as activity diagrams — activity diagrams, not BPMN — with a
 copy-ready conventions gate and a worked example).
 
+Introducing pumllint to a team? A ready-made 45-minute
+[round table](https://fdurieux.github.io/pumllint/talks/semantic-linting-round-table/)
+(slides, speaker notes with a run sheet, and a go / no-go hand-out for a
+proof of concept) is published from
+[talks/semantic-linting-round-table/](talks/semantic-linting-round-table/README.md).
+
 ## Maturity scoring
 
 `pumllint score` aggregates rule findings into a **360° maturity level** per

@@ -6,3 +6,8 @@
 # default, so without this the committed copies and the freshly generated ones
 # differ on every line — a failure with nothing to do with the tool.
 * text=auto eol=lf
+
+# Published talk files (docs/talks/) are built output, never text.
+*.pdf binary
+*.pptx binary
+*.jpg binary

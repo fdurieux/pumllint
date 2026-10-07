@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semantic linting of PlantUML diagrams: a round table</title>
+<meta name="description" content="A 45-minute round table on checking whether diagrams make sense, not only whether they render, with slides, speaker notes and a team hand-out.">
+<style>
+:root { --bg: #F7F8F5; --ink: #1E2B22; --muted: #4A5A4E; --title: #3E6B48; --card: #FFFFFF; --line: #C3CDBD; --accent: #9BD12E; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151B17; --ink: #E4EAE3; --muted: #A9B5AA; --title: #9BCB8E; --card: #1E2621; --line: #34423A; --accent: #9BD12E; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Calibri, sans-serif; }
+main { max-width: 860px; margin: 0 auto; padding: 32px 16px 48px; }
+.kicker { font-weight: 700; color: var(--muted); margin: 0; }
+h1 { color: var(--title); font-size: 2.1rem; line-height: 1.2; margin: 4px 0 12px; }
+h2 { color: var(--title); font-size: 1.3rem; margin: 36px 0 8px; }
+p { margin: 8px 0; }
+a { color: var(--title); }
+.preview { display: block; margin: 20px 0 8px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.preview img { display: block; width: 100%; height: auto; }
+.caption { color: var(--muted); font-size: 0.9rem; }
+.files { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+.files li { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 6px; padding: 12px 14px; }
+.files a { font-weight: 700; }
+.files span { display: block; color: var(--muted); font-size: 0.95rem; }
+ol.parts { padding-left: 1.3em; }
+ol.parts li { margin: 6px 0; }
+dt { font-weight: 700; margin-top: 10px; }
+dd { margin: 2px 0 0 0; color: var(--muted); }
+footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">pumllint · a round table</p>
+<h1>Every diagram renders. Does it make sense?</h1>
+<p>A 45-minute round table for teams that draw diagrams in PlantUML, or build on them: business processes, sequence diagrams, state charts.
+It works through three questions with the people in the room: <b>do we recognise the problem</b>, <b>what does a semantic linter add</b>,
+and <b>is it worth trying in a small proof of concept (PoC)?</b></p>
+
+<a class="preview" href="deck.pdf"><img src="overview.jpg" alt="All twenty slides of the deck, shown as thumbnails" width="2730" height="1248"></a>
+<p class="caption">All 20 slides. Slides 17 to 20 are hand-outs and are not shown during the session.</p>
+
+<h2>Download</h2>
+<ul class="files">
+  <li><a href="deck.pdf">The slides (PDF)</a><span>Opens in your browser. The quickest way to see what the session covers.</span></li>
+  <li><a href="deck.pptx">The slides (PowerPoint)</a><span>To present or adapt. Speaker notes are included, and two slides reveal their answer on a click.</span></li>
+  <li><a href="speaker-notes.pdf">Speaker notes and run sheet (PDF)</a><span>A timed 45-minute plan on the first page, then one page per slide: what to say, what to ask the room, and the bridge to the next slide.</span></li>
+  <li><a href="team-handout.pdf">Team hand-out (PDF)</a><span>For teams that were not in the room: a one-page go / no-go form for a PoC, plus three pages on getting started with pumllint.</span></li>
+</ul>
+
+<h2>A few words first</h2>
+<dl>
+  <dt>PlantUML</dt><dd>A way of drawing diagrams by writing short text files. The text is turned into a picture, and the files can be stored and reviewed like code.</dd>
+  <dt>Linter</dt><dd>A tool that reads a file and points out problems. Most diagram tools only check that a diagram renders; a <i>semantic</i> linter checks whether it makes sense: missing steps, unclear decisions, two diagrams contradicting each other.</dd>
+  <dt>pumllint</dt><dd>The semantic linter for PlantUML that this repository builds. It lists each problem with a severity, and gives every diagram a maturity level from 1 to 5.</dd>
+</dl>
+
+<h2>What the session covers</h2>
+<ol class="parts">
+  <li><b>The problem.</b> A diagram can render and still leave the next reader guessing. Two short examples: a credit-approval process whose decision never says which way approves, and two diagrams that describe the same service in contradictory ways. Analysts, developers and AI tools all build on what the diagram says, and each one fills the gaps differently.</li>
+  <li><b>What a linter adds.</b> Findings with a severity, a maturity level per diagram, and an optional gate before a diagram is handed on. One result was measured: AI-written code generated from the least mature sequence diagrams failed about 1 in 3 of its intended behaviours, against about 1 in 10 from diagrams at Level 2 and up.
+    The source is <a href="https://github.com/fdurieux/pumllint/blob/main/EVIDENCE.md">EVIDENCE.md</a>, explained step by step in <a href="https://github.com/fdurieux/pumllint/blob/main/docs/evidence-explained.md">The evidence, explained from scratch</a>.</li>
+  <li><b>The value.</b> Checks in the editor while you write and in the delivery pipeline on every change, introduced step by step: first advice only, then "nothing may get worse", then a minimum level.</li>
+  <li><b>The decision.</b> A show of thumbs: run a PoC or not. If yes, the room agrees on scope, success criteria, an owner and a check-in date before it leaves.</li>
+</ol>
+
+<h2>Presenting it yourself</h2>
+<p>The PowerPoint has a speaker note on every slide. Before you share the team hand-out (slide 17), type your name, your email and a reply-by date into its green strip.
+Or rebuild the deck with your details filled in, and with slide numbers that allow for your own opening slides. The <a href="https://github.com/fdurieux/pumllint/tree/main/talks/semantic-linting-round-table">source folder</a> explains how.</p>
+
+<footer>Built from <a href="https://github.com/fdurieux/pumllint/tree/main/talks/semantic-linting-round-table">talks/semantic-linting-round-table</a> for pumllint 0.33.0 on 2026-10-07.
+Part of the <a href="https://github.com/fdurieux/pumllint">pumllint</a> repository and shared under the same licence (GPL-3.0-or-later).</footer>
+</main>
+</body>
+</html>
