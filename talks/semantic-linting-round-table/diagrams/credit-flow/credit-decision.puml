@@ -1,0 +1,14 @@
+@startuml credit-decision
+title Credit decision
+actor Customer
+participant CreditOfficer
+participant RiskEngine
+Customer -> CreditOfficer : submitApplication()
+CreditOfficer -> RiskEngine : scoreApplicant()
+RiskEngine --> CreditOfficer : score
+alt
+  CreditOfficer -> Customer : approveCredit()
+else
+  CreditOfficer -> Customer : rejectApplication()
+end
+@enduml

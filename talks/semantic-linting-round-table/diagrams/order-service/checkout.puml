@@ -1,0 +1,7 @@
+@startuml checkout
+actor Customer
+participant OrderService <<service>>
+participant Payments
+Customer -> OrderService : placeOrder()
+OrderService -> Payments : charge()
+@enduml

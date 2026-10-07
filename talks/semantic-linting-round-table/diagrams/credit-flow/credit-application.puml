@@ -1,0 +1,21 @@
+@startuml credit-application
+title Credit application
+|Customer|
+start
+:Submit credit application;
+|Credit officer|
+:Check completeness;
+if (Complete?) then (yes)
+  |Risk engine|
+  :Score applicant;
+  if (Score sufficient?) then
+    :Approve credit;
+  else
+    :Reject application;
+  endif
+else (no)
+  :Request missing documents;
+endif
+|Credit officer|
+:Inform customer;
+@enduml

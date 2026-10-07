@@ -1,0 +1,7 @@
+@startuml refund
+actor Customer
+participant OrderService <<gateway>>
+participant Payments
+Customer -> OrderService : requestRefund()
+OrderService -> Payments : refund()
+@enduml

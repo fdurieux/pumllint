@@ -249,6 +249,28 @@ them.
   only trend state the product has, and a snapshot + deltas is the honest
   scope. Fit was near-zero-cost by construction: `render_maturity()` was
   already the pluggable seam, so `-f html` needed no CLI or Action changes.
+- [x] **Round-table talk** *(2026-10-07, docs only)* — a 45-minute adoption
+  session in four parts (the problem, the contribution, the value, a PoC
+  go / no-go): 20 slides, of which 4 are hidden hand-outs; speaker notes
+  with a run sheet; a team hand-out for squads not in the room. Source in
+  `talks/semantic-linting-round-table/`: PptxGenJS 4.0.1 slide scripts,
+  plus `post/*.py` OOXML edits for what PptxGenJS cannot write (notes
+  paragraphs, Appear, Morph, hidden slides). Node is talk-only and stays
+  outside the package and CI. The neutral build is published to GitHub
+  Pages under `docs/talks/semantic-linting-round-table/` by
+  `build.sh --publish`, which refuses a personalised build
+  (`INTRO_SLIDES`, `PRESENTER_*` and `REPLY_BY` are environment-only).
+  Drift guard `tests/test_talk_round_table.py` checks:
+  - the findings on the two example pairs: ACT003 ×2, ACT002 and SEQ007
+    exit 1; XD002 ×2 and GEN001 ×2 exit 0;
+  - the credit process at Level 4;
+  - slide 5's drawn data equal to the committed files;
+  - the landing page's links resolve.
+
+  The appendix's `@vX` pin reads `pyproject.toml`, so a release needs no
+  edit to the talk. The published PPTX and PDFs go stale until
+  republished. They are not byte-reproducible, so nothing guards them;
+  the landing page states the version and date they were built for.
 
 ## Arc C — Coverage growth (base catalog done; further growth demand-driven)
 

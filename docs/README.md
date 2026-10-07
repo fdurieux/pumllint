@@ -13,6 +13,7 @@ why you are here:
 | A developer extending the linter | How to specify, implement, and test a new rule | [Writing rules](writing-rules.md) |
 | A coding agent implementing from diagrams — or the person wiring one up | The score → repair → re-score loop to run before generating code | [Using pumllint from a coding agent](agents.md) |
 | A process owner or BPM analyst whose processes live in ARIS | How to express a process as a PlantUML activity diagram and gate it on your naming conventions | [Linting business processes](business-processes.md) |
+| Someone introducing pumllint to a team or a seminar | A ready-made 45-minute session: what problem it solves, what a linter adds, and whether to try it | [The round table](https://fdurieux.github.io/pumllint/talks/semantic-linting-round-table/): slides, speaker notes and a hand-out ([source](../talks/semantic-linting-round-table/README.md)) |
 
 The management shelf is three documents: the *case* (what the tool is, what
 it costs, what the evidence supports), the *SDLC assessment* (where the

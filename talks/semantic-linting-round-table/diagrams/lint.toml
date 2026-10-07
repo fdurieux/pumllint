@@ -1,0 +1,3 @@
+# The talk shows pumllint's default behaviour, so these runs use the built-in
+# defaults: this file exists only to keep the repository's own pumllint.toml
+# (its house conventions) out of auto-detection.
