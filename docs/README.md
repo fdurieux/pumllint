@@ -888,6 +888,26 @@ but they are a useful cross-check that no audience was forgotten.
   end arriving at the green end wearing green. Against that, the six
   machine-readable channels by which this chain carries its own
   uncertainty upward — which telemetry structurally cannot.
+- [Knowledge graphs for architecture and process artefacts — a research synthesis, evaluated](kg-research-synthesis-evaluation.md)
+  — dated evaluation (2026-10-12), following the knowledge-graph note and
+  the Linked.Archi thread. The maintainer's research note — seven Medium articles grounded in W3C,
+  OMG, Neo4j, DataCite and Crossref documentation, an integration model, a
+  do/don't list, DOI practice and a three-question first experiment —
+  read for what bears on pumllint. Verdict: nothing to build. Five
+  settlements cover it and none of their triggers fires.
+  - **Its primaries, read at w3.org** for the first time in the thread,
+    confirm the knowledge-graph note's N3 from both sides. OWL cannot see
+    an absence. SHACL reports every absence a shape constrains, including
+    what the tolerant projection did not read. Neither grades: `sh:conforms`
+    is a boolean, and severities "have no impact on the validation".
+  - **Its separations expose two gaps.** Every run record the chain emits
+    names its inputs by path only (no tool version, configuration
+    identity or digest). And ARIS element ids stop at aris2puml's
+    emitter: a finding offers `(file, line)` and a label, so the way back
+    is the name join the synthesis warns against.
+
+  Both gaps are recorded as gated candidates (pumllint Arc E; aris2puml
+  D4), each with its carrier argued and its trigger named.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

@@ -37,6 +37,12 @@ arxiv.org, dl.acm.org and w3.org are unreachable from this environment —
 and is kept deliberately non-load-bearing: no verdict below rests on an
 external number. Where one is quoted it is marked as characterization.*
 
+*[2026-10-12: w3.org was reachable from a later session. SHACL (§2.1.4,
+§3.6.1.1, `sh:minCount`) and the OWL 2 Primer (§2, §4.8) were read at the
+primary, and N3's two grounds hold as written — see
+[the research-synthesis evaluation](kg-research-synthesis-evaluation.md),
+§3. The GraphRAG and failure-survey figures remain characterization.]*
+
 ## 0. Why this evaluation ran, and what it is not
 
 This is the sixth externally-prompted analysis run under the house
