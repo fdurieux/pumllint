@@ -165,6 +165,12 @@ Two properties of that validator matter later:
   graph conforms only when the report "contains no results at all", so
   downgrading a shape to `sh:Warning` does not make a graph conform, and
   RDF4J's `ShaclSail` does not distinguish severities either.
+  *[2026-10-12: confirmed at the primary. The SHACL Recommendation (20 July
+  2017), §3.6.1.1: `sh:conforms` is `xsd:boolean`, "true if and only if
+  the validation did not produce any validation results"; §2.1.4: "The
+  specific values of `sh:severity` have no impact on the validation". See
+  [the research-synthesis evaluation](kg-research-synthesis-evaluation.md),
+  §3.]*
 - **It knows its own blind spot and says so.** Of its 13 named profiles:
   "Most profiles above use a metamodel's own ontology as the data graph.
   That exercises the shapes constraining enumerated values… but it
