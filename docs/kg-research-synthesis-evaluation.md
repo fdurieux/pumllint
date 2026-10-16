@@ -55,8 +55,8 @@ ROADMAP's decision log carries the same list under this date.*
 
 *Corrected again 2026-10-16, after a code review of that correction
 (#170): ten findings, all in text it wrote, are fixed in place together
-with what fixing them exposed. The ROADMAP's decision log lists the
-findings; everything changed in this file:*
+with what fixing them exposed. The ROADMAP's decision log records the
+findings, grouped; everything changed in this file:*
 
 - *the 2026-08-10 portable run-record candidate had been "built with"
   Arc E and "wrapping the lint invocation"; it is a pilot-repo format,
@@ -78,13 +78,16 @@ findings; everything changed in this file:*
 - *constraint 5 now names the command-line options that change what is
   reported, the input files and the PlantUML engine, which runs whenever
   the syntax gate does (`--check-syntax` or `scoring.syntax_gate`), and
-  a known limit: the files a diagram `!include`s, which the engine
-  resolves under the gate, are not digested;*
+  a known limit: the gate also depends on the engine's environment and
+  on the files a diagram `!include`s, which nothing digests;*
 - *§5's path-independent join and §6's "a retained report would also
   say what it judged" now hold for score and trace reports only;*
 - *§8 now carries the candidate's full scope;*
 - *the note above now lists constraint 6, and the prose both corrections
-  touched is re-wrapped.*
+  touched is re-wrapped;*
+- *the repository claims this note's changes add were executed against
+  pumllint's code at `64007cb`, which neither correction changes (both
+  are docs only); §9 lists the new commands.*
 
 ## 0. The document, so this note stands alone
 
@@ -321,8 +324,12 @@ Design constraints, recorded so a build does not re-derive them:
      levels down (`diagrams[].maturity.gapReport[].findings[]`). A file
      holding several diagrams repeats its digest on each of its items;
      that is the same bytes named twice, not a run fact named N times.
-   - **Input files with no such item** go in one additive root list,
-     one `{file, digest}` per file. On trace that is every input, since a
+   - **Input files that shape the report and have no such item** go in
+     one additive root list, one `{file, digest}` per file. (A collected
+     file that yields no diagram — no `@startuml` block, an `.iuml`
+     fragment — has no item and shapes the report only as an `!include`
+     target under the gate, which constraint 5 names as a limit.) On
+     trace that is every input, since a
      diagram appears on as many sites as it has citations and the
      inventory on none: the diagrams, the inventory (the `--requirements`
      file and every file `--requirements-scan` read, whichever were
@@ -390,11 +397,12 @@ Design constraints, recorded so a build does not re-derive them:
    - the PlantUML engine, which decides DIM-SYN whenever the syntax gate
      runs. `scoring.syntax_command` is configuration, but the engine's
      version is neither configuration nor an input file. Under the gate
-     the engine also resolves whatever a diagram `!include`s: pumllint's
-     parser records the directive but never expands it
-     (`parser/sequence.py:297`), and this design does not digest the
-     included files, so the gate's verdict is identified only up to
-     those files — a known limit, named rather than closed.
+     PlantUML also runs on the file in its own environment — its default
+     charset, for one — and resolves whatever a diagram `!include`s:
+     pumllint's parser records the directive but never expands it
+     (`parser/sequence.py:297`). None of that is configuration, an input
+     digest or the engine version, so the gate's verdict is identified
+     only up to it — a known limit, named rather than closed.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
    UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
    digest under constraint 4 on the text it is about to write, not on
@@ -479,10 +487,10 @@ Three carriers are possible, and two are wrong:
     carry org-unit ids; and a process-level finding maps to the process
     id the record already holds;
   - joined on `(file, line)`; path-independently, once gap 1 is built,
-    only where the finding's report carries its file's digest — a score
-    gap-report finding, through its `diagrams[]` item. Lint and sonar
-    findings, item 5's ACT006 among them, stay joined by path (§4
-    constraint 1).
+    only where the report carries the file's digest — a score gap-report
+    finding through its `diagrams[]` item, a trace site through the trace
+    report's root list. Lint and sonar findings, item 5's ACT006 among
+    them, stay joined by path (§4 constraint 1).
 
   The cheapest correct carrier.
 
@@ -633,6 +641,13 @@ grep -c "" tests/expected/order-to-cash.puml                 # 34 lines, two ids
 
 # pumllint again: the demo is the golden plus a comment header
 grep -c "" docs/process-demo/order_to_cash.puml              # 40 lines: header at 2–7, golden line 10 is 16
+
+# the second correction (2026-10-16), against pumllint's code at 64007cb
+python -m pumllint trace --profile codegen examples/         # exit 2: trace takes no --profile
+grep -n 'errors="replace"' pumllint/trace.py                 # 389, 568: scan and feature files
+grep -n "syntax_gate" pumllint/cli.py                        # 603: the gate runs on config too
+grep -n "never expanded" pumllint/parser/sequence.py         # !include recorded, not expanded
+grep -n "minimal blocking set" pumllint/scoring.py           # the gap report is not every finding
 ```
 
 ## Related reading

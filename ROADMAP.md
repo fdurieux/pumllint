@@ -583,18 +583,23 @@ three items — full write-up in EVIDENCE.md §Deepening:
   - **Input digests, one per input file** — a per-file fact, so outside
     the `syntaxGateRan` precedent, riding on the report's one-per-diagram
     item, beside the path it carries: on score, each `diagrams[]` item
-    itself, beside its `file` key. Input files with no such item go in
-    one additive root list of `{file, digest}` — on trace every input
-    (the diagrams; the inventory, the `--requirements` file and every
-    file `--requirements-scan` read, whichever were given; the feature
-    files), on score the `--baseline FILE` when it existed and was read
-    (as read, before any `--update-baseline` rewrite). Trace reads its
-    scan and feature files with `errors="replace"` and no
-    byte-order-mark handling, so the digest below does not describe what
-    it judged for them; the build aligns those readers first or digests
-    them differently — open. Under the syntax gate PlantUML also
-    resolves a diagram's `!include` targets, which nothing digests: a
-    known limit.
+    itself, beside its `file` key. Input files that shape the report and
+    have no such item go in one additive root list of `{file, digest}` —
+    on trace every input (the diagrams; the inventory, the
+    `--requirements` file and every file `--requirements-scan` read,
+    whichever were given; the feature files), on score the
+    `--baseline FILE` when it existed and was read (as read, before any
+    `--update-baseline` rewrite).
+  - **Open before trace digests mean anything:** trace reads its scan
+    and feature files with `errors="replace"` and no byte-order-mark
+    handling (`trace.py:389`, `568`), so the digest below does not
+    describe what it judged for them. The build aligns those readers
+    first or digests them differently.
+  - **Known limit of the syntax gate:** PlantUML runs on the file in its
+    own environment — its default charset, for one — and resolves the
+    diagram's `!include` targets, which pumllint records but never
+    expands. None of that is configuration, an input digest or the
+    engine version, so DIM-SYN is identified only up to it.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -623,15 +628,15 @@ three items — full write-up in EVIDENCE.md §Deepening:
   consumer — an evidence store, a knowledge graph — ingesting them, who
   must say which version, configuration and input produced a finding.
   When it fires, pumllint's half lands first.* *[2026-10-16: the
-  knowledge-graph consumer now has a concrete shape. Reading 3 of
-  docs/graph-store-evaluation.md imports `-f json` into Neo4j on the
-  consumer's side, with no pumllint code, and is a dashboard rather than
-  an evidence record until this item ships — and, for imported lint
-  findings, even then, since this item covers score and trace only
-  (Not covered, just above; the two Corrected 2026-10-16 notes under
-  the 2026-10-12 decision-log entry say why). A question about
-  such a consumer is not one, so the trigger is unchanged and not
-  fired.]*
+  knowledge-graph consumer now has a concrete shape, which this item
+  only half serves. Reading 3 of docs/graph-store-evaluation.md imports
+  `-f json` into Neo4j on the consumer's side, with no pumllint code,
+  and is a dashboard rather than an evidence record until this item
+  ships. Its worked example imports lint findings, which this item does
+  not cover even then (Not covered, just above; the Corrected and
+  Corrected again 2026-10-16 notes under the 2026-10-12 decision-log
+  entry say why). A question about such a consumer is not one, so the
+  trigger is unchanged and not fired.]*
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -7501,40 +7506,31 @@ list and license posture live in § Settled questions.
   *[Corrected again 2026-10-16, after a code review of the correction
   above (#170): ten findings, all in text that correction wrote, fixed
   in place with what fixing them exposed — here, in the Arc E item, in
-  the *Recommended next* inventory, in the 2026-10-16 graph-store entry
+  the Recommended next inventory, in the 2026-10-16 graph-store entry
   below, in docs/kg-research-synthesis-evaluation.md (whose bounds list
-  the part in that file), in docs/graph-store-evaluation.md and in
-  docs/README.md.
-  Priorities, checkbox counts and triggers unchanged. Docs only.]*
+  everything changed in that file), in docs/graph-store-evaluation.md
+  and in docs/README.md. The bullets group the findings with what they
+  exposed; the design itself is stated once, in the Arc E item, and not
+  restated here. Priorities, checkbox counts and triggers unchanged.
+  Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
-    "wrapping the lint invocation". It is a pilot-repo format for
-    generation runs, gated on a real pilot stabilizing one, with nothing
-    built here before then (docs/sdd-manifest-evaluation.md), so that
-    wording moved its gate. Lint and sonar findings now stay without
-    provenance, and how to give them any is an open question for Arc E's
-    build — in the Arc E item, the evaluation's §4 and §8, the Reading 3
-    bullet of the 2026-10-16 graph-store entry and the graph-store
-    note's §4.
+    "wrapping the lint invocation". It is a pilot-repo format, with
+    nothing built here before a real pilot stabilizes one
+    (docs/sdd-manifest-evaluation.md), so that wording moved its gate.
+    Lint and sonar provenance is now an open question for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
     lint and score take `--profile` and `--no-suppressions`.
   - *"Not root keys" contradicted trace's root list.* Digests are a
     per-file fact, not a run-level root key on the `syntaxGateRan`
-    precedent; on trace they sit in one root list because no item names
-    each input once.
-  - *Inputs left out.* Now named: score's `--baseline FILE`, in the same
-    root list as every input no item names once (none in record mode;
-    the file as read before an `--update-baseline` rewrite); the
-    command-line options that change what is reported, `--check-syntax`
-    among them; the PlantUML engine, whenever the syntax gate runs
-    (`--check-syntax` or `scoring.syntax_gate`, `cli.py:603`); and
-    trace's scan and feature files, read with `errors="replace"` and no
-    byte-order-mark handling (`trace.py:389`, `568`), so the digest
-    definition does not describe them — an open choice for the build;
-    and, as a known limit, the `!include` targets PlantUML resolves
-    under the gate, which pumllint records but never expands and nothing
-    digests.
+    precedent; where each sits is in the Arc E item.
+  - *Inputs left out.* The Arc E item now names score's baseline file,
+    the command-line options that change what is reported, the PlantUML
+    engine whenever the syntax gate runs (`--check-syntax` or
+    `scoring.syntax_gate`, `cli.py:603`), trace's leniently read scan
+    and feature files (an open choice), and the gate's own environment
+    and `!include` targets (a known limit).
   - *Five summaries #169 wrote* said an imported finding is evidence
     once Arc E ships — the graph-store note's verdict, its §1 table row
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of

@@ -208,11 +208,13 @@ ships — and, for lint findings like the ones imported above, not even
 then. Arc E covers the score and trace reports only, and a separate score
 or trace invocation cannot lend lint findings provenance. Nothing
 recorded gives them any; that is an open question for Arc E's build (the
-2026-10-12 record's two *Corrected 2026-10-16* notes). That item's
-trigger already names this consumer: "a consumer — an evidence store, a
-knowledge graph — ingesting them". A question about one is not that
-consumer, so the trigger does not fire. The pointer added to the item
-makes this reading its concrete shape.
+2026-10-12 record's *Corrected* and *Corrected again* 2026-10-16 notes).
+That item's trigger already names this consumer: "a consumer — an
+evidence store, a knowledge graph — ingesting them". A question about
+one is not that consumer, so the trigger does not fire. The pointer
+added to the item makes this reading its concrete shape, which the item
+only half serves: score and trace reports, within the limits it names,
+and not the lint findings imported above.
 
 ## 5. The corporate-semantic-layer framing
 
@@ -255,10 +257,10 @@ vocabulary):
 1. **A store→`.puml` converter**, aris2puml-shaped, in its own
    repository. Trigger: §3.
 2. **The findings-import mapping**, a consumer-side recipe and not
-   product. Imported score and trace reports become evidence through
-   Arc E's run-provenance item, whose trigger already covers a
-   knowledge-graph consumer; the lint findings the recipe imports do
-   not, even then (§4).
+   product. Imported score and trace reports can become evidence
+   through Arc E's run-provenance item, within the limits it names,
+   and its trigger already covers a knowledge-graph consumer; the lint
+   findings the recipe imports do not, even then (§4).
 
 **Annotated in place, as pointers:** the Arc E *Run provenance* item (its
 knowledge-graph consumer, given a concrete shape), and the knowledge-graph
