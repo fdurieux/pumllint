@@ -579,7 +579,7 @@ three items — full write-up in EVIDENCE.md §Deepening:
     the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
     its `file` key; on trace, which has no item naming each input once,
     and for score's input files with no such item, in one additive root
-    list of `{file, digest}`. Which files are digested is open.
+    list of `{file, digest}`.
   - **Open, decided when the trigger fires:** what the configuration
     identity covers on each command; which files the root list holds;
     trace's lenient readers, which the digest below does not describe;
@@ -7522,9 +7522,9 @@ list and license posture live in § Settled questions.
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of
     the 2026-10-16 graph-store entry below, and docs/README.md's index
     entry. For lint findings, the ones Reading 3 imports, they now say
-    not even then. Two of them also quoted the Arc E trigger's consumer
-    clause as "a knowledge graph ingesting them"; they now quote that
-    clause verbatim.
+    not even then. The graph-store verdict, and the body of that Reading
+    3 bullet, also quoted the Arc E trigger's consumer clause as "a
+    knowledge graph ingesting them"; both now quote it verbatim.
   - *Three statements of the 2026-10-12 record itself* went further than
     the corrected candidate: the evaluation's §5 join "path-independently
     once gap 1's digests exist", its §6 "a retained report would also

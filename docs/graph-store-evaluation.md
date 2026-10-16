@@ -267,7 +267,7 @@ vocabulary):
    product. Imported score and trace reports can become evidence
    through Arc E's run-provenance item, within the limits it names,
    and its trigger already covers a knowledge-graph consumer; the lint
-   findings the recipe imports do not, even then (§4).
+   findings the recipe imports do not become evidence, even then (§4).
 
 **Annotated in place, as pointers:** the Arc E *Run provenance* item (its
 knowledge-graph consumer, given a concrete shape), and the knowledge-graph
