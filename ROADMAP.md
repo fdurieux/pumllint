@@ -574,18 +574,24 @@ three items — full write-up in EVIDENCE.md §Deepening:
   inside owner decision §6.5's yes:
   - **Run-level facts as additive root keys** on the score and trace
     reports, announced the `syntaxGateRan` way: the tool version; the
-    effective-configuration identity, which counts every command-line
-    option that changes what is reported (`--profile` and
-    `--no-suppressions` on score, `--pattern` on trace), not only the
-    file's; on score, the digest of the `--baseline FILE` when one is
-    given; and, when `--check-syntax` ran, the version the PlantUML
-    engine reports, or a statement that it is unknown.
+    effective-configuration identity, which counts the command-line
+    options that change what is reported (`--profile`,
+    `--no-suppressions` and `--check-syntax` on score, `--pattern` on
+    trace), not only the file's; and, whenever the syntax gate ran
+    (`--check-syntax` or `scoring.syntax_gate`), the version the
+    PlantUML engine reports, or a statement that it is unknown.
   - **Input digests, one per input file** — a per-file fact, so outside
-    the `syntaxGateRan` precedent: on score, on each `diagrams[]` item
-    itself, beside its `file` key; on trace, which has no item naming
-    each input once, in one additive root list of `{file, digest}` over
-    the diagrams, the inventory (the `--requirements` file, or every
-    file `--requirements-scan` read) and the feature files.
+    the `syntaxGateRan` precedent, riding where the file is named once:
+    on score, on each `diagrams[]` item itself, beside its `file` key;
+    for input files no item names once, in one additive root list of
+    `{file, digest}` — on trace every input (the diagrams, the inventory:
+    the `--requirements` file or every file `--requirements-scan` read,
+    and the feature files), on score the `--baseline FILE` when it
+    existed and was read (as read, before any `--update-baseline`
+    rewrite). Trace reads its scan and feature files with
+    `errors="replace"` and no byte-order-mark handling, so the digest
+    below does not describe what it judged for them; the build aligns
+    those readers first or digests them differently — open.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -7490,10 +7496,10 @@ list and license posture live in § Settled questions.
 
   *[Corrected again 2026-10-16, after a code review of the correction
   above (#170): ten findings, all in text that correction wrote, fixed
-  in place here, in the Arc E item, in
-  docs/kg-research-synthesis-evaluation.md (whose bounds carry the same
-  list) and in docs/graph-store-evaluation.md §4. Priorities, checkbox
-  counts and triggers unchanged. Docs only.]*
+  in place with what fixing them exposed — here, in the Arc E item, in
+  docs/kg-research-synthesis-evaluation.md (whose bounds list the part
+  in that file), in docs/graph-store-evaluation.md and in docs/README.md.
+  Priorities, checkbox counts and triggers unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format for
@@ -7511,10 +7517,20 @@ list and license posture live in § Settled questions.
     per-file fact, not a run-level root key on the `syntaxGateRan`
     precedent; on trace they sit in one root list because no item names
     each input once.
-  - *Inputs left out.* Score's `--baseline FILE`, which sets every
-    `baseline` in the report, the command-line options that change what
-    is reported, and the PlantUML engine behind `--check-syntax` are now
-    named.
+  - *Inputs left out.* Now named: score's `--baseline FILE`, in the same
+    root list as every input no item names once (none in record mode;
+    the file as read before an `--update-baseline` rewrite); the
+    command-line options that change what is reported, `--check-syntax`
+    among them; the PlantUML engine, whenever the syntax gate runs
+    (`--check-syntax` or `scoring.syntax_gate`, `cli.py:603`); and
+    trace's scan and feature files, read with `errors="replace"` and no
+    byte-order-mark handling (`trace.py:389`, `568`), so the digest
+    definition does not describe them — an open choice for the build.
+  - *Three summaries #169 wrote* said an imported finding becomes
+    evidence once Arc E ships — the graph-store note's verdict and its
+    *Recorded, not queued* item 2, and docs/README.md's index entry. For
+    lint findings, the ones Reading 3 imports, they now say not even
+    then.
   - *"Beside the gap report's findings"* is now the `diagrams[]` item
     itself, beside `file`; the findings sit at
     `diagrams[].maturity.gapReport[].findings[]`.

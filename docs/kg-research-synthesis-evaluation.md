@@ -55,20 +55,27 @@ ROADMAP's decision log carries the same list under this date.*
 
 *Corrected again 2026-10-16, after a code review of that correction
 (#170): ten statements it wrote were wrong, contradictory or incomplete,
-and are fixed in place. It had the 2026-08-10 portable run-record
-candidate "built with" Arc E and "wrapping the lint invocation"; that
-candidate is a pilot-repo format, gated on its own trigger, so lint
-findings' provenance is now an open question for the build (§4
-constraint 1, §8). `trace` takes no `--profile` (§4 constraint 1). The
-note above said digests "do not ride as root keys" while §4 put trace's
-in a root list; it now says what it meant. Constraint 4's rationale had
-left out the UTF-8 byte-order mark. Constraint 5 now names the
-command-line options, score's baseline file and the PlantUML engine
-(§4 constraints 2 and 5). Score's digest sits on the `diagrams[]` item
-itself, not "beside the gap report's findings" (§4 constraint 2). The
-note above now lists constraint 6, and the prose both corrections
-touched is re-wrapped. The ROADMAP's decision log carries the same
-list.*
+and are fixed in place together with what fixing them exposed. The
+ROADMAP's decision log lists all of it; in this file:*
+
+- *the 2026-08-10 portable run-record candidate had been "built with"
+  Arc E and "wrapping the lint invocation"; it is a pilot-repo format,
+  gated on its own trigger, so lint findings' provenance is now an open
+  question for the build (§4 constraint 1, §8);*
+- *`trace` takes no `--profile` (§4 constraint 1);*
+- *the note above said digests "do not ride as root keys" while §4 put
+  trace's in a root list; it now says what it meant, and §4 constraint 2
+  places every input file by one rule, score's baseline included;*
+- *score's digest sits on the `diagrams[]` item itself, not "beside the
+  gap report's findings" (§4 constraint 2);*
+- *constraint 4's rationale had left out the UTF-8 byte-order mark, and
+  now says which trace inputs its decoding does not describe;*
+- *constraint 5 now names the command-line options that change what is
+  reported, the input files and the PlantUML engine, which runs whenever
+  the syntax gate does (`--check-syntax` or `scoring.syntax_gate`);*
+- *§8 now carries the candidate's full scope;*
+- *the note above now lists constraint 6, and the prose both corrections
+  touched is re-wrapped.*
 
 ## 0. The document, so this note stands alone
 
@@ -291,25 +298,29 @@ Design constraints, recorded so a build does not re-derive them:
    existing pinned shape is inside the yes").
    - **Run-level facts** are one fact per run: additive root keys. They
      are the version, the effective-configuration identity (constraint
-     5), on score the digest of the `--baseline FILE` when one is given,
-     and, when `--check-syntax` ran, the PlantUML engine's version
-     (constraint 5). `syntaxGateRan` is the precedent, and its route is
-     the announcement — README § Report schemas, the schema's own
-     description, and this file.
+     5) and, whenever the syntax gate ran (`syntaxGateRan` true, from
+     `--check-syntax` or `scoring.syntax_gate`), the version the PlantUML
+     engine reports, or a statement that it is unknown. `syntaxGateRan`
+     is the precedent, and its route is the announcement — README
+     § Report schemas, the schema's own description, and this file.
    - **Input digests** are one fact per input file, so the precedent does
-     not cover them, and a root map keyed by path would duplicate the
-     paths the items already carry. In the score report each digest rides
-     on the `diagrams[]` item itself, beside its `file` key — not inside
-     `maturity`, and not on the gap report's findings three levels down
+     not cover them. Each rides where its file is named once; a root map
+     keyed by path would duplicate the paths the items already carry. In
+     the score report a diagram's digest rides on the `diagrams[]` item
+     itself, beside its `file` key — not inside `maturity`, and not on
+     the gap report's findings three levels down
      (`diagrams[].maturity.gapReport[].findings[]`). A file holding
-     several diagrams repeats its digest on each of its items; that is the
-     same bytes named twice, not a run fact named N times.
-   - The trace report has no item that names each input once: a diagram
-     appears on as many sites as it has citations, and the inventory on
-     none. Its digests go in one additive root list, one `{file, digest}`
-     per input file — the diagrams, the inventory (the `--requirements`
+     several diagrams repeats its digest on each of its items; that is
+     the same bytes named twice, not a run fact named N times.
+   - **Input files no item names once** go in one additive root list,
+     one `{file, digest}` per file. On trace that is every input, since a
+     diagram appears on as many sites as it has citations and the
+     inventory on none: the diagrams, the inventory (the `--requirements`
      file, or every file `--requirements-scan` read) and the feature
-     files. That list is a root key, but not a run-level fact on the
+     files. On score it is the `--baseline FILE`, when it existed and was
+     read — a record-mode run, which creates the file, lists nothing, and
+     with `--update-baseline` it is the file as read before the rewrite.
+     The list is a root key, but not a run-level fact on the
      `syntaxGateRan` precedent: it is the per-file fact, listed once.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
@@ -343,18 +354,32 @@ Design constraints, recorded so a build does not re-derive them:
    - A raw-byte digest would therefore make one commit's report differ
      between Windows and POSIX, against the byte-identical-report contract
      that forward-slash paths exist to keep.
+
+   The definition describes what pumllint judged only where pumllint
+   decodes that way. Diagrams, the configuration, the `--requirements`
+   inventory and the baseline go through `read_text_file`; trace's
+   `--requirements-scan` and `--features` files do not. They are read
+   with `read_text(encoding="utf-8", errors="replace")` (`trace.py:389`
+   and `568`): no byte-order mark is honoured and nothing fails to
+   decode, so a UTF-16 feature file is scanned as text that matches no
+   ID, while its digest under this definition would hash the decoded
+   text. The build either moves those two readers onto `read_text_file`
+   first — a behaviour change, since an undecodable file then becomes an
+   error instead of being scanned — or digests those files differently.
+   That choice is open.
 5. **Configuration identity means the effective configuration** — profile
    applied, defaults resolved — not the configuration file's bytes, since
-   two files can state one rule set. It includes every command-line option
-   that changes what is reported, not only the file's: `--profile` and
-   `--no-suppressions` on score, `--pattern` on trace. Two things are not
-   configuration and are named separately (constraint 2):
-   - inputs: `trace`'s inventory and feature files, and score's
-     `--baseline FILE`, which sets every `baseline` in the report;
-   - with `--check-syntax`, the PlantUML engine, which decides DIM-SYN.
-     `scoring.syntax_command` is configuration, but the engine's version
-     is neither configuration nor an input file. The report records the
-     version the engine reports, or says it is unknown.
+   two files can state one rule set. It includes the command-line options
+   that change what is reported, not only the file's: on score
+   `--profile`, `--no-suppressions` and `--check-syntax` (whose
+   configuration twin is `scoring.syntax_gate`), on trace `--pattern`.
+   Two things are not configuration, and constraint 2 places them:
+   - input files: the diagrams, `trace`'s inventory and feature files,
+     and score's `--baseline FILE`, from which the report's `baseline`
+     values come (null for a diagram new since it);
+   - the PlantUML engine, which decides DIM-SYN whenever the syntax gate
+     runs. `scoring.syntax_command` is configuration, but the engine's
+     version is neither configuration nor an input file.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
    UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
    digest under constraint 4 on the text it is about to write, not on
@@ -531,9 +556,11 @@ already practised where this project measures (§4).
 **Decision: nothing queued.** Two candidates are recorded, both gated:
 
 1. **pumllint, Arc E — run provenance in the score and trace reports:**
-   tool version and effective-configuration identity as additive root
-   keys; input digests per input — on each score `diagrams[]` item, and in
-   one root list on the trace report. The lint array stays as it is, so
+   the tool version, the effective-configuration identity and, when the
+   syntax gate ran, the PlantUML engine's version as additive root keys;
+   input digests per input file — on each score `diagrams[]` item, and in
+   one root list for the input files no item names once (every trace
+   input; score's baseline file). The lint array stays as it is, so
    lint and sonar findings stay without provenance; how to give them any
    is open (§4 constraint 1). *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent

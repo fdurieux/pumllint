@@ -23,11 +23,12 @@ refused, findings anchor to invented lines, remediation speaks PlantUML
 to someone who never wrote it, and the syntax gate can never run. So if
 it is ever built, it is a converter that emits `.puml`, in its own
 repository and under aris2puml's iron rules, never an adapter inside
-pumllint. (3) *Findings loaded into the store* needs no pumllint code, but
-an imported finding is evidence only once Arc E's run-provenance
-candidate ships, whose trigger already names "a knowledge graph
-ingesting them". No checkbox is added, no trigger fires, and the
-priorities do not move.**
+pumllint. (3) *Findings loaded into the store* needs no pumllint code. An
+imported score or trace report is evidence only once Arc E's
+run-provenance candidate ships, whose trigger already names "a
+knowledge graph ingesting them"; imported lint findings are not
+evidence even then, and how they could be is open. No checkbox is
+added, no trigger fires, and the priorities do not move.**
 
 *Bounds: every repository claim was executed at `15a517b`, and §7 lists
 the commands. No Neo4j server is available in this environment, so every
@@ -207,10 +208,10 @@ then. Arc E covers the score and trace reports only, and a separate score
 or trace invocation cannot lend lint findings provenance. Nothing
 recorded gives them any; that is an open question for Arc E's build (the
 2026-10-12 record's two *Corrected 2026-10-16* notes). That item's
-trigger already names this consumer: "a consumer — an
-evidence store, a knowledge graph — ingesting them". A question about one
-is not that consumer, so the trigger does not fire. The pointer added to
-the item makes this reading its concrete shape.
+trigger already names this consumer: "a consumer — an evidence store, a
+knowledge graph — ingesting them". A question about one is not that
+consumer, so the trigger does not fire. The pointer added to the item
+makes this reading its concrete shape.
 
 ## 5. The corporate-semantic-layer framing
 
@@ -253,8 +254,10 @@ vocabulary):
 1. **A store→`.puml` converter**, aris2puml-shaped, in its own
    repository. Trigger: §3.
 2. **The findings-import mapping**, a consumer-side recipe and not
-   product. It becomes evidence through Arc E's run-provenance item,
-   whose trigger already covers a knowledge-graph consumer.
+   product. Imported score and trace reports become evidence through
+   Arc E's run-provenance item, whose trigger already covers a
+   knowledge-graph consumer; the lint findings the recipe imports do
+   not, even then (§4).
 
 **Annotated in place, as pointers:** the Arc E *Run provenance* item (its
 knowledge-graph consumer, given a concrete shape), and the knowledge-graph
