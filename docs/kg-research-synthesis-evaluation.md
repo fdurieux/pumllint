@@ -52,18 +52,18 @@ score or trace report, which is a separate run (§4 constraint 1); and the
 shared digest is now defined to the byte (§4 constraint 4). The ROADMAP's
 decision log carries the same list under this date.*
 
-*Corrected again 2026-10-16 (#171), after a code review of that
-correction: the ROADMAP's decision log, under this record's 2026-10-12
-entry, holds the one list of findings and where each was fixed. In this
-file: the verdict's last sentence, §4 constraints 1, 2, 4, 5 and the new
-7 (open questions for the build, with their evidence), §5's join, §6's
-acceptance line, §8 and §9. The note above is left as #170 wrote it; it
-is wrong in two places. It says digests "do not ride as root keys",
-while §4 lists the inputs no item names in a root list: digests are a
-per-file fact, not a run-level root key on the `syntaxGateRan`
-precedent. And it leaves out constraint 6, which #170 also rewrote. This
-note's repository claims were executed against pumllint's code at
-`64007cb`, which neither correction changes; §9 lists the commands.*
+*Corrected again 2026-10-16 (#171), after a code review of that correction:
+the ROADMAP's decision log, under this record's 2026-10-12 entry, holds the
+one list of findings and where each was fixed. In this file: the verdict's
+last sentence, §4 constraints 1, 2, 4, 5 and the new 7 (open questions for
+the build, with their evidence), §5's join, §6's acceptance line, §8 and
+§9. The note above is left as #170 wrote it; it is wrong in two places. It
+says digests "do not ride as root keys", while §4 puts the digests no item
+carries in a root list: digests are a per-file fact, not a run-level root
+key on the `syntaxGateRan` precedent. And it leaves out constraint 6, which
+#170 also rewrote. This note's repository claims were executed against
+pumllint's code at `64007cb`, which neither correction changes; §9 lists
+the commands.*
 
 ## 0. The document, so this note stands alone
 
@@ -348,8 +348,10 @@ Design constraints, recorded so a build does not re-derive them:
    recorded so the build does not re-derive it; none of it is design.
    - *What the configuration identity covers.* Score builds an engine from
      the rules, the active profile with its `profiles:` definition (enable
-     lists, escalations) and the top-level `suppressions` key, and reads
-     the `scoring` section (`ScoringConfig.from_dict`); `--profile`,
+     lists, escalations) and the top-level `suppressions` key; it reads the
+     `scoring` section through `ScoringConfig.from_dict`, except
+     `syntax_gate` and `syntax_command` — the PlantUML command the gate
+     runs — which `_run_score` reads itself; `--profile`,
      `--no-suppressions` (configuration twin: `suppressions`) and
      `--check-syntax` (configuration twin: `scoring.syntax_gate`) change
      what it reports. Trace applies no profile and builds no engine: its
@@ -381,17 +383,21 @@ Design constraints, recorded so a build does not re-derive them:
      `--requirements-scan` and `--features` files with
      `read_text(encoding="utf-8", errors="replace")` (`scan_inventory` and
      `scan_features` in `trace.py`), honouring no byte-order mark and
-     failing on nothing. A UTF-16 feature file's text then matches no ID
-     (its file name, matched separately, still can), while constraint 4's
-     digest would hash the decoded text; and for a file with no byte-order
-     mark that is not valid UTF-8 that digest cannot be computed at all.
-     Moving those readers onto `read_text_file` is a behaviour change: an
-     undecodable file becomes an error instead of being scanned.
+     failing on nothing. A UTF-16 feature file's text then reads as its
+     characters with a NUL between each: a multi-character ID pattern such
+     as `REQ-\d+` matches nothing in it, a one-character pattern can match
+     stray letters (its file name, matched separately, still matches as
+     usual), while constraint 4's digest would hash the decoded text; and
+     for a file with no byte-order mark that is not valid UTF-8 that digest
+     cannot be computed at all. Moving those readers onto `read_text_file`
+     is a behaviour change: an undecodable file becomes an error instead of
+     being scanned.
    - *What the syntax gate depends on beyond the file.* With the gate on
-     (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine: its
-     version, its environment (its default charset, for one) and the
-     targets of a diagram's `!include`s, which pumllint's parser records
-     but never expands (`parse_source` in `parser/sequence.py`).
+     (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine
+     `scoring.syntax_command` names: its version, its environment (its
+     default charset, for one) and the targets of a diagram's `!include`s,
+     which pumllint's parser records but never expands (`parse_source` in
+     `parser/sequence.py`).
 
 **Recorded as** pumllint Arc E, *Run provenance in the score and trace
 reports*, plus the converter half as aris2puml D4(b).
@@ -468,11 +474,8 @@ Three carriers are possible, and two are wrong:
     carry org-unit ids; and a process-level finding maps to the process
     id the record already holds;
   - joined on `(file, line)`; path-independently, once gap 1 is built,
-    only where the report carries the file's digest — a score gap-report
-    finding through its `diagrams[]` item, a trace site through the trace
-    report's root list when its file is among those digested (§4
-    constraint 7). Lint and sonar findings, item 5's ACT006 among them,
-    stay joined by path (§4 constraint 1).
+    only where the report carries the file's digest. Lint findings, item
+    5's ACT006 among them, never do (§4 constraint 1).
 
   The cheapest correct carrier.
 
@@ -569,8 +572,9 @@ already practised where this project measures (§4).
 1. **pumllint, Arc E — run provenance in the score and trace reports:**
    designed in §4 (constraints 1–6, with the open questions in 7) and
    specified in the ROADMAP's Arc E item, which this section does not
-   restate. Lint and sonar findings are not covered, and how to give
-   them provenance is open (§4 constraint 1).
+   restate. Lint findings are not covered, nor any report but score's
+   and trace's `-f json`; how to give lint findings provenance is open
+   (§4 constraint 1).
    *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:

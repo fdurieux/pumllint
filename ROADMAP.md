@@ -603,8 +603,9 @@ three items — full write-up in EVIDENCE.md §Deepening:
     trace report can lend its findings provenance. Nothing recorded closes
     this — the 2026-08-10 portable run-record candidate is not the route —
     so if the trigger fires on lint findings, how they get provenance is an
-    open question for that build, put to the owner. The evaluation's §4
-    constraint 1 says why.
+    open question for that build, put to the owner. The candidate adds
+    keys to the score and trace JSON shapes only; for lint, the
+    evaluation's §4 constraint 1 says why nothing else serves.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
