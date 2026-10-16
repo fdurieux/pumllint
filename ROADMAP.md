@@ -7347,7 +7347,9 @@ list and license posture live in § Settled questions.
   It was read against both roadmaps for what bears on pumllint. Full
   record:
   [docs/kg-research-synthesis-evaluation.md](docs/kg-research-synthesis-evaluation.md);
-  repository claims executed at `558d762` and aris2puml `f725b59`.
+  repository claims executed at `558d762` and aris2puml `f725b59`; those
+  the 2026-10-16 corrections add, at `64007cb`
+  (docs/kg-research-synthesis-evaluation.md §9).
   - *Settled, and confirmed rather than disturbed.*
     - Store, ontology, SHACL as validator and LLM-proposed links are the
       2026-08-26 settlement's N1–N4.
@@ -7481,19 +7483,20 @@ list and license posture live in § Settled questions.
     UTF-8 re-encoding, shared test vectors — so pumllint and aris2puml
     cannot diverge while each follows the text.
 
-  *[Corrected again 2026-10-16, after a code review of the correction above
-  (#170): ten findings in text that correction wrote, and statements #169
-  and the 2026-10-12 record wrote that fixing them exposed (the two bullets
-  that name them), all fixed in place — here, in the Arc E item, in the
-  Recommended next inventory, in the 2026-10-16 graph-store entry below, in
+  *[Corrected again 2026-10-16, after a code review of the correction
+  above (#170): ten findings in text that correction wrote, grouped in the
+  bullets below with what fixing them exposed — statements #169 and the
+  2026-10-12 record wrote, and one defect in trace — all fixed in place or
+  recorded — here, in the Arc E item, in the Recommended next inventory,
+  in the 2026-10-16 graph-store entry below, in
   docs/kg-research-synthesis-evaluation.md, in
   docs/graph-store-evaluation.md and in docs/README.md. This is the one
-  list of the correction; the evaluation's and the graph-store note's dated
-  notes point here. The block above is left as #170 wrote it; where it is
-  wrong, the bullets below say so. The candidate's design has two homes,
-  the Arc E item (what) and the evaluation's §4 (why); other summaries name
-  only the lint carve-out. Priorities, checkbox counts and triggers
-  unchanged. Docs only.]*
+  list of the correction; the evaluation's and the graph-store note's
+  dated notes point here. The block above is left as #170 wrote it; where
+  it is wrong, the bullets below say so. The candidate's design has two
+  homes, the Arc E item (what) and the evaluation's §4 (why); other
+  summaries name only the lint carve-out. Priorities, checkbox counts and
+  triggers unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format, with
@@ -7562,8 +7565,9 @@ list and license posture live in § Settled questions.
   [docs/graph-store-evaluation.md](docs/graph-store-evaluation.md);
   repository claims executed at `15a517b`, except Reading 3's carve-out,
   corrected on 2026-10-16 and resting on the second correction's checks at
-  `64007cb` (the evaluation's §9); no Neo4j server was available, so every
-  Cypher fragment in the note is illustrative and unexecuted.
+  `64007cb` (docs/kg-research-synthesis-evaluation.md §9); no Neo4j server
+  was available, so every Cypher fragment in the note is illustrative and
+  unexecuted.
   - *Reading 1, rules executed in the store: settled.* N1 and N3 of the
     2026-08-26 settlement, with N3 confirmed at the primary on
     2026-10-12. New here is a census of the 52 catalog rules, graded by

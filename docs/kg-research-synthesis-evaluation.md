@@ -58,13 +58,14 @@ correction: the ROADMAP's decision log, under this record's 2026-10-12
 entry, holds the one list of findings and where each was fixed. In this
 file: the verdict's last sentence, §4 constraints 1, 2, 4, 5 and the new 7
 (open questions for the build, with their evidence), §5's join, §6's
-acceptance line, §8 and §9. The note above is left as #170 wrote it; it is
-wrong in two places. It says digests "do not ride as root keys", while the
-Arc E item puts the digests no item carries in a root list: digests are a
-per-file fact, not a run-level root key on the `syntaxGateRan` precedent.
-And it leaves out constraint 6, which #170 also rewrote. This note's
-repository claims were executed against pumllint's code at `64007cb`,
-which neither correction changes; §9 lists the commands.*
+acceptance line, §4's trigger paragraph, §8 and §9. The note above is left
+as #170 wrote it; it is wrong in two places. It says digests "do not ride
+as root keys", while the Arc E item puts the digests no item carries in a
+root list: digests are a per-file fact, not a run-level root key on the
+`syntaxGateRan` precedent. And it leaves out constraint 6, which #170 also
+rewrote. This note's repository claims were executed against pumllint's
+code at `64007cb`, which neither correction changes; §9 lists the
+commands.*
 
 ## 0. The document, so this note stands alone
 
@@ -400,9 +401,10 @@ Design constraints, recorded so a build does not re-derive them:
      error instead of being scanned.
    - *What the syntax gate depends on beyond the file.* With the gate on
      (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine
-     `scoring.syntax_command` names: its version, its environment (its
-     default charset, for one) and the targets of a diagram's `!include`s,
-     which pumllint's parser records but never expands (`parse_source` in
+     `scoring.syntax_command` names, or `plantuml` on the `PATH` when it
+     names none: its version, its environment (its default charset, for
+     one) and the targets of a diagram's `!include`s, which pumllint's
+     parser records but never expands (`parse_source` in
      `parser/sequence.py`).
    - *The lint report's findings.* Whether anything gives them provenance;
      constraint 1 has the reasoning, and the Arc E item's *Not covered*

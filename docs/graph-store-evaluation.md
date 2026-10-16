@@ -214,10 +214,10 @@ graph of findings is therefore a dashboard, not an evidence record. For
 imported score and trace JSON reports that ends with Gap 1 when Arc E's
 *Run provenance in the score and trace reports* ships; the lint report's
 findings, which are the ones imported above, stay outside it (Arc E item,
-*Not covered*); and the name join of Gap 2 is aris2puml's D4(a), not Arc
-E's. That item's trigger already names this consumer: "a consumer — an
-evidence store, a knowledge graph — ingesting them". A question about one
-is not that consumer, so the trigger does not fire. The pointer added to
+*Not covered*); Arc E's trigger already names this consumer: "a consumer —
+an evidence store, a knowledge graph — ingesting them". A question about
+one is not that consumer, so the trigger does not fire. The name join of
+Gap 2 is aris2puml's D4(a), not Arc E's. The pointer added to
 the item makes this reading its concrete shape, which the item only half
 serves.
 
