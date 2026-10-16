@@ -9,26 +9,26 @@ page), and investigate which of its elements are relevant to pumllint.*
 **Verdict up front: nothing to build, and little that is new. The
 synthesis's main proposal — a graph store, an ontology, SHACL validation,
 LLM-proposed links — lands on five settled records and fires none of their
-triggers. What it adds is evidentiary and diagnostic. Evidentiary: it cites
-the W3C primaries the 2026-08-26 knowledge-graph note could only
+triggers. What it adds is evidentiary and diagnostic. Evidentiary: it
+cites the W3C primaries the 2026-08-26 knowledge-graph note could only
 characterize, and read at w3.org they confirm that note's N3 from both
 sides — OWL cannot see an absence, SHACL reports every absence a shape
-constrains, and neither grades. Diagnostic: its integration model separates *representation*,
-*transformation run* and *validation result*, and keeps a diagram's
-occurrence of an element apart from the entity it depicts. Held against the
-chain, that separation finds two gaps no record names. **Gap 1**: what the
-chain *ships* names its inputs by path only — pumllint's JSON reports carry
-no tool version, configuration identity or input digest (the HTML report's
-footer names the version, and nothing else), and aris2puml's sidecar names
-its tool version but no digest. The project's own measurement drivers do
-digest their inputs (§4); the shipped tools do not. **Gap 2**:
-element identity stops at aris2puml's emitter — the ARIS ids survive into
-the JSON and the sidecar's notes, none reaches the `.puml`, and a pumllint
-finding offers `(file, line)` and the element's name, so the only way back
-to the ARIS object is the name-equality join the synthesis warns against.
-Both are recorded as gated candidates, one per repository's contract —
-pumllint's covering the score and trace reports, not lint; neither is
-queued, and no priority moves.**
+constrains, and neither grades. Diagnostic: its integration model
+separates *representation*, *transformation run* and *validation result*,
+and keeps a diagram's occurrence of an element apart from the entity it
+depicts. Held against the chain, that separation finds two gaps no record
+names. **Gap 1**: what the chain *ships* names its inputs by path only —
+pumllint's JSON reports carry no tool version, configuration identity or
+input digest (the HTML report's footer names the version, and nothing
+else), and aris2puml's sidecar names its tool version but no digest. The
+project's own measurement drivers do digest their inputs (§4); the shipped
+tools do not. **Gap 2**: element identity stops at aris2puml's emitter —
+the ARIS ids survive into the JSON and the sidecar's notes, none reaches
+the `.puml`, and a pumllint finding offers `(file, line)` and the
+element's name, so the only way back to the ARIS object is the
+name-equality join the synthesis warns against. Both are recorded as gated
+candidates, one per repository's contract — pumllint's covering the score
+and trace JSON reports only; neither is queued, and no priority moves.**
 
 *Bounds: every repository claim was executed at the two commits above, and
 §9 lists the commands. The primaries were read at the source for the
@@ -52,18 +52,18 @@ score or trace report, which is a separate run (§4 constraint 1); and the
 shared digest is now defined to the byte (§4 constraint 4). The ROADMAP's
 decision log carries the same list under this date.*
 
-*Corrected again 2026-10-16 (#171), after a code review of that correction:
-the ROADMAP's decision log, under this record's 2026-10-12 entry, holds the
-one list of findings and where each was fixed. In this file: the verdict's
-last sentence, §4 constraints 1, 2, 4, 5 and the new 7 (open questions for
-the build, with their evidence), §5's join, §6's acceptance line, §8 and
-§9. The note above is left as #170 wrote it; it is wrong in two places. It
-says digests "do not ride as root keys", while §4 puts the digests no item
-carries in a root list: digests are a per-file fact, not a run-level root
-key on the `syntaxGateRan` precedent. And it leaves out constraint 6, which
-#170 also rewrote. This note's repository claims were executed against
-pumllint's code at `64007cb`, which neither correction changes; §9 lists
-the commands.*
+*Corrected again 2026-10-16 (#171), after a code review of that
+correction: the ROADMAP's decision log, under this record's 2026-10-12
+entry, holds the one list of findings and where each was fixed. In this
+file: the verdict's last sentence, §4 constraints 1, 2, 4, 5 and the new 7
+(open questions for the build, with their evidence), §5's join, §6's
+acceptance line, §8 and §9. The note above is left as #170 wrote it; it is
+wrong in two places. It says digests "do not ride as root keys", while the
+Arc E item puts the digests no item carries in a root list: digests are a
+per-file fact, not a run-level root key on the `syntaxGateRan` precedent.
+And it leaves out constraint 6, which #170 also rewrote. This note's
+repository claims were executed against pumllint's code at `64007cb`,
+which neither correction changes; §9 lists the commands.*
 
 ## 0. The document, so this note stands alone
 
@@ -475,9 +475,10 @@ Three carriers are possible, and two are wrong:
     the XOR split `x1` and its first outcome's event `e1`; lane lines
     carry org-unit ids; and a process-level finding maps to the process
     id the record already holds;
-  - joined on `(file, line)`; path-independently, once gap 1 is built, only
-    where the report carries the file's digest: lint-report findings
-    excepted (Arc E item, *Not covered*), item 5's among them.
+  - joined on `(file, line)`; path-independently, once gap 1 is built,
+    only where the report carries the file's digest, which the lint
+    report's findings, item 5's among them, do not under Arc E (Arc E
+    item, *Not covered*).
 
   The cheapest correct carrier.
 
@@ -576,7 +577,8 @@ already practised where this project measures (§4).
    restate; what it leaves out is the item's *Not covered*. *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:
-   - (a) the line → ids map (gap 2; *trigger*: §5);
+   - (a) the line → ids map (gap 2; *trigger*: §5; for the lint report's
+     findings it joins on paths, §5);
    - (b) input and output digests under pumllint's definition (gap 1's
      converter half; *trigger*: §4).
 

@@ -577,9 +577,9 @@ three items — full write-up in EVIDENCE.md §Deepening:
     identity of the effective configuration the run used.
   - **Input digests, one per input file** — a per-file fact, so outside
     the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
-    its `file` key; on trace, which has no item naming each input once,
-    and for score's input files with no such item, in one additive root
-    list of `{file, digest}`.
+    its `file` key; any other digested file — every one on trace, which
+    has no item naming each input once — in one additive root list of
+    `{file, digest}`.
   - **Open, decided when the trigger fires:** what the configuration
     identity covers on each command; which files the root list holds;
     trace's lenient readers, which the digest below does not describe;
@@ -597,13 +597,15 @@ three items — full write-up in EVIDENCE.md §Deepening:
     there on the text it writes, so the converter's output digest equals
     pumllint's input digest for the same diagram and the two records join
     on content.
-  - **Not covered: the lint report's findings, and every report but score's
-    and trace's `-f json`** (lint's and score's sonar, score's HTML and
-    badge, every text report). The candidate adds keys to the score and
-    trace JSON shapes only. Whether anything will give the lint report's
-    findings provenance is an open question for the build, put to the
-    owner; the evaluation's §4 constraint 1 has the reasoning. This is the
-    one statement of the carve-out; other summaries point here.
+  - **Not covered: the lint report's findings, and every report but
+    score's and trace's `-f json`** (lint's and score's sonar, score's
+    HTML and badge, every text report). The candidate adds keys to the
+    score and trace JSON shapes only. Whether anything will give the lint
+    report's findings provenance is an open question for the build, put to
+    the owner; the evaluation's §4 constraint 1 has the reasoning. This is
+    the one statement of the carve-out's scope; the evaluation's §4
+    constraint 1 gives its reasoning, and other summaries name it in a
+    clause that points here.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
@@ -7400,8 +7402,7 @@ list and license posture live in § Settled questions.
       record sha256 digests of the frozen kit; aris2puml pins
       `SAPModels.epml` (`EPML_SHA256`, `--verify`).
     - Recorded as Arc E's *Run provenance in the score and trace reports*
-      (design in the item, lint-report findings excepted — Arc E item, *Not
-      covered*) and as aris2puml D4(b).
+      (design and the lint carve-out in the item) and as aris2puml D4(b).
     - One digest definition, over decoded, LF-normalised text, defined to
       the byte in the Arc E item. Raw bytes would split Windows from
       POSIX: `read_text_and_encoding` does no newline translation, and
@@ -7497,12 +7498,12 @@ list and license posture live in § Settled questions.
     "wrapping the lint invocation". It is a pilot-repo format, with
     nothing built here before a real pilot stabilizes one
     (docs/sdd-manifest-evaluation.md), so that wording moved its gate.
-    #170 wrote it into the Arc E item, the Gap 1 bullet of this entry,
-    the block above and the evaluation's §4 constraint 1 and §8; its
-    merge of main (`6e77b19`) carried it into the Arc E item's
-    2026-10-16 annotation, the graph-store note's §4 and the Reading 3
-    bullet of the 2026-10-16 graph-store entry below. All but the block
-    above are rewritten. Lint and sonar provenance is now an open
+    #170 wrote it into the Arc E item, the Gap 1 bullet of this entry, the
+    block above and the evaluation's §4 constraint 1 and §8; its merge of
+    main (`6e77b19`) carried it into the Arc E item's 2026-10-16
+    annotation, the graph-store note's §4 and the Reading 3 bullet of the
+    2026-10-16 graph-store entry below. All but the block above are
+    rewritten. Provenance for the lint report's findings is now an open
     question for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
@@ -7521,11 +7522,10 @@ list and license posture live in § Settled questions.
     Arc E ships — the graph-store note's verdict, its §1 table row (3) and
     its *Recorded, not queued* item 2, the Reading 3 heading of the
     2026-10-16 graph-store entry below, and docs/README.md's index entry.
-    They now carry the carve-out as one pointer, "lint-report findings
-    excepted (Arc E item, *Not covered*)". The graph-store verdict, and the
-    body of that Reading 3 bullet, also quoted the Arc E trigger's consumer
-    clause as "a knowledge graph ingesting them"; both now quote it
-    verbatim.
+    They now name the carve-out in one clause that points at the Arc E
+    item's *Not covered*. The graph-store verdict, and the body of that
+    Reading 3 bullet, also quoted the Arc E trigger's consumer clause as
+    "a knowledge graph ingesting them"; both now quote it verbatim.
   - *Three statements of the 2026-10-12 record itself* went further than
     the corrected candidate: the evaluation's §5 join "path-independently
     once gap 1's digests exist", its §6 "a retained report would also
@@ -7545,14 +7545,16 @@ list and license posture live in § Settled questions.
 
 - **Graph store / "run pumllint on Neo4j" (2026-10-16): no inside the
   store; a converter shape recorded outside this repository; nothing to
-  build for reports flowing into the store. Nothing queued, no
-  checkbox.** Asked in two turns: should pumllint become a semantic
-  validator over a corporate knowledge layer (customer journeys, BPMN,
-  UML artefacts); then, sharpened, "run pumllint on a graph network, such
-  as a Neo4j". Full record:
+  build for reports flowing into the store. Nothing queued, no checkbox.**
+  Asked in two turns: should pumllint become a semantic validator over a
+  corporate knowledge layer (customer journeys, BPMN, UML artefacts);
+  then, sharpened, "run pumllint on a graph network, such as a Neo4j".
+  Full record:
   [docs/graph-store-evaluation.md](docs/graph-store-evaluation.md);
-  repository claims executed at `15a517b`; no Neo4j server was available,
-  so every Cypher fragment in the note is illustrative and unexecuted.
+  repository claims executed at `15a517b`, except Reading 3's carve-out,
+  corrected on 2026-10-16 and resting on the 2026-10-12 record's checks at
+  `64007cb`; no Neo4j server was available, so every Cypher fragment in
+  the note is illustrative and unexecuted.
   - *Reading 1, rules executed in the store: settled.* N1 and N3 of the
     2026-08-26 settlement, with N3 confirmed at the primary on
     2026-10-12. New here is a census of the 52 catalog rules, graded by
@@ -7597,16 +7599,16 @@ list and license posture live in § Settled questions.
     asking for it to be gated. An enterprise graph assembled from other
     tools' exports is Loop C and does not fire it.*
   - **Reading 3, reports imported into the store: no pumllint code; score
-    and trace JSON reports are evidence only behind Arc E, lint-report
-    findings excepted (Arc E item, *Not covered*).** The `-f json` shapes
-    pinned in `pumllint/schemas/` are the interface, and the consumer maps
-    them. No Cypher or RDF reporter. The chat answer's "zero build" was
-    right about code and wrong about value: an imported finding names its
-    input by path only (Gap 1), so a graph of findings is a dashboard until
-    *Run provenance in the score and trace reports* ships, lint-report
-    findings excepted (Arc E item, *Not covered*). That item's trigger
-    already names "a consumer — an evidence store, a knowledge graph —
-    ingesting them". It is annotated with this shape, and is not fired.
+    and trace JSON reports are evidence only behind Arc E.** The `-f json`
+    shapes pinned in `pumllint/schemas/` are the interface, and the
+    consumer maps them. No Cypher or RDF reporter. The chat answer's "zero
+    build" was right about code and wrong about value: an imported finding
+    names its input by path only (Gap 1), so a graph of findings is a
+    dashboard until *Run provenance in the score and trace reports* ships;
+    the lint report's findings stay outside it (Arc E item, *Not
+    covered*). That item's trigger already names "a consumer — an evidence
+    store, a knowledge graph — ingesting them". It is annotated with this
+    shape, and is not fired.
   - *The corporate framing.* BPMN is the four grounds of 2026-08-27. UML
     is the product, for the subset it parses. Customer journeys have no
     PlantUML diagram type and no artefact here, and a journey drawn as an

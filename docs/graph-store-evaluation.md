@@ -25,10 +25,11 @@ it is ever built, it is a converter that emits `.puml`, in its own
 repository and under aris2puml's iron rules, never an adapter inside
 pumllint. (3) *Findings loaded into the store* needs no pumllint code. An
 imported score or trace JSON report is evidence only once Arc E's
-run-provenance candidate ships, lint-report findings excepted (Arc E item,
-*Not covered*), and that candidate's trigger already names "a consumer — an
-evidence store, a knowledge graph — ingesting them". No checkbox is added,
-no trigger fires, and the priorities do not move.**
+run-provenance candidate ships — the lint report's findings stay outside
+it (Arc E item, *Not covered*) — and that candidate's trigger already
+names "a consumer — an evidence store, a knowledge graph — ingesting
+them". No checkbox is added, no trigger fires, and the priorities do not
+move.**
 
 *Bounds: every repository claim was executed at `15a517b`, and §7 lists
 the commands. No Neo4j server is available in this environment, so every
@@ -73,7 +74,7 @@ source of truth is a graph.
 |---|---|---|
 | (1) The rules run inside the store, as Cypher or SHACL | pumllint → store, as engine | **No.** Settled (N1, N3). §2 |
 | (2) A store-built model runs through pumllint's engine | store → pumllint | **Feasible; recorded shape, adopter-gated, outside pumllint.** §3 |
-| (3) pumllint's reports are imported into the store | pumllint → store, as data | **No pumllint build; score and trace JSON reports are evidence only behind Arc E, lint-report findings excepted (Arc E item, *Not covered*).** §4 |
+| (3) pumllint's reports are imported into the store | pumllint → store, as data | **No pumllint build; score and trace JSON reports are evidence only behind Arc E; the lint report's findings stay outside it (Arc E item, *Not covered*).** §4 |
 
 ## 2. Reading 1 — the rules inside the store
 
@@ -203,20 +204,20 @@ No Cypher or RDF reporter is warranted. A reporter is a contract
 (`-f` values and their shapes), it would have one hypothetical consumer,
 and the mapping is a dozen lines on the consumer's side.
 
-**Correction to the chat answer that prompted this note:** "zero build" was
-right for pumllint's code and wrong as a claim about value. Imported this
-way, a finding names its input by path only. It cannot say which pumllint
-version, which configuration or which content produced it (#168 Gap 1). And
-when the artefact was generated from a model held elsewhere, it cannot
-reach that model's element except by a name join (Gap 2). A graph of
-findings is therefore a dashboard, not an evidence record, until Arc E's
-*Run provenance in the score and trace reports* ships, lint-report findings
-excepted (Arc E item, *Not covered*) — and the findings imported above come
-from the lint report. That item's trigger already names this consumer: "a
-consumer — an evidence store, a knowledge graph — ingesting them". A
+**Correction to the chat answer that prompted this note:** "zero build"
+was right for pumllint's code and wrong as a claim about value. Imported
+this way, a finding names its input by path only. It cannot say which
+pumllint version, which configuration or which content produced it (#168
+Gap 1). And when the artefact was generated from a model held elsewhere,
+it cannot reach that model's element except by a name join (Gap 2). A
+graph of findings is therefore a dashboard, not an evidence record, until
+Arc E's *Run provenance in the score and trace reports* ships; the lint
+report's findings, which are the ones imported above, stay outside it (Arc
+E item, *Not covered*). That item's trigger already names this consumer:
+"a consumer — an evidence store, a knowledge graph — ingesting them". A
 question about one is not that consumer, so the trigger does not fire. The
 pointer added to the item makes this reading its concrete shape, which the
-item only half serves (Arc E item, *Not covered*).
+item only half serves.
 
 ## 5. The corporate-semantic-layer framing
 
@@ -258,11 +259,12 @@ vocabulary):
 
 1. **A store→`.puml` converter**, aris2puml-shaped, in its own
    repository. Trigger: §3.
-2. **The findings-import mapping**, a consumer-side recipe and not product.
-   Imported score and trace JSON reports can become evidence through Arc
-   E's run-provenance item, within the limits it names, lint-report
-   findings excepted (Arc E item, *Not covered*) — the recipe's own example
-   among them — and its trigger already covers a knowledge-graph consumer.
+2. **The findings-import mapping**, a consumer-side recipe and not
+   product. Imported score and trace JSON reports can become evidence
+   through Arc E's run-provenance item, within the limits it names, and
+   its trigger already covers a knowledge-graph consumer; the lint
+   report's findings, the recipe's own example among them, stay outside it
+   (Arc E item, *Not covered*).
 
 **Annotated in place, as pointers:** the Arc E *Run provenance* item (its
 knowledge-graph consumer, given a concrete shape), and the knowledge-graph

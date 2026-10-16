@@ -924,10 +924,10 @@ but they are a useful cross-check that no audience was forgotten.
     anchors are invented, remediation speaks PlantUML and the syntax gate
     can never run. If it is ever built, it is an aris2puml-shaped
     converter emitting `.puml`, in its own repository and adopter-gated.
-  - **Reports imported into the store: no pumllint code.** Score and
-    trace JSON reports are evidence only once pumllint's run-provenance
-    candidate is built, the lint report's findings excepted (see that
-    candidate's *Not covered*).
+  - **Reports imported into the store: no pumllint code.** Score and trace
+    JSON reports are evidence only once pumllint's run-provenance
+    candidate is built; the lint report's findings stay outside it (see
+    that candidate's *Not covered*).
 
   Nothing queued, no checkbox.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
