@@ -909,7 +909,7 @@ but they are a useful cross-check that no audience was forgotten.
     join the synthesis warns against.
 
   Both gaps are recorded as gated candidates (pumllint Arc E, for the
-  score and trace reports and not lint; aris2puml D4), each with its
+  score and trace JSON reports and not lint; aris2puml D4), each with its
   carrier argued and its trigger named.
 - [Running pumllint on a graph store (Neo4j), evaluated](graph-store-evaluation.md)
   — dated evaluation (2026-10-16), sixth in the thread: "run pumllint on a
@@ -924,7 +924,7 @@ but they are a useful cross-check that no audience was forgotten.
     can never run. If it is ever built, it is an aris2puml-shaped
     converter emitting `.puml`, in its own repository and adopter-gated.
   - **Reports imported into the store: no pumllint code.** Score and
-    trace reports are evidence only once Arc E's run-provenance item
+    trace JSON reports are evidence only once Arc E's run-provenance item
     ships; imported lint findings are not, even then.
 
   Nothing queued, no checkbox.

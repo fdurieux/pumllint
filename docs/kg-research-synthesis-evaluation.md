@@ -266,9 +266,11 @@ Design constraints, recorded so a build does not re-derive them:
    version nor the rule set. The lint report stays as it is.
    - A score or trace report does **not** carry provenance for lint
      findings. `pumllint <paths>`, `pumllint score` and `pumllint trace`
-     are separate invocations, free to differ in `-c` and in time, and
-     lint and score also in `--profile` and `--no-suppressions`, which
-     `trace` does not take. There is no "same run" to borrow from. Nor
+     are separate invocations, free to differ in their paths, in `-c` —
+     without it each discovers its configuration from its own working
+     directory (`load_config`) — and in time, and lint and score also in
+     `--profile` and `--no-suppressions`, which `trace` does not take.
+     There is no "same run" to borrow from. Nor
      does the score report carry the findings themselves: its gap report
      holds "the minimal blocking set to reach `level + 1`"
      (`build_gap_report`), not every finding.
@@ -345,54 +347,52 @@ Design constraints, recorded so a build does not re-derive them:
    keep them so. The two records then join on content, not on paths that
    differ between machines and invocations (the sidecar's `output` is
    whatever `-o` was given, absolute or relative).
-7. **Open for the build, decided when the trigger fires.** The evidence
-   is recorded so the build does not re-derive it; none of it is design.
-   - *What the configuration identity covers.* Score builds an engine
-     from the rules, the active profile with its `profiles:` definition
-     (enable lists, escalations) and the top-level `suppressions` key,
-     and reads the `scoring` section (`ScoringConfig.from_dict`);
-     `--profile`, `--no-suppressions` (configuration twin:
-     `suppressions`) and `--check-syntax` (configuration twin:
-     `scoring.syntax_gate`) change what it reports. Trace applies no
-     profile and builds no engine: its whole configuration is the
-     requirement-ID pattern: `--pattern`, else the `pattern` of the
-     configuration's `rules.GEN007` entry, or of `rules.requirement-link`
-     when there is no `GEN007` entry at all (`pattern_from_config`). It
-     reads those two keys differently from the engine's `_rule_entry`
-     and `_rule_config`, which the lint and score paths use: it matches
-     them exactly, where the engine also accepts a case variant
-     (`gen007`); any `GEN007` entry shadows the other, even one without a
-     pattern; and it does not read `enabled`, so a table with
-     `enabled = false`, which turns GEN007 off in lint and score, still
-     gives trace its pattern. Its docstring's "a disabled rule … yields
-     None" holds only for the `off`/`false` form.
-   - *Which files the root list holds.* Candidates: trace's diagrams,
-     its inventory sources (the `--requirements` file and every file
+7. **Open for the build, decided when the trigger fires.** The evidence is
+   recorded so the build does not re-derive it; none of it is design.
+   - *What the configuration identity covers.* Score builds an engine from
+     the rules, the active profile with its `profiles:` definition (enable
+     lists, escalations) and the top-level `suppressions` key, and reads
+     the `scoring` section (`ScoringConfig.from_dict`); `--profile`,
+     `--no-suppressions` (configuration twin: `suppressions`) and
+     `--check-syntax` (configuration twin: `scoring.syntax_gate`) change
+     what it reports. Trace applies no profile and builds no engine: its
+     whole configuration is the requirement-ID pattern — `--pattern`, else
+     the `pattern` of the configuration's `rules.GEN007` entry, or of
+     `rules.requirement-link` when there is no `GEN007` entry at all
+     (`pattern_from_config`). Like the engine's `_rule_entry`, it lets any
+     `GEN007` entry shadow the other, even one without a pattern. Unlike
+     the engine (`_rule_entry`, `_rule_config`), which the lint and score
+     paths use, it matches the two keys exactly, where the engine also
+     accepts a case variant (`gen007`), and it does not read `enabled`, so
+     a table with `enabled = false`, which turns GEN007 off in lint and
+     score, still gives trace its pattern. Its docstring's "a disabled rule
+     … yields None" holds only for the non-table forms (`false`, `off`,
+     `disabled`).
+   - *Which files the root list holds.* Candidates: trace's diagrams, its
+     inventory sources (the `--requirements` file and every file
      `--requirements-scan` read, whichever were given) and its feature
      files; score's `--baseline FILE`, from which the report's `baseline`
-     values come, which `_run_score` reads whenever the file exists —
-     with or without `--update-baseline`, before any rewrite — and not
-     when it does not exist yet, the run then creating it; and collected
-     files that yield
-     no diagram (no `@startuml` block, an `.iuml` fragment), which
+     values come, which `_run_score` reads whenever the file exists — with
+     or without `--update-baseline`, before any rewrite — and not when it
+     does not exist yet, the run then creating it; and collected files that
+     yield no diagram (no `@startuml` block, an `.iuml` fragment), which
      pumllint reads, which the syntax gate hands to PlantUML like every
      collected file (`check_files`), and which may also be another
      diagram's `!include` target.
    - *Trace's lenient readers.* Trace's diagrams and its `--requirements`
      inventory go through `read_text_file`; it reads its
      `--requirements-scan` and `--features` files with
-     `read_text(encoding="utf-8", errors="replace")` (`scan_inventory`
-     and `scan_features` in `trace.py`), honouring no byte-order mark and
-     failing on nothing. A
-     UTF-16 feature file's text then matches no ID (its file name,
-     matched separately, still can), while constraint 4's digest would
-     hash the decoded text; and for a file with no byte-order mark that
-     is not valid UTF-8 that digest cannot be computed at all. Moving
-     those readers onto `read_text_file` is a behaviour change: an
+     `read_text(encoding="utf-8", errors="replace")` (`scan_inventory` and
+     `scan_features` in `trace.py`), honouring no byte-order mark and
+     failing on nothing. A UTF-16 feature file's text then matches no ID
+     (its file name, matched separately, still can), while constraint 4's
+     digest would hash the decoded text; and for a file with no byte-order
+     mark that is not valid UTF-8 that digest cannot be computed at all.
+     Moving those readers onto `read_text_file` is a behaviour change: an
      undecodable file becomes an error instead of being scanned.
    - *What the syntax gate depends on beyond the file.* With the gate on
-     (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine:
-     its version, its environment (its default charset, for one) and the
+     (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine: its
+     version, its environment (its default charset, for one) and the
      targets of a diagram's `!include`s, which pumllint's parser records
      but never expands (`parse_source` in `parser/sequence.py`).
 
@@ -537,9 +537,10 @@ The synthesis's acceptance evidence, item by item:
   `--strict`).
 - **A controlled source change that preserves historical evidence: half.**
   The baseline ratchet keeps one level per diagram and leaves history to
-  git. With gap 1's Arc E half built, a retained score or trace report
-  would also say what it judged, within what §4 leaves open (constraint
-  7); a lint or sonar report would not (§4 constraint 1).
+  git. With gap 1's Arc E half built, a retained score or trace JSON
+  report would also say what it judged, within what §4 leaves open (constraint
+  7); a lint report, or any sonar, HTML, badge or text report, would not
+  (§4 constraint 1).
 
 ## 7. DOIs
 
@@ -631,6 +632,12 @@ grep -n 'errors="replace"' pumllint/trace.py                 # in scan_inventory
 grep -n 'scoring_cfg.get("syntax_gate")' pumllint/cli.py    # in _run_score: the gate runs on config too
 grep -n "def pattern_from_config" -A12 pumllint/trace.py    # trace's configuration: the GEN007 pattern
 grep -n "def _rule_entry" -A18 pumllint/engine.py           # the engine's key matching, case variants included
+grep -n "def _rule_config" -A22 pumllint/engine.py          # enabled = false disables; false/off/disabled too
+grep -n "Path(args.baseline).exists()" pumllint/cli.py      # in _run_score: the baseline is read when it exists
+grep -n "for f in files" pumllint/syntax.py                 # check_files: PlantUML on every collected file
+grep -n "read_text_file" pumllint/trace.py pumllint/parser/sequence.py  # strict readers
+grep -n "def from_dict" pumllint/scoring.py                 # ScoringConfig reads the scoring section
+grep -n "def load_config" -A6 pumllint/config.py            # without -c, discovered from the working directory
 grep -n "never expanded" pumllint/parser/sequence.py         # !include recorded, not expanded
 grep -n "minimal blocking set" pumllint/scoring.py           # the gap report is not every finding
 ```

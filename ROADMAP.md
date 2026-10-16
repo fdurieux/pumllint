@@ -597,26 +597,28 @@ three items — full write-up in EVIDENCE.md §Deepening:
     there on the text it writes, so the converter's output digest equals
     pumllint's input digest for the same diagram and the two records join
     on content.
-  - **Not covered: lint and sonar findings.** The lint report stays a
-    bare array, and no score or trace report can lend its findings
-    provenance. Nothing recorded closes this — the 2026-08-10 portable
-    run-record candidate is not the route — so if the trigger fires on
-    lint findings, how they get provenance is an open question for that
-    build, put to the owner. The evaluation's §4 constraint 1 says why.
+  - **Not covered: lint findings, and every report but score's and trace's
+    `-f json`** — sonar from either command, HTML, badge, text. The lint
+    report stays a bare array, and no score or trace report can lend its
+    findings provenance. Nothing recorded closes this — the 2026-08-10
+    portable run-record candidate is not the route — so if the trigger
+    fires on lint findings, how they get provenance is an open question for
+    that build, put to the owner. The evaluation's §4 constraint 1 says
+    why.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
-  must say which version, configuration and input produced a finding.
-  When it fires, pumllint's half lands first.* *[2026-10-16: the
-  knowledge-graph consumer now has a concrete shape, which this item
-  only half serves. Reading 3 of docs/graph-store-evaluation.md imports
-  `-f json` into Neo4j on the consumer's side, with no pumllint code,
-  and is a dashboard rather than an evidence record until this item
-  ships. Its worked example imports lint findings, which this item does
-  not cover even then (Not covered, just above; the Corrected and
-  Corrected again 2026-10-16 notes under the 2026-10-12 decision-log
-  entry say why). A question about such a consumer is not one, so the
-  trigger is unchanged and not fired.]*
+  must say which version, configuration and input produced a finding. When
+  it fires, pumllint's half lands first.* *[2026-10-16: the knowledge-graph
+  consumer now has a concrete shape, which this item only half serves.
+  Reading 3 of docs/graph-store-evaluation.md imports `-f json` into Neo4j
+  on the consumer's side, with no pumllint code, and is a dashboard rather
+  than an evidence record until this item ships. Its worked example imports
+  lint findings, which this item does not cover even then (Not covered,
+  just above; the Corrected again 2026-10-16 note under the 2026-10-12
+  decision-log entry says why, and supersedes the first note on this
+  point). A question about such a consumer is not one, so the trigger is
+  unchanged and not fired.]*
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -7596,7 +7598,7 @@ list and license posture live in § Settled questions.
     asking for it to be gated. An enterprise graph assembled from other
     tools' exports is Loop C and does not fire it.*
   - **Reading 3, reports imported into the store: no pumllint code;
-    score and trace reports are evidence only behind Arc E, lint
+    score and trace JSON reports are evidence only behind Arc E, lint
     findings not even then.** The `-f json` shapes pinned in
     `pumllint/schemas/` are the interface, and the consumer maps them.
     No Cypher or RDF reporter. The chat answer's "zero build" was right
