@@ -590,12 +590,15 @@ three items — full write-up in EVIDENCE.md §Deepening:
     whichever were given; the feature files), on score the
     `--baseline FILE` when it existed and was read (as read, before any
     `--update-baseline` rewrite).
-  - **Open before trace digests mean anything:** trace reads the text of
-    its scan and feature files with `errors="replace"` and no
-    byte-order-mark handling (`trace.py:389`, `568` at `64007cb`), so the
-    digest below does not describe what it judged for them, and for a
-    non-UTF-8 file cannot be computed at all: its strict decode fails
-    where trace scans on. The build aligns those readers first or
+  - **Open before the scan and feature-file digests mean anything:**
+    trace reads the text of its `--requirements-scan` and `--features`
+    files with `errors="replace"` and no byte-order-mark handling
+    (`trace.py:389`, `568` at `64007cb`); its diagrams and
+    `--requirements` file go through `read_text_file` and are not
+    affected. So the digest below does not describe what trace judged
+    for those files, and for one with no byte-order mark that is not
+    valid UTF-8 it cannot be computed at all: its strict decode fails
+    where trace scans on. The build aligns those two readers first or
     digests those files differently.
   - **Known limit of the syntax gate:** PlantUML runs on the file in its
     own environment — its default charset, for one — and resolves the
@@ -7504,17 +7507,20 @@ list and license posture live in § Settled questions.
     cannot diverge while each follows the text.
 
   *[Corrected again 2026-10-16, after a code review of the correction
-  above (#170): ten findings, all in text that correction wrote, fixed
-  in place with what fixing them exposed — here, in the Arc E item, in
+  above (#170): ten findings in text that correction wrote, fixed in
+  place with what fixing them exposed, including statements #169 and
+  the 2026-10-12 record wrote — here, in the Arc E item, in
   the Recommended next inventory, in the 2026-10-16 graph-store entry
   below, in docs/kg-research-synthesis-evaluation.md (whose bounds list
   everything changed in that file), in docs/graph-store-evaluation.md
   and in docs/README.md. The block above is left as #170 wrote it;
   where it is wrong, the bullets below say so. The bullets group the
   findings with what they exposed. The candidate's design has two
-  homes, the Arc E item (what) and the evaluation's §4 (why); every
-  other place points at them rather than restating them. Priorities,
-  checkbox counts and triggers unchanged. Docs only.]*
+  homes, the Arc E item (what) and the evaluation's §4 (why); the
+  bullets record what changed and cite code as evidence, but a design
+  change is made in those two homes, and the other summaries name only
+  the lint carve-out. Priorities, checkbox counts and triggers
+  unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format, with
@@ -7534,9 +7540,8 @@ list and license posture live in § Settled questions.
     the command-line options that change what is reported, the PlantUML
     engine whenever the syntax gate runs (`--check-syntax` or
     `scoring.syntax_gate`; `cli.py:603` at `64007cb`), trace's leniently
-    read scan
-    and feature files (an open choice), and the gate's own environment
-    and `!include` targets (a known limit).
+    read scan and feature files (an open choice), and the gate's own
+    environment and `!include` targets (a known limit).
   - *Five summaries #169 wrote* said an imported finding is evidence
     once Arc E ships — the graph-store note's verdict, its §1 table row
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of

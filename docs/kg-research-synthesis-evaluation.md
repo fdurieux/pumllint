@@ -45,18 +45,18 @@ here depends on them. The DCAT 3 page was read for its status line only.*
 statements were wrong or overreached, and are fixed in place. XD005 never
 joins swimlanes (§2, §5); the demo is the golden plus a comment header, not
 the golden (§5); Gap 1 is about what the chain ships, not every run record
-(verdict, §4); per-input digests are a per-file fact, not a run-level
-root key on the `syntaxGateRan` precedent (§4 constraints 1–2, §8); lint
-findings get no provenance from a score or trace report, which is a
-separate run (§4 constraint 1); the shared digest is now defined to the
-byte (§4 constraint 4); and aris2puml computes it on the text it writes,
-pinned by test vectors both repositories share (§4 constraint 6). The
-ROADMAP's decision log carries the same list under this date.*
+(verdict, §4); per-input digests are a per-file fact and do not ride as
+root keys (§4 constraints 1–2, §8); lint findings get no provenance from a
+score or trace report, which is a separate run (§4 constraint 1); and the
+shared digest is now defined to the byte (§4 constraint 4). The ROADMAP's
+decision log carries the same list under this date.*
 
 *Corrected again 2026-10-16, after a code review of that correction
-(#170): ten findings, all in text it wrote, are fixed in place together
-with what fixing them exposed. The ROADMAP's decision log records the
-findings, grouped; everything changed in this file:*
+(#170): ten findings in text it wrote are fixed in place, together with
+what fixing them exposed, including statements #169 and this record
+wrote. The note above is left as #170 wrote it; where it is wrong, the
+bullets below say so. The ROADMAP's decision log records the findings,
+grouped; everything changed in this file:*
 
 - *the 2026-08-10 portable run-record candidate had been "built with"
   Arc E and "wrapping the lint invocation"; it is a pilot-repo format,
@@ -67,9 +67,10 @@ findings, grouped; everything changed in this file:*
 - *§4 constraint 1 now also says the score report does not carry the
   findings themselves: its gap report holds only the minimal blocking
   set to the next level (`build_gap_report`);*
-- *the note above said digests "do not ride as root keys" while §4 put
-  trace's in a root list; it now says what it meant, and §4 constraint 2
-  places every input file by one rule, score's baseline included;*
+- *the note above says digests "do not ride as root keys", while §4 puts
+  trace's in a root list: they are a per-file fact, not a run-level root
+  key on the `syntaxGateRan` precedent, and §4 constraint 2 now places
+  every input file by one rule, score's baseline included;*
 - *§4 constraint 2 had named score's digest's item "the item that also
   holds the gap report's findings", which sit three levels inside it; it
   now says the `diagrams[]` item itself, beside `file`;*
@@ -83,8 +84,9 @@ findings, grouped; everything changed in this file:*
 - *§5's path-independent join and §6's "a retained report would also
   say what it judged" now hold for score and trace reports only;*
 - *§8 now points at §4 and the Arc E item instead of restating them;*
-- *the note above now lists constraint 6, and the prose both corrections
-  touched is re-wrapped;*
+- *the note above leaves out §4 constraint 6, which #170 also rewrote
+  (aris2puml computes the digest on the text it writes, pinned by shared
+  test vectors); the prose both corrections touched is re-wrapped;*
 - *the repository claims this note's changes add were executed against
   pumllint's code at `64007cb`, which neither correction changes (both
   are docs only); §9 lists the new commands.*
@@ -333,12 +335,11 @@ Design constraints, recorded so a build does not re-derive them:
      as it has citations and the inventory on none: the diagrams, the
      inventory (the `--requirements` file and every file
      `--requirements-scan` read, whichever were given) and the feature
-     files. On score it is the `--baseline FILE`,
-     when it existed and was read — a record-mode run, which creates the
-     file, lists nothing, and with `--update-baseline` it is the file as
-     read before the rewrite. The list is a root key, but not a run-level
-     fact on the `syntaxGateRan` precedent: it is the per-file fact,
-     listed once.
+     files. On score it is the `--baseline FILE`, when it existed and
+     was read — a record-mode run, which creates the file, lists
+     nothing, and with `--update-baseline` it is the file as read before
+     the rewrite. The list is a root key, but not a run-level fact on the
+     `syntaxGateRan` precedent: it is the per-file fact, listed once.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -380,12 +381,13 @@ Design constraints, recorded so a build does not re-derive them:
    and `568`): no byte-order mark is honoured and nothing fails to
    decode. A UTF-16 feature file's text then matches no ID (its file
    name, matched separately, still can), while its digest under this
-   definition would hash the decoded text; and for a non-UTF-8 file the
-   digest cannot be computed at all, its strict decode failing where
-   trace scans on. The build either moves those two readers onto
-   `read_text_file` first — a behaviour change, since an undecodable
-   file then becomes an error instead of being scanned — or digests
-   those files differently. That choice is open.
+   definition would hash the decoded text; and for a file with no
+   byte-order mark that is not valid UTF-8 the digest cannot be computed
+   at all, its strict decode failing where trace scans on. The build
+   either moves those two readers onto `read_text_file` first — a
+   behaviour change, since an undecodable file then becomes an error
+   instead of being scanned — or digests those files differently. That
+   choice is open.
 5. **Configuration identity means the effective configuration** — profile
    applied, defaults resolved — not the configuration file's bytes, since
    two files can state one rule set. It includes the command-line options
@@ -555,8 +557,8 @@ The synthesis's acceptance evidence, item by item:
 - **A controlled source change that preserves historical evidence: half.**
   The baseline ratchet keeps one level per diagram and leaves history to
   git. With gap 1's Arc E half built, a retained score or trace report
-  would also say what it judged; a lint or sonar report would not (§4
-  constraint 1).
+  would also say what it judged, within the limits §4 names (constraints
+  4 and 5); a lint or sonar report would not (§4 constraint 1).
 
 ## 7. DOIs
 
