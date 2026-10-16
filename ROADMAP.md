@@ -590,11 +590,13 @@ three items — full write-up in EVIDENCE.md §Deepening:
     whichever were given; the feature files), on score the
     `--baseline FILE` when it existed and was read (as read, before any
     `--update-baseline` rewrite).
-  - **Open before trace digests mean anything:** trace reads its scan
-    and feature files with `errors="replace"` and no byte-order-mark
-    handling (`trace.py:389`, `568`), so the digest below does not
-    describe what it judged for them. The build aligns those readers
-    first or digests them differently.
+  - **Open before trace digests mean anything:** trace reads the text of
+    its scan and feature files with `errors="replace"` and no
+    byte-order-mark handling (`trace.py:389`, `568` at `64007cb`), so the
+    digest below does not describe what it judged for them, and for a
+    non-UTF-8 file cannot be computed at all: its strict decode fails
+    where trace scans on. The build aligns those readers first or
+    digests those files differently.
   - **Known limit of the syntax gate:** PlantUML runs on the file in its
     own environment — its default charset, for one — and resolves the
     diagram's `!include` targets, which pumllint records but never
@@ -7421,9 +7423,9 @@ list and license posture live in § Settled questions.
       record sha256 digests of the frozen kit; aris2puml pins
       `SAPModels.epml` (`EPML_SHA256`, `--verify`).
     - Recorded as Arc E's *Run provenance in the score and trace reports*
-      (run-level facts as root keys, digests per input file; the lint
-      report stays an array, so lint findings stay without provenance,
-      an open question for the build) and as aris2puml D4(b).
+      (design in the item; the lint report stays an array, so lint
+      findings stay without provenance, an open question for the build)
+      and as aris2puml D4(b).
     - One digest definition, over decoded, LF-normalised text, defined to
       the byte in the Arc E item. Raw bytes would split Windows from
       POSIX: `read_text_and_encoding` does no newline translation, and
@@ -7489,19 +7491,17 @@ list and license posture live in § Settled questions.
     what the chain *ships*, here and in docs/README.md's index entry,
     which had also dropped the HTML footer's version and the sidecar's
     `tool`.
-  - *Digests are per input file, not run-level root keys.*
-    `syntaxGateRan` covers one run-level fact; a digest is one per file.
-    Run-level facts stay root keys; digests ride on score's `diagrams[]`
-    items and, for input files no item names once (every trace input,
-    score's baseline file), in one root list with one entry per file.
+  - *Digests are per input, not root keys.* `syntaxGateRan` covers one
+    run-level fact; a digest is one per file. Version and configuration
+    stay root keys; digests ride on score's `diagrams[]` items and in one
+    root list on trace.
   - *No "same run" for lint.* Lint, score and trace are separate
     invocations, so a score or trace report cannot lend lint findings
     provenance. The candidate now says lint and sonar findings stay
-    without it.
+    without it unless the 2026-08-10 run record is built alongside.
   - *The digest is defined to the byte* — BOM handling, CRLF and lone CR,
-    UTF-8 re-encoding — and aris2puml computes it on the text it writes,
-    pinned by shared test vectors, so pumllint and aris2puml cannot
-    diverge while each follows the text.
+    UTF-8 re-encoding, shared test vectors — so pumllint and aris2puml
+    cannot diverge while each follows the text.
 
   *[Corrected again 2026-10-16, after a code review of the correction
   above (#170): ten findings, all in text that correction wrote, fixed
@@ -7509,26 +7509,32 @@ list and license posture live in § Settled questions.
   the Recommended next inventory, in the 2026-10-16 graph-store entry
   below, in docs/kg-research-synthesis-evaluation.md (whose bounds list
   everything changed in that file), in docs/graph-store-evaluation.md
-  and in docs/README.md. The bullets group the findings with what they
-  exposed; the design itself is stated once, in the Arc E item, and not
-  restated here. Priorities, checkbox counts and triggers unchanged.
-  Docs only.]*
+  and in docs/README.md. The block above is left as #170 wrote it;
+  where it is wrong, the bullets below say so. The bullets group the
+  findings with what they exposed. The candidate's design has two
+  homes, the Arc E item (what) and the evaluation's §4 (why); every
+  other place points at them rather than restating them. Priorities,
+  checkbox counts and triggers unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format, with
     nothing built here before a real pilot stabilizes one
-    (docs/sdd-manifest-evaluation.md), so that wording moved its gate.
-    Lint and sonar provenance is now an open question for Arc E's build.
+    (docs/sdd-manifest-evaluation.md), so that wording moved its gate;
+    the block above repeats it ("unless the 2026-08-10 run record is
+    built alongside"). Lint and sonar provenance is now an open question
+    for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
     lint and score take `--profile` and `--no-suppressions`.
-  - *"Not root keys" contradicted trace's root list.* Digests are a
-    per-file fact, not a run-level root key on the `syntaxGateRan`
-    precedent; where each sits is in the Arc E item.
+  - *"Not root keys" contradicted trace's root list,* in the block above
+    and the evaluation's first note. Digests are a per-file fact, not a
+    run-level root key on the `syntaxGateRan` precedent; where each sits
+    is in the Arc E item.
   - *Inputs left out.* The Arc E item now names score's baseline file,
     the command-line options that change what is reported, the PlantUML
     engine whenever the syntax gate runs (`--check-syntax` or
-    `scoring.syntax_gate`, `cli.py:603`), trace's leniently read scan
+    `scoring.syntax_gate`; `cli.py:603` at `64007cb`), trace's leniently
+    read scan
     and feature files (an open choice), and the gate's own environment
     and `!include` targets (a known limit).
   - *Five summaries #169 wrote* said an imported finding is evidence
@@ -7536,8 +7542,9 @@ list and license posture live in § Settled questions.
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of
     the 2026-10-16 graph-store entry below, and docs/README.md's index
     entry. For lint findings, the ones Reading 3 imports, they now say
-    not even then. Two of them also quoted the Arc E trigger as "a
-    knowledge graph ingesting them"; they now quote it whole.
+    not even then. Two of them also quoted the Arc E trigger's consumer
+    clause as "a knowledge graph ingesting them"; they now quote that
+    clause verbatim.
   - *Three statements of the 2026-10-12 record itself* went further than
     the corrected candidate: the evaluation's §5 join "path-independently
     once gap 1's digests exist", its §6 "a retained report would also

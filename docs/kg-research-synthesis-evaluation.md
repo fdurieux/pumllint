@@ -82,7 +82,7 @@ findings, grouped; everything changed in this file:*
   on the files a diagram `!include`s, which nothing digests;*
 - *§5's path-independent join and §6's "a retained report would also
   say what it judged" now hold for score and trace reports only;*
-- *§8 now carries the candidate's full scope;*
+- *§8 now points at §4 and the Arc E item instead of restating them;*
 - *the note above now lists constraint 6, and the prose both corrections
   touched is re-wrapped;*
 - *the repository claims this note's changes add were executed against
@@ -329,11 +329,11 @@ Design constraints, recorded so a build does not re-derive them:
      file that yields no diagram — no `@startuml` block, an `.iuml`
      fragment — has no item and shapes the report only as an `!include`
      target under the gate, which constraint 5 names as a limit.) On
-     trace that is every input, since a
-     diagram appears on as many sites as it has citations and the
-     inventory on none: the diagrams, the inventory (the `--requirements`
-     file and every file `--requirements-scan` read, whichever were
-     given) and the feature files. On score it is the `--baseline FILE`,
+     trace that is every input, since a diagram appears on as many sites
+     as it has citations and the inventory on none: the diagrams, the
+     inventory (the `--requirements` file and every file
+     `--requirements-scan` read, whichever were given) and the feature
+     files. On score it is the `--baseline FILE`,
      when it existed and was read — a record-mode run, which creates the
      file, lists nothing, and with `--update-baseline` it is the file as
      read before the rewrite. The list is a root key, but not a run-level
@@ -378,12 +378,14 @@ Design constraints, recorded so a build does not re-derive them:
    `--requirements-scan` and `--features` files do not. They are read
    with `read_text(encoding="utf-8", errors="replace")` (`trace.py:389`
    and `568`): no byte-order mark is honoured and nothing fails to
-   decode, so a UTF-16 feature file is scanned as text that matches no
-   ID, while its digest under this definition would hash the decoded
-   text. The build either moves those two readers onto `read_text_file`
-   first — a behaviour change, since an undecodable file then becomes an
-   error instead of being scanned — or digests those files differently.
-   That choice is open.
+   decode. A UTF-16 feature file's text then matches no ID (its file
+   name, matched separately, still can), while its digest under this
+   definition would hash the decoded text; and for a non-UTF-8 file the
+   digest cannot be computed at all, its strict decode failing where
+   trace scans on. The build either moves those two readers onto
+   `read_text_file` first — a behaviour change, since an undecodable
+   file then becomes an error instead of being scanned — or digests
+   those files differently. That choice is open.
 5. **Configuration identity means the effective configuration** — profile
    applied, defaults resolved — not the configuration file's bytes, since
    two files can state one rule set. It includes the command-line options
@@ -584,13 +586,11 @@ already practised where this project measures (§4).
 **Decision: nothing queued.** Two candidates are recorded, both gated:
 
 1. **pumllint, Arc E — run provenance in the score and trace reports:**
-   the tool version, the effective-configuration identity and, when the
-   syntax gate ran, the PlantUML engine's version as additive root keys;
-   input digests per input file — on each score `diagrams[]` item, and in
-   one root list for the input files no item names once (every trace
-   input; score's baseline file). The lint array stays as it is, so
-   lint and sonar findings stay without provenance; how to give them any
-   is open (§4 constraint 1). *Trigger*: §4.
+   designed in §4 (constraints 1–6, with an open choice in 4 and a known
+   limit in 5) and specified in the ROADMAP's Arc E item, which this
+   section does not restate. Lint and sonar findings are not covered,
+   and how to give them provenance is open (§4 constraint 1).
+   *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:
    - (a) the line → ids map (gap 2; *trigger*: §5);

@@ -41,6 +41,18 @@ rests on one. Licences were read at the source: the `neo4j` Python driver
 closes the product path whatever the licence. The rule census in §2 is a
 classification by judgment, listed per rule so it can be re-graded.*
 
+*Corrected 2026-10-16, twice, after this note was written: by #170, which
+corrected the 2026-10-12 record this note leans on, and by #171, which
+corrected that correction. The verdict's clause (3), the §1 table's row
+(3), §4's last paragraph and §6 item 2 now say that score and trace
+reports wait on Arc E's run-provenance item and that the lint findings
+§4's recipe imports stay without provenance even after it; §4 and §6
+add that the item serves score and trace reports only within the
+limits it names, and the verdict quotes the Arc E trigger's consumer
+clause verbatim. The claims these edits add were checked against
+pumllint's code at `64007cb` (both corrections are docs only); the
+2026-10-12 record's two 2026-10-16 notes give the reasons.*
+
 ## 0. Why this ran, and what it is not
 
 This is the sixth record in the thread, and it is short because five
