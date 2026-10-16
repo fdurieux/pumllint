@@ -904,9 +904,9 @@ but they are a useful cross-check that no audience was forgotten.
     inputs by path only: pumllint's JSON reports carry no tool version,
     configuration identity or input digest (only the HTML report's footer
     names the version), and aris2puml's sidecar names its tool version but
-    no digest. And ARIS element ids stop at aris2puml's
-    emitter: a finding offers `(file, line)` and a label, so the way back
-    is the name join the synthesis warns against.
+    no digest. And ARIS element ids stop at aris2puml's emitter: a
+    finding offers `(file, line)` and a label, so the way back is the name
+    join the synthesis warns against.
 
   Both gaps are recorded as gated candidates (pumllint Arc E; aris2puml
   D4), each with its carrier argued and its trigger named.

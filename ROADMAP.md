@@ -577,8 +577,8 @@ three items — full write-up in EVIDENCE.md §Deepening:
     identity of the effective configuration the run used.
   - **Input digests, one per input file** — a per-file fact, so outside
     the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
-    its `file` key; input files with no such item (all of trace's), in
-    one additive root list of `{file, digest}`.
+    its `file` key; input files with no such item, in one additive root
+    list of `{file, digest}` (which files, is open).
   - **Open, decided when the trigger fires:** what the configuration
     identity covers on each command; which files the root list holds;
     trace's lenient readers, which the digest below does not describe;
@@ -601,7 +601,9 @@ three items — full write-up in EVIDENCE.md §Deepening:
     cannot lend it provenance: `pumllint`, `pumllint score` and
     `pumllint trace` are separate invocations, free to differ in `-c`,
     and lint and score also in `--profile` and `--no-suppressions`,
-    which trace does not take. Nothing recorded closes this. The
+    which trace does not take; and the score report does not carry every
+    finding, its gap report being "the minimal blocking set to reach
+    `level + 1`". Nothing recorded closes this. The
     2026-08-10 portable run-record candidate is a pilot-repo format for
     generation runs, gated on a real pilot stabilizing one, and builds
     nothing here before then. If the trigger fires on lint findings, how
@@ -7487,10 +7489,10 @@ list and license posture live in § Settled questions.
 
   *[Corrected again 2026-10-16, after a code review of the correction
   above (#170): ten findings in text that correction wrote, fixed in
-  place with what fixing them exposed, including statements #169 and
-  the 2026-10-12 record wrote — here, in the Arc E item, in
-  the Recommended next inventory, in the 2026-10-16 graph-store entry
-  below, in docs/kg-research-synthesis-evaluation.md, in
+  place with what fixing them exposed, including statements #169 and the
+  2026-10-12 record wrote — here, in the Arc E item, in the Recommended
+  next inventory, in the 2026-10-16 graph-store entry below, in
+  docs/kg-research-synthesis-evaluation.md, in
   docs/graph-store-evaluation.md and in docs/README.md. This is the one
   list of the correction; the evaluation's and the graph-store note's
   dated notes point here. The block above is left as #170 wrote it;
@@ -7504,8 +7506,10 @@ list and license posture live in § Settled questions.
     nothing built here before a real pilot stabilizes one
     (docs/sdd-manifest-evaluation.md), so that wording moved its gate;
     the block above repeats it ("unless the 2026-08-10 run record is
-    built alongside"). Lint and sonar provenance is now an open question
-    for Arc E's build.
+    built alongside"), and #170's merge of main (`6e77b19`) wrote it into
+    the graph-store note's §4 and the Reading 3 bullet of the 2026-10-16
+    graph-store entry below. Lint and sonar provenance is now an open
+    question for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
     lint and score take `--profile` and `--no-suppressions`.

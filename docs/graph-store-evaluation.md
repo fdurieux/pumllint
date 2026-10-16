@@ -41,11 +41,11 @@ rests on one. Licences were read at the source: the `neo4j` Python driver
 closes the product path whatever the licence. The rule census in §2 is a
 classification by judgment, listed per rule so it can be re-graded.*
 
-*Corrected 2026-10-16, twice, by #170 and #171: the verdict's clause
-(3), the §1 table's row (3), §4's last paragraph and §6 item 2. The
-ROADMAP's decision log, under the 2026-10-12 knowledge-graph entry,
-lists why. These edits add no repository claim; every repository claim
-here still rests on `15a517b` and §7.*
+*Corrected 2026-10-16: §4's last paragraph twice, by #170 and #171;
+the verdict's clause (3), the §1 table's row (3) and §6 item 2 once, by
+#171. The ROADMAP's decision log, under the 2026-10-12 knowledge-graph
+entry, lists why. These edits add no repository claim; every repository
+claim here still rests on `15a517b` and §7.*
 
 ## 0. Why this ran, and what it is not
 

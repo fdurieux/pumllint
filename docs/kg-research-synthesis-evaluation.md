@@ -348,9 +348,10 @@ Design constraints, recorded so a build does not re-derive them:
 7. **Open for the build, decided when the trigger fires.** The evidence
    is recorded so the build does not re-derive it; none of it is design.
    - *What the configuration identity covers.* Score builds an engine
-     from the rules with the active profile and reads the `scoring`
-     section (`ScoringConfig.from_dict`), and `--profile`,
-     `--no-suppressions` and `--check-syntax` (configuration twin
+     from the rules, the active profile and the top-level `suppressions`
+     key, and reads the `scoring` section (`ScoringConfig.from_dict`);
+     `--profile`, `--no-suppressions` (configuration twin:
+     `suppressions`) and `--check-syntax` (configuration twin:
      `scoring.syntax_gate`) change what it reports. Trace applies no
      profile and builds no engine: its whole configuration is the
      requirement-ID pattern, `--pattern`, else the configuration's
@@ -363,8 +364,9 @@ Design constraints, recorded so a build does not re-derive them:
      come — none is read in record mode, and with `--update-baseline` the
      file is read before it is rewritten; and collected files that yield
      no diagram (no `@startuml` block, an `.iuml` fragment), which
-     pumllint reads and which, under the syntax gate, may reach PlantUML
-     as `!include` targets.
+     pumllint reads, which the syntax gate hands to PlantUML like every
+     collected file (`check_files`), and which may also be another
+     diagram's `!include` target.
    - *Trace's lenient readers.* Diagrams, the `--requirements` inventory
      and the baseline go through `read_text_file`; trace reads its
      `--requirements-scan` and `--features` files with
