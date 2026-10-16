@@ -910,6 +910,22 @@ but they are a useful cross-check that no audience was forgotten.
 
   Both gaps are recorded as gated candidates (pumllint Arc E; aris2puml
   D4), each with its carrier argued and its trigger named.
+- [Running pumllint on a graph store (Neo4j), evaluated](graph-store-evaluation.md)
+  — dated evaluation (2026-10-16), sixth in the thread: "run pumllint on a
+  graph network, such as a Neo4j", as a validator over a corporate
+  knowledge layer. Three readings, three verdicts:
+  - **Rules executed in the store: settled (N1, N3).** A census of the 52
+    rules finds 31 that transfer as constraints the store's own tooling
+    already expresses, and 21 that check what a store cannot hold.
+  - **Store → in-memory model → engine: works, measured, and the wrong
+    shape inside pumllint.** An unjoined decision is accepted silently,
+    anchors are invented, remediation speaks PlantUML and the syntax gate
+    can never run. If it is ever built, it is an aris2puml-shaped
+    converter emitting `.puml`, in its own repository and adopter-gated.
+  - **Reports imported into the store: no pumllint code**, and evidence
+    only once Arc E's run-provenance item ships.
+
+  Nothing queued, no checkbox.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

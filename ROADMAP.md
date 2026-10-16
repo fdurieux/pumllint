@@ -601,7 +601,13 @@ three items — full write-up in EVIDENCE.md §Deepening:
   adopter retaining the reports as audit evidence, or a consumer — an
   evidence store, a knowledge graph — ingesting them, who must say which
   version, configuration and input produced a finding. When it fires,
-  pumllint's half lands first.*
+  pumllint's half lands first.* *[2026-10-16: the knowledge-graph consumer
+  now has a concrete shape. Reading 3 of docs/graph-store-evaluation.md
+  imports `-f json` into Neo4j on the consumer's side, with no pumllint
+  code, and is a dashboard rather than an evidence record until this item
+  ships — for imported lint findings, until the 2026-08-10 run record
+  ships with it, per the 2026-10-16 correction above. A question about such a consumer is not one, so the trigger is
+  unchanged and not fired.]*
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -1533,6 +1539,12 @@ list and license posture live in § Settled questions.
     measured: ARIS element ids stop at aris2puml's emitter. As with
     sequence↔contract, the cheapest carrier is a file-to-file map (here in
     the converter's sidecar), not a store. See the entry of that date.]*
+    *[2026-10-16: touched, not fired, again, by "run pumllint on a graph
+    store such as Neo4j". No model set and no ask is named. The
+    store-hosted reading lands on N1 and N3. The store→engine reading
+    lands on aris2puml's shape: a converter emitting `.puml`, outside
+    this repository. See the entry of that date and
+    docs/graph-store-evaluation.md.]*
 
 - **Linked.Archi ecosystem (2026-08-27): adjacent and complementary — no
   build, no dependency; the one fit worth having already ships. Two
@@ -7457,3 +7469,87 @@ list and license posture live in § Settled questions.
   - *The digest is defined to the byte* — BOM handling, CRLF and lone CR,
     UTF-8 re-encoding, shared test vectors — so pumllint and aris2puml
     cannot diverge while each follows the text.
+
+- **Graph store / "run pumllint on Neo4j" (2026-10-16): no inside the
+  store; a converter shape recorded outside this repository; nothing to
+  build for reports flowing into the store. Nothing queued, no
+  checkbox.** Asked in two turns: should pumllint become a semantic
+  validator over a corporate knowledge layer (customer journeys, BPMN,
+  UML artefacts); then, sharpened, "run pumllint on a graph network, such
+  as a Neo4j". Full record:
+  [docs/graph-store-evaluation.md](docs/graph-store-evaluation.md);
+  repository claims executed at `15a517b`; no Neo4j server was available,
+  so every Cypher fragment in the note is illustrative and unexecuted.
+  - *Reading 1, rules executed in the store: settled.* N1 and N3 of the
+    2026-08-26 settlement, with N3 confirmed at the primary on
+    2026-10-12. New here is a census of the 52 catalog rules, graded by
+    judgment and listed per rule:
+    - **8** report authoring defects of the text that cannot occur in a
+      store (SEQ001, SEQ003, SEQ004, SEQ010, SEQ101, SEQ108, ACT004,
+      GEN003);
+    - **13** need the diagram as a unit, or its order and fragment tree;
+    - **31** transfer as constraints (9 topology, 17 label or property,
+      5 cross-node agreement).
+
+    The 31 are what native constraints and SHACL via neosemantics
+    already express, so porting them builds a weaker neosemantics. The
+    21 are where the catalog earns its keep. XD turns into a merge
+    decision taken before validation, the "never merge on similar names"
+    warning of 2026-10-12.
+  - **Reading 2, store → in-memory `Diagram` → engine: works, and is the
+    wrong shape inside pumllint.** Probe P2 builds an activity `Diagram`
+    from six store-shaped rows and runs `Engine.lint_diagram` and
+    `scoring.score` unchanged. It finds ACT002 and ACT003 ×2, and scores
+    Level 3, 77.5/100, with the gate assumed passed and Level 1 with it
+    failed (C2). Four defects of the route:
+    - an unjoined decision is accepted, because ACT004 reads
+      `diagram.blocks` and only the parser fills it, so the adapter
+      would have to invent the nesting or refuse;
+    - anchors are invented: a `seq` property posing as a line, or every
+      finding on `:0`, which re-sorts the report and orphans baseline,
+      language-server, sonar and suppression keys;
+    - remediation speaks PlantUML (`write "then (yes)"`) to someone who
+      never wrote it;
+    - DIM-SYN can never run. `syntaxGateRan: false` already discloses
+      this, but would do so on every run: the 2026-09-14 hazard family,
+      reached by a third route.
+
+    The surviving shape is aris2puml's: a converter that **emits
+    `.puml`**, in its own repository and under the same iron rules
+    (refuse with the node named, preserve defects, record drops in a
+    sidecar, move the mapping table with business-processes.md §2), with
+    element identity returned through a line → ids map in its sidecar
+    (Gap 2's carrier). *Recorded, not queued. Trigger: an adopter whose
+    authored process or interaction content lives in a graph store,
+    asking for it to be gated. An enterprise graph assembled from other
+    tools' exports is Loop C and does not fire it.*
+  - **Reading 3, reports imported into the store: no pumllint code, and
+    evidence only behind Arc E.** The `-f json` shapes pinned in
+    `pumllint/schemas/` are the interface, and the consumer maps them.
+    No Cypher or RDF reporter. The chat answer's "zero build" was right
+    about code and wrong about value: an imported finding names its
+    input by path only (Gap 1), so a graph of findings is a dashboard
+    until *Run provenance in the score and trace reports* ships (for
+    lint findings, with the 2026-08-10 run record beside it). That
+    item's trigger already names "a knowledge graph ingesting them". It
+    is annotated with this shape, and is not fired.
+  - *The corporate framing.* BPMN is the four grounds of 2026-08-27. UML
+    is the product, for the subset it parses. Customer journeys have no
+    PlantUML diagram type and no artefact here, and a journey drawn as an
+    activity diagram is checked as one. A layer unifying them is Loop C,
+    with the seam unchanged.
+  - *Never build, restated in this question's vocabulary:*
+    - the rules ported to or executed in a store;
+    - an in-memory store→`Diagram` adapter inside pumllint;
+    - a Cypher or RDF reporter.
+  - *Annotated in place, as pointers:* the Arc E run-provenance item and
+    the knowledge-graph settlement's re-litigation line (touched, not
+    fired, again).
+  - *Priorities unchanged.* The critical path stays aris2puml A1b → A4.
+    Open checkboxes stay at 17, all gated.
+  - *Re-litigate on* the knowledge-graph settlement's four triggers,
+    unchanged. The first, a model set beyond one in-memory batch, is the
+    one a Neo4j-resident corpus would most plausibly fire, and none is
+    named.
+
+  *Docs only: no product code, golden, schema or score moved.*
