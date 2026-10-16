@@ -16,10 +16,12 @@ sides — OWL cannot see an absence, SHACL reports every absence a shape
 constrains, and neither grades. Diagnostic: its integration model separates *representation*,
 *transformation run* and *validation result*, and keeps a diagram's
 occurrence of an element apart from the entity it depicts. Held against the
-chain, that separation finds two gaps no record names. **Gap 1**: every run
-record the chain emits names its inputs by path only — pumllint's JSON
-reports carry no tool version, configuration identity or input digest, and
-aris2puml's sidecar carries the tool version but no digest. **Gap 2**:
+chain, that separation finds two gaps no record names. **Gap 1**: what the
+chain *ships* names its inputs by path only — pumllint's JSON reports carry
+no tool version, configuration identity or input digest (the HTML report's
+footer names the version, and nothing else), and aris2puml's sidecar names
+its tool version but no digest. The project's own measurement drivers do
+digest their inputs (§4); the shipped tools do not. **Gap 2**:
 element identity stops at aris2puml's emitter — the ARIS ids survive into
 the JSON and the sidecar's notes, none reaches the `.puml`, and a pumllint
 finding offers `(file, line)` and the element's name, so the only way back
@@ -38,6 +40,16 @@ thread. The seven Medium articles were not fetched: they are characterized
 from the synthesis, and no verdict rests on them. The OMG BPMN, Neo4j
 neosemantics, Crossref and DOI Foundation pages were not read, and nothing
 here depends on them. The DCAT 3 page was read for its status line only.*
+
+*Corrected 2026-10-16, after a code review of this record: seven
+statements were wrong or overreached, and are fixed in place. XD005 never
+joins swimlanes (§2, §5); the demo is the golden plus a comment header, not
+the golden (§5); Gap 1 is about what the chain ships, not every run record
+(verdict, §4); per-input digests are a per-file fact and do not ride as
+root keys (§4 constraints 1–2, §8); lint findings get no provenance from a
+score or trace report, which is a separate run (§4 constraint 1); and the
+shared digest is now defined to the byte (§4 constraint 4). The ROADMAP's
+decision log carries the same list under this date.*
 
 ## 0. The document, so this note stands alone
 
@@ -135,7 +147,7 @@ Running the synthesis's experiment would be an owner go, not a trigger.
 | §4 Do: record the rule behind each derivation | Already the rule | `ruleId` on every finding; `code` and `node` on every sidecar note. |
 | §4 Do: test cross-artefact questions against reviewed answers | Already the rule | The executable RULES.md, the golden scores, aris2puml's golden diagram and corpus census. |
 | §4 Don't: reduce relationships to `RELATED_TO` | The shape `trace` has | Typed diagram→diagram links are Arc C's G6/O4 item. Trigger unchanged: an adopter running `trace` who asks for them. |
-| §4 Don't: merge entities on similar names | **The XD join, in exact-match form** | XD joins on name equality: participants by alias, swimlanes by name (XD004 case-insensitively, XD005 exactly). XD compares and reports; it never merges. `distinct` declares a join false. The display-name identity candidate (Arc C, G2) is already written as evidence-shaped, minor and `distinct`-honouring, so this warning bounds G2 rather than firing it; G2's trigger is an adopter corpus using aliases inconsistently. |
+| §4 Don't: merge entities on similar names | **The XD join, in exact-match form** | XD joins on name equality: participants by alias, swimlanes by name — in XD004 only, case-insensitively. XD005 never sees a swimlane: a lane declares no stereotype, and XD005 keeps only sites that declare one. XD compares and reports; it never merges. `distinct` declares a join false. The display-name identity candidate (Arc C, G2) is already written as evidence-shaped, minor and `distinct`-honouring, so this warning bounds G2 rather than firing it; G2's trigger is an adopter corpus using aliases inconsistently. |
 | §4 Don't: treat conformance as truth | Already the rule | "Gate on the linter, not the level"; the chain certifies Know What and never Know Why (2026-09-14). |
 | §4 Don't: overwrite history | Already the discipline | The ROADMAP's decision log annotates in place. The product keeps one level per diagram and leaves history to git. |
 | §4 Don't: claim lossless round-tripping | Already the rule | aris2puml's census figures and the sidecar's `dropped`. |
@@ -193,7 +205,7 @@ stands, and is now quoted rather than characterized. The Linked.Archi
 note's "binary by the specification", read then from Linked.Archi's page,
 is annotated as confirmed.
 
-## 4. Gap 1 — run records name their inputs by path only
+## 4. Gap 1 — the shipped reports name their inputs by path only
 
 What each output carries, as executed:
 
@@ -230,24 +242,64 @@ it judged.
 
 Design constraints, recorded so a build does not re-derive them:
 
-1. **The lint report has no root.** It is a bare array, and repeating a
-   run-level fact on every finding was the shape rejected for
-   `syntaxGateRan` ("a per-diagram key would repeat one fact N times",
-   #30's record). The lint report stays as it is. A consumer needing
-   provenance for lint findings takes it from a score or trace report of
-   the same run, or from a run record outside the report — the 2026-08-10
-   portable run-record candidate.
-2. **Score and trace take additive root keys.** That is inside owner
-   decision §6.5's yes ("an additive field in an existing pinned shape is
-   inside the yes"). `syntaxGateRan` is the precedent, and its route is the
-   announcement: README § Report schemas, the schema's own description,
-   and this file. A strict validator holding an older schema rejects the
-   new key; README already says so.
+1. **The lint report has no root, and no other report stands in for
+   it.** It is a bare array. The run-level facts — version, configuration
+   identity — have nowhere to go but onto every finding, which is the shape
+   rejected for `syntaxGateRan` ("a per-diagram key would repeat one fact
+   N times", #30's record); turning the array into an object breaks a
+   pinned report shape. A digest per finding is a different case — a
+   per-file fact, not a run-level one — but alone it names neither the
+   version nor the rule set. The lint report stays as it is.
+   - A score or trace report does **not** carry provenance for lint
+     findings. `pumllint <paths>`, `pumllint score` and `pumllint trace`
+     are separate invocations, free to differ in `-c`, `--profile` and
+     time, so there is no "same run" to borrow from.
+   - So this candidate leaves lint and sonar findings — the outputs most
+     consumers ingest — without provenance. A consumer that needs it for
+     lint findings needs a record outside the report: the 2026-08-10
+     portable run-record candidate, wrapping the lint invocation. When the
+     trigger below fires on lint findings, that candidate is part of the
+     build.
+2. **Score and trace: run-level facts at the root, digests per input.**
+   Both are inside owner decision §6.5's yes ("an additive field in an
+   existing pinned shape is inside the yes").
+   - **Version and effective-configuration identity** are one fact per
+     run: additive root keys. `syntaxGateRan` is the precedent, and its
+     route is the announcement — README § Report schemas, the schema's own
+     description, and this file.
+   - **Input digests** are one fact per input file, so the precedent does
+     not cover them, and a root map keyed by path would duplicate the
+     paths the items already carry. In the score report each digest rides
+     on the `diagrams[]` item that names its file — the item that also
+     holds the gap report's findings. A file holding several diagrams
+     repeats its digest on each of its items; that is the same bytes named
+     twice, not a run fact named N times.
+   - The trace report has no item that names each input once: a diagram
+     appears on as many sites as it has citations, and the inventory on
+     none. Its digests go in one additive root list, one `{file, digest}`
+     per input — diagrams, the inventory and the feature files.
+   - Every schema involved closes its objects (`additionalProperties:
+     false`), so a strict validator holding an older schema rejects the
+     new keys; README already says so.
 3. **A version in the report changes its bytes every release.** This is
    already accepted for the HTML report: the published example carries
    `0.33.0`, and `tests/test_pilot_example.py`'s byte comparison forces a
    regeneration per release.
-4. **Digest the decoded text with LF line endings, not the bytes.**
+4. **Digest the decoded text with LF line endings, not the bytes.** The
+   definition, to the byte:
+   - decode as `read_text_and_encoding` does: a UTF-8, UTF-16 or UTF-32
+     byte-order mark selects the codec and is dropped; otherwise strict
+     UTF-8;
+   - replace every CRLF, then every remaining lone CR, with LF;
+   - change nothing else — no Unicode normalisation, no trimming, no final
+     newline added or removed;
+   - encode the result as UTF-8 without a byte-order mark, and take its
+     SHA-256, as lowercase hex.
+
+   The build pins it with the same test vectors in both repositories — at
+   least a UTF-16 file with a BOM, a UTF-8 file with a BOM, a CRLF file
+   and a lone-CR file, each equal to its plain-UTF-8, LF twin. Why not the
+   bytes:
    - `read_text_and_encoding` reads bytes and decodes them without newline
      translation, and honours UTF-16 and UTF-32 byte-order marks.
    - Git for Windows checks text out as CRLF by default, which is why this
@@ -262,9 +314,11 @@ Design constraints, recorded so a build does not re-derive them:
    two files can state one rule set. `trace`'s inventory and feature files
    are inputs too.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
-   UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`), so its output digest
-   and pumllint's input digest of the same diagram are equal by
-   construction. The two records then join on content, not on paths that
+   UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
+   digest under constraint 4 on the text it is about to write, not on
+   bytes re-read, so its output digest and pumllint's input digest of the
+   same diagram are equal by construction, and the shared test vectors
+   keep them so. The two records then join on content, not on paths that
    differ between machines and invocations (the sidecar's `output` is
    whatever `-o` was given, absolute or relative).
 
@@ -305,7 +359,7 @@ Walked through one fixture, aris2puml's golden
    `participant "Order Service" as OS <<svc>>` against
    `database "Order Service" as OrderService <<store>>`, and XD001 plus
    XD002 at both sites once the alias matches. Swimlanes join by name
-   (XD004, XD005). For a converted process the lane is an ARIS org unit,
+   (XD004 only; XD005 never sees a lane). For a converted process the lane is an ARIS org unit,
    itself an object definition whose GUID the join never sees.
 
 So the chain carries the entity/occurrence distinction from ARIS as far as
@@ -323,8 +377,10 @@ Three carriers are possible, and two are wrong:
 - **A comment per node** (the `' aris:` form). Invisible to every rule —
   docs/business-processes.md §2's interface row says so — so no finding
   carries it, and a consumer would still read the diagram's text. It also
-  moves the golden, which is pumllint's demo, so it is a change in both
-  repositories. B4 (2026-09-06) met this exact wall for interface targets
+  moves the golden and pumllint's demo together — the demo
+  (`docs/process-demo/order_to_cash.puml`, 40 lines) is the golden's 34
+  lines plus a six-line comment header (lines 2–7), so its lines sit six
+  below the golden's — and is therefore a change in both repositories. B4 (2026-09-06) met this exact wall for interface targets
   and added a footer copy beside the comment. That is right for one
   process id per diagram and impossible for one id per line. Expensive,
   for nothing a rule can use.
@@ -333,8 +389,8 @@ Three carriers are possible, and two are wrong:
     and `interfaces` were (both 2026-09-06);
   - read-only: nothing is written to ARIS, so the "no round-trip" Never
     stands;
-  - multi-valued by necessity: line 10 of the golden,
-    `if (Order valid?) then (Order valid)`, carries the XOR split `x1` and
+  - multi-valued by necessity: line 10 of the golden (line 16 of
+    pumllint's demo), `if (Order valid?) then (Order valid)`, carries the XOR split `x1` and
     its first outcome's event `e1`; lane lines carry org-unit ids; and a
     process-level finding maps to the process id the record already holds;
   - joined on `(file, line)`, and path-independently once gap 1's digests
@@ -430,8 +486,11 @@ already practised where this project measures (§4).
 **Decision: nothing queued.** Two candidates are recorded, both gated:
 
 1. **pumllint, Arc E — run provenance in the score and trace reports:**
-   tool version, effective-configuration identity and input digests as
-   additive root keys. The lint array stays as it is. *Trigger*: §4.
+   tool version and effective-configuration identity as additive root
+   keys; input digests per input — on each score `diagrams[]` item, and in
+   one root list on the trace report. The lint array stays as it is, so
+   lint and sonar findings stay without provenance unless the 2026-08-10
+   run-record candidate is built with it. *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:
    - (a) the line → ids map (gap 2; *trigger*: §5);
@@ -479,6 +538,9 @@ python -m pumllint a.puml c.puml -f json    # XD001, XD002 at both sites
 # aris2puml, at f725b59
 aris2puml tests/fixtures/order_to_cash.json -o out --report sidecar.json --manifest manifest.json
 grep -c "" tests/expected/order-to-cash.puml                 # 34 lines, two ids, both process ids
+
+# pumllint again: the demo is the golden plus a comment header
+grep -c "" docs/process-demo/order_to_cash.puml              # 40 lines: header at 2–7, golden line 10 is 16
 ```
 
 ## Related reading
