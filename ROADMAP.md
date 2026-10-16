@@ -572,14 +572,20 @@ three items — full write-up in EVIDENCE.md §Deepening:
   <version>` is the only self-description any report carries; the badge's
   `schemaVersion` is shields.io's endpoint-format version. Candidate,
   inside owner decision §6.5's yes:
-  - **Tool version and effective-configuration identity** — one fact per
-    run — as additive root keys on the score and trace reports, announced
-    the `syntaxGateRan` way.
-  - **Input digests** — one fact per input file, which the `syntaxGateRan`
-    precedent does not cover — on each score `diagrams[]` item (beside the
-    gap report's findings), and in one additive root list of `{file,
-    digest}` on the trace report, which has no item naming each input
-    once. `trace`'s inventory and feature files count as inputs.
+  - **Run-level facts as additive root keys** on the score and trace
+    reports, announced the `syntaxGateRan` way: the tool version; the
+    effective-configuration identity, which counts every command-line
+    option that changes what is reported (`--profile` and
+    `--no-suppressions` on score, `--pattern` on trace), not only the
+    file's; on score, the digest of the `--baseline FILE` when one is
+    given; and, when `--check-syntax` ran, the version the PlantUML
+    engine reports, or a statement that it is unknown.
+  - **Input digests, one per input file** — a per-file fact, so outside
+    the `syntaxGateRan` precedent: on score, on each `diagrams[]` item
+    itself, beside its `file` key; on trace, which has no item naming
+    each input once, in one additive root list of `{file, digest}` over
+    the diagrams, the inventory (the `--requirements` file, or every
+    file `--requirements-scan` read) and the feature files.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -593,21 +599,30 @@ three items — full write-up in EVIDENCE.md §Deepening:
     pumllint's input digest for the same diagram and the two records join
     on content.
   - **Not covered: lint and sonar findings.** The lint report is a bare
-    array with no root, and stays as it is. A score or trace report cannot
-    lend it provenance: `pumllint`, `pumllint score` and `pumllint trace`
-    are separate invocations, free to differ in `-c` and `--profile`. A
-    consumer that needs provenance per lint finding needs the 2026-08-10
-    portable run-record candidate, built with this one. *Trigger: an
-  adopter retaining the reports as audit evidence, or a consumer — an
-  evidence store, a knowledge graph — ingesting them, who must say which
-  version, configuration and input produced a finding. When it fires,
-  pumllint's half lands first.* *[2026-10-16: the knowledge-graph consumer
-  now has a concrete shape. Reading 3 of docs/graph-store-evaluation.md
-  imports `-f json` into Neo4j on the consumer's side, with no pumllint
-  code, and is a dashboard rather than an evidence record until this item
-  ships — for imported lint findings, until the 2026-08-10 run record
-  ships with it, per the 2026-10-16 correction above. A question about such a consumer is not one, so the trigger is
-  unchanged and not fired.]*
+    array with no root, and stays as it is. A score or trace report
+    cannot lend it provenance: `pumllint`, `pumllint score` and
+    `pumllint trace` are separate invocations, free to differ in `-c`,
+    and lint and score also in `--profile` and `--no-suppressions`,
+    which trace does not take. Nothing recorded closes this. The
+    2026-08-10 portable run-record candidate is a pilot-repo format for
+    generation runs, gated on a real pilot stabilizing one, and builds
+    nothing here before then. If the trigger fires on lint findings, how
+    they get provenance is an open question for that build, put to the
+    owner.
+
+  *Trigger: an adopter retaining the reports as audit evidence, or a
+  consumer — an evidence store, a knowledge graph — ingesting them, who
+  must say which version, configuration and input produced a finding.
+  When it fires, pumllint's half lands first.* *[2026-10-16: the
+  knowledge-graph consumer now has a concrete shape. Reading 3 of
+  docs/graph-store-evaluation.md imports `-f json` into Neo4j on the
+  consumer's side, with no pumllint code, and is a dashboard rather than
+  an evidence record until this item ships — and, for imported lint
+  findings, even then, since this item covers score and trace only
+  (Not covered, just above; the two Corrected 2026-10-16 notes under
+  the 2026-10-12 decision-log entry say why). A question about
+  such a consumer is not one, so the trigger is unchanged and not
+  fired.]*
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -7375,8 +7390,9 @@ list and license posture live in § Settled questions.
       exact-match form. Participants join by alias — re-probed at
       `558d762`: same display name, different aliases, zero XD findings.
       Swimlanes join by name, in XD004 only: XD005 keeps only sites that
-      declare a stereotype, and a lane declares none. The join compares and never merges, and
-      `distinct` and G2's evidence-shaped design already bound it.
+      declare a stereotype, and a lane declares none. The join compares
+      and never merges, and `distinct` and G2's evidence-shaped design
+      already bound it.
   - **Gap 1 — the shipped reports name their inputs by path only.**
     - pumllint: the lint JSON is a bare array of `{file, line, message,
       ruleId, severity}`; the score and trace roots carry no version,
@@ -7390,14 +7406,14 @@ list and license posture live in § Settled questions.
       record sha256 digests of the frozen kit; aris2puml pins
       `SAPModels.epml` (`EPML_SHA256`, `--verify`).
     - Recorded as Arc E's *Run provenance in the score and trace reports*
-      (version and configuration as root keys, digests per input; the
-      lint report stays an array, so lint findings need the 2026-08-10
-      run record) and as aris2puml D4(b).
+      (run-level facts as root keys, digests per input file; the lint
+      report stays an array, so lint findings stay without provenance,
+      an open question for the build) and as aris2puml D4(b).
     - One digest definition, over decoded, LF-normalised text, defined to
-      the byte in the Arc E item. Raw bytes
-      would split Windows from POSIX: `read_text_and_encoding` does no
-      newline translation, and `.gitattributes` exists because Git for
-      Windows checks text out as CRLF.
+      the byte in the Arc E item. Raw bytes would split Windows from
+      POSIX: `read_text_and_encoding` does no newline translation, and
+      `.gitattributes` exists because Git for Windows checks text out as
+      CRLF.
   - **Gap 2 — element identity stops at aris2puml's emitter.**
     - ARIS keeps the entity/occurrence split natively, and the report
       script keeps both halves (`<definition GUID>#<occurrence index>`,
@@ -7458,17 +7474,59 @@ list and license posture live in § Settled questions.
     what the chain *ships*, here and in docs/README.md's index entry,
     which had also dropped the HTML footer's version and the sidecar's
     `tool`.
-  - *Digests are per input, not root keys.* `syntaxGateRan` covers one
-    run-level fact; a digest is one per file. Version and configuration
-    stay root keys; digests ride on score's `diagrams[]` items and in one
-    root list on trace.
+  - *Digests are per input file, not run-level root keys.*
+    `syntaxGateRan` covers one run-level fact; a digest is one per file.
+    Version and configuration stay root keys; digests ride on score's
+    `diagrams[]` items and, on trace, which has no item naming each input
+    once, in one root list with one entry per input file.
   - *No "same run" for lint.* Lint, score and trace are separate
     invocations, so a score or trace report cannot lend lint findings
     provenance. The candidate now says lint and sonar findings stay
-    without it unless the 2026-08-10 run record is built alongside.
+    without it.
   - *The digest is defined to the byte* — BOM handling, CRLF and lone CR,
-    UTF-8 re-encoding, shared test vectors — so pumllint and aris2puml
-    cannot diverge while each follows the text.
+    UTF-8 re-encoding — and aris2puml computes it on the text it writes,
+    pinned by shared test vectors, so pumllint and aris2puml cannot
+    diverge while each follows the text.
+
+  *[Corrected again 2026-10-16, after a code review of the correction
+  above (#170): ten findings, all in text that correction wrote, fixed
+  in place here, in the Arc E item, in
+  docs/kg-research-synthesis-evaluation.md (whose bounds carry the same
+  list) and in docs/graph-store-evaluation.md §4. Priorities, checkbox
+  counts and triggers unchanged. Docs only.]*
+  - *The run-record candidate was misdescribed.* The correction had the
+    2026-08-10 portable run-record candidate "built with" Arc E and
+    "wrapping the lint invocation". It is a pilot-repo format for
+    generation runs, gated on a real pilot stabilizing one, with nothing
+    built here before then (docs/sdd-manifest-evaluation.md), so that
+    wording moved its gate. Lint and sonar findings now stay without
+    provenance, and how to give them any is an open question for Arc E's
+    build — in the Arc E item, the evaluation's §4 and §8, the Reading 3
+    bullet of the 2026-10-16 graph-store entry and the graph-store
+    note's §4.
+  - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
+    exits 2 on an unrecognized argument; only lint and score take
+    `--profile` and `--no-suppressions`.
+  - *"Not root keys" contradicted trace's root list.* Digests are a
+    per-file fact, not a run-level root key on the `syntaxGateRan`
+    precedent; on trace they sit in one root list because no item names
+    each input once.
+  - *Inputs left out.* Score's `--baseline FILE`, which sets every
+    `baseline` in the report, the command-line options that change what
+    is reported, and the PlantUML engine behind `--check-syntax` are now
+    named.
+  - *"Beside the gap report's findings"* is now the `diagrams[]` item
+    itself, beside `file`; the findings sit at
+    `diagrams[].maturity.gapReport[].findings[]`.
+  - *The UTF-8 byte-order mark* was missing from the evaluation's digest
+    rationale; `_BOMS` in `pumllint/textio.py` drops it like the UTF-16
+    and UTF-32 marks.
+  - *The Arc E trigger* had run on inside the item's last sub-bullet, and
+    the item's pointer to "the 2026-10-16 correction above" pointed at
+    this decision log, far below. The trigger is its own paragraph again
+    and the pointer names where it goes.
+  - *The evaluation's correction note* had left out §4 constraint 6, and
+    the prose both corrections touched is re-wrapped.
 
 - **Graph store / "run pumllint on Neo4j" (2026-10-16): no inside the
   store; a converter shape recorded outside this repository; nothing to
@@ -7529,10 +7587,10 @@ list and license posture live in § Settled questions.
     No Cypher or RDF reporter. The chat answer's "zero build" was right
     about code and wrong about value: an imported finding names its
     input by path only (Gap 1), so a graph of findings is a dashboard
-    until *Run provenance in the score and trace reports* ships (for
-    lint findings, with the 2026-08-10 run record beside it). That
-    item's trigger already names "a knowledge graph ingesting them". It
-    is annotated with this shape, and is not fired.
+    until *Run provenance in the score and trace reports* ships, and
+    for lint findings not even then: that item covers score and trace
+    only. That item's trigger already names "a knowledge graph ingesting
+    them". It is annotated with this shape, and is not fired.
   - *The corporate framing.* BPMN is the four grounds of 2026-08-27. UML
     is the product, for the subset it parses. Customer journeys have no
     PlantUML diagram type and no artefact here, and a journey drawn as an

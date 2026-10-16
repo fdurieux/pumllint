@@ -45,11 +45,30 @@ here depends on them. The DCAT 3 page was read for its status line only.*
 statements were wrong or overreached, and are fixed in place. XD005 never
 joins swimlanes (§2, §5); the demo is the golden plus a comment header, not
 the golden (§5); Gap 1 is about what the chain ships, not every run record
-(verdict, §4); per-input digests are a per-file fact and do not ride as
-root keys (§4 constraints 1–2, §8); lint findings get no provenance from a
-score or trace report, which is a separate run (§4 constraint 1); and the
-shared digest is now defined to the byte (§4 constraint 4). The ROADMAP's
-decision log carries the same list under this date.*
+(verdict, §4); per-input digests are a per-file fact, not a run-level
+root key on the `syntaxGateRan` precedent (§4 constraints 1–2, §8); lint
+findings get no provenance from a score or trace report, which is a
+separate run (§4 constraint 1); the shared digest is now defined to the
+byte (§4 constraint 4); and aris2puml computes it on the text it writes,
+pinned by test vectors both repositories share (§4 constraint 6). The
+ROADMAP's decision log carries the same list under this date.*
+
+*Corrected again 2026-10-16, after a code review of that correction
+(#170): ten statements it wrote were wrong, contradictory or incomplete,
+and are fixed in place. It had the 2026-08-10 portable run-record
+candidate "built with" Arc E and "wrapping the lint invocation"; that
+candidate is a pilot-repo format, gated on its own trigger, so lint
+findings' provenance is now an open question for the build (§4
+constraint 1, §8). `trace` takes no `--profile` (§4 constraint 1). The
+note above said digests "do not ride as root keys" while §4 put trace's
+in a root list; it now says what it meant. Constraint 4's rationale had
+left out the UTF-8 byte-order mark. Constraint 5 now names the
+command-line options, score's baseline file and the PlantUML engine
+(§4 constraints 2 and 5). Score's digest sits on the `diagrams[]` item
+itself, not "beside the gap report's findings" (§4 constraint 2). The
+note above now lists constraint 6, and the prose both corrections
+touched is re-wrapped. The ROADMAP's decision log carries the same
+list.*
 
 ## 0. The document, so this note stands alone
 
@@ -252,32 +271,46 @@ Design constraints, recorded so a build does not re-derive them:
    version nor the rule set. The lint report stays as it is.
    - A score or trace report does **not** carry provenance for lint
      findings. `pumllint <paths>`, `pumllint score` and `pumllint trace`
-     are separate invocations, free to differ in `-c`, `--profile` and
-     time, so there is no "same run" to borrow from.
+     are separate invocations, free to differ in `-c` and in time, and
+     lint and score also in `--profile` and `--no-suppressions`, which
+     `trace` does not take. There is no "same run" to borrow from. Nor
+     does the score report carry the findings themselves: its gap report
+     holds "the minimal blocking set to reach `level + 1`"
+     (`build_gap_report`), not every finding.
    - So this candidate leaves lint and sonar findings — the outputs most
-     consumers ingest — without provenance. A consumer that needs it for
-     lint findings needs a record outside the report: the 2026-08-10
-     portable run-record candidate, wrapping the lint invocation. When the
-     trigger below fires on lint findings, that candidate is part of the
-     build.
+     consumers ingest — without provenance, and nothing recorded closes
+     that. The 2026-08-10 portable run-record candidate is not the route:
+     it is a format for adopter generation runs, "a pilot-repo artifact"
+     gated on a real pilot stabilizing one, with "nothing … built here
+     before then" (docs/sdd-manifest-evaluation.md, *Recorded, not
+     queued*, item 1). When the trigger below fires on lint findings, how
+     they get provenance is an open design question for that build, put
+     to the owner, not settled here.
 2. **Score and trace: run-level facts at the root, digests per input.**
    Both are inside owner decision §6.5's yes ("an additive field in an
    existing pinned shape is inside the yes").
-   - **Version and effective-configuration identity** are one fact per
-     run: additive root keys. `syntaxGateRan` is the precedent, and its
-     route is the announcement — README § Report schemas, the schema's own
+   - **Run-level facts** are one fact per run: additive root keys. They
+     are the version, the effective-configuration identity (constraint
+     5), on score the digest of the `--baseline FILE` when one is given,
+     and, when `--check-syntax` ran, the PlantUML engine's version
+     (constraint 5). `syntaxGateRan` is the precedent, and its route is
+     the announcement — README § Report schemas, the schema's own
      description, and this file.
    - **Input digests** are one fact per input file, so the precedent does
      not cover them, and a root map keyed by path would duplicate the
      paths the items already carry. In the score report each digest rides
-     on the `diagrams[]` item that names its file — the item that also
-     holds the gap report's findings. A file holding several diagrams
-     repeats its digest on each of its items; that is the same bytes named
-     twice, not a run fact named N times.
+     on the `diagrams[]` item itself, beside its `file` key — not inside
+     `maturity`, and not on the gap report's findings three levels down
+     (`diagrams[].maturity.gapReport[].findings[]`). A file holding
+     several diagrams repeats its digest on each of its items; that is the
+     same bytes named twice, not a run fact named N times.
    - The trace report has no item that names each input once: a diagram
      appears on as many sites as it has citations, and the inventory on
      none. Its digests go in one additive root list, one `{file, digest}`
-     per input — diagrams, the inventory and the feature files.
+     per input file — the diagrams, the inventory (the `--requirements`
+     file, or every file `--requirements-scan` read) and the feature
+     files. That list is a root key, but not a run-level fact on the
+     `syntaxGateRan` precedent: it is the per-file fact, listed once.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -301,7 +334,8 @@ Design constraints, recorded so a build does not re-derive them:
    and a lone-CR file, each equal to its plain-UTF-8, LF twin. Why not the
    bytes:
    - `read_text_and_encoding` reads bytes and decodes them without newline
-     translation, and honours UTF-16 and UTF-32 byte-order marks.
+     translation, with the codec a UTF-8, UTF-16 or UTF-32 byte-order mark
+     selects (`_BOMS` in `pumllint/textio.py`), which drops the mark.
    - Git for Windows checks text out as CRLF by default, which is why this
      repository's `.gitattributes` pins `eol=lf`: without it, its own
      comment says, the pilot artefacts' byte comparison fails on a Windows
@@ -311,8 +345,16 @@ Design constraints, recorded so a build does not re-derive them:
      that forward-slash paths exist to keep.
 5. **Configuration identity means the effective configuration** — profile
    applied, defaults resolved — not the configuration file's bytes, since
-   two files can state one rule set. `trace`'s inventory and feature files
-   are inputs too.
+   two files can state one rule set. It includes every command-line option
+   that changes what is reported, not only the file's: `--profile` and
+   `--no-suppressions` on score, `--pattern` on trace. Two things are not
+   configuration and are named separately (constraint 2):
+   - inputs: `trace`'s inventory and feature files, and score's
+     `--baseline FILE`, which sets every `baseline` in the report;
+   - with `--check-syntax`, the PlantUML engine, which decides DIM-SYN.
+     `scoring.syntax_command` is configuration, but the engine's version
+     is neither configuration nor an input file. The report records the
+     version the engine reports, or says it is unknown.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
    UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
    digest under constraint 4 on the text it is about to write, not on
@@ -359,8 +401,9 @@ Walked through one fixture, aris2puml's golden
    `participant "Order Service" as OS <<svc>>` against
    `database "Order Service" as OrderService <<store>>`, and XD001 plus
    XD002 at both sites once the alias matches. Swimlanes join by name
-   (XD004 only; XD005 never sees a lane). For a converted process the lane is an ARIS org unit,
-   itself an object definition whose GUID the join never sees.
+   (XD004 only; XD005 never sees a lane). For a converted process the
+   lane is an ARIS org unit, itself an object definition whose GUID the
+   join never sees.
 
 So the chain carries the entity/occurrence distinction from ARIS as far as
 the sidecar, and drops it at the one boundary a finding crosses. The way
@@ -380,19 +423,21 @@ Three carriers are possible, and two are wrong:
   moves the golden and pumllint's demo together — the demo
   (`docs/process-demo/order_to_cash.puml`, 40 lines) is the golden's 34
   lines plus a six-line comment header (lines 2–7), so its lines sit six
-  below the golden's — and is therefore a change in both repositories. B4 (2026-09-06) met this exact wall for interface targets
-  and added a footer copy beside the comment. That is right for one
-  process id per diagram and impossible for one id per line. Expensive,
-  for nothing a rule can use.
+  below the golden's — and is therefore a change in both repositories.
+  B4 (2026-09-06) met this exact wall for interface targets and added a
+  footer copy beside the comment. That is right for one process id per
+  diagram and impossible for one id per line. Expensive, for nothing a
+  rule can use.
 - **A line → ids map in the sidecar**, per converted record:
   - aris2puml's alone, and an additive key inside version 1, as `flagged`
     and `interfaces` were (both 2026-09-06);
   - read-only: nothing is written to ARIS, so the "no round-trip" Never
     stands;
   - multi-valued by necessity: line 10 of the golden (line 16 of
-    pumllint's demo), `if (Order valid?) then (Order valid)`, carries the XOR split `x1` and
-    its first outcome's event `e1`; lane lines carry org-unit ids; and a
-    process-level finding maps to the process id the record already holds;
+    pumllint's demo), `if (Order valid?) then (Order valid)`, carries
+    the XOR split `x1` and its first outcome's event `e1`; lane lines
+    carry org-unit ids; and a process-level finding maps to the process
+    id the record already holds;
   - joined on `(file, line)`, and path-independently once gap 1's digests
     exist.
 
@@ -489,8 +534,8 @@ already practised where this project measures (§4).
    tool version and effective-configuration identity as additive root
    keys; input digests per input — on each score `diagrams[]` item, and in
    one root list on the trace report. The lint array stays as it is, so
-   lint and sonar findings stay without provenance unless the 2026-08-10
-   run-record candidate is built with it. *Trigger*: §4.
+   lint and sonar findings stay without provenance; how to give them any
+   is open (§4 constraint 1). *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:
    - (a) the line → ids map (gap 2; *trigger*: §5);
