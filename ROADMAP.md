@@ -602,20 +602,20 @@ three items — full write-up in EVIDENCE.md §Deepening:
     HTML and badge, every text report). The candidate adds keys to the
     score and trace JSON shapes only. Whether anything will give the lint
     report's findings provenance is an open question for the build, put to
-    the owner; the evaluation's §4 constraint 1 has the reasoning. This is
-    the one statement of the carve-out's scope; the evaluation's §4
-    constraint 1 gives its reasoning, and other summaries name it in a
-    clause that points here.
+    the owner. This is the one statement of the carve-out's scope; the
+    evaluation's §4 constraint 1 gives its reasoning, and the summaries
+    that name the carve-out point here.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
   must say which version, configuration and input produced a finding. When
-  it fires, pumllint's half lands first.* *[2026-10-16: the knowledge-graph
-  consumer now has a concrete shape, which this item only half serves.
-  Reading 3 of docs/graph-store-evaluation.md imports `-f json` into Neo4j
-  on the consumer's side, with no pumllint code, and is a dashboard rather
-  than an evidence record until this item ships. Its worked example imports
-  the lint report's findings, which this item does not cover (Not covered,
+  it fires, both halves land in one cross-repository change, pumllint's
+  first.* *[2026-10-16: the knowledge-graph consumer now has a concrete
+  shape, which this item only half serves. Reading 3 of
+  docs/graph-store-evaluation.md imports `-f json` into Neo4j on the
+  consumer's side, with no pumllint code, and is a dashboard rather than
+  an evidence record until this item ships. Its worked example imports the
+  lint report's findings, which this item does not cover (Not covered,
   just above). A question about such a consumer is not one, so the trigger
   is unchanged and not fired.]*
 
@@ -7512,12 +7512,13 @@ list and license posture live in § Settled questions.
     and the evaluation's first note. Digests are a per-file fact, not a
     run-level root key on the `syntaxGateRan` precedent; where each sits
     is in the Arc E item.
-  - *Inputs left out.* Score's baseline file, what the configuration
-    identity covers on each command, trace's lenient readers and what
-    the syntax gate depends on beyond the file. Specifying each drew a
-    new review finding every pass, so the Arc E item now lists them as
-    open for the build, with the evidence in the evaluation's §4
-    constraint 7, rather than deciding them for an unbuilt candidate.
+  - *Inputs left out.* Score's baseline file (a root-list candidate), what
+    the configuration identity covers on each command, trace's lenient
+    readers and what the syntax gate depends on beyond the file.
+    Specifying each drew a new review finding every pass, so the Arc E
+    item now lists them as open for the build, with the evidence in the
+    evaluation's §4 constraint 7, rather than deciding them for an unbuilt
+    candidate.
   - *Five summaries #169 wrote* said an imported finding is evidence once
     Arc E ships — the graph-store note's verdict, its §1 table row (3) and
     its *Recorded, not queued* item 2, the Reading 3 heading of the
@@ -7538,8 +7539,9 @@ list and license posture live in § Settled questions.
     rationale.
   - *The Arc E trigger* had run on inside the item's last sub-bullet, and
     the item's pointer to "the 2026-10-16 correction above" pointed at
-    this decision log, far below. The trigger is back at the item's
-    level, now its own paragraph, and the pointer names where it goes.
+    this decision log, far below. The trigger is back at the item's level,
+    now its own paragraph, and the pointer is gone: the annotation points
+    only at the item's own *Not covered*.
   - *The evaluation's correction note* had left out §4 constraint 6, and
     the prose both corrections touched is re-wrapped.
 

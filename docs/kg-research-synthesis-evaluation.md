@@ -28,7 +28,8 @@ the `.puml`, and a pumllint finding offers `(file, line)` and the
 element's name, so the only way back to the ARIS object is the
 name-equality join the synthesis warns against. Both are recorded as gated
 candidates, one per repository's contract — pumllint's covering the score
-and trace JSON reports only; neither is queued, and no priority moves.**
+and trace JSON reports only (Arc E item, *Not covered*); neither is
+queued, and no priority moves.**
 
 *Bounds: every repository claim was executed at the two commits above, and
 §9 lists the commands. The primaries were read at the source for the
@@ -273,16 +274,16 @@ Design constraints, recorded so a build does not re-derive them:
      There is no "same run" to borrow from. Nor does the score report carry
      the findings themselves: its gap report holds "the minimal blocking
      set to reach `level + 1`" (`build_gap_report`), not every finding.
-   - So this candidate leaves the lint report's findings — and the sonar
-     report's, the outputs most consumers ingest — without provenance, and
-     nothing recorded closes that. The 2026-08-10 portable run-record
-     candidate is not the route: it is a format for adopter generation
-     runs, "a pilot-repo artifact" gated on a real pilot stabilizing one,
-     with "nothing … built here before then"
+   - So this candidate leaves the lint report's findings — the output most
+     consumers ingest — without provenance (its full scope: the Arc E
+     item's *Not covered*), and nothing recorded closes that. The
+     2026-08-10 portable run-record candidate is not the route: it is a
+     format for adopter generation runs, "a pilot-repo artifact" gated on
+     a real pilot stabilizing one, with "nothing … built here before then"
      (docs/sdd-manifest-evaluation.md, *Recorded, not queued*, item 1).
-     When the trigger below fires on lint findings, how they get provenance
-     is an open design question for that build, put to the owner, not
-     settled here.
+     When the trigger below fires on lint findings, how they get
+     provenance is an open design question for that build, put to the
+     owner, not settled here.
 2. **Score and trace: run-level facts at the root, digests per input.**
    Both are inside owner decision §6.5's yes ("an additive field in an
    existing pinned shape is inside the yes").
@@ -350,8 +351,8 @@ Design constraints, recorded so a build does not re-derive them:
    recorded so the build does not re-derive it; none of it is design.
    - *What the configuration identity covers.* Score builds an engine from
      the rules, the active profile with its `profiles:` definition (enable
-     lists, escalations) and the top-level `suppressions` key; it reads the
-     `scoring` section through `ScoringConfig.from_dict`, except
+     lists, escalations) and the top-level `suppressions` key; it reads
+     the `scoring` section through `ScoringConfig.from_dict`, except
      `syntax_gate` and `syntax_command` — the PlantUML command the gate
      runs — which `_run_score` reads itself; `--profile`,
      `--no-suppressions` (configuration twin: `suppressions`) and
@@ -360,15 +361,15 @@ Design constraints, recorded so a build does not re-derive them:
      whole configuration is the requirement-ID pattern — `--pattern`, else
      the `pattern` of the configuration's `rules.GEN007` entry, or of
      `rules.requirement-link` when there is no `GEN007` entry at all
-     (`pattern_from_config`). Like the engine's `_rule_entry`, it lets any
-     `GEN007` entry shadow the other, even one without a pattern. Unlike
-     the engine (`_rule_entry`, `_rule_config`), which the lint and score
-     paths use, it matches the two keys exactly, where the engine also
-     accepts a case variant (`gen007`), and it does not read `enabled`, so
-     a table with `enabled = false`, which turns GEN007 off in lint and
-     score, still gives trace its pattern. Its docstring's "a disabled rule
-     … yields None" holds only for the non-table forms (`false`, `off`,
-     `disabled`).
+     (`pattern_from_config`). Like the engine's `_rule_entry`, it lets an
+     exact `GEN007` key shadow `requirement-link`, even one without a
+     pattern. Unlike the engine (`_rule_entry`, `_rule_config`), which the
+     lint and score paths use, it matches the two keys exactly, where the
+     engine also accepts a case variant (`gen007`), and it does not read
+     `enabled`, so a table with `enabled = false`, which turns GEN007 off
+     in lint and score, still gives trace its pattern. Its docstring's "a
+     disabled rule … yields None" holds only for the non-table forms
+     (`false`, `off`, `disabled`).
    - *Which files the root list holds.* Candidates: trace's diagrams, its
      inventory sources (the `--requirements` file and every file
      `--requirements-scan` read, whichever were given) and its feature

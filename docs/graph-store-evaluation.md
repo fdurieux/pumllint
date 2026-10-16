@@ -41,13 +41,13 @@ rests on one. Licences were read at the source: the `neo4j` Python driver
 closes the product path whatever the licence. The rule census in §2 is a
 classification by judgment, listed per rule so it can be re-graded.*
 
-*Corrected 2026-10-16: §4's last paragraph twice, by #170 and #171;
-the verdict's clause (3), the §1 table's row (3) and §6 item 2 once, by
-#171. The ROADMAP's decision log, under the 2026-10-12 knowledge-graph
-entry, lists why. The code facts these edits lean on — separate
-invocations, what each command reads — are the 2026-10-12 record's,
-checked at `64007cb` and listed in its §9; every other repository claim
-here still rests on `15a517b` and §7.*
+*Corrected 2026-10-16: §4's last paragraph twice, by #170 and #171; the
+verdict's clause (3), the §1 table's row (3) and §6 item 2 once, by #171.
+The ROADMAP's decision log, under the 2026-10-12 knowledge-graph entry,
+lists why. These edits make no code claim of their own: they point at the
+Arc E item, whose carve-out rests on the 2026-10-12 record's checks at
+`64007cb` (its §9). Every repository claim here still rests on `15a517b`
+and §7.*
 
 ## 0. Why this ran, and what it is not
 
