@@ -573,34 +573,17 @@ three items — full write-up in EVIDENCE.md §Deepening:
   `schemaVersion` is shields.io's endpoint-format version. Candidate,
   inside owner decision §6.5's yes:
   - **Run-level facts as additive root keys** on the score and trace
-    reports, announced the `syntaxGateRan` way: the tool version; the
-    effective-configuration identity — on score the effective rule set
-    with the command-line options that change it (`--profile`,
-    `--no-suppressions`, `--check-syntax`), on trace, which applies no
-    profile and builds no engine, only its requirement-ID pattern
-    (`--pattern`, else the configured `rules.requirement-link` pattern);
-    and, whenever the syntax gate ran
-    (`--check-syntax` or `scoring.syntax_gate`), the version the
-    PlantUML engine reports, or a statement that it is unknown.
+    reports, announced the `syntaxGateRan` way: the tool version and an
+    identity of the effective configuration the run used.
   - **Input digests, one per input file** — a per-file fact, so outside
-    the `syntaxGateRan` precedent, riding on the report's one-per-diagram
-    item, beside the path it carries: on score, each `diagrams[]` item
-    itself, beside its `file` key. Input files that shape the report and
-    have no such item go in one additive root list of `{file, digest}` —
-    on trace every input file (the diagrams; the inventory's source
-    files, the `--requirements` file and every file `--requirements-scan`
-    read, whichever were given; the feature files), on score the
-    `--baseline FILE` when it existed and was read (as read, before any
-    `--update-baseline` rewrite).
-  - **Open before the scan and feature-file digests mean anything:**
-    trace reads its `--requirements-scan` and `--features` files
-    leniently, so the digest below does not describe them and cannot
-    always be computed; the build aligns those readers first or digests
-    those files differently (docs/kg-research-synthesis-evaluation.md
-    §4 constraint 4).
-  - **Known limit of the syntax gate:** DIM-SYN also depends on the
-    PlantUML engine's environment and on a diagram's `!include` targets,
-    which nothing digests (same §4, constraint 5).
+    the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
+    its `file` key; input files with no such item (all of trace's), in
+    one additive root list of `{file, digest}`.
+  - **Open, decided when the trigger fires:** what the configuration
+    identity covers on each command; which files the root list holds;
+    trace's lenient readers, which the digest below does not describe;
+    and what the syntax gate depends on beyond the file. The evidence for
+    each is in docs/kg-research-synthesis-evaluation.md §4 constraint 7.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -7507,16 +7490,14 @@ list and license posture live in § Settled questions.
   place with what fixing them exposed, including statements #169 and
   the 2026-10-12 record wrote — here, in the Arc E item, in
   the Recommended next inventory, in the 2026-10-16 graph-store entry
-  below, in docs/kg-research-synthesis-evaluation.md (whose bounds list
-  everything changed in that file), in docs/graph-store-evaluation.md
-  and in docs/README.md. The block above is left as #170 wrote it;
-  where it is wrong, the bullets below say so. The bullets group the
-  findings with what they exposed. The candidate's design has two
-  homes, the Arc E item (what) and the evaluation's §4 (why); the
-  bullets record what changed and cite code as evidence, but a design
-  change is made in those two homes, and the other summaries name only
-  the lint carve-out. Priorities, checkbox counts and triggers
-  unchanged. Docs only.]*
+  below, in docs/kg-research-synthesis-evaluation.md, in
+  docs/graph-store-evaluation.md and in docs/README.md. This is the one
+  list of the correction; the evaluation's and the graph-store note's
+  dated notes point here. The block above is left as #170 wrote it;
+  where it is wrong, the bullets below say so. The candidate's design
+  has two homes, the Arc E item (what) and the evaluation's §4 (why);
+  other summaries name only the lint carve-out. Priorities, checkbox
+  counts and triggers unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format, with
@@ -7532,11 +7513,12 @@ list and license posture live in § Settled questions.
     and the evaluation's first note. Digests are a per-file fact, not a
     run-level root key on the `syntaxGateRan` precedent; where each sits
     is in the Arc E item.
-  - *Inputs left out.* The Arc E item now names them: score's baseline
-    file, what the configuration identity counts on each command, the
-    PlantUML engine whenever the syntax gate runs, trace's leniently
-    read files (an open choice) and the gate's environment and
-    `!include` targets (a known limit).
+  - *Inputs left out.* Score's baseline file, what the configuration
+    identity covers on each command, trace's lenient readers and what
+    the syntax gate depends on beyond the file. Specifying each drew a
+    new review finding every pass, so the Arc E item now lists them as
+    open for the build, with the evidence in the evaluation's §4
+    constraint 7, rather than deciding them for an unbuilt candidate.
   - *Five summaries #169 wrote* said an imported finding is evidence
     once Arc E ships — the graph-store note's verdict, its §1 table row
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of
