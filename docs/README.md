@@ -908,8 +908,9 @@ but they are a useful cross-check that no audience was forgotten.
     finding offers `(file, line)` and a label, so the way back is the name
     join the synthesis warns against.
 
-  Both gaps are recorded as gated candidates (pumllint Arc E; aris2puml
-  D4), each with its carrier argued and its trigger named.
+  Both gaps are recorded as gated candidates (pumllint Arc E, for the
+  score and trace reports and not lint; aris2puml D4), each with its
+  carrier argued and its trigger named.
 - [Running pumllint on a graph store (Neo4j), evaluated](graph-store-evaluation.md)
   — dated evaluation (2026-10-16), sixth in the thread: "run pumllint on a
   graph network, such as a Neo4j", as a validator over a corporate

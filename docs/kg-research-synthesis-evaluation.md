@@ -26,8 +26,9 @@ element identity stops at aris2puml's emitter — the ARIS ids survive into
 the JSON and the sidecar's notes, none reaches the `.puml`, and a pumllint
 finding offers `(file, line)` and the element's name, so the only way back
 to the ARIS object is the name-equality join the synthesis warns against.
-Both are recorded as gated candidates, one per repository's contract;
-neither is queued, and no priority moves.**
+Both are recorded as gated candidates, one per repository's contract —
+pumllint's covering the score and trace reports, not lint; neither is
+queued, and no priority moves.**
 
 *Bounds: every repository claim was executed at the two commits above, and
 §9 lists the commands. The primaries were read at the source for the
@@ -299,9 +300,9 @@ Design constraints, recorded so a build does not re-derive them:
      `{file, digest}` per file: a root key, but the per-file fact listed
      once, not a run-level fact on the `syntaxGateRan` precedent. Trace
      has no item that names each input once — a diagram appears on as
-     many sites as it has citations, the inventory on none — so its
-     inputs go there. Which files belong in the list is open (constraint
-     7).
+     many sites as it has citations, the inventory on none — so every
+     digest trace carries goes there. Which files are digested is open
+     (constraint 7).
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -354,9 +355,11 @@ Design constraints, recorded so a build does not re-derive them:
      `suppressions`) and `--check-syntax` (configuration twin:
      `scoring.syntax_gate`) change what it reports. Trace applies no
      profile and builds no engine: its whole configuration is the
-     requirement-ID pattern, `--pattern`, else the configuration's
-     `rules.GEN007` or `rules.requirement-link` pattern, `GEN007` first
-     (`pattern_from_config`).
+     requirement-ID pattern: `--pattern`, else the `pattern` of the
+     configuration's `rules.GEN007` entry, or of `rules.requirement-link`
+     when there is no `GEN007` entry at all (`pattern_from_config`). Any
+     `GEN007` entry shadows the other, even one without a pattern, and
+     its `enabled` flag is not read.
    - *Which files the root list holds.* Candidates: trace's inventory
      sources (the `--requirements` file and every file
      `--requirements-scan` read, whichever were given) and feature files;
@@ -367,8 +370,8 @@ Design constraints, recorded so a build does not re-derive them:
      pumllint reads, which the syntax gate hands to PlantUML like every
      collected file (`check_files`), and which may also be another
      diagram's `!include` target.
-   - *Trace's lenient readers.* Diagrams, the `--requirements` inventory
-     and the baseline go through `read_text_file`; trace reads its
+   - *Trace's lenient readers.* Trace's diagrams and its `--requirements`
+     inventory go through `read_text_file`; it reads its
      `--requirements-scan` and `--features` files with
      `read_text(encoding="utf-8", errors="replace")` (`trace.py:389` and
      `568`), honouring no byte-order mark and failing on nothing. A
@@ -461,8 +464,9 @@ Three carriers are possible, and two are wrong:
   - joined on `(file, line)`; path-independently, once gap 1 is built,
     only where the report carries the file's digest — a score gap-report
     finding through its `diagrams[]` item, a trace site through the trace
-    report's root list. Lint and sonar findings, item 5's ACT006 among
-    them, stay joined by path (§4 constraint 1).
+    report's root list when its file is among those digested (§4
+    constraint 7). Lint and sonar findings, item 5's ACT006 among them,
+    stay joined by path (§4 constraint 1).
 
   The cheapest correct carrier.
 

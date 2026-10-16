@@ -577,8 +577,9 @@ three items — full write-up in EVIDENCE.md §Deepening:
     identity of the effective configuration the run used.
   - **Input digests, one per input file** — a per-file fact, so outside
     the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
-    its `file` key; input files with no such item, in one additive root
-    list of `{file, digest}` (which files, is open).
+    its `file` key; on trace, which has no item naming each input once,
+    and for score's input files with no such item, in one additive root
+    list of `{file, digest}`. Which files are digested is open.
   - **Open, decided when the trigger fires:** what the configuration
     identity covers on each command; which files the root list holds;
     trace's lenient readers, which the digest below does not describe;
@@ -596,19 +597,12 @@ three items — full write-up in EVIDENCE.md §Deepening:
     there on the text it writes, so the converter's output digest equals
     pumllint's input digest for the same diagram and the two records join
     on content.
-  - **Not covered: lint and sonar findings.** The lint report is a bare
-    array with no root, and stays as it is. A score or trace report
-    cannot lend it provenance: `pumllint`, `pumllint score` and
-    `pumllint trace` are separate invocations, free to differ in `-c`,
-    and lint and score also in `--profile` and `--no-suppressions`,
-    which trace does not take; and the score report does not carry every
-    finding, its gap report being "the minimal blocking set to reach
-    `level + 1`". Nothing recorded closes this. The
-    2026-08-10 portable run-record candidate is a pilot-repo format for
-    generation runs, gated on a real pilot stabilizing one, and builds
-    nothing here before then. If the trigger fires on lint findings, how
-    they get provenance is an open question for that build, put to the
-    owner.
+  - **Not covered: lint and sonar findings.** The lint report stays a
+    bare array, and no score or trace report can lend its findings
+    provenance. Nothing recorded closes this — the 2026-08-10 portable
+    run-record candidate is not the route — so if the trigger fires on
+    lint findings, how they get provenance is an open question for that
+    build, put to the owner. The evaluation's §4 constraint 1 says why.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
@@ -7507,9 +7501,9 @@ list and license posture live in § Settled questions.
     (docs/sdd-manifest-evaluation.md), so that wording moved its gate;
     the block above repeats it ("unless the 2026-08-10 run record is
     built alongside"), and #170's merge of main (`6e77b19`) wrote it into
-    the graph-store note's §4 and the Reading 3 bullet of the 2026-10-16
-    graph-store entry below. Lint and sonar provenance is now an open
-    question for Arc E's build.
+    the Arc E item's 2026-10-16 annotation, the graph-store note's §4 and
+    the Reading 3 bullet of the 2026-10-16 graph-store entry below. Lint
+    and sonar provenance is now an open question for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
     lint and score take `--profile` and `--no-suppressions`.
