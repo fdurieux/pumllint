@@ -581,18 +581,20 @@ three items — full write-up in EVIDENCE.md §Deepening:
     (`--check-syntax` or `scoring.syntax_gate`), the version the
     PlantUML engine reports, or a statement that it is unknown.
   - **Input digests, one per input file** — a per-file fact, so outside
-    the `syntaxGateRan` precedent, riding where the file is named once:
-    on score, on each `diagrams[]` item itself, beside its `file` key;
-    for input files no item names once, in one additive root list of
-    `{file, digest}` — on trace every input (the diagrams; the inventory,
-    the `--requirements` file and every file `--requirements-scan` read,
-    whichever were given; the feature files), on score the
-    `--baseline FILE` when it
-    existed and was read (as read, before any `--update-baseline`
-    rewrite). Trace reads its scan and feature files with
-    `errors="replace"` and no byte-order-mark handling, so the digest
-    below does not describe what it judged for them; the build aligns
-    those readers first or digests them differently — open.
+    the `syntaxGateRan` precedent, riding on the report's one-per-diagram
+    item, beside the path it carries: on score, each `diagrams[]` item
+    itself, beside its `file` key. Input files with no such item go in
+    one additive root list of `{file, digest}` — on trace every input
+    (the diagrams; the inventory, the `--requirements` file and every
+    file `--requirements-scan` read, whichever were given; the feature
+    files), on score the `--baseline FILE` when it existed and was read
+    (as read, before any `--update-baseline` rewrite). Trace reads its
+    scan and feature files with `errors="replace"` and no
+    byte-order-mark handling, so the digest below does not describe what
+    it judged for them; the build aligns those readers first or digests
+    them differently — open. Under the syntax gate PlantUML also
+    resolves a diagram's `!include` targets, which nothing digests: a
+    known limit.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -857,8 +859,9 @@ list and license posture live in § Settled questions.
   (2026-09-09) has two gates: an owner decision on model content as a
   trace carrier, and a corpus with both a process and its features. Arc
   E's **run provenance in the score and trace reports** (2026-10-12) waits
-  on an adopter keeping the reports as evidence. Neither changes the tier:
-  the ungated tier stays closed.)* The one demand-backed build — rank 8,
+  on an adopter keeping the reports as evidence or a consumer (an evidence
+  store, a knowledge graph) ingesting them. Neither changes the tier: the
+  ungated tier stays closed.)* The one demand-backed build — rank 8,
   declarable convention options from issues #43/#47 — was contingent on
   owner decision §6.1
   *(answered yes 2026-09-04, and **built the same day**; its hard
@@ -7498,8 +7501,10 @@ list and license posture live in § Settled questions.
   *[Corrected again 2026-10-16, after a code review of the correction
   above (#170): ten findings, all in text that correction wrote, fixed
   in place with what fixing them exposed — here, in the Arc E item, in
-  docs/kg-research-synthesis-evaluation.md (whose bounds list the part
-  in that file), in docs/graph-store-evaluation.md and in docs/README.md.
+  the *Recommended next* inventory, in the 2026-10-16 graph-store entry
+  below, in docs/kg-research-synthesis-evaluation.md (whose bounds list
+  the part in that file), in docs/graph-store-evaluation.md and in
+  docs/README.md.
   Priorities, checkbox counts and triggers unchanged. Docs only.]*
   - *The run-record candidate was misdescribed.* The correction had the
     2026-08-10 portable run-record candidate "built with" Arc E and
@@ -7526,12 +7531,23 @@ list and license posture live in § Settled questions.
     (`--check-syntax` or `scoring.syntax_gate`, `cli.py:603`); and
     trace's scan and feature files, read with `errors="replace"` and no
     byte-order-mark handling (`trace.py:389`, `568`), so the digest
-    definition does not describe them — an open choice for the build.
-  - *Three summaries #169 wrote* said an imported finding becomes
-    evidence once Arc E ships — the graph-store note's verdict and its
-    *Recorded, not queued* item 2, and docs/README.md's index entry. For
-    lint findings, the ones Reading 3 imports, they now say not even
-    then.
+    definition does not describe them — an open choice for the build;
+    and, as a known limit, the `!include` targets PlantUML resolves
+    under the gate, which pumllint records but never expands and nothing
+    digests.
+  - *Five summaries #169 wrote* said an imported finding is evidence
+    once Arc E ships — the graph-store note's verdict, its §1 table row
+    (3) and its *Recorded, not queued* item 2, the Reading 3 heading of
+    the 2026-10-16 graph-store entry below, and docs/README.md's index
+    entry. For lint findings, the ones Reading 3 imports, they now say
+    not even then. Two of them also quoted the Arc E trigger as "a
+    knowledge graph ingesting them"; they now quote it whole.
+  - *Three statements of the 2026-10-12 record itself* went further than
+    the corrected candidate: the evaluation's §5 join "path-independently
+    once gap 1's digests exist", its §6 "a retained report would also
+    say what it judged", and the *Recommended next* inventory's trigger,
+    which named the adopter and not the consumer. They now hold for
+    score and trace reports, and name both.
   - *"Beside the gap report's findings"* is now the `diagrams[]` item
     itself, beside `file`; the findings sit at
     `diagrams[].maturity.gapReport[].findings[]`.
@@ -7540,8 +7556,8 @@ list and license posture live in § Settled questions.
     and UTF-32 marks.
   - *The Arc E trigger* had run on inside the item's last sub-bullet, and
     the item's pointer to "the 2026-10-16 correction above" pointed at
-    this decision log, far below. The trigger is its own paragraph again
-    and the pointer names where it goes.
+    this decision log, far below. The trigger is back at the item's
+    level, now its own paragraph, and the pointer names where it goes.
   - *The evaluation's correction note* had left out §4 constraint 6, and
     the prose both corrections touched is re-wrapped.
 
@@ -7598,16 +7614,18 @@ list and license posture live in § Settled questions.
     authored process or interaction content lives in a graph store,
     asking for it to be gated. An enterprise graph assembled from other
     tools' exports is Loop C and does not fire it.*
-  - **Reading 3, reports imported into the store: no pumllint code, and
-    evidence only behind Arc E.** The `-f json` shapes pinned in
+  - **Reading 3, reports imported into the store: no pumllint code;
+    score and trace reports are evidence only behind Arc E, lint
+    findings not even then.** The `-f json` shapes pinned in
     `pumllint/schemas/` are the interface, and the consumer maps them.
     No Cypher or RDF reporter. The chat answer's "zero build" was right
     about code and wrong about value: an imported finding names its
     input by path only (Gap 1), so a graph of findings is a dashboard
     until *Run provenance in the score and trace reports* ships, and
     for lint findings not even then: that item covers score and trace
-    only. That item's trigger already names "a knowledge graph ingesting
-    them". It is annotated with this shape, and is not fired.
+    only. That item's trigger already names "a consumer — an evidence
+    store, a knowledge graph — ingesting them". It is annotated with this
+    shape, and is not fired.
   - *The corporate framing.* BPMN is the four grounds of 2026-08-27. UML
     is the product, for the subset it parses. Customer journeys have no
     PlantUML diagram type and no artefact here, and a journey drawn as an

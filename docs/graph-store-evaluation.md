@@ -26,9 +26,10 @@ repository and under aris2puml's iron rules, never an adapter inside
 pumllint. (3) *Findings loaded into the store* needs no pumllint code. An
 imported score or trace report is evidence only once Arc E's
 run-provenance candidate ships, whose trigger already names "a
-knowledge graph ingesting them"; imported lint findings are not
-evidence even then, and how they could be is open. No checkbox is
-added, no trigger fires, and the priorities do not move.**
+consumer — an evidence store, a knowledge graph — ingesting them";
+imported lint findings are not evidence even then, and how they could
+be is open. No checkbox is added, no trigger fires, and the priorities
+do not move.**
 
 *Bounds: every repository claim was executed at `15a517b`, and §7 lists
 the commands. No Neo4j server is available in this environment, so every
@@ -65,7 +66,7 @@ source of truth is a graph.
 |---|---|---|
 | (1) The rules run inside the store, as Cypher or SHACL | pumllint → store, as engine | **No.** Settled (N1, N3). §2 |
 | (2) A store-built model runs through pumllint's engine | store → pumllint | **Feasible; recorded shape, adopter-gated, outside pumllint.** §3 |
-| (3) pumllint's reports are imported into the store | pumllint → store, as data | **No pumllint build; evidence only behind Arc E.** §4 |
+| (3) pumllint's reports are imported into the store | pumllint → store, as data | **No pumllint build; score and trace reports are evidence only behind Arc E, lint findings not even then.** §4 |
 
 ## 2. Reading 1 — the rules inside the store
 

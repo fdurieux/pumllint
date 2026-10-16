@@ -54,9 +54,9 @@ pinned by test vectors both repositories share (§4 constraint 6). The
 ROADMAP's decision log carries the same list under this date.*
 
 *Corrected again 2026-10-16, after a code review of that correction
-(#170): ten statements it wrote were wrong, contradictory or incomplete,
-and are fixed in place together with what fixing them exposed. The
-ROADMAP's decision log lists all of it; in this file:*
+(#170): ten findings, all in text it wrote, are fixed in place together
+with what fixing them exposed. The ROADMAP's decision log lists the
+findings; everything changed in this file:*
 
 - *the 2026-08-10 portable run-record candidate had been "built with"
   Arc E and "wrapping the lint invocation"; it is a pilot-repo format,
@@ -64,16 +64,24 @@ ROADMAP's decision log lists all of it; in this file:*
   findings' provenance is now an open question for the build (§4
   constraint 1, §8);*
 - *`trace` takes no `--profile` (§4 constraint 1);*
+- *§4 constraint 1 now also says the score report does not carry the
+  findings themselves: its gap report holds only the minimal blocking
+  set to the next level (`build_gap_report`);*
 - *the note above said digests "do not ride as root keys" while §4 put
   trace's in a root list; it now says what it meant, and §4 constraint 2
   places every input file by one rule, score's baseline included;*
-- *score's digest sits on the `diagrams[]` item itself, not "beside the
-  gap report's findings" (§4 constraint 2);*
+- *§4 constraint 2 had named score's digest's item "the item that also
+  holds the gap report's findings", which sit three levels inside it; it
+  now says the `diagrams[]` item itself, beside `file`;*
 - *constraint 4's rationale had left out the UTF-8 byte-order mark, and
   now says which trace inputs its decoding does not describe;*
 - *constraint 5 now names the command-line options that change what is
   reported, the input files and the PlantUML engine, which runs whenever
-  the syntax gate does (`--check-syntax` or `scoring.syntax_gate`);*
+  the syntax gate does (`--check-syntax` or `scoring.syntax_gate`), and
+  a known limit: the files a diagram `!include`s, which the engine
+  resolves under the gate, are not digested;*
+- *§5's path-independent join and §6's "a retained report would also
+  say what it judged" now hold for score and trace reports only;*
 - *§8 now carries the candidate's full scope;*
 - *the note above now lists constraint 6, and the prose both corrections
   touched is re-wrapped.*
@@ -305,15 +313,15 @@ Design constraints, recorded so a build does not re-derive them:
      is the precedent, and its route is the announcement — README
      § Report schemas, the schema's own description, and this file.
    - **Input digests** are one fact per input file, so the precedent does
-     not cover them. Each rides where its file is named once; a root map
-     keyed by path would duplicate the paths the items already carry. In
-     the score report a diagram's digest rides on the `diagrams[]` item
-     itself, beside its `file` key — not inside `maturity`, and not on
-     the gap report's findings three levels down
-     (`diagrams[].maturity.gapReport[].findings[]`). A file holding
-     several diagrams repeats its digest on each of its items; that is
-     the same bytes named twice, not a run fact named N times.
-   - **Input files no item names once** go in one additive root list,
+     not cover them. Each rides on the report's one-per-diagram item,
+     beside the path that item already carries; a root map keyed by path
+     would duplicate those paths. In the score report that item is the
+     `diagrams[]` item itself: the digest sits beside its `file` key —
+     not inside `maturity`, and not on the gap report's findings three
+     levels down (`diagrams[].maturity.gapReport[].findings[]`). A file
+     holding several diagrams repeats its digest on each of its items;
+     that is the same bytes named twice, not a run fact named N times.
+   - **Input files with no such item** go in one additive root list,
      one `{file, digest}` per file. On trace that is every input, since a
      diagram appears on as many sites as it has citations and the
      inventory on none: the diagrams, the inventory (the `--requirements`
@@ -382,10 +390,11 @@ Design constraints, recorded so a build does not re-derive them:
    - the PlantUML engine, which decides DIM-SYN whenever the syntax gate
      runs. `scoring.syntax_command` is configuration, but the engine's
      version is neither configuration nor an input file. Under the gate
-     the engine also resolves whatever a diagram `!include`s, which
-     pumllint's parser skips (`!` lines, `parser/sequence.py:219`) and
-     this design does not digest, so the gate's verdict is identified
-     only up to those files — a known limit, named rather than closed.
+     the engine also resolves whatever a diagram `!include`s: pumllint's
+     parser records the directive but never expands it
+     (`parser/sequence.py:297`), and this design does not digest the
+     included files, so the gate's verdict is identified only up to
+     those files — a known limit, named rather than closed.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
    UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
    digest under constraint 4 on the text it is about to write, not on
@@ -469,8 +478,11 @@ Three carriers are possible, and two are wrong:
     the XOR split `x1` and its first outcome's event `e1`; lane lines
     carry org-unit ids; and a process-level finding maps to the process
     id the record already holds;
-  - joined on `(file, line)`, and path-independently once gap 1's digests
-    exist.
+  - joined on `(file, line)`; path-independently, once gap 1 is built,
+    only where the finding's report carries its file's digest — a score
+    gap-report finding, through its `diagrams[]` item. Lint and sonar
+    findings, item 5's ACT006 among them, stay joined by path (§4
+    constraint 1).
 
   The cheapest correct carrier.
 
@@ -532,7 +544,9 @@ The synthesis's acceptance evidence, item by item:
   `--strict`).
 - **A controlled source change that preserves historical evidence: half.**
   The baseline ratchet keeps one level per diagram and leaves history to
-  git. With gap 1 built, a retained report would also say what it judged.
+  git. With gap 1's Arc E half built, a retained score or trace report
+  would also say what it judged; a lint or sonar report would not (§4
+  constraint 1).
 
 ## 7. DOIs
 
