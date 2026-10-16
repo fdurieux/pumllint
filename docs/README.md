@@ -904,12 +904,15 @@ but they are a useful cross-check that no audience was forgotten.
     inputs by path only: pumllint's JSON reports carry no tool version,
     configuration identity or input digest (only the HTML report's footer
     names the version), and aris2puml's sidecar names its tool version but
-    no digest. And ARIS element ids stop at aris2puml's
-    emitter: a finding offers `(file, line)` and a label, so the way back
-    is the name join the synthesis warns against.
+    no digest. And ARIS element ids stop at aris2puml's emitter: a
+    finding offers `(file, line)` and a label, so the way back is the name
+    join the synthesis warns against.
 
-  Both gaps are recorded as gated candidates (pumllint Arc E; aris2puml
-  D4), each with its carrier argued and its trigger named.
+  Both gaps are recorded as gated candidates — in pumllint, run provenance
+  in the score and trace JSON reports, which leaves the lint report's
+  findings out (ROADMAP, Arc E, *Not covered*); in aris2puml, the sidecar
+  as an evidence record — each with its carrier argued and its trigger
+  named.
 - [Running pumllint on a graph store (Neo4j), evaluated](graph-store-evaluation.md)
   — dated evaluation (2026-10-16), sixth in the thread: "run pumllint on a
   graph network, such as a Neo4j", as a validator over a corporate
@@ -922,8 +925,10 @@ but they are a useful cross-check that no audience was forgotten.
     anchors are invented, remediation speaks PlantUML and the syntax gate
     can never run. If it is ever built, it is an aris2puml-shaped
     converter emitting `.puml`, in its own repository and adopter-gated.
-  - **Reports imported into the store: no pumllint code**, and evidence
-    only once Arc E's run-provenance item ships.
+  - **Reports imported into the store: no pumllint code.** Score and trace
+    JSON reports are evidence only once pumllint's run-provenance
+    candidate is built; the lint report's findings stay outside it
+    (ROADMAP, Arc E, *Not covered*).
 
   Nothing queued, no checkbox.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
