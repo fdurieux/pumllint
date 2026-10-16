@@ -49,9 +49,10 @@ reports wait on Arc E's run-provenance item and that the lint findings
 §4's recipe imports stay without provenance even after it; §4 and §6
 add that the item serves score and trace reports only within the
 limits it names, and the verdict quotes the Arc E trigger's consumer
-clause verbatim. The claims these edits add were checked against
-pumllint's code at `64007cb` (both corrections are docs only); the
-2026-10-12 record's two 2026-10-16 notes give the reasons.*
+clause verbatim. These edits add no repository claim: they carry over
+the 2026-10-12 record's corrected conclusions, whose two 2026-10-16
+notes give the reasons and whose §9 lists the commands. Every
+repository claim here still rests on `15a517b` and §7.*
 
 ## 0. Why this ran, and what it is not
 

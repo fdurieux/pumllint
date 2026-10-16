@@ -574,10 +574,12 @@ three items — full write-up in EVIDENCE.md §Deepening:
   inside owner decision §6.5's yes:
   - **Run-level facts as additive root keys** on the score and trace
     reports, announced the `syntaxGateRan` way: the tool version; the
-    effective-configuration identity, which counts the command-line
-    options that change what is reported (`--profile`,
-    `--no-suppressions` and `--check-syntax` on score, `--pattern` on
-    trace), not only the file's; and, whenever the syntax gate ran
+    effective-configuration identity — on score the effective rule set
+    with the command-line options that change it (`--profile`,
+    `--no-suppressions`, `--check-syntax`), on trace, which applies no
+    profile and builds no engine, only its requirement-ID pattern
+    (`--pattern`, else the configured `rules.requirement-link` pattern);
+    and, whenever the syntax gate ran
     (`--check-syntax` or `scoring.syntax_gate`), the version the
     PlantUML engine reports, or a statement that it is unknown.
   - **Input digests, one per input file** — a per-file fact, so outside
@@ -585,26 +587,20 @@ three items — full write-up in EVIDENCE.md §Deepening:
     item, beside the path it carries: on score, each `diagrams[]` item
     itself, beside its `file` key. Input files that shape the report and
     have no such item go in one additive root list of `{file, digest}` —
-    on trace every input (the diagrams; the inventory, the
-    `--requirements` file and every file `--requirements-scan` read,
-    whichever were given; the feature files), on score the
+    on trace every input file (the diagrams; the inventory's source
+    files, the `--requirements` file and every file `--requirements-scan`
+    read, whichever were given; the feature files), on score the
     `--baseline FILE` when it existed and was read (as read, before any
     `--update-baseline` rewrite).
   - **Open before the scan and feature-file digests mean anything:**
-    trace reads the text of its `--requirements-scan` and `--features`
-    files with `errors="replace"` and no byte-order-mark handling
-    (`trace.py:389`, `568` at `64007cb`); its diagrams and
-    `--requirements` file go through `read_text_file` and are not
-    affected. So the digest below does not describe what trace judged
-    for those files, and for one with no byte-order mark that is not
-    valid UTF-8 it cannot be computed at all: its strict decode fails
-    where trace scans on. The build aligns those two readers first or
-    digests those files differently.
-  - **Known limit of the syntax gate:** PlantUML runs on the file in its
-    own environment — its default charset, for one — and resolves the
-    diagram's `!include` targets, which pumllint records but never
-    expands. None of that is configuration, an input digest or the
-    engine version, so DIM-SYN is identified only up to it.
+    trace reads its `--requirements-scan` and `--features` files
+    leniently, so the digest below does not describe them and cannot
+    always be computed; the build aligns those readers first or digests
+    those files differently (docs/kg-research-synthesis-evaluation.md
+    §4 constraint 4).
+  - **Known limit of the syntax gate:** DIM-SYN also depends on the
+    PlantUML engine's environment and on a diagram's `!include` targets,
+    which nothing digests (same §4, constraint 5).
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -7536,12 +7532,11 @@ list and license posture live in § Settled questions.
     and the evaluation's first note. Digests are a per-file fact, not a
     run-level root key on the `syntaxGateRan` precedent; where each sits
     is in the Arc E item.
-  - *Inputs left out.* The Arc E item now names score's baseline file,
-    the command-line options that change what is reported, the PlantUML
-    engine whenever the syntax gate runs (`--check-syntax` or
-    `scoring.syntax_gate`; `cli.py:603` at `64007cb`), trace's leniently
-    read scan and feature files (an open choice), and the gate's own
-    environment and `!include` targets (a known limit).
+  - *Inputs left out.* The Arc E item now names them: score's baseline
+    file, what the configuration identity counts on each command, the
+    PlantUML engine whenever the syntax gate runs, trace's leniently
+    read files (an open choice) and the gate's environment and
+    `!include` targets (a known limit).
   - *Five summaries #169 wrote* said an imported finding is evidence
     once Arc E ships — the graph-store note's verdict, its §1 table row
     (3) and its *Recorded, not queued* item 2, the Reading 3 heading of
@@ -7556,12 +7551,10 @@ list and license posture live in § Settled questions.
     say what it judged", and the *Recommended next* inventory's trigger,
     which named the adopter and not the consumer. They now hold for
     score and trace reports, and name both.
-  - *"Beside the gap report's findings"* is now the `diagrams[]` item
-    itself, beside `file`; the findings sit at
-    `diagrams[].maturity.gapReport[].findings[]`.
+  - *"Beside the gap report's findings"* named the wrong level of the
+    score report; the Arc E item now names the `diagrams[]` item.
   - *The UTF-8 byte-order mark* was missing from the evaluation's digest
-    rationale; `_BOMS` in `pumllint/textio.py` drops it like the UTF-16
-    and UTF-32 marks.
+    rationale.
   - *The Arc E trigger* had run on inside the item's last sub-bullet, and
     the item's pointer to "the 2026-10-16 correction above" pointed at
     this decision log, far below. The trigger is back at the item's

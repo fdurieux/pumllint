@@ -64,9 +64,8 @@ grouped; everything changed in this file:*
   findings' provenance is now an open question for the build (§4
   constraint 1, §8);*
 - *`trace` takes no `--profile` (§4 constraint 1);*
-- *§4 constraint 1 now also says the score report does not carry the
-  findings themselves: its gap report holds only the minimal blocking
-  set to the next level (`build_gap_report`);*
+- *§4 constraint 1 now also says the score report does not carry every
+  finding;*
 - *the note above says digests "do not ride as root keys", while §4 puts
   trace's in a root list: they are a per-file fact, not a run-level root
   key on the `syntaxGateRan` precedent, and §4 constraint 2 now places
@@ -76,11 +75,9 @@ grouped; everything changed in this file:*
   now says the `diagrams[]` item itself, beside `file`;*
 - *constraint 4's rationale had left out the UTF-8 byte-order mark, and
   now says which trace inputs its decoding does not describe;*
-- *constraint 5 now names the command-line options that change what is
-  reported, the input files and the PlantUML engine, which runs whenever
-  the syntax gate does (`--check-syntax` or `scoring.syntax_gate`), and
-  a known limit: the gate also depends on the engine's environment and
-  on the files a diagram `!include`s, which nothing digests;*
+- *constraint 5 now says what the configuration identity counts on
+  score and on trace, names the input files and the PlantUML engine,
+  and names a known limit of the syntax gate;*
 - *§5's path-independent join and §6's "a retained report would also
   say what it judged" now hold for score and trace reports only;*
 - *§8 now points at §4 and the Arc E item instead of restating them;*
@@ -390,10 +387,13 @@ Design constraints, recorded so a build does not re-derive them:
    choice is open.
 5. **Configuration identity means the effective configuration** — profile
    applied, defaults resolved — not the configuration file's bytes, since
-   two files can state one rule set. It includes the command-line options
-   that change what is reported, not only the file's: on score
-   `--profile`, `--no-suppressions` and `--check-syntax` (whose
-   configuration twin is `scoring.syntax_gate`), on trace `--pattern`.
+   two files can state one rule set. On score it includes the
+   command-line options that change what is reported, not only the
+   file's: `--profile`, `--no-suppressions` and `--check-syntax` (whose
+   configuration twin is `scoring.syntax_gate`). On trace it is the
+   requirement-ID pattern alone — `--pattern`, else the configuration's
+   `rules.requirement-link` pattern (`pattern_from_config`) — since
+   trace applies no profile and builds no engine.
    Two things are not configuration, and constraint 2 places them:
    - input files: the diagrams, `trace`'s inventory and feature files,
      and score's `--baseline FILE`, from which the report's `baseline`
@@ -647,7 +647,8 @@ grep -c "" docs/process-demo/order_to_cash.puml              # 40 lines: header 
 # the second correction (2026-10-16), against pumllint's code at 64007cb
 python -m pumllint trace --profile codegen examples/         # exit 2: trace takes no --profile
 grep -n 'errors="replace"' pumllint/trace.py                 # 389, 568: scan and feature files
-grep -n "syntax_gate" pumllint/cli.py                        # 603: the gate runs on config too
+grep -n 'scoring_cfg.get("syntax_gate")' pumllint/cli.py    # 603: the gate runs on config too
+grep -n "def pattern_from_config" -A12 pumllint/trace.py    # trace's configuration: the GEN007 pattern
 grep -n "never expanded" pumllint/parser/sequence.py         # !include recorded, not expanded
 grep -n "minimal blocking set" pumllint/scoring.py           # the gap report is not every finding
 ```
