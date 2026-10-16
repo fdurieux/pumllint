@@ -584,9 +584,10 @@ three items — full write-up in EVIDENCE.md §Deepening:
     the `syntaxGateRan` precedent, riding where the file is named once:
     on score, on each `diagrams[]` item itself, beside its `file` key;
     for input files no item names once, in one additive root list of
-    `{file, digest}` — on trace every input (the diagrams, the inventory:
-    the `--requirements` file or every file `--requirements-scan` read,
-    and the feature files), on score the `--baseline FILE` when it
+    `{file, digest}` — on trace every input (the diagrams; the inventory,
+    the `--requirements` file and every file `--requirements-scan` read,
+    whichever were given; the feature files), on score the
+    `--baseline FILE` when it
     existed and was read (as read, before any `--update-baseline`
     rewrite). Trace reads its scan and feature files with
     `errors="replace"` and no byte-order-mark handling, so the digest
@@ -7482,9 +7483,9 @@ list and license posture live in § Settled questions.
     `tool`.
   - *Digests are per input file, not run-level root keys.*
     `syntaxGateRan` covers one run-level fact; a digest is one per file.
-    Version and configuration stay root keys; digests ride on score's
-    `diagrams[]` items and, on trace, which has no item naming each input
-    once, in one root list with one entry per input file.
+    Run-level facts stay root keys; digests ride on score's `diagrams[]`
+    items and, for input files no item names once (every trace input,
+    score's baseline file), in one root list with one entry per file.
   - *No "same run" for lint.* Lint, score and trace are separate
     invocations, so a score or trace report cannot lend lint findings
     provenance. The candidate now says lint and sonar findings stay
@@ -7511,8 +7512,8 @@ list and license posture live in § Settled questions.
     bullet of the 2026-10-16 graph-store entry and the graph-store
     note's §4.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
-    exits 2 on an unrecognized argument; only lint and score take
-    `--profile` and `--no-suppressions`.
+    exits 2 on an unrecognized argument; of lint, score and trace, only
+    lint and score take `--profile` and `--no-suppressions`.
   - *"Not root keys" contradicted trace's root list.* Digests are a
     per-file fact, not a run-level root key on the `syntaxGateRan`
     precedent; on trace they sit in one root list because no item names

@@ -60,8 +60,9 @@ ROADMAP's decision log lists all of it; in this file:*
 
 - *the 2026-08-10 portable run-record candidate had been "built with"
   Arc E and "wrapping the lint invocation"; it is a pilot-repo format,
-  gated on its own trigger, so lint findings' provenance is now an open
-  question for the build (§4 constraint 1, §8);*
+  with nothing built here before a real pilot stabilizes one, so lint
+  findings' provenance is now an open question for the build (§4
+  constraint 1, §8);*
 - *`trace` takes no `--profile` (§4 constraint 1);*
 - *the note above said digests "do not ride as root keys" while §4 put
   trace's in a root list; it now says what it meant, and §4 constraint 2
@@ -316,12 +317,13 @@ Design constraints, recorded so a build does not re-derive them:
      one `{file, digest}` per file. On trace that is every input, since a
      diagram appears on as many sites as it has citations and the
      inventory on none: the diagrams, the inventory (the `--requirements`
-     file, or every file `--requirements-scan` read) and the feature
-     files. On score it is the `--baseline FILE`, when it existed and was
-     read — a record-mode run, which creates the file, lists nothing, and
-     with `--update-baseline` it is the file as read before the rewrite.
-     The list is a root key, but not a run-level fact on the
-     `syntaxGateRan` precedent: it is the per-file fact, listed once.
+     file and every file `--requirements-scan` read, whichever were
+     given) and the feature files. On score it is the `--baseline FILE`,
+     when it existed and was read — a record-mode run, which creates the
+     file, lists nothing, and with `--update-baseline` it is the file as
+     read before the rewrite. The list is a root key, but not a run-level
+     fact on the `syntaxGateRan` precedent: it is the per-file fact,
+     listed once.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -379,7 +381,11 @@ Design constraints, recorded so a build does not re-derive them:
      values come (null for a diagram new since it);
    - the PlantUML engine, which decides DIM-SYN whenever the syntax gate
      runs. `scoring.syntax_command` is configuration, but the engine's
-     version is neither configuration nor an input file.
+     version is neither configuration nor an input file. Under the gate
+     the engine also resolves whatever a diagram `!include`s, which
+     pumllint's parser skips (`!` lines, `parser/sequence.py:219`) and
+     this design does not digest, so the gate's verdict is identified
+     only up to those files — a known limit, named rather than closed.
 6. **Use one digest definition in both tools.** aris2puml writes diagrams as
    UTF-8 with `newline="\n"` (`aris2puml/cli.py:142`). It computes the
    digest under constraint 4 on the text it is about to write, not on
