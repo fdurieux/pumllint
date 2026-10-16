@@ -900,9 +900,11 @@ but they are a useful cross-check that no audience was forgotten.
     an absence. SHACL reports every absence a shape constrains, including
     what the tolerant projection did not read. Neither grades: `sh:conforms`
     is a boolean, and severities "have no impact on the validation".
-  - **Its separations expose two gaps.** Every run record the chain emits
-    names its inputs by path only (no tool version, configuration
-    identity or digest). And ARIS element ids stop at aris2puml's
+  - **Its separations expose two gaps.** What the chain ships names its
+    inputs by path only: pumllint's JSON reports carry no tool version,
+    configuration identity or input digest (only the HTML report's footer
+    names the version), and aris2puml's sidecar names its tool version but
+    no digest. And ARIS element ids stop at aris2puml's
     emitter: a finding offers `(file, line)` and a label, so the way back
     is the name join the synthesis warns against.
 

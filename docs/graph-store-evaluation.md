@@ -202,7 +202,11 @@ pumllint version, which configuration or which content produced it
 elsewhere, it cannot reach that model's element except by a name join
 (Gap 2). A graph of findings is therefore a dashboard, not an evidence
 record, until Arc E's *Run provenance in the score and trace reports*
-ships. That item's trigger already names this consumer: "a consumer — an
+ships — and, for lint findings like the ones imported above, the
+2026-08-10 portable run-record candidate with it: Arc E covers the score
+and trace reports only, and a separate score or trace invocation cannot
+lend lint findings provenance (corrected 2026-10-16 in the 2026-10-12
+record). That item's trigger already names this consumer: "a consumer — an
 evidence store, a knowledge graph — ingesting them". A question about one
 is not that consumer, so the trigger does not fire. The pointer added to
 the item makes this reading its concrete shape.
