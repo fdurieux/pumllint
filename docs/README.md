@@ -910,8 +910,9 @@ but they are a useful cross-check that no audience was forgotten.
 
   Both gaps are recorded as gated candidates — in pumllint, run provenance
   in the score and trace JSON reports, which leaves the lint report's
-  findings out (see its *Not covered*); in aris2puml, the sidecar as an
-  evidence record — each with its carrier argued and its trigger named.
+  findings out (ROADMAP, Arc E, *Not covered*); in aris2puml, the sidecar
+  as an evidence record — each with its carrier argued and its trigger
+  named.
 - [Running pumllint on a graph store (Neo4j), evaluated](graph-store-evaluation.md)
   — dated evaluation (2026-10-16), sixth in the thread: "run pumllint on a
   graph network, such as a Neo4j", as a validator over a corporate
@@ -926,8 +927,8 @@ but they are a useful cross-check that no audience was forgotten.
     converter emitting `.puml`, in its own repository and adopter-gated.
   - **Reports imported into the store: no pumllint code.** Score and trace
     JSON reports are evidence only once pumllint's run-provenance
-    candidate is built; the lint report's findings stay outside it (see
-    that candidate's *Not covered*).
+    candidate is built; the lint report's findings stay outside it
+    (ROADMAP, Arc E, *Not covered*).
 
   Nothing queued, no checkbox.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)

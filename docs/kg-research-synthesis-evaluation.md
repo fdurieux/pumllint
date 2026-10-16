@@ -369,7 +369,10 @@ Design constraints, recorded so a build does not re-derive them:
      `enabled`, so a table with `enabled = false`, which turns GEN007 off
      in lint and score, still gives trace its pattern. Its docstring's "a
      disabled rule … yields None" holds only for the non-table forms
-     (`false`, `off`, `disabled`).
+     (`false`, `off`, `disabled`), and its "Reads the same `rules:` keys
+     the engine does" does not hold: this is a defect in
+     `pattern_from_config`, to be fixed on its own, not part of Arc E and
+     not an open question for it.
    - *Which files the root list holds.* Candidates: trace's diagrams, its
      inventory sources (the `--requirements` file and every file
      `--requirements-scan` read, whichever were given) and its feature
@@ -401,6 +404,9 @@ Design constraints, recorded so a build does not re-derive them:
      default charset, for one) and the targets of a diagram's `!include`s,
      which pumllint's parser records but never expands (`parse_source` in
      `parser/sequence.py`).
+   - *The lint report's findings.* Whether anything gives them provenance;
+     constraint 1 has the reasoning, and the Arc E item's *Not covered*
+     the scope.
 
 **Recorded as** pumllint Arc E, *Run provenance in the score and trace
 reports*, plus the converter half as aris2puml D4(b).
@@ -408,8 +414,8 @@ reports*, plus the converter half as aris2puml D4(b).
 *Trigger, shared by both halves:* an adopter retaining the chain's reports
 as audit evidence, or a consumer — an evidence store, a knowledge graph —
 ingesting them, who must say which version, configuration and input
-produced a finding. When it fires, both halves land in one cross-repository
-change, pumllint first (the landing order), with one digest definition.
+produced a finding. When it fires, both halves land, pumllint's first (the
+landing order), with one digest definition.
 
 ## 5. Gap 2 — element identity stops at the emitter
 

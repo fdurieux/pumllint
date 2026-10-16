@@ -45,9 +45,9 @@ classification by judgment, listed per rule so it can be re-graded.*
 verdict's clause (3), the §1 table's row (3) and §6 item 2 once, by #171.
 The ROADMAP's decision log, under the 2026-10-12 knowledge-graph entry,
 lists why. These edits make no code claim of their own: they point at the
-Arc E item, whose carve-out rests on the 2026-10-12 record's checks at
-`64007cb` (its §9). Every repository claim here still rests on `15a517b`
-and §7.*
+Arc E item, whose carve-out rests on the second correction's checks at
+`64007cb` (the 2026-10-12 record's §9). Every repository claim here still
+rests on `15a517b` and §7.*
 
 ## 0. Why this ran, and what it is not
 
@@ -210,14 +210,16 @@ this way, a finding names its input by path only. It cannot say which
 pumllint version, which configuration or which content produced it (#168
 Gap 1). And when the artefact was generated from a model held elsewhere,
 it cannot reach that model's element except by a name join (Gap 2). A
-graph of findings is therefore a dashboard, not an evidence record, until
-Arc E's *Run provenance in the score and trace reports* ships; the lint
-report's findings, which are the ones imported above, stay outside it (Arc
-E item, *Not covered*). That item's trigger already names this consumer:
-"a consumer — an evidence store, a knowledge graph — ingesting them". A
-question about one is not that consumer, so the trigger does not fire. The
-pointer added to the item makes this reading its concrete shape, which the
-item only half serves.
+graph of findings is therefore a dashboard, not an evidence record. For
+imported score and trace JSON reports that ends with Gap 1 when Arc E's
+*Run provenance in the score and trace reports* ships; the lint report's
+findings, which are the ones imported above, stay outside it (Arc E item,
+*Not covered*); and the name join of Gap 2 is aris2puml's D4(a), not Arc
+E's. That item's trigger already names this consumer: "a consumer — an
+evidence store, a knowledge graph — ingesting them". A question about one
+is not that consumer, so the trigger does not fire. The pointer added to
+the item makes this reading its concrete shape, which the item only half
+serves.
 
 ## 5. The corporate-semantic-layer framing
 

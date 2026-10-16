@@ -575,7 +575,7 @@ three items — full write-up in EVIDENCE.md §Deepening:
   - **Run-level facts as additive root keys** on the score and trace
     reports, announced the `syntaxGateRan` way: the tool version and an
     identity of the effective configuration the run used.
-  - **Input digests, one per input file** — a per-file fact, so outside
+  - **Input digests, one per digested file** — a per-file fact, so outside
     the `syntaxGateRan` precedent: on score's `diagrams[]` item, beside
     its `file` key; any other digested file — every one on trace, which
     has no item naming each input once — in one additive root list of
@@ -583,8 +583,10 @@ three items — full write-up in EVIDENCE.md §Deepening:
   - **Open, decided when the trigger fires:** what the configuration
     identity covers on each command; which files the root list holds;
     trace's lenient readers, which the digest below does not describe;
-    and what the syntax gate depends on beyond the file. The evidence for
-    each is in docs/kg-research-synthesis-evaluation.md §4 constraint 7.
+    what the syntax gate depends on beyond the file; and whether anything
+    gives the lint report's findings provenance (Not covered, below). The
+    evidence for each is in docs/kg-research-synthesis-evaluation.md §4
+    constraints 7 and 1.
   - **The digest, to the byte:** decode as `read_text_and_encoding` does
     (a UTF-8/16/32 BOM selects the codec and is dropped, else strict
     UTF-8); replace every CRLF, then every lone CR, with LF; change nothing
@@ -609,15 +611,14 @@ three items — full write-up in EVIDENCE.md §Deepening:
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
   must say which version, configuration and input produced a finding. When
-  it fires, both halves land in one cross-repository change, pumllint's
-  first.* *[2026-10-16: the knowledge-graph consumer now has a concrete
-  shape, which this item only half serves. Reading 3 of
-  docs/graph-store-evaluation.md imports `-f json` into Neo4j on the
-  consumer's side, with no pumllint code, and is a dashboard rather than
-  an evidence record until this item ships. Its worked example imports the
-  lint report's findings, which this item does not cover (Not covered,
-  just above). A question about such a consumer is not one, so the trigger
-  is unchanged and not fired.]*
+  it fires, pumllint's half lands first.* *[2026-10-16: the
+  knowledge-graph consumer now has a concrete shape, which this item only
+  half serves. Reading 3 of docs/graph-store-evaluation.md imports `-f
+  json` into Neo4j on the consumer's side, with no pumllint code. For
+  score and trace JSON reports it is a dashboard until this item ships;
+  its worked example imports the lint report's findings, which this item
+  does not cover (Not covered, just above). A question about such a
+  consumer is not one, so the trigger is unchanged and not fired.]*
 
 ## Arc F — AI-authored rules (demand-driven; wait for pull)
 
@@ -7542,6 +7543,12 @@ list and license posture live in § Settled questions.
     this decision log, far below. The trigger is back at the item's level,
     now its own paragraph, and the pointer is gone: the annotation points
     only at the item's own *Not covered*.
+  - *The trigger's landing sentence* read differently in the Arc E item
+    and the evaluation; both now say pumllint's half lands first.
+  - *A defect surfaced:* trace's `pattern_from_config` reads the GEN007
+    keys unlike the engine (exact keys only, `enabled` unread). The
+    evaluation's §4 constraint 7 records it; its fix is separate from Arc
+    E.
   - *The evaluation's correction note* had left out §4 constraint 6, and
     the prose both corrections touched is re-wrapped.
 
@@ -7554,9 +7561,9 @@ list and license posture live in § Settled questions.
   Full record:
   [docs/graph-store-evaluation.md](docs/graph-store-evaluation.md);
   repository claims executed at `15a517b`, except Reading 3's carve-out,
-  corrected on 2026-10-16 and resting on the 2026-10-12 record's checks at
-  `64007cb`; no Neo4j server was available, so every Cypher fragment in
-  the note is illustrative and unexecuted.
+  corrected on 2026-10-16 and resting on the second correction's checks at
+  `64007cb` (the evaluation's §9); no Neo4j server was available, so every
+  Cypher fragment in the note is illustrative and unexecuted.
   - *Reading 1, rules executed in the store: settled.* N1 and N3 of the
     2026-08-26 settlement, with N3 confirmed at the primary on
     2026-10-12. New here is a census of the 52 catalog rules, graded by
@@ -7606,11 +7613,12 @@ list and license posture live in § Settled questions.
     consumer maps them. No Cypher or RDF reporter. The chat answer's "zero
     build" was right about code and wrong about value: an imported finding
     names its input by path only (Gap 1), so a graph of findings is a
-    dashboard until *Run provenance in the score and trace reports* ships;
-    the lint report's findings stay outside it (Arc E item, *Not
-    covered*). That item's trigger already names "a consumer — an evidence
-    store, a knowledge graph — ingesting them". It is annotated with this
-    shape, and is not fired.
+    dashboard. For score and trace JSON reports that ends when *Run
+    provenance in the score and trace reports* ships; the lint report's
+    findings stay outside it (Arc E item, *Not covered*). That item's
+    trigger already names "a consumer — an evidence store, a knowledge
+    graph — ingesting them". It is annotated with this shape, and is not
+    fired.
   - *The corporate framing.* BPMN is the four grounds of 2026-08-27. UML
     is the product, for the subset it parses. Customer journeys have no
     PlantUML diagram type and no artefact here, and a journey drawn as an
