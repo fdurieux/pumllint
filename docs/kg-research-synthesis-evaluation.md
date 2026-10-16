@@ -273,15 +273,16 @@ Design constraints, recorded so a build does not re-derive them:
      There is no "same run" to borrow from. Nor does the score report carry
      the findings themselves: its gap report holds "the minimal blocking
      set to reach `level + 1`" (`build_gap_report`), not every finding.
-   - So this candidate leaves lint and sonar findings — the outputs most
-     consumers ingest — without provenance, and nothing recorded closes
-     that. The 2026-08-10 portable run-record candidate is not the route:
-     it is a format for adopter generation runs, "a pilot-repo artifact"
-     gated on a real pilot stabilizing one, with "nothing … built here
-     before then" (docs/sdd-manifest-evaluation.md, *Recorded, not
-     queued*, item 1). When the trigger below fires on lint findings, how
-     they get provenance is an open design question for that build, put
-     to the owner, not settled here.
+   - So this candidate leaves the lint report's findings — and the sonar
+     report's, the outputs most consumers ingest — without provenance, and
+     nothing recorded closes that. The 2026-08-10 portable run-record
+     candidate is not the route: it is a format for adopter generation
+     runs, "a pilot-repo artifact" gated on a real pilot stabilizing one,
+     with "nothing … built here before then"
+     (docs/sdd-manifest-evaluation.md, *Recorded, not queued*, item 1).
+     When the trigger below fires on lint findings, how they get provenance
+     is an open design question for that build, put to the owner, not
+     settled here.
 2. **Score and trace: run-level facts at the root, digests per input.**
    Both are inside owner decision §6.5's yes ("an additive field in an
    existing pinned shape is inside the yes").
@@ -291,16 +292,17 @@ Design constraints, recorded so a build does not re-derive them:
      announcement — README § Report schemas, the schema's own
      description, and this file.
    - **Input digests** are one fact per input file, so the precedent does
-     not cover them, and a root map keyed by path would duplicate the
-     paths the report's items already carry. Where each sits is the Arc E
-     item's to say; the reasoning behind it: a digest belongs beside a
-     path the report already names once per diagram, so a file holding
-     several diagrams repeats its digest, the same bytes named twice and
-     not a run fact named N times; and where no item names a file once,
-     as on trace — a diagram appears on as many sites as it has
-     citations, the inventory on none — a root list of `{file, digest}`
-     is a root key that is still the per-file fact, listed once, not a
-     run-level fact on the `syntaxGateRan` precedent.
+     not cover them, and a root map keyed by path would duplicate the paths
+     the report's items already carry. Where each sits is the Arc E item's
+     to say; the reasoning behind it: a digest belongs beside a path the
+     report already names once per diagram, so a file holding several
+     diagrams repeats its digest, the same bytes named twice and not a run
+     fact named N times; and where no item names a file once — on trace,
+     where a diagram appears on as many sites as it has citations and the
+     inventory on none, and for a score input with no `diagrams[]` item — a
+     root list of `{file, digest}` is a root key that is still the per-file
+     fact, listed once, not a run-level fact on the `syntaxGateRan`
+     precedent.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -383,15 +385,15 @@ Design constraints, recorded so a build does not re-derive them:
      `--requirements-scan` and `--features` files with
      `read_text(encoding="utf-8", errors="replace")` (`scan_inventory` and
      `scan_features` in `trace.py`), honouring no byte-order mark and
-     failing on nothing. A UTF-16 feature file's text then reads as its
-     characters with a NUL between each: a multi-character ID pattern such
-     as `REQ-\d+` matches nothing in it, a one-character pattern can match
-     stray letters (its file name, matched separately, still matches as
-     usual), while constraint 4's digest would hash the decoded text; and
-     for a file with no byte-order mark that is not valid UTF-8 that digest
-     cannot be computed at all. Moving those readers onto `read_text_file`
-     is a behaviour change: an undecodable file becomes an error instead of
-     being scanned.
+     failing on nothing. The ASCII text of a UTF-16LE feature file then
+     reads as its characters with a NUL between each: a multi-character ID
+     pattern such as `REQ-\d+` matches nothing in it, a one-character
+     pattern can match stray letters (its file name, matched separately,
+     still matches as usual), while constraint 4's digest would hash the
+     decoded text; and for a file with no byte-order mark that is not valid
+     UTF-8 that digest cannot be computed at all. Moving those readers onto
+     `read_text_file` is a behaviour change: an undecodable file becomes an
+     error instead of being scanned.
    - *What the syntax gate depends on beyond the file.* With the gate on
      (`syntaxGateRan` true), DIM-SYN is decided by the PlantUML engine
      `scoring.syntax_command` names: its version, its environment (its
@@ -473,9 +475,9 @@ Three carriers are possible, and two are wrong:
     the XOR split `x1` and its first outcome's event `e1`; lane lines
     carry org-unit ids; and a process-level finding maps to the process
     id the record already holds;
-  - joined on `(file, line)`; path-independently, once gap 1 is built,
-    only where the report carries the file's digest. Lint findings, item
-    5's ACT006 among them, never do (§4 constraint 1).
+  - joined on `(file, line)`; path-independently, once gap 1 is built, only
+    where the report carries the file's digest: lint-report findings
+    excepted (Arc E item, *Not covered*), item 5's among them.
 
   The cheapest correct carrier.
 
@@ -539,8 +541,7 @@ The synthesis's acceptance evidence, item by item:
   The baseline ratchet keeps one level per diagram and leaves history to
   git. With gap 1's Arc E half built, a retained score or trace JSON report
   would also say what it judged, within what §4 leaves open (constraint 7);
-  a lint report, or any sonar, HTML, badge or text report, would not (§4
-  constraint 1).
+  other reports would not (Arc E item, *Not covered*).
 
 ## 7. DOIs
 
@@ -572,10 +573,7 @@ already practised where this project measures (§4).
 1. **pumllint, Arc E — run provenance in the score and trace reports:**
    designed in §4 (constraints 1–6, with the open questions in 7) and
    specified in the ROADMAP's Arc E item, which this section does not
-   restate. Lint findings are not covered, nor any report but score's
-   and trace's `-f json`; how to give lint findings provenance is open
-   (§4 constraint 1).
-   *Trigger*: §4.
+   restate; what it leaves out is the item's *Not covered*. *Trigger*: §4.
 2. **aris2puml, D4 — the sidecar as an evidence record**, two independent
    additive keys:
    - (a) the line → ids map (gap 2; *trigger*: §5);
@@ -637,7 +635,9 @@ grep -n "def _rule_config" -A22 pumllint/engine.py          # enabled = false di
 grep -n "Path(args.baseline).exists()" pumllint/cli.py      # in _run_score: the baseline is read when it exists
 grep -n "for f in files" pumllint/syntax.py                 # check_files: PlantUML on every collected file
 grep -n "read_text_file" pumllint/trace.py pumllint/parser/sequence.py  # strict readers
-grep -n "def from_dict" pumllint/scoring.py                 # ScoringConfig reads the scoring section
+grep -n "def from_dict" -A30 pumllint/scoring.py            # ScoringConfig reads the scoring section
+grep -c "syntax_gate\|syntax_command" pumllint/scoring.py    # 0: from_dict reads neither
+grep -n "PUML_EXTENSIONS = " pumllint/engine.py             # .iuml is collected
 grep -n "def load_config" -A6 pumllint/config.py            # without -c, discovered from the working directory
 grep -n "never expanded" pumllint/parser/sequence.py         # !include recorded, not expanded
 grep -n "minimal blocking set" pumllint/scoring.py           # the gap report is not every finding
