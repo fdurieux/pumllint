@@ -598,13 +598,13 @@ three items — full write-up in EVIDENCE.md §Deepening:
     pumllint's input digest for the same diagram and the two records join
     on content.
   - **Not covered: lint findings, and every report but score's and trace's
-    `-f json`** — sonar from either command, HTML, badge, text. The lint
-    report stays a bare array, and no score or trace report can lend its
-    findings provenance. Nothing recorded closes this — the 2026-08-10
-    portable run-record candidate is not the route — so if the trigger
-    fires on lint findings, how they get provenance is an open question for
-    that build, put to the owner. The evaluation's §4 constraint 1 says
-    why.
+    `-f json`** — lint's and score's sonar, score's HTML and badge, and
+    every text report. The lint report stays a bare array, and no score or
+    trace report can lend its findings provenance. Nothing recorded closes
+    this — the 2026-08-10 portable run-record candidate is not the route —
+    so if the trigger fires on lint findings, how they get provenance is an
+    open question for that build, put to the owner. The evaluation's §4
+    constraint 1 says why.
 
   *Trigger: an adopter retaining the reports as audit evidence, or a
   consumer — an evidence store, a knowledge graph — ingesting them, who
@@ -7500,12 +7500,14 @@ list and license posture live in § Settled questions.
     2026-08-10 portable run-record candidate "built with" Arc E and
     "wrapping the lint invocation". It is a pilot-repo format, with
     nothing built here before a real pilot stabilizes one
-    (docs/sdd-manifest-evaluation.md), so that wording moved its gate;
-    the block above repeats it ("unless the 2026-08-10 run record is
-    built alongside"), and #170's merge of main (`6e77b19`) wrote it into
-    the Arc E item's 2026-10-16 annotation, the graph-store note's §4 and
-    the Reading 3 bullet of the 2026-10-16 graph-store entry below. Lint
-    and sonar provenance is now an open question for Arc E's build.
+    (docs/sdd-manifest-evaluation.md), so that wording moved its gate.
+    #170 wrote it into the Arc E item, the Gap 1 bullet of this entry,
+    the block above and the evaluation's §4 constraint 1 and §8; its
+    merge of main (`6e77b19`) carried it into the Arc E item's
+    2026-10-16 annotation, the graph-store note's §4 and the Reading 3
+    bullet of the 2026-10-16 graph-store entry below. All but the block
+    above are rewritten. Lint and sonar provenance is now an open
+    question for Arc E's build.
   - *`trace` takes no `--profile`.* `pumllint trace --profile codegen`
     exits 2 on an unrecognized argument; of lint, score and trace, only
     lint and score take `--profile` and `--no-suppressions`.

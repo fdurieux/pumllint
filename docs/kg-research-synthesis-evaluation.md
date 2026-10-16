@@ -270,10 +270,9 @@ Design constraints, recorded so a build does not re-derive them:
      without it each discovers its configuration from its own working
      directory (`load_config`) — and in time, and lint and score also in
      `--profile` and `--no-suppressions`, which `trace` does not take.
-     There is no "same run" to borrow from. Nor
-     does the score report carry the findings themselves: its gap report
-     holds "the minimal blocking set to reach `level + 1`"
-     (`build_gap_report`), not every finding.
+     There is no "same run" to borrow from. Nor does the score report carry
+     the findings themselves: its gap report holds "the minimal blocking
+     set to reach `level + 1`" (`build_gap_report`), not every finding.
    - So this candidate leaves lint and sonar findings — the outputs most
      consumers ingest — without provenance, and nothing recorded closes
      that. The 2026-08-10 portable run-record candidate is not the route:
@@ -292,18 +291,16 @@ Design constraints, recorded so a build does not re-derive them:
      announcement — README § Report schemas, the schema's own
      description, and this file.
    - **Input digests** are one fact per input file, so the precedent does
-     not cover them. On score each rides on the one-per-diagram item,
-     the `diagrams[]` item itself, beside the `file` key it already
-     carries; a root map keyed by path would duplicate those paths. A
-     file holding several diagrams repeats its digest on each of its
-     items; that is the same bytes named twice, not a run fact named N
-     times.
-   - **Input files with no such item** go in one additive root list, one
-     `{file, digest}` per file: a root key, but the per-file fact listed
-     once, not a run-level fact on the `syntaxGateRan` precedent. Trace
-     has no item that names each input once — a diagram appears on as
-     many sites as it has citations, the inventory on none — so every
-     digest trace carries goes there.
+     not cover them, and a root map keyed by path would duplicate the
+     paths the report's items already carry. Where each sits is the Arc E
+     item's to say; the reasoning behind it: a digest belongs beside a
+     path the report already names once per diagram, so a file holding
+     several diagrams repeats its digest, the same bytes named twice and
+     not a run fact named N times; and where no item names a file once,
+     as on trace — a diagram appears on as many sites as it has
+     citations, the inventory on none — a root list of `{file, digest}`
+     is a root key that is still the per-file fact, listed once, not a
+     run-level fact on the `syntaxGateRan` precedent.
    - Every schema involved closes its objects (`additionalProperties:
      false`), so a strict validator holding an older schema rejects the
      new keys; README already says so.
@@ -537,10 +534,10 @@ The synthesis's acceptance evidence, item by item:
   `--strict`).
 - **A controlled source change that preserves historical evidence: half.**
   The baseline ratchet keeps one level per diagram and leaves history to
-  git. With gap 1's Arc E half built, a retained score or trace JSON
-  report would also say what it judged, within what §4 leaves open (constraint
-  7); a lint report, or any sonar, HTML, badge or text report, would not
-  (§4 constraint 1).
+  git. With gap 1's Arc E half built, a retained score or trace JSON report
+  would also say what it judged, within what §4 leaves open (constraint 7);
+  a lint report, or any sonar, HTML, badge or text report, would not (§4
+  constraint 1).
 
 ## 7. DOIs
 

@@ -44,9 +44,10 @@ classification by judgment, listed per rule so it can be re-graded.*
 *Corrected 2026-10-16: §4's last paragraph twice, by #170 and #171;
 the verdict's clause (3), the §1 table's row (3) and §6 item 2 once, by
 #171. The ROADMAP's decision log, under the 2026-10-12 knowledge-graph
-entry, lists why. These edits add no claim about pumllint's code, which
-still rests on `15a517b` and §7; what they say of the Arc E item rests
-on that item as corrected on 2026-10-16.*
+entry, lists why. The code facts these edits lean on — separate
+invocations, what each command reads — are the 2026-10-12 record's,
+checked at `64007cb` and listed in its §9; every other repository claim
+here still rests on `15a517b` and §7.*
 
 ## 0. Why this ran, and what it is not
 
@@ -214,14 +215,14 @@ findings is therefore a dashboard, not an evidence record, until Arc E's
 findings like the ones imported above, not even then. Arc E covers the
 score and trace JSON reports only, and a separate score or trace invocation
 cannot lend lint findings provenance. Nothing recorded gives them any; that
-is an open question for Arc E's build (the 2026-10-12 record's *Corrected
-again* 2026-10-16 note, which supersedes the first on this point). That
-item's trigger already names this consumer: "a consumer — an evidence
-store, a knowledge graph — ingesting them". A question about one is not
-that consumer, so the trigger does not fire. The pointer added to the item
-makes this reading its concrete shape, which the item only half serves:
-score and trace reports, within the limits it names, and not the lint
-findings imported above.
+is an open question for Arc E's build (the ROADMAP decision log's
+*Corrected again* 2026-10-16 note under the 2026-10-12 knowledge-graph
+entry, which supersedes the first on this point). That item's trigger
+already names this consumer: "a consumer — an evidence store, a knowledge
+graph — ingesting them". A question about one is not that consumer, so the
+trigger does not fire. The pointer added to the item makes this reading its
+concrete shape, which the item only half serves: score and trace reports,
+within the limits it names, and not the lint findings imported above.
 
 ## 5. The corporate-semantic-layer framing
 
