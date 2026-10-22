@@ -205,7 +205,7 @@ but they are a useful cross-check that no audience was forgotten.
   - **The yield is a parser defect it surfaced**: a message from a
     participant named after a PlantUML keyword was dropped. It is fixed
     in the same PR for 32 of the 47 keywords the pinned jar draws as
-    message sources.
+    message sources, and for the other 15 the same day.
 - [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
   — dated evaluation (2026-08-27), ninth in the series and the cleanest
   refusal: not a diagram notation (a model+perspectives format for an

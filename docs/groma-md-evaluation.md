@@ -30,7 +30,8 @@ construction rather than by rule. It meets pumllint in three ways:**
 a message sent by a participant named after a PlantUML keyword was
 dropped, and SEQ002 then reported the receiver as declared but never
 used. It is fixed in this PR for 32 of the 47 keywords that the pinned
-jar draws as message senders. The other 15 are recorded.**
+jar draws as message senders. The other 15 are recorded.** *[Fixed
+the same day; §5.]*
 
 *Bounds: groma.md 0.7.2 (npm `latest`, linux-x64 binary), with
 `@groma/scanner-python` 0.2.3, was **executed** on a scratch clone of this
@@ -258,7 +259,12 @@ PlantUML draws all 15 as messages. Making the parser agree means
 reordering five places, including the note pre-pass. That is recorded
 under Arc A as a residual and not changed here: the 93 diagrams in this
 repository hold **no** participant named after any of the 53 words, and
-the one occurrence observed is a generated alias.
+the one occurrence observed is a generated alias. *[Fixed the same day,
+on the maintainer's ask. A predicate recognises the line before those
+branches can claim it, following PlantUML's arrow rule as measured on 55
+further edge lines: a head or an `x`/`o` end makes it a message, and a
+bare dash, a dotted body, a `+`/`*`/`!` suffix or a missing target does
+not. Agreement is now 106 of 106. Record: ROADMAP Arc A.]*
 
 The tests pin both directions (`tests/test_parser_sequence.py`):
 
@@ -489,7 +495,7 @@ Structurizr, LikeC4 and Linked.Archi's SHACL. The C4 ecosystem record's
   and the docstring escape with its compile guard. Unreleased; they land
   in the next version.
 - **Recorded, not queued:**
-  - the 15-word residual of the fix (Arc A);
+  - the 15-word residual of the fix (Arc A); *fixed the same day*;
   - the converter shape for groma, which is the graph-store record's
     shape with groma as its first named producer.
 - **Annotated in place, as pointers:**
