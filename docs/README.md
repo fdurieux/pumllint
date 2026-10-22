@@ -206,6 +206,15 @@ but they are a useful cross-check that no audience was forgotten.
     participant named after a PlantUML keyword was dropped. It is fixed
     in the same PR for 32 of the 47 keywords the pinned jar draws as
     message sources, and for the other 15 the same day.
+- [groma.md's diagram visualisation and pumllint, evaluated](groma-visualisation-evaluation.md)
+  — dated evaluation (2026-10-22) narrowing the groma.md note to its
+  browser map, whose static export was run on groma's own model. Verdict:
+  no capability to adopt and nothing queued. groma's map is its renderer,
+  because groma has no diagram language; pumllint's picture is
+  PlantUML's. The one transferable idea, showing which drawn element a
+  finding is about, reaches 10 of 66 findings through PlantUML's SVG
+  (none on activity diagrams). Its recorded shape is aris2puml's
+  `--diagnose` precedent: emit `.puml` and let PlantUML draw it.
 - [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
   — dated evaluation (2026-08-27), ninth in the series and the cleanest
   refusal: not a diagram notation (a model+perspectives format for an
