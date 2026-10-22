@@ -105,16 +105,14 @@ RE_UC_LINK = re.compile(
 )
 RE_UC_ACTOR_INLINE = re.compile(r"^:(?P<name>[^:]+):(?:\s+as\s+(?P<alias>" + _IDENT + r"))?\s*$")
 
-_LIKELY_KEYWORD_SOURCES = {
-    "activate", "deactivate", "destroy", "create", "return", "note", "ref",
-    "alt", "opt", "loop", "par", "break", "critical", "group", "else", "end",
-    "box", "title", "skinparam", "autonumber", "hide", "show", "header",
-    "footer", "legend", "endlegend", "newpage", "participant", "actor",
-    "boundary", "control", "entity", "database", "collections", "queue",
-    "usecase", "rectangle", "package", "left", "right", "top", "bottom",
-    "caption", "delay", "endnote", "endrnote", "endhnote", "mainframe",
-    "endbox", "hnote", "rnote", "ignore", "set",
-}
+# A message whose source is a keyword is still a message: PlantUML 1.2026.6
+# draws `package -> B : x` from a participant named `package`, declared or
+# not, and does the same for 47 of the 53 keywords an earlier guard here
+# dropped (measured 2026-10-22). Only these six directives win over the
+# arrow. Fifteen more (block, note, `return`, `autonumber`, `skinparam`)
+# never reach this branch, because their own branches claim the line
+# first, and PlantUML disagrees with that too (ROADMAP Arc A, 2026-10-22).
+_DIRECTIVE_SOURCES = {"caption", "footer", "header", "legend", "mainframe", "title"}
 
 
 # Inline suppression comments, e.g.
@@ -495,8 +493,7 @@ def _parse_statement(
             src = None
         if dst == "]":
             dst = None
-        # Guard against keyword lines mis-matched as messages
-        if (src or "").lower() in _LIKELY_KEYWORD_SOURCES:
+        if (src or "").lower() in _DIRECTIVE_SOURCES:
             return
         if src is None and dst is None:
             return
@@ -556,7 +553,7 @@ def parse_file(path: str | Path) -> list[Diagram]:
 
     Reports carry this string, and a Windows-produced report has to match a
     POSIX-produced one byte for byte: a SonarQube ingest, a committed
-    example, a baseline key and a CI artefact diff all break on ``\``.
+    example, a baseline key and a CI artefact diff all break on ``\\``.
     """
     p = Path(path)
     return parse_source(read_source(p), file_path=p.as_posix())

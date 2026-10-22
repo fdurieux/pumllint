@@ -188,6 +188,24 @@ but they are a useful cross-check that no audience was forgotten.
   generated-artefact problem in the series: nothing malfunctions, the
   findings are *true*, and their only fix is upstream where Structurizr's
   own `inspect` already runs.
+- [groma.md and pumllint — a live C4 map from code, evaluated](groma-md-evaluation.md)
+  — dated evaluation (2026-10-22) of a three-month-old tool that scans
+  code into a C4 model stored as OKF Markdown in Git, and keeps it live
+  for people and agents to curate. Verdict: nothing to adopt or build,
+  and no quadrant criterion moves.
+  - **A neighbour, not a part.** It emits no diagram language. On this
+    repository's Python its first scan derives zero relationships.
+  - **Projected onto PlantUML by a probe**, its curated model gives C4
+    views at Level 1 (the C4 settlement's prediction) and flows at Level
+    4 with zero findings. That is prevention, not quality: groma's
+    contract refused the defects first. Under codegen the flows score
+    Level 2, because a flow step is prose by design.
+  - **The conformance cost moves for inventory, not for interactions**,
+    and the trigger has not fired.
+  - **The yield is a parser defect it surfaced**: a message from a
+    participant named after a PlantUML keyword was dropped. It is fixed
+    in the same PR for 32 of the 47 keywords the pinned jar draws as
+    message sources.
 - [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
   — dated evaluation (2026-08-27), ninth in the series and the cleanest
   refusal: not a diagram notation (a model+perspectives format for an
