@@ -252,16 +252,17 @@ def test_authored_is_declared_before_or_after_first_use():
 
 
 # --- keyword-named message sources -----------------------------------------
-# Ground truth: PlantUML 1.2026.6 (the syntax gate's pin), one message per
-# file counted in its SVG, 2026-10-22. The fifteen block, note, `return`,
-# `autonumber` and `skinparam` keywords PlantUML also draws as sources are
-# claimed by their own branches first; they are on record, not pinned here.
+# Ground truth: PlantUML 1.2026.6 (the syntax gate's pin), the messages and
+# participants in its SVG, 2026-10-22: 106 keyword files and 55 edge lines.
 
 KEYWORD_SOURCES = (
     "activate actor bottom boundary collections control create database "
     "deactivate delay destroy end endbox endhnote endlegend endnote endrnote "
     "entity hide ignore left newpage package participant queue rectangle ref "
     "right set show top usecase"
+).split() + (  # these fifteen also have a block, note, return or directive branch
+    "alt opt loop par break critical group else box note hnote rnote return "
+    "autonumber skinparam"
 ).split()
 
 DIRECTIVE_SOURCES = "caption footer header legend mainframe title".split()
@@ -281,3 +282,35 @@ def test_a_directive_still_wins_over_the_arrow():
     for kw in DIRECTIVE_SOURCES:
         d = _one(f'@startuml\nparticipant "Alpha" as {kw}\nparticipant B\n{kw} -> B : x\n@enduml\n')
         assert d.messages == [], kw
+
+
+def test_a_keyword_line_is_a_message_only_with_a_real_arrow():
+    """A head or an ``x``/``o`` end makes the line a message; a bare dash, a
+    dotted body, a ``+``/``*`` suffix or no target leaves it to the keyword."""
+    sent = ["alt x->y : z", "loop x-axis", "alt <- B : x", "alt ->]", "par -/ B : x",
+            "note x->y", "return --> B : r", "box x-y", "else -> B : x", "alt->B : x"]
+    for line in sent:
+        d = _one(f"@startuml\nparticipant A\nparticipant B\nalt ok\n{line}\nend\n@enduml\n")
+        kw = line.split()[0].split("-")[0]
+        assert [m.source for m in d.messages] == [kw], (line, d.messages)
+    kept = ["alt -1", "alt ..> B : x", "alt ->+ B : x", "alt ->* B : x", "group -",
+            "alt success", "loop over x->y", "alt (x->y)", "opt -- guard --"]
+    for line in kept:
+        d = _one(f"@startuml\nparticipant A\nparticipant B\n{line}\nA -> B : in\nend\n@enduml\n")
+        assert [m.source for m in d.messages] == ["A"], (line, d.messages)
+        assert [b.kind for b in d.blocks] == [line.split()[0]], (line, d.blocks)
+
+
+def test_a_keyword_message_does_not_open_a_block_or_a_note():
+    """``group -> B`` used to open a group block that nothing closed, and
+    ``note -> B`` with no label opened a note that swallowed the rest."""
+    d = _one("@startuml\nparticipant A\nparticipant B\ngroup -> B\nnote -> B\nA -> B : x\n@enduml\n")
+    assert d.blocks == []
+    assert [(m.source, m.target) for m in d.messages] == [("group", "B"), ("note", "B"), ("A", "B")]
+
+
+def test_a_state_named_note_keeps_its_transitions():
+    """``note --> Idle : go`` was read as an inline note, so the state lost
+    its outgoing transition; PlantUML draws all three."""
+    d = _one("@startuml\n[*] --> note\nnote --> Idle : go\nIdle --> [*]\n@enduml\n")
+    assert [(t.source, t.target) for t in d.transitions] == [("[*]", "note"), ("note", "Idle"), ("Idle", "[*]")]

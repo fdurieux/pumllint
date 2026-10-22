@@ -241,6 +241,28 @@ them.
   PlantUML draws all 15 as messages. Making the parser agree means
   reordering five places. *Trigger: a diagram, hand-written or a
   converter's output, naming a participant after one of the fifteen.*
+  *[Fixed 2026-10-22, the same day, on the maintainer's ask; no trigger
+  fired. One predicate, `_keyword_message`, recognises the line before
+  the note pre-pass and the directive, `return` and block branches can
+  claim it, and the message branch became `_parse_message` so it can be
+  reached early. The boundary is PlantUML's arrow rule, measured on 55
+  further edge lines at the pin:
+  - a head (`>`, `<`, `/`, `\`) or an `x`/`o` end makes the line a
+    message: `alt x->y : z`, `loop x-axis`, `alt ->]`;
+  - a bare dash, a dotted body, a `+`/`*`/`!` suffix or a missing target
+    leaves the line to its keyword: `alt -1`, `alt ..> B`, `alt ->+ B`,
+    `group -`.
+
+  Agreement is now 106 of 106 on the keyword files, and 44 of 44 on the
+  edge lines where the jar decides. The other 11 are PlantUML syntax
+  errors, which the gate reports whichever way pumllint reads them. Two
+  failure modes went with it: `group -> B` opened a block nothing closed,
+  and an unlabelled `note -> B` opened a note that swallowed the rest of
+  the diagram. A third went too, outside sequence diagrams: a state named
+  `note` lost its outgoing transitions, because `note --> Idle : go` was
+  read as an inline note. PlantUML draws all three transitions (smetana
+  layout, the pinned jar). Pinned by the 47-word test and three new ones.
+  No golden, schema or score moved.]*
 
 ## Arc B — Trust & adoption (done)
 
@@ -7659,7 +7681,8 @@ list and license posture live in § Settled questions.
     participant named after a PlantUML keyword were dropped, and SEQ002
     then reported the receiver as unused. Fixed for 32 of the 47 words
     the jar draws as message sources, from 12 of 106 to 76 of 106
-    agreement. 15 words are recorded as a residual. The commit also
+    agreement. 15 words are recorded as a residual *(fixed the same day:
+    106 of 106, Arc A)*. The commit also
     carries the docstring escape and its compile guard. 739/739 stdlib,
     877 pytest; no golden, schema or score moved.
   - *Never build*, in this question's vocabulary:
