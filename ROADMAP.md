@@ -231,6 +231,20 @@ them.
   participant after any of the 53. The same commit escapes the backslash
   in `parse_file`'s docstring (a `SyntaxWarning` at every fresh compile)
   and adds `test_package_sources_compile_without_warnings`. Unreleased.
+  *[Released as 0.34.0, 2026-10-22, together with the residual fix below.
+  The release carries everything product-side merged since 0.33.0:
+  - #146: `declared_line`, with SEQ001 naming both lines;
+  - #147: `syntaxGateRan` at the score report's root;
+  - #148: `pumllint schema config`;
+  - #149 and #151: XD001/XD002, SEQ102 and GEN004 read the authored kind;
+  - #152, #153 and #155: `trace --features`;
+  - #164: the DIM-SEM label;
+  - #172 and #173: these parser fixes.
+
+  13 version sites bumped. The pilot report moved in its footer only, and
+  the badge is byte-identical. Golden scores have not moved since 0.33.0.
+  aris2puml's floor stays `pumllint>=0.33`, because nothing in its suite
+  needs a newer rule.]*
   *Residual, recorded:* 15 words still disagree, because an earlier
   branch claims the line before the message branch:
   - the block keywords `alt opt loop par break critical group else box`;
