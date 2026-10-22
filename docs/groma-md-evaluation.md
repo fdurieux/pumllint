@@ -493,7 +493,8 @@ Structurizr, LikeC4 and Linked.Archi's SHACL. The C4 ecosystem record's
   the open count stays at 17, all gated.
 - **Shipped in this PR:** the keyword-alias parser fix with its tests,
   and the docstring escape with its compile guard. Unreleased; they land
-  in the next version.
+  in the next version. *[Released as 0.34.0, 2026-10-22, with the
+  residual fix.]*
 - **Recorded, not queued:**
   - the 15-word residual of the fix (Arc A); *fixed the same day*;
   - the converter shape for groma, which is the graph-store record's
