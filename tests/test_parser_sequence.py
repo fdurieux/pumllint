@@ -249,3 +249,35 @@ def test_authored_is_declared_before_or_after_first_use():
     assert [(p.kind, p.declared, p.authored) for p in u.participants.values()] == [
         ("usecase", True, True), ("actor", False, False), ("usecase", False, False)
     ]
+
+
+# --- keyword-named message sources -----------------------------------------
+# Ground truth: PlantUML 1.2026.6 (the syntax gate's pin), one message per
+# file counted in its SVG, 2026-10-22. The fifteen block, note, `return`,
+# `autonumber` and `skinparam` keywords PlantUML also draws as sources are
+# claimed by their own branches first; they are on record, not pinned here.
+
+KEYWORD_SOURCES = (
+    "activate actor bottom boundary collections control create database "
+    "deactivate delay destroy end endbox endhnote endlegend endnote endrnote "
+    "entity hide ignore left newpage package participant queue rectangle ref "
+    "right set show top usecase"
+).split()
+
+DIRECTIVE_SOURCES = "caption footer header legend mainframe title".split()
+
+
+def test_a_keyword_named_participant_sends_messages():
+    """``participant "Plugin packages" as package`` then ``package -> B``:
+    the message used to be dropped, and SEQ002 then called B unused."""
+    for kw in KEYWORD_SOURCES:
+        for decl in (f'participant "Alpha" as {kw}\n', ""):
+            d = _one(f"@startuml\n{decl}participant B\n{kw} -> B : x\n@enduml\n")
+            got = [(m.source, m.target, m.label) for m in d.messages]
+            assert got == [(kw, "B", "x")], (kw, bool(decl), got)
+
+
+def test_a_directive_still_wins_over_the_arrow():
+    for kw in DIRECTIVE_SOURCES:
+        d = _one(f'@startuml\nparticipant "Alpha" as {kw}\nparticipant B\n{kw} -> B : x\n@enduml\n')
+        assert d.messages == [], kw

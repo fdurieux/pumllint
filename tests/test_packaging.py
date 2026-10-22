@@ -175,3 +175,16 @@ def test_yaml_files_parse_when_yaml_is_available():
     assert [h["id"] for h in hooks] == ["pumllint", "pumllint-score"]
     for h in hooks:
         assert h["files"] == r"\.(puml|plantuml|iuml|wsd)$"
+
+
+def test_package_sources_compile_without_warnings():
+    """An invalid escape in a docstring warns at every fresh compile
+    (``SyntaxWarning`` since 3.12) and becomes an error in a later Python.
+    One sat in ``parser/sequence.py`` until 2026-10-22."""
+    import warnings
+
+    for path in sorted((_ROOT / "pumllint").rglob("*.py")):
+        with warnings.catch_warnings(record=True) as caught:
+            warnings.simplefilter("always")
+            compile(path.read_bytes(), str(path), "exec")
+        assert not caught, f"{path.relative_to(_ROOT).as_posix()}: {caught[0].message}"
