@@ -7714,3 +7714,51 @@ list and license posture live in § Settled questions.
 
   *Product code moved: the parser fix and its tests (Arc A). Otherwise
   docs.*
+
+- **groma.md's diagram visualisation (2026-10-22): no capability to
+  adopt, nothing queued, no quadrant move; one shape recorded.** Asked:
+  evaluate the relevance, for pumllint, of the visualisation of diagrams
+  as done in groma. Full record:
+  [docs/groma-visualisation-evaluation.md](docs/groma-visualisation-evaluation.md).
+  It narrows the same-day groma.md note, whose bounds had the web viewer
+  "characterized from documentation, not run". `groma export` (0.7.2)
+  ran twice on groma's own model at `4f7ffac` and was opened in
+  Chromium; findings were joined to PlantUML 1.2026.6 SVGs of the 14
+  `examples/` files (Smetana; no Graphviz in the container).
+  - *What it draws.* One computed sheet (iso, 2D, layers) that no viewer
+    may re-lay out; flows lit over the standing structure; ghosts;
+    revision comparison; social covers; task pins. The export is an 11 MB
+    JS application. Its layout is deterministic, but it is not
+    byte-stable: a generation stamp and millisecond timings differ
+    between runs. pumllint's HTML report is 22.6 KB, has no scripts and
+    is byte-stable.
+  - *Reading.* groma's map is its renderer, because groma has no diagram
+    language ("Store architecture, not diagrams"). pumllint's picture is
+    PlantUML's, and the project "has never needed to know which engine
+    drew the picture". Each of the eight devices was matched to
+    pumllint's nearest surface. Seven are irrelevant, inverse
+    (one-model identity against XD's checked joins) or a different object
+    (a model diff against a score diff). The first note's readings stand:
+    substitution confirmed, not widened. The converter could read the
+    export's JSON instead of the Markdown, which changes its input, not
+    its shape or trigger.
+  - *The one transferable idea: findings on the picture.* PlantUML's SVG
+    carries a 0-based `data-source-line` on sequence messages and
+    participants and on class, state and use-case entities. Links carry
+    entity ids only, and activity diagrams carry nothing. On the
+    examples: of **66 findings, 10 land on a drawn element**. 40 are
+    diagram-level (line 1). 16 have no element: blocks, activations,
+    members, links, and **all 6 activity findings**. Remaining joins would
+    be name joins, and `Violation` has no element field.
+    *Recorded, not queued:* if an architect asks to see findings on the
+    picture, the shape is aris2puml's `--diagnose`. Emit an annotated
+    `.puml` (coloured lines, findings as notes) from the fixer's line
+    edits and let PlantUML draw it; SVG overlay comes second.
+  - *Never build*, in this question's vocabulary: a renderer, layout
+    engine or interactive map inside pumllint; scripts in the HTML report,
+    or a report that is not byte-stable; a viewer for another tool's model.
+  - *Annotated in place:* the groma.md note's bounds sentence.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated; the
+    critical path stays aris2puml A1b → A4.
+
+  *Docs only: no product code, golden, schema or score moved.*

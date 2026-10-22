@@ -49,6 +49,8 @@ pypistats for pumllint, whose window is the last 30 days and so is not
 identical. The GitHub Action, the web viewer and Backlog.md were
 characterized from documentation, not run. OKF was characterized from its
 repository page.*
+*[The web viewer's static export was run the same day, on groma's own
+model: [groma-visualisation-evaluation.md](groma-visualisation-evaluation.md).]*
 
 ## 0. Why this ran, and what it is not
 
