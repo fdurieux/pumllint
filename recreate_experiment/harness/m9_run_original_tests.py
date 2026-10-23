@@ -21,6 +21,7 @@ ap.add_argument("--rc-pkg", required=True)
 ap.add_argument("--rc-chain", required=True)
 ap.add_argument("--python", required=True)
 ap.add_argument("--out", required=True)
+ap.add_argument("--extra-path", default="", help="extra PYTHONPATH entries (os.pathsep-joined) where the rc package lives")
 args = ap.parse_args()
 JF = Path(args.jf)
 
@@ -28,7 +29,15 @@ API_MODULES = ["test_actions_store", "test_adjust", "test_binance_collector",
                "test_classification", "test_contract", "test_differential",
                "test_eodhd_collector", "test_health", "test_rate_limiter",
                "test_store", "test_store_reconcile", "test_store_robustness",
-               "test_sync", "test_universe_config", "test_pilot_universe"]
+               "test_sync", "test_universe_config"]
+# Not applicable through the shim, on the ORIGINAL too (measured 2026-10-23):
+# three health tests inspect other source homes (jef.api, deploy/, docs/) for
+# knob consistency, test_pilot_universe needs jef.binning, and the chain's
+# ledger test needs `python3 -m jef.events`, which no recreation venv has.
+DESELECT = ["tests/data/test_health.py::test_every_health_knob_has_one_calibrated_value_in_every_home",
+            "tests/data/test_health.py::test_the_resolution_knobs_have_one_set_of_defaults",
+            "tests/data/test_health.py::test_no_call_site_overrides_a_calibrated_knob",
+            "tests/test_daily_chain.py::test_red_day_still_writes_the_ledger"]
 BLACKBOX_MODULES = ["test_daily_chain"]
 SUBMODULES = ["actions", "adjust", "classification", "cli", "collectors",
               "collectors.base", "collectors.eodhd", "collectors.binance",
@@ -61,6 +70,7 @@ tests = work / "tests"
 shutil.copy(JF / "tests" / "conftest.py", tests / "conftest.py")
 shutil.copy(JF / "tests" / "data" / "conftest.py", tests / "data" / "conftest.py")
 shutil.copytree(JF / "tests" / "data" / "fixtures", tests / "data" / "fixtures")
+shutil.copytree(JF / "tests" / "fixtures", tests / "fixtures")
 shutil.copytree(JF / "experiments", work / "experiments", ignore=shutil.ignore_patterns("*.txt", "*.R", "*.py"))
 (work / "tools").mkdir()
 for m in API_MODULES:
@@ -75,9 +85,10 @@ report = {"work": str(work), "modules": {}}
 def run(paths, label):
     xml = work / f"{label}.xml"
     p = subprocess.run([args.python, "-m", "pytest", "-q", "-p", "no:cacheprovider",
-                        f"--junitxml={xml}", "-o", "junit_family=xunit2", *paths],
+                        f"--junitxml={xml}", "-o", "junit_family=xunit2",
+                        *[a for d in DESELECT for a in ("--deselect", d)], *paths],
                        cwd=work, capture_output=True, text=True,
-                       env={"PYTHONPATH": str(work / "shim"), "PATH": "/usr/bin:/bin:" + str(Path(args.python).parent),
+                       env={"PYTHONPATH": str(work / "shim") + (":" + args.extra_path if args.extra_path else ""), "PATH": "/usr/bin:/bin:" + str(Path(args.python).parent),
                             "HOME": str(work)})
     import xml.etree.ElementTree as ET
     per = {}
