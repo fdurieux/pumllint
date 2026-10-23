@@ -398,3 +398,36 @@ re-measure per model generation.
 ## Results
 
 *(appended as the phases complete; nothing above this line changes)*
+
+### Phase 0 — frozen 2026-10-23
+
+- Pre-registration frozen at pumllint `5c1fa55`
+  (sha256 `4f14e9a0…1982` of this file at that commit).
+- Subject: J-F at `8f6d6b0` (= `origin/main`), read-only throughout; the
+  working tree showed zero tracked changes before and after the reference run.
+- Reverse engineer's clean room: a copy of `src/jef/data/`, `deploy/daily.sh`,
+  the two sourced scripts as marked externals, and a reduced `pyproject.toml`
+  with the pins, installed into its own venv; no `docs/`, `tests/`, README or
+  ROADMAP present. The reverse-engineering agent: Opus 5 @ xhigh, fresh
+  context, brief in the Agent call of this session.
+- Comparison harness (`harness/`): 24 scenario groups, **157 artefacts**,
+  through the adapter interface fixed in `harness/HARNESS_INTERFACE.md`
+  (given to the reverse engineer verbatim, to be copied into the kit). Inputs
+  derived from the subject's nine recorded fixtures plus six derived variants
+  (windowless AAPL dividends, a revised TLT tail, a TLT jump, a two-bar BTC
+  tail with one revised close, a zero-volume BTC run) and 18 universe files
+  (`harness/INPUTS.sha256.json`, 36 files). Reference outputs:
+  `harness/REFERENCE.MANIFEST.sha256.json`. Two reference runs compare
+  identical after normalising wall-clock values (ISO stamps, the chain's run
+  stamp and stage epochs, the actions `last_updated` field, store and tmp
+  paths); those are the pre-registered exclusions.
+- M8 on the reference: PASS (10 400 rows through the original loader).
+- One observation on the original, to be triaged with the rest:
+  `jef-data export` on a series the store does not hold exits 1 with a raw
+  `AttributeError` traceback instead of a message (scenario
+  `s21_cli_refusals/export_empty`).
+- Deviation from §4 item 1, minor: the `arc` field cannot be filled by a
+  reverse engineer who sees no roadmap, so `requirements.json` carries
+  `id`, `kind`, `statement`, `basis`, `rationale?` and no `arc`.
+- Recreator brief recorded verbatim in `harness/RECREATOR_PROMPT.md`.
+
