@@ -1,7 +1,10 @@
 # Recreation experiment — reverse-engineer, specify, recreate, compare
 
-*Plan, 2026-10-23 (revised the same day: the target is J-F's daily asset
-load, named by the maintainer after the first draft proposed aris2puml).
+*Plan, 2026-10-23 (revised twice the same day: the target is J-F's daily
+asset load, named by the maintainer after the first draft proposed
+aris2puml; then, on the maintainer's instruction, the kit is derived from
+the code alone — no existing diagram or document of J-F is read for it,
+and Arm E is dropped).
 Draft for the maintainer's go. Becomes `PREREGISTRATION.md` (frozen,
 hashed) once the decisions in §10 are taken and before any recreation
 run. House protocol applies (`stack_experiment/PREREGISTRATION_TEMPLATE.md`,
@@ -28,17 +31,18 @@ of the spec defects is the result: which information classes a
 reverse-engineered spec loses — the mirror of the charter's "which
 artefacts, which level of detail".
 
-Two things make this target sharper than a toy. **The subject already
-carries a pumllint-gated model set** — eight data-load diagrams at
-Level 5, 100/100 under the codegen profile, a requirement inventory, a
-source join — and a normative contract (`docs/DATA_CONTRACT.md`). J-F's
-own trap T-0800 says the green gate "scores the set against itself,
-never against the code". A recreation from those artefacts alone is the
-first measurement of what they carry (§3.1, Arm E). And **the subject's
-failure class is silent and numeric**: a wrong cell in the frame the
-binning consumes, or a health gate that says green on a red day, feeds
-the model wrong values with no error anywhere. The differential test
-sees both per series and per scenario.
+Two things make this target sharper than a toy. **The kit is derived
+from the code alone, on the maintainer's instruction** (2026-10-23): the
+reverse engineer reads `src/jef/data/`, `deploy/daily.sh`, the two
+packaged TOML files and the pins in `pyproject.toml` — never `docs/`,
+`docs/diagrams/`, the README or the ROADMAP, and (recommended, §10
+decision 1) never `tests/`. J-F's existing eight data-load diagrams and
+its data contract are not inputs to anything here; they are compared with
+the kit only after the recreation is scored (§6, the side result). And
+**the subject's failure class is silent and numeric**: a wrong cell in
+the frame the binning consumes, or a health gate that says green on a red
+day, feeds the model wrong values with no error anywhere. The
+differential test sees both per series and per scenario.
 
 Register for the 2026-10-20 note *AI-Assisted Testing in Spec-Driven
 Development*, whose rules this design adopts verbatim: the spec is the
@@ -96,7 +100,7 @@ original proves `load_eod_store` ≡ `load_eod_csv` on it
 (`test_seam_invariance.py`), and the recreated store must pass the
 same proof.
 
-## 3. Design — four phases, three contexts
+## 3. Design — four phases, four contexts
 
 ```
  Phase 0  freeze         Phase 1  reverse-engineer      Phase 2  recreate         Phase 3  compare
@@ -105,35 +109,46 @@ same proof.
  hashed                  + provenance file (hidden)      + ASSUMPTIONS.md          differential + triage
 ```
 
-**Independence is the design, not a wish.** The reverse engineer (this
-session) sees everything. The recreator is a *fresh* agent (not a fork:
-a fork inherits this context and with it the original source), started
-with one directory, the kit, copied outside every repository; the
-prompt names no repository, URL or package name but the kit's own.
-Leakage is checked after the fact: the recreator's report lists every
-path it read; the recreated source is diffed against the original for
-copied comments and docstrings, which no kit carries. The original's
-tests and the recorded fixtures never enter a kit — the kit's scenarios
-carry their own small fixtures in the same recorded-fixture file shape.
+**Independence is the design, not a wish.** Two clean rooms, not one.
+*The reverse engineer* is a fresh agent started on a scratch copy of the
+code tree from which `docs/`, `tests/`, every README and the ROADMAP have
+been deleted, so it cannot read what it must not; it derives the kit and
+the hidden `provenance.json` from that tree. This orchestrating session
+has read parts of J-F's data contract and diagram index while planning,
+which is exactly why it does not write the kit: it runs the kit gates,
+the recreations and the comparison. *The recreator* is a second fresh
+agent (never a fork: a fork inherits context) started with one directory,
+the kit, copied outside every repository; its prompt names no repository,
+URL or package name but the kit's own. Leakage is checked after the fact
+on both: each agent's report lists every path it read; the recreated
+source is diffed against the original for copied comments and
+docstrings, which no kit carries. The original's tests and recorded
+fixtures never enter a kit — the kit's scenarios carry their own small
+fixtures in the recorded-fixture file shape the kit documents.
+
+The source carries prose: docstrings and comments quote decisions and
+cite the contract by section. That is code and stays in. Each kit
+requirement records whether it rests on logic read, on comment prose, or
+on both, so behaviour read from the program can be told apart from
+behaviour read from the author's notes.
 
 ### 3.1 Arms
 
 | Arm | Kit contents | What it measures |
 |---|---|---|
-| **E — existing documentation** (cheap, recommended) | `docs/DATA_CONTRACT.md`, `docs/DATA_LOADER_PLAN.md`, `docs/DAILY_OPS_PLAN.md`, the `jef-data` entries of `docs/COMMANDS.md`, the eight `data_*.puml` diagrams plus `ops_daily_chain.puml`, `requirements.txt`, `universe.toml`, `classifications.toml`. Nothing written for this experiment. | what the house's own documentation discipline carries — T-0800's question, measured rather than argued |
-| **K — the kit** (mandatory) | requirements as code + contracts + UML + Gherkin, reverse-engineered under §4 | the question as asked |
+| **K — the kit** (mandatory) | requirements as code + contracts + UML + Gherkin, all derived from the code tree under §4 | the question as asked |
 | **K−UML** (optional) | K without the diagrams | whether the architecture/UML artefacts are *needed* — the literal word in the ask |
 
 Same recreator model, fresh context per arm; one variable per contrast
-(charter E3). Recommendation: run E and K; add K−UML if K completes
-under half the ceiling. E costs no kit work and turns a standing trap
-into a number.
+(charter E3). An arm that hands a recreator J-F's existing documentation
+(the first revision's Arm E) is dropped on the maintainer's instruction
+not to use the existing diagrams; its question — what that documentation
+carries — is answered instead by the post-hoc comparison in §6.
 
 ### 3.2 Iteration policy
 
-The recreator may run the kit's Gherkin suite (Arm K) or nothing (Arm E
-has no executable tests, by construction — that is part of what E
-measures) against its own code, at most **k = 3** rounds, each round's
+The recreator may run the kit's Gherkin suite against its own code, at
+most **k = 3** rounds, each round's
 pass count recorded. The stack lab found iteration repairs only what
 visible tests state, so the hidden oracles are where the result lives.
 
@@ -175,18 +190,16 @@ before freeze (every gate below is a shipped command).
    CLI reference; the refusal catalogue as a decision table. One source
    per decision.
 4. **Architecture and UML** (`uml/`, PlantUML, requirement IDs in the
-   footer): component diagram; class diagram of the data model
-   (`ParquetStore`, `CorporateActionsStore`, `SplitEvent`, the
-   collectors and transports, `Universe`/`Asset`/`Source`, the health
-   report); **sequence diagrams of `run_sync` and of one leg**
-   (`_run_leg`: the load-bearing ones); activity diagram of basis
-   resolution and the CRSP pass; sequence diagram of `status`; state
-   diagram of a stored series; sequence of the daily chain. The
-   existing nine diagrams are the starting point, re-read against the
-   source per T-0800 (`tools/diagram_sources.py read`), corrected and
-   extended where the read finds a gap — and every such correction is
-   itself a finding about Arm E. Gate: `pumllint` exit 0 and `score
-   --profile codegen --min-level 5`, the subject's own bar.
+   footer), every diagram drawn from the code tree: component diagram;
+   class diagram of the data model (`ParquetStore`,
+   `CorporateActionsStore`, `SplitEvent`, the collectors and transports,
+   `Universe`/`Asset`/`Source`, the health report); **sequence diagrams
+   of `run_sync` and of one leg** (`_run_leg`: the load-bearing ones);
+   activity diagram of basis resolution and the CRSP pass; sequence
+   diagram of `status`; state diagram of a stored series; sequence of
+   the daily chain. Gate: `pumllint` exit 0 and `score --profile codegen
+   --min-level 5`. The reverse engineer never sees J-F's `pumllint.toml`
+   either: the kit carries its own configuration.
 5. **Gherkin** (`features/`): black-box over `jef-data` and `daily.sh`,
    one feature per requirement kind, scenarios tagged `@JDL-NNN`;
    inputs are small recorded-fixture-shaped JSON files written for the
@@ -271,7 +284,16 @@ requirement), code defect (the kit carried it; cite the ID), test defect
 (a kit scenario asserts the wrong thing), original defect (J-F is wrong;
 file an issue, change nothing here) — using `provenance.json`. The
 spec-defect list, grouped by requirement kind, is the headline table;
-for Arm E it is grouped by the document that should have carried it.
+
+
+**The side result, taken last.** Only after every arm is scored, the
+kit's diagrams and contracts are set beside J-F's existing eight
+data-load diagrams and its data contract: two specification sets derived
+independently from the same code. Every disagreement is a defect signal
+in one of them (the SDD note's principle), classified by hand — kit
+wrong, existing wrong, both right at different altitudes — and reported
+to J-F as findings, not changes. Taken last so it cannot influence the
+kit.
 
 **One closing round** (budget permitting): fold Arm K's spec defects
 back into the kit (dated, additive), re-run the recreator, re-measure
@@ -285,14 +307,12 @@ per iteration".
 - **E2** Arm K: M2 = 0. Any count above zero: the `verdict`
   requirements are under-specified (threshold, knob or clock semantics)
   — the answer on "which level of detail" for a health gate.
-- **E3** Arm E below Arm K on M1 and M2 by ≥ 20 pp of series/scenarios.
-  Confirmed: the documentation carries the decisions but not the
-  arithmetic and the verdict thresholds, the W1/W1b result on a real
-  program. Refuted (E within 5 pp of K): the existing documentation
-  already *is* a sufficient spec and the kit buys little — recorded as
-  a result for the house discipline, with the kit's residual value
-  located in whatever E still lost.
-- **E4** Spec defects outnumber code defects in triage (both arms). If
+- **E3** The post-hoc comparison finds at least one disagreement between
+  the kit and J-F's existing diagrams that the source settles against
+  the existing diagram. Confirmed: a Level 5 gate did not catch it
+  (T-0800 measured, not argued). None found: the existing set is
+  faithful on everything the kit models — recorded as such.
+- **E4** Spec defects outnumber code defects in triage (every arm). If
   reversed: the bottleneck is the generator, not the spec — the
   opposite of the SDD note's thesis, recorded as such.
 - **E5** (K−UML only) within 5 pp of K on M1/M2: the UML carries little
@@ -318,14 +338,16 @@ only. Nothing here touches the venue, its bucket, or any schedule.
 
 ## 9. Budget, effort, timeline
 
-- This session (Fable 5.1): Phases 0, 1, 3, 4. Phase 1 is the long
-  part — ≈ 140 requirements, 7–9 diagrams re-read and corrected against
-  source, ≈ 30 scenarios with their fixtures, 4 schemas, the mutant
-  calibration; about three hours of agent time.
+- This session (Fable 5.1): Phases 0, 3, 4 and the kit gates.
+- Reverse-engineering agent: **Opus 5 @ xhigh** (the kit's accuracy on
+  the arithmetic and the verdicts is the whole experiment), one run on
+  the stripped code tree; ≈ 140 requirements, 7–9 diagrams, ≈ 30
+  scenarios with fixtures, 4 schemas; about three hours of agent time,
+  then the gates and the mutant calibration here.
 - Recreation agent: Opus 5 @ xhigh, one run per arm, k ≤ 3; one to two
-  hours each; Arm E likely shorter (less to read, more to guess).
-- Ceiling: **three recreation runs plus one closing round**; stop and
-  report when reached. No API spend outside the agent runs.
+  hours each.
+- Ceiling: **one reverse-engineering run, two recreation runs plus one
+  closing round**; stop and report when reached. No API spend outside the agent runs.
 - Record: `docs/recreate-experiment.md` in pumllint (dated, house
   style), a ROADMAP entry under the research program, the two artifact
   pages refreshed. J-F receives nothing unless the maintainer asks for
@@ -335,13 +357,20 @@ only. Nothing here touches the venue, its bucket, or any schedule.
 
 ## 10. Decisions needed before freeze
 
-1. **Scope:** `src/jef/data/` plus the acquisition half of `daily.sh`
-   as §2 draws it — binning, events, dashboard and AWS out.
-2. **Arms:** E and K as recommended; K−UML in or out.
-3. **Home of the lab:** `pumllint/recreate_experiment/`, J-F untouched —
-   or a record in J-F too.
-4. **Closing round:** authorised in advance under the ceiling, or
+1. **Are the original's tests part of "the codebase" the reverse
+   engineer may read?** Recommended: no — `tests/` stays hidden, so the
+   original's suite remains an untouched grading oracle and the kit's
+   Gherkin is derived from behaviour, not from existing assertions; an
+   edge case the tests pin and the reverse engineer misses then surfaces
+   in the comparison as a spec defect, which is the experiment working.
+2. **Arms:** K alone, or K and K−UML.
+3. **Closing round:** authorised in advance under the ceiling, or
    decided after the first comparison.
+
+Settled by the maintainer on 2026-10-23: the scope is `src/jef/data/`
+plus the acquisition half of `daily.sh`; the lab lives in
+`pumllint/recreate_experiment/` and J-F is never changed; the kit is
+derived from the code alone, no existing diagram or document used.
 
 ## 11. Carried limitations
 
