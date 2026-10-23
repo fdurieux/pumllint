@@ -1,0 +1,13 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json"
+  },
+  "path": "/api/div/RES.US"
+ },
+ "response": {
+  "json": [],
+  "status": 200
+ }
+}

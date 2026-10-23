@@ -1,0 +1,11 @@
+[[asset]]
+name = "X"
+asset_class = "crypto"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "X-USD.CC"
+  modeled = true
+  [[asset.source]]
+  provider = "binance"
+  symbol = "XUSDT"
+  modeled = true

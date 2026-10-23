@@ -1,0 +1,107 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json",
+   "order": "a",
+   "period": "d",
+   "to": "2024-05-10"
+  },
+  "path": "/api/eod/WEIRD.XX"
+ },
+ "response": {
+  "json": [
+   {
+    "adjusted_close": 10.5,
+    "close": 10.5,
+    "date": "2024-05-01",
+    "high": 11.0,
+    "low": 9.0,
+    "open": 10.0,
+    "volume": 700
+   },
+   {
+    "adjusted_close": 11.5,
+    "close": 11.5,
+    "date": "2024-05-02",
+    "high": 12.0,
+    "low": 10.0,
+    "open": 11.0,
+    "volume": 701
+   },
+   {
+    "adjusted_close": 12.5,
+    "close": 12.5,
+    "date": "2024-05-03",
+    "high": 13.0,
+    "low": 11.0,
+    "open": 12.0,
+    "volume": 702
+   },
+   {
+    "adjusted_close": 13.5,
+    "close": 13.5,
+    "date": "2024-05-04",
+    "high": 14.0,
+    "low": 12.0,
+    "open": 13.0,
+    "volume": 703
+   },
+   {
+    "adjusted_close": 14.5,
+    "close": 14.5,
+    "date": "2024-05-05",
+    "high": 15.0,
+    "low": 13.0,
+    "open": 14.0,
+    "volume": 704
+   },
+   {
+    "adjusted_close": 15.5,
+    "close": 15.5,
+    "date": "2024-05-06",
+    "high": 16.0,
+    "low": 14.0,
+    "open": 15.0,
+    "volume": 705
+   },
+   {
+    "adjusted_close": 16.5,
+    "close": 16.5,
+    "date": "2024-05-07",
+    "high": 17.0,
+    "low": 15.0,
+    "open": 16.0,
+    "volume": 706
+   },
+   {
+    "adjusted_close": 17.5,
+    "close": 17.5,
+    "date": "2024-05-08",
+    "high": 18.0,
+    "low": 16.0,
+    "open": 17.0,
+    "volume": 707
+   },
+   {
+    "adjusted_close": 18.5,
+    "close": 18.5,
+    "date": "2024-05-09",
+    "high": 19.0,
+    "low": 17.0,
+    "open": 18.0,
+    "volume": 708
+   },
+   {
+    "adjusted_close": 19.5,
+    "close": 19.5,
+    "date": "2024-05-10",
+    "high": 20.0,
+    "low": 18.0,
+    "open": 19.0,
+    "volume": 709
+   }
+  ],
+  "status": 200
+ }
+}

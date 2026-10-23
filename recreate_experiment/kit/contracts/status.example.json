@@ -1,0 +1,68 @@
+{
+ "schema_version": 1,
+ "store": "s_pair2",
+ "reports": [
+  {
+   "asset": "PAIR",
+   "exchange": "eodhd",
+   "symbol": "PAIR-USD.CC",
+   "alerts": [
+    "stale: 3 expected session(s) missing since 2024-01-20 (multi-day holidays can trip this - verify before acting)"
+   ],
+   "warnings": [],
+   "notes": [
+    "declared class: no vendor classification recorded - run tools/record_classifications.py"
+   ],
+   "declared_class_check": "no_evidence",
+   "last_session": "2024-01-20",
+   "missed_sessions": 3,
+   "rows": 20
+  },
+  {
+   "asset": "PAIR",
+   "exchange": "binance",
+   "symbol": "PAIRUSDT",
+   "alerts": [
+    "stale: 3 expected session(s) missing since 2024-01-20 (multi-day holidays can trip this - verify before acting)"
+   ],
+   "warnings": [],
+   "notes": [],
+   "last_session": "2024-01-20",
+   "missed_sessions": 3,
+   "rows": 20
+  },
+  {
+   "asset": "IBM",
+   "exchange": "eodhd",
+   "symbol": "IBM.US",
+   "alerts": [
+    "never filled - no stored rows (jef-data sync first)"
+   ],
+   "warnings": [
+    "declared class: declared asset_type 'etf' but the vendor says 'Common Stock' (-> 'stock'), recorded 2026-08-30 for eodhd/IBM.US - check the asset_class in universe.toml against docs/EVALUATION_ASSET_CLASSIFICATION.md \u00a75 C2"
+   ],
+   "notes": [],
+   "declared_class_check": "disagree"
+  }
+ ],
+ "pairs": [
+  {
+   "asset": "PAIR",
+   "kind": "cross_venue",
+   "a": "eodhd/PAIR-USD.CC",
+   "b": "binance/PAIRUSDT",
+   "common_session": "2024-01-20",
+   "spread": 0.005501375343835931,
+   "threshold": 0.005,
+   "alerts": [],
+   "warnings": [
+    "cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"
+   ],
+   "notes": [
+    "close spread 0.5501% on 2024-01-20 (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7)"
+   ]
+  }
+ ],
+ "alerts_total": 3,
+ "warnings_total": 2
+}

@@ -1,0 +1,55 @@
+@startuml status_run
+title One status run - per-source checks, venue pairs and the exit code
+actor "Operator" as Operator <<cli user>>
+participant "StatusCommand" as StatusCommand <<cli>>
+participant "HealthChecks" as HealthChecks <<module>>
+participant "ClassificationEvidence" as Evidence <<module>>
+participant "ParquetStore" as ParquetStore <<repository>>
+participant "CorporateActionsStore" as ActionsStore <<repository>>
+
+Operator -> StatusCommand : status(universe, store, filters, knobs, json)
+activate StatusCommand
+note right of StatusCommand : legs selected as for sync, yahoo-csv legs dropped (JDL-107); today = UTC date of the clock (JDL-108)
+loop for each live leg in order
+  StatusCommand -> HealthChecks : check_source(leg, knobs, today)
+  activate HealthChecks
+  opt provider is eodhd
+    HealthChecks -> Evidence : compare(asset_type, packaged_row)
+    Evidence --> HealthChecks : verdict and message (JDL-112)
+  end
+  HealthChecks -> ParquetStore : latest_date(exchange, symbol)
+  ParquetStore --> HealthChecks : last stored session or none
+  alt no stored row
+    HealthChecks --> StatusCommand : report with the never-filled alert (JDL-114)
+  else series filled
+    HealthChecks -> ParquetStore : load(exchange, symbol)
+    ParquetStore --> HealthChecks : full stored series
+    opt leg is actions-eligible
+      HealthChecks -> ActionsStore : load_splits_and_stamp(symbol)
+      ActionsStore --> HealthChecks : split dates and splits stamp
+    end
+    note right of HealthChecks
+      in order: stale (JDL-116), today-dated (JDL-117), zero volume
+      (JDL-118, JDL-119), post-seam gap (JDL-120, JDL-121),
+      resolution (JDL-122, JDL-123), jumps (JDL-124),
+      actions freshness (JDL-125); sessions per JDL-115
+    end note
+    HealthChecks --> StatusCommand : source report with alerts, warnings, notes, measured fields
+  end
+  deactivate HealthChecks
+end
+loop for each asset with two or more live legs, each pair i before j
+  StatusCommand -> HealthChecks : check_cross_venue(asset, legs, window, threshold, promote)
+  HealthChecks -> ParquetStore : load(exchange, symbol)
+  ParquetStore --> HealthChecks : both stored series
+  HealthChecks --> StatusCommand : pair report with spread note and breach finding (JDL-128, JDL-129)
+end
+alt json requested
+  StatusCommand --> Operator : envelope with alerts_total and warnings_total (JDL-130)
+else table
+  StatusCommand --> Operator : one block per report and a summary line (JDL-132)
+end
+note right of StatusCommand : exit 1 iff alerts_total > 0; warnings never fail (JDL-131)
+deactivate StatusCommand
+footer owner: data-load — realises JDL-145, JDL-107, JDL-108, JDL-109, JDL-110, JDL-111, JDL-112, JDL-113, JDL-114, JDL-115, JDL-116, JDL-117, JDL-118, JDL-119, JDL-120, JDL-121, JDL-122, JDL-123, JDL-124, JDL-125, JDL-126, JDL-127, JDL-128, JDL-129, JDL-130, JDL-131, JDL-132, JDL-074
+@enduml

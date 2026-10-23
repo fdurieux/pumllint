@@ -1,0 +1,231 @@
+@startuml data_model
+title Data model - universe, legs, stores, collectors, reports and errors
+class Universe {
+  +defaults : Defaults
+  +assets : list
+}
+class Defaults {
+  +store : str = "data"
+  +currency : str = "USD"
+}
+class Asset {
+  +name : str
+  +asset_class : str
+  +asset_type : str
+  +currency : str
+  +threshold : float = -0.05
+  +enabled : bool = true
+}
+class Source {
+  +provider : str
+  +kind : str = "eod"
+  +enabled : bool = true
+  +modeled : bool = false
+  +exchange : str
+  +symbol : str
+  +currency : str
+  +note : str
+  +path : str
+  +start : str
+  +end : str
+}
+class Leg {
+  +asset : str
+  +provider : str
+  +exchange : str
+  +symbol : str
+  +path : str
+  +asset_type : str
+  +currency : str
+  +start : str
+  +end : str
+  +actions : bool
+}
+class LegResult {
+  +ok : bool
+  +detail : str
+  +revisions : list
+}
+class Revision {
+  +date : str
+  +column : str
+  +stored : float
+  +served : float
+}
+class SyncSummary {
+  +schema_version : int = 1
+  +legs_total : int
+  +legs_failed : int
+  +revised_cells_total : int
+  +ok : bool
+}
+class ParquetStore {
+  +root : str
+  +lock_timeout : float = 300.0
+  +load(exchange, symbol) : DataFrame
+  +latest_date(exchange, symbol) : date
+  +recent_dates(exchange, symbol, n) : list
+  +reconcile_bars(exchange, symbol, bars, splits, price_basis, volume_basis) : tuple
+  +ingest_bars(exchange, symbol, bars, splits, price_basis, volume_basis, mode) : int
+  +ingest_yahoo_csv(csv_path, exchange, symbol, asset_type, currency) : int
+  +reapply_adjustment(exchange, symbol, splits) : int
+}
+class StoredRow {
+  +timestamp : int64
+  +datetime : timestamp_ms_utc
+  +open_high_low_close_volume : float64
+  +labels : str
+  +adjustment_factor : float64
+  +raw_columns : float64
+  +adjusted_close : float64
+  +cumulative_split_factor : float64
+}
+class CorporateActionsStore {
+  +base_path : str
+  +save_splits(symbol, exchange, splits) : str
+  +load_splits(symbol) : list
+  +save_dividends(symbol, exchange, entries) : str
+  +load_dividends(symbol) : list
+  +last_updated(symbol) : datetime
+}
+class SplitEvent {
+  +date : date
+  +ratio : float
+  +split_string : str
+}
+class BaseCollector {
+  +max_retries : int = 4
+  +backoff : float = 2.0
+  +get_json(url, params, what) : object
+  +paginate(fetch_page, cursor, max_pages) : list
+}
+class EODHDCollector {
+  +exchange : str = "eodhd"
+  +volume_basis : str = "split_adjusted"
+  +get_eod(symbol, start, end) : list
+  +get_splits(symbol) : list
+  +get_dividends(symbol) : list
+}
+class BinanceCollector {
+  +exchange : str = "binance"
+  +volume_basis : str = "raw"
+  +limit : int = 1000
+  +get_eod(symbol, start, end) : list
+}
+class TransportResponse {
+  +status : int
+  +text : str
+  +json() : object
+}
+class HttpTransport {
+  +timeout : float = 30.0
+  +request(method, url, params) : TransportResponse
+  +close() : None
+}
+class ReplayTransport {
+  +fixture_dir : str
+  +calls : list
+  +request(method, url, params) : TransportResponse
+  +close() : None
+}
+class RecordingTransport {
+  +fixture_dir : str
+  +written : list
+  +request(method, url, params) : TransportResponse
+  +close() : None
+}
+interface Transport {
+  +request(method, url, params) : TransportResponse
+  +close() : None
+}
+class RateLimiter {
+  +per_minute : int = 1000
+  +daily_budget : int = 100000
+  +acquire() : None
+}
+class SourceReport {
+  +asset : str
+  +exchange : str
+  +symbol : str
+  +alerts : list
+  +warnings : list
+  +notes : list
+  +declared_class_check : str
+  +last_session : str
+  +missed_sessions : int
+  +rows : int
+}
+class Resolution {
+  +sessions : int
+  +distinct : int
+  +min_tick : float
+  +flat_share : float
+}
+class PairReport {
+  +asset : str
+  +kind : str = "cross_venue"
+  +a : str
+  +b : str
+  +common_session : str
+  +spread : float
+  +threshold : float
+}
+class StatusEnvelope {
+  +schema_version : int = 1
+  +store : str
+  +alerts_total : int
+  +warnings_total : int
+}
+class ContractReport {
+  +errors : list
+  +notes : list
+  +ok() : bool
+}
+class UniverseError
+class SyncError
+class StoreError
+class AdjustmentRefused
+class CollectorError
+class DailyBudgetExhausted
+class DeclarationRefused
+class TransportConnectionError
+class ContractError
+class ClassificationError
+UniverseError --|> ValueError
+DeclarationRefused --|> ValueError
+AdjustmentRefused --|> ValueError
+SyncError --|> RuntimeError
+StoreError --|> RuntimeError
+CollectorError --|> RuntimeError
+DailyBudgetExhausted --|> CollectorError
+EODHDCollector --|> BaseCollector
+TransportConnectionError --|> RuntimeError
+ContractError --|> ValueError
+ClassificationError --|> ValueError
+HttpTransport ..|> Transport
+ReplayTransport ..|> Transport
+RecordingTransport ..|> Transport
+RecordingTransport "1" --> "1" Transport : wraps the inner
+BaseCollector "1" --> "1" Transport : requests through
+Transport "1" --> "0..*" TransportResponse : answers with
+BinanceCollector --|> BaseCollector
+Universe "1" *-- "1" Defaults : resolves
+Universe "1" *-- "1..*" Asset : declares
+Asset "1" *-- "1..*" Source : feeds from
+Source "1" --> "0..1" Leg : selected as
+LegResult "1" --> "1" Leg : extends
+LegResult "1" *-- "0..*" Revision : carries
+SyncSummary "1" *-- "0..*" LegResult : projects
+ParquetStore "1" *-- "0..*" StoredRow : keeps per series
+ParquetStore "1" --> "0..*" Revision : reports
+CorporateActionsStore "1" *-- "0..*" SplitEvent : stores per symbol
+BaseCollector "1" *-- "1" RateLimiter : acquires before each attempt
+StatusEnvelope "1" *-- "0..*" SourceReport : reports
+StatusEnvelope "1" *-- "0..*" PairReport : pairs
+SourceReport "1" *-- "0..1" Resolution : measures
+note top of UniverseError
+  universe refusals JDL-013, JDL-014, JDL-015, JDL-016,
+  JDL-017, JDL-018, JDL-019, JDL-020, JDL-021
+end note
+footer owner: data-load — realises JDL-002, JDL-003, JDL-004, JDL-005, JDL-006, JDL-007, JDL-008, JDL-009, JDL-010, JDL-011, JDL-013, JDL-014, JDL-015, JDL-016, JDL-017, JDL-018, JDL-019, JDL-020, JDL-021, JDL-084, JDL-106, JDL-041, JDL-059, JDL-062, JDL-067, JDL-109, JDL-126, JDL-130, JDL-081, JDL-023, JDL-051, JDL-052, JDL-142, JDL-087, JDL-028
+@enduml

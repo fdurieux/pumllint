@@ -1,0 +1,17 @@
+# Synthetic: a committed-snapshot leg next to a collector leg.
+[defaults]
+store = "dstore"
+
+[[asset]]
+name = "SMALL"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "SMALL.US"
+  modeled = true
+
+  [[asset.source]]
+  provider = "yahoo-csv"
+  path = "snap/small.csv"
+  symbol = "SMALL"

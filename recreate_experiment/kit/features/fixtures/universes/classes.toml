@@ -1,0 +1,37 @@
+# Synthetic: declarations checked against the packaged vendor evidence.
+[[asset]]
+name = "IBM"
+asset_class = "bond_etf"          # mis-declared: the vendor says Common Stock
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "IBM.US"
+
+[[asset]]
+name = "TLT"
+asset_class = "bond_etf"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "TLT.US"
+
+[[asset]]
+name = "BTC"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "BTC-USD.CC"
+  modeled = true
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "BTCUSDT"
+
+[[asset]]
+name = "SPLT"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "SPLT.US"

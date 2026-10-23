@@ -1,0 +1,58 @@
+@startuml daily_chain
+title The daily chain - guards, stages, the publish gate and the traps
+participant "Scheduler" as Scheduler <<external>>
+participant "DailyChain" as DailyChain <<script>>
+participant "Timeout" as Timeout <<external>>
+participant "JefData" as JefData <<cli>>
+participant "JefBinning" as JefBinning <<external>>
+participant "EventsExternal" as EventsExternal <<sourced script>>
+participant "AwsCli" as AwsCli <<external>>
+
+Scheduler -> DailyChain : daily_sh(arguments)
+activate DailyChain
+note right of DailyChain
+  prologue: digest from task metadata when unset (JDL-147),
+  run stamp set-if-unset (JDL-148); arguments other than --inner
+  are exec'd instead of the chain (JDL-149)
+end note
+group failure: the hard cap sends TERM after 3600 s and KILL 60 s later
+  DailyChain -> Timeout : timeout(signal_term, kill_after_60, limit_3600, daily_sh, inner)
+  Timeout --> DailyChain : inner run exit status
+end
+note right of DailyChain
+  inner run: bucket required (JDL-151); sources events.sh and dashboard.sh,
+  cd JEF_APP_DIR (JDL-152); TERM trap emits rc 143, EXIT trap publishes
+  the dashboard (JDL-153)
+end note
+group failure: a non-zero restore exit stops the chain
+  DailyChain -> AwsCli : s3_sync(bucket_store, local_data)
+  AwsCli --> DailyChain : restore exit status
+end
+DailyChain -> JefData : sync(asset_filters, store_data, summary_json)
+JefData --> DailyChain : sync exit status
+DailyChain -> EventsExternal : jef_emit_and_put(stage_sync, rc, t0, t1, attach)
+EventsExternal --> DailyChain : always zero
+alt sync exit status is not zero
+  DailyChain --> Scheduler : exit with the sync status, nothing published
+else sync green
+  DailyChain -> JefData : status(asset_filters, store_data, json)
+  JefData --> DailyChain : status exit status and the JSON teed to status.json
+  DailyChain -> EventsExternal : jef_emit_and_put(stage_status, rc, t0, t1, attach)
+  EventsExternal --> DailyChain : always zero
+end
+loop for each asset until the first failing one
+  group failure: a non-zero binning exit is emitted, then ends the loop
+    DailyChain -> JefBinning : binning(asset, store_data, counter_latest, output_dir)
+    JefBinning --> DailyChain : asset exit status and optional run manifest
+  end
+  DailyChain -> EventsExternal : jef_emit(stage_binning, rc, t0, t1, asset, manifest)
+  EventsExternal --> DailyChain : always zero
+end
+group failure: any non-zero aws exit stops the publish
+  DailyChain -> AwsCli : s3_sync_and_copy(store, runs, image_digest)
+  AwsCli --> DailyChain : publish exit status
+end
+DailyChain --> Scheduler : "== green (digest)" and exit 0 (JDL-158)
+deactivate DailyChain
+footer owner: data-load — realises JDL-146, JDL-147, JDL-148, JDL-149, JDL-150, JDL-151, JDL-152, JDL-153, JDL-154, JDL-155, JDL-156, JDL-157, JDL-158
+@enduml

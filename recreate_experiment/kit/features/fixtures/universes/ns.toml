@@ -1,0 +1,16 @@
+# Synthetic: the declared class, not the .CC suffix, decides.
+[[asset]]
+name = "WEIRD"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "WEIRD.XX"
+
+[[asset]]
+name = "CCSTK"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "CCSTK-USD.CC"

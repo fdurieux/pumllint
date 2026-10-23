@@ -1,0 +1,9 @@
+[[asset]]
+name = "X"
+asset_class = "crypto"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "X-USD.CC"
+  [[asset.source]]
+  provider = "binance"
+  symbol = "XUSDT"

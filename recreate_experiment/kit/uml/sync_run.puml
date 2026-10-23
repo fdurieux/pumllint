@@ -1,0 +1,55 @@
+@startuml sync_run
+title One sync run over several legs - selection, independent failure, summary
+actor "Operator" as Operator <<cli user>>
+participant "SyncCommand" as SyncCommand <<cli>>
+participant "UniverseLoader" as UniverseLoader <<module>>
+participant "SyncRunner" as SyncRunner <<module>>
+participant "LegExecutor" as LegExecutor <<module>>
+participant "ParquetStore" as ParquetStore <<repository>>
+participant "SummaryFile" as SummaryFile <<file>>
+
+Operator -> SyncCommand : sync(universe, store, asset_filters, provider_filters, tail, dry_run, force_actions, summary_json)
+activate SyncCommand
+SyncCommand -> UniverseLoader : load_universe(path)
+alt universe text violates the grammar
+  UniverseLoader --> SyncCommand : UniverseError naming the first violation
+  SyncCommand --> Operator : "sync: {message}" on stderr, exit 1
+else universe parses
+  UniverseLoader --> SyncCommand : normalised universe document
+end
+SyncCommand -> SyncRunner : run_sync(universe, store_path, assets, providers, dry_run, tail, force_actions)
+activate SyncRunner
+note right of SyncRunner
+  tail >= 1 checked first (JDL-087); today = UTC date of the run clock (JDL-088);
+  store = --store or defaults.store (JDL-089); legs = enabled asset x enabled source,
+  filtered, in universe order (JDL-084); bad filter or empty selection is a SyncError (JDL-085)
+end note
+alt dry run
+  SyncRunner -> ParquetStore : recent_dates(exchange, symbol, tail)
+  ParquetStore --> SyncRunner : stored tail dates per leg
+  SyncRunner --> SyncCommand : every leg ok with detail planned, plan lines logged (JDL-104, JDL-105)
+else real run
+  loop for each selected leg in order
+    SyncRunner -> LegExecutor : run_leg(leg, collector_for_provider, tail, today, force_actions)
+    alt leg completes
+      LegExecutor --> SyncRunner : detail and revisions
+    else any exception escapes the leg (failure contained)
+      LegExecutor --> SyncRunner : failed leg with detail "{ExceptionClass}: {message}"
+    end
+  end
+  note right of SyncRunner
+    collectors built lazily once per provider and closed at the end (JDL-102);
+    a missing EODHD key fails each eodhd leg (JDL-030); yahoo-csv legs import
+    their whole file without a collector (JDL-099); log lines per JDL-103
+  end note
+  SyncRunner --> SyncCommand : leg results and ok when no leg failed
+end
+deactivate SyncRunner
+opt summary path given
+  SyncCommand -> SummaryFile : write_summary(results, ok)
+  SummaryFile --> SyncCommand : sorted JSON with 1-space indent written (JDL-106)
+end
+SyncCommand --> Operator : exit 0 when ok else 1
+deactivate SyncCommand
+footer owner: data-load — realises JDL-144, JDL-087, JDL-088, JDL-089, JDL-084, JDL-085, JDL-104, JDL-105, JDL-101, JDL-102, JDL-103, JDL-106, JDL-099, JDL-070, JDL-030, JDL-134, JDL-001, JDL-012, JDL-022
+@enduml
