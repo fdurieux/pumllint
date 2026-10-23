@@ -31,8 +31,14 @@ refusal path the kit was silent on, where both rebuilds refused cleanly
 and the original crashes. **Zero code defects; two spec-defect classes;
 and the diagrams changed nothing measurable in behaviour** — they fixed
 the module layout and API shape, which is exactly what the original's
-own API-level tests then measured. *[Closing round and the post-hoc
-diagram comparison: pending below.]*
+own API-level tests then measured. One revision of the kit, derived
+again from the code alone, closed every divergence the kit could be held
+responsible for: the third rebuild passed the kit's 197 scenarios on its
+first run and left 11 of 157 artefacts non-identical, all by
+construction. Set beside J-F's existing Level 5 model set for the same
+lane, adjudicated against the source, the one-day code-only diagrams
+won 20 of 33 disagreements and carry 12 claims the code contradicts;
+the maintained set carries 25.
 
 ## Why this ran
 
@@ -171,13 +177,51 @@ confirmed. E3 pending (§ Post-hoc).
 
 ## Closing round
 
-*[Pending: the three cli/refusal gaps folded into the kit as dated
-additions by the reverse-engineering agent; gates and calibration
-re-run; a third recreation on the revised full kit; M1–M8 re-measured.]*
+The reverse-engineering agent, resumed in its own context and still
+reading only the code tree, folded the two spec-defect classes in as
+dated additions: JDL-159 (the absent-series export ends in pandas'
+unwrapped `AttributeError`, stated as the logic it is), JDL-160 (the
+exact argparse declaration), JDL-161 (the exact parse-error form),
+JDL-162 (`--help` verbatim, in a new `contracts/cli_help.md`). First
+158 requirements byte-identical; scenarios 95 → 98 (197 cases);
+197/197 on the original; gates green at 162/162 — all re-verified here.
+
+A third fresh agent rebuilt from the revised kit: **197/197 on its
+first and only suite run**, 30 assumptions. Against the reference,
+M1–M6 and M8 unchanged at 100 %, CLI text 38/52 → **49/52**,
+non-identical artefacts **22 → 11**: three tracebacks whose paths and
+module prefix differ, seven chain call logs whose inline metadata
+parser is spelled differently, one key spelling in the adapter. Spec
+defects found per iteration: 2 → 0. The round removed every divergence
+the kit could be held responsible for.
 
 ## Post-hoc: the kit's diagrams beside J-F's existing eight
 
-*[Pending, taken last by design.]*
+Taken last. A fresh agent read both sets against the source and
+adjudicated 33 disagreements (`recreate_experiment/results/review/`;
+four verdicts spot-checked here, one overturned by running the code —
+the stored `timestamp` is seconds, as the kit says and the source's
+comment denies). Kit right 20, existing right 7, both right at
+different altitude 3, both wrong 2, undecidable 1. **Claims the source
+contradicts: 12 in the kit, 25 in the existing Level 5, 100/100, fully
+traced set** — `select_legs` drawn on `Universe`, `base_path` for an
+attribute named `root`, two invented dependencies, a failed sync and a
+failed restore drawn as carrying on, re-adjustment triggered by a
+subcommand that never re-adjusts, among them. Blind spots are
+symmetric (15 and 16): only the existing set draws the store's write
+path, the two-write actions refresh and the dashboard publish; only
+the kit draws the CLI error paths, collector lifecycle, series basis
+states and the status output.
+
+Two readings. First, T-0800 measured: a green `diagrams-structure` job
+sat on 25 contradicted claims, and a one-day code-only set beat it. The
+gate scores the set against itself. Second, and more important for this
+experiment: the kit's own 12 diagram defects were invisible to every
+metric, because three rebuilds built from those diagrams matched the
+original cell for cell. The contracts and scenarios carried the
+behaviour; the diagrams carried names and layout. A diagram defect no
+rebuild reproduces is a documentation defect, not a specification one —
+the same fact E5 measured from the other side.
 
 ## What this does and does not show
 
@@ -213,5 +257,9 @@ Findings, never changes: `jef-data export` on an absent series exits
 with a raw traceback; `timestamp` holds seconds where the comment says
 milliseconds; the import row count includes dropped duplicates;
 `actions_missed_k` is documented but not exposed; the injected clock
-does not reach the actions stamp. *[Plus whatever the post-hoc diagram
-comparison finds.]* Filed on the maintainer's go.
+does not reach the actions stamp. And 25 claims in `docs/diagrams/`'s
+data-load and chain set that the source contradicts, each cited in
+`recreate_experiment/results/review/REVIEW.md` (one of the reviewer's
+own rows overturned here, so the list is a reading to re-verify in
+J-F's own ritual — `tools/diagram_sources.py read`, per T-0800 — not a
+patch). Filed on the maintainer's go.

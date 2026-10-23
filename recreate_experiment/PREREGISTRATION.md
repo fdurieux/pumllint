@@ -640,3 +640,66 @@ could be held responsible for.
 Phase 3 complete for all three arms. Pending: the post-hoc diagram
 comparison (E3) and the record.
 
+### Phase 4 — the post-hoc diagram comparison (E3), 2026-10-23
+
+Taken last, after every arm was scored. A fresh Opus 5 agent read the
+kit's 8 diagrams (set A) and J-F's 9 data-load and chain diagrams (set
+B, `data_*.puml`, `ops_daily_chain.puml`, with `sources.toml`) against
+the source tree and adjudicated every disagreement
+(`results/review/REVIEW.md`; this session's spot-check of four
+verdicts, one overturned by execution: `results/review/VERIFICATION.md`).
+
+| | A (kit, code-only, one agent, one day) | B (existing, Level 5, maintained since 2026-08) |
+|---|---|---|
+| Disagreements won (of 33) | 20 | 7 |
+| Both right, different altitude / both wrong / undecidable | 3 / 2 / 1 | |
+| Claims the source contradicts | 12 | **25** |
+| True claims only the other set makes | 15 | 16 |
+
+B's defects are structural: `select_legs` drawn on `Universe` (it is
+`sync.select_legs`), `actions` on the source (a leg field),
+`ParquetStore.base_path` (the attribute is `root`), `SplitEvent.date` as
+a string, `ContractReport.warnings` (it is `notes`), two invented
+dependencies (collector → store, store → contract), leg guards narrower
+than the code, a failed restore and a failed sync drawn as carrying on,
+a binning loop that never breaks, re-adjustment triggered by
+`sync-actions`. A's defects: `sync_actions` folded into the runner and
+`get_splits` fetching dividends, the status gate called but not drawn as
+a branch in the chain, a failed binning asset drawn as reaching the
+publish, "a red sync publishes nothing" (the exit trap still publishes
+the dashboard), the binning ledger upload omitted, validation drawn after
+the ingest write. B alone covers the store write path (per-symbol lock,
+temp-file-then-replace, write-only-on-change), the actions refresh as two
+non-transactional writes, classification loading, the no-spread cases,
+the dashboard publish; A alone covers the CLI error paths, the summary
+file, collector construction and closing, the raw vs pre-adjusted series
+states, the status output and a fuller class model.
+
+**E3 confirmed, strongly:** 25 claims in a Level 5, 100/100, fully
+traced model set are contradicted by the code it documents — T-0800
+measured rather than argued — and the one-day code-only set has half as
+many. Both sets have blind spots of the same size. The 12 kit defects
+were invisible to every pre-registered metric: three recreations built
+from those diagrams matched the original cell for cell, because the
+contracts and scenarios carried the behaviour and the diagrams carried
+names. A diagram defect that no rebuild reproduces is a documentation
+defect, not a specification one — which is also why E5 came out as it
+did.
+
+### Summary of expectations
+
+| | Outcome |
+|---|---|
+| E1 seam identity 100 % | confirmed, all three arms |
+| E2 zero gate inversions | confirmed, all three arms |
+| E3 disagreement settled against the existing set | confirmed, 25 of them |
+| E4 spec defects > code defects | confirmed (2 classes vs 0), small denominator |
+| E5 K−UML within 5 pp of K | confirmed, identical on every metric |
+| E6 M11 ≥ 0.5 | at the bar, 0.5 in both first-round arms |
+| E7 M8 pass | confirmed, all three arms |
+
+Closing round: spec defects per iteration 2 → 0; non-identical
+artefacts 22 → 11, all by construction. Original defects observed, for
+J-F as findings: five from the kit's notes (§ Phase 1) plus the 25
+diagram claims above.
+
