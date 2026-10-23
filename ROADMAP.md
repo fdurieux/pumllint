@@ -989,6 +989,25 @@ list and license posture live in § Settled questions.
   no product behavior and queues no build; it is revised in place,
   dated, as waves land. Acceptance was de facto at the 2026-08-06
   merges (PRs #18/#19); recorded here per charter §10.
+  *Dated addition, 2026-10-23 — the program's first round trip, code →
+  kit → code, graded by the original (record:
+  docs/recreate-experiment.md; frozen pre-registration and results:
+  recreate_experiment/PREREGISTRATION.md). Subject: J-F's daily asset
+  load, read as an oracle and never changed. A fresh agent on the code
+  tree alone produced 158 requirements as code, 14 contracts, 8
+  diagrams at Level 5 and 95 scenarios (178/178 on the original, both
+  planted mutants caught); two fresh agents rebuilt from the kit, with
+  and without the diagrams; both matched the original cell for cell on
+  every exported frame, stored series, verdict and exit code. Zero code
+  defects; two spec-defect classes (the unspecified CLI surface, one
+  unspecified refusal path), closed by one code-only revision — the
+  third rebuild passed 197/197 first time. Removing the diagrams
+  changed no behaviour; the post-hoc read found 25 claims in J-F's own
+  Level 5 model set contradicted by its code against 12 in the one-day
+  kit (T-0800 measured). The requirements-as-code gate was
+  `pumllint trace --features` over a JSON inventory and scenario tags,
+  shipped interfaces only. Changes no product behaviour, queues no
+  build; the J-F findings go back as issues on the maintainer's go.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

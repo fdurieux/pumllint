@@ -1,0 +1,67 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://jdl.example/status.schema.json",
+ "title": "jef-data status --json document",
+ "description": "The status envelope, printed with 1-space indentation in the key order of the properties below (not sorted). Requirements JDL-130, JDL-109, JDL-126.",
+ "type": "object",
+ "additionalProperties": false,
+ "required": ["schema_version", "store", "reports", "pairs", "alerts_total", "warnings_total"],
+ "properties": {
+  "schema_version": {"const": 1},
+  "store": {"type": "string", "description": "the store path as given (or the universe default)"},
+  "reports": {"type": "array", "items": {"$ref": "#/$defs/source_report"}},
+  "pairs": {"type": "array", "items": {"$ref": "#/$defs/pair_report"}},
+  "alerts_total": {"type": "integer", "minimum": 0, "description": "sum of len(alerts) over reports and pairs; the exit code is 1 iff > 0"},
+  "warnings_total": {"type": "integer", "minimum": 0, "description": "sum of len(warnings) over reports and pairs"}
+ },
+ "$defs": {
+  "messages": {"type": "array", "items": {"type": "string"}},
+  "source_report": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["asset", "exchange", "symbol", "alerts", "warnings", "notes"],
+   "description": "Key order: asset, exchange, symbol, alerts, warnings, notes, declared_class_check, last_session, missed_sessions, rows, resolution. A never-filled series stops after declared_class_check.",
+   "properties": {
+    "asset": {"type": "string"},
+    "exchange": {"type": "string"},
+    "symbol": {"type": "string"},
+    "alerts": {"$ref": "#/$defs/messages"},
+    "warnings": {"$ref": "#/$defs/messages"},
+    "notes": {"$ref": "#/$defs/messages"},
+    "declared_class_check": {"enum": ["agree", "disagree", "no_evidence", "not_comparable", "unmapped"], "description": "eodhd legs only"},
+    "last_session": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"},
+    "missed_sessions": {"type": "integer", "minimum": 0},
+    "rows": {"type": "integer", "minimum": 1},
+    "resolution": {
+     "type": "object",
+     "additionalProperties": false,
+     "required": ["sessions", "distinct", "min_tick", "flat_share"],
+     "description": "present only when at least 60 traded sessions were measured; key order sessions, distinct, min_tick, flat_share",
+     "properties": {
+      "sessions": {"type": "integer", "minimum": 60},
+      "distinct": {"type": "integer", "minimum": 1},
+      "min_tick": {"type": ["number", "null"]},
+      "flat_share": {"type": "number", "minimum": 0, "maximum": 1}
+     }
+    }
+   }
+  },
+  "pair_report": {
+   "type": "object",
+   "additionalProperties": false,
+   "required": ["asset", "kind", "a", "b", "common_session", "spread", "threshold", "alerts", "warnings", "notes"],
+   "properties": {
+    "asset": {"type": "string"},
+    "kind": {"const": "cross_venue"},
+    "a": {"type": "string", "description": "{exchange}/{symbol} of the earlier leg"},
+    "b": {"type": "string", "description": "{exchange}/{symbol} of the later leg"},
+    "common_session": {"type": ["string", "null"]},
+    "spread": {"type": ["number", "null"]},
+    "threshold": {"type": "number"},
+    "alerts": {"$ref": "#/$defs/messages"},
+    "warnings": {"$ref": "#/$defs/messages"},
+    "notes": {"$ref": "#/$defs/messages"}
+   }
+  }
+ }
+}

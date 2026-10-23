@@ -1,0 +1,15 @@
+# Synthetic: one crypto asset carried by two live feeds.
+[[asset]]
+name = "PAIR"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "PAIR-USD.CC"
+  start = 2024-01-01
+  modeled = true
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "PAIRUSDT"
+  start = 2024-01-01

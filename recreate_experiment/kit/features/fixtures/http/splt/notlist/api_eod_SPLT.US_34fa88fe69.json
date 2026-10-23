@@ -1,0 +1,19 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json",
+   "from": "2024-01-02",
+   "order": "a",
+   "period": "d"
+  },
+  "path": "/api/eod/SPLT.US"
+ },
+ "response": {
+  "json": {
+   "code": 200,
+   "message": "no data"
+  },
+  "status": 200
+ }
+}

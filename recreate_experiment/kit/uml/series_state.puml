@@ -1,0 +1,19 @@
+@startuml series_state
+title A stored series across runs
+[*] --> Empty
+Empty --> RawSeries : collector first fill, basis raw, from universe start, capped by end
+Empty --> PreAdjusted : crypto, binance or CSV first fill, basis split_adjusted
+RawSeries --> RawSeries : tail refresh reconciles newest-wins inside the newest tail sessions
+RawSeries --> RawSeries : split synced later, whole series re-derived from raw
+RawSeries --> Pinned : stored rows reach past a declared end
+Pinned --> Pinned : inverted window, nothing fetched, leg green
+PreAdjusted --> PreAdjusted : tail refresh reconciles, no split pass ever
+PreAdjusted --> PreAdjusted : CSV import overwrites the whole series
+PreAdjusted --> Refused : adjust command applied
+Refused --> PreAdjusted : AdjustmentRefused raised, series unchanged
+note right of RawSeries
+  rows outside the tail stay frozen-first-seen only because they are not requested
+  (JDL-066); unchanged re-serves write nothing (JDL-068)
+end note
+footer owner: data-load — realises JDL-063, JDL-064, JDL-065, JDL-066, JDL-068, JDL-069, JDL-070, JDL-093, JDL-094, JDL-095, JDL-049, JDL-051, JDL-096, JDL-100
+@enduml

@@ -1,0 +1,50 @@
+@startuml basis_and_adjustment
+title Basis resolution, the adjustment pass and the export projection
+start
+:receive the bars of one write;
+if (provider is yahoo-csv or binance?) then (yes)
+  :set price_basis split_adjusted;
+elseif (declared asset_type is crypto?) then (yes)
+  :set price_basis split_adjusted;
+else (no)
+  :set price_basis raw;
+endif
+:parse each bar date at 00:00 UTC, timestamp in Unix seconds;
+:copy served open, high, low, close, volume into the raw columns;
+:take adjusted_close from the bar, else its close;
+:compute adjustment_factor as adjusted_close over close_raw;
+if (price_basis is raw?) then (yes)
+  if (collector volume basis is split_adjusted?) then (yes)
+    :divide volume_raw by the factor of the known splits;
+  else (no)
+    :keep volume_raw as served;
+  endif
+  :compute factor F per row as the product of ratios of splits strictly after its date;
+  if (any ratio non-finite or not above zero?) then (yes)
+    :raise AdjustmentRefused for the degenerate ratio;
+    stop
+  else (no)
+    :divide open, high, low and close raw by F;
+  endif
+  :multiply volume_raw by F into volume;
+  :write F into cumulative_split_factor;
+else (no)
+  :copy the raw columns into the mains;
+  :write 1.0 into cumulative_split_factor;
+endif
+:store the rows through reconcile, append or overwrite;
+:project stored rows into Date, Open, High, Low, Close, Adj Close, Volume;
+if (every volume finite and integral?) then (yes)
+  :emit Volume as int64;
+else (no)
+  :emit Volume as float64;
+endif
+:validate the frame and render the report;
+stop
+note right
+  basis table JDL-053; factor JDL-045, JDL-046;
+  prices JDL-047; volume JDL-048, JDL-054;
+  dividends never applied JDL-050; export JDL-071, JDL-072
+end note
+footer owner: data-load — realises JDL-053, JDL-045, JDL-046, JDL-047, JDL-048, JDL-049, JDL-050, JDL-051, JDL-052, JDL-054, JDL-055, JDL-056, JDL-060, JDL-061, JDL-062, JDL-071, JDL-072, JDL-073, JDL-075, JDL-076, JDL-077, JDL-078, JDL-079, JDL-080, JDL-081, JDL-139, JDL-141, JDL-142, JDL-031, JDL-037, JDL-038, JDL-039
+@enduml

@@ -1,0 +1,29 @@
+# Synthetic: a paused asset and a switched-off source.
+[[asset]]
+name = "SPLT"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "SPLT.US"
+  start = 2024-01-02
+
+  [[asset.source]]
+  provider = "yahoo-csv"
+  path = "snap/splt.csv"
+  symbol = "SPLT"
+  enabled = false
+  note = "an old snapshot"
+
+[[asset]]
+name = "GONE"
+asset_class = "stock"
+enabled = false
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "GONE.US"
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "GONEUSDT"

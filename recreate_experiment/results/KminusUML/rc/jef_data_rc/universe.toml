@@ -1,0 +1,129 @@
+# The declarative asset universe - the config `jef-data sync` executes.
+#
+# Scope: DATA ACQUISITION ONLY. This file names the assets, their provider
+# sources and their history windows; it never carries behavior knobs of the
+# modeled pipeline. In particular:
+#   - `price_basis` / `volume_basis` are NOT configurable - they are derived
+#     from the DECLARED class (crypto and yahoo-csv imports are pre-adjusted;
+#     EODHD equities/ETFs are raw) so the NJAPMP double-adjustment bug class
+#     stays unrepresentable (docs/DATA_CONTRACT.md SS2).
+#   - `threshold` is DOCUMENTATION, never read by the loader: the -5%/29-day
+#     target stays untouched per class (Arc D6 conscious-knob decision);
+#     measured base rates 2026-08-15 on the committed CSVs are noted per
+#     asset. Single-source additions with no committed CSV (TLT, NVDA,
+#     TSLA, IBM) measure base rate from the synced store instead, via
+#     `jef-data export` + `jef.api.realized_events_for_asset` (the same
+#     -5%/29-day target arithmetic, pinned equal to the pipeline's own
+#     target columns) - TLT's is not yet recorded.
+#   - `kind` accepts only "eod": every downstream contract (the seam, the
+#     720+395-row minimum-history math, the target) is EOD-denominated. Any
+#     other kind is a new contract, not a config value.
+#
+# Sources per asset are independent store series (partition `exchange=`),
+# which is the point: the differential harness compares them cross-provider.
+# `start`/`end` (eodhd/binance sources) are NOT the same kind of bound:
+# `start` is a FIRST-FILL floor only - once a series exists, `jef-data sync`
+# tail-refreshes the newest stored sessions and never reads `start` again -
+# while `end` is a PERSISTENT cap on every fetch, first fill and tail
+# refresh alike, `min`-ed with the crypto end-guard: a pinned window
+# (docs/DATA_CONTRACT.md SS7 item 10). Volume units differ BY SOURCE for crypto (Binance reports
+# base-asset volume, EODHD/Yahoo notional); each series is internally
+# consistent and the binning's volume features are ratios, so the unit
+# cancels per-series - only cross-source volume comparisons are
+# unit-incomparable (the differential report flags exactly that).
+
+[defaults]
+store = "data"        # store root (gitignored); `jef-data sync --store` overrides
+currency = "USD"
+
+[[asset]]
+name = "AAPL"                  # binning Symbol tag / output-file tag
+asset_class = "stock"
+threshold = -0.05              # documentation only; base rate 1.72%/day
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "AAPL.US"           # raw prices; sync-actions runs BEFORE load
+  modeled = true               # the series that feeds the binning (docs/
+                               # DATA_CONTRACT.md SS7.7); exactly one
+                               # enabled source per asset carries this
+
+  [[asset.source]]
+  provider = "yahoo-csv"
+  path = "experiments/AAPL.csv"
+  symbol = "AAPL"              # store series yahoo/AAPL
+  note = "committed; the goldens' ancestry (counter-720 gate)"
+
+[[asset]]
+name = "BTC"
+asset_class = "crypto"
+threshold = -0.05              # documentation only; base rate 3.60%/day
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "BTC-USD.CC"        # pre-adjusted basis; no CRSP pass, ever
+  modeled = true               # binning feeder; Binance stays cross-check
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "BTCUSDT"
+  start = 2017-08-01           # pre-listing (Aug 2017); Binance serves from
+                               # listing. CONSCIOUS, learned 2026-08-21 (Arc X
+                               # rung (b)): without a start, the collector's
+                               # first page carries no startTime and Binance
+                               # serves its newest-1000 default - a trailing
+                               # window, not history. And `start` bounds the
+                               # FIRST fill only: an existing series must be
+                               # wiped (its exchange=binance partition) before
+                               # this takes effect (docs/CROSS_VENUE_PLAN.md)
+  note = "redundancy cross-check (D0 decision 3); base-asset volume"
+
+  [[asset.source]]
+  provider = "yahoo-csv"
+  path = "experiments/BTC-USD_feb2024.csv"
+  symbol = "BTC-USD"           # store series yahoo/BTC-USD
+  note = "committed; drives the offline store-path pilot run"
+
+[[asset]]
+name = "TLT"
+asset_class = "bond_etf"       # stored as asset_type "etf"
+threshold = -0.05              # documentation only; events only in stress regimes
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "TLT.US"
+  modeled = true               # sole source would be implicit; marked anyway
+  note = "no committed CSV - first fill needs the owner's key"
+
+[[asset]]
+name = "NVDA"
+asset_class = "stock"
+threshold = -0.05              # documentation only; base rate 2.46%/day
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "NVDA.US"
+  modeled = true               # sole source would be implicit; marked anyway
+  note = "no committed CSV - first fill needs the owner's key"
+
+[[asset]]
+name = "TSLA"
+asset_class = "stock"
+threshold = -0.05              # documentation only; base rate 2.58%/day
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "TSLA.US"
+  modeled = true               # sole source would be implicit; marked anyway
+  note = "no committed CSV - first fill needs the owner's key"
+
+[[asset]]
+name = "IBM"
+asset_class = "stock"
+threshold = -0.05              # documentation only; base rate 0.33%/day
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "IBM.US"
+  modeled = true               # sole source would be implicit; marked anyway
+  note = "no committed CSV - first fill needs the owner's key"

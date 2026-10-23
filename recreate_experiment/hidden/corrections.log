@@ -1,0 +1,8 @@
+- adjustment.feature "declared class decides": expected CCSTK 2024-05-03 close written as 6.75; the served close is 12.5 (fixture row index 2 = 10.5 + 2) so 12.5 / 2.0 = 6.25. My arithmetic slip while writing the scenario, not a misreading of the code. Corrected to 6.25.
+- sync.feature "dry run plans every leg shape": my plan.toml gave DIVY two enabled sources without a modeled marker, which the parser rightly refuses (uni-err-modeled). Fixture error; marked the eodhd source modeled = true.
+- sync.feature "CLI dry run uses the default store": I padded the 5-character asset SMALL as if it were 4 characters; `{asset:>6}` gives one pad space, plus the two-space plan indent = 3 spaces. Scenario typo, corrected.
+- status.feature "resolution reads the provider's own print": I divided the tick by the upper value (0.5/101.5); the measurement divides by the lower distinct value d[k] (0.5/101 = 1.5/303 = 0.0049504950495049506). My arithmetic, the requirement text (stat-resolution) already said (d[k+1]-d[k])/d[k]. Corrected value and note text.
+- status.feature "status table": two padding miscounts in my expected table (ok/WARN rows) and a guessed min tick for future_crypto.csv (0.01/1.98 = 0.5051%, not 0.6536%). Scenario errors, corrected.
+- status.feature: my step text 'report 1 has no field "resolution"' collided with the 'report {n} has no {kind}' step; renamed to 'lacks the field'. Harness wiring, not a spec issue.
+- chain.feature exec guard: an empty docstring cannot express empty stdout with my 'stdout is:' step (it appends a newline); added a 'stdout is empty' step. Harness wiring.
+- sync.feature cross-year tail: the same {asset:>6} padding slip for SMALL (3 spaces, not 5). Corrected.

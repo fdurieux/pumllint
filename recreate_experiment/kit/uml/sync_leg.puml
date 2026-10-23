@@ -1,0 +1,60 @@
+@startuml sync_leg
+title One raw-basis EODHD leg - actions gate, fetch window, reconcile, re-adjustment
+participant "SyncRunner" as SyncRunner <<module>>
+participant "CorporateActionsStore" as ActionsStore <<repository>>
+participant "EODHDCollector" as Eodhd <<collector>>
+participant "EodhdApi" as EodhdApi <<external>>
+participant "ParquetStore" as ParquetStore <<repository>>
+
+activate SyncRunner
+SyncRunner -> ParquetStore : recent_dates(exchange, symbol, tail)
+ParquetStore --> SyncRunner : newest tail session dates ascending
+note right of SyncRunner
+  window (JDL-093, JDL-094):
+  start = universe start while the series is empty,
+  else the oldest of the newest tail stored dates;
+  end = min(universe end, today - 1 day when the DECLARED class is crypto)
+end note
+opt leg is actions-eligible: provider eodhd and declared asset_type is not crypto
+  SyncRunner -> ActionsStore : last_updated(symbol)
+  ActionsStore --> SyncRunner : splits stamp or none
+  alt force_actions or no stamp or stamp UTC date before today
+    SyncRunner -> Eodhd : get_splits(symbol)
+    group failure: retry 429 and 5xx up to 5 attempts, then CollectorError fails the leg
+      Eodhd -> EodhdApi : http_get(splits_path, fmt)
+      EodhdApi --> Eodhd : split entries or error status
+      Eodhd -> EodhdApi : http_get(div_path, fmt)
+      EodhdApi --> Eodhd : dividend entries or error status
+    end
+    Eodhd --> SyncRunner : split events and dividends sorted by date
+    SyncRunner -> ActionsStore : save_splits_then_dividends(symbol, exchange, events)
+    ActionsStore --> SyncRunner : two files stamped with the real UTC clock
+  else stamp UTC date on or after today and not forced
+    note right of SyncRunner : detail gains "actions fresh; " (JDL-091)
+  end
+  SyncRunner -> ActionsStore : load_splits(symbol)
+  ActionsStore --> SyncRunner : split events used for this leg
+end
+alt series has rows and start is after end (inverted window)
+  note right of SyncRunner : no request is sent; detail says end predates the stored tail (JDL-095)
+else window is fetchable
+  SyncRunner -> Eodhd : get_eod(symbol, start, end)
+  group failure: HTTP error or retries exhausted raise CollectorError and fail the leg
+    Eodhd -> EodhdApi : http_get(eod_path, period, order, from_date, to_date)
+    EodhdApi --> Eodhd : provider rows or error status
+  end
+  Eodhd --> SyncRunner : bars with close above zero, first per date, ascending
+end
+SyncRunner -> ParquetStore : reconcile_bars(exchange, symbol, bars, splits, basis, volume_basis)
+ParquetStore --> SyncRunner : served bar count and revised cells
+opt series has at least one stored row and basis is raw
+  SyncRunner -> ParquetStore : reapply_adjustment(exchange, symbol, splits)
+  ParquetStore --> SyncRunner : row count; files rewritten only when a value moved
+end
+note right of SyncRunner
+  detail = actions part + inverted part + page-limit part
+  + "{bars} bar(s), {r} revised cell(s)" + today-dated suffix (JDL-098)
+end note
+deactivate SyncRunner
+footer owner: data-load — realises JDL-090, JDL-091, JDL-086, JDL-092, JDL-093, JDL-094, JDL-095, JDL-097, JDL-098, JDL-042, JDL-043, JDL-044, JDL-029, JDL-032, JDL-033, JDL-034, JDL-027, JDL-028, JDL-035, JDL-065, JDL-066, JDL-068, JDL-067, JDL-069, JDL-064, JDL-058, JDL-054
+@enduml

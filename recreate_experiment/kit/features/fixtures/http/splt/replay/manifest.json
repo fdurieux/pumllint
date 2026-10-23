@@ -1,0 +1,18 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json",
+   "from": "2024-01-02",
+   "order": "a",
+   "period": "d"
+  },
+  "path": "/api/eod/SPLT.US"
+ },
+ "response": {
+  "json": {
+   "error": "a manifest is not a fixture"
+  },
+  "status": 500
+ }
+}

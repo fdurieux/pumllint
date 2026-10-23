@@ -1,0 +1,17 @@
+# Synthetic: two Binance-only crypto assets (page limit; two pages).
+[[asset]]
+name = "LIM"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "LIMUSDT"
+
+[[asset]]
+name = "PGS"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "binance"
+  symbol = "PGSUSDT"
+  start = 2021-01-01

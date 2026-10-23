@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "sync-actions",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data sync-actions [-h] --symbol SYMBOL [--store STORE]\n                             [--base-url BASE_URL]\n\noptions:\n  -h, --help           show this help message and exit\n  --symbol SYMBOL\n  --store STORE\n  --base-url BASE_URL\n"
+}

@@ -1,0 +1,8 @@
+[[asset]]
+name = "X"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "yahoo-csv"
+  symbol = "X"
+  path = "x.csv"
+  end = 2024-01-31

@@ -1,0 +1,19 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "endTime": "1719791999999",
+   "interval": "1d",
+   "limit": "1000",
+   "symbol": "LIMUSDT"
+  },
+  "path": "/api/v3/klines"
+ },
+ "response": {
+  "json": {
+   "code": -1121,
+   "msg": "Invalid symbol."
+  },
+  "status": 200
+ }
+}

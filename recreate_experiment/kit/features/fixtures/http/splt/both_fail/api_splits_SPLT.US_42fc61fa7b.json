@@ -1,0 +1,15 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json"
+  },
+  "path": "/api/splits/SPLT.US"
+ },
+ "response": {
+  "json": {
+   "error": "busy"
+  },
+  "status": 503
+ }
+}

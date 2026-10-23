@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "status",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data status [-h] [--universe UNIVERSE] [--store STORE]\n                       [--asset ASSET] [--provider PROVIDER]\n                       [--staleness STALENESS]\n                       [--jump-threshold JUMP_THRESHOLD] [--window WINDOW]\n                       [--resolution-window RESOLUTION_WINDOW]\n                       [--resolution-k RESOLUTION_K] [--flat-k FLAT_K]\n                       [--gap-k GAP_K] [--spread-threshold SPREAD_THRESHOLD]\n                       [--spread-alerts] [--json]\n\noptions:\n  -h, --help            show this help message and exit\n  --universe UNIVERSE\n  --store STORE\n  --asset ASSET\n  --provider PROVIDER\n  --staleness STALENESS\n  --jump-threshold JUMP_THRESHOLD\n  --window WINDOW\n  --resolution-window RESOLUTION_WINDOW\n  --resolution-k RESOLUTION_K\n  --flat-k FLAT_K\n  --gap-k GAP_K\n  --spread-threshold SPREAD_THRESHOLD\n  --spread-alerts\n  --json\n"
+}

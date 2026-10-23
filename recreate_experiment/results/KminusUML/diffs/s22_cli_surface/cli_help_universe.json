@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "universe",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data universe [-h] [--universe UNIVERSE]\n\noptions:\n  -h, --help           show this help message and exit\n  --universe UNIVERSE\n"
+}

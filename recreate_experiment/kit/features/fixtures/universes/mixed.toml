@@ -1,0 +1,17 @@
+# Synthetic: one failing leg and one healthy leg on the same provider.
+[[asset]]
+name = "SPLT"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "SPLT.US"
+  start = 2024-01-02
+
+[[asset]]
+name = "DIVY"
+asset_class = "bond_etf"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "DIVY.US"

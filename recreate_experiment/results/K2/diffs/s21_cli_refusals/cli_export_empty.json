@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "export",
+  "--symbol",
+  "GHOST",
+  "--exchange",
+  "eodhd",
+  "--output",
+  "<work>/ghost.csv",
+  "--store",
+  "<work>/s21_cli_refusals-store"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/home/user/.rc-k2-venv/bin/jef-data-rc\", line 10, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K2/out/jef_data_rc/cli.py\", line 390, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K2/out/jef_data_rc/cli.py\", line 280, in cmd_export\n    frame = export_frame(ParquetStore(args.store), args.exchange, args.symbol)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K2/out/jef_data_rc/store.py\", line 379, in export_frame\n    dates = stored[\"datetime\"].dt.strftime(\"%Y-%m-%d\")\n            ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k2-venv/lib/python3.12/site-packages/pandas/core/generic.py\", line 6194, in __getattr__\n    return object.__getattribute__(self, name)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k2-venv/lib/python3.12/site-packages/pandas/core/accessor.py\", line 230, in __get__\n    return self._accessor(obj)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k2-venv/lib/python3.12/site-packages/pandas/core/indexes/accessors.py\", line 698, in __new__\n    raise AttributeError(\"Can only use .dt accessor with datetimelike values\")\nAttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?\n",
+ "stdout": ""
+}
