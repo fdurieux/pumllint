@@ -431,3 +431,70 @@ re-measure per model generation.
   `id`, `kind`, `statement`, `basis`, `rationale?` and no `arc`.
 - Recreator brief recorded verbatim in `harness/RECREATOR_PROMPT.md`.
 
+### Phase 1 — the kit, frozen 2026-10-23
+
+Produced by one fresh Opus 5 @ xhigh agent on the stripped code tree
+(169 tool calls, 88 minutes). Kit hash (sha256 over the sorted
+`sha256sum` list of its 192 files): `7ca3c135a83157ad…`; the no-UML copy
+(`uml/` and `pumllint.toml` removed, the README's diagram paragraph
+dropped): `c83bbd02f7765571…`. Committed as `recreate_experiment/kit/`
+with the hidden record in `recreate_experiment/hidden/` (pumllint
+`1451c05`).
+
+| Artefact | Count |
+|---|---|
+| Requirements (`requirements.json`) | 158: contract 48, ritual 27, arithmetic 22, refusal 19, cli 17, chain 13, verdict 12; basis both 112, logic 45, prose 1 |
+| Contracts | 14 documents + 2 JSON Schemas with examples + the two shipped TOML files + the harness interface |
+| Diagrams | 8 (component, class, 4 sequence, 1 activity, 1 state); 231 lines for the class diagram, 19–73 for the rest |
+| Scenarios | 95 in 11 features (23 outlines), 178 test cases; 148 synthetic fixture files |
+
+**Gates, re-run by this session with pumllint 0.34.0 from the kit
+directory (not taken from the agent's report):** lint `--fail-on info`
+no findings, exit 0; score Level 5 (Method-complete) 100/100 on all 8
+diagrams; trace 158/158 realised and 158/158 verified, exit 0. The
+syntax gate (DIM-SYN) did not run: no PlantUML renderer here. The kit's
+own `pumllint.toml` raises `max-elements` to 80 for the one class
+diagram (70 elements).
+
+**Calibration, re-run by this session:** the suite passes **178/178**
+on the subject (54 s). Mutant m1 (bar fetch moved before the
+corporate-actions refresh; store-invisible by construction): **2
+failures**. Mutant m2 (crypto end-guard removed): **11 failures**.
+Both mutant trees differ from the subject by the one intended edit.
+
+**Clean-room checks:** the subject tree is byte-identical to J-F's
+`src/jef/data/` and `deploy/daily.sh` after the run; J-F's checkout has
+zero tracked changes; the read log (127 lines) names nothing outside
+the tree, the kit directory and the interface file; zero lines of 50+
+characters are shared between the subject's source and any kit file;
+the only document references in the kit are inside message strings
+the program itself emits (the subject's messages cite its own
+documents by section), which the recreator must reproduce byte for
+byte. One integrity note from the agent's record: eleven `.pyc` files
+appeared in the subject copy's `__pycache__` during its run although
+every command set `PYTHONDONTWRITEBYTECODE=1`; it deleted exactly
+those and no source changed (verified above).
+
+**Observations on the original, parked for triage** (from the agent's
+`hidden/NOTES.md`, "comment says one thing, logic another"): the
+store's `timestamp` column holds Unix seconds under the pinned pandas
+while its schema comment says milliseconds; `ingest_yahoo_csv` reports
+a row count that includes duplicate dates it then drops; the health
+module documents an `actions_missed_k` knob the CLI never exposes; the
+docstring of `run_sync` says the injected clock drives the actions
+gate, but the stamp the gate reads is always the real clock. Plus the
+Phase 0 one: `export` on an absent series exits with a raw traceback.
+
+**Scope the harness cannot reach, declared by the kit (NOTES.md):** the
+live transport, the rate limiter and the 30 s timeout; connection-error
+retries and non-JSON bodies; the refusal past 100 Binance pages; the
+300 s lock timeout; the happy paths of hand-run `load` and
+`sync-actions`; the `unmapped` class verdict. These requirements are
+folded into the nearest observable one and are a known hole in M10.
+
+Recreations launched 2026-10-23, both Opus 5 @ xhigh, fresh contexts,
+brief as recorded (`harness/RECREATOR_PROMPT.md`), k ≤ 3: Arm K on the
+full kit (venv `.rc-k-venv`), Arm K−UML on the no-UML copy (venv
+`.rc-kminusuml-venv`). The two given externals were placed beside each
+output directory before launch.
+
