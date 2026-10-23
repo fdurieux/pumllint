@@ -55,3 +55,9 @@ include = ["pumllint*"]
 
 [tool.setuptools.package-data]
 pumllint = ["rules/catalog.toml", "schemas/*.schema.json"]
+
+[tool.pytest.ini_options]
+# The lab directories (stack_experiment/, c4_experiment/, recreate_experiment/)
+# carry their own pytest suites, which run against their own subjects, never
+# against this package: collect only this repository's tests.
+testpaths = ["tests"]

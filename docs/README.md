@@ -1073,3 +1073,16 @@ but they are a useful cross-check that no audience was forgotten.
   downstream — the gating pattern the pipeline already trusts for code,
   containers and infrastructure, argued back to the design artefact they
   all descend from.
+
+- [recreate-experiment.md](recreate-experiment.md) — dated experiment
+  record (2026-10-23): the research program's first round trip, code →
+  specification kit → code, graded by the original. A fresh agent
+  reverse-engineered J-F's daily asset load (≈ 3 500 lines) from its code
+  alone into requirements as code, contracts, UML and Gherkin; two more
+  rebuilt it from the kit, with and without the diagrams; a third from
+  the kit revised once. Every exported frame, stored series, health
+  verdict and exit code matched the original cell for cell in all three
+  arms; the divergences were the unspecified command-line surface,
+  closed in one revision. Removing the diagrams changed no behaviour.
+  Lab machinery, kit, recreations and the frozen pre-registration:
+  `recreate_experiment/`.
