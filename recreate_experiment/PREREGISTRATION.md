@@ -1,13 +1,24 @@
 # Recreation experiment — reverse-engineer, specify, recreate, compare
 
+*FROZEN 2026-10-23, before any kit, recreation or comparison run. Every
+decision in §10 is taken (below). Editing anything above § Results after
+this point invalidates the wave; re-freeze consciously and say so.*
+
+**Decisions taken by the maintainer, 2026-10-23:** target `src/jef/data/`
+plus the acquisition half of `deploy/daily.sh`; the lab lives in
+`pumllint/recreate_experiment/` and J-F is never changed; the kit is
+derived from the code alone, no existing J-F diagram or document is an
+input, and the existing model set is met only in the post-hoc
+comparison; `tests/` stays hidden from the reverse engineer; two
+recreation runs (Arm K and Arm K−UML); the closing round is authorised
+in advance under the ceiling.
+
 *Plan, 2026-10-23 (revised twice the same day: the target is J-F's daily
 asset load, named by the maintainer after the first draft proposed
 aris2puml; then, on the maintainer's instruction, the kit is derived from
 the code alone — no existing diagram or document of J-F is read for it,
 and Arm E is dropped).
-Draft for the maintainer's go. Becomes `PREREGISTRATION.md` (frozen,
-hashed) once the decisions in §10 are taken and before any recreation
-run. House protocol applies (`stack_experiment/PREREGISTRATION_TEMPLATE.md`,
+Frozen as `PREREGISTRATION.md`. House protocol applies (`stack_experiment/PREREGISTRATION_TEMPLATE.md`,
 research-charter.md §7): oracles, expectations and the interpretation
 matrix are fixed before the first scored run; failures are recorded with
 the same prominence as confirmations. This directory is lab territory:
@@ -355,7 +366,7 @@ only. Nothing here touches the venue, its bucket, or any schedule.
   J-F's house frame, with the ontology page regenerated if its gate
   counts the file, T-0006).
 
-## 10. Decisions needed before freeze
+## 10. Decisions (all taken, see the header)
 
 1. **Are the original's tests part of "the codebase" the reverse
    engineer may read?** Recommended: no — `tests/` stays hidden, so the
@@ -383,3 +394,7 @@ fixture files and one CSV; it cannot see live-provider behaviour
 (provisional closes, pagination at scale, rate limits in anger), only
 the code paths the fixtures and stubs reach. Capability-relative:
 re-measure per model generation.
+
+## Results
+
+*(appended as the phases complete; nothing above this line changes)*
