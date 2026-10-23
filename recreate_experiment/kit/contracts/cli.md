@@ -97,7 +97,10 @@ when `--b-csv` is given, else seam frame of b-exchange/S2 (label
 `{b-exchange}/{S2}`); neither → `differential: pass --b-csv or --b-symbol`,
 exit 1. Prints the report (requirement JDL-083); with `--output` also
 writes it plus a newline to F2. Exit 0 when the verdict is `within
-tolerance, aligned`, else 1.
+tolerance, aligned`, else 1. A stored side the store does not hold (A, or
+B via `--b-symbol`) → the traceback of export's X-09, exit 1, nothing on
+stdout, F2 not written (revision 2026-10-23 (wave 2): requirement JDL-163,
+refusals.md X-10).
 
 ## sync
 

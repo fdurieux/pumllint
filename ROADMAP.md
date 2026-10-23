@@ -1008,6 +1008,14 @@ list and license posture live in § Settled questions.
   `pumllint trace --features` over a JSON inventory and scenario tags,
   shipped interfaces only. Changes no product behaviour, queues no
   build; the J-F findings go back as issues on the maintainer's go.*
+  *Same day, the follow-up wave: invariants, DMN with gap analysis,
+  Gherkin `Rule:` blocks and a glossary added to the kit as dated
+  revisions and measured against frozen expectations
+  (recreate_experiment/WAVE2_PREREGISTRATION.md). The decision layer
+  answered the would-it-have-caught-it question — the round-one defect
+  was an untyped outcome, not a gap — and found one unspecified refusal
+  (JDL-163); the kit's suite stands at 257/257 on the original and on
+  the third rebuild. Changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

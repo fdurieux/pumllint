@@ -1,0 +1,183 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="basis" name="basis" namespace="urn:recreate-experiment:basis">
+  <decision id="price_basis_resolution" name="price_basis_resolution">
+    <description>Which basis a stored series gets and whether stored split events are applied, from the leg's provider and DECLARED asset_type (never the symbol suffix).</description>
+    <decisionTable id="price_basis_resolution_dt" hitPolicy="UNIQUE">
+      <input id="price_basis_resolution_i0" label="provider">
+        <inputExpression id="price_basis_resolution_ie0" typeRef="string">
+          <text>provider</text>
+        </inputExpression>
+        <inputValues id="price_basis_resolution_iv0">
+          <text>"eodhd", "binance", "yahoo-csv"</text>
+        </inputValues>
+      </input>
+      <input id="price_basis_resolution_i1" label="declared_asset_type">
+        <inputExpression id="price_basis_resolution_ie1" typeRef="string">
+          <text>declared_asset_type</text>
+        </inputExpression>
+        <inputValues id="price_basis_resolution_iv1">
+          <text>"stock", "etf", "crypto"</text>
+        </inputValues>
+      </input>
+      <output id="price_basis_resolution_o0" label="price_basis" name="price_basis" typeRef="string">
+        <outputValues id="price_basis_resolution_ov0">
+          <text>"raw", "split_adjusted"</text>
+        </outputValues>
+      </output>
+      <output id="price_basis_resolution_o1" label="split_events_applied" name="split_events_applied" typeRef="boolean"/>
+      <output id="price_basis_resolution_o2" label="actions_eligible" name="actions_eligible" typeRef="boolean"/>
+      <rule id="price_basis_resolution_r1">
+        <description>adjustment.md s1 row 1; JDL-086</description>
+        <inputEntry id="price_basis_resolution_r1_i0">
+          <text>"eodhd"</text>
+        </inputEntry>
+        <inputEntry id="price_basis_resolution_r1_i1">
+          <text>"stock"</text>
+        </inputEntry>
+        <outputEntry id="price_basis_resolution_r1_o0">
+          <text>"raw"</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r1_o1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r1_o2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="price_basis_resolution_r2">
+        <description>adjustment.md s1 row 2 (bond_etf -&gt; etf); JDL-086</description>
+        <inputEntry id="price_basis_resolution_r2_i0">
+          <text>"eodhd"</text>
+        </inputEntry>
+        <inputEntry id="price_basis_resolution_r2_i1">
+          <text>"etf"</text>
+        </inputEntry>
+        <outputEntry id="price_basis_resolution_r2_o0">
+          <text>"raw"</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r2_o1">
+          <text>true</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r2_o2">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="price_basis_resolution_r3">
+        <description>adjustment.md s1 row 3; JDL-086 (declared class, not suffix)</description>
+        <inputEntry id="price_basis_resolution_r3_i0">
+          <text>"eodhd"</text>
+        </inputEntry>
+        <inputEntry id="price_basis_resolution_r3_i1">
+          <text>"crypto"</text>
+        </inputEntry>
+        <outputEntry id="price_basis_resolution_r3_o0">
+          <text>"split_adjusted"</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r3_o1">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r3_o2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="price_basis_resolution_r4">
+        <description>adjustment.md s1 row 4; JDL-100</description>
+        <inputEntry id="price_basis_resolution_r4_i0">
+          <text>"binance"</text>
+        </inputEntry>
+        <inputEntry id="price_basis_resolution_r4_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="price_basis_resolution_r4_o0">
+          <text>"split_adjusted"</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r4_o1">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r4_o2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="price_basis_resolution_r5">
+        <description>adjustment.md s1 row 5; JDL-070</description>
+        <inputEntry id="price_basis_resolution_r5_i0">
+          <text>"yahoo-csv"</text>
+        </inputEntry>
+        <inputEntry id="price_basis_resolution_r5_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="price_basis_resolution_r5_o0">
+          <text>"split_adjusted"</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r5_o1">
+          <text>false</text>
+        </outputEntry>
+        <outputEntry id="price_basis_resolution_r5_o2">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="volume_raw_source" name="volume_raw_source">
+    <description>What is written to volume_raw.</description>
+    <decisionTable id="volume_raw_source_dt" hitPolicy="UNIQUE">
+      <input id="volume_raw_source_i0" label="price_basis">
+        <inputExpression id="volume_raw_source_ie0" typeRef="string">
+          <text>price_basis</text>
+        </inputExpression>
+        <inputValues id="volume_raw_source_iv0">
+          <text>"raw", "split_adjusted"</text>
+        </inputValues>
+      </input>
+      <input id="volume_raw_source_i1" label="provider">
+        <inputExpression id="volume_raw_source_ie1" typeRef="string">
+          <text>provider</text>
+        </inputExpression>
+        <inputValues id="volume_raw_source_iv1">
+          <text>"eodhd", "binance", "yahoo-csv"</text>
+        </inputValues>
+      </input>
+      <output id="volume_raw_source_o0" label="stored_volume_raw" name="stored_volume_raw" typeRef="string">
+        <outputValues id="volume_raw_source_ov0">
+          <text>"served_volume_divided_by_F", "served_volume"</text>
+        </outputValues>
+      </output>
+      <rule id="volume_raw_source_r1">
+        <description>adjustment.md s2 row 1: EODHD serves split-adjusted volume, raw-ized by the cumulative factor; JDL-056</description>
+        <inputEntry id="volume_raw_source_r1_i0">
+          <text>"raw"</text>
+        </inputEntry>
+        <inputEntry id="volume_raw_source_r1_i1">
+          <text>"eodhd"</text>
+        </inputEntry>
+        <outputEntry id="volume_raw_source_r1_o0">
+          <text>"served_volume_divided_by_F"</text>
+        </outputEntry>
+      </rule>
+      <rule id="volume_raw_source_r2">
+        <description>adjustment.md s2 row 2 (no raw-basis collector other than EODHD exists today; the row is the contract, not a reachable path); JDL-056</description>
+        <inputEntry id="volume_raw_source_r2_i0">
+          <text>"raw"</text>
+        </inputEntry>
+        <inputEntry id="volume_raw_source_r2_i1">
+          <text>not("eodhd")</text>
+        </inputEntry>
+        <outputEntry id="volume_raw_source_r2_o0">
+          <text>"served_volume"</text>
+        </outputEntry>
+      </rule>
+      <rule id="volume_raw_source_r3">
+        <description>adjustment.md s2 row 3: the collector's basis is not consulted; JDL-055</description>
+        <inputEntry id="volume_raw_source_r3_i0">
+          <text>"split_adjusted"</text>
+        </inputEntry>
+        <inputEntry id="volume_raw_source_r3_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="volume_raw_source_r3_o0">
+          <text>"served_volume"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

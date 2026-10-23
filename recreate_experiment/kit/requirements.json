@@ -1038,5 +1038,11 @@
   "kind": "cli",
   "statement": "When `--help` or `-h` is given to the top-level parser or to any of the ten subcommands, the program shall print on stdout exactly the corresponding block of contracts/cli_help.md (captured with an 80-column terminal: `COLUMNS=80`, or no terminal and `COLUMNS` unset), print nothing on stderr and exit 0.",
   "basis": "logic"
+ },
+ {
+  "id": "JDL-163",
+  "kind": "refusal",
+  "statement": "If `differential` is asked for a stored side the store does not hold (the A series, or the B series named by `--b-symbol`), then the command shall apply the seam projection to the zero-row read-back frame without any guard and terminate like JDL-159: an unhandled traceback whose last stderr line is `AttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?`, exit code 1, nothing on stdout, no report file written - it is not a StoreError refusal (revision 2026-10-23 (wave 2): measured on the original, both sides).",
+  "basis": "logic"
  }
 ]

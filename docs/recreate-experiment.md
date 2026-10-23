@@ -343,6 +343,62 @@ half of the list that would have made the kit self-checking. The
 follow-up wave is well-defined and cheap; nothing is queued from this
 section, which records an evaluation and not a decision.
 
+## Follow-up wave: the four missing layers, built and measured (2026-10-23)
+
+*Dated addition. Pre-registration and results:
+`recreate_experiment/WAVE2_PREREGISTRATION.md`; the pages quote it.*
+
+The re-evaluation above named the half of the maintainer's list the kit
+lacked. The wave built it, in the priority order the pre-registration
+fixed and as additive kit revisions dated "wave 2", from the kit and the
+code alone. No new recreation (amendment 1); the one expected negative
+(the CLI-surface class, invisible to every layer) stated in advance.
+
+- **Invariants** (`harness/invariants/`, Hypothesis through the adapter,
+  no float tolerance): seven properties, 100 examples each; zero
+  counter-examples on the original and, differentially, on all three
+  rebuilds — K and K−UML included, since the properties export filled
+  series only and never reach the one path those two got wrong.
+- **DMN with gap analysis** (`kit/contracts/dmn/`, 13 tables, 63 rules;
+  `harness/dmn_check.py`): the would-it-have-caught-it question answered
+  on the round-1 kit — **0 gaps, 0 overlaps, 1 untyped output**. The
+  round-1 kit had the (`export`, absent) row; it lacked the outcome. So
+  completeness alone would have passed it; output typing catches it. The
+  revised table then forced two cells neither kit revision had written
+  (`differential` on an absent A or B side), measured on the original
+  (the same traceback) and folded in as JDL-163 / X-10. Revised kit: 0 /
+  0 / 0.
+- **Gherkin `Rule:` blocks** (`kit/features/decisions.feature`, one Rule
+  per table, 60 cases keyed to DMN rule ids): 257/257 on the original and
+  on Arm K2 with the existing 197; 60 of 63 rows exercised, the three
+  without an example named with their reason — one unreachable by
+  construction, two because `load`'s happy path needs the live
+  transport, which the kit's seams cannot replay: the kit's executable
+  spec never covered `load`'s ingestion, a coverage finding the DMN
+  layer surfaced. The pre-registered "≥ 3 rows the existing scenarios
+  never exercised" measured 2 at requirement granularity (a lower bound).
+- **Glossary** (`kit/contracts/glossary.md`, 63 terms;
+  `harness/glossary_check.py`): 46 of a 60-term vocabulary recur in three
+  or more requirements; 42 had no definition anywhere in the kit; 0
+  after. The contracts described, they did not define.
+
+One harness defect found by running the kit on the original with the
+reference adapter: `actions_state` returned dataclass field names and a
+re-serialised stamp, not the stored fields the interface promises; three
+existing actions scenarios fail with the adapter as committed and pass
+with the fix (no scenario changed). Kit gates after the wave: lint clean,
+Level 5 on all 8 diagrams, trace 163/163 across 12 feature files.
+
+**Reading.** Of the four, the decision layer paid for itself twice: it
+answered the pre-registered question with a sharper verdict than the
+one expected (the defect was an untyped outcome, not a gap — a
+distinction the pre-registration did not draw), and it found a refusal
+nobody had looked for. The invariants found nothing, which on a kit
+already matched cell for cell is the expected shape of a passing
+property suite, not evidence against the layer. The `Rule:` blocks and
+the glossary are hygiene with a count attached. Nothing here is a J-F
+finding beyond the two already filed; nothing is queued.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits

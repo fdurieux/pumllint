@@ -89,13 +89,19 @@ def stored_frame(store_path, exchange, symbol):
 def actions_state(store_path, symbol):
     from jef.data.actions import CorporateActionsStore
     s = CorporateActionsStore(store_path)
-    splits = [asdict(x) if is_dataclass(x) else dict(x) for x in s.load_splits(symbol)]
-    for x in splits:
-        if hasattr(x.get("date"), "isoformat"):
-            x["date"] = x["date"].isoformat()
-    lu = s.last_updated(symbol)
+    # The stored fields as the file holds them (HARNESS_INTERFACE.md): the
+    # splits file's key is `split`; SplitEvent's dataclass field is
+    # `split_string`. Until 2026-10-23 (wave 2) this returned the dataclass
+    # fields, the `split`/`split_string` ambiguity recorded under M6post.
+    import json, os
+    path = s._path("splits", symbol)
+    stamp = None
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            stamp = json.load(f)["last_updated"]      # the stored text, e.g. "...Z"
+    splits = [dict(item) for item in s._load("splits", "splits", symbol)]
     return {"splits": splits, "dividends": list(s.load_dividends(symbol)),
-            "last_updated": lu.isoformat() if lu else None}
+            "last_updated": stamp}
 
 
 def import_csv(store_path, csv_path, exchange, symbol, asset_type, currency="USD"):

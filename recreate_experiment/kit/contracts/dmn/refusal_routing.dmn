@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="refusal_routing" name="refusal_routing" namespace="urn:recreate-experiment:refusal_routing">
+  <decision id="refusal_routing" name="refusal_routing">
+    <decisionTable id="refusal_routing_dt" hitPolicy="UNIQUE">
+      <input id="refusal_routing_i0" label="raised_in">
+        <inputExpression id="refusal_routing_ie0" typeRef="string">
+          <text>raised_in</text>
+        </inputExpression>
+        <inputValues id="refusal_routing_iv0">
+          <text>"universe_load", "selection", "leg_body", "load_declaration", "command_body", "argument_parse"</text>
+        </inputValues>
+      </input>
+      <output id="refusal_routing_o0" label="handling" name="handling" typeRef="string">
+        <outputValues id="refusal_routing_ov0">
+          <text>"wrapped", "leg_failed", "traceback", "usage"</text>
+        </outputValues>
+      </output>
+      <output id="refusal_routing_o1" label="exit_code" name="exit_code" typeRef="number"/>
+      <output id="refusal_routing_o2" label="stderr_form" name="stderr_form" typeRef="string"/>
+      <rule id="refusal_routing_r1">
+        <description>refusals.md Universe: wrapped by sync, status, universe; JDL-134, JDL-144, JDL-145</description>
+        <inputEntry id="refusal_routing_r1_i0">
+          <text>"universe_load"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r1_o0">
+          <text>"wrapped"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r1_o1">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r1_o2">
+          <text>"{command}: {message}"</text>
+        </outputEntry>
+      </rule>
+      <rule id="refusal_routing_r2">
+        <description>refusals.md Selection; JDL-085, JDL-134</description>
+        <inputEntry id="refusal_routing_r2_i0">
+          <text>"selection"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r2_o0">
+          <text>"wrapped"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r2_o1">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r2_o2">
+          <text>"{command}: {message}"</text>
+        </outputEntry>
+      </rule>
+      <rule id="refusal_routing_r3">
+        <description>refusals.md Leg failures, JDL-101</description>
+        <inputEntry id="refusal_routing_r3_i0">
+          <text>"leg_body"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r3_o0">
+          <text>"leg_failed"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r3_o1">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r3_o2">
+          <text>"FAILED  {asset} {exchange}/{symbol} [{provider}]: {ErrorClass}: {message} (stdout); other legs run"</text>
+        </outputEntry>
+      </rule>
+      <rule id="refusal_routing_r4">
+        <description>refusals.md D-01..D-03; JDL-142</description>
+        <inputEntry id="refusal_routing_r4_i0">
+          <text>"load_declaration"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r4_o0">
+          <text>"wrapped"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r4_o1">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r4_o2">
+          <text>"load: {message}"</text>
+        </outputEntry>
+      </rule>
+      <rule id="refusal_routing_r5">
+        <description>refusals.md Other commands X-02..X-07, X-09; JDL-069, JDL-159, JDL-163</description>
+        <inputEntry id="refusal_routing_r5_i0">
+          <text>"command_body"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r5_o0">
+          <text>"traceback"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r5_o1">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r5_o2">
+          <text>"Python traceback, last line {module}.{ErrorClass}: {message}"</text>
+        </outputEntry>
+      </rule>
+      <rule id="refusal_routing_r6">
+        <description>refusals.md X-08, cli.md Parser errors; JDL-133, JDL-161</description>
+        <inputEntry id="refusal_routing_r6_i0">
+          <text>"argument_parse"</text>
+        </inputEntry>
+        <outputEntry id="refusal_routing_r6_o0">
+          <text>"usage"</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r6_o1">
+          <text>2</text>
+        </outputEntry>
+        <outputEntry id="refusal_routing_r6_o2">
+          <text>"usage: ... then {prog}: error: {message}"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
