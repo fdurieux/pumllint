@@ -607,3 +607,36 @@ actions artefact is unified in `compare.py` under a labelled post-hoc
 metric (`M6post…`), 3/3 in both arms once unified; the pre-registered
 M6 figure (2/3) stands as reported.
 
+### Closing round — Arm K2 scored, 2026-10-23
+
+Fresh Opus 5 @ xhigh agent on the revised full kit, 26 minutes,
+**197/197 on its first and only suite run**; 30 assumptions; 13 modules
+as the component diagram names them (2 470 lines). No reading-rule breach
+reported.
+
+| Metric | K (before) | K2 (after the closing round) |
+|---|---|---|
+| M1 exported seam frames identical | 14/14 | 14/14 |
+| M2 / M3 gate inversions | 0 / 0 | 0 / 0 |
+| M4 status documents identical | 17/17 | 17/17 |
+| M5 sync summaries identical | 14/14 | 14/14 |
+| M6 stored series / actions files (post-hoc unified) | 13/13, 2/3 (3/3) | 13/13, 2/3 (3/3) |
+| M7 CLI exit codes / CLI text identical | 52/52, 38/52 | 52/52, **49/52** |
+| M7 chain exit codes / call logs identical (post-hoc equivalent) | 8/8, 1/8 (8/8) | 8/8, 1/8 (8/8) |
+| M8 | PASS | PASS |
+| M9 original API-level tests: modules importing, cases passing; chain | 5/14, 18/50; 10/10 | 4/14, 5/34; 10/10 |
+| Artefacts not byte-identical | 22/157 | **11/157** |
+
+The 11 remaining differ by construction only: three unwrapped
+tracebacks whose paths and `jef.data` vs `jef_data_rc` module prefix
+differ (same exception class, same message; the `export` path now ends
+in the same pandas `AttributeError` as the original), seven chain call
+logs whose inline `python3 -c` metadata parser is spelled differently
+(same commands, arguments and exit codes), and the one split-key
+spelling. **Spec defects found per iteration: 2 classes in round one,
+0 in round two.** The closing round removed every divergence the kit
+could be held responsible for.
+
+Phase 3 complete for all three arms. Pending: the post-hoc diagram
+comparison (E3) and the record.
+
