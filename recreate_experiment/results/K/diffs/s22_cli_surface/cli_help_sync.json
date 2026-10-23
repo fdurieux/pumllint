@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "sync",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data sync [-h] [--universe UNIVERSE] [--store STORE]\n                     [--asset ASSET] [--provider PROVIDER] [--dry-run]\n                     [--tail TAIL] [--force-actions] [--base-url BASE_URL]\n                     [--summary-json SUMMARY_JSON]\n\noptions:\n  -h, --help            show this help message and exit\n  --universe UNIVERSE\n  --store STORE\n  --asset ASSET\n  --provider PROVIDER\n  --dry-run\n  --tail TAIL\n  --force-actions\n  --base-url BASE_URL\n  --summary-json SUMMARY_JSON\n"
+}

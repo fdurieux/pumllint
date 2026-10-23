@@ -8,7 +8,7 @@ S=/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad
 H=$(cd "$(dirname "$0")" && pwd)
 mkdir -p "$RES"
 . "$VENV/bin/activate"
-pip install -q -e "$OUT" 2>&1 | tail -1
+VIRTUAL_ENV="$VENV" uv pip install -q --offline -e "$OUT" 2>&1 | tail -1
 echo "== run_impl ($ARM)"
 PYTHONPATH="$OUT" python "$H/run_impl.py" --adapter adapter_rc --exe jef-data-rc \
     --chain "$OUT/daily-rc.sh" --inputs "$S/inputs" --out "$RES/run" 2>&1 | grep -v ": ok" | tail -30

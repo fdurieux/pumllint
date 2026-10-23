@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "validate",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data validate [-h] [--min-rows MIN_ROWS] csv\n\npositional arguments:\n  csv\n\noptions:\n  -h, --help           show this help message and exit\n  --min-rows MIN_ROWS\n"
+}

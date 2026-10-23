@@ -1,0 +1,8 @@
+{
+ "argv": [
+  "frobnicate"
+ ],
+ "exit": 2,
+ "stderr": "usage: jef-data [-h] command ...\njef-data: error: argument command: invalid choice: 'frobnicate' (choose from 'validate', 'sync-actions', 'load', 'adjust', 'import-csv', 'export', 'differential', 'sync', 'status', 'universe')\n",
+ "stdout": ""
+}

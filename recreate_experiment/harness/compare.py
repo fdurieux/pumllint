@@ -57,7 +57,29 @@ metrics = {"M1_export_identical": [0, 0], "M2_gate_inversions_rc_green_ref_red":
            "M6_stored_identical": [0, 0], "M6_actions_identical": [0, 0],
            "M7_cli_exit_identical": [0, 0], "M7_cli_text_identical": [0, 0],
            "M7_chain_exit_identical": [0, 0], "M7_chain_calls_identical": [0, 0],
-           "other_identical": [0, 0], "missing_in_rc": 0, "scenario_errors_rc": []}
+           "other_identical": [0, 0], "missing_in_rc": 0, "scenario_errors_rc": [],
+           # post-hoc (2026-10-23, after Arm K's first comparison; not pre-registered):
+           # the same CLI outcome = same exit code and same final stderr line (a
+           # traceback's file paths and line numbers differ by construction);
+           # equivalent chain calls = same commands and arguments once an inline
+           # `python3 -c` script is reduced to its presence.
+           "M7post_cli_same_outcome": [0, 0], "M7post_chain_calls_equivalent": [0, 0]}
+
+
+def last_line(text):
+    lines = [ln for ln in (text or "").splitlines() if ln.strip()]
+    return lines[-1] if lines else ""
+
+
+def reduce_calls(calls):
+    out = []
+    for c in calls or []:
+        parts = c.split(" ", 2)
+        if len(parts) >= 2 and parts[0] == "python3" and parts[1] == "-c":
+            out.append("python3 -c <script>")
+        else:
+            out.append(c)
+    return out
 
 for ref_file in sorted(REF.rglob("*")):
     if not ref_file.is_file() or ref_file.name == "MANIFEST.sha256.json":
@@ -120,11 +142,21 @@ for ref_file in sorted(REF.rglob("*")):
             metrics["M7_cli_text_identical"][0] += same
             if a.get("exit") != b.get("exit"):
                 row["exit"] = [a.get("exit"), b.get("exit")]
+            metrics["M7post_cli_same_outcome"][1] += 1
+            same_out = a.get("exit") == b.get("exit") and last_line(a.get("stderr")) == last_line(b.get("stderr")) and (a.get("stdout") == b.get("stdout") or name.startswith("cli_help"))
+            metrics["M7post_cli_same_outcome"][0] += same_out
+            if not same and same_out:
+                row["verdict"] = "differs (same exit and final message; help/usage prose or traceback paths differ)"
         elif name.startswith("chain_"):
             metrics["M7_chain_exit_identical"][1] += 1
             metrics["M7_chain_exit_identical"][0] += (a.get("exit") == b.get("exit"))
             metrics["M7_chain_calls_identical"][1] += 1
             metrics["M7_chain_calls_identical"][0] += (a.get("calls") == b.get("calls"))
+            metrics["M7post_chain_calls_equivalent"][1] += 1
+            eq = reduce_calls(a.get("calls")) == reduce_calls(b.get("calls"))
+            metrics["M7post_chain_calls_equivalent"][0] += eq
+            if not same and eq and a.get("exit") == b.get("exit"):
+                row["verdict"] = "differs (equivalent calls; inline python text or script path differs)"
         else:
             metrics["other_identical"][1] += 1
             metrics["other_identical"][0] += same

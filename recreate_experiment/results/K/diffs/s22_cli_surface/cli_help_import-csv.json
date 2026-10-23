@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "import-csv",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data import-csv [-h] --csv CSV --symbol SYMBOL\n                           [--exchange EXCHANGE] --asset-type\n                           {crypto,etf,stock} [--currency CURRENCY]\n                           [--store STORE]\n\noptions:\n  -h, --help            show this help message and exit\n  --csv CSV\n  --symbol SYMBOL\n  --exchange EXCHANGE\n  --asset-type {crypto,etf,stock}\n  --currency CURRENCY\n  --store STORE\n"
+}

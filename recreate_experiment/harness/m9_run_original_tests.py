@@ -84,7 +84,7 @@ report = {"work": str(work), "modules": {}}
 
 def run(paths, label):
     xml = work / f"{label}.xml"
-    p = subprocess.run([args.python, "-m", "pytest", "-q", "-p", "no:cacheprovider",
+    p = subprocess.run([args.python, "-m", "pytest", "-q", "-p", "no:cacheprovider", "--continue-on-collection-errors",
                         f"--junitxml={xml}", "-o", "junit_family=xunit2",
                         *[a for d in DESELECT for a in ("--deselect", d)], *paths],
                        cwd=work, capture_output=True, text=True,
