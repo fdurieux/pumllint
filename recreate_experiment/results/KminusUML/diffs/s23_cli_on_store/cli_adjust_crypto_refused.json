@@ -1,0 +1,14 @@
+{
+ "argv": [
+  "adjust",
+  "--symbol",
+  "BTC-USD.CC",
+  "--exchange",
+  "eodhd",
+  "--store",
+  "<work>/s23_cli_on_store-store"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/home/user/.rc-kminusuml-venv/bin/jef-data-rc\", line 10, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/KminusUML/out/jef_data_rc/cli.py\", line 296, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/KminusUML/out/jef_data_rc/cli.py\", line 179, in cmd_adjust\n    rows = store.readjust(args.store, args.exchange, args.symbol, events)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/KminusUML/out/jef_data_rc/store.py\", line 350, in readjust\n    adjusted = adjust(frame, events)\n               ^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/KminusUML/out/jef_data_rc/adjustment.py\", line 54, in adjust\n    raise AdjustmentRefused(\njef_data_rc.adjustment.AdjustmentRefused: price_basis ['split_adjusted'] is already adjusted at the provider - applying split events would double-adjust (docs/DATA_CONTRACT.md \u00a72)\n",
+ "stdout": ""
+}

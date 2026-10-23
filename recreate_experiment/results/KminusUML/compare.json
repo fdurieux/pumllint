@@ -1,0 +1,687 @@
+{
+ "metrics": {
+  "M1_export_identical": [
+   14,
+   14
+  ],
+  "M2_gate_inversions_rc_green_ref_red": 0,
+  "M3_gate_inversions_rc_red_ref_green": 0,
+  "M4_status_identical": [
+   17,
+   17
+  ],
+  "M4_status_same_verdicts": 0,
+  "M5_summary_identical": [
+   14,
+   14
+  ],
+  "M6_stored_identical": [
+   13,
+   13
+  ],
+  "M6_actions_identical": [
+   2,
+   3
+  ],
+  "M7_cli_exit_identical": [
+   52,
+   52
+  ],
+  "M7_cli_text_identical": [
+   38,
+   52
+  ],
+  "M7_chain_exit_identical": [
+   8,
+   8
+  ],
+  "M7_chain_calls_identical": [
+   1,
+   8
+  ],
+  "other_identical": [
+   36,
+   36
+  ],
+  "missing_in_rc": 0,
+  "scenario_errors_rc": [],
+  "M7post_cli_same_outcome": [
+   50,
+   52
+  ],
+  "M7post_chain_calls_equivalent": [
+   8,
+   8
+  ]
+ },
+ "artefacts": [
+  {
+   "artefact": "s01_first_fill/actions_TLT.US.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/export_binance_BTCUSDT.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/export_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/export_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/export_yahoo_AAPL.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_binance_BTCUSDT.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_binance_BTCUSDT.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_eodhd_BTC-USD.CC.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_eodhd_TLT.US.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_yahoo_AAPL.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/stored_yahoo_AAPL.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s01_first_fill/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s02_status_fresh/status.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s03_status_stale/status_jan07.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s03_status_stale/status_jan08.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s03_status_stale/status_jan10.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s04_status_spread/status_knobs.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s04_status_spread/status_tight.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s04_status_spread/status_tight_alerts.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/actions_TLT.US.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/export_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/stored_eodhd_TLT.US.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/stored_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s05_rerun_same_day/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s06_rerun_force_actions/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s06_rerun_force_actions/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s07_tail_revision/export_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s07_tail_revision/stored_eodhd_TLT.US.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s07_tail_revision/stored_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s07_tail_revision/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s07_tail_revision/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s08_btc_tail2/export_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s08_btc_tail2/stored_eodhd_BTC-USD.CC.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s08_btc_tail2/stored_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s08_btc_tail2/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s08_btc_tail2/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s09_inverted_end/export_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s09_inverted_end/stored_eodhd_BTC-USD.CC.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s09_inverted_end/stored_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s09_inverted_end/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s09_inverted_end/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s10_aapl_split/actions_AAPL.US.json",
+   "verdict": "differs"
+  },
+  {
+   "artefact": "s10_aapl_split/export_eodhd_AAPL.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s10_aapl_split/stored_eodhd_AAPL.US.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s10_aapl_split/stored_eodhd_AAPL.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s10_aapl_split/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s10_aapl_split/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s11_status_aapl/status_sep04_22h.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s11_status_aapl/status_sep05.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s11_status_aapl/status_sep08.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s11_status_aapl/status_sep09.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s11_status_aapl/status_sep15.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s12_today_dated/status.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s12_today_dated/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s12_today_dated/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s13_crypto_guard/export_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s13_crypto_guard/stored_eodhd_BTC-USD.CC.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s13_crypto_guard/stored_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s13_crypto_guard/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s13_crypto_guard/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/legs.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/paused_named.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/select_['NOPE'].json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/select_['nope'].json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s14_paused/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/export_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/status.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/status_misdeclared.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/stored_eodhd_TLT.US.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/stored_eodhd_TLT.US.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s15_jump/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/export_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/status.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/stored_eodhd_BTC-USD.CC.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/stored_eodhd_BTC-USD.CC.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s16_zero_volume/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s17_misdeclared/status.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s17_misdeclared/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s17_misdeclared/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s18_import_export/export_yahoo_AAPL.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s18_import_export/import.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s18_import_export/import_again.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s18_import_export/stored_yahoo_AAPL.columns.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s18_import_export/stored_yahoo_AAPL.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s19_dry_run/legs_packaged.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s19_dry_run/sync_out.txt",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s19_dry_run/sync_summary.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s20_legs/legs_r1.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s20_legs/legs_r1_eodhd.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_class.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_csv_no_path.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_date.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_dup_asset.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_kind.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_modeled_disabled.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_no_enabled_source.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_provider.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_subcommand.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_toml.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_two_modeled.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_bad_unknown_key.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_export_empty.json",
+   "verdict": "differs"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_import_missing_type.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_no_args.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_paused_only.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_status_unknown_asset.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_tail_zero.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_unknown_asset.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_unknown_provider.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_validate_bad.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s21_cli_refusals/cli_validate_missing.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_differential_csv.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_dry_run_packaged.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_dry_run_r1.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_export_aapl.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_adjust.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_differential.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_export.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_import-csv.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_load.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_status.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_sync-actions.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_sync.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_universe.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_help_validate.json",
+   "verdict": "differs (same exit and final message; help/usage prose or traceback paths differ)"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_import_csv.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_status_empty_store.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_status_empty_store_json.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_universe.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_universe_paused.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_universe_r1.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_validate_aapl.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/cli_validate_aapl_minrows.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s22_cli_surface/export_cli_yahoo_AAPL.frame.csv",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_adjust_crypto_refused.json",
+   "verdict": "differs"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_adjust_tlt.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_differential_tolerance.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_differential_venues.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_export_tlt.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_status_json_now.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s23_cli_on_store/cli_status_table.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s24_chain/chain_assets_btc.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_binning_red_tlt.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_digest_given.json",
+   "verdict": "identical"
+  },
+  {
+   "artefact": "s24_chain/chain_green.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_no_bucket.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_override.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_status_red.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  },
+  {
+   "artefact": "s24_chain/chain_sync_red.json",
+   "verdict": "differs (equivalent calls; inline python text or script path differs)"
+  }
+ ]
+}

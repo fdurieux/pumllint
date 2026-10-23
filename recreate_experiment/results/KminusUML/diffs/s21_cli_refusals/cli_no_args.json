@@ -1,0 +1,6 @@
+{
+ "argv": [],
+ "exit": 2,
+ "stderr": "usage: jef-data [-h] command ...\njef-data: error: the following arguments are required: command\n",
+ "stdout": ""
+}

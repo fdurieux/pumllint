@@ -1,0 +1,72 @@
+{
+ "dividends": [
+  {
+   "currency": "USD",
+   "date": "2020-02-07",
+   "declarationDate": "2020-01-28",
+   "paymentDate": "2020-02-13",
+   "period": "Quarterly",
+   "recordDate": "2020-02-10",
+   "unadjustedValue": 0.77,
+   "value": 0.1925
+  },
+  {
+   "currency": "USD",
+   "date": "2020-05-08",
+   "declarationDate": "2020-04-30",
+   "paymentDate": "2020-05-14",
+   "period": "Quarterly",
+   "recordDate": "2020-05-11",
+   "unadjustedValue": 0.82,
+   "value": 0.205
+  },
+  {
+   "currency": "USD",
+   "date": "2020-08-07",
+   "declarationDate": "2020-07-30",
+   "paymentDate": "2020-08-13",
+   "period": "Quarterly",
+   "recordDate": "2020-08-10",
+   "unadjustedValue": 0.82,
+   "value": 0.205
+  },
+  {
+   "currency": "USD",
+   "date": "2020-11-06",
+   "declarationDate": "2020-10-29",
+   "paymentDate": "2020-11-12",
+   "period": "Quarterly",
+   "recordDate": "2020-11-09",
+   "unadjustedValue": 0.205,
+   "value": 0.205
+  }
+ ],
+ "last_updated": "<stamp>",
+ "splits": [
+  {
+   "date": "1987-06-16",
+   "ratio": 2.0,
+   "split": "2.000000/1.000000"
+  },
+  {
+   "date": "2000-06-21",
+   "ratio": 2.0,
+   "split": "2.000000/1.000000"
+  },
+  {
+   "date": "2005-02-28",
+   "ratio": 2.0,
+   "split": "2.000000/1.000000"
+  },
+  {
+   "date": "2014-06-09",
+   "ratio": 7.0,
+   "split": "7.000000/1.000000"
+  },
+  {
+   "date": "2020-08-31",
+   "ratio": 4.0,
+   "split": "4.000000/1.000000"
+  }
+ ]
+}
