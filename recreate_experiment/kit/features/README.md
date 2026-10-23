@@ -36,7 +36,7 @@ Scenarios need no network; every provider answer comes from
 | `differential.feature` | the differential report, tolerance, the refusal without a B side |
 | `sync.feature` | leg selection and filters, selection refusals of `sync` and `status`, end caps, the inverted window, today-dated bars, the tail window, dry-run plans, independent leg failure, the summary document, CSV legs, default store, cross-year tails |
 | `status.feature` | every alert, warning and note at and past its threshold, the class verdicts, the venue-pair spread, the JSON envelope, the table and the exit code |
-| `cli.feature` | parser errors (exit 2), import labels |
+| `cli.feature` | parser errors (exit 2), import labels; revision 2026-10-23 (closing round): the export of an absent series, the exact parser error output, every `--help` text verbatim (from `../contracts/cli_help.md`, run with `COLUMNS=80`) |
 | `chain.feature` | stage order and arguments, the publish gate, red stages, the exec guard, the bucket guard, the metadata digest, the TERM trap |
 
 ## Fixtures

@@ -156,5 +156,9 @@
  "chain-sync": "JDL-155",
  "chain-status": "JDL-156",
  "chain-binning": "JDL-157",
- "chain-publish": "JDL-158"
+ "chain-publish": "JDL-158",
+ "cli-export-empty": "JDL-159",
+ "cli-parser-surface": "JDL-160",
+ "cli-parser-errors": "JDL-161",
+ "cli-help": "JDL-162"
 }

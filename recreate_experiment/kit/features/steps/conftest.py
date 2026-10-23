@@ -684,6 +684,52 @@ def stdout_line(ctx, text):
     assert render(ctx, text) in ctx.proc.stdout.split("\n"), ctx.proc.stdout
 
 
+# revision 2026-10-23 (closing round): exact parser output and verbatim help
+@given(parsers.parse("the terminal is {columns:d} columns wide"))
+def terminal_width(ctx, columns):
+    ctx.extra_env["COLUMNS"] = str(columns)
+
+
+def _help_blocks():
+    """Map each '## <command in backticks>' heading to the text block under it."""
+    text = (FEATURES.parent / "contracts" / "cli_help.md").read_text(encoding="utf-8")
+    blocks, heading, inside, lines = {}, None, False, []
+    for line in text.split("\n"):
+        if not inside and line.startswith("## `") and line.endswith("`"):
+            heading = line[4:-1]
+        elif not inside and line == "```text" and heading:
+            inside, lines = True, []
+        elif inside and line == "```":
+            blocks[heading] = "\n".join(lines) + "\n"
+            inside, heading = False, None
+        elif inside:
+            lines.append(line)
+    return blocks
+
+
+@then(parsers.parse('stdout is the "{heading}" block of contracts/cli_help.md'))
+def stdout_help(ctx, heading):
+    blocks = _help_blocks()
+    assert heading in blocks, sorted(blocks)
+    assert ctx.proc.stdout == blocks[heading], ctx.proc.stdout
+
+
+@then("stderr is empty")
+def stderr_empty(ctx):
+    assert ctx.proc.stderr == "", ctx.proc.stderr
+
+
+@then(parsers.parse('the last line of stderr is "{text}"'))
+def stderr_last_exact(ctx, text):
+    assert ctx.proc.stderr.endswith("\n"), ctx.proc.stderr[-200:]
+    assert ctx.proc.stderr.rstrip("\n").split("\n")[-1] == render(ctx, text), ctx.proc.stderr[-500:]
+
+
+@then(parsers.parse('stderr is the lines "{text}"'))
+def stderr_lines(ctx, text):
+    assert ctx.proc.stderr == render(ctx, text).replace("\\n", "\n") + "\n", ctx.proc.stderr
+
+
 @then(parsers.parse('the file "{path}" does not exist'))
 def no_file(ctx, path):
     assert not (ctx.work / render(ctx, path)).exists()

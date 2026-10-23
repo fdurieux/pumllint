@@ -20,3 +20,10 @@ Standard-library modules relied on: `tomllib` (TOML parsing and its error
 texts), `json`, `hashlib`, `argparse`, `fcntl` (POSIX locking).
 
 The chain needs `bash` (arrays, `[[ ]]`, `pipefail`) and GNU `timeout`.
+
+Revision 2026-10-23 (closing round): the `--help` texts (cli_help.md) and the
+parser error lines are Python `argparse` output, and the traceback line of
+refusal X-09 is pandas' error text with CPython's name suggestion
+(`Did you mean: 'at'?`); both are fixed by these pins (CPython 3.12, pandas
+3.0.5) and by an 80-column terminal (`COLUMNS=80`, or none set without a
+terminal).

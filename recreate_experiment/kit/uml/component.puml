@@ -67,7 +67,9 @@ end note
 note bottom of Cli
   ten subcommands JDL-133; validate JDL-135, universe JDL-136,
   import-csv JDL-137, export JDL-138, differential JDL-140,
-  sync-actions JDL-143
+  sync-actions JDL-143; revision 2026-10-23 (closing round): parser
+  declaration JDL-160, parse errors JDL-161, verbatim
+  help JDL-162, export of an absent series JDL-159
 end note
-footer owner: data-load — realises JDL-133, JDL-001, JDL-113, JDL-023, JDL-024, JDL-025, JDL-026, JDL-029, JDL-036, JDL-057, JDL-040, JDL-152, JDL-074, JDL-135, JDL-136, JDL-137, JDL-138, JDL-140, JDL-143, JDL-082, JDL-083
+footer owner: data-load — realises JDL-133, JDL-001, JDL-113, JDL-023, JDL-024, JDL-025, JDL-026, JDL-029, JDL-036, JDL-057, JDL-040, JDL-152, JDL-074, JDL-135, JDL-136, JDL-137, JDL-138, JDL-140, JDL-143, JDL-082, JDL-083, JDL-159, JDL-160, JDL-161, JDL-162
 @enduml

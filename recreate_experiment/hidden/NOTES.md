@@ -189,3 +189,61 @@ set `PYTHONDONTWRITEBYTECODE=1`, and no command of mine imports all of those
 modules at once), so I cannot attribute it. I deleted exactly those files,
 restoring the tree's original file set (only the five `.pyc` files present at
 the start remain).
+
+## Closing round (revision 2026-10-23)
+
+Trigger: two rebuilds matched every stored series, frame, document and exit
+code, and diverged on three things the kit did not carry. All three were
+reproduced from the subject before writing anything.
+
+1. **Export of an absent series** (JDL-159, refusal, basis logic). `cmd_export`
+   calls `store.load`, which returns `pd.DataFrame(columns=COLUMNS)` (object
+   dtype columns), and `to_contract_frame` applies `.dt` to its `datetime`
+   column with no guard. Last stderr line under the pins:
+   `AttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?`
+   (the suggestion is CPython 3.12's name hint; the line carries no module
+   prefix because the error is the builtin AttributeError). Exit 1, stdout
+   empty, no output file, no store file. My original JDL-138 said only
+   "fails with a traceback"; it is unchanged, JDL-159 adds the exact outcome.
+   Both rebuilds' clean StoreError was a reasonable reading of that silence.
+2. **Parser surface** (JDL-160) and **parse errors** (JDL-161). Captured by
+   introspecting the subject's parser in-process (`argparse.parse_args`
+   patched to capture the parser) into `hidden/scratch/closing/surface.json`,
+   then rendered into cli.md "Parser surface" by
+   `hidden/tools/gen_cli_contract.py`. Facts that matter for byte equality:
+   subparsers dest `command`, required, no metavar/title/help (hence the
+   braced choices line, which argparse never wraps - 103 characters);
+   subcommand parsers carry `help=` only (no description, so their `--help`
+   has no description paragraph); metavar = upper-cased dest except
+   `--summary-json PATH`; `--asset-type` prints `{crypto,etf,stock}`; the
+   `--spread-threshold` help is written `0.5%%` (argparse %-interpolation).
+   Unrecognised arguments after a valid subcommand are reported by the
+   TOP-LEVEL parser (top-level usage) - a detail a rebuild easily gets wrong.
+3. **Verbatim help** (JDL-162). `contracts/cli_help.md` holds the 11 outputs
+   captured with `COLUMNS=80`; identical with `COLUMNS` unset and no tty (the
+   scenarios' situation), different at 120 columns for 9 of 11 commands, so
+   every new CLI scenario sets `COLUMNS=80` (new step "the terminal is 80
+   columns wide"). argparse output also depends on the Python minor version
+   (3.13 changed some help formatting); recorded in pins.md.
+
+What I did NOT change: no existing requirement id or text (verified by
+comparing requirements.json before/after: the first 158 entries are
+byte-identical), no existing scenario. New ids JDL-159..JDL-162 are appended
+after the chain requirements (reqs_part5.py), which keeps the numbering
+stable but leaves them outside the original reading order.
+
+Judgement calls this round:
+* The help texts are quoted whole (they are program output), including the
+  module docstring and the comment-like help strings, because byte equality
+  is the requirement; the parser surface tables are generated from the same
+  introspection so the two cannot disagree.
+* I asserted only error messages that are stable across 3.11/3.12 argparse
+  ("required", "invalid int value", "unrecognized arguments"), not the
+  "invalid choice" text whose quoting differs between Python patch releases.
+* Diagram realisation is a note on the `cli` component of component.puml plus
+  its footer, as permitted.
+
+Results: suite on the subject 197/197 (98 scenarios, 25 outlines); gates:
+lint 0 findings, score Level 5 on all 8 diagrams, trace 162/162 covered and
+verified. Mutants were not re-run this round (no change touches the sync
+path; the earlier m1/m2 results stand).

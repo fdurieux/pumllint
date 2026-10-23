@@ -1262,5 +1262,37 @@
   "ranges": "1-9,172-181",
   "basis": "both",
   "key": "chain-publish"
+ },
+ "JDL-159": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_export; store.load (empty branch); store.to_contract_frame",
+  "lines": "202-211",
+  "ranges": "202-211",
+  "basis": "logic",
+  "key": "cli-export-empty"
+ },
+ "JDL-160": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main",
+  "lines": "378-573",
+  "ranges": "378-573",
+  "basis": "logic",
+  "key": "cli-parser-surface"
+ },
+ "JDL-161": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main (argparse parse_args)",
+  "lines": "378-573",
+  "ranges": "378-380,572-573",
+  "basis": "logic",
+  "key": "cli-parser-errors"
+ },
+ "JDL-162": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main (argparse help actions)",
+  "lines": "378-573",
+  "ranges": "378-573",
+  "basis": "logic",
+  "key": "cli-help"
  }
 }

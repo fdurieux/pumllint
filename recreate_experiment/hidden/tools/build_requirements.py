@@ -5,9 +5,10 @@ from reqs_part1 import R1
 from reqs_part2 import R2
 from reqs_part3 import R3
 from reqs_part4 import R4
+from reqs_part5 import R5
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-ALL = R1 + R2 + R3 + R4
+ALL = R1 + R2 + R3 + R4 + R5
 keys = [r[0] for r in ALL]
 assert len(keys) == len(set(keys)), [k for k in keys if keys.count(k) > 1]
 ids = {k: f"JDL-{i + 1:03d}" for i, k in enumerate(keys)}
