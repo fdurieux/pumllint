@@ -244,6 +244,13 @@ the same fact E5 measured from the other side.
   per arm: single runs, quoted as such. The reverse engineer and the
   comparison analyst were different contexts, but the comparison
   analyst and the pre-registration author were the same one.
+- **For the pumlspec pilot, on hold.** The maintainer's pilot of
+  PlantUML models as contract-grade specs for codegen, with
+  manifest/lockfile provenance (the plan docs/sdd-manifest-evaluation.md
+  evaluated on 2026-08-10), is on hold as of 2026-10-23. This experiment
+  leaves one reading against its thesis for when it resumes: the models
+  were not the contract-grade layer here; decision tables, message
+  strings and boundary examples were. Nothing is queued from it.
 - **The denominator problem.** Two spec-defect classes out of 158
   requirements says less about reverse-engineered specs in general than
   about this subject: a program whose comments already carry its

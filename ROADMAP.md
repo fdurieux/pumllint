@@ -1449,6 +1449,21 @@ list and license posture live in § Settled questions.
   has flowed through a pilot pipeline). The scope-threshold rule it
   asked for is written (pilot charter, the phase-4 scope test).
   Triggers unchanged; the census remains the next action.
+  *Annotated 2026-10-23: the maintainer identifies the recommendation
+  as the plan of their own pilot repository, **pumlspec** — PlantUML
+  models as contract-grade specs for AI code generation, with
+  manifest/lockfile provenance; kept separate from pumllint, the only
+  link an early spec for pumllint's output format — and states that
+  **the pilot is on hold**. Nothing here changes: the two recorded
+  candidates stay recorded, not queued, and the portable
+  run-record/manifest trigger stays unfired, since no pilot is
+  stabilising one. One reading from the recreation experiment of the
+  same day (docs/recreate-experiment.md) is left against the pilot's
+  thesis for when it resumes: on a real program the PlantUML models
+  carried names and layout while the decision tables, message strings
+  and boundary examples carried the behaviour, so the contractual tier
+  the plan calls T3 is better served by decision logic and examples
+  beside the models than by the models themselves.*
 
 - **Two-stage external project review (2026-08-11): evaluated — the
   most accurate external assessment this repository has received; both
