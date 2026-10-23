@@ -274,7 +274,7 @@ at status, red at one asset. Expected count 25–35 scenarios.
 | M6 | Store equal beyond the seam: `*_raw` columns, partitions, the actions files | per series | 2 — raw history is the immutable record |
 | M7 | Exit codes and refusal messages identical on every refusal scenario | per scenario | 2 |
 | M8 | Seam invariance: RC's store path ≡ the original's CSV path on `experiments/AAPL.csv`, bit-exact | pass/fail | **1** |
-| M9 | Original's in-scope tests against RC, split black-box (CLI, chain) vs API-level | pass rate per split | reported; API-level depends on the names the UML specifies, so Arm E and K−UML are expected lower by construction |
+| M9 | Original's in-scope tests against RC, split black-box (CLI, chain) vs API-level | pass rate per split | reported; API-level depends on the names the UML specifies, so K−UML is expected lower by construction |
 | M10 | Kit Gherkin on RC after k rounds | pass rate | reported |
 | M11 | Assumptions listed vs divergences: how many divergences the recreator had already flagged as a gap | ratio | the SDD note's "each assumption is a spec defect", measured |
 
