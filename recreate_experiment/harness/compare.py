@@ -63,7 +63,22 @@ metrics = {"M1_export_identical": [0, 0], "M2_gate_inversions_rc_green_ref_red":
            # traceback's file paths and line numbers differ by construction);
            # equivalent chain calls = same commands and arguments once an inline
            # `python3 -c` script is reduced to its presence.
-           "M7post_cli_same_outcome": [0, 0], "M7post_chain_calls_equivalent": [0, 0]}
+           "M7post_cli_same_outcome": [0, 0], "M7post_chain_calls_equivalent": [0, 0],
+           # post-hoc: the interface's "stored fields" of a split event were read as the
+           # dataclass field `split_string` by the reference adapter and as the stored key
+           # `split` by every rebuild - a harness ambiguity, so the two keys are unified here.
+           "M6post_actions_identical_keys_unified": [0, 0]}
+
+
+def unify_split_keys(obj):
+    if isinstance(obj, dict):
+        out = {}
+        for k, v in obj.items():
+            out["split" if k == "split_string" else k] = unify_split_keys(v)
+        return out
+    if isinstance(obj, list):
+        return [unify_split_keys(v) for v in obj]
+    return obj
 
 
 def last_line(text):
@@ -135,6 +150,11 @@ for ref_file in sorted(REF.rglob("*")):
         elif name.startswith("actions_"):
             metrics["M6_actions_identical"][1] += 1
             metrics["M6_actions_identical"][0] += same
+            metrics["M6post_actions_identical_keys_unified"][1] += 1
+            u = unify_split_keys(a) == unify_split_keys(b)
+            metrics["M6post_actions_identical_keys_unified"][0] += u
+            if not same and u:
+                row["verdict"] = "differs (identical once split/split_string keys are unified)"
         elif name.startswith("cli_"):
             metrics["M7_cli_exit_identical"][1] += 1
             metrics["M7_cli_exit_identical"][0] += (a.get("exit") == b.get("exit"))

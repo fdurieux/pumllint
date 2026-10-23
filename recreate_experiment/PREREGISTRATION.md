@@ -577,3 +577,33 @@ with the verbatim `--help` texts, scenarios), gates and the 100 %
 subject calibration re-run; then a third recreation on the revised
 full kit.
 
+### Closing round — the kit revised, 2026-10-23
+
+The reverse-engineering agent (same context, resumed; 14 tool calls)
+folded the three gaps in as dated additions, from the subject tree alone:
+**JDL-159** (refusal: `export` of an absent series ends in pandas'
+unwrapped `AttributeError`, exit 1, no file), **JDL-160** (cli: the exact
+argparse declaration — prog, description, subparsers dest `command`
+without metavar, each option's dest, metavar, action, type, default,
+choices and help), **JDL-161** (cli: the exact usage + `{prog}: error:
+{message}` form of a parse error, exit 2), **JDL-162** (cli: `--help` of
+the top level and every subcommand prints the verbatim text of the new
+`contracts/cli_help.md`, exit 0). Refusals rows X-09/X-10, a note on
+`pins.md` that help text depends on argparse, pandas and CPython 3.12 at
+80 columns, `kit/CHANGES.md`, and the four ids realised in
+`component.puml`. Scenarios 95 → 98 (197 cases). The first 158
+requirements are byte-identical to the frozen kit (checked here);
+mutants not re-run (nothing on the sync path changed).
+
+Re-verified by this session: suite **197/197** on the subject; lint
+clean; Level 5 100/100 on all 8; trace **162/162** realised and verified;
+subject tree and J-F unchanged; read log confined. Revised kit hash
+`819cc564cf915006…` (194 files), committed as `recreate_experiment/kit/`
+at pumllint `e4f63a3`. Third recreation (Arm K2, full revised kit, fresh
+Opus 5 @ xhigh, venv `.rc-k2-venv`) launched the same day.
+
+Harness note, post-hoc: the `split`/`split_string` key ambiguity of the
+actions artefact is unified in `compare.py` under a labelled post-hoc
+metric (`M6post…`), 3/3 in both arms once unified; the pre-registered
+M6 figure (2/3) stands as reported.
+

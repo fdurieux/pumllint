@@ -52,6 +52,10 @@
   "M7post_chain_calls_equivalent": [
    8,
    8
+  ],
+  "M6post_actions_identical_keys_unified": [
+   3,
+   3
   ]
  },
  "artefacts": [
@@ -237,7 +241,7 @@
   },
   {
    "artefact": "s10_aapl_split/actions_AAPL.US.json",
-   "verdict": "differs"
+   "verdict": "differs (identical once split/split_string keys are unified)"
   },
   {
    "artefact": "s10_aapl_split/export_eodhd_AAPL.US.frame.csv",
