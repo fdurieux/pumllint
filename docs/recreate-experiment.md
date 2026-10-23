@@ -258,6 +258,91 @@ the same fact E5 measured from the other side.
   arithmetic. The experiment should be repeated on a program with fewer
   comments before the "to the cell" claim travels.
 
+## Re-evaluation against the maintainer's requirements-as-code stack (2026-10-23)
+
+*Dated addition, on the maintainer's ask, after the experiment closed.
+The maintainer's own list of requirements-as-code layers — EARS or
+SBVR/RuleSpeak for statements and vocabulary, DMN decision tables with
+hit policies and gap/overlap analysis for decisions, Gherkin `Rule:`
+blocks with boundary outlines as acceptance examples, OpenAPI/JSON
+Schema contracts, property-based invariants, TLA+/Alloy for state,
+policy-as-code and rules-as-code where they apply, traceability by id
+in git — was not available to this experiment while it ran; the kit was
+derived from the code alone and the overlap below is convergence, not
+use.*
+
+**Where the kit stands against that list.**
+
+| Layer | In the kit | How |
+|---|---|---|
+| EARS statements | yes | 130 of 162 requirements open with When / If / While / The … shall |
+| Gherkin acceptance examples, boundary outlines | yes | 98 scenarios, 25 outlines with Examples at and past each threshold; glue drives the CLI and an adapter, never a UI |
+| `Rule:` blocks | no | features group by theme; rules live only in `requirements.json` |
+| Decision tables | informally | markdown pipe tables in eleven contracts; no hit policy, no gap or overlap analysis |
+| Vocabulary (SBVR, RuleSpeak, a glossary) | no | terms inherited from the code, none defined |
+| Contracts (JSON Schema) | yes | two schemas with validating examples; no API, so no OpenAPI |
+| Invariants, property-based tests | no | arithmetic example-tested cell for cell, never property-tested |
+| Traceability by id | yes | `requirements.json` as inventory, `pumllint trace --features` with fail-on gates |
+| Spec-driven codegen | yes | three rebuilds from the kit alone |
+| Manifest / lockfile | informally | kit hash, pins, model ids, briefs, read logs in the pre-registration; no format |
+| Catala, OPA/Cedar, TLA+/Alloy | no | not applicable to this subject |
+
+**Pros.** The core claim held under the hardest oracle available: three
+rebuilds matched the original cell for cell, with no judge's charity
+possible. Two of the listed layers did the carrying and were proven to
+— EARS with stable ids plus boundary outlines sufficed for behaviour,
+and the ablation isolated the diagrams' contribution as names and
+layout. Traceability by id worked on shipped tooling and needed nothing
+built. Two cheap guards paid: the planted mutants and the 100 %
+calibration caught a kit that would otherwise have been trusted on its
+gates, and the post-hoc read turned a standing trap into a number.
+Independence was real: four contexts, two clean rooms, read logs, a
+hidden provenance map, one disclosed breach.
+
+**Cons.** Three listed layers were absent — vocabulary, a decision model
+with gap analysis, `Rule:` structure — and the decisions lived in
+markdown tables and prose, the informal form that drifts. Completeness
+was never checked: examples sample a rule, nothing asked whether the
+rule space was covered, and the two gaps that cost a closing round were
+completeness gaps found by comparison with the original, not by the
+kit. No invariants: a property layer over the adjustment pass was cheap
+and untried. The subject was generous — comments already pinned every
+decision, messages were exact strings — so "to the cell" says less
+about reverse-engineered specs in general than about this codebase.
+Single runs, one model. Harness debt showed in one interface ambiguity
+and two post-hoc metrics, labelled after the fact.
+
+**SWOT.**
+
+- *Strengths.* A pre-registered, oracle-graded, clean-room design
+  repeatable on any program with recorded fixtures; a reusable harness;
+  a kit format already satisfying four of the ten layers; a measured
+  ordering of artefact value — contracts and examples first, diagrams
+  for structure.
+- *Weaknesses.* An informal decision layer that cannot see its own
+  gaps; no vocabulary; n = 1 per arm; the comparison analyst and the
+  pre-registration author were the same context.
+- *Opportunities.* One more wave on the same kit: decision tables as
+  DMN with hit policies and gap analysis, outlines regrouped under
+  `Rule:` blocks, a glossary file, a Hypothesis layer over the
+  arithmetic — then measure whether the two completeness gaps would
+  have been caught by the kit itself before any recreation. A second
+  subject with sparse comments to test the generosity caveat. Both run
+  on tooling that exists today and need no manifest format, so the
+  pumlspec hold does not block them.
+- *Threats.* Over-reading the result as "diagrams are worthless" (they
+  fixed the module layout, which the original's API-level tests
+  measured). Over-specification: W4 measured dilution past the knee,
+  and a kit adding DMN, a glossary and properties on top of 162
+  requirements may cross it. And the standing one: a green gate reads
+  as truth — 25 contradicted claims sat under a Level 5 badge in a
+  maintained set.
+
+**Net.** The experiment answers the question as asked and misses the
+half of the list that would have made the kit self-checking. The
+follow-up wave is well-defined and cheap; nothing is queued from this
+section, which records an evaluation and not a decision.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
