@@ -262,4 +262,12 @@ data-load and chain set that the source contradicts, each cited in
 `recreate_experiment/results/review/REVIEW.md` (one of the reviewer's
 own rows overturned here, so the list is a reading to re-verify in
 J-F's own ritual — `tools/diagram_sources.py read`, per T-0800 — not a
-patch). Filed on the maintainer's go.
+patch). Filed on the maintainer's go, 2026-10-23: J-F issues
+[#304](https://github.com/akantai/J-F/issues/304) (`timestamp` seconds vs
+milliseconds), [#305](https://github.com/akantai/J-F/issues/305) (`export`
+on an absent series), [#306](https://github.com/akantai/J-F/issues/306)
+(the import row count), [#307](https://github.com/akantai/J-F/issues/307)
+(`actions_missed_k`), [#308](https://github.com/akantai/J-F/issues/308)
+(the injected clock and the actions stamp) and
+[#309](https://github.com/akantai/J-F/issues/309) (the 25 diagram
+claims, cited to symbols).
