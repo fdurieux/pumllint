@@ -1,0 +1,180 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="sync_window" name="sync_window" namespace="urn:recreate-experiment:sync_window">
+  <decision id="fetch_start" name="fetch_start">
+    <decisionTable id="fetch_start_dt" hitPolicy="UNIQUE">
+      <input id="fetch_start_i0" label="series_has_rows">
+        <inputExpression id="fetch_start_ie0" typeRef="boolean">
+          <text>series_has_rows</text>
+        </inputExpression>
+      </input>
+      <input id="fetch_start_i1" label="universe_start_declared">
+        <inputExpression id="fetch_start_ie1" typeRef="boolean">
+          <text>universe_start_declared</text>
+        </inputExpression>
+      </input>
+      <output id="fetch_start_o0" label="fetch_start" name="fetch_start" typeRef="string">
+        <outputValues id="fetch_start_ov0">
+          <text>"universe_start", "open", "oldest_of_newest_tail_sessions"</text>
+        </outputValues>
+      </output>
+      <rule id="fetch_start_r1">
+        <description>JDL-093 first fill with start</description>
+        <inputEntry id="fetch_start_r1_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="fetch_start_r1_i1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="fetch_start_r1_o0">
+          <text>"universe_start"</text>
+        </outputEntry>
+      </rule>
+      <rule id="fetch_start_r2">
+        <description>JDL-093 first fill, full history</description>
+        <inputEntry id="fetch_start_r2_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="fetch_start_r2_i1">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="fetch_start_r2_o0">
+          <text>"open"</text>
+        </outputEntry>
+      </rule>
+      <rule id="fetch_start_r3">
+        <description>JDL-093: the universe start is never read again once the series has rows</description>
+        <inputEntry id="fetch_start_r3_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="fetch_start_r3_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="fetch_start_r3_o0">
+          <text>"oldest_of_newest_tail_sessions"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="fetch_end" name="fetch_end">
+    <decisionTable id="fetch_end_dt" hitPolicy="UNIQUE">
+      <input id="fetch_end_i0" label="declared_crypto">
+        <inputExpression id="fetch_end_ie0" typeRef="boolean">
+          <text>declared_crypto</text>
+        </inputExpression>
+      </input>
+      <input id="fetch_end_i1" label="universe_end_declared">
+        <inputExpression id="fetch_end_ie1" typeRef="boolean">
+          <text>universe_end_declared</text>
+        </inputExpression>
+      </input>
+      <output id="fetch_end_o0" label="fetch_end" name="fetch_end" typeRef="string">
+        <outputValues id="fetch_end_ov0">
+          <text>"universe_end", "today_minus_1", "min_universe_end_today_minus_1", "open"</text>
+        </outputValues>
+      </output>
+      <rule id="fetch_end_r1">
+        <description>JDL-094: ISO-string minimum</description>
+        <inputEntry id="fetch_end_r1_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="fetch_end_r1_i1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="fetch_end_r1_o0">
+          <text>"min_universe_end_today_minus_1"</text>
+        </outputEntry>
+      </rule>
+      <rule id="fetch_end_r2">
+        <description>JDL-094 end-guard, any provider</description>
+        <inputEntry id="fetch_end_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="fetch_end_r2_i1">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="fetch_end_r2_o0">
+          <text>"today_minus_1"</text>
+        </outputEntry>
+      </rule>
+      <rule id="fetch_end_r3">
+        <description>JDL-094: end caps every fetch</description>
+        <inputEntry id="fetch_end_r3_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="fetch_end_r3_i1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="fetch_end_r3_o0">
+          <text>"universe_end"</text>
+        </outputEntry>
+      </rule>
+      <rule id="fetch_end_r4">
+        <description>JDL-094</description>
+        <inputEntry id="fetch_end_r4_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="fetch_end_r4_i1">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="fetch_end_r4_o0">
+          <text>"open"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="bar_request" name="bar_request">
+    <decisionTable id="bar_request_dt" hitPolicy="UNIQUE">
+      <input id="bar_request_i0" label="series_has_rows">
+        <inputExpression id="bar_request_ie0" typeRef="boolean">
+          <text>series_has_rows</text>
+        </inputExpression>
+      </input>
+      <input id="bar_request_i1" label="start_after_end">
+        <inputExpression id="bar_request_ie1" typeRef="boolean">
+          <text>start_after_end</text>
+        </inputExpression>
+      </input>
+      <output id="bar_request_o0" label="request" name="request" typeRef="string">
+        <outputValues id="bar_request_ov0">
+          <text>"send", "skip_green_inverted"</text>
+        </outputValues>
+      </output>
+      <rule id="bar_request_r1">
+        <description>JDL-095: zero bars, leg green, detail names the declaration</description>
+        <inputEntry id="bar_request_r1_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="bar_request_r1_i1">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="bar_request_r1_o0">
+          <text>"skip_green_inverted"</text>
+        </outputEntry>
+      </rule>
+      <rule id="bar_request_r2">
+        <description>JDL-093</description>
+        <inputEntry id="bar_request_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="bar_request_r2_i1">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="bar_request_r2_o0">
+          <text>"send"</text>
+        </outputEntry>
+      </rule>
+      <rule id="bar_request_r3">
+        <description>JDL-095: an empty series with start &gt; end still sends its request</description>
+        <inputEntry id="bar_request_r3_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="bar_request_r3_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="bar_request_r3_o0">
+          <text>"send"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

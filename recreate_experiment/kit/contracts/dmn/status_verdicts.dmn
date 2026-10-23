@@ -1,0 +1,422 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="status_verdicts" name="status_verdicts" namespace="urn:recreate-experiment:status_verdicts">
+  <decision id="staleness_check" name="staleness_check">
+    <description>--staleness is encoded at its default (2); the threshold is an input of the program, a constant of this table.</description>
+    <decisionTable id="staleness_check_dt" hitPolicy="UNIQUE">
+      <input id="staleness_check_i0" label="series_has_rows">
+        <inputExpression id="staleness_check_ie0" typeRef="boolean">
+          <text>series_has_rows</text>
+        </inputExpression>
+      </input>
+      <input id="staleness_check_i1" label="expected_sessions_missed">
+        <inputExpression id="staleness_check_ie1" typeRef="integer">
+          <text>expected_sessions_missed</text>
+        </inputExpression>
+        <inputValues id="staleness_check_iv1">
+          <text>&gt;= 0</text>
+        </inputValues>
+      </input>
+      <output id="staleness_check_o0" label="finding" name="finding" typeRef="string">
+        <outputValues id="staleness_check_ov0">
+          <text>"ALERT_never_filled", "ALERT_stale", "none"</text>
+        </outputValues>
+      </output>
+      <output id="staleness_check_o1" label="ends_report" name="ends_report" typeRef="boolean"/>
+      <rule id="staleness_check_r1">
+        <description>JDL-114</description>
+        <inputEntry id="staleness_check_r1_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="staleness_check_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="staleness_check_r1_o0">
+          <text>"ALERT_never_filled"</text>
+        </outputEntry>
+        <outputEntry id="staleness_check_r1_o1">
+          <text>true</text>
+        </outputEntry>
+      </rule>
+      <rule id="staleness_check_r2">
+        <description>JDL-116 below --staleness (default 2 encoded)</description>
+        <inputEntry id="staleness_check_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="staleness_check_r2_i1">
+          <text>&lt; 2</text>
+        </inputEntry>
+        <outputEntry id="staleness_check_r2_o0">
+          <text>"none"</text>
+        </outputEntry>
+        <outputEntry id="staleness_check_r2_o1">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+      <rule id="staleness_check_r3">
+        <description>JDL-116: missed_sessions reported regardless</description>
+        <inputEntry id="staleness_check_r3_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="staleness_check_r3_i1">
+          <text>&gt;= 2</text>
+        </inputEntry>
+        <outputEntry id="staleness_check_r3_o0">
+          <text>"ALERT_stale"</text>
+        </outputEntry>
+        <outputEntry id="staleness_check_r3_o1">
+          <text>false</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="actions_freshness_check" name="actions_freshness_check">
+    <decisionTable id="actions_freshness_check_dt" hitPolicy="UNIQUE">
+      <input id="actions_freshness_check_i0" label="actions_eligible">
+        <inputExpression id="actions_freshness_check_ie0" typeRef="boolean">
+          <text>actions_eligible</text>
+        </inputExpression>
+      </input>
+      <input id="actions_freshness_check_i1" label="splits_stamp">
+        <inputExpression id="actions_freshness_check_ie1" typeRef="string">
+          <text>splits_stamp</text>
+        </inputExpression>
+        <inputValues id="actions_freshness_check_iv1">
+          <text>"none", "present"</text>
+        </inputValues>
+      </input>
+      <input id="actions_freshness_check_i2" label="refresh_sessions_missed">
+        <inputExpression id="actions_freshness_check_ie2" typeRef="integer">
+          <text>refresh_sessions_missed</text>
+        </inputExpression>
+        <inputValues id="actions_freshness_check_iv2">
+          <text>&gt;= 0</text>
+        </inputValues>
+      </input>
+      <output id="actions_freshness_check_o0" label="finding" name="finding" typeRef="string">
+        <outputValues id="actions_freshness_check_ov0">
+          <text>"ALERT_never_synced", "ALERT_stale", "none"</text>
+        </outputValues>
+      </output>
+      <rule id="actions_freshness_check_r1">
+        <description>JDL-125 applies to actions-eligible legs only</description>
+        <inputEntry id="actions_freshness_check_r1_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r1_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="actions_freshness_check_r1_o0">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_freshness_check_r2">
+        <description>JDL-125</description>
+        <inputEntry id="actions_freshness_check_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r2_i1">
+          <text>"none"</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r2_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="actions_freshness_check_r2_o0">
+          <text>"ALERT_never_synced"</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_freshness_check_r3">
+        <description>JDL-125: fixed threshold 2, not an option</description>
+        <inputEntry id="actions_freshness_check_r3_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r3_i1">
+          <text>"present"</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r3_i2">
+          <text>&lt; 2</text>
+        </inputEntry>
+        <outputEntry id="actions_freshness_check_r3_o0">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_freshness_check_r4">
+        <description>JDL-125</description>
+        <inputEntry id="actions_freshness_check_r4_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r4_i1">
+          <text>"present"</text>
+        </inputEntry>
+        <inputEntry id="actions_freshness_check_r4_i2">
+          <text>&gt;= 2</text>
+        </inputEntry>
+        <outputEntry id="actions_freshness_check_r4_o0">
+          <text>"ALERT_stale"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="phantom_jump_check" name="phantom_jump_check">
+    <decisionTable id="phantom_jump_check_dt" hitPolicy="UNIQUE">
+      <input id="phantom_jump_check_i0" label="previous_close_nonzero">
+        <inputExpression id="phantom_jump_check_ie0" typeRef="boolean">
+          <text>previous_close_nonzero</text>
+        </inputExpression>
+      </input>
+      <input id="phantom_jump_check_i1" label="abs_move_exceeds_threshold">
+        <inputExpression id="phantom_jump_check_ie1" typeRef="boolean">
+          <text>abs_move_exceeds_threshold</text>
+        </inputExpression>
+      </input>
+      <input id="phantom_jump_check_i2" label="split_on_same_date">
+        <inputExpression id="phantom_jump_check_ie2" typeRef="boolean">
+          <text>split_on_same_date</text>
+        </inputExpression>
+      </input>
+      <output id="phantom_jump_check_o0" label="finding" name="finding" typeRef="string">
+        <outputValues id="phantom_jump_check_ov0">
+          <text>"ALERT_phantom_jump", "none"</text>
+        </outputValues>
+      </output>
+      <rule id="phantom_jump_check_r1">
+        <description>JDL-124: rows with a zero previous close are skipped</description>
+        <inputEntry id="phantom_jump_check_r1_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r1_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="phantom_jump_check_r1_o0">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="phantom_jump_check_r2">
+        <description>JDL-124: strict &gt; --jump-threshold</description>
+        <inputEntry id="phantom_jump_check_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r2_i1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r2_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="phantom_jump_check_r2_o0">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="phantom_jump_check_r3">
+        <description>JDL-124: a same-day stored split explains the move (splits read for eligible legs only)</description>
+        <inputEntry id="phantom_jump_check_r3_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r3_i1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r3_i2">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="phantom_jump_check_r3_o0">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="phantom_jump_check_r4">
+        <description>JDL-124</description>
+        <inputEntry id="phantom_jump_check_r4_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r4_i1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="phantom_jump_check_r4_i2">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="phantom_jump_check_r4_o0">
+          <text>"ALERT_phantom_jump"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="cross_venue_spread_check" name="cross_venue_spread_check">
+    <decisionTable id="cross_venue_spread_check_dt" hitPolicy="UNIQUE">
+      <input id="cross_venue_spread_check_i0" label="measurable">
+        <inputExpression id="cross_venue_spread_check_ie0" typeRef="string">
+          <text>measurable</text>
+        </inputExpression>
+        <inputValues id="cross_venue_spread_check_iv0">
+          <text>"empty_side", "no_common_session", "zero_mid", "measured"</text>
+        </inputValues>
+      </input>
+      <input id="cross_venue_spread_check_i1" label="spread_exceeds_threshold">
+        <inputExpression id="cross_venue_spread_check_ie1" typeRef="boolean">
+          <text>spread_exceeds_threshold</text>
+        </inputExpression>
+      </input>
+      <input id="cross_venue_spread_check_i2" label="spread_alerts_flag">
+        <inputExpression id="cross_venue_spread_check_ie2" typeRef="boolean">
+          <text>spread_alerts_flag</text>
+        </inputExpression>
+      </input>
+      <output id="cross_venue_spread_check_o0" label="note" name="note" typeRef="string">
+        <outputValues id="cross_venue_spread_check_ov0">
+          <text>"not_measured", "close_spread"</text>
+        </outputValues>
+      </output>
+      <output id="cross_venue_spread_check_o1" label="finding" name="finding" typeRef="string">
+        <outputValues id="cross_venue_spread_check_ov1">
+          <text>"none", "WARNING", "ALERT"</text>
+        </outputValues>
+      </output>
+      <rule id="cross_venue_spread_check_r1">
+        <description>JDL-127: exactly one note, spread null</description>
+        <inputEntry id="cross_venue_spread_check_r1_i0">
+          <text>not("measured")</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r1_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="cross_venue_spread_check_r1_o0">
+          <text>"not_measured"</text>
+        </outputEntry>
+        <outputEntry id="cross_venue_spread_check_r1_o1">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="cross_venue_spread_check_r2">
+        <description>JDL-129: the note is always added</description>
+        <inputEntry id="cross_venue_spread_check_r2_i0">
+          <text>"measured"</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r2_i1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r2_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="cross_venue_spread_check_r2_o0">
+          <text>"close_spread"</text>
+        </outputEntry>
+        <outputEntry id="cross_venue_spread_check_r2_o1">
+          <text>"none"</text>
+        </outputEntry>
+      </rule>
+      <rule id="cross_venue_spread_check_r3">
+        <description>JDL-129 default</description>
+        <inputEntry id="cross_venue_spread_check_r3_i0">
+          <text>"measured"</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r3_i1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r3_i2">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="cross_venue_spread_check_r3_o0">
+          <text>"close_spread"</text>
+        </outputEntry>
+        <outputEntry id="cross_venue_spread_check_r3_o1">
+          <text>"WARNING"</text>
+        </outputEntry>
+      </rule>
+      <rule id="cross_venue_spread_check_r4">
+        <description>JDL-129 --spread-alerts</description>
+        <inputEntry id="cross_venue_spread_check_r4_i0">
+          <text>"measured"</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r4_i1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="cross_venue_spread_check_r4_i2">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="cross_venue_spread_check_r4_o0">
+          <text>"close_spread"</text>
+        </outputEntry>
+        <outputEntry id="cross_venue_spread_check_r4_o1">
+          <text>"ALERT"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <decision id="status_exit_and_flag" name="status_exit_and_flag">
+    <description>Counts are non-negative integers (typeRef integer, inputValues &gt;= 0): the checker samples integer points of the constrained partition only.</description>
+    <decisionTable id="status_exit_and_flag_dt" hitPolicy="UNIQUE">
+      <input id="status_exit_and_flag_i0" label="alerts_total">
+        <inputExpression id="status_exit_and_flag_ie0" typeRef="integer">
+          <text>alerts_total</text>
+        </inputExpression>
+        <inputValues id="status_exit_and_flag_iv0">
+          <text>&gt;= 0</text>
+        </inputValues>
+      </input>
+      <input id="status_exit_and_flag_i1" label="warnings_in_report">
+        <inputExpression id="status_exit_and_flag_ie1" typeRef="integer">
+          <text>warnings_in_report</text>
+        </inputExpression>
+        <inputValues id="status_exit_and_flag_iv1">
+          <text>&gt;= 0</text>
+        </inputValues>
+      </input>
+      <output id="status_exit_and_flag_o0" label="exit_code" name="exit_code" typeRef="number"/>
+      <output id="status_exit_and_flag_o1" label="row_flag" name="row_flag" typeRef="string">
+        <outputValues id="status_exit_and_flag_ov1">
+          <text>"ALERT", "WARN", "ok"</text>
+        </outputValues>
+      </output>
+      <rule id="status_exit_and_flag_r1">
+        <description>JDL-131/JDL-132 (flag is per report; exit is per run - the table reads alerts_total as the report's alerts for the flag)</description>
+        <inputEntry id="status_exit_and_flag_r1_i0">
+          <text>&gt;= 1</text>
+        </inputEntry>
+        <inputEntry id="status_exit_and_flag_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="status_exit_and_flag_r1_o0">
+          <text>1</text>
+        </outputEntry>
+        <outputEntry id="status_exit_and_flag_r1_o1">
+          <text>"ALERT"</text>
+        </outputEntry>
+      </rule>
+      <rule id="status_exit_and_flag_r2">
+        <description>JDL-132</description>
+        <inputEntry id="status_exit_and_flag_r2_i0">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="status_exit_and_flag_r2_i1">
+          <text>&gt;= 1</text>
+        </inputEntry>
+        <outputEntry id="status_exit_and_flag_r2_o0">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="status_exit_and_flag_r2_o1">
+          <text>"WARN"</text>
+        </outputEntry>
+      </rule>
+      <rule id="status_exit_and_flag_r3">
+        <description>JDL-132</description>
+        <inputEntry id="status_exit_and_flag_r3_i0">
+          <text>0</text>
+        </inputEntry>
+        <inputEntry id="status_exit_and_flag_r3_i1">
+          <text>0</text>
+        </inputEntry>
+        <outputEntry id="status_exit_and_flag_r3_o0">
+          <text>0</text>
+        </outputEntry>
+        <outputEntry id="status_exit_and_flag_r3_o1">
+          <text>"ok"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

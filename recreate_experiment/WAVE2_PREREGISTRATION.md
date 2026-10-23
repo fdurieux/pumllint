@@ -183,3 +183,119 @@ bullet annotated, the two artifact pages refreshed after the merge.
 ## Results
 
 *(appended as layers land; nothing above this line changes)*
+
+### Layer 1 — invariants, 2026-10-23
+
+`harness/invariants/test_properties.py` (7 properties, Hypothesis,
+`derandomize=True`, 100 examples each) and `harness/fixturelib.py` (the
+generated series written as recorded fixtures, keyed as the replay
+transport keys them; the second-run fixture keyed on the tail window).
+Guards added during the build for series the glitch rule empties (all
+closes 0): a property that would read an absent store returns instead
+of asserting. **W2-E1 confirmed:** on the original (`.jf-venv`) 6
+passed, 1 skipped (the differential property, no reference named),
+zero counter-examples. **W2-E2 confirmed, and stronger than expected:**
+with `JDL_REF_ADAPTER=adapters.original`, Arm K2, Arm K and Arm K−UML
+each 7 passed — zero differential counter-examples in all three. The
+expected K / K−UML counter-examples on the `export`-of-absent path did
+not appear because the properties export filled series only; the path
+is the DMN layer's, below.
+
+### Layer 2 — DMN, 2026-10-23
+
+`kit/contracts/dmn/` holds six files, 13 decision tables, 63 rules,
+every rule's description citing the requirement or contract line it
+encodes; `harness/dmn_write.py` writes them from `harness/dmn_build.py`
+(the compact specs, the record of what each row says), `harness/
+dmn_check.py` reads DMN 1.3 and the FEEL subset used and enumerates the
+input space. Instrument revision before the first recorded measurement:
+the first draft sampled count inputs as reals and reported twelve
+unreachable "gaps" (alerts = −1, 0.5) on `status_exit_and_flag`; inputs
+are now typed `integer` with an `inputValues` constraint (`>= 0`) and
+the checker samples integer points of the constrained partition. Checker
+self-test: a planted gap (one enumeration value no rule names) and a
+planted overlap (`< 3` beside `>= 2`) are both reported.
+
+**W2-E3 partially confirmed, and the shape of the defect is the
+finding.** The round-1 table (`harness/dmn_round1/command_store_state.dmn`,
+written from the round-1 kit at `1451c05` only): 14 rules, 18 points,
+**0 gaps, 0 overlaps, 1 untyped output** — the (`export`, absent) row.
+The round-1 kit *had* the row (refusals.md X-04, "traceback, no file
+written"); what it lacked was the outcome: the message cell is a
+category where every other cell carries a literal. A completeness check
+alone would have passed the round-1 kit; the check that catches the
+defect is output typing (every outcome a literal of the declared output
+domain), which the pre-registration did not name. The claim "gap
+analysis would have caught it" holds only for a DMN discipline that
+types its outputs; recorded as such.
+
+**W2-E4 confirmed, with one new kit finding.** Writing the revised table
+forced the (`differential`, absent side) cells, which neither kit
+revision had specified — not X-04's export path, a second command on the
+same zero-row frame. Measured on the original the same day (`.jf-venv`,
+A absent with `--b-csv`; A stored, B named by `--b-symbol` absent): the
+same `AttributeError: Can only use .dt accessor …` traceback, exit 1,
+stdout empty, both sides. Folded into the kit as requirement JDL-163,
+refusals.md X-10, cli.md, `component.puml` (trace 163/163). Revised
+kit: 13 tables, 63 rules, **0 gaps, 0 overlaps, 0 untyped outputs**.
+
+### Layer 3 — `Rule:` blocks, 2026-10-23
+
+`kit/features/decisions.feature`: 13 `Rule:` blocks (one per DMN table),
+32 scenarios and outlines, **60 cases**, every Examples row keyed to a
+DMN rule id (`row` column) or a `# dmn-row:` comment; one new fixture
+(`zero_close_jump.csv`, for the skipped-previous-close row). Full kit
+suite — the existing 197 cases plus the 60 — **257/257 on the original**
+(`.re-venv`, reference adapter) and **257/257 on Arm K2**
+(`.rc-k2-venv`). Three of my expectations were wrong at first writing
+and corrected against the original (`yahoo_small.csv` has 5 rows, one a
+duplicate date, so 4 stored — the JDL-070 rule; the differential's
+first and last line texts); K2 agreed with the original on each.
+
+`harness/dmn_coverage.py`: **60/63 rows exercised**; the three without
+an example are named in the feature's description, each with its
+reason — `volume_raw_source` r2 (no raw-basis collector other than EODHD
+exists; the row is contract only) and `command_by_store_state` r4, r5
+(`load`'s happy path runs the live transport, which the kit's seams
+cannot replay; the existing suite reaches only its refusals — itself a
+coverage finding about the kit). **W2-E5 partially confirmed:** every
+reachable row passes on both; but the count of rows the existing 98
+scenarios never exercised is **2** by the only mechanical measure
+available (a row none of whose cited requirement ids any other feature
+tags: the two differential-absent rows), below the pre-registered 3.
+That join is requirement-granular and so a lower bound; the row-level
+truth is larger but is not measurable from tags, and is not claimed.
+
+Harness defect found by the run and fixed: `adapters/original.py`'s
+`actions_state` returned the `SplitEvent` dataclass fields
+(`split_string`) and a re-serialised stamp instead of the stored fields
+the interface promises (`split`, the stamp text); three existing
+`actions.feature` scenarios fail on the original with the adapter as
+committed at `e4294df`, and pass with the fix. No scenario was changed.
+The M6post note of the main record stands as the earlier trace of the
+same ambiguity.
+
+### Layer 4 — glossary, 2026-10-23
+
+`kit/contracts/glossary.md`: 63 rows, one term each, from the code's
+meaning, each citing where the contract specifies it.
+`harness/glossary_check.py`: a 60-term vocabulary (the instrument,
+committed), a term recurring when ≥ 3 requirement statements use it,
+defined when the glossary has its row or another contract opens a line
+with it in bold or as a heading. **W2-E6 confirmed:** 46 of 60 terms
+recur; **42 undefined before** the glossary (`--no-glossary`), **0
+after**. The measure is instrument-dependent (store.md describes the
+store at length without ever opening a definition of "store"), and the
+before figure says that: the kit's contracts describe, they do not
+define.
+
+### The expected negative, and the two kit facts the wave adds
+
+Amendment 2 stands: nothing in the four layers sees the CLI-surface
+class (help and usage text); it stays the closing round's finding only.
+The wave adds two kit facts the first round did not have: the
+`differential`-on-absent refusal (JDL-163) and that `load`'s ingestion
+has no executable coverage through the kit's seams. Kit gates after the
+wave, from the kit directory: lint `--fail-on info` no issues; score
+Level 5 100/100 on all 8; trace 163/163 covered, 163/163 verified across
+12 feature files. J-F unchanged; nothing read from J-F for the wave.
