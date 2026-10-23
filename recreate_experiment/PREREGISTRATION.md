@@ -703,3 +703,12 @@ artefacts 22 → 11, all by construction. Original defects observed, for
 J-F as findings: five from the kit's notes (§ Phase 1) plus the 25
 diagram claims above.
 
+### Findings filed, 2026-10-23
+
+On the maintainer's go, as J-F issues and nothing else: #304 (`timestamp`
+seconds vs milliseconds), #305 (`export` on an absent series), #306 (the
+import row count), #307 (`actions_missed_k`), #308 (the injected clock
+and the actions stamp), #309 (the 25 contradicted diagram claims, cited
+to symbols, each a claim to re-verify in J-F's own ritual). J-F's tree
+remains unchanged.
+
