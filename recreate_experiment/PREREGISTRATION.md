@@ -498,3 +498,82 @@ full kit (venv `.rc-k-venv`), Arm K−UML on the no-UML copy (venv
 `.rc-kminusuml-venv`). The two given externals were placed beside each
 output directory before launch.
 
+### Phases 2 and 3 — Arms K and K−UML, scored 2026-10-23
+
+Two fresh Opus 5 @ xhigh agents, one per arm, 27 and 31 minutes, each
+stopping after the second of three allowed suite runs at 178/178 (first
+runs 175/178 in both arms, the three failures the same chain scenario:
+multi-line inline python broke the recording stub). Arm K laid its
+modules out as the component diagram names them (13 modules, 2 419
+lines); Arm K−UML chose one module per contract (12 modules, 2 337
+lines). Assumptions recorded: 65 entries (K), 50 (K−UML). One disclosed
+breach of the reading rule in Arm K: a filesystem search for a build
+backend wheel, directory listings of its venv, and one re-read of its
+own output; no program file or document was read (its read log holds
+197 lines, all kit or own output). Arm K−UML reports none.
+
+**Pre-registered metrics, both arms identical on every one:**
+
+| Metric | K | K−UML |
+|---|---|---|
+| M1 exported seam frames identical | 14/14 | 14/14 |
+| M2 gate inversions (RC green, original red) | 0 | 0 |
+| M3 gate inversions (RC red, original green) | 0 | 0 |
+| M4 status documents identical | 17/17 | 17/17 |
+| M5 sync summaries identical | 14/14 | 14/14 |
+| M6 stored series identical / actions files identical | 13/13, 2/3 | 13/13, 2/3 |
+| M7 CLI exit codes identical / CLI text identical | 52/52, 38/52 | 52/52, 38/52 |
+| M7 chain exit codes identical / chain call logs identical | 8/8, 1/8 | 8/8, 1/8 |
+| M8 seam invariance through the original loader | PASS | PASS |
+| M9 original tests: API-level modules importing / cases passing; chain | 5 of 14, 18/50; 10/10 | 1 of 14, 0/5; 10/10 |
+| M10 kit suite on the arm (our run) | 178/178 | 178/178 |
+| Artefacts not byte-identical | 22/157 | 22/157 |
+
+Post-hoc, labelled as such in `compare.py` (not pre-registered): the
+same CLI outcome (exit code and final stderr line) in 50/52; equivalent
+chain calls once an inline `python3 -c` script is reduced to its
+presence in 8/8. The 22 non-identical artefacts are the same set in
+both arms.
+
+**Triage of the 22 (identical in both arms):**
+
+| Artefacts | Class | Finding |
+|---|---|---|
+| 9 `--help` outputs + 2 parser-error usage lines | **spec defect (cli)** | the kit carried flags, defaults and messages, not the argparse surface: usage-line form, metavars, help strings; both rebuilds wrote their own |
+| `export` of an absent series | **spec defect (refusal) + original observation** | the kit is silent (refusals.md covers `adjust` only); the original exits 1 with a raw pandas `AttributeError`; both rebuilds refuse with a clean `StoreError` — and both listed the gap as an assumption (K #31, K−UML #30) |
+| 2 unwrapped tracebacks (`validate` on a missing file, `adjust` on a pre-adjusted series) | not a defect | same exception class and message; file paths and the `jef.data` vs `jef_data_rc` module prefix differ by construction |
+| 7 chain call logs | not a defect | identical commands, arguments and exit codes; the two inline `python3 -c` metadata parsers are spelled differently |
+| 1 actions file | **harness defect** | the interface said "a plain dict of the stored fields": the reference adapter returned the dataclass field `split_string`, both rebuilds the stored key `split`; dates and ratios identical |
+
+Code defects found: **0**. Spec defects: **2 classes** (cli surface;
+one unspecified refusal path), 12 artefacts. M9's API-level failures
+are signature-level by construction (keyword names such as
+`eodhd_collector`, `utc_today`, `limit`, `now`; result tuples vs
+objects; module names) and are reported, not triaged, as
+pre-registered.
+
+**Expectations:**
+- **E1 confirmed** (both arms): M1 100 %.
+- **E2 confirmed** (both arms): M2 = 0.
+- **E4 confirmed**, trivially: 2 spec-defect classes, 0 code defects.
+  The caveat is the small denominator: on 157 artefacts the kit left
+  almost nothing to diverge on.
+- **E5 confirmed**: K−UML equals K on M1–M8 exactly. The diagrams'
+  measurable contribution is the module layout and API shape, visible
+  only in M9 (5 vs 1 of 14 original test modules importing) — not
+  behaviour.
+- **E6 (M11)**: of the 2 spec-defect classes, 1 (the export path) was
+  flagged as an assumption in both arms; the cli-surface class was not
+  (K's assumption #1 and K−UML's #44 touch the program name and one
+  metavar, not the usage form or help text). M11 = 0.5 in both arms,
+  at the bar.
+- **E7 confirmed** (both arms): M8 PASS.
+- **E3** waits on the post-hoc diagram comparison (Phase 4).
+
+Closing round requested of the reverse-engineering agent the same day:
+the three cli/refusal gaps folded into the kit as dated additions
+(requirements continuing the id sequence, a `contracts/cli_help.md`
+with the verbatim `--help` texts, scenarios), gates and the 100 %
+subject calibration re-run; then a third recreation on the revised
+full kit.
+
