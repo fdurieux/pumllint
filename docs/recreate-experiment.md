@@ -520,6 +520,25 @@ not. For the knowledge-capture approach this register, not the suite, is
 the list of questions for the subject matter expert, and its class-C
 count is the honest size of the tacit remainder for this lane.
 
+## A case for the approach: a departing expert (2026-10-24)
+
+*Dated addition, on the maintainer's ask. The plan:
+`recreate_experiment/knowledge-transfer/DOMINIQUE-CASE.md`.*
+
+The knowledge-capture method of the fourth rebuild (EVALUATION-METHOD 1.2
+and 1.3) and the experiment's instruments, applied to a person rather than
+a system: a professional-loans analyst with twenty years in the bank
+leaving in eight weeks, and a question-answering layer over the captured
+material proposed as her stand-in. The assessment: necessary, not yet
+sufficient, because nothing in the method builds the inventory of what
+she knows that nobody else does. The plan builds it from her own work
+products first, captures against it in example-driven sessions with the
+successor present, measures sufficiency by a graded question set with its
+denominator, freezes the corpus as of her last day, and makes the
+successor's questions the blind test. The question layer cites, abstains
+and logs; it never signs off. Illustrative names and figures; a plan, not
+a run.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
