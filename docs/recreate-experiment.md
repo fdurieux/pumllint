@@ -485,6 +485,41 @@ are both named `jef` and cannot share a process, so equality to the
 original is transitive through K2, which had matched it on the same seven
 properties, rather than measured directly.
 
+## The other direction: what the kit does not reach (2026-10-24)
+
+*Dated addition, on the maintainer's ask, after the knowledge-capture
+discussion. Register and numbers:
+`recreate_experiment/results/coverage/UNREALISED.md`, `coverage.json`.*
+
+`trace` says every requirement is verified; it says nothing about the code
+no requirement reaches. Measured: the kit's 258 cases run against the
+original under branch coverage execute 1 379 of the data lane's 1 520
+statements (89 %), leaving 141 never executed and 49 branches taken one
+way only. The 141 fall into four classes. **40** are the program's live
+half — HTTP, the rate limiter, retries after a connection error, the
+`load` and `sync-actions` happy paths — which replay cannot reach by
+construction. **33** are behaviour the kit states and no scenario
+exercises (the lock timeout, the leftover-file sweep, the 100-page refusal,
+a non-JSON body, the status table's pair lines, the resolution fallback,
+two Binance edges, the whole grammar of `classifications.toml`): the
+requirement-granular "verified" hid a clause-level gap, as the wave-2
+record anticipated. **61** have no caller in the lane: deliberate orphans,
+test-only helpers, a cross-lane API, the fixture recorder. **6** are guards
+the store's own writes make unreachable; one statement is unspecified as
+well as unexercised, the fourth rebuild's assumption A-08.
+
+Two readings. Regeneration validates exercised behaviour: a rebuild that
+matches cell for cell has been checked on 89 % of the statements, and the
+other 11 % is where a defect or a workaround can sit unseen. And the
+clearest instance of knowledge the code states and no derived artefact
+carried is in class C: `needs_update`'s docstring, "NOT A GATE. Do not
+give this a production caller again", the record of two callers removed
+on 2026-08-30 — history a reverse-engineered kit can only reproduce if
+the reverse engineer reads orphans, which a behaviour-first reading does
+not. For the knowledge-capture approach this register, not the suite, is
+the list of questions for the subject matter expert, and its class-C
+count is the honest size of the tacit remainder for this lane.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits

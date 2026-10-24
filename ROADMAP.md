@@ -1035,6 +1035,11 @@ list and license posture live in § Settled questions.
   nine bookkeeping errors; all corrected in the kit (CHANGES.md revision
   2026-10-24), 258/258 on the original and the third rebuild. Changes no
   product behaviour.*
+  *Same day, the other direction measured: the kit's suite executes 89 % of
+  the data lane's statements; the 141 it never reaches are classified
+  (live half 40, specified-unexercised 33, no caller in the lane 61,
+  guards 6; recreate_experiment/results/coverage/UNREALISED.md). Changes
+  no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
