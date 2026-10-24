@@ -774,7 +774,7 @@ def json_stdout_format(ctx):
 # ---------------------------------------------------------------- chain
 STUB = r'''#!/bin/bash
 name=$(basename "$0")
-{ printf '%s' "$name"; for a in "$@"; do printf '\t%s' "$a"; done; printf '\n'; } >> "$STUB_LOG"
+{ printf '%s' "$name"; for a in "$@"; do printf '\t%s' "${a//$'\n'/\\n}"; done; printf '\n'; } >> "$STUB_LOG"
 rc_var="STUB_RC_${name//-/_}"
 case "$name" in
   timeout) shift 3; exec "$@";;

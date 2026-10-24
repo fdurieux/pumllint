@@ -77,7 +77,7 @@ The loader shall return one normalised document `{"defaults": {"store", "currenc
 *Verified by:* universe.feature: Defaults, dates and the class map normalise into one shape
 
 ### JDL-023 · contract · basis both
-Every collector shall perform HTTP through a transport offering `request(method, url, params) -> (status, text)` and `close()`; the live transport shall use a requests session with a 30 s timeout and convert connection errors and timeouts into a retryable TransportConnectionError whose text has the token redacted; each collector shall rate-limit live traffic to 1000 requests per sliding 60 s window (sleeping until the oldest request leaves the window) and 100000 per UTC day, beyond which it raises DailyBudgetExhausted `daily API budget of 100000 spent ({UTC date}); the per-minute window cannot lend quota across days`.
+Every collector shall perform HTTP through a transport offering `request(method, url, params)` returning a response carrying `status` and `text` (TransportResponse) and `close()`; the live transport shall use a requests session with a 30 s timeout and convert connection errors and timeouts into a retryable TransportConnectionError whose text has the token redacted; each collector shall rate-limit live traffic to 1000 requests per sliding 60 s window (sleeping until the oldest request leaves the window) and 100000 per UTC day, beyond which it raises DailyBudgetExhausted `daily API budget of 100000 spent ({UTC date}); the per-minute window cannot lend quota across days`.
 
 *Why:* the daily quota is enforced as a daily budget, not fed in as a per-minute rate
 
@@ -570,7 +570,7 @@ The actions gate shall refresh an actions-eligible leg's corporate actions when 
 *Why:* a calendar date cannot be missed by a second; a run straddling midnight UTC stamps tomorrow and skips one refresh, absorbed by the status side's two-session tolerance
 
 *Realised by:* sync_leg  
-*Verified by:* actions.feature: A later run on an earlier injected day finds the real-clock stamp fresh unless forced; actions.feature: A stamp from an earlier UTC day refreshes, a second before midnight or not; actions.feature: A stamp from the same UTC day skips the refresh and the stored splits are used; decisions.feature: A stamp from an earlier UTC day refreshes, one from today skips; decisions.feature: No stamp means refresh; decisions.feature: force-actions refreshes whatever the stamp says
+*Verified by:* actions.feature: A later run on an earlier injected day finds the real-clock stamp fresh unless forced; actions.feature: A stamp from an earlier UTC day refreshes, a second before midnight or not; actions.feature: A stamp from the same UTC day skips the refresh and the stored splits are used; decisions.feature: A stamp from an earlier UTC day refreshes, one from today or later skips; decisions.feature: No stamp means refresh; decisions.feature: force-actions refreshes whatever the stamp says
 
 ### JDL-092 · ritual · basis logic
 An actions-eligible leg shall reconcile and re-adjust with the split events read from the actions store after the gate; every other leg shall use no split events.

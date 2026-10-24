@@ -5,7 +5,7 @@ identity: fixtures.md.
 
 ## 1. Common plumbing (both collectors)
 
-* **Transport**: `request(method, url, params) -> (status: int, text: str)`,
+* **Transport**: `request(method, url, params) -> TransportResponse(status: int, text: str)` (an object with those two fields and a `json()` method, as the data model draws it; revision 2026-10-24: the prose said a bare tuple),
   `close()`. Live: a `requests` session, timeout 30 s; connection errors and
   timeouts become a retryable TransportConnectionError (token redacted).
 * **Rate limiting** (live traffic; disabled in the harness): each collector

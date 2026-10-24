@@ -236,7 +236,8 @@ same zero-row frame. Measured on the original the same day (`.jf-venv`,
 A absent with `--b-csv`; A stored, B named by `--b-symbol` absent): the
 same `AttributeError: Can only use .dt accessor …` traceback, exit 1,
 stdout empty, both sides. Folded into the kit as requirement JDL-163,
-refusals.md X-10, cli.md, `component.puml` (trace 163/163). Revised
+refusals.md X-10 [renumbered X-11 on 2026-10-24: the closing round had
+already used X-10 for parser errors, found by the fourth rebuild], cli.md, `component.puml` (trace 163/163). Revised
 kit: 13 tables, 63 rules, **0 gaps, 0 overlaps, 0 untyped outputs**.
 
 ### Layer 3 — `Rule:` blocks, 2026-10-23

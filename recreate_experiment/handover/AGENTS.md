@@ -20,8 +20,9 @@ that wording.
   `classifications.toml` shipped as package data.
 - `deploy/daily.sh`: the chain script of `../kit/contracts/chain.md`. It
   sources `events.sh` and `dashboard.sh` from its own directory; those two
-  are given externals you do not write (the suite places stubs beside your
-  script).
+  are given externals you do not write: copy them verbatim from
+  `../kit/contracts/externals/` beside your script (the suite copies them
+  from there and stubs the commands they call).
 - `jdl_adapter.py`: the harness adapter, implementing every function of
   `../kit/contracts/HARNESS_INTERFACE.md` against your package. Glue only.
 - `ASSUMPTIONS.md`: every point where the kit was silent, ambiguous or
@@ -39,7 +40,7 @@ that wording.
   `JDL_UNDER_TEST=jef-data JDL_CHAIN=<your deploy/daily.sh> JDL_ADAPTER=jdl_adapter python -m pytest -q features/steps`
   with your output directory on `PYTHONPATH` and your package installed in
   the active environment (`../kit/features/README.md` has the details).
-  Done is 257 passed, 0 failed, 0 skipped.
+  Done is 258 passed, 0 failed, 0 skipped.
 - Exactness over elegance: where the kit gives a message string, reproduce
   it byte for byte; where it gives arithmetic, implement that arithmetic,
   not an equivalent you prefer. The build is judged on numbers, verdicts,

@@ -1016,6 +1016,13 @@ list and license posture live in § Settled questions.
   was an untyped outcome, not a gap — and found one unspecified refusal
   (JDL-163); the kit's suite stands at 257/257 on the original and on
   the third rebuild. Changes no product behaviour.*
+  *2026-10-24: a fourth rebuild from outside — a different vendor's model,
+  inputs hash-pinned to the kit and the handover alone — passed the data
+  behaviour first time and found the one gap the in-house harness had
+  hidden (the chain's two given externals were named, never shipped) plus
+  nine bookkeeping errors; all corrected in the kit (CHANGES.md revision
+  2026-10-24), 258/258 on the original and the third rebuild. Changes no
+  product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

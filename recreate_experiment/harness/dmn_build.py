@@ -115,14 +115,14 @@ request = table(
 gate = table(
     "actions_gate",
     [("actions_eligible", "boolean", None), ("force_actions", "boolean", None),
-     ("splits_stamp", "string", ["none", "before_today", "today"])],
+     ("splits_stamp", "string", ["none", "before_today", "today_or_later"])],
     [("action", "string", ["refresh", "skip_fresh", "none"]), ("detail_part", "string", None)],
     [(["false", "-", "-"], ['"none"', '""'], "JDL-086: not eligible, no actions part in the detail"),
      (["true", "true", "-"], ['"refresh"', '"{s} split(s), {d} dividend(s); "'], "JDL-091 force"),
      (["true", "false", '"none"'], ['"refresh"', '"{s} split(s), {d} dividend(s); "'], "JDL-091 no stamp"),
      (["true", "false", '"before_today"'], ['"refresh"', '"{s} split(s), {d} dividend(s); "'], "JDL-091 stale stamp"),
-     (["true", "false", '"today"'], ['"skip_fresh"', '"actions fresh; "'], "JDL-091")],
-    description="today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043).")
+     (["true", "false", '"today_or_later"'], ['"skip_fresh"', '"actions fresh; "'], "JDL-091: refresh only when the stamp's date is earlier than today, so a stamp dated today or later (the real clock running ahead of an injected one, JDL-043) is fresh")],
+    description="today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043). Revision 2026-10-24: the stamp domain gained the later-than-today case (fourth rebuild, finding F-005).")
 
 # ---- 5. status verdicts (JDL-114..JDL-132) ---------------------------------
 staleness = table(
