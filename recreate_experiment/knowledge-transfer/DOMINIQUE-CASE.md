@@ -107,9 +107,20 @@ uniqueness (does anyone else know it). In parallel, run the system-side
 extraction for the in-scope systems: the specification kit, its quirks
 list, its unrealised-code register and the rebuilders' assumption files,
 all of which are lists of questions a system cannot answer about itself.
+Lint the existing business documents the same way: the analysis models
+through pumllint (unjoined decisions, unreachable branches, participants
+that differ between diagrams, requirements no diagram realises), the
+requirements through the trace and glossary checks (statements no model
+realises and no test verifies, terms used repeatedly and defined nowhere),
+the decision tables through the gap and overlap check, the process models
+through bpmnlint or, for ARIS EPCs, through aris2puml's refusals. Every
+finding is a candidate register entry, not a defect to fix: an unjoined
+decision is a modelling slip or an exception path nobody wrote down, and
+only she can say which. Appendix E lists what each tool finds and cannot.
 
 *Why.* Interviews find what she remembers to mention; traces find what she
-was actually asked. The experiment showed the same on the system side: the
+was actually asked, and the linters find what the documents cannot say
+about themselves. The experiment showed the same on the system side: the
 code's own orphans and quirks were the sharpest questions, and an outside
 rebuild found in a day a gap three internal rounds had missed.
 
@@ -170,7 +181,11 @@ the normative artefacts the same day; Dominique validates within two days;
 the second validator reads anything marked judgement or disputed. The
 executable half is built as it comes: a rule becomes a decision-table row
 and an acceptance example; a term becomes a glossary row; a flow becomes a
-process model that passes the model gates.
+process model. Every normative artefact passes its gate before she
+validates it: the models the pumllint gates, the tables the gap and
+overlap check, the glossary its check, the requirements the trace. A gate
+proves the artefact is well-formed and complete against its inventory; her
+validation is what proves it true, and the two are never confused.
 
 *Why.* Examples elicit what questions do not. A rule stated in the abstract
 is wrong at its edges; the counterexample finds the edge. Writing the same
@@ -412,3 +427,22 @@ or who to ask. Show the corpus version. Never apply a judgement item as a
 rule; present it as a worked case with its author and date. Log every
 question; route every abstention to the backlog. Credit-related answers
 are auditable. The layer assists; a person decides.
+## Appendix E — what the linters find, and cannot
+
+| artefact | tool | finds | cannot find |
+|---|---|---|---|
+| PlantUML analysis models | pumllint lint, score, cross-diagram rules | unjoined decisions, unreachable branches, dead ends, participants that differ between diagrams, missing requirement links, the maturity level | a well-formed flow that is wrong |
+| requirements documents | pumllint trace with the feature files; the glossary check; an EARS-pattern check | requirements no model realises, none a test verifies, terms used three times and defined nowhere, statements outside the pattern | a precise, traced, verified requirement the business never meant |
+| decision tables | the DMN gap and overlap check | inputs no rule covers, inputs two rules claim, outcomes left as a category instead of a value | a complete table with a wrong row |
+| BPMN processes | bpmnlint, not pumllint; ARIS EPCs through aris2puml first | structural faults, and refusals where the process does not reduce to blocks | process intent |
+| the set together | the manifest and the precedence rule | drift between copies, contradictions with no stated winner | which copy was right |
+
+The experiment's own numbers set the expectation: a model set at Level 5,
+100/100, had 12 claims contradicted by the code it documented; the bank's
+own set had 25. A linter certifies that an artefact is well-formed,
+complete against its inventory and consistent with its neighbours. It
+cannot tell a wrong rule from a right one when both are well-formed. The
+exception is structural completeness: a decision table's missing row is a
+fact about the table, and the gap check found an unspecified behaviour in
+the experiment without running the program.
+
