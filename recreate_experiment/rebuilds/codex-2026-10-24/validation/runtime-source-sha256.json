@@ -1,0 +1,17 @@
+{
+  "deploy/daily.sh": "0a87b541baebff09808e4c1bb2ed3ea4923f6f463c4d4279ad0d42ff7887c7e7",
+  "jdl_adapter.py": "d8292c40ddac6015954be733ac79e03bf8053b975af76da5e46604d996c96541",
+  "pyproject.toml": "34f66307fada293c6a028aa08149d4eaf08ec984c040e3df419bafef9930a479",
+  "src/jef/__init__.py": "c99a1cef5802ae4055f2d749cf50698db3351c73beedc48878ff15aa57e88c1d",
+  "src/jef/data/__init__.py": "92079e8894d908bff1904e1778bf8936510497a50dfd89fdb869011db497c8f1",
+  "src/jef/data/classifications.toml": "b9848dc6c6d2ce61a6b994586b86050380d4b7370eda94f08c296ff729b4b953",
+  "src/jef/data/cli.py": "9d129196fd1ed78428e53d76973e98e70e3483f4a45c2b7abdfaf1aa6229b4c9",
+  "src/jef/data/collectors.py": "4a73b6f5a8499e0462cd49fb8276bec42128d227be6edbfe2b13ac5c3a1a0058",
+  "src/jef/data/contract.py": "e6d0014e930c04130897c6984d7fe8d48ab8a51c8b89ee09f43101f10b822116",
+  "src/jef/data/health.py": "e694481d43917a3a53c6b01461bc549a1bfad6a3101d315ebbb93b70ad58dc05",
+  "src/jef/data/parser.py": "36545e31a60a7502b6821817865ab4f4263f9464e5f0592b4c9e3b190424a258",
+  "src/jef/data/store.py": "08ddbb6a10b713fc2be34df5686cfecc548b828e7c0a332b54e7c6fe81ab9bbd",
+  "src/jef/data/sync.py": "5c9cbaa0e7aa8a08f452688a97e1ec1d07a4c1decc9d378e7f8935cb7e96fbca",
+  "src/jef/data/universe.py": "cef6bc4e1e2eabe09c881d295e84b281dffdbc1d0b88ca6d41fe72667f00646a",
+  "src/jef/data/universe.toml": "3bfd82ca66a9fe0567615ddd7932763555489ccf80dd3f3cc10adb4166478d8b"
+}

@@ -1,0 +1,14 @@
+{
+  "wheel": "jef-0.6.0-py3-none-any.whl",
+  "sha256": "7ae68075d734603fae292e497b2449b3e0f3198c401cdf3c79e2dcd2579bba23",
+  "metadata": "Metadata-Version: 2.4\nName: jef\nVersion: 0.6.0\nRequires-Python: >=3.11\nRequires-Dist: pandas==3.0.5\nRequires-Dist: numpy==2.4.6\nRequires-Dist: requests==2.34.2\nRequires-Dist: pyarrow==25.0.1\n",
+  "entry_points": "[console_scripts]\njef-data = jef.data.cli:main\n",
+  "packaged_resources": "byte identical to pinned inputs",
+  "versions": {
+    "jef": "0.6.0",
+    "pandas": "3.0.5",
+    "numpy": "2.4.6",
+    "requests": "2.34.2",
+    "pyarrow": "25.0.1"
+  }
+}

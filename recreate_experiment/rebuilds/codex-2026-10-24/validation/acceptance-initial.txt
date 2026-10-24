@@ -1,0 +1,208 @@
+...........F...............................................F......FFFFFF [ 28%]
+FFFFF................................................................... [ 56%]
+........................................................................ [ 84%]
+.........................................                                [100%]
+=================================== FAILURES ===================================
+_ test_every_recorded_fixture_of_the_kit_is_named_and_laid_out_by_its_request_identity _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:396: in fixture_corpus
+    assert path.read_text(encoding="utf-8") == json.dumps(doc, indent=1, sort_keys=True) + "\n", path
+E   AssertionError: PosixPath('/workspace/scratch/a2818d442cd1/recreate_experiment/kit/features/fixtures/http/binance/limit/api_v3_klines_20c2e2b351.json')
+E   assert '{\n "request...00\n }\n}\n\n' == '{\n "request... 200\n }\n}\n'
+E     
+E     Skipping 159971 identical leading characters in diff, use -v to show
+E       : 200
+E        }
+E       }
+E     +
+_ test_every_help_prints_its_verbatim_text_and_exits_0[jef-data status --help-jef-data status --help] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:714: in stdout_help
+    assert ctx.proc.stdout == blocks[heading], ctx.proc.stdout
+E   AssertionError: usage: jef-data status [-h] [--universe UNIVERSE] [--store STORE]
+E                            [--asset ASSET] [--provider PROVIDER]
+E                            [--staleness STALENESS]
+E                            [--jump-threshold JUMP_THRESHOLD] [--window WINDOW]
+E                            [--resolution-window RESOLUTION_WINDOW]
+E                            [--resolution-k RESOLUTION_K] [--flat-k FLAT_K]
+E                            [--gap-k GAP_K] [--spread-threshold SPREAD_THRESHOLD]
+E                            [--spread-alerts] [--json]
+E     
+E     options:
+E       -h, --help            show this help message and exit
+E       --universe UNIVERSE   universe TOML (default: the packaged one)
+E       --store STORE         store root (default: the universe's defaults.store)
+E       --asset ASSET         limit to this asset name (repeatable)
+E       --provider PROVIDER   limit to this provider (repeatable)
+E       --staleness STALENESS
+E                             alert at this many missed expected sessions
+E                             (docs/DATA_CONTRACT.md §7.4; default 2)
+E       --jump-threshold JUMP_THRESHOLD
+E                             phantom-split one-day|return|alert threshold (default
+E                             0.40)
+E       --window WINDOW       newest sessions scanned for jumps, and for the cross-
+E                             venue common session (default 10)
+E       --resolution-window RESOLUTION_WINDOW
+E                             newest TRADED sessions measured for price resolution -
+E                             zero-volume rows drop first, like the seam
+E                             (docs/DATA_CONTRACT.md §7.8; default 500)
+E       --resolution-k RESOLUTION_K
+E                             note a coarse quoting grid below this distinct-
+E                             close/session ratio (default 0.20)
+E       --flat-k FLAT_K       note a coarse/frozen feed above this share of sessions
+E                             whose close did not move (default 0.25)
+E       --gap-k GAP_K         note a post-seam continuity gap at or above this many
+E                             absent expected sessions (default 5, calibrated: the
+E                             largest true US closure since 1962 measures 4 -
+E                             2001-09-10..17 - so the market itself never notes; a
+E                             provider data hole does, however it is served)
+E       --spread-threshold SPREAD_THRESHOLD
+E                             cross-venue close-spread WARN threshold for assets
+E                             with 2+ live feeds (Arc X X1; default 0.005 = 0.5%,
+E                             calibrated on the committed fixtures -
+E                             docs/CROSS_VENUE_PLAN.md)
+E       --spread-alerts       promote a cross-venue spread breach from a warning to
+E                             an ALERT, so it joins the exit-1 contract (off by
+E                             default: it compares a CROSS-CHECK leg, and exit 1
+E                             stops the venue's day before it publishes anything)
+E       --json                machine-readable report instead of the table
+E     
+E   assert 'usage: jef-d...f the table\n' == 'usage: jef-d...f the table\n'
+E     
+E     Skipping 1065 identical leading characters in diff, use -v to show
+E     - it one-day |return| alert threshold
+E     ?           -        -
+E     + it one-day|return|alert threshold (default
+E     ?                                  +++++++++
+E     -                         (default 0.40)...
+E     
+E     ...Full output truncated (28 lines hidden), use '-vv' to show
+______ test_a_green_run_executes_every_stage_in_order_and_publishes_last _______
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_a_red_sync_stops_the_chain_with_its_exit_code_after_emitting_and_the_dashboard_still_publishes _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_____ test_status_alerts_stop_the_chain_before_binning_and_publish_nothing _____
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_the_binning_loop_stops_at_the_first_failing_asset_which_is_still_emitted _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+___ test_arguments_other_than_inner_are_executed_in_place_of_the_daily_chain ___
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+__________ test_without_a_bucket_the_inner_run_stops_before_any_stage __________
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+___ test_a_failed_store_restore_stops_the_chain_with_the_restores_exit_code ____
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}-sha256:img-0.5-2.0] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}-sha256:dig-2-0.5] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[not json-unknown-<unset>-<unset>] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+_ test_a_term_during_a_stage_emits_that_stage_with_rc_143_exits_143_and_still_publishes_the_dashboard _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:824: in chain_setup
+    shutil.copyfile(source.parent / name, home / name)
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/shutil.py:260: in copyfile
+    with open(src, 'rb') as fsrc:
+         ^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24/deploy/events.sh'
+=========================== short test summary info ============================
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_every_recorded_fixture_of_the_kit_is_named_and_laid_out_by_its_request_identity
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_every_help_prints_its_verbatim_text_and_exits_0[jef-data status --help-jef-data status --help]
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_a_green_run_executes_every_stage_in_order_and_publishes_last
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_a_red_sync_stops_the_chain_with_its_exit_code_after_emitting_and_the_dashboard_still_publishes
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_status_alerts_stop_the_chain_before_binning_and_publish_nothing
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_the_binning_loop_stops_at_the_first_failing_asset_which_is_still_emitted
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_arguments_other_than_inner_are_executed_in_place_of_the_daily_chain
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_without_a_bucket_the_inner_run_stops_before_any_stage
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_a_failed_store_restore_stops_the_chain_with_the_restores_exit_code
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}-sha256:img-0.5-2.0]
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}-sha256:dig-2-0.5]
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[not json-unknown-<unset>-<unset>]
+FAILED recreate_experiment/kit/features/steps/test_features.py::test_a_term_during_a_stage_emits_that_stage_with_rc_143_exits_143_and_still_publishes_the_dashboard
+13 failed, 244 passed in 54.16s
