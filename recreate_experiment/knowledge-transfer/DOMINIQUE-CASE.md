@@ -116,7 +116,14 @@ the decision tables through the gap and overlap check, the process models
 through bpmnlint or, for ARIS EPCs, through aris2puml's refusals. Every
 finding is a candidate register entry, not a defect to fix: an unjoined
 decision is a modelling slip or an exception path nobody wrote down, and
-only she can say which. Appendix E lists what each tool finds and cannot.
+only its author can say which. So attribute every finding to the
+document's author or owner from the version history, and route it: the
+findings in documents with her name on them go to her sessions, as a
+block of their own, since she can clarify them faster than anyone and
+each is either a slip she corrects before she leaves or an exception that
+becomes a register entry; findings in other people's documents go to
+those authors, and reach her only where she is the last person who knows.
+Appendix E lists what each tool finds and cannot.
 
 *Why.* Interviews find what she remembers to mention; traces find what she
 was actually asked, and the linters find what the documents cannot say
@@ -170,6 +177,11 @@ theme:
   and unrealised-code register: deliberate, workaround for a data problem
   never fixed, temporary fix never refactored, or unknown. The unknowns are
   the tribal remainder; they stay listed as unknown.
+- *Her documents' findings.* The linter findings attributed to documents
+  she wrote or owns, taken as a block: for each, a slip to correct now, a
+  deliberate choice to record with its reason, or an exception path to
+  write down as a register entry. Corrections are made in the documents,
+  under the change process, before she leaves.
 - *Decision history.* The initiatives that were tried, descoped or
   reversed, and why. Produces decision records.
 - *Network map.* For every data set, rule and process in scope: who owns it,
