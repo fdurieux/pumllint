@@ -31,6 +31,10 @@ that wording.
 
 ## Working rules
 
+- First verify the kit you hold: `python tools/manifest.py --check` from
+  `../kit/` must print `OK`. If two kit documents disagree, the kit
+  README's precedence section says which wins; build that one and record
+  the disagreement in `ASSUMPTIONS.md`.
 - Read only the kit and your output directory. Do not search for other
   copies, documentation or tests of this program, and do not use the
   network: a gap in the kit is an assumption to record, not a thing to look

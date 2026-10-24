@@ -46,3 +46,11 @@ scenario's expectation changed; one Examples row added.
 | F-008 collectors.md gave the transport a bare `(status, text)` tuple while the data model draws `TransportResponse` | the prose and JDL-023 now say the object (the original's shape) |
 | F-009 the chain scenarios' call logger split a multi-line argument into several records | the stub escapes newlines in logged arguments; chain.md states the one-line `python3 -c` the original uses |
 | F-010 cli.md's JSON escaping example showed `§` unchanged | `§` |
+
+Two additions the rebuild's method asked for (`EVALUATION-METHOD.md`,
+"Consistency and authority", "input manifest"), same revision:
+
+| addition | where |
+|---|---|
+| a precedence rule for disagreements between the suite, the requirements, the contracts, the decision tables and glossary, and the diagrams | README.md "Precedence"; the handover README, AGENTS.md and DONE.md point at it |
+| `MANIFEST.sha256`, every kit file with its SHA-256, and `tools/manifest.py` to write and verify it (`sha256sum -c` works too) | README.md "Verifying the copy you hold"; regenerate after every revision |

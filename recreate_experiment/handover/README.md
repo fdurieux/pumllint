@@ -29,6 +29,12 @@ code is specified, and the acceptance suite checks them byte for byte.
 | 7 | `KNOWN-QUIRKS.md` | behaviours that look like bugs and are the contract |
 | 8 | `DONE.md` | the definition of done and the commands that prove it |
 
+When two kit documents disagree, the kit README's precedence section
+says which wins (the suite, then the requirements, then the contracts,
+then the decision tables and glossary, then the diagrams); build the
+higher one and report the disagreement. Before anything else, verify the
+copy you hold: `python tools/manifest.py --check` in `../kit/`.
+
 `TRACE.md` is the join of 3, 1 and 6 in one place; `../kit/CHANGES.md` lists
 every revision the kit has had since its first issue.
 
