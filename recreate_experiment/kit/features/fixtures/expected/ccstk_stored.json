@@ -1,0 +1,12 @@
+{"columns": ["timestamp", "datetime", "open", "high", "low", "close", "volume", "symbol", "exchange", "asset_type", "asset_subtype", "adjustment_factor", "open_raw", "high_raw", "low_raw", "close_raw", "volume_raw", "adjusted_close", "cumulative_split_factor", "currency", "price_basis"],
+ "dtypes": {"timestamp": "int64", "datetime": "datetime64[ms, UTC]", "open": "float64", "high": "float64", "low": "float64", "close": "float64", "volume": "float64", "symbol": "text", "exchange": "text", "asset_type": "text", "asset_subtype": "text", "adjustment_factor": "float64", "open_raw": "float64", "high_raw": "float64", "low_raw": "float64", "close_raw": "float64", "volume_raw": "float64", "adjusted_close": "float64", "cumulative_split_factor": "float64", "currency": "text", "price_basis": "text"},
+ "data": [
+  [1714521600, "2024-05-01T00:00:00+00:00", 5.0, 5.5, 4.5, 5.25, 700.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 10.0, 11.0, 9.0, 10.5, 350.0, 10.5, 2.0, "USD", "raw"],
+  [1714608000, "2024-05-02T00:00:00+00:00", 5.5, 6.0, 5.0, 5.75, 701.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 11.0, 12.0, 10.0, 11.5, 350.5, 11.5, 2.0, "USD", "raw"],
+  [1714694400, "2024-05-03T00:00:00+00:00", 6.0, 6.5, 5.5, 6.25, 702.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 12.0, 13.0, 11.0, 12.5, 351.0, 12.5, 2.0, "USD", "raw"],
+  [1714953600, "2024-05-06T00:00:00+00:00", 15.0, 16.0, 14.0, 15.5, 705.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 15.0, 16.0, 14.0, 15.5, 705.0, 15.5, 1.0, "USD", "raw"],
+  [1715040000, "2024-05-07T00:00:00+00:00", 16.0, 17.0, 15.0, 16.5, 706.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 16.0, 17.0, 15.0, 16.5, 706.0, 16.5, 1.0, "USD", "raw"],
+  [1715126400, "2024-05-08T00:00:00+00:00", 17.0, 18.0, 16.0, 17.5, 707.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 17.0, 18.0, 16.0, 17.5, 707.0, 17.5, 1.0, "USD", "raw"],
+  [1715212800, "2024-05-09T00:00:00+00:00", 18.0, 19.0, 17.0, 18.5, 708.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 18.0, 19.0, 17.0, 18.5, 708.0, 18.5, 1.0, "USD", "raw"],
+  [1715299200, "2024-05-10T00:00:00+00:00", 19.0, 20.0, 18.0, 19.5, 709.0, "CCSTK-USD.CC", "eodhd", "stock", "", 1.0, 19.0, 20.0, 18.0, 19.5, 709.0, 19.5, 1.0, "USD", "raw"]
+ ]}

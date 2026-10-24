@@ -1,0 +1,8 @@
+{
+ "argv": [
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data [-h] command ...\n\nEOD data layer\n\npositional arguments:\n  command\n    validate    validate a CSV against the EOD input contract\n    sync-actions\n                sync a symbol's splits and dividends\n    load        hand-run EODHD load of one symbol\n    adjust      re-derive a series from its raw columns\n    import-csv  import a Yahoo CSV as a whole series\n    export      write a series' seam frame as CSV\n    differential\n                compare two series within a tolerance\n    sync        run the universe's acquisition legs\n    status      read-only health verdicts of the store\n    universe    list the universe\n\noptions:\n  -h, --help    show this help message and exit\n"
+}

@@ -1,0 +1,13 @@
+[[asset]]
+name = "X"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "X.US"
+[[asset]]
+name = "Y"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "eodhd"
+  exchange = "eodhd"
+  symbol = "X.US"

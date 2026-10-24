@@ -1,0 +1,76 @@
+@startuml component
+title jef.data - modules, the store root and the external systems
+package "jef.data (console script jef-data)" {
+  component "cli" as Cli
+  component "universe" as Universe
+  component "sync" as Sync
+  component "health" as Health
+  component "classification" as Classification
+  component "actions" as Actions
+  component "adjust" as Adjust
+  component "store" as Store
+  component "contract" as Contract
+  component "differential" as Differential
+  component "collectors.base" as CollectorBaseModule
+  component "collectors.eodhd" as EodhdModule
+  component "collectors.binance" as BinanceModule
+  interface "Transport: request(method, url, params) -> (status, text)" as Transport
+  component "HttpTransport (requests, 30 s timeout)" as HttpTransport
+  component "ReplayTransport (recorded fixtures)" as ReplayTransport
+  artifact "universe.toml" as UniverseToml
+  artifact "classifications.toml" as ClassificationsToml
+}
+folder "store root" as StoreRoot {
+  folder "market_data/exchange=X/symbol=Y/year=YYYY" as MarketData
+  folder "corporate_actions/splits and dividends" as ActionsFiles
+}
+cloud "EODHD API (eodhd.com/api)" as EodhdApi
+cloud "Binance API (api.binance.com)" as BinanceApi
+folder "recorded fixtures" as FixtureDir
+node "deploy/daily.sh" as DailySh
+node "events.sh and dashboard.sh (given externals)" as Externals
+node "aws, jef-binning, python3 -m jef.events / jef.dashboard (stubbed)" as ChainStubs
+component "downstream seam (outside the program)" as Seam
+
+Cli ..> Universe : load_universe
+Cli ..> Sync : run_sync and select_legs
+Cli ..> Health : check_source and check_cross_venue
+Cli ..> Store : import, export, adjust
+Cli ..> Contract : validate
+Cli ..> Differential : differential_report
+Universe ..> UniverseToml : packaged default
+Health ..> Classification : compare
+Classification ..> ClassificationsToml : packaged evidence
+Sync ..> Actions : sync_actions
+Sync ..> Store : reconcile_bars and reapply_adjustment
+Sync ..> EodhdModule : get_eod, get_splits, get_dividends
+Sync ..> BinanceModule : get_eod
+Store ..> Adjust : adjust
+Store ..> MarketData : Parquet year files under a lock
+Actions ..> ActionsFiles : JSON per symbol
+EodhdModule ..> CollectorBaseModule : retries and rate limit
+BinanceModule ..> CollectorBaseModule : retries and rate limit
+CollectorBaseModule ..> Transport : request through the seam
+HttpTransport ..|> Transport : implements
+ReplayTransport ..|> Transport : implements
+HttpTransport ..> EodhdApi : HTTPS GET
+HttpTransport ..> BinanceApi : HTTPS GET
+ReplayTransport ..> FixtureDir : reads every *.json except manifest.json
+DailySh ..> Cli : jef-data sync and status
+DailySh ..> Externals : sources
+DailySh ..> ChainStubs : calls
+Seam ..> MarketData : reads the exported frame
+note bottom of CollectorBaseModule
+  transport seam JDL-023; fixture identity JDL-024,
+  file JDL-025, replay JDL-026
+end note
+note bottom of Cli
+  ten subcommands JDL-133; validate JDL-135, universe JDL-136,
+  import-csv JDL-137, export JDL-138, differential JDL-140,
+  sync-actions JDL-143; revision 2026-10-23 (closing round): parser
+  declaration JDL-160, parse errors JDL-161, verbatim
+  help JDL-162, export of an absent series JDL-159; revision
+  2026-10-23 (wave 2): differential on an absent side JDL-163
+end note
+footer owner: data-load — realises JDL-133, JDL-001, JDL-113, JDL-023, JDL-024, JDL-025, JDL-026, JDL-029, JDL-036, JDL-057, JDL-040, JDL-152, JDL-074, JDL-135, JDL-136, JDL-137, JDL-138, JDL-140, JDL-143, JDL-082, JDL-083, JDL-159, JDL-160, JDL-161, JDL-162, JDL-163
+@enduml

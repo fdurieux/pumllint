@@ -1,0 +1,79 @@
+........................................................................ [ 26%]
+.FFF.................................................................... [ 53%]
+........................................................................ [ 80%]
+....................................................                     [100%]
+=================================== FAILURES ===================================
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}-sha256:img-0.5-2.0] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:920: in chain_calls
+    assert _calls(ctx) == want, "\n".join(_calls(ctx))
+E   AssertionError: curl -s http://meta/task
+E     try:
+E      d=json.loads(sys.argv[1]); c=(d.get("Containers") or [{}])[0]; print(c.get("ImageDigest") or c.get("ImageID") or "unknown")
+E     except Exception: print("unknown") {"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}
+E     try:
+E      d=json.loads(sys.argv[1])["Limits"]; print(str(d["CPU"])+" "+str(d["Memory"]/1024))
+E     except Exception: pass {"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}
+E     timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai0/chain/daily.sh --inner
+E     aws s3 sync s3://bkt/store/ data/ --only-show-errors
+E     jef-data sync --asset AAPL --store data --summary-json out/2026-10-22/.diagnostics/sync.json
+E     python3 -m jef.events emit --stage sync --rc 9 --t0 1700000000 --t1 1700000000 --run-date 2026-10-22 --out /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai0/events/2026-10-22T053000Z-sync.jsonl --attach out/2026-10-22/.diagnostics/sync.json
+E     aws s3 cp /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai0/events/2026-10-22T053000Z-sync.jsonl s3://bkt/events/v1/2026-10-22T053000Z-sync.jsonl --only-show-errors
+E   assert ['curl -s htt.../1024))', ...] == ['curl -s htt...-show-errors']
+E     
+E     At index 1 diff: 'try:' != 'timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai0/chain/daily.sh --inner'
+E     Left contains 6 more items, first extra item: 'except Exception: pass {"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}'
+E     Use -v to get more diff
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}-sha256:dig-2-0.5] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:920: in chain_calls
+    assert _calls(ctx) == want, "\n".join(_calls(ctx))
+E   AssertionError: curl -s http://meta/task
+E     try:
+E      d=json.loads(sys.argv[1]); c=(d.get("Containers") or [{}])[0]; print(c.get("ImageDigest") or c.get("ImageID") or "unknown")
+E     except Exception: print("unknown") {"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}
+E     try:
+E      d=json.loads(sys.argv[1])["Limits"]; print(str(d["CPU"])+" "+str(d["Memory"]/1024))
+E     except Exception: pass {"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}
+E     timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai1/chain/daily.sh --inner
+E     aws s3 sync s3://bkt/store/ data/ --only-show-errors
+E     jef-data sync --asset AAPL --store data --summary-json out/2026-10-22/.diagnostics/sync.json
+E     python3 -m jef.events emit --stage sync --rc 9 --t0 1700000000 --t1 1700000000 --run-date 2026-10-22 --out /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai1/events/2026-10-22T053000Z-sync.jsonl --attach out/2026-10-22/.diagnostics/sync.json
+E     aws s3 cp /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai1/events/2026-10-22T053000Z-sync.jsonl s3://bkt/events/v1/2026-10-22T053000Z-sync.jsonl --only-show-errors
+E   assert ['curl -s htt.../1024))', ...] == ['curl -s htt...-show-errors']
+E     
+E     At index 1 diff: 'try:' != 'timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai1/chain/daily.sh --inner'
+E     Left contains 6 more items, first extra item: 'except Exception: pass {"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}'
+E     Use -v to get more diff
+_ test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[not json-unknown-<unset>-<unset>] _
+.venv-recreation/lib/python3.12/site-packages/_pytest/fixtures.py:1005: in call_fixture_func
+    fixture_result = fixturefunc(**kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^
+recreate_experiment/kit/features/steps/conftest.py:920: in chain_calls
+    assert _calls(ctx) == want, "\n".join(_calls(ctx))
+E   AssertionError: curl -s http://meta/task
+E     try:
+E      d=json.loads(sys.argv[1]); c=(d.get("Containers") or [{}])[0]; print(c.get("ImageDigest") or c.get("ImageID") or "unknown")
+E     except Exception: print("unknown") not json
+E     try:
+E      d=json.loads(sys.argv[1])["Limits"]; print(str(d["CPU"])+" "+str(d["Memory"]/1024))
+E     except Exception: pass not json
+E     timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai2/chain/daily.sh --inner
+E     aws s3 sync s3://bkt/store/ data/ --only-show-errors
+E     jef-data sync --asset AAPL --store data --summary-json out/2026-10-22/.diagnostics/sync.json
+E     python3 -m jef.events emit --stage sync --rc 9 --t0 1700000000 --t1 1700000000 --run-date 2026-10-22 --out /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai2/events/2026-10-22T053000Z-sync.jsonl --attach out/2026-10-22/.diagnostics/sync.json
+E     aws s3 cp /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai2/events/2026-10-22T053000Z-sync.jsonl s3://bkt/events/v1/2026-10-22T053000Z-sync.jsonl --only-show-errors
+E   assert ['curl -s htt.../1024))', ...] == ['curl -s htt...-show-errors']
+E     
+E     At index 1 diff: 'try:' != 'timeout --signal=TERM --kill-after=60 3600 /tmp/pytest-of-root/pytest-1/test_without_a_digest_the_chai2/chain/daily.sh --inner'
+E     Left contains 6 more items, first extra item: 'except Exception: pass not json'
+E     Use -v to get more diff
+=========================== short test summary info ============================
+FAILED recreate_experiment/rebuilds/codex-2026-10-24/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageID": "sha256:img"}], "Limits": {"CPU": 0.5, "Memory": 2048}}-sha256:img-0.5-2.0]
+FAILED recreate_experiment/rebuilds/codex-2026-10-24/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[{"Containers": [{"ImageDigest": "sha256:dig", "ImageID": "sha256:img"}], "Limits": {"CPU": 2, "Memory": 512}}-sha256:dig-2-0.5]
+FAILED recreate_experiment/rebuilds/codex-2026-10-24/test_features.py::test_without_a_digest_the_chain_reads_it_and_the_task_size_from_the_task_metadata_once[not json-unknown-<unset>-<unset>]
+3 failed, 265 passed in 56.65s

@@ -105,16 +105,44 @@ RE_UC_LINK = re.compile(
 )
 RE_UC_ACTOR_INLINE = re.compile(r"^:(?P<name>[^:]+):(?:\s+as\s+(?P<alias>" + _IDENT + r"))?\s*$")
 
-_LIKELY_KEYWORD_SOURCES = {
-    "activate", "deactivate", "destroy", "create", "return", "note", "ref",
-    "alt", "opt", "loop", "par", "break", "critical", "group", "else", "end",
-    "box", "title", "skinparam", "autonumber", "hide", "show", "header",
-    "footer", "legend", "endlegend", "newpage", "participant", "actor",
-    "boundary", "control", "entity", "database", "collections", "queue",
-    "usecase", "rectangle", "package", "left", "right", "top", "bottom",
-    "caption", "delay", "endnote", "endrnote", "endhnote", "mainframe",
-    "endbox", "hnote", "rnote", "ignore", "set",
+# A message whose source is a keyword is still a message: PlantUML 1.2026.6
+# draws `package -> B : x` from a participant named `package`, declared or
+# not, and does the same for 47 of the 53 keywords an earlier guard here
+# dropped (measured 2026-10-22). Only these six directives win over the
+# arrow.
+_DIRECTIVE_SOURCES = {"caption", "footer", "header", "legend", "mainframe", "title"}
+
+# Fifteen of the 47 have a branch of their own (a block, a note, `return`, a
+# directive) that would claim the line before the message branch sees it.
+_BRANCH_SOURCES = {
+    *GROUP_KEYWORDS, "else", "box", "note", "hnote", "rnote", "return",
+    "autonumber", "skinparam",
 }
+RE_BRANCH_HEAD = re.compile(r"^(?:" + "|".join(sorted(_BRANCH_SOURCES)) + r")\b", re.IGNORECASE)
+
+
+def _keyword_message(line: str) -> Optional[re.Match]:
+    """The message match when *line* is a message sent by a participant named
+    after one of :data:`_BRANCH_SOURCES` (`group -> B : x`), else ``None``.
+
+    PlantUML 1.2026.6 decides by the arrow (55 lines measured, 2026-10-22):
+    a head (``>``, ``<``, ``/``, ``\\``) or an ``x``/``o`` end makes the line
+    a message (`alt x->y : z`, `loop x-axis`); a bare dash, a dotted body, a
+    ``+``/``*``/``!`` suffix or a missing target leaves it to the keyword
+    (`alt -1`, `alt ..> B`, `alt ->+ B`, `group -`), or is a syntax error
+    that the gate reports.
+    """
+    if not RE_BRANCH_HEAD.match(line):
+        return None
+    m = RE_MESSAGE.match(line)
+    if not m or not m.group("src") or not m.group("dst"):
+        return None
+    arrow = re.sub(r"\[[^\]]*\]", "", m.group("arrow"))
+    if "." in arrow or arrow.endswith(("+", "*", "!")):
+        return None
+    if any(c in arrow for c in "<>/\\") or arrow.startswith(("o", "x")) or arrow.endswith(("o", "x")):
+        return m
+    return None
 
 
 # Inline suppression comments, e.g.
@@ -305,13 +333,14 @@ def parse_source(text: str, file_path: str = "<string>") -> list[Diagram]:
             continue
         if RE_NOTE_END.match(line):
             continue
-        if RE_NOTE_START.match(line):
+        sent = _keyword_message(line)
+        if RE_NOTE_START.match(line) and not sent:
             in_note = True
             note_buf = []
             note_start = lineno
             continue
         m = RE_NOTE_INLINE.match(line)
-        if m:
+        if m and not sent:
             current.directives.append(
                 Directive(kind="note", value=m.group("v").strip(), line=lineno)
             )
@@ -387,6 +416,11 @@ def _parse_statement(
         name = alias or label
         _declare(d, name, lineno, kind="actor", display_name=label if alias else None)
         d.diagram_type = "usecase"
+        return
+
+    m = _keyword_message(line)
+    if m:
+        _parse_message(d, lineno, m)
         return
 
     # --- directives -----------------------------------------------------
@@ -489,43 +523,45 @@ def _parse_statement(
     # --- sequence messages ------------------------------------------------
     m = RE_MESSAGE.match(line)
     if m and m.group("arrow") and (m.group("src") or m.group("dst")):
-        src = _strip_ident(m.group("src"))
-        dst = _strip_ident(m.group("dst"))
-        if src == "[":
-            src = None
-        if dst == "]":
-            dst = None
-        # Guard against keyword lines mis-matched as messages
-        if (src or "").lower() in _LIKELY_KEYWORD_SOURCES:
-            return
-        if src is None and dst is None:
-            return
-        arrow = m.group("arrow")
-        mods = (m.group("mods") or "").strip()
-        msg = Message(
-            source=src,
-            target=dst,
-            label=(m.group("label") or "").strip(),
-            line=lineno,
-            arrow=arrow,
-            activates_target="++" in mods or arrow.endswith("+"),
-            deactivates_source="--" in mods,
-            is_return_arrow="--" in arrow or ".." in arrow,  # dotted line = return convention
-        )
-        d.messages.append(msg)
-        if d.diagram_type == "unknown":
-            d.diagram_type = "sequence"
-        for name in (src, dst):
-            if name and name not in d.participants:
-                d.participants[name] = Participant(
-                    name=name, kind="implicit", line=lineno, declared=False
-                )
-        # ++/-- shortcuts also count as activation events
-        if msg.activates_target and dst:
-            d.activations.append(ActivationEvent(kind="activate", participant=dst, line=lineno))
-        if msg.deactivates_source and src:
-            d.activations.append(ActivationEvent(kind="deactivate", participant=src, line=lineno))
+        _parse_message(d, lineno, m)
+
+
+def _parse_message(d: Diagram, lineno: int, m: re.Match) -> None:
+    src = _strip_ident(m.group("src"))
+    dst = _strip_ident(m.group("dst"))
+    if src == "[":
+        src = None
+    if dst == "]":
+        dst = None
+    if (src or "").lower() in _DIRECTIVE_SOURCES:
         return
+    if src is None and dst is None:
+        return
+    arrow = m.group("arrow")
+    mods = (m.group("mods") or "").strip()
+    msg = Message(
+        source=src,
+        target=dst,
+        label=(m.group("label") or "").strip(),
+        line=lineno,
+        arrow=arrow,
+        activates_target="++" in mods or arrow.endswith("+"),
+        deactivates_source="--" in mods,
+        is_return_arrow="--" in arrow or ".." in arrow,  # dotted line = return convention
+    )
+    d.messages.append(msg)
+    if d.diagram_type == "unknown":
+        d.diagram_type = "sequence"
+    for name in (src, dst):
+        if name and name not in d.participants:
+            d.participants[name] = Participant(
+                name=name, kind="implicit", line=lineno, declared=False
+            )
+    # ++/-- shortcuts also count as activation events
+    if msg.activates_target and dst:
+        d.activations.append(ActivationEvent(kind="activate", participant=dst, line=lineno))
+    if msg.deactivates_source and src:
+        d.activations.append(ActivationEvent(kind="deactivate", participant=src, line=lineno))
 
 
 def _uc_name(raw: str) -> Optional[str]:
@@ -556,7 +592,7 @@ def parse_file(path: str | Path) -> list[Diagram]:
 
     Reports carry this string, and a Windows-produced report has to match a
     POSIX-produced one byte for byte: a SonarQube ingest, a committed
-    example, a baseline key and a CI artefact diff all break on ``\``.
+    example, a baseline key and a CI artefact diff all break on ``\\``.
     """
     p = Path(path)
     return parse_source(read_source(p), file_path=p.as_posix())

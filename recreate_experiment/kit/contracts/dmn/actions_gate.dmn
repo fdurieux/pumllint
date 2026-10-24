@@ -1,0 +1,122 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="actions_gate" name="actions_gate" namespace="urn:recreate-experiment:actions_gate">
+  <decision id="actions_gate" name="actions_gate">
+    <description>today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043). Revision 2026-10-24: the stamp domain gained the later-than-today case (fourth rebuild, finding F-005).</description>
+    <decisionTable id="actions_gate_dt" hitPolicy="UNIQUE">
+      <input id="actions_gate_i0" label="actions_eligible">
+        <inputExpression id="actions_gate_ie0" typeRef="boolean">
+          <text>actions_eligible</text>
+        </inputExpression>
+      </input>
+      <input id="actions_gate_i1" label="force_actions">
+        <inputExpression id="actions_gate_ie1" typeRef="boolean">
+          <text>force_actions</text>
+        </inputExpression>
+      </input>
+      <input id="actions_gate_i2" label="splits_stamp">
+        <inputExpression id="actions_gate_ie2" typeRef="string">
+          <text>splits_stamp</text>
+        </inputExpression>
+        <inputValues id="actions_gate_iv2">
+          <text>"none", "before_today", "today_or_later"</text>
+        </inputValues>
+      </input>
+      <output id="actions_gate_o0" label="action" name="action" typeRef="string">
+        <outputValues id="actions_gate_ov0">
+          <text>"refresh", "skip_fresh", "none"</text>
+        </outputValues>
+      </output>
+      <output id="actions_gate_o1" label="detail_part" name="detail_part" typeRef="string"/>
+      <rule id="actions_gate_r1">
+        <description>JDL-086: not eligible, no actions part in the detail</description>
+        <inputEntry id="actions_gate_r1_i0">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r1_i1">
+          <text>-</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r1_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="actions_gate_r1_o0">
+          <text>"none"</text>
+        </outputEntry>
+        <outputEntry id="actions_gate_r1_o1">
+          <text>""</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_gate_r2">
+        <description>JDL-091 force</description>
+        <inputEntry id="actions_gate_r2_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r2_i1">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r2_i2">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="actions_gate_r2_o0">
+          <text>"refresh"</text>
+        </outputEntry>
+        <outputEntry id="actions_gate_r2_o1">
+          <text>"{s} split(s), {d} dividend(s); "</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_gate_r3">
+        <description>JDL-091 no stamp</description>
+        <inputEntry id="actions_gate_r3_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r3_i1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r3_i2">
+          <text>"none"</text>
+        </inputEntry>
+        <outputEntry id="actions_gate_r3_o0">
+          <text>"refresh"</text>
+        </outputEntry>
+        <outputEntry id="actions_gate_r3_o1">
+          <text>"{s} split(s), {d} dividend(s); "</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_gate_r4">
+        <description>JDL-091 stale stamp</description>
+        <inputEntry id="actions_gate_r4_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r4_i1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r4_i2">
+          <text>"before_today"</text>
+        </inputEntry>
+        <outputEntry id="actions_gate_r4_o0">
+          <text>"refresh"</text>
+        </outputEntry>
+        <outputEntry id="actions_gate_r4_o1">
+          <text>"{s} split(s), {d} dividend(s); "</text>
+        </outputEntry>
+      </rule>
+      <rule id="actions_gate_r5">
+        <description>JDL-091: refresh only when the stamp's date is earlier than today, so a stamp dated today or later (the real clock running ahead of an injected one, JDL-043) is fresh</description>
+        <inputEntry id="actions_gate_r5_i0">
+          <text>true</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r5_i1">
+          <text>false</text>
+        </inputEntry>
+        <inputEntry id="actions_gate_r5_i2">
+          <text>"today_or_later"</text>
+        </inputEntry>
+        <outputEntry id="actions_gate_r5_o0">
+          <text>"skip_fresh"</text>
+        </outputEntry>
+        <outputEntry id="actions_gate_r5_o1">
+          <text>"actions fresh; "</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

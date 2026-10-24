@@ -1,0 +1,24 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json"
+  },
+  "path": "/api/div/SPLT.US"
+ },
+ "response": {
+  "json": [
+   {
+    "currency": "USD",
+    "date": "2024-01-25",
+    "declarationDate": "2024-01-10",
+    "paymentDate": "2024-02-05",
+    "period": "Quarterly",
+    "recordDate": "2024-01-26",
+    "unadjustedValue": 0.24,
+    "value": 0.24
+   }
+  ],
+  "status": 200
+ }
+}

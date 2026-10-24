@@ -1,0 +1,8 @@
+{
+ "argv": [
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data [-h] command ...\n\nEOD data acquisition, store and status checks.\n\npositional arguments:\n  command\n    validate    check a CSV against the EOD input contract\n    sync-actions\n                sync a symbol's splits and dividends\n    load        hand-run EODHD bar load into the store\n    adjust      re-derive a raw series from *_raw and stored splits\n    import-csv  import a Yahoo 7-column CSV (overwrite)\n    export      write a stored series as the 7-column EOD CSV\n    differential\n                compare a stored series with another source\n    sync        run the declarative universe sync\n    status      read-only freshness and integrity checks\n    universe    list the declared universe\n\noptions:\n  -h, --help    show this help message and exit\n"
+}

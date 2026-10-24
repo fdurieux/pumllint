@@ -62,7 +62,22 @@ write to the repository settings is denied by the session's permission
 gate (reading `delete_branch_on_merge` works). A branch that outlives its
 PR — one closed unmerged, or never opened as one — is the owner's to
 delete, via `gh api -X DELETE repos/fdurieux/pumllint/git/refs/heads/<branch>`
-or the Branches page. Verify a ref with `git ls-remote origin 'refs/heads/*'`. `main`'s history was restarted on 2026-08-29 (two roots,
+or the Branches page. Verify a ref with `git ls-remote origin 'refs/heads/*'`.
+
+**A tag push is refused the same way** (2026-10-22, `git push origin
+v0.34.0`: `RPC failed; HTTP 403`, then `Everything up-to-date`), and no
+MCP tool creates a tag or a GitHub Release. A session therefore carries
+a release only as far as the merged release PR. The owner then publishes
+the Release in the GitHub UI, typing the tag as new; publishing creates
+the tag, and its push runs `publish.yml` to PyPI. That is how 0.31.0–0.33.0
+went out: each publish run started two seconds after its Release. Target
+`main` when the release merge is its head. For any other commit, push a
+throwaway branch at it and target that branch, which the owner deletes
+afterwards. The proxy accepts a new branch at any commit, which is
+aris2puml's v0.1.0 route. Verify a tag with `git ls-remote origin
+'refs/tags/*'`.
+
+`main`'s history was restarted on 2026-08-29 (two roots,
 `a92c24f` and `1089a99`): a branch from the old line (root `71f70a6`)
 shares no ancestor with `main`, reads as hundreds of commits "ahead", and
 is superseded once its PRs are merged — compare trees, not commit counts,

@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "differential",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data differential [-h] --a-symbol A_SYMBOL\n                             [--a-exchange A_EXCHANGE] [--b-symbol B_SYMBOL]\n                             [--b-exchange B_EXCHANGE] [--b-csv B_CSV]\n                             [--tolerance TOLERANCE] [--output OUTPUT]\n                             [--store STORE]\n\noptions:\n  -h, --help            show this help message and exit\n  --a-symbol A_SYMBOL\n  --a-exchange A_EXCHANGE\n  --b-symbol B_SYMBOL\n  --b-exchange B_EXCHANGE\n  --b-csv B_CSV\n  --tolerance TOLERANCE\n  --output OUTPUT\n  --store STORE\n"
+}

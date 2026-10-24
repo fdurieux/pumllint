@@ -1,0 +1,8 @@
+[[asset]]
+name = "X"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "X.US"
+  start = 2024-02-01
+  end = "20240101"

@@ -1,0 +1,8 @@
+# Synthetic: a bond ETF with dividends and no splits, no declared start.
+[[asset]]
+name = "DIVY"
+asset_class = "bond_etf"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "DIVY.US"

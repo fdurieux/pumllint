@@ -1,0 +1,107 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json",
+   "from": "2024-01-30",
+   "order": "a",
+   "period": "d"
+  },
+  "path": "/api/eod/SPLT.US"
+ },
+ "response": {
+  "json": [
+   {
+    "adjusted_close": 20.895,
+    "close": 147.0,
+    "date": "2024-01-30",
+    "high": 148.47,
+    "low": 144.06,
+    "open": 145.53,
+    "volume": 120000
+   },
+   {
+    "adjusted_close": 20.9447,
+    "close": 147.35,
+    "date": "2024-01-31",
+    "high": 148.82,
+    "low": 144.4,
+    "open": 145.88,
+    "volume": 121000
+   },
+   {
+    "adjusted_close": 20.9945,
+    "close": 21.1,
+    "date": "2024-02-01",
+    "high": 21.31,
+    "low": 20.68,
+    "open": 20.89,
+    "volume": 122000
+   },
+   {
+    "adjusted_close": 21.0442,
+    "close": 21.15,
+    "date": "2024-02-02",
+    "high": 21.36,
+    "low": 20.73,
+    "open": 20.94,
+    "volume": 123000
+   },
+   {
+    "adjusted_close": 21.094,
+    "close": 21.2,
+    "date": "2024-02-05",
+    "high": 21.41,
+    "low": 20.78,
+    "open": 20.99,
+    "volume": 124000
+   },
+   {
+    "adjusted_close": 21.1438,
+    "close": 21.25,
+    "date": "2024-02-06",
+    "high": 21.46,
+    "low": 20.82,
+    "open": 21.04,
+    "volume": 125000
+   },
+   {
+    "adjusted_close": 21.1935,
+    "close": 21.3,
+    "date": "2024-02-07",
+    "high": 21.51,
+    "low": 20.87,
+    "open": 21.09,
+    "volume": 126000
+   },
+   {
+    "adjusted_close": 21.2432,
+    "close": 21.35,
+    "date": "2024-02-08",
+    "high": 21.56,
+    "low": 20.92,
+    "open": 21.14,
+    "volume": 127000
+   },
+   {
+    "adjusted_close": 21.293,
+    "close": 21.4,
+    "date": "2024-02-09",
+    "high": 21.61,
+    "low": 20.97,
+    "open": 21.19,
+    "volume": 128000
+   },
+   {
+    "adjusted_close": 21.3427,
+    "close": 21.45,
+    "date": "2024-02-12",
+    "high": 21.66,
+    "low": 21.02,
+    "open": 21.24,
+    "volume": 129000
+   }
+  ],
+  "status": 200
+ }
+}

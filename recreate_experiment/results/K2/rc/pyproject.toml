@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jef_data_rc"
+version = "0.6.0"
+description = "The data layer: universe, collectors, Parquet store, split adjustment, sync and status"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas==3.0.5",
+    "numpy==2.4.6",
+    "requests==2.34.2",
+    "pyarrow==25.0.1",
+]
+
+[project.scripts]
+jef-data-rc = "jef_data_rc.cli:main"
+
+[tool.setuptools]
+packages = ["jef_data_rc", "jef_data_rc.collectors"]
+
+[tool.setuptools.package-data]
+jef_data_rc = ["universe.toml", "classifications.toml"]

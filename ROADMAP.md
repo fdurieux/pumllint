@@ -211,6 +211,72 @@ them.
   not linted are kept, files absent from disk are deleted); Psalm refuses
   both baseline flags when specific files are named, after #1566 emptied
   a 23,964-entry baseline.
+- [x] **A keyword-named participant loses its messages — FIXED
+  2026-10-22 for 32 of the 47 keywords PlantUML draws as message
+  sources.** `_LIKELY_KEYWORD_SOURCES` in `parser/sequence.py` dropped
+  every message whose source was one of 53 keywords, declared participant
+  or not, so `participant "Plugin packages" as package` then `package ->
+  B : x` lost the message and SEQ002 called B unused: false, and every
+  message rule blind to the line. Found by the groma.md probe, whose ids
+  are file stems (docs/groma-md-evaluation.md §5). Ground truth from the
+  syntax gate's pin, PlantUML 1.2026.6, counting `<g class="message">`
+  over 106 SVGs (53 words, declared and undeclared): **47 words draw a
+  message** from a participant of that name, and six directives win over
+  the arrow (`caption footer header legend mainframe title`). pumllint
+  agreed on 12 of 106. **Fix:** the guard holds the six directives only.
+  Agreement is now 76 of 106, pinned by
+  `test_a_keyword_named_participant_sends_messages` (32 words, both
+  forms) and `test_a_directive_still_wins_over_the_arrow`. No golden,
+  schema or score moved, and no diagram in this repository's 93 names a
+  participant after any of the 53. The same commit escapes the backslash
+  in `parse_file`'s docstring (a `SyntaxWarning` at every fresh compile)
+  and adds `test_package_sources_compile_without_warnings`. Unreleased.
+  *[Released as 0.34.0, 2026-10-22, together with the residual fix below.
+  The release carries everything product-side merged since 0.33.0:
+  - #146: `declared_line`, with SEQ001 naming both lines;
+  - #147: `syntaxGateRan` at the score report's root;
+  - #148: `pumllint schema config`;
+  - #149 and #151: XD001/XD002, SEQ102 and GEN004 read the authored kind;
+  - #152, #153 and #155: `trace --features`;
+  - #164: the DIM-SEM label;
+  - #172 and #173: these parser fixes.
+
+  13 version sites bumped. The pilot report moved in its footer only, and
+  the badge is byte-identical. Golden scores have not moved since 0.33.0.
+  aris2puml's floor stays `pumllint>=0.33`, because nothing in its suite
+  needs a newer rule.]*
+  *Residual, recorded:* 15 words still disagree, because an earlier
+  branch claims the line before the message branch:
+  - the block keywords `alt opt loop par break critical group else box`;
+  - the note starts `note hnote rnote`, in the pre-pass;
+  - `return`;
+  - the directives `autonumber skinparam`.
+
+  PlantUML draws all 15 as messages. Making the parser agree means
+  reordering five places. *Trigger: a diagram, hand-written or a
+  converter's output, naming a participant after one of the fifteen.*
+  *[Fixed 2026-10-22, the same day, on the maintainer's ask; no trigger
+  fired. One predicate, `_keyword_message`, recognises the line before
+  the note pre-pass and the directive, `return` and block branches can
+  claim it, and the message branch became `_parse_message` so it can be
+  reached early. The boundary is PlantUML's arrow rule, measured on 55
+  further edge lines at the pin:
+  - a head (`>`, `<`, `/`, `\`) or an `x`/`o` end makes the line a
+    message: `alt x->y : z`, `loop x-axis`, `alt ->]`;
+  - a bare dash, a dotted body, a `+`/`*`/`!` suffix or a missing target
+    leaves the line to its keyword: `alt -1`, `alt ..> B`, `alt ->+ B`,
+    `group -`.
+
+  Agreement is now 106 of 106 on the keyword files, and 44 of 44 on the
+  edge lines where the jar decides. The other 11 are PlantUML syntax
+  errors, which the gate reports whichever way pumllint reads them. Two
+  failure modes went with it: `group -> B` opened a block nothing closed,
+  and an unlabelled `note -> B` opened a note that swallowed the rest of
+  the diagram. A third went too, outside sequence diagrams: a state named
+  `note` lost its outgoing transitions, because `note --> Idle : go` was
+  read as an inline note. PlantUML draws all three transitions (smetana
+  layout, the pinned jar). Pinned by the 47-word test and three new ones.
+  No golden, schema or score moved.]*
 
 ## Arc B — Trust & adoption (done)
 
@@ -935,6 +1001,40 @@ list and license posture live in § Settled questions.
   no product behavior and queues no build; it is revised in place,
   dated, as waves land. Acceptance was de facto at the 2026-08-06
   merges (PRs #18/#19); recorded here per charter §10.
+  *Dated addition, 2026-10-23 — the program's first round trip, code →
+  kit → code, graded by the original (record:
+  docs/recreate-experiment.md; frozen pre-registration and results:
+  recreate_experiment/PREREGISTRATION.md). Subject: J-F's daily asset
+  load, read as an oracle and never changed. A fresh agent on the code
+  tree alone produced 158 requirements as code, 14 contracts, 8
+  diagrams at Level 5 and 95 scenarios (178/178 on the original, both
+  planted mutants caught); two fresh agents rebuilt from the kit, with
+  and without the diagrams; both matched the original cell for cell on
+  every exported frame, stored series, verdict and exit code. Zero code
+  defects; two spec-defect classes (the unspecified CLI surface, one
+  unspecified refusal path), closed by one code-only revision — the
+  third rebuild passed 197/197 first time. Removing the diagrams
+  changed no behaviour; the post-hoc read found 25 claims in J-F's own
+  Level 5 model set contradicted by its code against 12 in the one-day
+  kit (T-0800 measured). The requirements-as-code gate was
+  `pumllint trace --features` over a JSON inventory and scenario tags,
+  shipped interfaces only. Changes no product behaviour, queues no
+  build; the J-F findings go back as issues on the maintainer's go.*
+  *Same day, the follow-up wave: invariants, DMN with gap analysis,
+  Gherkin `Rule:` blocks and a glossary added to the kit as dated
+  revisions and measured against frozen expectations
+  (recreate_experiment/WAVE2_PREREGISTRATION.md). The decision layer
+  answered the would-it-have-caught-it question — the round-one defect
+  was an untyped outcome, not a gap — and found one unspecified refusal
+  (JDL-163); the kit's suite stands at 257/257 on the original and on
+  the third rebuild. Changes no product behaviour.*
+  *2026-10-24: a fourth rebuild from outside — a different vendor's model,
+  inputs hash-pinned to the kit and the handover alone — passed the data
+  behaviour first time and found the one gap the in-house harness had
+  hidden (the chain's two given externals were named, never shipped) plus
+  nine bookkeeping errors; all corrected in the kit (CHANGES.md revision
+  2026-10-24), 258/258 on the original and the third rebuild. Changes no
+  product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
@@ -995,6 +1095,13 @@ list and license posture live in § Settled questions.
     farthest by scope: requires parsing implementation languages,
     straining the zero-dependency promise. Pull looks like: a user
     asking to gate PRs on model↔code drift.
+    *[Annotated 2026-10-22: groma.md is a named code-side neighbour. Its 22
+    scanners write an element inventory from code as Markdown naming
+    exact files, so the language-parsing cost leaves pumllint's process.
+    It does not do so for interactions: 0 derived relationships on this
+    repository's Python, 18 of 60 on groma's own TypeScript. The join
+    would still be a declared name map, and the frontmatter is YAML
+    (docs/groma-md-evaluation.md §6.2). Trigger unchanged.]*
   - *Oracle quality for AI-generated tests* — strongest external
     evidence (HumanEval+: weak suites overstate AI-code correctness by
     up to 19.3–28.9%), weakest asset fit: nothing here parses test
@@ -1369,6 +1476,21 @@ list and license posture live in § Settled questions.
   has flowed through a pilot pipeline). The scope-threshold rule it
   asked for is written (pilot charter, the phase-4 scope test).
   Triggers unchanged; the census remains the next action.
+  *Annotated 2026-10-23: the maintainer identifies the recommendation
+  as the plan of their own pilot repository, **pumlspec** — PlantUML
+  models as contract-grade specs for AI code generation, with
+  manifest/lockfile provenance; kept separate from pumllint, the only
+  link an early spec for pumllint's output format — and states that
+  **the pilot is on hold**. Nothing here changes: the two recorded
+  candidates stay recorded, not queued, and the portable
+  run-record/manifest trigger stays unfired, since no pilot is
+  stabilising one. One reading from the recreation experiment of the
+  same day (docs/recreate-experiment.md) is left against the pilot's
+  thesis for when it resumes: on a real program the PlantUML models
+  carried names and layout while the decision tables, message strings
+  and boundary examples carried the behaviour, so the contractual tier
+  the plan calls T3 is better served by decision logic and examples
+  beside the models than by the models themselves.*
 
 - **Two-stage external project review (2026-08-11): evaluated — the
   most accurate external assessment this repository has received; both
@@ -7641,5 +7763,141 @@ list and license posture live in § Settled questions.
     unchanged. The first, a model set beyond one in-memory batch, is the
     one a Neo4j-resident corpus would most plausibly fire, and none is
     named.
+
+  *Docs only: no product code, golden, schema or score moved.*
+
+- **groma.md, a live C4 map scanned from code (2026-10-22): nothing to
+  adopt and nothing to build; no quadrant criterion moves; the probe
+  found a parser defect, fixed in the same PR. Nothing queued, no
+  checkbox.** Asked: investigate github.com/MrLesk/groma.md. Could it be
+  used with pumllint; would it bring benefits, solve problems, improve the
+  quadrant position? A SWOT. Full record:
+  [docs/groma-md-evaluation.md](docs/groma-md-evaluation.md). groma.md
+  0.7.2 (npm) and `@groma/scanner-python` 0.2.3 were executed on a scratch
+  clone at `64007cb`, never the working tree, because `init` appends a
+  managed block to `CLAUDE.md`. Its source was read at `4f7ffac` (v0.7.6),
+  and the syntax gate ran at the pinned 1.2026.6.
+  - *What it is.* A CLI with a browser map and a terminal map. 22
+    deterministic scanners produce a first C4 model of the code, and
+    people or agents curate it. One OKF v0.2 Markdown document per
+    element. Relationship tables have exact-file endpoints. A
+    contract that refuses an empty relationship Description or
+    Technology, an unresolvable flow step, or a broken containment.
+    `groma lint`: one rule, duplicate logic in source code. **No
+    diagram-language output of any kind.** MIT, 87 days old, 99.0% of
+    1,082 commits by one author (Backlog.md's). 311 stars, 5,152 npm
+    downloads a month.
+  - *On this repository.* The first scan writes nothing: 15 recorded
+    generation outputs under `stack_experiment/results/` are not valid
+    Python, and one `SyntaxError` fails the whole scanner. With those
+    directories excluded: 1 system, 24 entry-point containers, 69
+    components, 35 of the product's modules with no container, and **0
+    relationships** (`PYTHON_SYNTAX_ONLY`). An inventory, until curated.
+  - *At its best*, its own model: 134 documents, 6 flows, 60 relationship
+    rows of which **42 are authored** and 18 derived, and technology on 4
+    of 115 components.
+  - *Reading 1, producer through a converter: works, low yield.* The
+    probe projects 11 files from that model, all grammar-valid:
+    - C4 component views: `unknown`, 0 elements, **Level 1**, the
+      2026-07-27 prediction confirmed a third time;
+    - flows at default: **Level 4, 100/100, zero findings**. That is
+      prevention, not quality: groma refused every defect a sequence
+      rule would catch;
+    - flows under codegen: **Level 2**, SEQ102/103/104 ×23 each, because
+      a flow step is narrative by contract;
+    - a snake_case alias rule trips GEN004 ×29, the generated-artefact
+      principle's third instance: a converter's choice, cited, not
+      re-derived.
+
+    The shape is the graph-store record's converter, in its own
+    repository. *Recorded, not queued. Trigger: an adopter keeping
+    architecture in groma who asks for the gate. Projections are not
+    hand-written C4, so the C4 census trigger is untouched.*
+  - *Reading 2, code side of diagram↔code conformance: cost down for
+    inventory, not for interactions.* The 2026-07-26 bullet is annotated
+    in place. Trigger unchanged.
+  - *Reading 3, substitute.* "Store architecture, not diagrams" is the C4
+    method's own stance, with the model kept live from code. It presses on hand-written C4,
+    which pumllint does not gate (pack census-gated, 0 of 39), and not on
+    the five parsed types, XD or the maturity layer. The agent loop
+    (curating OKF Markdown, riding Backlog.md's reach) is the larger
+    pressure, and at 87 days it is a direction, not a measurement.
+  - *Open problems.* None of the 17 gates fires.
+  - *Quadrant.* Not a dot: the inclusion rule fails twice (not a checker;
+    a non-diagram artefact), and docs/positioning-quadrant.md §2 is
+    annotated. pumllint's eight criteria do not move: vision is
+    saturated at 19, and E1/E2 are "earned, not written". Illustratively,
+    on its checking layer it would score Vision 7 / Execute 7, among the
+    Niche Players. It is **the fourth C4-capable validator that does not
+    grade**.
+  - *The yield: the parser defect* (Arc A, 2026-10-22). Messages from a
+    participant named after a PlantUML keyword were dropped, and SEQ002
+    then reported the receiver as unused. Fixed for 32 of the 47 words
+    the jar draws as message sources, from 12 of 106 to 76 of 106
+    agreement. 15 words are recorded as a residual *(fixed the same day:
+    106 of 106, Arc A)*. The commit also
+    carries the docstring escape and its compile guard. 739/739 stdlib,
+    877 pytest; no golden, schema or score moved.
+  - *Never build*, in this question's vocabulary:
+    - an OKF or groma reader inside pumllint;
+    - a groma-specific profile or recognizer;
+    - rules over OKF Markdown.
+  - *Re-litigate on:*
+    - an adopter keeping architecture in groma and asking for the gate;
+    - the model↔code drift ask (unchanged);
+    - groma shipping a PlantUML export;
+    - groma's `lint` growing architecture rules *and* a grade;
+    - groma observed as an adoption channel in an adopter's repository.
+  - *Priorities unchanged.* The critical path stays aris2puml A1b → A4.
+    Open checkboxes stay at 17, all gated.
+
+  *Product code moved: the parser fix and its tests (Arc A). Otherwise
+  docs.*
+
+- **groma.md's diagram visualisation (2026-10-22): no capability to
+  adopt, nothing queued, no quadrant move; one shape recorded.** Asked:
+  evaluate the relevance, for pumllint, of the visualisation of diagrams
+  as done in groma. Full record:
+  [docs/groma-visualisation-evaluation.md](docs/groma-visualisation-evaluation.md).
+  It narrows the same-day groma.md note, whose bounds had the web viewer
+  "characterized from documentation, not run". `groma export` (0.7.2)
+  ran twice on groma's own model at `4f7ffac` and was opened in
+  Chromium; findings were joined to PlantUML 1.2026.6 SVGs of the 14
+  `examples/` files (Smetana; no Graphviz in the container).
+  - *What it draws.* One computed sheet (iso, 2D, layers) that no viewer
+    may re-lay out; flows lit over the standing structure; ghosts;
+    revision comparison; social covers; task pins. The export is an 11 MB
+    JS application. Its layout is deterministic, but it is not
+    byte-stable: a generation stamp and millisecond timings differ
+    between runs. pumllint's HTML report is 22.6 KB, has no scripts and
+    is byte-stable.
+  - *Reading.* groma's map is its renderer, because groma has no diagram
+    language ("Store architecture, not diagrams"). pumllint's picture is
+    PlantUML's, and the project "has never needed to know which engine
+    drew the picture". Each of the eight devices was matched to
+    pumllint's nearest surface. Seven are irrelevant, inverse
+    (one-model identity against XD's checked joins) or a different object
+    (a model diff against a score diff). The first note's readings stand:
+    substitution confirmed, not widened. The converter could read the
+    export's JSON instead of the Markdown, which changes its input, not
+    its shape or trigger.
+  - *The one transferable idea: findings on the picture.* PlantUML's SVG
+    carries a 0-based `data-source-line` on sequence messages and
+    participants and on class, state and use-case entities. Links carry
+    entity ids only, and activity diagrams carry nothing. On the
+    examples: of **66 findings, 10 land on a drawn element**. 40 are
+    diagram-level (line 1). 16 have no element: blocks, activations,
+    members, links, and **all 6 activity findings**. Remaining joins would
+    be name joins, and `Violation` has no element field.
+    *Recorded, not queued:* if an architect asks to see findings on the
+    picture, the shape is aris2puml's `--diagnose`. Emit an annotated
+    `.puml` (coloured lines, findings as notes) from the fixer's line
+    edits and let PlantUML draw it; SVG overlay comes second.
+  - *Never build*, in this question's vocabulary: a renderer, layout
+    engine or interactive map inside pumllint; scripts in the HTML report,
+    or a report that is not byte-stable; a viewer for another tool's model.
+  - *Annotated in place:* the groma.md note's bounds sentence.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated; the
+    critical path stays aris2puml A1b → A4.
 
   *Docs only: no product code, golden, schema or score moved.*

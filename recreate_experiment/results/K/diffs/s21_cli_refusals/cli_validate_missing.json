@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "validate",
+  "<inputs>/no-such.csv"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/home/user/.rc-k-venv/bin/jef-data-rc\", line 10, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K/out/jef_data_rc/cli.py\", line 314, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K/out/jef_data_rc/cli.py\", line 130, in cmd_validate\n    frame = pd.read_csv(args.csv)\n            ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k-venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py\", line 873, in read_csv\n    return _read(filepath_or_buffer, kwds)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k-venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py\", line 300, in _read\n    parser = TextFileReader(filepath_or_buffer, **kwds)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k-venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py\", line 1645, in __init__\n    self._engine = self._make_engine(f, self.engine)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/.rc-k-venv/lib/python3.12/site-packages/pandas/io/parsers/readers.py\", line 1904, in _make_engine\n    self.handles = get_handle(\n                   ^^^^^^^^^^^\n  File \"/home/user/.rc-k-venv/lib/python3.12/site-packages/pandas/io/common.py\", line 930, in get_handle\n    handle = open(\n             ^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '<inputs>/no-such.csv'\n",
+ "stdout": ""
+}

@@ -1,0 +1,18 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json"
+  },
+  "path": "/api/splits/SPLT.US"
+ },
+ "response": {
+  "json": [
+   {
+    "date": "2024-01-17",
+    "split": "0/1"
+   }
+  ],
+  "status": 200
+ }
+}

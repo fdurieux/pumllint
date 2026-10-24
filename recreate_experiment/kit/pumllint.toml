@@ -1,0 +1,11 @@
+# pumllint configuration for the kit's diagrams (run from the kit directory).
+profile = "codegen"
+
+[rules.requirement-link]
+pattern = 'JDL-\d{3}'
+
+# The data model is one class diagram by request (stores, collectors and
+# transports, universe objects, reports and errors together); it holds 70
+# elements, so the cap is raised for it rather than splitting the model.
+[rules.max-elements]
+max = 80

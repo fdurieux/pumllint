@@ -21,6 +21,13 @@ pre-registered demand scan. Two genuinely new candidates are recorded,
 nothing is queued, no build trigger fires.** The decision record lives
 in ROADMAP.md § Settled questions; this note is the evidence behind it.*
 
+*Annotated 2026-10-23: the maintainer identifies the recommendation
+evaluated here as the plan of their own pilot repository, pumlspec, and
+states that the pilot is on hold. The verdict, the two recorded
+candidates and their triggers are unchanged; see the ROADMAP entry of
+this date for the one reading the recreation experiment leaves against
+the pilot's thesis.*
+
 ## Why this evaluation ran
 
 Same reason as the spec-stack evaluation (2026-07-29): externally

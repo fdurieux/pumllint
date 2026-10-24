@@ -188,6 +188,33 @@ but they are a useful cross-check that no audience was forgotten.
   generated-artefact problem in the series: nothing malfunctions, the
   findings are *true*, and their only fix is upstream where Structurizr's
   own `inspect` already runs.
+- [groma.md and pumllint — a live C4 map from code, evaluated](groma-md-evaluation.md)
+  — dated evaluation (2026-10-22) of a three-month-old tool that scans
+  code into a C4 model stored as OKF Markdown in Git, and keeps it live
+  for people and agents to curate. Verdict: nothing to adopt or build,
+  and no quadrant criterion moves.
+  - **A neighbour, not a part.** It emits no diagram language. On this
+    repository's Python its first scan derives zero relationships.
+  - **Projected onto PlantUML by a probe**, its curated model gives C4
+    views at Level 1 (the C4 settlement's prediction) and flows at Level
+    4 with zero findings. That is prevention, not quality: groma's
+    contract refused the defects first. Under codegen the flows score
+    Level 2, because a flow step is prose by design.
+  - **The conformance cost moves for inventory, not for interactions**,
+    and the trigger has not fired.
+  - **The yield is a parser defect it surfaced**: a message from a
+    participant named after a PlantUML keyword was dropped. It is fixed
+    in the same PR for 32 of the 47 keywords the pinned jar draws as
+    message sources, and for the other 15 the same day.
+- [groma.md's diagram visualisation and pumllint, evaluated](groma-visualisation-evaluation.md)
+  — dated evaluation (2026-10-22) narrowing the groma.md note to its
+  browser map, whose static export was run on groma's own model. Verdict:
+  no capability to adopt and nothing queued. groma's map is its renderer,
+  because groma has no diagram language; pumllint's picture is
+  PlantUML's. The one transferable idea, showing which drawn element a
+  finding is about, reaches 10 of 66 findings through PlantUML's SVG
+  (none on activity diagrams). Its recorded shape is aris2puml's
+  `--diagnose` precedent: emit `.puml` and let PlantUML draw it.
 - [The Ilograph ecosystem, evaluated](ilograph-ecosystem-evaluation.md)
   — dated evaluation (2026-08-27), ninth in the series and the cleanest
   refusal: not a diagram notation (a model+perspectives format for an
@@ -1051,3 +1078,16 @@ but they are a useful cross-check that no audience was forgotten.
   downstream — the gating pattern the pipeline already trusts for code,
   containers and infrastructure, argued back to the design artefact they
   all descend from.
+
+- [recreate-experiment.md](recreate-experiment.md) — dated experiment
+  record (2026-10-23): the research program's first round trip, code →
+  specification kit → code, graded by the original. A fresh agent
+  reverse-engineered J-F's daily asset load (≈ 3 500 lines) from its code
+  alone into requirements as code, contracts, UML and Gherkin; two more
+  rebuilt it from the kit, with and without the diagrams; a third from
+  the kit revised once. Every exported frame, stored series, health
+  verdict and exit code matched the original cell for cell in all three
+  arms; the divergences were the unspecified command-line surface,
+  closed in one revision. Removing the diagrams changed no behaviour.
+  Lab machinery, kit, recreations and the frozen pre-registration:
+  `recreate_experiment/`.

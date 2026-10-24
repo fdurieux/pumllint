@@ -1,0 +1,1298 @@
+{
+ "JDL-001": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe, universe_text, _TOP_KEYS",
+  "lines": "35-238",
+  "ranges": "35-35,209-238",
+  "basis": "both",
+  "key": "uni-file"
+ },
+ "JDL-002": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe",
+  "lines": "239-247",
+  "ranges": "239-247",
+  "basis": "logic",
+  "key": "uni-defaults"
+ },
+ "JDL-003": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_asset, _ASSET_KEYS",
+  "lines": "37-170",
+  "ranges": "37-38,146-170",
+  "basis": "logic",
+  "key": "uni-asset-keys"
+ },
+ "JDL-004": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "ASSET_TYPE_BY_CLASS",
+  "lines": "26-27",
+  "ranges": "26-27",
+  "basis": "both",
+  "key": "uni-class-map"
+ },
+ "JDL-005": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_asset",
+  "lines": "10-162",
+  "ranges": "159-162,10-15",
+  "basis": "both",
+  "key": "uni-threshold"
+ },
+ "JDL-006": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_source, _SOURCE_KEYS, PROVIDERS",
+  "lines": "28-128",
+  "ranges": "28-28,39-40,89-128",
+  "basis": "logic",
+  "key": "uni-source-keys"
+ },
+ "JDL-007": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "DEFAULT_EXCHANGE_TAG, _parse_source",
+  "lines": "29-121",
+  "ranges": "29-32,120-121",
+  "basis": "both",
+  "key": "uni-exchange-tag"
+ },
+ "JDL-008": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_iso_date",
+  "lines": "74-86",
+  "ranges": "74-86",
+  "basis": "logic",
+  "key": "uni-dates"
+ },
+ "JDL-009": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_source",
+  "lines": "129-142",
+  "ranges": "129-142",
+  "basis": "logic",
+  "key": "uni-csv-source"
+ },
+ "JDL-010": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_asset",
+  "lines": "171-197",
+  "ranges": "171-197",
+  "basis": "both",
+  "key": "uni-modeled"
+ },
+ "JDL-011": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_source, _parse_asset",
+  "lines": "115-206",
+  "ranges": "115-143,198-206",
+  "basis": "logic",
+  "key": "uni-normalised"
+ },
+ "JDL-012": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe, _parse_asset, _parse_source",
+  "lines": "89-268",
+  "ranges": "89-143,146-197,232-268",
+  "basis": "logic",
+  "key": "uni-check-order"
+ },
+ "JDL-013": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe",
+  "lines": "233-236",
+  "ranges": "233-236",
+  "basis": "logic",
+  "key": "uni-err-toml"
+ },
+ "JDL-014": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_check_keys",
+  "lines": "47-52",
+  "ranges": "47-52",
+  "basis": "logic",
+  "key": "uni-err-unknown-key"
+ },
+ "JDL-015": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe, _parse_asset, _parse_source",
+  "lines": "91-251",
+  "ranges": "91-92,148-149,166-167,240-241,249-251",
+  "basis": "logic",
+  "key": "uni-err-shape"
+ },
+ "JDL-016": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_string, _flag, _iso_date, _parse_source, _parse_asset",
+  "lines": "55-162",
+  "ranges": "55-86,111-114,159-162",
+  "basis": "logic",
+  "key": "uni-err-values"
+ },
+ "JDL-017": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_asset, _parse_source",
+  "lines": "95-158",
+  "ranges": "95-103,153-158",
+  "basis": "logic",
+  "key": "uni-err-enums"
+ },
+ "JDL-018": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_source",
+  "lines": "105-110",
+  "ranges": "105-110",
+  "basis": "both",
+  "key": "uni-err-eodhd-symbol"
+ },
+ "JDL-019": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_source",
+  "lines": "131-141",
+  "ranges": "131-141",
+  "basis": "logic",
+  "key": "uni-err-windows"
+ },
+ "JDL-020": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "_parse_asset",
+  "lines": "175-197",
+  "ranges": "175-197",
+  "basis": "logic",
+  "key": "uni-err-modeled"
+ },
+ "JDL-021": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "load_universe",
+  "lines": "254-268",
+  "ranges": "254-268",
+  "basis": "logic",
+  "key": "uni-err-duplicates"
+ },
+ "JDL-022": {
+  "file": "src/jef/data/universe.py",
+  "symbol": "universe_text",
+  "lines": "220-221",
+  "ranges": "220-221",
+  "basis": "logic",
+  "key": "uni-err-missing-file"
+ },
+ "JDL-023": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "HttpTransport, TransportResponse, RateLimiter",
+  "lines": "16-144",
+  "ranges": "16-21,49-56,86-144",
+  "basis": "both",
+  "key": "col-transport"
+ },
+ "JDL-024": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "request_key, public_params, SECRET_PARAMS",
+  "lines": "34-75",
+  "ranges": "34-34,65-75",
+  "basis": "both",
+  "key": "col-fixture-key"
+ },
+ "JDL-025": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "fixture_filename, RecordingTransport",
+  "lines": "78-222",
+  "ranges": "78-83,185-222",
+  "basis": "logic",
+  "key": "col-fixture-file"
+ },
+ "JDL-026": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "ReplayTransport",
+  "lines": "147-182",
+  "ranges": "147-182",
+  "basis": "both",
+  "key": "col-replay"
+ },
+ "JDL-027": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "BaseCollector.get_json",
+  "lines": "235-266",
+  "ranges": "235-266",
+  "basis": "both",
+  "key": "col-retry"
+ },
+ "JDL-028": {
+  "file": "src/jef/data/collectors/base.py",
+  "symbol": "BaseCollector.get_json, redact",
+  "lines": "58-279",
+  "ranges": "58-62,244-279",
+  "basis": "logic",
+  "key": "col-errors"
+ },
+ "JDL-029": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "EODHDCollector._get, get_eod, get_splits, get_dividends, DEFAULT_BASE_URL",
+  "lines": "25-131",
+  "ranges": "25-25,86-131",
+  "basis": "both",
+  "key": "col-eodhd-endpoints"
+ },
+ "JDL-030": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "EODHDCollector.__init__",
+  "lines": "72-84",
+  "ranges": "72-84",
+  "basis": "both",
+  "key": "col-eodhd-key"
+ },
+ "JDL-031": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "normalize_symbol, CRYPTO_QUOTES, FIAT_CURRENCIES",
+  "lines": "37-61",
+  "ranges": "37-61",
+  "basis": "both",
+  "key": "col-symbol"
+ },
+ "JDL-032": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "EODHDCollector.get_eod",
+  "lines": "91-109",
+  "ranges": "91-109",
+  "basis": "both",
+  "key": "col-eodhd-bars"
+ },
+ "JDL-033": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "parse_split_ratio, SplitEvent.from_provider; eodhd get_splits",
+  "lines": "30-54",
+  "ranges": "30-54",
+  "basis": "both",
+  "key": "col-splits"
+ },
+ "JDL-034": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "EODHDCollector.get_dividends",
+  "lines": "122-131",
+  "ranges": "122-131",
+  "basis": "both",
+  "key": "col-dividends"
+ },
+ "JDL-035": {
+  "file": "src/jef/data/collectors/eodhd.py",
+  "symbol": "EODHDCollector.VOLUME_BASIS; base BaseCollector.VOLUME_BASIS",
+  "lines": "66-70",
+  "ranges": "66-70",
+  "basis": "both",
+  "key": "col-volume-basis"
+ },
+ "JDL-036": {
+  "file": "src/jef/data/collectors/binance.py",
+  "symbol": "BinanceCollector",
+  "lines": "23-63",
+  "ranges": "23-63",
+  "basis": "both",
+  "key": "col-binance-endpoint"
+ },
+ "JDL-037": {
+  "file": "src/jef/data/collectors/binance.py",
+  "symbol": "_date_to_ms, get_eod",
+  "lines": "27-45",
+  "ranges": "27-45",
+  "basis": "logic",
+  "key": "col-binance-window"
+ },
+ "JDL-038": {
+  "file": "src/jef/data/collectors/binance.py",
+  "symbol": "get_eod.fetch_page; base BaseCollector.paginate",
+  "lines": "47-66",
+  "ranges": "47-66",
+  "basis": "both",
+  "key": "col-binance-pages"
+ },
+ "JDL-039": {
+  "file": "src/jef/data/collectors/binance.py",
+  "symbol": "get_eod",
+  "lines": "65-82",
+  "ranges": "65-82",
+  "basis": "both",
+  "key": "col-binance-bars"
+ },
+ "JDL-040": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "CorporateActionsStore._path, _save",
+  "lines": "6-77",
+  "ranges": "6-12,61-77",
+  "basis": "both",
+  "key": "act-layout"
+ },
+ "JDL-041": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "save_splits, load_splits",
+  "lines": "87-102",
+  "ranges": "87-102",
+  "basis": "logic",
+  "key": "act-split-items"
+ },
+ "JDL-042": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "sync_actions, _save",
+  "lines": "65-183",
+  "ranges": "65-77,172-183",
+  "basis": "both",
+  "key": "act-sync"
+ },
+ "JDL-043": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "_utc_now_iso, _save; sync._run_leg calls sync_actions without now",
+  "lines": "25-69",
+  "ranges": "25-27,69-69",
+  "basis": "logic",
+  "key": "act-stamp"
+ },
+ "JDL-044": {
+  "file": "src/jef/data/actions.py",
+  "symbol": "_load, last_updated",
+  "lines": "79-119",
+  "ranges": "79-84,113-119",
+  "basis": "both",
+  "key": "act-absent"
+ },
+ "JDL-045": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "cumulative_split_factors",
+  "lines": "45-63",
+  "ranges": "45-63",
+  "basis": "both",
+  "key": "adj-factor"
+ },
+ "JDL-046": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "module docstring, cumulative_split_factors",
+  "lines": "9-62",
+  "ranges": "9-12,62-62",
+  "basis": "both",
+  "key": "adj-on-date"
+ },
+ "JDL-047": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "adjust",
+  "lines": "89-97",
+  "ranges": "89-97",
+  "basis": "both",
+  "key": "adj-prices"
+ },
+ "JDL-048": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "adjust",
+  "lines": "92-93",
+  "ranges": "92-93",
+  "basis": "both",
+  "key": "adj-volume"
+ },
+ "JDL-049": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "module docstring, adjust",
+  "lines": "14-97",
+  "ranges": "14-25,66-97",
+  "basis": "both",
+  "key": "adj-pure"
+ },
+ "JDL-050": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "module docstring; actions module docstring",
+  "lines": "9-11",
+  "ranges": "9-11",
+  "basis": "both",
+  "key": "adj-dividends"
+ },
+ "JDL-051": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "adjust",
+  "lines": "74-81",
+  "ranges": "74-81",
+  "basis": "both",
+  "key": "adj-refuse-basis"
+ },
+ "JDL-052": {
+  "file": "src/jef/data/adjust.py",
+  "symbol": "cumulative_split_factors, adjust",
+  "lines": "57-87",
+  "ranges": "57-61,82-87",
+  "basis": "logic",
+  "key": "adj-refuse-ratio"
+ },
+ "JDL-053": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg (basis branch, binance branch); store.ingest_yahoo_csv",
+  "lines": "191-234",
+  "ranges": "191-234",
+  "basis": "both",
+  "key": "adj-basis-table"
+ },
+ "JDL-054": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_frame_from_bars",
+  "lines": "301-329",
+  "ranges": "301-329",
+  "basis": "both",
+  "key": "adj-volume-rawize"
+ },
+ "JDL-055": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_frame_from_bars",
+  "lines": "308-331",
+  "ranges": "308-311,330-331",
+  "basis": "both",
+  "key": "adj-preadjusted"
+ },
+ "JDL-056": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_frame_from_bars",
+  "lines": "312-316",
+  "ranges": "312-316",
+  "basis": "both",
+  "key": "adj-adjusted-close"
+ },
+ "JDL-057": {
+  "file": "src/jef/data/store.py",
+  "symbol": "ParquetStore._symbol_dir, _year_file, _locked, _write_frame",
+  "lines": "3-256",
+  "ranges": "3-6,107-113,177-182,256-256",
+  "basis": "both",
+  "key": "st-layout"
+ },
+ "JDL-058": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_locked, _sweep_tmp, _write_frame, LOCK_POLL_SECONDS",
+  "lines": "23-263",
+  "ranges": "23-32,49-49,167-199,227-263",
+  "basis": "both",
+  "key": "st-atomic"
+ },
+ "JDL-059": {
+  "file": "src/jef/data/store.py",
+  "symbol": "SCHEMA, COLUMNS",
+  "lines": "57-82",
+  "ranges": "57-82",
+  "basis": "both",
+  "key": "st-schema"
+ },
+ "JDL-060": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_utc_midnight_ms, _frame_from_bars",
+  "lines": "89-307",
+  "ranges": "89-95,303-307",
+  "basis": "logic",
+  "key": "st-timestamp"
+ },
+ "JDL-061": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_utc_midnight_ms",
+  "lines": "91-94",
+  "ranges": "91-94",
+  "basis": "logic",
+  "key": "st-bad-dates"
+ },
+ "JDL-062": {
+  "file": "src/jef/data/store.py",
+  "symbol": "_frame_from_bars",
+  "lines": "317-322",
+  "ranges": "317-322",
+  "basis": "logic",
+  "key": "st-string-cols"
+ },
+ "JDL-063": {
+  "file": "src/jef/data/store.py",
+  "symbol": "load, _normalize",
+  "lines": "121-164",
+  "ranges": "121-127,160-164",
+  "basis": "both",
+  "key": "st-read"
+ },
+ "JDL-064": {
+  "file": "src/jef/data/store.py",
+  "symbol": "latest_date, recent_dates",
+  "lines": "129-158",
+  "ranges": "129-158",
+  "basis": "both",
+  "key": "st-latest"
+ },
+ "JDL-065": {
+  "file": "src/jef/data/store.py",
+  "symbol": "reconcile_bars, RECONCILE_COLUMNS",
+  "lines": "51-388",
+  "ranges": "51-55,334-388",
+  "basis": "both",
+  "key": "st-reconcile"
+ },
+ "JDL-066": {
+  "file": "src/jef/data/store.py",
+  "symbol": "reconcile_bars docstring",
+  "lines": "343-346",
+  "ranges": "343-346",
+  "basis": "both",
+  "key": "st-reconcile-window"
+ },
+ "JDL-067": {
+  "file": "src/jef/data/store.py",
+  "symbol": "reconcile_bars",
+  "lines": "364-376",
+  "ranges": "364-376",
+  "basis": "logic",
+  "key": "st-revisions"
+ },
+ "JDL-068": {
+  "file": "src/jef/data/store.py",
+  "symbol": "reconcile_bars",
+  "lines": "351-388",
+  "ranges": "351-388",
+  "basis": "logic",
+  "key": "st-reconcile-count"
+ },
+ "JDL-069": {
+  "file": "src/jef/data/store.py",
+  "symbol": "reapply_adjustment",
+  "lines": "413-428",
+  "ranges": "413-428",
+  "basis": "both",
+  "key": "st-reapply"
+ },
+ "JDL-070": {
+  "file": "src/jef/data/store.py",
+  "symbol": "ingest_yahoo_csv, save",
+  "lines": "201-410",
+  "ranges": "390-410,201-225",
+  "basis": "both",
+  "key": "st-csv-import"
+ },
+ "JDL-071": {
+  "file": "src/jef/data/store.py",
+  "symbol": "to_contract_frame",
+  "lines": "431-456",
+  "ranges": "431-456",
+  "basis": "both",
+  "key": "seam-export"
+ },
+ "JDL-072": {
+  "file": "src/jef/data/store.py",
+  "symbol": "to_contract_frame",
+  "lines": "438-447",
+  "ranges": "438-447",
+  "basis": "both",
+  "key": "seam-volume-dtype"
+ },
+ "JDL-073": {
+  "file": "src/jef/data/store.py",
+  "symbol": "to_contract_frame",
+  "lines": "434-436",
+  "ranges": "434-436",
+  "basis": "both",
+  "key": "seam-no-drop"
+ },
+ "JDL-074": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "module docstring; validate notes; store.to_contract_frame docstring; health docstrings",
+  "lines": "11-118",
+  "ranges": "11-16,67-72,111-118",
+  "basis": "prose",
+  "key": "seam-load-policy"
+ },
+ "JDL-075": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_export",
+  "lines": "202-211",
+  "ranges": "202-211",
+  "basis": "logic",
+  "key": "seam-csv"
+ },
+ "JDL-076": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "validate",
+  "lines": "62-72",
+  "ranges": "62-72",
+  "basis": "logic",
+  "key": "val-shape"
+ },
+ "JDL-077": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "validate",
+  "lines": "74-101",
+  "ranges": "74-82,101-101",
+  "basis": "logic",
+  "key": "val-numeric"
+ },
+ "JDL-078": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "validate",
+  "lines": "84-99",
+  "ranges": "84-99",
+  "basis": "logic",
+  "key": "val-dates"
+ },
+ "JDL-079": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "validate",
+  "lines": "101-132",
+  "ranges": "101-132",
+  "basis": "logic",
+  "key": "val-values"
+ },
+ "JDL-080": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "RECOMMENDED_MIN_ROWS",
+  "lines": "29-31",
+  "ranges": "29-31",
+  "basis": "both",
+  "key": "val-min-rows"
+ },
+ "JDL-081": {
+  "file": "src/jef/data/contract.py",
+  "symbol": "ContractReport",
+  "lines": "38-55",
+  "ranges": "38-55",
+  "basis": "logic",
+  "key": "val-render"
+ },
+ "JDL-082": {
+  "file": "src/jef/data/differential.py",
+  "symbol": "differential_report",
+  "lines": "30-60",
+  "ranges": "30-60",
+  "basis": "both",
+  "key": "diff-arith"
+ },
+ "JDL-083": {
+  "file": "src/jef/data/differential.py",
+  "symbol": "differential_report",
+  "lines": "38-82",
+  "ranges": "38-82",
+  "basis": "logic",
+  "key": "diff-report"
+ },
+ "JDL-084": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "select_legs",
+  "lines": "65-116",
+  "ranges": "65-116",
+  "basis": "both",
+  "key": "sync-legs"
+ },
+ "JDL-085": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "select_legs",
+  "lines": "71-115",
+  "ranges": "71-80,114-115",
+  "basis": "both",
+  "key": "sync-filter-errors"
+ },
+ "JDL-086": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "select_legs",
+  "lines": "101-113",
+  "ranges": "101-113",
+  "basis": "both",
+  "key": "sync-actions-eligible"
+ },
+ "JDL-087": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync",
+  "lines": "347-348",
+  "ranges": "347-348",
+  "basis": "both",
+  "key": "sync-tail"
+ },
+ "JDL-088": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync",
+  "lines": "349-350",
+  "ranges": "349-350",
+  "basis": "both",
+  "key": "sync-clock"
+ },
+ "JDL-089": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync; cli.cmd_status",
+  "lines": "351-351",
+  "ranges": "351-351",
+  "basis": "both",
+  "key": "sync-store-default"
+ },
+ "JDL-090": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "187-264",
+  "ranges": "187-264",
+  "basis": "both",
+  "key": "sync-order"
+ },
+ "JDL-091": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "205-231",
+  "ranges": "205-231",
+  "basis": "both",
+  "key": "sync-gate"
+ },
+ "JDL-092": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "190-264",
+  "ranges": "190-190,232-232,260-264",
+  "basis": "logic",
+  "key": "sync-splits-used"
+ },
+ "JDL-093": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_window",
+  "lines": "119-153",
+  "ranges": "119-153",
+  "basis": "both",
+  "key": "sync-window-start"
+ },
+ "JDL-094": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_window",
+  "lines": "146-149",
+  "ranges": "146-149",
+  "basis": "both",
+  "key": "sync-window-end"
+ },
+ "JDL-095": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "236-248",
+  "ranges": "236-248",
+  "basis": "both",
+  "key": "sync-inverted"
+ },
+ "JDL-096": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "249-259",
+  "ranges": "249-259",
+  "basis": "both",
+  "key": "sync-page-limit"
+ },
+ "JDL-097": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "265-275",
+  "ranges": "265-275",
+  "basis": "both",
+  "key": "sync-reapply"
+ },
+ "JDL-098": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "189-282",
+  "ranges": "189-282",
+  "basis": "both",
+  "key": "sync-detail"
+ },
+ "JDL-099": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "180-185",
+  "ranges": "180-185",
+  "basis": "both",
+  "key": "sync-csv-leg"
+ },
+ "JDL-100": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_run_leg",
+  "lines": "233-234",
+  "ranges": "233-234",
+  "basis": "both",
+  "key": "sync-binance-leg"
+ },
+ "JDL-101": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync",
+  "lines": "378-406",
+  "ranges": "378-406",
+  "basis": "both",
+  "key": "sync-containment"
+ },
+ "JDL-102": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync.get_collector",
+  "lines": "362-403",
+  "ranges": "362-403",
+  "basis": "both",
+  "key": "sync-collectors"
+ },
+ "JDL-103": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync",
+  "lines": "381-407",
+  "ranges": "381-407",
+  "basis": "both",
+  "key": "sync-log"
+ },
+ "JDL-104": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "run_sync",
+  "lines": "356-360",
+  "ranges": "356-360",
+  "basis": "both",
+  "key": "sync-dry-run"
+ },
+ "JDL-105": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "_describe_plan",
+  "lines": "156-173",
+  "ranges": "156-173",
+  "basis": "logic",
+  "key": "sync-plan"
+ },
+ "JDL-106": {
+  "file": "src/jef/data/sync.py",
+  "symbol": "sync_summary",
+  "lines": "285-320",
+  "ranges": "285-320",
+  "basis": "both",
+  "key": "sync-summary"
+ },
+ "JDL-107": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_status; health.multi_feed_legs, check_cross_venue",
+  "lines": "283-301",
+  "ranges": "283-301",
+  "basis": "both",
+  "key": "stat-legs"
+ },
+ "JDL-108": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "272-273",
+  "ranges": "272-273",
+  "basis": "both",
+  "key": "stat-clock"
+ },
+ "JDL-109": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "275-330",
+  "ranges": "275-330",
+  "basis": "logic",
+  "key": "stat-report-shape"
+ },
+ "JDL-110": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "278-385",
+  "ranges": "278-385",
+  "basis": "logic",
+  "key": "stat-checks-order"
+ },
+ "JDL-111": {
+  "file": "src/jef/data/health.py",
+  "symbol": "_check_declared_class",
+  "lines": "227-257",
+  "ranges": "227-257",
+  "basis": "both",
+  "key": "stat-class-check"
+ },
+ "JDL-112": {
+  "file": "src/jef/data/classification.py",
+  "symbol": "compare, VENDOR_TYPE_TO_ASSET_TYPE, AMBIGUOUS_VENDOR_TYPES",
+  "lines": "38-211",
+  "ranges": "38-60,173-211",
+  "basis": "both",
+  "key": "stat-class-verdicts"
+ },
+ "JDL-113": {
+  "file": "src/jef/data/classification.py",
+  "symbol": "load_classifications, _parse_instrument, classifications_text",
+  "lines": "62-170",
+  "ranges": "62-170",
+  "basis": "both",
+  "key": "cls-file"
+ },
+ "JDL-114": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "280-284",
+  "ranges": "280-284",
+  "basis": "both",
+  "key": "stat-never-filled"
+ },
+ "JDL-115": {
+  "file": "src/jef/data/health.py",
+  "symbol": "expected_sessions_between, WEEKDAY_TYPES",
+  "lines": "76-95",
+  "ranges": "76-95",
+  "basis": "both",
+  "key": "stat-sessions"
+ },
+ "JDL-116": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "285-292",
+  "ranges": "285-292",
+  "basis": "both",
+  "key": "stat-stale"
+ },
+ "JDL-117": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "293-295",
+  "ranges": "293-295",
+  "basis": "both",
+  "key": "stat-today"
+ },
+ "JDL-118": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "299-311",
+  "ranges": "299-311",
+  "basis": "both",
+  "key": "stat-zero-volume"
+ },
+ "JDL-119": {
+  "file": "src/jef/data/health.py",
+  "symbol": "longest_zero_volume_run",
+  "lines": "98-129",
+  "ranges": "98-129",
+  "basis": "both",
+  "key": "stat-zero-run"
+ },
+ "JDL-120": {
+  "file": "src/jef/data/health.py",
+  "symbol": "largest_post_seam_gap",
+  "lines": "132-162",
+  "ranges": "132-162",
+  "basis": "both",
+  "key": "stat-gap"
+ },
+ "JDL-121": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "313-326",
+  "ranges": "313-326",
+  "basis": "both",
+  "key": "stat-gap-note"
+ },
+ "JDL-122": {
+  "file": "src/jef/data/health.py",
+  "symbol": "_printed_closes, measure_resolution, MIN_RESOLUTION_SESSIONS",
+  "lines": "80-224",
+  "ranges": "80-82,180-224",
+  "basis": "both",
+  "key": "stat-resolution"
+ },
+ "JDL-123": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "328-342",
+  "ranges": "328-342",
+  "basis": "both",
+  "key": "stat-resolution-note"
+ },
+ "JDL-124": {
+  "file": "src/jef/data/health.py",
+  "symbol": "scan_jumps, check_source",
+  "lines": "165-351",
+  "ranges": "165-177,344-351",
+  "basis": "both",
+  "key": "stat-jump"
+ },
+ "JDL-125": {
+  "file": "src/jef/data/health.py",
+  "symbol": "check_source",
+  "lines": "352-385",
+  "ranges": "352-385",
+  "basis": "both",
+  "key": "stat-actions"
+ },
+ "JDL-126": {
+  "file": "src/jef/data/health.py",
+  "symbol": "_pair_report",
+  "lines": "466-473",
+  "ranges": "466-473",
+  "basis": "logic",
+  "key": "stat-pair-shape"
+ },
+ "JDL-127": {
+  "file": "src/jef/data/health.py",
+  "symbol": "_pair_report",
+  "lines": "475-498",
+  "ranges": "475-498",
+  "basis": "both",
+  "key": "stat-pair-unmeasured"
+ },
+ "JDL-128": {
+  "file": "src/jef/data/health.py",
+  "symbol": "newest_common_session, close_on, _pair_report",
+  "lines": "388-500",
+  "ranges": "388-405,492-500",
+  "basis": "both",
+  "key": "stat-spread"
+ },
+ "JDL-129": {
+  "file": "src/jef/data/health.py",
+  "symbol": "_pair_report",
+  "lines": "500-518",
+  "ranges": "500-518",
+  "basis": "both",
+  "key": "stat-spread-note"
+ },
+ "JDL-130": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_status",
+  "lines": "305-325",
+  "ranges": "305-325",
+  "basis": "both",
+  "key": "stat-envelope"
+ },
+ "JDL-131": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_status",
+  "lines": "302-365",
+  "ranges": "302-305,365-365",
+  "basis": "both",
+  "key": "stat-exit"
+ },
+ "JDL-132": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_status",
+  "lines": "326-364",
+  "ranges": "326-364",
+  "basis": "logic",
+  "key": "stat-table"
+ },
+ "JDL-133": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main",
+  "lines": "378-573",
+  "ranges": "378-573",
+  "basis": "both",
+  "key": "cli-surface"
+ },
+ "JDL-134": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_sync, cmd_status, cmd_universe, cmd_load, cmd_differential",
+  "lines": "164-374",
+  "ranges": "164-165,227-227,251-252,278-279,373-374",
+  "basis": "both",
+  "key": "cli-errors"
+ },
+ "JDL-135": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_validate",
+  "lines": "128-133",
+  "ranges": "128-133",
+  "basis": "logic",
+  "key": "cli-validate"
+ },
+ "JDL-136": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_universe; universe.describe",
+  "lines": "368-375",
+  "ranges": "368-375",
+  "basis": "logic",
+  "key": "cli-universe"
+ },
+ "JDL-137": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_import_csv",
+  "lines": "185-442",
+  "ranges": "185-199,429-442",
+  "basis": "both",
+  "key": "cli-import"
+ },
+ "JDL-138": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_export",
+  "lines": "202-211",
+  "ranges": "202-211",
+  "basis": "logic",
+  "key": "cli-export"
+ },
+ "JDL-139": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_adjust",
+  "lines": "172-182",
+  "ranges": "172-182",
+  "basis": "both",
+  "key": "cli-adjust"
+ },
+ "JDL-140": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_differential",
+  "lines": "214-234",
+  "ranges": "214-234",
+  "basis": "both",
+  "key": "cli-differential"
+ },
+ "JDL-141": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "load_symbol, cmd_load; store.ingest_bars, save",
+  "lines": "42-169",
+  "ranges": "42-125,152-169",
+  "basis": "both",
+  "key": "cli-load"
+ },
+ "JDL-142": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "load_symbol",
+  "lines": "83-113",
+  "ranges": "83-113",
+  "basis": "both",
+  "key": "cli-load-decl"
+ },
+ "JDL-143": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_sync_actions",
+  "lines": "136-149",
+  "ranges": "136-149",
+  "basis": "logic",
+  "key": "cli-sync-actions"
+ },
+ "JDL-144": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_sync",
+  "lines": "237-262",
+  "ranges": "237-262",
+  "basis": "both",
+  "key": "cli-sync"
+ },
+ "JDL-145": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_status, main",
+  "lines": "265-563",
+  "ranges": "265-365,507-563",
+  "basis": "both",
+  "key": "cli-status"
+ },
+ "JDL-146": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "11-90",
+  "ranges": "11-14,70-74,86-90",
+  "basis": "both",
+  "key": "chain-env"
+ },
+ "JDL-147": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "16-46",
+  "ranges": "16-46",
+  "basis": "both",
+  "key": "chain-digest"
+ },
+ "JDL-148": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "48-54",
+  "ranges": "48-54",
+  "basis": "both",
+  "key": "chain-stamp"
+ },
+ "JDL-149": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "56-63",
+  "ranges": "56-63",
+  "basis": "both",
+  "key": "chain-exec-guard"
+ },
+ "JDL-150": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "65-68",
+  "ranges": "65-68",
+  "basis": "both",
+  "key": "chain-hard-cap"
+ },
+ "JDL-151": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "70-70",
+  "ranges": "70-70",
+  "basis": "logic",
+  "key": "chain-bucket"
+ },
+ "JDL-152": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "76-104",
+  "ranges": "76-87,96-104",
+  "basis": "both",
+  "key": "chain-externals"
+ },
+ "JDL-153": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "92-104",
+  "ranges": "92-104",
+  "basis": "both",
+  "key": "chain-traps"
+ },
+ "JDL-154": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "106-111",
+  "ranges": "106-111",
+  "basis": "both",
+  "key": "chain-restore"
+ },
+ "JDL-155": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "113-125",
+  "ranges": "113-125",
+  "basis": "both",
+  "key": "chain-sync"
+ },
+ "JDL-156": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "127-140",
+  "ranges": "127-140",
+  "basis": "both",
+  "key": "chain-status"
+ },
+ "JDL-157": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "142-170",
+  "ranges": "142-170",
+  "basis": "both",
+  "key": "chain-binning"
+ },
+ "JDL-158": {
+  "file": "deploy/daily.sh",
+  "symbol": "daily.sh",
+  "lines": "1-181",
+  "ranges": "1-9,172-181",
+  "basis": "both",
+  "key": "chain-publish"
+ },
+ "JDL-159": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "cmd_export; store.load (empty branch); store.to_contract_frame",
+  "lines": "202-211",
+  "ranges": "202-211",
+  "basis": "logic",
+  "key": "cli-export-empty"
+ },
+ "JDL-160": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main",
+  "lines": "378-573",
+  "ranges": "378-573",
+  "basis": "logic",
+  "key": "cli-parser-surface"
+ },
+ "JDL-161": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main (argparse parse_args)",
+  "lines": "378-573",
+  "ranges": "378-380,572-573",
+  "basis": "logic",
+  "key": "cli-parser-errors"
+ },
+ "JDL-162": {
+  "file": "src/jef/data/cli.py",
+  "symbol": "main (argparse help actions)",
+  "lines": "378-573",
+  "ranges": "378-573",
+  "basis": "logic",
+  "key": "cli-help"
+ }
+}

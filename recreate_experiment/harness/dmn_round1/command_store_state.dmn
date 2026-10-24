@@ -1,0 +1,240 @@
+<?xml version="1.0" ?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="command_store_state_round1" name="command_store_state_round1" namespace="urn:recreate-experiment:command_store_state_round1">
+  <decision id="command_by_store_state" name="command_by_store_state">
+    <description>What each store-touching command does when the addressed series is absent or filled. Round-1 kit (pumllint 1451c05) as written: built for the W2-E3 measurement only.</description>
+    <decisionTable id="command_by_store_state_dt" hitPolicy="UNIQUE">
+      <input id="command_by_store_state_i0" label="command">
+        <inputExpression id="command_by_store_state_ie0" typeRef="string">
+          <text>command</text>
+        </inputExpression>
+        <inputValues id="command_by_store_state_iv0">
+          <text>"sync-collector-leg", "sync-yahoo-csv-leg", "load", "adjust", "import-csv", "export", "differential-a", "differential-b", "status"</text>
+        </inputValues>
+      </input>
+      <input id="command_by_store_state_i1" label="store_state">
+        <inputExpression id="command_by_store_state_ie1" typeRef="string">
+          <text>store_state</text>
+        </inputExpression>
+        <inputValues id="command_by_store_state_iv1">
+          <text>"absent", "filled"</text>
+        </inputValues>
+      </input>
+      <output id="command_by_store_state_o0" label="outcome" name="outcome" typeRef="string">
+        <outputValues id="command_by_store_state_ov0">
+          <text>"proceed", "refuse-wrapped", "refuse-traceback", "alert"</text>
+        </outputValues>
+      </output>
+      <output id="command_by_store_state_o1" label="message_or_action" name="message_or_action" typeRef="string"/>
+      <rule id="command_by_store_state_r1">
+        <description>JDL-093, store.md s6 reconcile (empty series)</description>
+        <inputEntry id="command_by_store_state_r1_i0">
+          <text>"sync-collector-leg"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r1_i1">
+          <text>"absent"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r1_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r1_o1">
+          <text>"first fill: fetch from the universe start (or open) and write every served row; no revisions"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r2">
+        <description>JDL-093, JDL-065</description>
+        <inputEntry id="command_by_store_state_r2_i0">
+          <text>"sync-collector-leg"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r2_i1">
+          <text>"filled"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r2_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r2_o1">
+          <text>"tail refresh: fetch from the oldest of the newest tail sessions and reconcile"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r3">
+        <description>JDL-099, JDL-070</description>
+        <inputEntry id="command_by_store_state_r3_i0">
+          <text>"sync-yahoo-csv-leg"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r3_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r3_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r3_o1">
+          <text>"overwrite the series with the whole file"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r4">
+        <description>cli.md load step 4-5, JDL-141</description>
+        <inputEntry id="command_by_store_state_r4_i0">
+          <text>"load"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r4_i1">
+          <text>"absent"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r4_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r4_o1">
+          <text>"first fill from --from (or open); append; re-adjust when raw and bars ingested"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r5">
+        <description>cli.md load step 4-5, JDL-141</description>
+        <inputEntry id="command_by_store_state_r5_i0">
+          <text>"load"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r5_i1">
+          <text>"filled"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r5_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r5_o1">
+          <text>"incremental from the day after the latest stored session; append; re-adjust when raw"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r6">
+        <description>refusals.md X-02, JDL-069</description>
+        <inputEntry id="command_by_store_state_r6_i0">
+          <text>"adjust"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r6_i1">
+          <text>"absent"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r6_o0">
+          <text>"refuse-traceback"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r6_o1">
+          <text>"StoreError: nothing stored for {exchange}/{symbol}"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r7">
+        <description>JDL-069; X-03 is on price_basis, not store state</description>
+        <inputEntry id="command_by_store_state_r7_i0">
+          <text>"adjust"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r7_i1">
+          <text>"filled"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r7_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r7_o1">
+          <text>"re-derive main OHLCV from *_raw with the stored splits (split_adjusted series refuse: X-03, a different input)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r8">
+        <description>JDL-070</description>
+        <inputEntry id="command_by_store_state_r8_i0">
+          <text>"import-csv"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r8_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r8_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r8_o1">
+          <text>"overwrite the series with the CSV rows"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r9">
+        <description>cli.md export, JDL-138</description>
+        <inputEntry id="command_by_store_state_r9_i0">
+          <text>"export"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r9_i1">
+          <text>"filled"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r9_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r9_o1">
+          <text>"write the seam frame to F and print the validation report"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r10">
+        <description>JDL-114</description>
+        <inputEntry id="command_by_store_state_r10_i0">
+          <text>"status"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r10_i1">
+          <text>"absent"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r10_o0">
+          <text>"alert"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r10_o1">
+          <text>"never filled - no stored rows (jef-data sync first)"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r11">
+        <description>JDL-110</description>
+        <inputEntry id="command_by_store_state_r11_i0">
+          <text>"status"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r11_i1">
+          <text>"filled"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r11_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r11_o1">
+          <text>"run the source checks in JDL-110 order"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r12">
+        <description>round-1 refusals.md X-04: the outcome category is given, the message is not</description>
+        <inputEntry id="command_by_store_state_r12_i0">
+          <text>"export"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r12_i1">
+          <text>"absent"</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r12_o0">
+          <text>"refuse-traceback"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r12_o1">
+          <text>traceback, no file written</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r13">
+        <description>round-1 cli.md differential: silent on an absent series</description>
+        <inputEntry id="command_by_store_state_r13_i0">
+          <text>"differential-a"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r13_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r13_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r13_o1">
+          <text>"A = seam frame of a-exchange/S"</text>
+        </outputEntry>
+      </rule>
+      <rule id="command_by_store_state_r14">
+        <description>round-1 cli.md differential: silent on an absent series</description>
+        <inputEntry id="command_by_store_state_r14_i0">
+          <text>"differential-b"</text>
+        </inputEntry>
+        <inputEntry id="command_by_store_state_r14_i1">
+          <text>-</text>
+        </inputEntry>
+        <outputEntry id="command_by_store_state_r14_o0">
+          <text>"proceed"</text>
+        </outputEntry>
+        <outputEntry id="command_by_store_state_r14_o1">
+          <text>"B = seam frame of b-exchange/S2 (or the CSV when --b-csv)"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

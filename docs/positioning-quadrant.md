@@ -72,7 +72,13 @@ OpenAPI description, not a diagram — it reappears in Part 2 where it
 belongs); and MermaidGuard plus `mermaid-check`, two further Mermaid
 checkers surfaced by a 2026-08-28 web search whose facts could not be
 verified beyond search summaries — an unverifiable dot is worse than a
-named exclusion.
+named exclusion. *[Annotated 2026-10-22: groma.md is excluded too, on
+two counts, either of them sufficient. It maintains a C4 model scanned
+from code rather than checking an artefact, and that artefact is OKF
+Markdown, the model-side class above. Its `lint` checks source code. On
+its contract layer it would score Vision 7 / Execute 7, among the Niche
+Players, and it does not grade. Record:
+[groma-md-evaluation.md](groma-md-evaluation.md) §8.]*
 
 ## 3. The rubric
 

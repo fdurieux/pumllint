@@ -1,0 +1,13 @@
+# Synthetic: one raw-basis equity with two splits (3:2 then 7:1).
+[defaults]
+store = "data"
+currency = "USD"
+
+[[asset]]
+name = "SPLT"
+asset_class = "stock"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "SPLT.US"
+  start = 2024-01-02

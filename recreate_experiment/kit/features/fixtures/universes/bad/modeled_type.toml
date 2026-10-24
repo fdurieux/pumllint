@@ -1,0 +1,7 @@
+[[asset]]
+name = "X"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "X.US"
+  modeled = "yes"

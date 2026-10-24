@@ -1,0 +1,58 @@
+{
+ "legs": [
+  {
+   "asset": "SPLT",
+   "detail": "actions fresh; 11 bar(s), 3 revised cell(s)",
+   "exchange": "eodhd",
+   "ok": true,
+   "provider": "eodhd",
+   "revised_cells": 3,
+   "revisions": [
+    {
+     "column": "close_raw",
+     "date": "2024-02-08",
+     "served": 21.31,
+     "stored": 21.35
+    },
+    {
+     "column": "adjusted_close",
+     "date": "2024-02-08",
+     "served": 21.2,
+     "stored": 21.2432
+    },
+    {
+     "column": "volume_raw",
+     "date": "2024-02-09",
+     "served": 777777.0,
+     "stored": 128000.0
+    }
+   ],
+   "symbol": "SPLT.US"
+  },
+  {
+   "asset": "CSVA",
+   "detail": "3 row(s) imported",
+   "exchange": "yahoo",
+   "ok": true,
+   "provider": "yahoo-csv",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "CSVA"
+  },
+  {
+   "asset": "SPLX",
+   "detail": "CollectorError: eod SPLX.US: HTTP 404: {\"error\": \"Ticker Not Found.\"}",
+   "exchange": "eodhd",
+   "ok": false,
+   "provider": "eodhd",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "SPLX.US"
+  }
+ ],
+ "legs_failed": 1,
+ "legs_total": 3,
+ "ok": false,
+ "revised_cells_total": 3,
+ "schema_version": 1
+}

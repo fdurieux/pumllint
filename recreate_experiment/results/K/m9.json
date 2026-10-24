@@ -1,0 +1,70 @@
+{
+ "work": "/tmp/m9-y3lojjfh",
+ "modules": {},
+ "api_level": {
+  "per_module": {
+   "?": {
+    "passed": 0,
+    "failed": 0,
+    "error": 9,
+    "skipped": 0
+   },
+   "test_binance_collector": {
+    "passed": 2,
+    "failed": 2,
+    "error": 0,
+    "skipped": 0
+   },
+   "test_differential": {
+    "passed": 0,
+    "failed": 5,
+    "error": 0,
+    "skipped": 0
+   },
+   "test_eodhd_collector": {
+    "passed": 13,
+    "failed": 3,
+    "error": 0,
+    "skipped": 0
+   },
+   "test_rate_limiter": {
+    "passed": 0,
+    "failed": 5,
+    "error": 0,
+    "skipped": 0
+   },
+   "test_sync": {
+    "passed": 3,
+    "failed": 17,
+    "error": 0,
+    "skipped": 0
+   }
+  },
+  "summary_tail": "ERROR tests/data/test_health.py\nERROR tests/data/test_store.py\nERROR tests/data/test_store_reconcile.py\nERROR tests/data/test_store_robustness.py\nERROR tests/data/test_universe_config.py\n32 failed, 18 passed, 9 errors in 1.35s",
+  "collection_errors": 9,
+  "total": {
+   "passed": 18,
+   "failed": 32,
+   "error": 9,
+   "skipped": 0
+  }
+ },
+ "black_box": {
+  "per_module": {
+   "test_daily_chain": {
+    "passed": 10,
+    "failed": 0,
+    "error": 0,
+    "skipped": 0
+   }
+  },
+  "summary_tail": "..........                                                               [100%]\n10 passed, 1 deselected in 2.21s",
+  "collection_errors": 0,
+  "total": {
+   "passed": 10,
+   "failed": 0,
+   "error": 0,
+   "skipped": 0
+  }
+ }
+}

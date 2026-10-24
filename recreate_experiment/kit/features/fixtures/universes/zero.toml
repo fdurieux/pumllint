@@ -1,0 +1,9 @@
+# Synthetic: an EODHD crypto series with a run of zero-volume sessions.
+[[asset]]
+name = "ZERO"
+asset_class = "crypto"
+
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "ZERO-USD.CC"
+  start = 2024-01-01

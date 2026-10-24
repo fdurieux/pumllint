@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "export",
+  "--symbol",
+  "GHOST",
+  "--exchange",
+  "eodhd",
+  "--output",
+  "<work>/ghost.csv",
+  "--store",
+  "<work>/s21_cli_refusals-store"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/home/user/.rc-k-venv/bin/jef-data-rc\", line 10, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K/out/jef_data_rc/cli.py\", line 314, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K/out/jef_data_rc/cli.py\", line 228, in cmd_export\n    frame = export_frame(ParquetStore(args.store), args.exchange, args.symbol)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2ad689ab-3a24-5b0f-9348-2331660d6b34/scratchpad/arms/K/out/jef_data_rc/store.py\", line 353, in export_frame\n    raise StoreError(f\"nothing stored for {exchange}/{symbol}\")\njef_data_rc.store.StoreError: nothing stored for eodhd/GHOST\n",
+ "stdout": ""
+}

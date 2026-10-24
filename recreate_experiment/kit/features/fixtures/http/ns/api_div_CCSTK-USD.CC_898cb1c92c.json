@@ -1,0 +1,13 @@
+{
+ "request": {
+  "method": "GET",
+  "params": {
+   "fmt": "json"
+  },
+  "path": "/api/div/CCSTK-USD.CC"
+ },
+ "response": {
+  "json": [],
+  "status": 200
+ }
+}

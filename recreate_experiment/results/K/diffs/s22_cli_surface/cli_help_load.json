@@ -1,0 +1,9 @@
+{
+ "argv": [
+  "load",
+  "--help"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "usage: jef-data load [-h] --symbol SYMBOL [--store STORE] [--from START]\n                     [--to END] [--asset-type {crypto,etf,stock}]\n                     [--currency CURRENCY] [--base-url BASE_URL]\n\noptions:\n  -h, --help            show this help message and exit\n  --symbol SYMBOL\n  --store STORE\n  --from START\n  --to END\n  --asset-type {crypto,etf,stock}\n  --currency CURRENCY\n  --base-url BASE_URL\n"
+}
