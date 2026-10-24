@@ -399,6 +399,18 @@ property suite, not evidence against the layer. The `Rule:` blocks and
 the glossary are hygiene with a count attached. Nothing here is a J-F
 finding beyond the two already filed; nothing is queued.
 
+*2026-10-24, on the maintainer's ask:* the kit compiled into a handover set
+for a development squad working without AI assistance and for an AI coding
+agent, `recreate_experiment/handover/`: a reading path, the eight diagrams
+rendered (PlantUML's built-in layout, no Graphviz), the requirements by kind
+with their realising diagram and verifying scenarios, the decision tables
+rendered, the traceability report, a definition of done with the commands
+that prove it, the quirks to reproduce rather than fix, and the agent brief
+the three rebuilds were made from, generalised. The three generated
+documents come from `build.py` over the kit (`--check` says when they are
+stale); `--zip` packs kit, handover and the four checking tools as one
+archive. Nothing in the kit changed.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
