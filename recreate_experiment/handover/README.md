@@ -99,5 +99,6 @@ Integrate on the store: it is the one shape every slice reads or writes.
 `REQUIREMENTS.md`, `DECISIONS.md`, `TRACE.md` and `diagrams/*.svg` are
 generated: `python build.py` (needs pumllint importable; add
 `--plantuml plantuml.jar` to re-render the diagrams, `--zip out.zip` to pack
-kit and handover as one archive). `python build.py --check` says whether
+kit, handover, the four checking tools, the knowledge-transfer plan and the
+unrealised-code register as one archive). `python build.py --check` says whether
 the generated files match the kit.

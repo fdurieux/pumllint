@@ -159,6 +159,11 @@ def pack(target):
         harness = HERE.parent / "harness"
         for name in ("dmn_check.py", "dmn_coverage.py", "glossary_check.py", "fixturelib.py", "invariants/test_properties.py", "invariants/README.md"):
             z.write(harness / name, f"harness/{name}")
+        # the knowledge-transfer plan and the unrealised-code register it uses as an instrument
+        for rel in ("knowledge-transfer/DOMINIQUE-CASE.md", "results/coverage/UNREALISED.md", "results/coverage/coverage.json"):
+            src = HERE.parent / rel
+            if src.exists():
+                z.write(src, rel)
     print("packed", target, zipfile.ZipFile(target).namelist().__len__(), "files")
 
 
