@@ -295,6 +295,22 @@ upstream stage does not authorize the recreator to inspect the excluded
 original source or hidden material, nor does it establish a code-to-spec-to-code
 round-trip correctness result.
 
+*Pointer, 2026-10-24, added by the maintainer's session after the run:*
+two extraction-fidelity audits of the kit exist in this repository, both
+outside this recreation's permitted inputs and neither performed by it.
+(1) The experiment's post-hoc review set the kit's eight diagrams beside
+the original source and found 12 claims contradicted by the code
+(`recreate_experiment/results/review/REVIEW.md`; one reviewer verdict
+overturned by execution, `VERIFICATION.md`). (2) The kit's acceptance
+suite was run against the original under branch coverage: 1 379 of the
+data lane's 1 520 statements executed (89 %); the 141 never reached are
+classified line by line — 40 live-transport paths replay cannot reach, 33
+behaviour the kit states and no scenario exercises, 61 with no caller in
+the lane, 6 internal guards, 1 unspecified
+(`recreate_experiment/results/coverage/UNREALISED.md`, pumllint #188).
+Together they bound the round-trip claim: fidelity cell for cell on the
+exercised 89 %, not correctness, and not the unexercised remainder.
+
 ## Purpose and scope
 
 Recreate the program described by `recreate_experiment/handover/` and
