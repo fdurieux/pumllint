@@ -1,10 +1,123 @@
 # Independent recreation: approach and input evaluation method
 
-Method version: 1.0  
+Method version: 1.1 (SDD objective clarification)  
 Recorded: 24 October 2026  
-Status: protocol recorded before implementation; no evaluation scores or results yet.  
+Status: original protocol recorded before implementation; version 1.1 adds the user's clarified SDD objective after the first run. See the amendment below.  
 Specification baseline: `88f656a39f47fe92a31e887e26888775658aa19b`.  
 Output directory: `recreate_experiment/rebuilds/codex-2026-10-24/`.
+
+## Research objective: a sufficient specification set for SDD
+
+Amendment recorded on 24 October 2026 after the first recreation run.
+The original baseline scores, protocol and run results remain historical
+evidence; this clarification is not retroactive preregistration.
+
+The objective is to identify the set of artefacts that lets an independent
+developer or coding agent implement correct behaviour using those artefacts
+as its only project-specific specification. The recreation is the experiment
+used to evaluate that set. Per-file scores are supporting evidence; the main
+research output is an actionable specification-package definition for
+Spec-Driven Development (SDD).
+
+"Artefacts only" permits ordinary programming knowledge, the declared
+language/toolchain and pinned dependencies. It excludes undocumented
+project-specific behaviour, prior implementations, hidden oracles and
+unrecorded human clarification. A clarification that changes or supplies
+behaviour becomes a versioned input artefact before it can support a
+subsequent sufficiency claim.
+
+### Candidate package and information obligations
+
+These are information obligations, not a requirement to create a separate
+document for every row or use every notation in every project.
+
+| Information obligation | Candidate artefacts | Applicability |
+|---|---|---|
+| Purpose, scope and observable success | Requirements, boundaries, acceptance criteria, domain glossary | Every package |
+| Data and interface meaning | Schemas, API/CLI contracts, units, types, invariants, compatibility rules | Wherever data or interfaces exist |
+| Behaviour and decisions | Business rules, decision tables, state models, process/sequence descriptions | Wherever rules, states or ordering affect correctness |
+| Computational semantics | Formulas, operation order where material, examples, boundary/error cases | Wherever numerical or algorithmic choices affect results |
+| Execution and dependencies | Environment/version manifest, configuration, external contracts and supplied dependencies, operational requirements | Every runnable package, scaled to its context |
+| Verification oracle | Executable acceptance cases, expected outputs with provenance, meaningful fixtures, test/injection interfaces | Every package |
+| Navigation, authority and change control | Input manifest, reading path, source precedence, trace links and version history | Every package with multiple artefacts |
+
+Record which obligations each artefact satisfies. Classify it as primary
+normative content, independent verification evidence, or a derived view.
+A generated diagram or summary can improve comprehension without supplying
+additional independent behavioural facts. Duplicate information alone is
+not evidence that another artefact is required.
+
+### Sufficiency decision
+
+Assess the package as a whole against the following criteria:
+
+1. **Behavioural determinacy:** required externally observable choices can
+   be derived without unresolved material guesses. Freedom in internal
+   implementation is acceptable when it cannot change required outcomes.
+2. **Input closure:** every material reference, interface, external
+   prerequisite and validation resource is supplied, explicitly declared as
+   an obtainable dependency, or explicitly excluded from the assessed scope.
+   Merely calling a missing file "given" does not satisfy closure.
+3. **Consistency and authority:** contradictions have a documented resolution
+   rule; the implementer does not silently choose among competing meanings.
+4. **Verifiability:** success has executable or otherwise inspectable evidence,
+   with boundary/failure coverage appropriate to the requirements.
+5. **Reproducibility:** the input version, environment, implementation and
+   checks can be reproduced under the stated independence boundary.
+
+Use qualified outcomes: demonstrated sufficient for the assessed scope;
+sufficient only with recorded supplements/assumptions; not yet demonstrated;
+or insufficient because a material gap is observed. A defect-free scorecard
+or a green acceptance run alone cannot establish sufficiency.
+
+Correctness has separate evidence layers: conformance to stated contracts;
+internal consistency and independently derived invariants; and validity
+against intended domain outcomes. Tests and contracts may share the same
+incorrect assumption. Keep domain validity unverified where independent
+evidence is absent.
+
+### Convert findings into a package definition
+
+For every unclear, missing, ambiguous or contradictory point, record:
+
+- affected information obligation and requirement;
+- whether it is missing content, incorrect content, conflicting content,
+  missing external material, a verification gap, or harmless implementation
+  freedom;
+- material effect on observable behaviour and whether coding required a
+  project-specific assumption or human intervention;
+- the smallest content correction or additional artefact needed;
+- where that information should have lived and how it should be validated;
+- whether the correction requires rerunning affected scenarios.
+
+Do not count every assumption entry as a specification failure. Separate
+required quirks, harmless design choices and evaluation limitations from
+material unresolved behavioural assumptions.
+
+The final synthesis should state a proposed sufficient package, conditional
+artefacts by project characteristic, observed gaps and required supplements,
+and a checklist for deciding whether a specification is ready for coding.
+It should also describe how changes propagate from normative artefacts
+through trace links to implementation and regression checks. This makes
+the result usable as an SDD workflow rather than only an experiment report.
+
+### What the current recreation establishes
+
+The run supplies evidence of conformance for 246 non-chain cases and 11
+additional independent checks. All 257 supplied cases pass when the missing
+shell externals are replaced by labelled test doubles, but the required
+original-external integration run has 11 setup failures. Therefore the
+unchanged input package has not demonstrated sufficiency for the complete
+deployment/integration scope. The missing externals and excluded verification
+resources are concrete package-closure issues; narrowing scope or supplying
+the material must be explicit.
+
+One successful recreation can support a scoped sufficiency claim. It cannot
+prove that the proposed set is universally sufficient, or that every artefact
+is necessary. Claims about a minimal set require separately designed removal
+or comparison experiments and fresh independent implementations where
+learning effects would otherwise bias the result. No such experiment has
+been run or is silently implied by the present scores.
 
 ## Purpose and scope
 
