@@ -45,7 +45,7 @@ scenario's expectation changed; one Examples row added.
 | F-007 the packaged universe names two CSV snapshots the kit does not carry | README names them as deployment inputs |
 | F-008 collectors.md gave the transport a bare `(status, text)` tuple while the data model draws `TransportResponse` | the prose and JDL-023 now say the object (the original's shape) |
 | F-009 the chain scenarios' call logger split a multi-line argument into several records | the stub escapes newlines in logged arguments; chain.md states the one-line `python3 -c` the original uses |
-| F-010 cli.md's JSON escaping example showed `§` unchanged | `§` |
+| F-010 cli.md's JSON escaping example showed `§` unchanged | `\u00a7` (and this row had the same slip until its own manifest commit) |
 
 Two additions the rebuild's method asked for (`EVALUATION-METHOD.md`,
 "Consistency and authority", "input manifest"), same revision:
