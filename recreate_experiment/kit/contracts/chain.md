@@ -4,7 +4,13 @@ A bash script that drives the program once a day on the venue. Requirements:
 JDL-146 … JDL-158. The two scripts it sources, `events.sh`
 and `dashboard.sh`, are **given externals**: they are copied verbatim beside
 the rebuilt `daily.sh` and are not part of what you rebuild. This contract
-fixes only how `daily.sh` uses them.
+fixes only how `daily.sh` uses them. Revision 2026-10-24: the two files are
+shipped in `contracts/externals/` (until then the kit named them and did
+not carry them, found by the fourth rebuild); the chain scenarios copy them
+from beside the script named by `JDL_CHAIN`, so put them there. One
+constraint the scenarios' call logger imposes, met by the original: an
+argument handed to a stubbed command is logged on one line, so a
+`python3 -c` program is written on one physical line.
 
 ## 1. Invocation and environment
 

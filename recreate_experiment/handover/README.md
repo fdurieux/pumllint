@@ -25,7 +25,7 @@ code is specified, and the acceptance suite checks them byte for byte.
 | 3 | `REQUIREMENTS.md` | the 163 requirements by kind, each with the diagram that realises it and the scenarios that verify it (generated from `../kit/requirements.json`) |
 | 4 | `../kit/contracts/` | the detailed contracts: universe grammar, collectors, adjustment arithmetic, store layout, seam frame, CLI surface and help texts, refusal catalogue, the chain, dependency pins |
 | 5 | `DECISIONS.md` | every decision the program takes as a table: basis resolution, what each command does on an absent or filled series, the sync window, the actions gate, the status verdicts, how errors reach the user (generated from `../kit/contracts/dmn/`) |
-| 6 | `../kit/features/README.md`, then the `.feature` files | the acceptance suite: 130 scenarios, 257 cases, every one tagged with the requirements it verifies |
+| 6 | `../kit/features/README.md`, then the `.feature` files | the acceptance suite: 130 scenarios, 258 cases, every one tagged with the requirements it verifies |
 | 7 | `KNOWN-QUIRKS.md` | behaviours that look like bugs and are the contract |
 | 8 | `DONE.md` | the definition of done and the commands that prove it |
 
@@ -41,7 +41,9 @@ every revision the kit has had since its first issue.
   `classifications.toml` (both in `../kit/contracts/`).
 - `deploy/daily.sh`, the chain script (`../kit/contracts/chain.md`). It
   sources two given scripts, `events.sh` and `dashboard.sh`, which you do
-  not write; the acceptance suite stubs them.
+  not write: copy them from `../kit/contracts/externals/` beside your
+  `daily.sh`. The acceptance suite copies them from there and stubs the
+  commands they call.
 - `jdl_adapter.py`, a small module implementing every function of
   `../kit/contracts/HARNESS_INTERFACE.md` against your package. It is glue
   for the scenarios that must inject a clock or replay recorded provider

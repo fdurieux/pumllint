@@ -7,7 +7,7 @@ unless stated; `<out>` is your build's directory.
 |---|---|---|---|
 | 1 | package installs with the pinned dependencies only | `pip install -e <out>` then `pip freeze` | pandas 3.0.5, numpy 2.4.6, requests 2.34.2, pyarrow 25.0.1, nothing else beyond their own dependencies |
 | 2 | the console script exists and prints the verbatim help | `COLUMNS=80 jef-data --help` | byte-equal to the first block of `contracts/cli_help.md` (the suite checks all eleven) |
-| 3 | the acceptance suite passes, chain included | `JDL_UNDER_TEST=jef-data JDL_CHAIN=<out>/deploy/daily.sh JDL_ADAPTER=jdl_adapter PYTHONPATH=<out> python -m pytest -q features/steps` | `257 passed` — no failures, no skips, no deselection |
+| 3 | the acceptance suite passes, chain included | `JDL_UNDER_TEST=jef-data JDL_CHAIN=<out>/deploy/daily.sh JDL_ADAPTER=jdl_adapter PYTHONPATH=<out> python -m pytest -q features/steps` | `258 passed` — no failures, no skips, no deselection |
 | 4 | the decision tables are still complete and the feature still covers them | `python ../harness/dmn_check.py contracts/dmn` and `python ../harness/dmn_coverage.py .` | every table `OK`; `60/63 rows exercised` with the three named exceptions |
 | 5 | the property-based invariants hold on your build (needs `hypothesis` in the environment) | `JDL_ADAPTER=jdl_adapter PYTHONPATH=<out>:../harness python -m pytest -q ../harness/invariants` | `6 passed, 1 skipped` (the skip is the differential property, which needs a second implementation) |
 | 6 | the end-to-end smoke of the chain's data stage | `jef-data sync --universe contracts/universe.toml --store /tmp/s --dry-run` | the plan, one line per leg, exit 0 |
@@ -15,6 +15,10 @@ unless stated; `<out>` is your build's directory.
 
 Lines 1–3 are the gate; 4–6 are the checks the kit's own revisions are
 held to; 7 is how the next revision of the kit learns what it did not say.
+The four tools lines 4 and 5 name (`dmn_check.py`, `dmn_coverage.py`,
+`glossary_check.py`, `invariants/`) live in `../harness/` and are part of
+the handover set: the archive `build.py --zip` packs carries them, and a
+set handed over without them cannot run those two lines.
 
 The specification's own gates, which you do not need to run but may:
 `pumllint uml --fail-on info -c pumllint.toml` (no findings),

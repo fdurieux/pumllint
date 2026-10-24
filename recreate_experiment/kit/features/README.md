@@ -7,7 +7,7 @@ three seams, chosen by environment variables:
 | variable | default | what it names |
 |---|---|---|
 | `JDL_UNDER_TEST` | `jef-data` | the executable (split like a shell word list, so `python -m mypkg.cli` works); every `When I run "jef-data ..."` step runs it with the scenario's work directory as the current directory and without `EODHD_API_KEY` unless the scenario sets one |
-| `JDL_CHAIN` | `deploy/daily.sh` | the daily chain script; `events.sh` and `dashboard.sh` must sit beside it (the given externals). Chain scenarios copy the three files into a scratch directory, mark the chain executable and put recording stubs on `PATH` for `aws`, `jef-data`, `jef-binning`, `timeout`, `curl`, `date` and `python3` |
+| `JDL_CHAIN` | `deploy/daily.sh` | the daily chain script; `events.sh` and `dashboard.sh` must sit beside it (the given externals, shipped in `../contracts/externals/`). Chain scenarios copy the three files into a scratch directory, mark the chain executable and put recording stubs on `PATH` for `aws`, `jef-data`, `jef-binning`, `timeout`, `curl`, `date` and `python3` |
 | `JDL_ADAPTER` | `jdl_adapter` | an importable Python module implementing `../contracts/HARNESS_INTERFACE.md`; used for injected clocks, replayed provider traffic and reading stores back. Its collectors must replay `fixtures/http/<set>` with rate limiting disabled and backoff sleeps suppressed (contracts/fixtures.md §5) |
 
 Run (from anywhere; Python with the pins of `../contracts/pins.md`, plus

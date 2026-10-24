@@ -15,7 +15,7 @@ General rules:
   `differential`). Everything else that goes wrong is unwrapped (traceback).
 * Every line below goes to stdout unless stated otherwise.
 * JSON documents are written with Python's `json` defaults otherwise:
-  non-ASCII characters are escaped (`§` → `§`), floats in shortest
+  non-ASCII characters are escaped (`§` → `\u00a7`), floats in shortest
   round-trip form, `NaN` for NaN.
 * `{x!r}` means Python repr; `{x:g}`, `{x:.4%}`, `{x:+.1%}`, `{x:>6}` are Python
   format specifications (`:g` = 6 significant digits, trailing zeros removed;
@@ -100,7 +100,7 @@ writes it plus a newline to F2. Exit 0 when the verdict is `within
 tolerance, aligned`, else 1. A stored side the store does not hold (A, or
 B via `--b-symbol`) → the traceback of export's X-09, exit 1, nothing on
 stdout, F2 not written (revision 2026-10-23 (wave 2): requirement JDL-163,
-refusals.md X-10).
+refusals.md X-11).
 
 ## sync
 

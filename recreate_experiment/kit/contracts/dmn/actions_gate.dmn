@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" id="actions_gate" name="actions_gate" namespace="urn:recreate-experiment:actions_gate">
   <decision id="actions_gate" name="actions_gate">
-    <description>today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043).</description>
+    <description>today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043). Revision 2026-10-24: the stamp domain gained the later-than-today case (fourth rebuild, finding F-005).</description>
     <decisionTable id="actions_gate_dt" hitPolicy="UNIQUE">
       <input id="actions_gate_i0" label="actions_eligible">
         <inputExpression id="actions_gate_ie0" typeRef="boolean">
@@ -18,7 +18,7 @@
           <text>splits_stamp</text>
         </inputExpression>
         <inputValues id="actions_gate_iv2">
-          <text>"none", "before_today", "today"</text>
+          <text>"none", "before_today", "today_or_later"</text>
         </inputValues>
       </input>
       <output id="actions_gate_o0" label="action" name="action" typeRef="string">
@@ -100,7 +100,7 @@
         </outputEntry>
       </rule>
       <rule id="actions_gate_r5">
-        <description>JDL-091</description>
+        <description>JDL-091: refresh only when the stamp's date is earlier than today, so a stamp dated today or later (the real clock running ahead of an injected one, JDL-043) is fresh</description>
         <inputEntry id="actions_gate_r5_i0">
           <text>true</text>
         </inputEntry>
@@ -108,7 +108,7 @@
           <text>false</text>
         </inputEntry>
         <inputEntry id="actions_gate_r5_i2">
-          <text>"today"</text>
+          <text>"today_or_later"</text>
         </inputEntry>
         <outputEntry id="actions_gate_r5_o0">
           <text>"skip_fresh"</text>

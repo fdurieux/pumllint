@@ -139,7 +139,7 @@
  {
   "id": "JDL-023",
   "kind": "contract",
-  "statement": "Every collector shall perform HTTP through a transport offering `request(method, url, params) -> (status, text)` and `close()`; the live transport shall use a requests session with a 30 s timeout and convert connection errors and timeouts into a retryable TransportConnectionError whose text has the token redacted; each collector shall rate-limit live traffic to 1000 requests per sliding 60 s window (sleeping until the oldest request leaves the window) and 100000 per UTC day, beyond which it raises DailyBudgetExhausted `daily API budget of 100000 spent ({UTC date}); the per-minute window cannot lend quota across days`.",
+  "statement": "Every collector shall perform HTTP through a transport offering `request(method, url, params)` returning a response carrying `status` and `text` (TransportResponse) and `close()`; the live transport shall use a requests session with a 30 s timeout and convert connection errors and timeouts into a retryable TransportConnectionError whose text has the token redacted; each collector shall rate-limit live traffic to 1000 requests per sliding 60 s window (sleeping until the oldest request leaves the window) and 100000 per UTC day, beyond which it raises DailyBudgetExhausted `daily API budget of 100000 spent ({UTC date}); the per-minute window cannot lend quota across days`.",
   "basis": "both",
   "rationale": "the daily quota is enforced as a daily budget, not fed in as a per-minute rate"
  },

@@ -94,7 +94,7 @@ Not refusals (green, said loudly in the detail): the inverted window
 | X-07 | load | pair symbol of unknown kind | traceback `CollectorError: cannot infer exchange for pair symbol {s!r}` | JDL-031 |
 | X-08 | any | bad arguments | parser usage + error on stderr, exit 2 | JDL-133 |
 | X-09 | export | series the store does not hold (revision 2026-10-23 (closing round): the exact outcome of X-04) | traceback whose last line is pandas' `AttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?` (not a StoreError); exit 1, stdout empty, output file not written | JDL-159 |
-| X-10 | differential | a stored side (A, or B via `--b-symbol`) the store does not hold (revision 2026-10-23 (wave 2): found by the DMN command × store-state table, measured on the original) | the same traceback as X-09; exit 1, stdout empty, `--output` file not written | JDL-163 |
+| X-11 | differential | a stored side (A, or B via `--b-symbol`) the store does not hold (revision 2026-10-23 (wave 2): found by the DMN command × store-state table, measured on the original) | the same traceback as X-09; exit 1, stdout empty, `--output` file not written | JDL-163 |
 | X-10 | any | bad arguments, exact form (revision 2026-10-23 (closing round)) | stderr: `usage: ` + the failing parser's usage, then `{prog}: error: {message}`; unrecognised arguments are reported by the top-level parser; exit 2 (cli.md "Parser surface") | JDL-161 |
 
 ## Chain

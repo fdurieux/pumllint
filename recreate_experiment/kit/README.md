@@ -3,7 +3,7 @@
 Rebuild the program from this kit so that every stored number, every verdict
 and every exit code matches. Reading order:
 
-1. `requirements.json` — 162 atomic requirements (`JDL-001` …), kinds
+1. `requirements.json` — 163 atomic requirements (`JDL-001` …), kinds
    contract, arithmetic, ritual, verdict, refusal, cli, chain; each numeric
    constant lives in exactly one requirement.
 2. `contracts/` — one file per contract:
@@ -22,4 +22,10 @@ and every exit code matches. Reading order:
 4. `features/` — the executable scenarios (see `features/README.md`).
 
 `events.sh` and `dashboard.sh`, which the chain sources, are given
-externals: copy them unchanged beside your `daily.sh`.
+externals, shipped verbatim in `contracts/externals/` (revision 2026-10-24):
+copy them unchanged beside your `daily.sh`; the chain scenarios copy them
+from there. The packaged `universe.toml` names two Yahoo CSV snapshots
+(`experiments/AAPL.csv`, `experiments/BTC-USD_feb2024.csv`) that are not in
+the kit: they are deployment inputs the program's own package does not
+carry either, so a full `sync` of the packaged universe needs them present
+at the paths declared, while every scenario and `--dry-run` works without.

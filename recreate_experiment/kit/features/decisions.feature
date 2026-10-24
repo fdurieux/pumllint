@@ -289,7 +289,7 @@ Feature: The decision tables, row by row - revision 2026-10-23 (wave 2)
       And the detail of leg 1 starts with "2 split(s), 1 dividend(s); "
 
     @JDL-091
-    Scenario Outline: A stamp from an earlier UTC day refreshes, one from today skips
+    Scenario Outline: A stamp from an earlier UTC day refreshes, one from today or later skips
       Given the universe fixture "splt.toml"
       And the splits file of "SPLT.US" stamped "<stamp>" with no splits
       And the "eodhd" provider replays "splt/run1"
@@ -301,6 +301,7 @@ Feature: The decision tables, row by row - revision 2026-10-23 (wave 2)
         | row | stamp                | now                  | detail_start |
         | r4  | 2024-02-12T23:59:59Z | 2024-02-13T00:00:01Z | 2 split(s), 1 dividend(s); |
         | r5  | 2024-02-13T00:00:00Z | 2024-02-13T23:59:59Z | actions fresh; |
+        | r5  | 2024-02-14T00:00:00Z | 2024-02-13T12:00:00Z | actions fresh; |
 
   Rule: staleness_check
 

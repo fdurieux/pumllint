@@ -3,9 +3,9 @@
 The kit's DMN 1.3 tables (`../kit/contracts/dmn/*.dmn`), rendered. Hit policy UNIQUE: exactly one rule matches any input. `-` means any value. Every rule names the requirement or contract line it encodes; `harness/dmn_check.py` proves the tables complete, non-overlapping and typed, and `features/decisions.feature` exercises every reachable rule.
 
 ## actions_gate (`actions_gate.dmn`)
-today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043).
+today = the run clock's UTC date (JDL-088); the stamp is the splits file's, written by the real wall clock (JDL-043). Revision 2026-10-24: the stamp domain gained the later-than-today case (fourth rebuild, finding F-005).
 
-Inputs: `actions_eligible` (boolean); `force_actions` (boolean); `splits_stamp` (string: "none", "before_today", "today")  
+Inputs: `actions_eligible` (boolean); `force_actions` (boolean); `splits_stamp` (string: "none", "before_today", "today_or_later")  
 Outputs: `action` ∈ "refresh", "skip_fresh", "none"; `detail_part`
 
 | rule | actions_eligible | force_actions | splits_stamp | → | action | detail_part | source |
@@ -14,7 +14,7 @@ Outputs: `action` ∈ "refresh", "skip_fresh", "none"; `detail_part`
 | r2 | `true` | `true` | `-` | | refresh | {s} split(s), {d} dividend(s);  | JDL-091 force |
 | r3 | `true` | `false` | `"none"` | | refresh | {s} split(s), {d} dividend(s);  | JDL-091 no stamp |
 | r4 | `true` | `false` | `"before_today"` | | refresh | {s} split(s), {d} dividend(s);  | JDL-091 stale stamp |
-| r5 | `true` | `false` | `"today"` | | skip_fresh | actions fresh;  | JDL-091 |
+| r5 | `true` | `false` | `"today_or_later"` | | skip_fresh | actions fresh;  | JDL-091: refresh only when the stamp's date is earlier than today, so a stamp dated today or later (the real clock running ahead of an injected one, JDL-043) is fresh |
 
 ## price_basis_resolution (`basis.dmn`)
 Which basis a stored series gets and whether stored split events are applied, from the leg's provider and DECLARED asset_type (never the symbol suffix).

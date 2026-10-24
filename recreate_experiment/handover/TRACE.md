@@ -108,7 +108,7 @@ What `pumllint trace` reports over the kit: every requirement realised by a diag
 - A never-filled series alerts and its report ends there: JDL-109, JDL-114
 - A pair without a common session is not measured: JDL-127
 - A same-day stored split excuses the jump of an actions-eligible leg: JDL-086, JDL-124
-- A stamp from an earlier UTC day refreshes, one from today skips: JDL-091
+- A stamp from an earlier UTC day refreshes, one from today or later skips: JDL-091
 - A yahoo-csv leg is always split_adjusted: JDL-070, JDL-099
 - A zero previous close is skipped; the threshold is strict; an unexplained jump alerts: JDL-124
 - An empty series sends its request even when the end-guard falls before the declared start: JDL-095

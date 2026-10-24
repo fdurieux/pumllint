@@ -411,6 +411,65 @@ documents come from `build.py` over the kit (`--check` says when they are
 stale); `--zip` packs kit, handover and the four checking tools as one
 archive. Nothing in the kit changed.
 
+## A fourth rebuild, from outside (2026-10-24)
+
+*Dated addition. The rebuild and its review:
+`recreate_experiment/rebuilds/codex-2026-10-24/` (pumllint
+[#183](https://github.com/fdurieux/pumllint/pull/183)); the kit
+corrections it caused: `recreate_experiment/kit/CHANGES.md`, revision
+2026-10-24.*
+
+The maintainer had the kit and the handover set rebuilt once more by a
+different vendor's model (recorded as `gpt-6.1-sol-wm`, effort
+unverified), under a protocol it pre-registered itself: inputs limited to
+`kit/` and `handover/` at `88f656a`, every input blob hash-pinned, no
+access to the original, the hidden tests, the earlier rebuilds or their
+results, and a six-dimension 0–5 review of each of the 221 input files
+with "null, never zero" for what it could not assess. The data behaviour
+passed first time: 246 of 246 non-chain cases on the diagnostic run after
+a transport-added newline was removed, and all 11 chain cases once the
+author wrote labelled test doubles for the two scripts the kit names as
+given externals and did not carry. Twelve assumptions, ten findings
+against the kit, all verified here against the kit, the original and the
+handover:
+
+- **One major gap the harness had hidden for three rounds.** `events.sh`
+  and `dashboard.sh` are "given externals" in `chain.md`, and the chain
+  scenarios copy them from beside the script under test; the in-house
+  harness copied them from J-F at run time, so no arm noticed the kit did
+  not ship them, and the handover said "the suite stubs them", which it
+  does not. Now shipped verbatim in `kit/contracts/externals/`, the wording
+  corrected, and the suite re-run on the original and on Arm K2 with the
+  shipped copies: 258/258 each.
+- **Seven bookkeeping errors of wave 2 and the handover:** the README's
+  requirement count, two rows numbered X-10, the change log missing wave
+  2, the actions-gate DMN's stamp domain with no later-than-today value
+  (JDL-091 counts such a stamp as fresh; one Examples row added), the
+  transport drawn as an object in the data model and written as a tuple in
+  `collectors.md` and JDL-023 (the diagram was right; the prose and the
+  requirement's text now say the object), a lost `\u00a7` in the JSON
+  escaping example, and DONE.md naming tools outside the two folders the
+  protocol allowed.
+- **One harness limitation, now removed:** the chain scenarios' call
+  logger split a multi-line argument into several records; it escapes
+  newlines now, and `chain.md` states the one-line `python3 -c` the
+  original uses.
+- **One inherent note:** the packaged universe names two CSV snapshots the
+  program's own package does not carry either; the README now calls them
+  deployment inputs.
+
+Two readings. The review's usefulness scores land where the experiment's
+own K−UML arm did: contracts with exact strings and worked arithmetic at
+4–5, the decision tables at 3, the diagrams and generated views unscored
+as "navigation". And three of the rebuild's assumptions (an empty provider
+response, duplicate timestamps handed to a reconcile, numeric knob ranges)
+are silences the three earlier rebuilds also met and resolved the same
+way; they are recorded as candidates, not added. The rebuild's own code is
+about 700 lines of deliberately minified Python with a generated parser:
+correct under the suite, not a codebase for a squad, and kept as evidence.
+Its eleven extra tests include the `load` happy path through a fake
+collector, the row the wave-2 DMN pass named as uncovered.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
