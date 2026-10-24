@@ -477,6 +477,14 @@ kit implied the order and never stated it), and `MANIFEST.sha256` with a
 stdlib tool to verify a copy byte for byte, the check the rebuild had to
 build for itself.
 
+The wave-2 invariants were then run against this rebuild as well
+(2026-10-24, a fresh environment on the kit's pins): the six intrinsic
+properties pass at 100 examples each, and the differential property
+passes, 7/7, with Arm K2 as the reference — the original and this rebuild
+are both named `jef` and cannot share a process, so equality to the
+original is transitive through K2, which had matched it on the same seven
+properties, rather than measured directly.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
