@@ -1,0 +1,29 @@
+certifi==2026.10.23
+charset-normalizer==3.5.2
+gherkin-official==42.0.1
+hypothesis==6.170.9
+idna==3.20
+iniconfig==2.3.1
+# Editable install with no version control (jef==0.6.0)
+-e /workspace/scratch/a2818d442cd1/recreate_experiment/rebuilds/codex-2026-10-24
+Mako==1.4.3
+MarkupSafe==3.0.4
+numpy==2.4.6
+packaging==26.3
+pandas==3.0.5
+parse==1.22.4
+parse_type==0.6.6
+pluggy==1.7.0
+pyarrow==25.0.1
+Pygments==2.21.0
+pytest==9.1.1
+pytest-bdd==9.0.0
+python-dateutil==3.0.0
+requests==2.34.2
+setuptools==84.2.1
+six==1.17.0
+sortedcontainers==2.4.0
+typing_extensions==4.16.0
+tzdata==2026.5
+urllib3==2.8.0
+wheel==0.48.0

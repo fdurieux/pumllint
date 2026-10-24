@@ -1,0 +1,10 @@
+plan for store '/tmp/recreation-smoke' (9 leg(s)):
+    AAPL eodhd/AAPL.US: sync-actions + load (first fill, full history)
+    AAPL yahoo/AAPL: import experiments/AAPL.csv (whole file, idempotent)
+     BTC eodhd/BTC-USD.CC: load (first fill, full history to 2026-10-23)
+     BTC binance/BTCUSDT: load (first fill from 2017-08-01 to 2026-10-23)
+     BTC yahoo/BTC-USD: import experiments/BTC-USD_feb2024.csv (whole file, idempotent)
+     TLT eodhd/TLT.US: sync-actions + load (first fill, full history)
+    NVDA eodhd/NVDA.US: sync-actions + load (first fill, full history)
+    TSLA eodhd/TSLA.US: sync-actions + load (first fill, full history)
+     IBM eodhd/IBM.US: sync-actions + load (first fill, full history)

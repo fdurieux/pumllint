@@ -1,0 +1,98 @@
+{
+  "method": "Enumerate all declared finite values; representative nonnegative integers at and around thresholds. Not full FEEL validation or excluded harness equivalence.",
+  "decisions": [
+    {
+      "file": "actions_gate.dmn",
+      "decision": "actions_gate",
+      "rules": 5,
+      "sampled_points": 12,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "basis.dmn",
+      "decision": "price_basis_resolution",
+      "rules": 5,
+      "sampled_points": 9,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "basis.dmn",
+      "decision": "volume_raw_source",
+      "rules": 3,
+      "sampled_points": 6,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "command_store_state.dmn",
+      "decision": "command_by_store_state",
+      "rules": 16,
+      "sampled_points": 18,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "refusal_routing.dmn",
+      "decision": "refusal_routing",
+      "rules": 6,
+      "sampled_points": 6,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "status_verdicts.dmn",
+      "decision": "staleness_check",
+      "rules": 3,
+      "sampled_points": 10,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "status_verdicts.dmn",
+      "decision": "actions_freshness_check",
+      "rules": 4,
+      "sampled_points": 20,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "status_verdicts.dmn",
+      "decision": "phantom_jump_check",
+      "rules": 4,
+      "sampled_points": 8,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "status_verdicts.dmn",
+      "decision": "cross_venue_spread_check",
+      "rules": 4,
+      "sampled_points": 16,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "status_verdicts.dmn",
+      "decision": "status_exit_and_flag",
+      "rules": 3,
+      "sampled_points": 25,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "sync_window.dmn",
+      "decision": "fetch_start",
+      "rules": 3,
+      "sampled_points": 4,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "sync_window.dmn",
+      "decision": "fetch_end",
+      "rules": 4,
+      "sampled_points": 4,
+      "result": "unique on sampled declared domain"
+    },
+    {
+      "file": "sync_window.dmn",
+      "decision": "bar_request",
+      "rules": 3,
+      "sampled_points": 4,
+      "result": "unique on sampled declared domain"
+    }
+  ],
+  "rules_total": 63,
+  "limitation": "actions_gate future-stamp domain omission remains F-005."
+}
