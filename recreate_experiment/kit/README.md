@@ -21,6 +21,39 @@ and every exit code matches. Reading order:
    `pumllint trace uml --requirements requirements.json --features features --fail-on-uncovered --fail-on-unverified -c pumllint.toml`.
 4. `features/` — the executable scenarios (see `features/README.md`).
 
+## Precedence when two of the kit's documents disagree (revision 2026-10-24)
+
+The kit is written so that its documents agree. If they do not, this is
+the order; build the higher one and report the disagreement (in your
+`ASSUMPTIONS.md`, and to the kit's owner as a defect to fix):
+
+1. **The acceptance suite** — the expectations in `features/*.feature` and
+   `features/fixtures/expected/`, which were recorded from the original
+   program and verified on it. What a scenario expects is what the program
+   does.
+2. **`requirements.json`** — the normative statements. A requirement wins
+   over any prose that elaborates it.
+3. **`contracts/*.md`, the JSON Schemas and the packaged TOML files** — the
+   elaboration: exact strings, arithmetic, layouts, grammars.
+4. **`contracts/dmn/` and `contracts/glossary.md`** — derived from 2 and 3;
+   a table or a definition never overrides the text it summarises.
+5. **`uml/`** — structure, names, sequencing and layout; a diagram never
+   decides a message string, a number or an exit code.
+
+Generated views outside the kit (`../handover/REQUIREMENTS.md`,
+`DECISIONS.md`, `TRACE.md`) are below all five: they are built from the
+kit and carry nothing of their own.
+
+## Verifying the copy you hold
+
+`MANIFEST.sha256` lists every file of the kit with its SHA-256; `python
+tools/manifest.py --check` (or `sha256sum -c MANIFEST.sha256` on POSIX)
+verifies the copy byte for byte. A checkout that rewrote line endings, or
+a transfer that appended a newline, fails the check: the recorded fixtures
+are compared byte for byte by the suite, so a kit that fails the check
+cannot pass it. `python tools/manifest.py` rewrites the manifest after a
+revision.
+
 `events.sh` and `dashboard.sh`, which the chain sources, are given
 externals, shipped verbatim in `contracts/externals/` (revision 2026-10-24):
 copy them unchanged beside your `daily.sh`; the chain scenarios copy them

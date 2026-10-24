@@ -470,6 +470,13 @@ correct under the suite, not a codebase for a squad, and kept as evidence.
 Its eleven extra tests include the `load` happy path through a fake
 collector, the row the wave-2 DMN pass named as uncovered.
 
+Two more things its method asked for, added the same day: a written
+precedence rule for disagreements between the suite, the requirements,
+the contracts, the decision tables and glossary, and the diagrams (the
+kit implied the order and never stated it), and `MANIFEST.sha256` with a
+stdlib tool to verify a copy byte for byte, the check the rebuild had to
+build for itself.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits

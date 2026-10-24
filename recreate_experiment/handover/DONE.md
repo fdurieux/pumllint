@@ -5,6 +5,7 @@ unless stated; `<out>` is your build's directory.
 
 | # | proof | command | expected |
 |---|---|---|---|
+| 0 | the kit you built from is intact | `python tools/manifest.py --check` in `../kit/` | `OK` |
 | 1 | package installs with the pinned dependencies only | `pip install -e <out>` then `pip freeze` | pandas 3.0.5, numpy 2.4.6, requests 2.34.2, pyarrow 25.0.1, nothing else beyond their own dependencies |
 | 2 | the console script exists and prints the verbatim help | `COLUMNS=80 jef-data --help` | byte-equal to the first block of `contracts/cli_help.md` (the suite checks all eleven) |
 | 3 | the acceptance suite passes, chain included | `JDL_UNDER_TEST=jef-data JDL_CHAIN=<out>/deploy/daily.sh JDL_ADAPTER=jdl_adapter PYTHONPATH=<out> python -m pytest -q features/steps` | `258 passed` — no failures, no skips, no deselection |
