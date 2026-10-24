@@ -1,8 +1,8 @@
 # Independent recreation: approach and input evaluation method
 
-Method version: 1.1 (SDD objective clarification)  
+Method version: 1.2 (explicit tacit and tribal knowledge capture)  
 Recorded: 24 October 2026  
-Status: original protocol recorded before implementation; version 1.1 adds the user's clarified SDD objective after the first run. See the amendment below.  
+Status: original protocol recorded before implementation; versions 1.1 and 1.2 clarify the SDD objective and knowledge externalization after the first run. The original baseline remains unchanged.  
 Specification baseline: `88f656a39f47fe92a31e887e26888775658aa19b`.  
 Output directory: `recreate_experiment/rebuilds/codex-2026-10-24/`.
 
@@ -118,6 +118,98 @@ is necessary. Claims about a minimal set require separately designed removal
 or comparison experiments and fresh independent implementations where
 learning effects would otherwise bias the result. No such experiment has
 been run or is silently implied by the present scores.
+
+## Capturing tacit and tribal knowledge
+
+Method version 1.2 amendment, recorded after the initial recreation on
+24 October 2026. This is an extension of the research method, not a claim
+that interviews or a new independent recreation have already taken place.
+
+Tacit knowledge is practical know-how a person uses without fully stating
+it, such as how they recognize an invalid result or choose an exception.
+Tribal knowledge is project-specific understanding shared informally by a
+team, such as naming conventions, historical workarounds, deployment rituals
+or unwritten business rules. Both can be valuable, incorrect, outdated or
+disputed; neither becomes authoritative merely because someone states it.
+
+### Discovery and externalization
+
+During specification preparation, elicit consequential decisions through
+worked examples, counterexamples, exception walkthroughs, incident/repair
+stories, operational demonstrations and review by the relevant domain or
+operations owner. These are possible preparation activities, not authority
+to contact people or inspect sources excluded from the current experiment.
+
+For each candidate knowledge item, record:
+
+- stable ID and the concrete claim, rule, procedure or judgement;
+- source/person or role, date, context and evidence, with confidence;
+- whether it was elicited, directly observed, or merely inferred;
+- affected requirements, interfaces, invariants and operational outcomes;
+- scope, exceptions, rationale and historical constraints;
+- conflicts, unresolved questions, responsible validator and validation status;
+- destination artefact and the test/example that can demonstrate its meaning;
+- specification version in which it was accepted, revised or rejected.
+
+Distinguish an inference from confirmed knowledge. An implementer's guess
+about an unspecified behaviour is a gap hypothesis, not recovered tacit
+knowledge. A missing dependency likewise is not automatically evidence of
+tribal knowledge.
+
+Externalize accepted knowledge in its normative home: business rules or
+decision tables for policies; schemas/contracts/glossary for data semantics;
+state/process/sequence models for transitions and ordering; runbooks and
+dependency manifests for operations; decision records for rationale and
+constraints. Add executable examples or checks where possible. A knowledge
+register links provenance and validation; it must not become a second,
+competing source of behavioural truth.
+
+For example, the distinction between the injected run clock and the real
+actions-file stamp is already explicit in this kit. That is useful
+externalized implementation knowledge. It is not evidence that this
+recreation discovered an unwritten team practice.
+
+### Preserve the independent experiment
+
+Keep elicitation and independent verification separate:
+
+1. Freeze and version the candidate specification package after preparation.
+2. Let the independent implementer use only that package and the declared
+   toolchain, recording knowledge dependencies when information is absent.
+3. Record material clarification requests, assumptions and their effects.
+   Do not silently consult knowledgeable insiders to make the run succeed.
+4. After adjudication, incorporate accepted clarifications into a new input
+   version and link the affected checks. Preserve the original run and its
+   sufficiency judgement.
+5. Verify the revised version through affected regression checks. A stronger
+   claim of independent artefacts-only sufficiency needs a fresh independent
+   implementation where prior learning would otherwise supply the missing
+   knowledge.
+
+The implementer's accumulated understanding cannot be reset by merely
+rerunning tests. A clarified version passing the same implementation's suite
+is evidence of repair/regression, not a new blind recreation.
+
+### Evaluation and scoring
+
+For each artefact, assess whether consequential decisions depend on unwritten
+knowledge, whether stated rules retain enough context and exceptions, and
+whether an independent reader can apply them to examples. Link material
+omissions to completeness, clarity and verifiability scores under the
+existing rubric; do not retroactively add scores to the frozen baseline.
+
+At set level, report known material knowledge dependencies, clarification
+interventions, unsupported behavioural assumptions, and accepted items that
+remain outside normative artefacts or verification evidence. Distinguish
+these from ordinary internal design freedom and intentionally specified
+quirks.
+
+Do not report a percentage of all tacit knowledge captured: the unknown
+population has no defensible denominator. Any ratio must name a bounded,
+inventoried set of elicited items and show how many were validated,
+externalized and checked. The readiness criterion is that no known material
+project-specific knowledge dependency remains unresolved within the declared
+scope, with residual uncertainty stated explicitly.
 
 ## Purpose and scope
 
