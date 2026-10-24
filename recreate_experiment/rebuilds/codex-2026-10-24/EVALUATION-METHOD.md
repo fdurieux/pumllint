@@ -1,8 +1,8 @@
 # Independent recreation: approach and input evaluation method
 
-Method version: 1.2 (explicit tacit and tribal knowledge capture)  
+Method version: 1.3 (knowledge capture and reverse-engineering flow)  
 Recorded: 24 October 2026  
-Status: original protocol recorded before implementation; versions 1.1 and 1.2 clarify the SDD objective and knowledge externalization after the first run. The original baseline remains unchanged.  
+Status: original protocol recorded before implementation; versions 1.1–1.3 clarify the SDD objective, knowledge externalization and reverse-engineering flow after the first run. The original baseline remains unchanged.  
 Specification baseline: `88f656a39f47fe92a31e887e26888775658aa19b`.  
 Output directory: `recreate_experiment/rebuilds/codex-2026-10-24/`.
 
@@ -210,6 +210,90 @@ inventoried set of elicited items and show how many were validated,
 externalized and checked. The readiness criterion is that no known material
 project-specific knowledge dependency remains unresolved within the declared
 scope, with residual uncertainty stated explicitly.
+
+## Reverse-engineering within the SDD flow
+
+Method version 1.3 amendment, recorded after the initial recreation on
+24 October 2026. This describes an additional part of the research method;
+it does not claim that an upstream source-to-specification audit has run.
+
+For an existing system, reverse-engineering is an upstream way to discover
+and validate specification content. For greenfield SDD, domain elicitation
+and requirements engineering supply that content without a legacy reference.
+
+| Stage | Activity | Output and evidence |
+|---|---|---|
+| Discover implemented behaviour | Inspect the original code, tests, configuration, interfaces and controlled execution traces | Versioned observations of rules, arithmetic, states, dependencies, boundaries and failure behaviour |
+| Recover meaning and intent | Reconcile observations with domain and operational knowledge | Validated interpretations, rationale, exceptions, conflicts and open questions |
+| Specify | Externalize accepted knowledge in the normative artefacts and executable examples | Candidate SDD package with source provenance, authority rules and trace links |
+| Recreate independently | Freeze the package and implement using its artefacts only | Independent code, findings, assumptions and recorded interventions |
+| Compare and adjudicate | Verify contracts and, in a separate validation role, compare observable behaviour with the original | Classified discrepancies, explicit compatibility decisions and versioned specification corrections |
+
+### Two transformations, evaluated separately
+
+1. **Code to artefacts:** assess extraction fidelity and completeness. Can
+   consequential implemented behaviour be traced to explicit specifications?
+   Are inferred rules marked as inferences, and is intended behaviour validated
+   rather than merely assumed from the source?
+2. **Artefacts to recreated code:** assess specification sufficiency and
+   implementation conformance. Can an independent implementer derive the
+   required outcomes without undocumented project knowledge?
+
+Every extracted claim must distinguish:
+
+- **Observed:** what the pinned original implementation demonstrably does.
+- **Inferred:** a proposed explanation or generalized rule, with confidence.
+- **Intended:** behaviour accepted by the responsible specification authority.
+
+These statements may disagree. Preserve their provenance rather than merging
+them into one apparently authoritative requirement. A source defect must not
+silently become desired behaviour; preserving it for compatibility requires
+an explicit decision, scope and acceptance example. Conversely, an independent
+recreator must reproduce a clearly specified compatibility quirk rather than
+silently repair it.
+
+### Independence and discrepancy handling
+
+The extraction role may inspect the original system. The independent
+recreation role must not receive its source, hidden tests, prior recreated
+code or historical outcomes. Use separate people or genuinely independent
+execution contexts when testing that separation. Running both roles in the
+same informed context cannot substantiate a blind reconstruction claim.
+
+Freeze the specification and recreation revision before reference comparison.
+A separate validator can hold the original implementation and additional
+reference probes outside the recreator's inputs. Such probes provide
+diagnostic evidence, not automatic authority over the stated requirements.
+Any feedback or newly revealed behaviour becomes a recorded intervention;
+changes to normative content create a new specification version.
+
+For each discrepancy, record the input/setup, expected and actual outcomes,
+evidence versions, affected requirements and one or more candidate causes:
+extraction omission/error, inconsistent or ambiguous specification,
+recreation implementation defect, original implementation defect, environment
+mismatch, or invalid test oracle. Adjudicate using evidence and the stated
+authority rules; do not automatically treat the original implementation as
+correct.
+
+Source-derived tests and contracts can share the same mistake. Evaluate
+conformance, extraction fidelity and domain validity as separate evidence
+layers, using independently justified invariants or validated domain examples
+where available. Preserve unresolved validity as uncertainty.
+
+The research output should identify information lost in each transformation
+and the smallest artefact correction needed to prevent recurrence. Score the
+affected artefacts with that evidence, preserving baseline scores and avoiding
+double counting the same source fact across generated views.
+
+### Status of this experiment
+
+The completed run primarily evaluates artefacts to recreated code, subject
+to the already documented external-script and validation limitations. No
+independent audit of how faithfully the kit/handover were extracted from
+the original code has been performed by this recreation. Documenting this
+upstream stage does not authorize the recreator to inspect the excluded
+original source or hidden material, nor does it establish a code-to-spec-to-code
+round-trip correctness result.
 
 ## Purpose and scope
 
