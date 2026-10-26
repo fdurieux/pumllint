@@ -1040,6 +1040,13 @@ list and license posture live in § Settled questions.
   (live half 40, specified-unexercised 33, no caller in the lane 61,
   guards 6; recreate_experiment/results/coverage/UNREALISED.md). Changes
   no product behaviour.*
+  *2026-10-26: mneme's Architecture Audit read against the record (source
+  only, not run). Its "protected" is one literal-string rule type or a
+  grep-and-`exit 1` workflow line; a declared test never protects, so the
+  gates these repositories use would read as "depends on people
+  remembering". The idea it carries — a rule-to-gate table per CLAUDE.md
+  rule — is a J-F candidate, outside both repositories; queues nothing
+  here. Changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

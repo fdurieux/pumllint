@@ -542,6 +542,73 @@ successor's questions the blind test. The question layer cites, abstains
 and logs; it never signs off. Illustrative names and figures; a plan, not
 a run.
 
+## A tool read against the record: mneme's Architecture Audit (2026-10-26)
+
+*Dated addition, on the maintainer's ask. A reading of the source, not a
+run: the session's permission gate refused installing code from an
+external repository, so nothing below is measured on this repository or
+on J-F. Source read at `MnemeHQ/mneme` HEAD `1b5dc50` (2026-10-26),
+`pyproject.toml` version 0.10.0, MIT, Python 3.11+.*
+
+**What it is.** A CLI that keeps architectural decisions in
+`.mneme/project_memory.json`, blocks an agent's edit when the text
+contains a forbidden token, and runs an "Architecture Audit" sorting
+each decision into four tiers: *Protected*, *Mneme-ready*, *Requires
+modelling*, *Guidance*. The README's promise, "see where your
+architecture is actually protected — and where it still depends on
+people remembering the rules", is the claim read here.
+
+**What "protected" means in the code** (`mneme/enforcer.py`,
+`_assess_protection_tier`, the ADR-026 block above it). A decision is
+Protected on exactly two kinds of evidence: its own installed rule — one
+rule type exists, `FORBID_LITERAL`, a character sequence matched without
+normalisation (ADR-019; `FORBID_NUMERIC_ABOVE` is audit-only and
+unreleased) — or a GitHub Actions / GitLab workflow file in which a line
+mentioning the token is chained to `exit 1` in one of three grep-and-fail
+shapes (`_ci_verified_linkage`). A declared pytest selector annotates the
+decision and, by their ADR-024, never protects: the audit executes no
+repository code and no trusted verifier exists yet. Intent is a word
+list: any of *should*, *may*, *can*, *prefer*, *consider*, *generally*
+makes the decision Guidance, which no evidence can lift. The package
+depends on the `anthropic` SDK; the tiering itself is regex-only, and
+where the SDK is used was not checked.
+
+**Desk-check against this programme's own rules**, by mneme's regexes:
+
+| rule | tier | why |
+|---|---|---|
+| J-F: no `logging` in `src/` | Mneme-ready | "no logging" is a single-term prohibition; path scope exists (ADR-020) |
+| J-F: never switch R to OpenBLAS/MKL | Mneme-ready | single token; no workflow line to verify it |
+| J-F: never edit `experiments/`; never re-freeze `tests/golden/legacy/` | Requires modelling | a path rule, not a literal |
+| J-F: strict projection AST-identical to the frozen source | Requires modelling or Guidance | gated by `tests/test_consolidation.py`, which the audit cannot count |
+| pumllint: all output through `_out`/`_err`, never a bare `print()` | Mneme-ready via "no print", then false positives | the literal occurs legitimately in tests and docs |
+| pumllint: forward-slash paths, `as_posix()` never `str(path)` | Requires modelling | two terms |
+| both: exit codes 0/1/2 are a contract | Guidance | no obligation word, no literal |
+
+The audit would report almost nothing in J-F as protected while the AST
+proofs, `tests/test_traps.py`, `test-tier-ranges.R`, the paste-block
+checker and the diagram gates all exist. It scores the enforcement
+shapes it knows, not enforcement — T-0800 in a new coat, a tick that
+measures the tool against itself.
+
+**Verdict.** The question is sound and this programme has not answered
+it in one place: for each rule in a CLAUDE.md, which gate enforces it,
+by symbol, and which rely on memory. The tool does not answer it for
+these repositories, whose gates are tests, not grep-and-exit workflow
+steps. The transferable shape is a rule-to-gate table, hand-built once
+and then kept honest by a test that every rule names a gate or is marked
+*memory only* — J-F's `docs/VERIFICATION.md` covers the contract items,
+not the sixty-odd iron and working rules. A J-F candidate, outside both
+of these repositories; not queued here. For pumllint the parallel is
+`trace`'s verification column: requirement → scenario → verified is the
+same three-tier reading, applied to models instead of decisions, and it
+already counts what the audit cannot — a test.
+
+**Bounds.** Not run. The desk-check applies the published regexes to
+seven rules by hand; a live `mneme audit` on a J-F checkout would settle
+the tiers it actually assigns, and the one-term "no print" false-positive
+rate is a guess until a check is run on the docs tree.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
