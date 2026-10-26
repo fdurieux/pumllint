@@ -523,7 +523,10 @@ count is the honest size of the tacit remainder for this lane.
 ## A case for the approach: a departing expert (2026-10-24)
 
 *Dated addition, on the maintainer's ask. The plan:
-`recreate_experiment/knowledge-transfer/DOMINIQUE-CASE.md`.*
+`recreate_experiment/knowledge-transfer/DOMINIQUE-CASE.md`. Revised
+2026-10-26: the linter routing step written out as a five-step procedure
+(lint, attribute, route, resolve, re-lint) with its findings table,
+session prompt, measure and role assignments.*
 
 The knowledge-capture method of the fourth rebuild (EVALUATION-METHOD 1.2
 and 1.3) and the experiment's instruments, applied to a person rather than

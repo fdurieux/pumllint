@@ -5,7 +5,9 @@ knowledge-capture method of `recreate_experiment/rebuilds/codex-2026-10-24/
 EVALUATION-METHOD.md` (versions 1.2 and 1.3) and the experiment's own
 instruments (the specification kit, the quirks list, the unrealised-code
 register) to one case: a person leaving, not a system being rebuilt. Names
-and figures are illustrative.*
+and figures are illustrative. Revised 2026-10-26: the linter routing step
+written out as a procedure, with its findings table, session prompt,
+measure and role assignments.*
 
 ## The case
 
@@ -125,6 +127,33 @@ becomes a register entry; findings in other people's documents go to
 those authors, and reach her only where she is the last person who knows.
 Appendix E lists what each tool finds and cannot.
 
+The linter routing step, as a procedure:
+
+1. *Lint.* Run each tool over the documents in scope, as they are, without
+   fixing anything first: pumllint over the analysis models, trace and the
+   glossary check over the requirements, the gap and overlap check over
+   the decision tables, bpmnlint over the process models, aris2puml's
+   refusals over the ARIS exports. Keep every report with the tool's
+   version and the documents' versions.
+2. *Attribute.* For every finding, read the author and the current owner
+   off the document's version history, never off the title page. A
+   finding in a document with several authors goes to the author of the
+   lines it points at; one in a document with no history goes to the
+   owner.
+3. *Route.* Findings attributed to her form one block on her session plan
+   (phase 3, "Her documents' findings"). Findings attributed to others go
+   to those authors with a two-week deadline; the facilitator escalates
+   to her only the ones where the author no longer works there or cannot
+   say, since she is then the last person who knows.
+4. *Resolve.* Each finding of hers ends as one of four: a slip, corrected
+   in the document under the change process before she leaves; a
+   deliberate choice, recorded with its reason as a decision record; an
+   exception path nobody wrote down, which becomes a register entry; or
+   open, when she does not know either, which stays listed as such.
+5. *Re-lint.* After the corrections, run the same tools again at the same
+   versions; the second report is the evidence that the slips are gone and
+   the remaining findings are recorded choices or exceptions, not defects.
+
 *Why.* Interviews find what she remembers to mention; traces find what she
 was actually asked, and the linters find what the documents cannot say
 about themselves. The experiment showed the same on the system side: the
@@ -135,7 +164,10 @@ rebuild found in a day a gap three internal rounds had missed.
 archives (with the data-protection contact's agreement), the kit and its
 registers.
 *Materials out.* The candidate inventory: one row per item, with source,
-date, consequence, uniqueness, and a provisional class.
+date, consequence, uniqueness, and a provisional class. The findings table:
+one row per linter finding, with tool, document and version, author or
+owner, route (her block, another author, escalated to her), and
+resolution (slip, choice, exception, open).
 *Outcome.* The denominator. Every later claim of coverage is against this
 list, and the list is dated.
 
@@ -305,8 +337,8 @@ person in role, and a known list of what was lost.
 | role | who | does |
 |---|---|---|
 | knowledge owner | product owner, professional loans | scope, priorities, sign-off, maintains the corpus after departure |
-| facilitator | an analyst from the team | runs the sessions, writes register entries and normative artefacts the same day |
-| engineer | one developer | reverse engineering of the in-scope systems, the corpus, the question layer, the gates |
+| facilitator | an analyst from the team | runs the sessions, writes register entries and normative artefacts the same day; routes the linter findings and chases the other authors |
+| engineer | one developer | reverse engineering of the in-scope systems, the corpus, the question layer, the gates; runs the linters over the documents and attributes their findings |
 | Dominique | the departing expert | sessions, validation within two days, grading |
 | successor | the incoming analyst | present in every session, asks the questions, owns the backlog after departure |
 | second validator | line manager or peer analyst | reads every judgement and disputed item |
@@ -337,6 +369,9 @@ Reported in the method's form, always with the denominator:
   executable example or check;
 - adjudication: quirks and orphans classified as deliberate, workaround,
   temporary or unknown;
+- document findings: found, by tool; attributed; routed to her, to other
+  authors, escalated to her; of hers, resolved as slip, choice, exception
+  or open; the re-lint count against the first;
 - grading test: questions in the set; answered correctly with a source;
   partial; wrong; abstained correctly; abstained wrongly; the residual by
   name, before and after the second round;
@@ -418,7 +453,10 @@ Exception walk: "When does the standard flow not apply, and who says so?"
 Incident replay: "What did you see first? Who did you call? What did you
 try that did not work? What is still like that today?" Quirk adjudication:
 "The system does this. Was that chosen, a workaround, a stopgap, or do you
-not know?" Decision history: "What did we try and stop? Why?" Network:
+not know?" Her documents' findings: "This is your diagram from March; the
+tool says this decision has no outcome for 'no'. Did you leave it out, is
+there a reason it is not drawn, or does something happen there that nobody
+wrote down?" Decision history: "What did we try and stop? Why?" Network:
 "If this number is wrong at four o'clock on a Friday, who can fix it?"
 
 ## Appendix C — grading rubric
