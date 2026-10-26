@@ -11,6 +11,13 @@ SonarQube plugin.
 
 Zero runtime dependencies (PyYAML only if you use a YAML config). Python ≥ 3.11.
 
+pumllint is one tool in [Legible](https://fdurieux.github.io/), a programme
+to make the information upstream of code — requirements, processes, models,
+decisions, contracts — query-able for humans and AI, and quality-gated before
+it is handed to a developer or a dev-agent. That page maps where this tool
+sits among the gates for neighbouring artefacts, which of those are covered
+by other tools, and which gaps are still open.
+
 ## Quick start
 
 ```bash
