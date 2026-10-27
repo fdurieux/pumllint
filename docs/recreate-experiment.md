@@ -609,6 +609,43 @@ seven rules by hand; a live `mneme audit` on a J-F checkout would settle
 the tiers it actually assigns, and the one-term "no print" false-positive
 rate is a guess until a check is run on the docs tree.
 
+## OpenWiki against the kit: pre-registered, awaiting the artefact (2026-10-27)
+
+*Dated addition, on the maintainer's ask. Pre-registration:
+`recreate_experiment/openwiki-2026-10-27/PREREGISTRATION.md`; tools beside it.
+Nothing measured yet.*
+
+LangChain's OpenWiki (0.7.2; a Node CLI built on Deep Agents that writes a
+Markdown wiki with "Grounded Claims", each claim pinned to `repo://` line
+evidence with content hashes) is to be run over the **same clean-room
+tree** the kit's reverse engineer saw (J-F `8f6d6b0`, `src/jef/data/`,
+`deploy/daily.sh`, the two externals marked, a reduced `pyproject.toml`;
+23 files, subject sha256 `535982e6…`), and its wiki compared with the kit
+on three questions: accuracy (M1, a seeded sample of its claims verified
+against the code), coverage (M2, the 163 requirements mapped onto the wiki,
+by kind; M3 the inverse), and sufficiency (M7, a fresh Opus 5 @ xhigh agent
+rebuilding the lane from the wiki alone, graded by the hidden suite and the
+harness cell for cell, as the kit arms were). Also measured: the six filed
+defects and the twelve quirks (M4, M5), what each arm's machine checks
+prove (M6; the expectation that the evidence hash proves staleness, never
+truth, is T-0800 in the wiki's terms), cost (M8) and, if the owner runs
+the update, drift detection on the two Phase 1 mutants (M9).
+Expectations are frozen in §4: precision high (≥ 0.85 strict), coverage
+low (< 0.40 strict, lowest on refusals and arithmetic), at most one defect
+flagged, at most four quirks stated, the rebuild under 70 % of the 258
+cases. The model confound is stated up front: OpenWiki's effort knob exists
+only for OpenAI's gpt-5.6 family, so Arm W is the tool as shipped and the
+kit's Opus 5 @ xhigh is not matched; every difference is pipeline × model.
+
+**Blocked on one thing:** a model credential. The session can install and
+run the CLI (checked: `openwiki --help` at 0.7.2 on Node 22.22.0) but the
+environment carries no provider key, so the generation is the owner's,
+either as a key in the environment's secrets for a later session or as a
+local run with the paste block given in chat; the wiki lands under
+`results/W/` unread, and the rebuild starts before the grader reads it.
+The tools were dry-run on OpenWiki's own wiki (748 claims, 22 pages) to
+prove the sidecar parser; nothing from that is a result.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
