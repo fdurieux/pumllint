@@ -183,3 +183,15 @@ under `results/<arm>/`, so every judgement is on the record.
 ## Results
 
 *(appended as the steps complete; nothing above this line changes)*
+
+### Step 1 — frozen 2026-10-27
+
+- Pre-registration frozen at pumllint `5337265` (PR #195, squash-merged
+  on a green matrix); sha256 of this file at that commit, above this
+  Results section unchanged since: `cf7df94a…9aae` (full value:
+  `cf7df94a797fe3c26fb571d7a8b88e80fb0a651526f9b267232a1f22bdfc9aae`).
+- The clean room was built once here as a tooling check
+  (`make_clean_room.py` over J-F `8f6d6b0`): 23 files, subject tree
+  sha256 `535982e6…` as §2 states. No OpenWiki run: no model credential in
+  this environment. The owner was given the two routes (a key in the
+  environment's secrets for a later session, or the local paste block).
