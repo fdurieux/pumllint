@@ -1047,6 +1047,13 @@ list and license posture live in § Settled questions.
   remembering". The idea it carries — a rule-to-gate table per CLAUDE.md
   rule — is a J-F candidate, outside both repositories; queues nothing
   here. Changes no product behaviour.*
+  *2026-10-27: a comparison of LangChain's OpenWiki wiki with the kit is
+  pre-registered on the same clean-room subject
+  (recreate_experiment/openwiki-2026-10-27/PREREGISTRATION.md): claim
+  precision, coverage of the 163 requirements, and a rebuild from the wiki
+  alone graded as the kit arms were. Awaiting the artefact, which needs a
+  model credential the session lacks. Queues nothing; changes no product
+  behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
