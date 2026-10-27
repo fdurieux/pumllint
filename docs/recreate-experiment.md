@@ -526,7 +526,11 @@ count is the honest size of the tacit remainder for this lane.
 `recreate_experiment/knowledge-transfer/DOMINIQUE-CASE.md`. Revised
 2026-10-26: the linter routing step written out as a five-step procedure
 (lint, attribute, route, resolve, re-lint) with its findings table,
-session prompt, measure and role assignments.*
+session prompt, measure and role assignments. Revised 2026-10-27: an
+enforcement state (system, control, memory) on every rule item of the
+register and in Phase 2's triage, each state with its own handling, after
+J-F's rule-to-gate register showed the same column answers the question
+for a system's rules.*
 
 The knowledge-capture method of the fourth rebuild (EVALUATION-METHOD 1.2
 and 1.3) and the experiment's instruments, applied to a person rather than

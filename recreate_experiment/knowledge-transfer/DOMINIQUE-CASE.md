@@ -7,7 +7,10 @@ instruments (the specification kit, the quirks list, the unrealised-code
 register) to one case: a person leaving, not a system being rebuilt. Names
 and figures are illustrative. Revised 2026-10-26: the linter routing step
 written out as a procedure, with its findings table, session prompt,
-measure and role assignments.*
+measure and role assignments. Revised 2026-10-27: the enforcement state
+added to the register entry and to Phase 2's triage, after J-F's
+rule-to-gate register (`docs/RULE_GATES.md` there) showed the same
+column answers "what depends on memory" for a system's rules.*
 
 ## The case
 
@@ -176,15 +179,42 @@ list, and the list is dated.
 *Steps.* With the owner and the successor, triage the inventory: confirm
 or change each item's class, name its normative home, drop what is already
 documented and validated, park what is low-consequence and not unique.
-Order the rest by consequence times uniqueness. Group into session themes:
-eligibility and pricing rules; exceptions and workarounds; incident
-history; decision history; the network; the quirks and orphans of the
-systems.
+For every rule item (codifiable rule, exception path, procedure) record
+its **enforcement state**, read from the systems and the controls, never
+from her account of them:
+
+- *system* — a loan system applies it (a validation, a computation, a
+  decision table in code), and the kit's scenario or the unrealised-code
+  register names where. Handling: verify, do not elicit; her hours go to
+  the *why* (a quirk adjudication), never to the *what*.
+- *control* — a human step applies it (a four-eyes check, a checklist, a
+  reconciliation, a sign-off), and she or a named colleague operates it.
+  Handling: capture the control's procedure as a runbook entry and name
+  its successor operator; the item is lost when the operator leaves, not
+  when the rule is forgotten.
+- *memory* — nothing applies it but her remembering to. Handling: the
+  elicitation priority. Of these, the ones a system or a decision table
+  could carry are listed as automation candidates for the bank's backlog
+  after she leaves; the ones that are judgement stay worked cases, marked
+  as such, and are never mechanised (the classification of phase 0).
+
+Order the rest by consequence times uniqueness, memory-only items first
+within equal scores. Group into session themes: eligibility and pricing
+rules; exceptions and workarounds; incident history; decision history;
+the network; the quirks and orphans of the systems.
 
 *Why.* Her hours are the scarce resource. Spending them on what is already
-written, or on what three colleagues also know, is the failure mode.
+written, or on what three colleagues also know, is the failure mode. The
+enforcement state is the third factor beside consequence and uniqueness
+because it says how a rule would be lost: a system-enforced rule survives
+her departure with its reason missing, a control-enforced one survives
+until its operator goes, a memory-only one goes with her. One caveat
+carries over from the systems side: *system* means the code does it,
+defects included; the column says where a rule lives, never that it is
+right. Whether it is right is what the sessions validate.
 
-*Materials out.* The prioritised inventory and the session plan.
+*Materials out.* The prioritised inventory with its enforcement column,
+the automation-candidate list, and the session plan.
 *Outcome.* A schedule that fits the notice period, with the high-consequence
 unique items first.
 
@@ -369,6 +399,9 @@ Reported in the method's form, always with the denominator:
   executable example or check;
 - adjudication: quirks and orphans classified as deliberate, workaround,
   temporary or unknown;
+- enforcement: rule items by state (system, control, memory); of the
+  memory-only items, those handed to the backlog as automation candidates
+  and those kept as judgement;
 - document findings: found, by tool; attributed; routed to her, to other
   authors, escalated to her; of hers, resolved as slip, choice, exception
   or open; the re-lint count against the first;
@@ -433,6 +466,8 @@ id:            KT-0042
 claim:         A guarantee recorded before 2019-06 has no legal-form code;
                the eligibility rule treats a missing code as "personal".
 class:         codifiable rule (workaround for a data problem never fixed)
+enforced by:   system (GUAR-LOAD line 212 applies it; no control, no
+               document stated it; the reason was memory only until DR-017)
 source:        Dominique, session 4 (incident replay), 2026-11-18
 elicited/observed/inferred: elicited; confirmed observed in GUAR-LOAD line 212
 confidence:    high
