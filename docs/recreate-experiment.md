@@ -650,6 +650,52 @@ local run with the paste block given in chat; the wiki lands under
 The tools were dry-run on OpenWiki's own wiki (748 claims, 22 pages) to
 prove the sidecar parser; nothing from that is a result.
 
+## An external causal model tested against the record (2026-10-28)
+
+*Dated addition, on the maintainer's ask. Record:
+`recreate_experiment/legible-model-review-2026-10-28/REVIEW.md`.*
+
+*Legible: systemic impact model* v0.2 is a qualitative causal model of
+how the tools and practices on <https://fdurieux.github.io/> affect
+software quality and DORA metrics. It has four layers (artefact quality,
+product quality, quality in use, delivery performance), an explicit
+defect cascade, 70 signed edges and 8 feedback loops. Its pumllint
+evidence pin (`9d728c8`) predates this experiment's entry in
+`EVIDENCE.md`, so the experiment is out-of-sample evidence for it. It
+reaches the artefact → product leg only: nothing here deploys, so
+quality in use and every DORA path stay hypotheses.
+
+The model's hedges held:
+- propagation was conditional;
+- downstream faults arose independently;
+- matching specifications and tests proved nothing without an
+  independent oracle.
+
+Its shared-premise concealment claim (C06) has a measured instance:
+- The closing round, derived from the code, wrote the original's raw
+  traceback on `export` of an absent series into the spec as JDL-159.
+- K2 reproduced the crash, the suite stands at 257/257, and the
+  harness scored it as a divergence closed.
+- J-F #305 calls the same behaviour a defect.
+- K and K−UML, given a silent spec, had refused cleanly.
+
+Three gaps, each tied to a measurement:
+- **The cascade flows one way.** The store's `timestamp` holds seconds
+  under the pinned pandas 3.0.5 (`datetime64[us]`, divided by
+  `10**6`). The comment, docstring, J-F's data contract and OpenWiki's
+  wiki say milliseconds; the kit, from the logic, says seconds. One
+  dependency-made defect reached two derived artefacts in opposite
+  directions.
+- **Attenuation by load-bearing role is not representable.** Twelve
+  diagram defects reached no rebuild's behaviour, because contracts and
+  scenarios carried it (the E5 ablation, read from the other side).
+- **"Green but wrong" starts only from repair.** The measured case was
+  a green gate over drift: J-F #309's 25 claims under Level 5 100/100.
+
+The record proposes the interventional follow-up — plant known defects
+in the kit by layer, rebuild, grade against the frozen reference — and
+does not pre-register it.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
