@@ -60,9 +60,24 @@ return the same `not found` error the file case returns.
 calling `submit_page`. Nothing is logged under `--print`: `run.log` holds the
 D1 message and nothing about why page 1 did not submit. D1 then replaces it
 with an unrelated filesystem error. Established by reading the code and the
-log. Why attempt 1 failed is **not yet known**: a diagnostic copy that logs
-`outcome.error` is running in a throwaway room (not a result), and its answer
-is appended here when it lands.
+log.
+
+**What it hid, found 2026-10-28** with a diagnostic copy that logs
+`outcome.error` (one `console.error` added after `skipped = outcome;`), run
+in a throwaway room whose wiki was not read: `Error: 502 upstream request
+failed`, raised through `langchain`'s `MiddlewareError.wrap`. The same D1
+abort followed. The 502 is the session's agent proxy's, not OpenAI's. A bare
+`POST /v1/responses` (`gpt-5.6-terra`, `xhigh`) through it fails with the
+same body at 30.4 s; the same request with `"stream": true` returns 200
+after 128 s, first byte at 0.85 s. OpenWiki sends provider `openai`
+non-streaming: `providerUsesStreaming` (`dist/config/constants.js:390`)
+returns `true` only for `copilot`, `bob` and opt-in `openai-compatible`.
+Its own comment on `bob` names this failure ("Long generations … can outlast
+the endpoint's response timeout when sent as a single non-streaming
+completion"). So an `xhigh` page call that takes over 30 s to produce
+anything cannot pass this proxy. That is an environment limit, not an
+OpenWiki defect, but D2 made it look like a filesystem error, and D1 made
+one transient provider error fatal.
 
 ## D3 — no `--version` (minor)
 
