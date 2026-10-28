@@ -483,3 +483,43 @@ under `results/<arm>/`, so every judgement is on the record.
 - **Independent check:** 20 rows, seeded (20261027) over the 163, are
   offered to the maintainer for a re-grade: 7, 8, 11, 13, 21, 26, 34, 40,
   49, 54, 59, 60, 66, 99, 105, 108, 111, 127, 142, 154.
+
+### M3 — inverse coverage, written up 2026-10-28
+
+- **Datum:** the M1 worksheet's `in_kit` column (graded with M1). 18 of
+  the 127 TRUE claims are `NO`. The write-up is
+  `results/W/m3/inverse-coverage.md`.
+- **18 claims, 13 facts.** The wiki restates a fact on more than one
+  page; the quickstart repeats the architecture page.
+- **By kind, claims (facts):** structure 9 (6), behaviour 6 (4),
+  configuration 2 (2), repository 1 (1), naming 0.
+  - `repository` is not a pre-registered kind. It was added at grading
+    for claim 115, which describes the checkout, not the code.
+- **By the origin of the gap:**
+  - **3 facts (claims 1, 4, 80, 115) are clean-room artefacts.** They are
+    true of the subject tree that `make_clean_room.py` builds, not of
+    J-F: the `jef.data*` package include, the dependency list without
+    extras, the missing tests. The wiki read the subject faithfully; the
+    gap is the experiment's construction.
+  - **3 facts (claims 47, 70, 127) are undrawn consequences** of
+    requirements the kit states:
+    - a class correction is not a migration (JDL-065);
+    - the final uploads are not a transaction (JDL-158);
+    - there is no cross-file atomicity (JDL-058, JDL-042).
+  - **7 facts are code the kit leaves out by scope.** These are the
+    package-root surface, `python -m`, lazy imports, the injection seams,
+    the storage-seam docstring and the EventBridge placement comment.
+    Two of them, `modeled_source` and `validate_or_raise`, are on the kit
+    author's own "Unused code" list (`../hidden/NOTES.md`). No kit
+    scenario, adapter or harness step reaches any of the seven.
+- **Reading:** no fact the wiki adds is a CLI-observable behaviour that
+  the kit gets wrong or leaves undecided.
+  - **What the wiki adds:** what a maintainer of the package wants
+    (shape, seams, deployment placement) and three failure-mode
+    inferences.
+  - **What the kit holds instead:** what a rebuild must reproduce. M2
+    measured how much of that the wiki pins: 40 of 163.
+  - **So the two artefacts overlap less than either covers.** The wiki's
+    share outside the kit (18 of 127 TRUE claims, 0.14) is small, and
+    none of it is boundary behaviour.
+- No hypothesis was registered for M3; it is descriptive.
