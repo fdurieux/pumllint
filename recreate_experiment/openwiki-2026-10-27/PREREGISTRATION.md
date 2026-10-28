@@ -483,3 +483,107 @@ under `results/<arm>/`, so every judgement is on the record.
 - **Independent check:** 20 rows, seeded (20261027) over the 163, are
   offered to the maintainer for a re-grade: 7, 8, 11, 13, 21, 26, 34, 40,
   49, 54, 59, 60, 66, 99, 105, 108, 111, 127, 142, 154.
+
+### M3 — inverse coverage, written up 2026-10-28
+
+- **Datum** (from M1's `in_kit` column): 18 of 127 TRUE claims state at
+  least one part that no kit requirement and no kit contract states.
+- **By kind:** structure 9 (packaging and the package-root import
+  surface, `python -m jef.data`, the lazy imports of `pyarrow` and
+  `requests`, the injection seams of `RateLimiter`, `ParquetStore` and
+  `run_sync`); behaviour 6 (`modeled_source()`'s implicit choice for a
+  single-source asset and its relation to `select_legs()`; a class
+  correction is not a migration, since reconciliation compares served
+  values only; the daily publish is three sequential S3 commands, not a
+  transaction; no cross-file transaction and no `fsync` in the store);
+  configuration 2 (the reduced `pyproject` dependency list, the
+  EventBridge/CloudWatch placement the chain's comments name);
+  repository 1 (no checked-in tests).
+- **Reading.** The surplus is what the kit excludes by design: how the
+  program is built, which is the rebuilder's choice, and what the
+  program does not guarantee. None of the six behavioural facts is a
+  behaviour the harness could grade from outside, so none becomes a
+  requirement; the kit's rule is additive on evidence, and the evidence
+  here is the absence of a property. The one that could matter to an
+  operator, the non-transactional publish, is the chain's S3 ordering,
+  which the chain contract states as a sequence without calling it
+  non-transactional. No kit change.
+
+### M4 — the six filed defects, graded 2026-10-28
+
+Read from the wiki alone. "Stated" means the behaviour is described as
+a fact; "flagged" means called out as an anomaly or defect.
+
+| issue | the wiki | verdict |
+|---|---|---|
+| #304 `timestamp` holds seconds where the comment says milliseconds | data-model page: "Each Parquet row carries `timestamp` (Unix milliseconds)" | **contradicted**: the wiki repeats the docstring the code contradicts (M2 row 060, NONE) |
+| #305 `export` on an absent series ends in a raw `AttributeError` | nothing: no page names a traceback, an unhandled error, or an absent-series case for `export` | absent |
+| #306 `import-csv` reports rows read, duplicates included, stores first-of-duplicates | sync workflow: the leg "imports the configured local file through `ingest_yahoo_csv()` and reports imported rows"; nothing on duplicates or on what the count counts | absent |
+| #307 `actions_missed_k` documented, never exposed | health page: "an alert starts at `actions_missed_k=2` missed refresh sessions; and the public `status` CLI does not expose an action-freshness flag, so this command path uses that function default" | **stated**, as design, not flagged |
+| #308 the injected clock never reaches the actions stamp | testing page, seams table: `run_sync()`'s `now` drives "the UTC date used for crypto end guarding and action freshness gating"; `sync_actions()` and action saves take `now` "when directly exercising action persistence". Both true at the function level; that `run_sync` does not forward `now` to the stamp is never said (M2 row 043 counted the sentence as a contradiction of JDL-043) | absent, with a sentence that misleads |
+| #309 the 25 claims in J-F's diagrams | not applicable: the subject tree holds no diagram | — |
+
+- **Tally over the five applicable:** stated 1, flagged 0, absent 3,
+  contradicted 1. **H3 held** (at most one flagged: none; at most three
+  described: one). The wiki has no oracle to disagree with the code, so
+  it describes what the code does where it looks and repeats the
+  docstring where it does not; the one defect it states, #307, it
+  states as a design choice.
+
+### M5 — the twelve quirks, graded 2026-10-28
+
+Read from the wiki alone, against `../handover/KNOWN-QUIRKS.md`.
+
+| # | quirk | the wiki | verdict |
+|---|---|---|---|
+| 1 | `timestamp` in seconds | "Unix milliseconds" | **contradicted** |
+| 2 | `export` of an absent series: pandas' own `AttributeError` | nothing | absent |
+| 3 | `differential` with an absent side: the same | nothing | absent |
+| 4 | `import-csv` counts rows read, stores first-of-duplicates | "reports imported rows" | absent |
+| 5 | the actions stamp is the real clock under an injected clock | see M4 #308 | absent |
+| 6 | a filled series whose `end` predates its tail: no request, green, a detail line | sync workflow: "The runner makes no provider request, adds an explicit detail explaining that rows lie beyond the pinned end, reconciles an empty input, and considers the leg successful" | **stated**, as intentional; the detail text not quoted |
+| 7 | an empty series with the same inverted window still sends its request | only "one intentional no-fetch case for an established series" | absent |
+| 8 | `--staleness` is a flag, the actions threshold is not | see M4 #307 | **stated** |
+| 9 | a same-day split excuses a jump only for actions-eligible legs | "A jump becomes an alert only when its date has no same-day saved split event"; the eligibility rule not stated | absent |
+| 10 | the declared class decides; the `.CC` suffix never | "this is not inferred from a `.CC` suffix"; "Do not replace this declaration with a ticker heuristic" | **stated** |
+| 11 | `sync --tail 0` refused before selection, even with an unknown asset | "`tail` must be at least 1"; the order relative to the filter checks not stated | absent |
+| 12 | parse errors print the failing parser's usage; unknown arguments reported by the top-level parser | nothing on parse errors, usage or `--help` | absent |
+
+- **Tally:** stated 3, flagged 0, absent 8, contradicted 1. **H4 held**
+  (at most four stated). The guess about *which* quirks would be stated
+  was wrong in both directions: the two "visible in a docstring" ones
+  (1 and 4) came out contradicted and absent, while the three stated
+  (6, 8, 10) are the ones the code states in prose of its own: a detail
+  message, a function default, an explicit refusal of the suffix
+  heuristic. The wiki states what the code says about itself, not what
+  it does.
+
+### M6 — what the machine checks prove, 2026-10-28
+
+| arm | check | what a pass proves | what it cannot prove |
+|---|---|---|---|
+| kit | 258 cases of the feature suite on the original | each specified behaviour holds on the subject, through the adapter and the chain | a behaviour the kit does not state (the 33 specified-unexercised statements, M2 of `../results/coverage/`) |
+| kit | the same suite on a rebuild | the rebuild matches the specification on every case | cells the suite does not compare; the harness differential covers those |
+| kit | `dmn_check.py`: gaps, overlaps, untyped outputs | the decision tables are complete and single-valued over their declared inputs | that a row's outcome is the right one |
+| kit | `pumllint trace --features`: realised and verified | every requirement has a model element and a passing scenario | the scenario's strength (requirement-granular, M2 of the coverage register) |
+| kit | `glossary_check.py` | every recurring term is defined | the definition's correctness |
+| kit | `invariants/test_properties.py` (Hypothesis) | seven properties over generated inputs, intrinsic and differential | properties nobody wrote |
+| kit | `MANIFEST.sha256` + `manifest.py` | a copy is byte-identical to the frozen kit | — |
+| wiki | Grounded Claims: `repo://path#Lx-Ly` with per-line hashes (`.claims/*.json`) | the cited lines are unchanged since the page was written | that the statement about them was ever true: M1's one PARTIAL and M2's two contradictions all carry current evidence hashes |
+| wiki | `openwiki --update` | pages whose cited lines changed are re-planned | a behaviour change outside the cited lines (H7; not run, M9) |
+| wiki | OKF front-matter validation, index sync | metadata well-formed, every page indexed | — |
+| wiki | internal link validation | links resolve | — |
+| wiki | Mermaid validation | diagrams parse | that a diagram is right: the sync flowchart draws `Inverted` after `Splits` and the data-model flowchart one `Basis` decision, both correct here, but nothing checked them |
+
+- **H6 held by construction**: no wiki check executes the subject or
+  compares a statement to an outcome. The evidence hash is a staleness
+  signal.
+- **A datum H6 did not anticipate** (W-R2, step 4): the version token
+  of each evidence record carries sha256 hashes of the first and last
+  selected lines and of the surrounding context. For a short or
+  guessable line that is a partial disclosure of the source: W-R2
+  confirmed the format once against a line the wiki already quoted
+  (`set -euo pipefail`) and then declined to use it (its A0). A
+  grounded-claims wiki published from a private tree therefore leaks
+  line-level hashes of that tree; whether that matters depends on what
+  the tree contains.
