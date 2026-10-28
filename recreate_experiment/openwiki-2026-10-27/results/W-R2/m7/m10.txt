@@ -1,0 +1,40 @@
+FAILED features/steps/test_features.py::test_phantomsplit_jumps_are_scanned_over_the_newest_window_with_a_strict_threshold[window=11-phantom-split-shaped jump +50.0% on 2024-04-26 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)\nphantom-split-shaped jump +66.7% on 2024-05-03 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)\nphantom-split-shaped jump +45.0% on 2024-05-08 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)]
+FAILED features/steps/test_features.py::test_phantomsplit_jumps_are_scanned_over_the_newest_window_with_a_strict_threshold[window=10, jump_threshold=0.5-phantom-split-shaped jump +66.7% on 2024-05-03 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)]
+FAILED features/steps/test_features.py::test_a_sameday_split_excuses_a_jump_only_where_splits_are_read[stock-phantom-split-shaped jump +45.0% on 2024-05-08 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)]
+FAILED features/steps/test_features.py::test_a_sameday_split_excuses_a_jump_only_where_splits_are_read[crypto-phantom-split-shaped jump +66.7% on 2024-05-03 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)\nphantom-split-shaped jump +45.0% on 2024-05-08 with no same-day split event - check corporate actions (docs/DATA_CONTRACT.md \xa72)]
+FAILED features/steps/test_features.py::test_corporateactions_freshness_counts_the_refresh_sessions_missed_since_the_stamp[2024-03-01T07:00:00Z-2024-03-06T00:30:00Z-corporate actions stale: 2 refresh session(s) missed since 2024-03-01 - run jef-data sync]
+FAILED features/steps/test_features.py::test_an_actionseligible_series_that_never_synced_its_actions_alerts_at_any_threshold
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[at-spread_threshold=0.005-0-0-0-0.005-0.005-0.5000%-99.75--]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005-0-0-1-0.005501375343835931-0.005-0.5501%-99.7--"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005, spread_alerts=true-1-1-0-0.005501375343835931-0.005-0.5501%-99.7-"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"-]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.0056-0-0-0-0.005501375343835931-0.0056-0.5501%-99.7--]
+FAILED features/steps/test_features.py::test_the_spread_needs_a_common_session_inside_both_newest_windows_and_a_nonzero_mid[new_a.csv-old_b.csv-10-null-null-no common session in the newest 10 - spread not measured (see the staleness check)]
+FAILED features/steps/test_features.py::test_the_spread_needs_a_common_session_inside_both_newest_windows_and_a_nonzero_mid[new_a.csv-old_b.csv-13-"2023-01-12"-0.0-close spread 0.0000% on 2023-01-12 (eodhd/DUO-USD.CC 10 vs binance/DUOUSDT 10)]
+FAILED features/steps/test_features.py::test_the_spread_needs_a_common_session_inside_both_newest_windows_and_a_nonzero_mid[mid_a.csv-mid_b.csv-10-null-null-zero mid price on 2024-01-05 - spread not measured]
+FAILED features/steps/test_features.py::test_the_status_table_of_a_filled_a_misdeclared_and_a_neverfilled_source
+FAILED features/steps/test_features.py::test_the_status_table_of_a_pair_and_of_a_csvonly_selection
+FAILED features/steps/test_features.py::test_the_status_json_envelope_on_stdout_with_the_universes_default_store
+FAILED features/steps/test_features.py::test_the_packaged_universe_expands_into_nine_ordered_legs
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[sync---asset NOPE-unknown asset 'NOPE'; universe has ['GONE', 'SPLT']]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[status---asset SPLT --asset NOPE-unknown asset 'NOPE'; universe has ['GONE', 'SPLT']]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[sync---provider yahoo-unknown provider 'yahoo'; allowed: ['eodhd', 'binance', 'yahoo-csv']]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[status---asset NOPE --provider x-unknown asset 'NOPE'; universe has ['GONE', 'SPLT']]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[sync---asset GONE-selection matched no enabled asset/source legs]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[status---provider binance-selection matched no enabled asset/source legs]
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[sync---tail 0 --asset NOPE-tail must be >= 1 session, got 0]
+FAILED features/steps/test_features.py::test_a_universe_end_caps_the_first_fill_and_wins_the_minimum_against_the_crypto_endguard[splt_end.toml-splt/endcap-2024-02-13T12:00:00Z-SPLT.US-14-2 split(s), 1 dividend(s); 14 bar(s), 0 revised cell(s)]
+FAILED features/steps/test_features.py::test_a_universe_end_caps_the_first_fill_and_wins_the_minimum_against_the_crypto_endguard[zero_end.toml-zero/endcap-2024-02-10T08:00:00Z-ZERO-USD.CC-20-20 bar(s), 0 revised cell(s)]
+FAILED features/steps/test_features.py::test_a_series_with_rows_past_its_declared_end_fetches_nothing_and_stays_green
+FAILED features/steps/test_features.py::test_an_equity_bar_dated_on_the_runs_utc_day_is_ingested_and_flagged
+FAILED features/steps/test_features.py::test_the_tail_window_starts_at_the_oldest_of_the_newest_n_stored_sessions
+FAILED features/steps/test_features.py::test_a_dry_run_plans_every_leg_shape_from_local_state_only
+FAILED features/steps/test_features.py::test_one_failing_leg_does_not_stop_the_others_and_the_run_turns_red
+FAILED features/steps/test_features.py::test_the_summary_carries_every_revision_as_plain_numbers
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_imports_its_whole_file_without_any_collector
+FAILED features/steps/test_features.py::test_the_cli_dry_run_uses_the_universes_default_store_and_still_writes_the_summary
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_whose_file_is_missing_fails_that_leg_alone
+FAILED features/steps/test_features.py::test_the_tail_window_and_the_latest_session_read_across_year_files
+FAILED features/steps/test_features.py::test_a_stored_series_against_a_csv_with_one_changed_cell_and_unmatched_dates
+FAILED features/steps/test_features.py::test_two_stored_series_that_agree_are_aligned_within_tolerance
+FAILED features/steps/test_features.py::test_a_differential_with_nothing_to_compare_against_is_refused
+227 failed, 31 passed in 80.07s (0:01:20)

@@ -1091,6 +1091,21 @@ list and license posture live in § Settled questions.
   wiki statements contradict the code (bar timestamp unit, the
   action-stamp clock); they are M4's input. Queues nothing; changes no
   product behaviour.*
+  *Same day, M3–M8 graded and the verdict written (the PR carrying this
+  line). Of the five applicable filed defects the wiki states one, flags
+  none and repeats the docstring's wrong timestamp unit; of the twelve
+  quirks it states three. Two fresh rebuilds from the wiki alone pass 34
+  and 31 of the kit's 258 cases, and reproduce every export seam frame
+  cell for cell (14/14, M8 PASS); their stored frames differ from the
+  original only by that millisecond timestamp and a column order, their
+  status verdicts and gate exits match on every scenario, and their
+  refusals exit 2 where the original exits 1. The suite failures are
+  message bytes, usage text, JSON shapes and the adapter's result type,
+  not one wrong number. H1, H3, H4, H6 held; H2 and H5 each held on the
+  strict half and failed on the other. The wiki's rebuilds also pass
+  more of the original's own unit tests (26) than any kit rebuild,
+  because the wiki names the layout the kit leaves to the builder.
+  Queues nothing; changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

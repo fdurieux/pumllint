@@ -1,0 +1,40 @@
+     42 E   TypeError: 'LegResult' object is not subscriptable
+     21 E   AssertionError: (N, '', "universe: universe.toml: asset[
+     11 E   AssertionError: {
+      8 E   AssertionError: ['phantom split? close moved +N.N% on N-
+      8 E   AssertionError: ['no classification evidence recorded fo
+      8 E   AssertionError: /tmp/claude-N/-home-user/NadNab-NaN-NbNf
+      6 E   AssertionError: SPLT eodhd eodhd:SPLT.US: sync-actions +
+      6 E   AssertionError: ('resolution', {'sessions': N, 'distinct
+      5 E   AssertionError: timeout --signal=TERM --kill-after=N N /
+      4 E   AssertionError: usage: jef-data-rc [-h] COMMAND ...
+      4 E   AssertionError: ['timestamp', 'datetime', 'open', 'high'
+      3 E   AssertionError: usage: jef-data-rc sync [-h] [--universe
+      3 E   AssertionError: usage: jef-data-rc export [-h] --symbol 
+      3 E   AssertionError: pythonN - http://meta/task
+      3 E   AssertionError: ['stale - N expected session(s) missed s
+      3 E   AssertionError: (N, '', 'universe: universe.toml: asset[
+      3 E   AssertionError: (N, '', 'status: unknown asset(s): NOPE 
+      3 E   AssertionError: (N, '', 'load: --asset-type is required 
+      2 E   AssertionError: wrote N row(s) to out.csv
+      2 E   AssertionError: usage: jef-data-rc status [-h] [--univer
+      2 E   AssertionError: ok    FUT    eodhd:FUT-USD.CC  last N-N-
+      2 E   AssertionError: ok     SMALL yahoo-csv yahoo:SMALL: impo
+      2 E   AssertionError: imported N row(s) into eodhd:FEB.US (spl
+      2 E   AssertionError: export: no stored rows for eodhd:GHOST
+      2 E   AssertionError: adjust: no stored rows for eodhd:GHOST.U
+      2 E   AssertionError: ['corporate actions stale - N refresh se
+      2 E   AssertionError: ['corporate actions never refreshed - no
+      2 E   AssertionError: ZERO eodhd eodhd:ZERO-USD.CC: load first
+      2 E   AssertionError: SMALL eodhd eodhd:SMALL.US: sync-actions
+      2 E   AssertionError: DIVY eodhd eodhd:DIVY.US: sync-actions +
+      2 E   AssertionError: (N, '', 'sync: unknown asset(s): NOPE (d
+      1 E   AssertionError: wrote N row(s) to small.csv
+      1 E   AssertionError: usage: jef-data-rc validate [-h] [--min-
+      1 E   AssertionError: usage: jef-data-rc universe [-h] [--univ
+      1 E   AssertionError: usage: jef-data-rc sync-actions [-h] --s
+      1 E   AssertionError: usage: jef-data-rc load [-h] --symbol SY
+      1 E   AssertionError: usage: jef-data-rc import-csv [-h] --csv
+      1 E   AssertionError: usage: jef-data-rc differential [-h] [--
+      1 E   AssertionError: usage: jef-data-rc adjust [-h] --symbol 
+      1 E   AssertionError: universe universe.toml: store data, curr

@@ -587,3 +587,149 @@ Read from the wiki alone, against `../handover/KNOWN-QUIRKS.md`.
   grounded-claims wiki published from a private tree therefore leaks
   line-level hashes of that tree; whether that matters depends on what
   the tree contains.
+
+### M7 — rebuild sufficiency, graded 2026-10-28
+
+- **Grading environment.** Both rebuilds were installed into fresh venvs
+  carrying the kit arms' pins (pandas 3.0.5, numpy 2.4.6, scikit-learn
+  1.9.0, requests 2.34.2, pyarrow 25.0.1, setuptools; pytest 9.1.1 and
+  pytest-bdd 9.0.0 for the suite), so W-R1 is graded on what it built,
+  not on the venv it built in. Instruments: `../harness/run_arm.sh` (the
+  differential run over the 24 scenario groups against `ref_run1`, the
+  M8 seam check, the M9 original-tests shim) and the kit suite with
+  `adapter_rc`. Outputs under `results/<arm>/m7/`: `compare.json`,
+  `m8.txt`, `m9.json`, `m10.txt`, `m10.failed.txt`, `m10.reasons.txt`.
+- **Instrument note.** The first grading pass ran M9 and the suite in
+  venvs without pytest and reported zero cases; both were re-run after
+  installing the suite's pytest and pytest-bdd. No other change.
+
+| measure | W-R (no pins at build) | W-R2 (pins at build) | kit arms K / K−UML / K2 |
+|---|---|---|---|
+| kit suite, 258 cases | **34 pass, 224 fail** | **31 pass, 227 fail** | 178/178 (round 1); K2 197/197 first time, 258/258 after revision |
+| export seam frames identical (M1 of the first pre-registration) | **14/14** | **14/14** | 14/14 |
+| M8: exported frame routes bit-identically through the original loader | PASS, 10 400 rows | PASS, 10 400 rows | PASS |
+| stored frames identical, byte for byte | 0/13 | 0/13 | 13/13 |
+| stored frames identical after `timestamp` ms→s and column reorder | **13/13** | **13/13** | — |
+| status: exit, totals, per-source finding counts | 17/17 | 17/17 | 17/17 identical |
+| status JSON identical | 0/17 | 0/17 | 17/17 |
+| gate inversions (status red/green swapped) | 0 | 0 | 0 |
+| sync summaries: `ok`, totals, per-leg outcome and revision records | 13/14 (keys renamed) | 13/14 | 14/14 identical |
+| actions JSON (split keys unified) | 3/3 | 3/3 | 3/3 |
+| CLI exit codes identical | 36/52 | 35/52 | 52/52 |
+| CLI same outcome (exit + last line) | 12/52 | 11/52 | — |
+| chain exit codes | 8/8 | 8/8 | 8/8 |
+| chain calls equivalent | 1/8 | 1/8 | 8/8 |
+| M9 original API-level tests via the shim (passed / failed / errors) | 26 / 10 / 10 modules | 26 / 10 / 10 modules | K 18/32/9 · K−UML 0/5/13 · K2 5/29/10 |
+| M9 black-box (CLI, chain) | 10/10 | 10/10 | 10/10 |
+| `ASSUMPTIONS.md` entries | 117 | 94 | K 56 · K−UML 50 · K2 30 |
+
+- **What differs, by kind** (W-R2; W-R the same unless noted):
+  - **The timestamp unit.** Every stored frame carries `timestamp` in
+    milliseconds. That is the wiki's one contradicted claim (M1, M2 row
+    060, M4 #304, M5 quirk 1) reproduced faithfully. After dividing by
+    1000 and reordering `adjustment_factor`, all 13 stored frames are
+    identical cell for cell, both arms.
+  - **Message bytes.** No CLI text identical (0/52): refusal messages,
+    `--help`, parse errors, the status finding texts ("stale: 995
+    expected session(s) missed since … (alert at 2)" for the original's
+    "… missing since … (multi-day holidays can trip this …)"), the sync
+    detail lines. The wiki quotes no message; the kit quotes every one.
+  - **The refusal exit code.** 16 CLI refusals (W-R) and 17 (W-R2) exit
+    2 where the original exits 1: every universe, selection and `tail`
+    refusal. The wiki says such errors "are rendered as `sync: ...`" and
+    never gives the code. W-R alone reproduced the original's unwrapped
+    `FileNotFoundError` on `validate` of a missing file, exit 1; W-R2
+    wrapped it.
+  - **JSON shapes.** `declared_class_check` is an object (`declared`,
+    `mapped`, `vendor_type`, `verdict`) where the original has the
+    verdict string; the sync summary adds `rows` and shortens `detail`
+    (W-R also renames `legs_total`, `legs_failed`, `revised_cells_total`
+    to `legs`, `failed`, `revised_cells`). The counts inside agree.
+  - **The chain.** Exits identical in all 8 cases; the call sequence
+    identical only when a digest is given. Without one, the original
+    runs the ECS metadata lookup unconditionally (`curl …/task` and two
+    `python3 -c` parses, with an empty URI), the rebuilds skip it, so 3
+    calls are missing in 7 of 8 cases.
+  - **One selection difference.** The dry-run plan lists 8 legs for the
+    packaged universe against the original's 9: the BTC `yahoo-csv`
+    leg is missing (W-R2); W-R's dry run writes an empty summary.
+- **Why the suite and the differential disagree.** The suite's 227
+  failures (W-R2) group as: 42 cases where the adapter returns a
+  `LegResult` object where `HARNESS_INTERFACE.md` describes a mapping
+  (`TypeError: 'LegResult' object is not subscriptable`; every sync
+  scenario through the adapter); 41 on finding and detail message text;
+  29 on usage and `--help` bytes; 12 on the status and summary JSON
+  shapes; 8 on the chain's calls; 8 on fixture-path messages; 5 on the
+  `store:` echo line; 4 on stored column order. The remaining failures
+  are the refusal exit codes and the timestamp unit. **Not one failure
+  is a wrong price, volume, factor, date, verdict or revision.** The
+  suite pins the specification's bytes; the differential pins outcomes.
+  Both are true of the same build.
+- **H5 split.** The suite half **held** by a wide margin: 13 % and 12 %
+  of 258 against a threshold of 70 %. The cell half **failed**: not one
+  seam-frame cell differs, in either arm, and the stored frames differ
+  only by the one unit the wiki got wrong. The pre-registration guessed
+  that prose plus claims would lose "arithmetic order, message bytes
+  and exit codes"; it lost message bytes and one exit-code convention,
+  and kept the arithmetic.
+- **The M9 inversion.** The wiki rebuilds pass more of the original's
+  own API-level tests (26) than any kit rebuild (18, 0, 5), because the
+  wiki names the modules, classes and seams (`BaseCollector`,
+  `RateLimiter`, `EODHDCollector`, `run_sync(now=…)`) and the rebuilds
+  laid the package out after it, so the original's unit tests import.
+  The kit says what the program does and leaves the layout to the
+  builder, which is why its rebuilds fail at import. The black-box half
+  is 10/10 for every arm.
+- **W-R1 against W-R2.** The missing pins at build time cost nothing
+  the grading can see: 34 against 31 cases, the same differential
+  profile, the same M9. The one visible trace is W-R1's empty dry-run
+  summary. The owner's decision to grade both bought that reading.
+- **Bounds carried in.** The recreator was the Agent tool's `opus`
+  alias at `xhigh`, which may not be the exact model the kit arms ran
+  on (step 4); the wiki came from OpenAI's model (§2); the kit's suite
+  was written by the kit's author and is the grader here, as it was for
+  the kit arms. The suite result is a measure of conformance to the
+  kit, not of correctness; the differential and M8 are the measures of
+  correctness, and on those the two rebuilds from the wiki are within
+  one unit conversion of the original.
+
+### M8 — cost, 2026-10-28
+
+| arm | wall clock | tool calls | tokens |
+|---|---|---|---|
+| W, the wiki (one `--init`, page concurrency 1) | 1 455 s | — | not logged by the CLI |
+| W-R, rebuild from the wiki | 1 970 s | 80 | 378 931 |
+| W-R2, rebuild from the wiki | 1 688 s | 68 | 347 951 |
+| the kit, round 1 (one agent, code tree alone) | 5 280 s (88 min) | 169 | not recorded |
+
+The kit's figure is its first round only; the current kit is four rounds.
+The wiki's 24 minutes bought 9 pages and 128 claims; the kit's 88 minutes
+bought 158 requirements, 95 scenarios and 178 cases that ran. The two are
+not the same product, and M8 says only what each costs, not what it is
+worth.
+
+### Verdict against §4, 2026-10-28
+
+| expectation | outcome |
+|---|---|
+| H1 precision ≥ 0.85 strict, ≥ 0.95 lenient | **held**: 0.992 / 1.000 |
+| H2 coverage < 0.40 strict, < 0.60 lenient; refusals and arithmetic lowest | strict **held** (0.245); lenient **failed** (0.926); refusals lowest as predicted, arithmetic highest against the prediction |
+| H3 defects: ≤ 1 flagged, ≤ 3 described | **held**: 0 flagged, 1 described, 1 contradicted |
+| H4 quirks: ≤ 4 stated | **held**: 3 stated, 1 contradicted; the guess about which was wrong |
+| H5 rebuild < 70 % of 258 and ≥ 1 seam cell differs | suite half **held** (13 %, 12 %); cell half **failed** (0 cells; stored frames identical after one unit conversion) |
+| H6 no wiki check proves behaviour | **held** by construction; the evidence hash also discloses line hashes |
+| H7 drift on the two mutants | not run (M9 of this file; the owner's call) |
+
+**Headline.** The wiki is accurate about what it says and silent about
+what the kit pins: nearly every behaviour is named (lenient coverage
+0.93) and almost none is pinned to a message, a default or an exit code
+(strict 0.25). A fresh agent rebuilding from it reproduces the data to
+the cell and fails the kit's suite on bytes. The one place the wiki is
+wrong is the one place the code's own docstring is wrong, and the
+rebuilds carried that error into their stores. What the kit adds, on
+this evidence, is not the arithmetic, which prose and claims carried,
+but the bytes a consumer depends on and the suite that proves them;
+what the wiki adds that the kit lacks is the structure a maintainer
+navigates by, which is also what let the original's own unit tests run
+against the rebuilds. The two artefacts answer different questions, and
+this experiment measured which.
