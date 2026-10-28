@@ -1091,6 +1091,17 @@ list and license posture live in § Settled questions.
   wiki statements contradict the code (bar timestamp unit, the
   action-stamp clock); they are M4's input. Queues nothing; changes no
   product behaviour.*
+  *Same day, M3 written up (the PR carrying this line). The 18 TRUE
+  claims not in the kit reduce to 13 facts. 3 are artefacts of how the
+  clean room was built (the package include, no extras, no tests). 3 are
+  consequences of kit requirements that the kit never draws (a class
+  correction is not a migration, the final publish is not a transaction,
+  there is no cross-file atomicity). 7 are code the kit leaves out by
+  scope (the package-root surface, `python -m`, the injection seams, the
+  EventBridge placement); two of those, `modeled_source` and
+  `validate_or_raise`, are on its author's unused-code list. None is a
+  CLI-observable behaviour the kit gets wrong. M4 (the six J-F issues)
+  is next. Queues nothing; changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
