@@ -650,6 +650,83 @@ local run with the paste block given in chat; the wiki lands under
 The tools were dry-run on OpenWiki's own wiki (748 claims, 22 pages) to
 prove the sidecar parser; nothing from that is a result.
 
+## OpenWiki against the kit: the results (2026-10-28)
+
+*Dated addition. The pre-registration's Results section
+(`recreate_experiment/openwiki-2026-10-27/PREREGISTRATION.md`) is the
+record; this is the reading. Steps 3 and 4 and measures M1 and M2 were run
+and graded by a sibling session the same day; M3 to M8 and the verdict by
+this one.*
+
+**What ran.** OpenWiki 0.7.2 over the clean room with OpenAI's
+`gpt-5.6-terra` at `xhigh`, one owner-approved one-line patch to make its
+provider stream past the session proxy's 30-second cut: 9 content pages,
+128 Grounded Claims, 24 minutes. The Anthropic arm did not run (no key).
+Two fresh Opus agents then rebuilt the lane from the wiki alone, one in a
+venv missing two pins by a setup error, one with them, both before anyone
+read the wiki; both are graded.
+
+**What the wiki is.** Accurate and unpinned. 127 of 128 claims TRUE, one
+PARTIAL, none FALSE (precision 0.992 strict, 1.000 lenient; the claims are
+compound, 3.3 parts each, 426 of 427 parts hold). Against the kit's 163
+requirements it states 40 fully, 111 partially and 12 not at all: 0.245
+strict, 0.926 lenient. The partials are a missing message, default, edge
+or order, 58 of them an exact string. Refusals are the lowest kind, as
+predicted; arithmetic the highest, against the prediction: the factor
+rule, the calendar, the crypto guard and the pagination are written out
+exactly. Of the five applicable filed defects it states one as design
+(#307) and repeats the docstring's wrong unit on another (#304); of the
+twelve quirks it states three, none flagged, one contradicted. Eighteen
+TRUE claims state what no kit document does, nine of them structure.
+
+**What a rebuild from it is.** Two rebuilds, 34 and 31 of the kit's 258
+cases. And: every export seam frame identical to the original cell for
+cell (14 of 14, both arms; the exported frame routes bit-identically
+through the original loader over 10 400 rows); every stored frame
+identical after one unit conversion and a column reorder, because both
+rebuilds wrote `timestamp` in milliseconds, exactly the wiki's one
+contradicted claim; every status verdict, total and gate exit identical
+on all 17 status artefacts; every revision record identical; the chain's
+exits identical in all 8 cases. The 227 suite failures are message bytes
+(41), usage and `--help` text (29), the adapter returning an object where
+the interface describes a mapping (42, every sync scenario through the
+adapter), JSON shapes (12), the chain's skipped ECS lookup (8), paths and
+echo lines (13), column order (4), and sixteen refusals that exit 2 where
+the original exits 1. Not one failure is a wrong number, date, verdict or
+revision. The suite measures conformance to the specification's bytes;
+the differential measures outcomes; both are true of the same build.
+
+**One inversion.** The wiki rebuilds pass 26 of the original's own
+API-level tests through the shim; the kit rebuilds passed 18, 0 and 5.
+The wiki names the modules, classes and seams, so the rebuilt package is
+laid out like the original and the original's unit tests import; the kit
+says what the program does and leaves the layout to the builder. Black
+box, all arms are 10 of 10.
+
+**Against the expectations.** H1, H3, H4 and H6 held. H2 held on the
+strict bound and failed on the lenient one. H5 held on the suite and
+failed on the cells: the pre-registration guessed that prose and claims
+would lose arithmetic order, message bytes and exit codes; they lost
+message bytes and one exit-code convention and kept the arithmetic. H7
+was not run.
+
+**What it means for the programme.** The two artefacts answer different
+questions. The wiki tells a maintainer where things are and what the
+code says about itself, with a staleness check on every claim and
+nothing that can tell a true claim from a docstring's error. The kit
+pins what a consumer depends on, the bytes, defaults and exit codes, and
+ships the suite that proves them, at three to four times the cost of the
+first round and with no layout. On this subject, the arithmetic survived
+either route; what the kit bought was the message layer and the proof,
+and what the wiki bought was the map. A rebuild from the wiki is a
+working program with the original's data and a stranger's messages.
+
+**Bounds.** One model behind the wiki, another behind the rebuilds, a
+third behind the kit; one run of each; a grader who wrote the kit's
+suite; a 30-second proxy that forced the streaming patch. The two
+contradicted statements in the wiki carry current evidence hashes, which
+is H6 in one line. Independent re-grades of 20 claims and 20 requirements
+are offered in the Results section.
 ## An external causal model tested against the record (2026-10-28)
 
 *Dated addition, on the maintainer's ask. Record:

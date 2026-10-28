@@ -1,0 +1,40 @@
+     42 E   TypeError: 'LegResult' object is not subscriptable
+     12 E   AssertionError: {
+     12 E   AssertionError: (N, '', "universe: asset[N] 'X' source[N
+      8 E   AssertionError: ['phantom-split-shaped jump: close +N.N%
+      8 E   AssertionError: ['declared class: no evidence recorded f
+      8 E   AssertionError: /tmp/claude-N/-home-user/NadNab-NaN-NbNf
+      6 E   AssertionError: plan   SPLT eodhd eodhd/SPLT.US: sync-ac
+      6 E   AssertionError: (N, '', 'usage: jef-data-rc adjust [-h] 
+      6 E   AssertionError: ('resolution', {'basis': 'close_raw', 's
+      5 E   AssertionError: timeout --signal=TERM --kill-after=N N /
+      5 E   AssertionError: store: /tmp/claude-N/-home-user/NadNab-N
+      4 E   AssertionError: usage: jef-data-rc [-h] COMMAND ...
+      4 E   AssertionError: ['timestamp', 'datetime', 'open', 'high'
+      3 E   AssertionError: usage: jef-data-rc sync [-h] [--universe
+      3 E   AssertionError: usage: jef-data-rc export [-h] --exchang
+      3 E   AssertionError: pythonN - http://meta/task
+      3 E   AssertionError: imported N row(s) from /tmp/claude-N/-ho
+      3 E   AssertionError: ['stale: N expected session(s) missed si
+      3 E   AssertionError: (N, '', 'status: unknown asset(s): NOPE 
+      3 E   AssertionError: (N, '', 'load: --asset-type is required 
+      2 E   AssertionError: usage: jef-data-rc status [-h] [--univer
+      2 E   AssertionError: plan   ZERO eodhd eodhd/ZERO-USD.CC: loa
+      2 E   AssertionError: plan   SMALL eodhd eodhd/SMALL.US: sync-
+      2 E   AssertionError: plan   DIVY eodhd eodhd/DIVY.US: sync-ac
+      2 E   AssertionError: ok     SMALL yahoo-csv yahoo/SMALL: N ro
+      2 E   AssertionError: export: no stored rows for eodhd/GHOST i
+      2 E   AssertionError: ['corporate actions stale: N refresh ses
+      2 E   AssertionError: ['corporate actions never refreshed: no 
+      2 E   AssertionError: (N, '', 'usage: jef-data-rc export [-h] 
+      2 E   AssertionError: (N, '', 'usage: jef-data-rc differential
+      2 E   AssertionError: (N, '', 'universe: asset[N]: unknown key
+      2 E   AssertionError: (N, '', "universe: asset[N] 'X': missing
+      1 E   FileNotFoundError: [Errno N] No such file or directory: 
+      1 E   AssertionError: wrote differential report to rep.txt
+      1 E   AssertionError: wrote N row(s) to small.csv
+      1 E   AssertionError: wrote N row(s) to out.csv
+      1 E   AssertionError: usage: jef-data-rc validate [-h] [--min-
+      1 E   AssertionError: usage: jef-data-rc universe [-h] [--univ
+      1 E   AssertionError: usage: jef-data-rc sync-actions [-h] --s
+      1 E   AssertionError: usage: jef-data-rc load [-h] --symbol SY
