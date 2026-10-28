@@ -1,0 +1,4 @@
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+WARN: ledger emit failure, stage sync (telemetry only)
+WARN: no ledger lines for stage sync, nothing to put
+WARN: no store at data/market_data, dashboard publish skipped

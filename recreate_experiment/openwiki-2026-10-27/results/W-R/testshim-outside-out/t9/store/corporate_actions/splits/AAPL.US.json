@@ -1,0 +1,12 @@
+{
+  "symbol": "AAPL.US",
+  "exchange": "eodhd",
+  "last_updated": "2024-09-10T09:00:00+00:00",
+  "splits": [
+    {
+      "date": "2024-09-02",
+      "ratio": 4.0,
+      "split": "4.000000/1.000000"
+    }
+  ]
+}

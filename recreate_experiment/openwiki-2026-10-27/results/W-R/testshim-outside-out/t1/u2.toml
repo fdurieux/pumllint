@@ -1,0 +1,8 @@
+
+[[asset]]
+name = "AAPL"
+asset_class = "stock"
+  [[asset.source]]
+  provider = "eodhd"
+  symbol = "AAPL.US"
+  end = 2024-08-30

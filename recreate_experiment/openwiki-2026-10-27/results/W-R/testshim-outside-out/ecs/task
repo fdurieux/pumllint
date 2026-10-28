@@ -1,0 +1,1 @@
+{"Limits":{"CPU":0.5,"Memory":2048},"Containers":[{"ImageID":"sha256:abc123","Image":"repo:tag"}]}

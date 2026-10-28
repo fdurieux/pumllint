@@ -1,0 +1,47 @@
+
+You are rebuilding a program from its documentation. You have never seen the
+program and you will not: everything you know about it is in the wiki at
+`/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/wiki`. Read `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/wiki/AGENTS.md` and `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/wiki/openwiki/` first, starting from
+the wiki's index page, then everything else, in full, before writing code.
+The wiki holds Markdown pages describing the program, each with Grounded
+Claims (atomic statements citing source lines by path and line range, which
+you cannot open), the `.claims/` sidecars that record those claims, and a
+page manifest. `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/wiki/HARNESS_INTERFACE.md` is the interface the comparison
+harness drives your build through. There is no acceptance suite.
+
+Build, under `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/out/`:
+- a Python package `jef_data_rc` providing the console script `jef-data-rc`
+  with exactly the command-line surface the wiki describes (every
+  subcommand, flag, default, message and exit code), on Python ≥ 3.11, with
+  exactly the dependency pins the wiki states and no other runtime dependency;
+  a `pyproject.toml` so `pip install -e /tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/out` installs it (the console script
+  name is `jef-data-rc`; the package name is `jef_data_rc`; choose the module
+  layout the wiki's architecture describes where it describes one);
+- `daily-rc.sh`: the chain script, which sources `events.sh` and
+  `dashboard.sh` from its own directory as the wiki says (those two
+  are given externals you do not write; they are already beside your
+  script in `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/out`), and invokes the data command by the name the wiki says;
+- `adapter_rc.py`: the harness adapter, implementing every function of
+  `HARNESS_INTERFACE.md` against your package;
+- `ASSUMPTIONS.md`: every point where the wiki was silent, ambiguous or
+  contradictory, what you chose and why — one entry each, as you go, never
+  resolved silently; this file is a measured output;
+- `READ.log`: the path of every file you read, one per line, appended as you
+  go; also a measured output.
+
+Working rules:
+- Environment: `. /tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/venv/bin/activate`. Install your package there
+  (`pip install -e /tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/out`), nothing else beyond what the pins allow.
+- Read only under `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/wiki` and `/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W/out`. Do not search the file system, do not
+  look for other copies, documentation or tests of this program anywhere, do
+  not use the network. If something is missing from the wiki, that is an
+  assumption to record, not a thing to look up.
+- Exactness over elegance: the rebuild is judged on whether its numbers,
+  verdicts, messages and exit codes equal the original's, cell for cell.
+  Where the wiki gives a message string, reproduce it byte for byte. Where it
+  gives arithmetic, implement that arithmetic, not an equivalent you prefer.
+- Keep code comments to what the code does; do not cite the wiki's pages
+  in them.
+
+Report back with: the module layout you chose, the count of assumptions, the
+five hardest judgement calls in one line each. Do not paste file contents.

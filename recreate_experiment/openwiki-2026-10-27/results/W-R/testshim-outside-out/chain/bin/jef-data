@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+echo "jef-data $*" >> "$LOG"; sleep 3; exit 0
