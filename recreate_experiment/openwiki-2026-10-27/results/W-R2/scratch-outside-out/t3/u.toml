@@ -1,0 +1,14 @@
+
+[defaults]
+store = "st"
+[[asset]]
+name = "BTC"
+asset_class = "crypto"
+[[asset.source]]
+provider = "eodhd"
+symbol = "BTC-USD.CC"
+modeled = true
+[[asset.source]]
+provider = "binance"
+symbol = "BTCUSDT"
+start = 2024-01-01

@@ -325,3 +325,29 @@ under `results/<arm>/`, so every judgement is on the record.
     of the text sent `1446203917d35cbb…`.
   - **Recreator:** a fresh `general-purpose` agent, the `opus` alias at
     `xhigh`, as for W-R1.
+
+### Step 4 — W-R2 finished 2026-10-28, committed ungraded
+
+- 11:11 → 11:40 UTC: **1688 s**, 68 tool calls, 347 951 tokens.
+  Committed as written under `results/W-R2/`, nothing graded and nothing
+  run against the reference:
+  - `rc/` is the build: the `jef_data_rc` package laid out after the
+    wiki's `src/jef/data`, `adapter_rc.py`, `daily-rc.sh`,
+    **`ASSUMPTIONS.md` (94 entries, A0–A93)** and `READ.log` (37 paths);
+  - `PROMPT.sent.txt` (`1446203917d35cbb…`), `VENV.pip-list.txt`;
+  - `MANIFEST.sha256` covers 94 files (sha256 `dd15fa9a…`).
+- **Reading rule.** 31 `READ.log` paths are under the wiki or the output
+  directory. 6 are the agent's own test outputs in `wr-W2/scratch/`,
+  outside `{OUT}`; those files hold nothing from the subject and are kept
+  as found in `scratch-outside-out/`. Disclosed, like W-R1's shim.
+- **Disclosed, and a datum for M6.** The `.claims` sidecars carry sha256
+  hashes of the cited source lines. The agent noted that these could be
+  brute-forced to recover source text. It checked the hash format once,
+  against a line the wiki already quotes (`set -euo pipefail`), and then
+  deliberately did not use them (A0). So a grounded claim's evidence
+  hash is not only "staleness, not truth" (H6): for a short or guessable
+  line it is a partial disclosure of the source. M6 records this.
+- Its `pyproject.toml` again declares pandas, numpy and scikit-learn
+  unversioned ("the wiki gives no version pins"). In its venv pandas 3
+  imports `pyarrow` itself; the package imports neither `pyarrow` nor
+  `requests` at package level.

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo "aws $*" >> "$LOG"
+if [[ "$*" == *" - "* ]]; then cat > /dev/null; fi
+if [[ -n "${AWS_FAIL_ON:-}" && "$*" == *"${AWS_FAIL_ON}"* ]]; then exit 1; fi
+exit 0

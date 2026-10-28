@@ -1,0 +1,16 @@
+[defaults]
+store = "st"
+[[asset]]
+name = "AAPL"
+asset_class = "stock"
+[[asset.source]]
+provider = "yahoo-csv"
+symbol = "AAPL"
+path = "y.csv"
+[[asset]]
+name = "OLD"
+asset_class = "stock"
+[[asset.source]]
+provider = "eodhd"
+symbol = "OLD.US"
+end = 2024-01-03

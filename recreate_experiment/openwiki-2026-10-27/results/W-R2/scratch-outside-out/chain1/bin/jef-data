@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo "jef-data $*" >> "$LOG"
+if [[ "$1" == sync ]]; then sleep 5; fi
+exit 0

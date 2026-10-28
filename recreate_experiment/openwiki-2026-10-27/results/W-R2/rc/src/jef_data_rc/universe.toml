@@ -1,0 +1,98 @@
+# The EOD acquisition universe: what to acquire and how to treat it.
+#
+# This is data-acquisition configuration, not a model-tuning file. The
+# parser is strict: unknown keys at any level are errors, so a misspelled
+# control can never silently skip an asset or a source.
+#
+# [defaults]       store, currency
+# [[asset]]        name, asset_class (stock | bond_etf | crypto), currency,
+#                  threshold, enabled
+# [[asset.source]] provider (eodhd | binance | yahoo-csv), symbol, path,
+#                  exchange, start, end, kind (eod), enabled, modeled, note
+#
+# `asset_class` is authoritative: it becomes the stored asset_type and
+# decides price basis, corporate-action eligibility, the expected-session
+# calendar and the completed-UTC-day guard for crypto. price_basis and
+# volume_basis are derived by ingestion and are not settable here.
+#
+# `start` is a first-fill floor; `end` is a persistent cap on every fetch.
+# An asset with several enabled sources marks exactly one `modeled = true`;
+# the others are acquired as separately stored cross-check series.
+#
+# Volume units differ by provider. EODHD and Yahoo report notional-style
+# share/unit volume for the listing; Binance reports base-asset volume (BTC
+# for BTCUSDT). Each series is internally consistent, but cross-provider
+# volume comparison is unit-incomparable: never use it as a price-feed
+# equivalence test.
+#
+# Exchange tags are store partition tags, not listing exchanges. Defaults:
+# eodhd -> "eodhd", binance -> "binance", yahoo-csv -> "yahoo". The EODHD
+# listing exchange stays part of the canonical symbol (AAPL.US, BTC-USD.CC).
+
+[defaults]
+store = "data"
+currency = "USD"
+
+[[asset]]
+name = "AAPL"
+asset_class = "stock"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "AAPL.US"
+modeled = true
+note = "modeled feed"
+
+[[asset.source]]
+provider = "yahoo-csv"
+symbol = "AAPL"
+path = "experiments/AAPL.csv"
+note = "committed Yahoo snapshot (pre-adjusted)"
+
+[[asset]]
+name = "BTC"
+asset_class = "crypto"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "BTC-USD.CC"
+modeled = true
+note = "modeled feed (USD composite)"
+
+[[asset.source]]
+provider = "binance"
+symbol = "BTCUSDT"
+start = 2017-08-01
+note = "redundancy feed (USDT quote, base-asset volume)"
+
+[[asset]]
+name = "TLT"
+asset_class = "bond_etf"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "TLT.US"
+
+[[asset]]
+name = "NVDA"
+asset_class = "stock"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "NVDA.US"
+
+[[asset]]
+name = "TSLA"
+asset_class = "stock"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "TSLA.US"
+
+[[asset]]
+name = "IBM"
+asset_class = "stock"
+
+[[asset.source]]
+provider = "eodhd"
+symbol = "IBM.US"

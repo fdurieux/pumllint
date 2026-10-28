@@ -1,0 +1,1 @@
+{"request": {"method": "GET", "path": "/api/v3/klines", "params": {"endTime": "1704671999999", "interval": "1d", "limit": "3", "startTime": "1704585600000", "symbol": "BTCUSDT"}}, "response": {"status": 200, "json": [[1704585600000, "106", "107", "105", "106", "12.5", 1704671999999, "0", 1, "0", "0", "0"]]}}

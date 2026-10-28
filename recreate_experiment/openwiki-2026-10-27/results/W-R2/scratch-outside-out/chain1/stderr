@@ -1,0 +1,11 @@
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+ModuleNotFoundError: No module named 'jef'
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+ModuleNotFoundError: No module named 'jef'
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+binning failed for BTC (rc=3)

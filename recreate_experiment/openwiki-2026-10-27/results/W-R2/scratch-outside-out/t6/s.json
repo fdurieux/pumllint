@@ -1,0 +1,20 @@
+{
+ "schema_version": 1,
+ "ok": true,
+ "legs_total": 1,
+ "legs_failed": 0,
+ "revised_cells_total": 0,
+ "legs": [
+  {
+   "asset": "AAPL",
+   "provider": "yahoo-csv",
+   "exchange": "yahoo",
+   "symbol": "AAPL",
+   "ok": true,
+   "detail": "imported 4 row(s) from y.csv",
+   "rows": 4,
+   "revised_cells": 0,
+   "revisions": []
+  }
+ ]
+}

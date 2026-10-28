@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+echo "jef-binning $*" >> "$LOG"
+for ((i=1;i<=$#;i++)); do if [[ "${!i}" == --output-dir ]]; then j=$((i+1)); mkdir -p "${!j}"; echo '{"counter_end":5}' > "${!j}/run_manifest.json"; fi; done
+if [[ -n "${BIN_FAIL:-}" && "$*" == *"--asset ${BIN_FAIL} "* ]]; then exit 3; fi
+exit 0

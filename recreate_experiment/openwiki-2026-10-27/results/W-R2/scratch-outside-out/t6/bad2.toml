@@ -1,0 +1,9 @@
+[[asset]]
+name="A"
+asset_class="stock"
+[[asset.source]]
+provider="eodhd"
+symbol="A.US"
+[[asset.source]]
+provider="binance"
+symbol="AUSDT"
