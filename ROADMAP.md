@@ -1091,6 +1091,34 @@ list and license posture live in § Settled questions.
   wiki statements contradict the code (bar timestamp unit, the
   action-stamp clock); they are M4's input. Queues nothing; changes no
   product behaviour.*
+  *Same day, M3 written up (the PR carrying this line). The 18 TRUE
+  claims not in the kit reduce to 13 facts. 3 are artefacts of how the
+  clean room was built (the package include, no extras, no tests). 3 are
+  consequences of kit requirements that the kit never draws (a class
+  correction is not a migration, the final publish is not a transaction,
+  there is no cross-file atomicity). 7 are code the kit leaves out by
+  scope (the package-root surface, `python -m`, the injection seams, the
+  EventBridge placement); two of those, `modeled_source` and
+  `validate_or_raise`, are on its author's unused-code list. None is a
+  CLI-observable behaviour the kit gets wrong. M4 (the six J-F issues)
+  is next. Queues nothing; changes no product behaviour.*
+  *Same day: an external causal model tested against the record
+  (recreate_experiment/legible-model-review-2026-10-28/REVIEW.md). The
+  model is Legible's systemic impact model v0.2 (46 nodes, 70 signed
+  edges, 8 loops over the 18-row site inventory). Its evidence pin
+  predates this experiment, so the test is out of sample, and it covers
+  the artefact → product leg only. Verdict: fit after corrections. Its
+  hedges hold, and shared-premise concealment has a measured instance:
+  JDL-159 writes the original's `export` crash into the spec, and K2
+  reproduces it at 257/257. Three structural gaps, each measured:
+  defects flowing from code into code-derived specs and docs (the
+  `timestamp` unit, seconds under pandas 3.0.5, against milliseconds in
+  the comment, contract and wiki); attenuation by load-bearing role (12
+  diagram defects, no behavioural trace); a green gate over drift
+  rather than repair (J-F #309's 25 claims). DORA and quality in use are
+  not reached. A degradation test (plant defects in the kit, rebuild,
+  grade) is proposed in the record, not pre-registered. Queues nothing;
+  changes no product behaviour.*
   *Same day, M3–M8 graded and the verdict written (the PR carrying this
   line). Of the five applicable filed defects the wiki states one, flags
   none and repeats the docstring's wrong timestamp unit; of the twelve
