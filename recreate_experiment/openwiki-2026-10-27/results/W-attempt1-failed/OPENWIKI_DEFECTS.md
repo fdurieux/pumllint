@@ -52,6 +52,12 @@ isNotFound(r.error);                                   // false
 file. `deepagents`: catch `ENOENT` in `resolveDeletePath`'s parent walk and
 return the same `not found` error the file case returns.
 
+**Upstream.** Drafted 2026-10-28 for the owner to file (a hosted session cannot
+open issues on either repository): `ISSUE_DRAFT_openwiki.md` for
+langchain-ai/openwiki and `ISSUE_DRAFT_deepagents.md` for
+langchain-ai/deepagentsjs. Both were checked against upstream HEAD
+(`305599f` and `bf83c27`, deepagents 1.16.0 read from source) and still apply.
+
 ## D2 — the first attempt's failure is swallowed
 
 **Path.** `runPageAgent` keeps `outcome.error` only in a local
