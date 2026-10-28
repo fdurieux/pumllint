@@ -773,6 +773,46 @@ The record proposes the interventional follow-up — plant known defects
 in the kit by layer, rebuild, grade against the frozen reference — and
 does not pre-register it.
 
+## Degrading the kit: pre-registered, awaiting the plant (2026-10-28)
+
+*Dated addition, on the maintainer's go ("all six arms, rebuilds at
+xhigh"). Pre-registration:
+`recreate_experiment/degradation-2026-10-28/PREREGISTRATION.md`. Nothing
+planted or measured yet.*
+
+The intervention the Legible review asked for. Six fresh agents rebuild
+the program, each from a different copy of the kit:
+
+| arm | what is wrong in its kit |
+|---|---|
+| C | nothing; the kit as committed, today's baseline |
+| D1 | three defects in the diagrams only |
+| D2 | three in the requirements, contracts and decision tables, with the suite intact |
+| D3 | three wrong values planted consistently in every layer |
+| D4 | three in the suite only |
+| D5 | three omissions in every layer |
+
+The defect types are a wrong value, a missing rule and an ambiguous
+wording; D3 and D5 specialise. Sites are not chosen by hand:
+
+- **The walk.** A sha256 order over the requirement ids decides which
+  behaviour each slot degrades. Admission requires that both the
+  harness and the kit's suite observe the behaviour, and that the
+  observing artefacts are ones the K2 rebuild reproduced byte for byte.
+- **The mutant.** Each defect is paired with a mutant of the original,
+  so propagation is read by byte equality: ORIGINAL, PLANTED or OTHER.
+
+Before any rebuild, every degraded kit is run through the gates: lint,
+score, trace, the DMN check, the glossary check, and calibration of its
+suite on the original. For the rebuild window, the subject and the lab
+leave the container.
+
+Expectations are frozen per arm under the model as drawn and as
+corrected. The two readings part most sharply on D1, where defects
+propagate as drawn and are attenuated by role as corrected, and on D4:
+as drawn there is no edge from a wrong test to the code, while as
+corrected the suite pulls the code with it.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
