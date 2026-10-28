@@ -1054,6 +1054,17 @@ list and license posture live in § Settled questions.
   alone graded as the kit arms were. Awaiting the artefact, which needs a
   model credential the session lacks. Queues nothing; changes no product
   behaviour.*
+  *2026-10-28: Arm W generated and committed unread (#198): openwiki
+  0.7.2, `gpt-5.6-terra` at `xhigh`, 1455 s, 16 pages, 9 claim
+  sidecars. W-A not run (no Anthropic key). One owner-approved deviation:
+  a one-line patch makes provider `openai` stream, because the session
+  proxy cuts non-streaming calls at 30 s. The failed first attempt
+  surfaced three OpenWiki 0.7.2 defects, kept beside it: a failed page
+  attempt aborts `--init` on a `deepagents` ENOENT, the attempt's error is
+  swallowed, no `--version`. The same PR caps the test extra at
+  `pytest<9.2`: pytest 9.2.0 breaks pytest-bdd 9.0.0 (138 BDD cases red on
+  a fresh install). W-R, the rebuild from the wiki, launched before any
+  grading. Changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

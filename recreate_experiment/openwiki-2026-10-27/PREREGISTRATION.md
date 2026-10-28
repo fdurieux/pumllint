@@ -253,3 +253,23 @@ under `results/<arm>/`, so every judgement is on the record.
   `MANIFEST.sha256` (32 files) sha256 `60529e10…`. Nothing in the wiki
   has been read; the only thing looked at was the run's progress, as a
   count of page files.
+
+### Step 4 — W-R launched 2026-10-28, before any grading
+
+- Launched about 10:32 UTC, after #198 merged and before anyone read the
+  wiki beyond the page count. **One arm only** (W); W-A does not exist.
+- **Inputs.** The recreator's wiki directory holds `openwiki/` and
+  `AGENTS.md` extracted with `git archive` from the commit that carries
+  `results/W/` (byte-identical to it, 29 files counting
+  `HARNESS_INTERFACE.md`), plus `../kit/contracts/HARNESS_INTERFACE.md`.
+  Its output directory starts with only `events.sh` and `dashboard.sh`
+  from J-F `8f6d6b0`. Its venv is Python 3.12 with the three exact pins
+  and `setuptools`, as the kit arms had.
+- **Brief.** `tools/WR_RECREATOR_PROMPT.md` with `{WIKI}`, `{VENV}` and
+  `{OUT}` filled in; sha256 of the text sent:
+  `736a0fdb707d9d33…`. Nothing else is in the prompt.
+- **Recreator.** A fresh `general-purpose` agent, the Agent tool's `opus`
+  alias at effort `xhigh`. §2 names the kit arms' model. The alias
+  resolves to whichever Opus model the session serves, so the recreator
+  may not be the exact model the kit arms ran on. That confound is
+  carried into M7 beside the §6 model bound.
