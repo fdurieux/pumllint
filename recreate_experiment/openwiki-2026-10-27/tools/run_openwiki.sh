@@ -28,7 +28,10 @@ import sys
 major, minor, *_ = (int(x) for x in sys.argv[1].split("."))
 sys.exit(0 if (major, minor) >= (22, 22) else 1)
 EOF
-ow_v=$(openwiki --version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -1 || true)
+# openwiki has no --version flag ("Unknown option: --version"); read the
+# installed package's own version instead.
+command -v openwiki >/dev/null || { echo "openwiki not on PATH (npm install -g openwiki@$PINNED_OPENWIKI)"; exit 2; }
+ow_v=$(node -p "require('$(npm root -g)/openwiki/package.json').version" 2>/dev/null || true)
 [ "$ow_v" = "$PINNED_OPENWIKI" ] || { echo "openwiki $ow_v on PATH; the pre-registration pins $PINNED_OPENWIKI (npm install -g openwiki@$PINNED_OPENWIKI)"; exit 2; }
 
 keys=0
@@ -66,7 +69,8 @@ if [ -d openwiki ]; then
   rm -rf "$RES/openwiki"; cp -a openwiki "$RES/openwiki"
   [ -f AGENTS.md ] && cp AGENTS.md "$RES/AGENTS.md"
   pages=$(find openwiki -name '*.md' -not -path '*/.claims/*' | wc -l | tr -d ' ')
-  sidecars=$(find openwiki/.claims -name '*.json' 2>/dev/null | wc -l | tr -d ' ')
+  sidecars=0
+  [ -d openwiki/.claims ] && sidecars=$(find openwiki/.claims -name '*.json' | wc -l | tr -d ' ')
 else
   pages=0; sidecars=0
 fi

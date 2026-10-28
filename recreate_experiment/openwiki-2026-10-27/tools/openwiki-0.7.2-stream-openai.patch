@@ -1,0 +1,14 @@
+--- a/dist/config/constants.js	2026-10-28 09:58:48.672070680 +0000
++++ b/dist/config/constants.js	2026-10-28 09:58:48.675248779 +0000
+@@ -407,6 +407,11 @@
+     if (provider === "bob") {
+         return true;
+     }
++    // pumllint OpenWiki experiment, Arm W: stream provider openai too, so a long
++    // xhigh call is not cut by the session proxy's 30 s first-byte limit.
++    if (provider === "openai") {
++        return true;
++    }
+     return false;
+ }
+ export function getProviderProjectEnvKey(provider) {

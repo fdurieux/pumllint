@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "pages": {
+    "/openwiki/architecture/data-layer-boundaries.md": {
+      "pageVersion": "sha256:dbc5dbb1bca1a3e397d1cbe23817903c47cc88f8e9f904b14fa3e20e089e61bf",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/concepts/eod-data-model-and-adjustment.md": {
+      "pageVersion": "sha256:5ce9e17f3a3ad39a8379a203ef6c6cddae5a223711cb07625f7edbba848f249d",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/concepts/universe-and-classification.md": {
+      "pageVersion": "sha256:5168cd99aa2ed868a0e872abe12233a2b08c10f5d7be0ca79d7814e0a5f4ff94",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/integrations/market-data-collectors.md": {
+      "pageVersion": "sha256:0687810315964d77e801697e79254880ed07f3bb980e6847602fee3bbe6d21f3",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/operations/daily-run-and-publication.md": {
+      "pageVersion": "sha256:e46357e54d9e6de188535371cd218c345072b50d5a1418951e30bf6cba101568",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/operations/store-health-and-alerts.md": {
+      "pageVersion": "sha256:95288afecc8ad80675e24350cc4a2d2eb1d7fa752d29906c71748f34a5403ac5",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/quickstart.md": {
+      "pageVersion": "sha256:c79866bbd684131e21526c58bb29ddbaa802544f1a495e02f7b051356580367d",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/testing/verification-and-replay-seams.md": {
+      "pageVersion": "sha256:85d0aace4e033948f97d8e71c61cb7468df47f559a9030299bb320d5a5c2e5d6",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    },
+    "/openwiki/workflows/universe-sync-and-reconciliation.md": {
+      "pageVersion": "sha256:69d49191bf91e0422f21d53f50d27bf932140d4c5b2a5b8d9e9f7ed18a1a9578",
+      "completedBy": "openwiki/0.7.2",
+      "completedRunId": "dbb6b8a6-8bf4-49fc-8743-2f0f44722263",
+      "gitHead": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+      "sourceFingerprint": "sha256:0a4a086e256aae5e067f44d3a0f801c41d268402f8b5951191a62fff13d17069"
+    }
+  }
+}

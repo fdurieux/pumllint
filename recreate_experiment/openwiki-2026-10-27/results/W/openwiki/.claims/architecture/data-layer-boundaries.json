@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:dbc5dbb1bca1a3e397d1cbe23817903c47cc88f8e9f904b14fa3e20e089e61bf",
+  "claims": [
+    {
+      "id": "claim_aeae4e2b9101463fbc44bb8f120e7b96",
+      "statement": "The distribution discovers only `jef.data*` packages under `src` and exposes `jef-data` as `jef.data.cli:main`, establishing the owned Python package and console entrypoint boundary.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L5-L20",
+          "version": "repo-lines-v1:sha256:254f09203e0239dc26418440b9032cc430538169b6caf49ef9fe61f7d967a67f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMmE4MWMzODM2ZWRlZjJkMGJhMTFkMjM1M2ZiNmRhYmM3NzcxNTBhN2NhODNlYTBkOWU5YTcwMzEzZmVhYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1NjZhMTA2MzUyZjMyNTgwOTIwOTU4NzMzNTUwMmEwNjk3NmJjYmI4ZDU1NjU5NmZlZjhkNTA1Zjc3YmJlMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmOTIxN2ExOTZhNTczYmUyNGE0MGMxNDdjZWY3MDI0NThjODU2MmFhN2ZiNzViOWFjZjRhYmFjMDYyNmNlMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a0b4eb2f66c94643b8d002f9ead97595",
+      "statement": "The package-root Python surface is intentionally limited to `ContractError`, `ContractReport`, `validate`, and `validate_or_raise`; it does not import the Parquet or HTTP implementations at package import time.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/__init__.py#L1-L14",
+          "version": "repo-lines-v1:sha256:e1a0c6aec38028e7d3f89822c09e44bab78b715b337448901c174a38c8b063c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNjJkZWIyYmIwMmViYmVlMGQ0ZTg4MmZkZThjYTNlMDlkZjAzNmU1YzNlYTlmNDNiNDlhMDkzOWFhMTI4ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjgyMGU0YzQxZGQ5ZTIwZWVhMjliZjY0MTY4NGViMzI2ZmQ3MDA4MmE5NmMxZTk3Yzk0NmU5ZTEzMjQwMjI0MTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L121-L145",
+          "version": "repo-lines-v1:sha256:0f17bdcd6afd71f549ba03246b395fc1fc8785447865e79878faa52f73768ade:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNmI2YmFhNmQ5ZTk2MTdjMmYxZmI1YTlmNTZmMDA3YWE3MzVjMzYxNzgzZjU4OTRkMzc4NTU1MTVkODJmMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwOWMwY2ZlMTgwZDg0NmM5ZDY5MjA5ZjYxODNiM2RkZTIwZTRhMTkwMTE2MzU2NzAwYTliZGJjMzhkN2M4Y2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjZmYjBkNGZjOTMxOGNlZDEyNmVjNWNjMjJiNGNjMzQ1NDhkN2M4M2Y1MTZjN2M0Mzk2OTgxODJhMTViNmJiMjIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L34-L47",
+          "version": "repo-lines-v1:sha256:4f1c49ddfe56e745784ff66b634d0f6520c5915fce4277e944f79615570820af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MDUyOGI4MTk2NWE1MzhlZjU2M2Y4NDhkMDkzNTY4MzhmZWExMzY4NGM3NDMwZWU0MjdlZTY0YWIzNTdkYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYTRmM2U2ZTlhNmZhNjE2N2RlZjQ3MTg4MWUyZTIxYTNlYTFlNzhmZGI0ZDRmZmQ1YjBlZjBhZWJlZmNmZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NmQyMzY4ZTliOTI3M2FlNWZkYjgzY2QwNmQ0NmQzMjBjZDhmMjM4MTFhNzQ2ZGVkOGM1YTU5ZGQxZTA3MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMDZiZTc5OTEzNjJiNjkwMzc4ZTc4MzY4ZmNhYzQ3MTNkYzg4YTUxYTI5ODQ3ZDFlOTI3OTQyMGFiNWU0MTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_86116f24df3948439e203160aff6d81c",
+      "statement": "`python -m jef.data` delegates to the same CLI `main()` as the `jef-data` script, and the CLI defers network- and Parquet-touching imports to individual command handlers.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/__main__.py#L1-L4",
+          "version": "repo-lines-v1:sha256:307299fda7b77d22c64cb51430ec75e5f59d78e9c948786afb3b2544fe45e4b7:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjljNDA0NGIwZjAzOThjNTI1ODFiMjJmODY4YzI5NzE0NGFhNTY2NzZhZjRkYmVhMmU2ZmQ0ZTUxMTM1OWVlMCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZmI2NGU5MjAwMGExOWNhMzg1OTNhNGU2YTBiYWM3NzA5NmQxZTk4Njk0OWEzYjYyODI2YjdjZWE0ZjczZDllOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L1-L18",
+          "version": "repo-lines-v1:sha256:aaaacaf03cd382e626f4384b50ec026d6786c8c05838a9e23751ac4a42f3e69b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NjBmZmVlMGY1ZDJmYTJjY2U4MzAzOWZiNWM2N2VhMDU1Y2ZiODlmODdmNTZmYmUwODdlM2RlYWYyZTNiNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNzdjNGZjMmE3NGY0MjljMjNmNTg5MTk0OGY0YWM4M2ZiYTQ4NTZhNjUyZTRiMGVhMTBkYTE3YWZlOGFjMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxZTAxZTg4YTE3ZWFiZTRkMzA5ZDM0ZTNiNzYxZTgzMDJhMzUyYTQyODc3ZjI1MWZlNDAxMWYxNzQ5YjEwMTkifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L136-L216",
+          "version": "repo-lines-v1:sha256:c0c1c9da73bc4ef7f94ee9720e3b5f34ec169683359ce3cd6597a5024ab844e0:eyJzZWxlY3RlZExpbmVDb3VudCI6ODEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzOTY2YjA4ODkxNDVhN2Y3YWQ1OTQ4ZDAxNmRiZDY4MTk1MjdhNWRhZmJhNjQzYmI2YzYwNzQzODhmZTA0ZWIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjczYjNlNzA4NzY4M2Y4MDU0NzI2NzgzMWJiNjRlNTkxNTM1ZTkyMmNlYTE3NjdlM2M5ZWJkNTExZTdiMGQyY2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY4ZjY4MWZjZDIxZjJhNDQzYjdmMDY4YmJiZWFjMjRjMjkxMzk2NTQ5YWExNTY1MDQwMjhhYjczY2Q4NDIxNDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJiMzIxMjk1ZjY1NGIyY2NhMWJmZWU0ZDYwZDE4ZjA3MjRmMzE5NzE2MzU5NzA2Zjk3MWY3NGUxMjVlNGFlMzgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d89904a4b0a45f7abc9928779541f8b",
+      "statement": "The project metadata declares pandas, numpy, and scikit-learn but no optional-dependency group; Parquet persistence imports `pyarrow` and the real HTTP transport imports `requests`, so environments using those capabilities must provide those libraries.",
+      "evidence": [
+        {
+          "resource": "repo://pyproject.toml#L5-L20",
+          "version": "repo-lines-v1:sha256:254f09203e0239dc26418440b9032cc430538169b6caf49ef9fe61f7d967a67f:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcwMmE4MWMzODM2ZWRlZjJkMGJhMTFkMjM1M2ZiNmRhYmM3NzcxNTBhN2NhODNlYTBkOWU5YTcwMzEzZmVhYmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1NjZhMTA2MzUyZjMyNTgwOTIwOTU4NzMzNTUwMmEwNjk3NmJjYmI4ZDU1NjU5NmZlZjhkNTA1Zjc3YmJlMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjVmOTIxN2ExOTZhNTczYmUyNGE0MGMxNDdjZWY3MDI0NThjODU2MmFhN2ZiNzViOWFjZjRhYmFjMDYyNmNlMjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L121-L129",
+          "version": "repo-lines-v1:sha256:428533220a32baef703afc4c54d8fefad56ab4560ca6575352a533c2ea8487e0:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMjE2YjZiYWE2ZDllOTYxN2MyZjFmYjVhOWY1NmYwMDdhYTczNWMzNjE3ODNmNTg5NGQzNzg1NTUxNWQ4MmYwNSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNTRkN2VmYWNhOGYwZjdhMDQxMjBiYWYyNmEwOWUyMzg3YWFmZjY2ZWEwMDhlZWJkOTczNjUwZTVlOTAwZGIxNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZDA5YzBjZmUxODBkODQ2YzlkNjkyMDlmNjE4M2IzZGRlMjBlNGExOTAxMTYzNTY3MDBhOWJkYmMzOGQ3YzhjZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiOTgyZDFjZmJkOTkzMmQxYWRiODU1YWFkNDE1YmJlZGIwMDExMmYyOWNkMDQ2NThiNDk2NzlmNDhlMzcwYTBhOCJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L34-L47",
+          "version": "repo-lines-v1:sha256:4f1c49ddfe56e745784ff66b634d0f6520c5915fce4277e944f79615570820af:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg0MDUyOGI4MTk2NWE1MzhlZjU2M2Y4NDhkMDkzNTY4MzhmZWExMzY4NGM3NDMwZWU0MjdlZTY0YWIzNTdkYzAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYTRmM2U2ZTlhNmZhNjE2N2RlZjQ3MTg4MWUyZTIxYTNlYTFlNzhmZGI0ZDRmZmQ1YjBlZjBhZWJlZmNmZWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NmQyMzY4ZTliOTI3M2FlNWZkYjgzY2QwNmQ0NmQzMjBjZDhmMjM4MTFhNzQ2ZGVkOGM1YTU5ZGQxZTA3MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYxMDZiZTc5OTEzNjJiNjkwMzc4ZTc4MzY4ZmNhYzQ3MTNkYzg4YTUxYTI5ODQ3ZDFlOTI3OTQyMGFiNWU0MTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3cd09317ce7d4aaf9d9b902b6ce15f83",
+      "statement": "`deploy/daily.sh` sources `deploy/events.sh` and `deploy/dashboard.sh`, but `deploy/EXTERNALS.md` explicitly classifies those supplied scripts as out-of-subject venue telemetry and publishing legs rather than owned data-layer implementation.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/EXTERNALS.md#L1-L5",
+          "version": "repo-lines-v1:sha256:b77a898df9346a52c8a3324fc93824f65b0871567e9475865b1a2c74a3022383:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY1NmZkZDMzNjI2ZTFlOTc5OGRkNzVkNjFlNmVhNTk2ZGMxNjNjY2I1NzU0YWU2NzIzZjY4NTgxZTdlZTM5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjk4M2FkMGRmMjFkMDJmMWY5ZGIyMGIxMTVkMzRlZmFhZTZhZWY4OWVlMWUxZWY1Y2ZjMGFlNGIzNzBiMWUxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L76-L86",
+          "version": "repo-lines-v1:sha256:db41402899c6b1f8af5dcbe339c199181bdebd1303f39360f1e6b0464b0f3cb6:eyJzZWxlY3RlZExpbmVDb3VudCI6MTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImY1MmE2OWFmM2Y5ZDhhYjY4OGIwMDZhMTE3ODJmNTVhOWI5ZGExYzNjZjFiZDM3ODNjMzUyNmIwNmI0ODllYzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzODQ1ZmRmN2ZhNjk0NmM1MzNmNDRjZGEzZGRiMWFmYzc2YTgyN2E0NGU2NDBlMWJmZTYwN2IwOWY3YWRmNzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcwOGMzMWU0MTE3NDlmNWM3MzQ5MDIwMzg2MDA4YTk3YmQxMDE4ZTRiZDQwYTlmMzk3MzY5NWZiMDdkMmQwZDgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJmMTEwMTVmNzg0MzcyNjgwMWEzNGUxNTRhZDgxYTYyNzljYzkxYzlkNDYwZjA5NGUzNzZhN2RjMDY1YWZiNTkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_20cfa36357b44738af2a765db8c10c7e",
+      "statement": "The deployment script invokes `jef-binning` once per selected asset with a store path, latest counter range, and output directory; the repository package configuration supplies no binning package, so this is a deployment-time handoff rather than an owned modeling implementation.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L147-L170",
+          "version": "repo-lines-v1:sha256:5086e076174e238a0544762ba12a9b4f81ccef1f20cb74337d42243ff2a5e5b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzYjI3MzZlNGU2Mzk1ODBiNzFiNDkxZDFhMDhmZjgyNDhiMDQ1MDM3YzBmM2UwMjcxOTA2ODNjNzlkNzczNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ODM5MDMyNTkyMmE0YTAxZDQ3ZjgxZWQ1OTQ4ZjUzYWE1ZDBkZjFhMDgxNmY2NDQwODFmMGYxNThkMmU3M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYWNjMzhjOTU4MzFjMjE0MmI0MGQ4YTYzNTVhNDgxM2Y3ZjRjMGRhYTkzNzMyZmJmYjY3NWU4ZTQzZWY0ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0YWEwM2U5YmViZjY1MmMxMDRhMjA2N2E0NGE4ZjRlOTVkOWNkMTc3Zjg5NmMxMjk5NzFlNDA4MDQzOWRmMTIifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L15-L20",
+          "version": "repo-lines-v1:sha256:eff721900e4defefb197eaaaa468a2151820b376247c90c4533dd77998cd2efb:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU2NmExMDYzNTJmMzI1ODA5MjA5NTg3MzM1NTAyYTA2OTc2YmNiYjhkNTU2NTk2ZmVmOGQ1MDVmNzdiYmUyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTMxZDc1Y2YwOTU0ZDE5YTEzZjlhMjE4ZTViNTlmYzIxNWExZTA3MDkzMDQ3NjNmMzFhYzY4YmQzMWM2YTliMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_cafec55aee72430eb1043fd008a4424e",
+      "statement": "The package identifies `jef.binning.loading` as the storage seam and keeps binning storage-agnostic; CLI help identifies `jef.binning.loading.load_eod_store` as the bit-exact consumer path.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/__init__.py#L1-L10",
+          "version": "repo-lines-v1:sha256:47a2b36147dfc987964b40ba5251dd2237c587f1b28de0c274f2de4fcbdf3534:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFhNjJkZWIyYmIwMmViYmVlMGQ0ZTg4MmZkZThjYTNlMDlkZjAzNmU1YzNlYTlmNDNiNDlhMDkzOWFhMTI4ZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdlNTY3ZTkwMDcwNDJkYTNhYTgzNGE2ZmFhOThjYjBmNmZjODBjOGQ2ZTIwMDkxYzM2YTY2NmNmNDJmZjhhYjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNmExNGZlNjc3NjliZjdkMmE5OTYyMzI3ZjYyYjkyOWZmMmYxMWE1OTYyZjY5OGZmMTY1YTE2YmNlZjE4NjMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L444-L453",
+          "version": "repo-lines-v1:sha256:a4a4668986b67b8b6ee29260c50a383ec85e767ef51fc5c68d1b3cf7d2eb3766:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjNhMjAxNWZjNGE0NWQ3NDNjY2FiZGY2YzQwOWM0N2ZhZGQxZTdlNDc2MWIwYjBhMmNmOGRiNmMyYjU1MzUzNjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEyZDVlZmE1MzkxY2JkYWI4YTBiMWMwODFiMTM1YTA4ZTZkZmVhNDdlODAzODM5ZGM3YmUzNzI0ZDY3MGJhZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRlN2FkMTM3ZGNhMTUxYTUwNDc3ZjgxMzMzYjY2ZWU5MjBjYzlhMjZjMGVlMWEwZTFjNzhlYjJiYzUyZWNiNjAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxNzllMmIxM2M1YjhiODQwMzYzYThhYWNjMTM0ZTYxYzc3ZWI2NDFjZThiMGFiZjUyNzE5NjBmYzk5Zjc3MjQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7861d9c27aa54ac5928d91b24828ec6f",
+      "statement": "The universe parser is the single strict configuration boundary: it permits only the declared provider and EOD vocabularies, rejects unknown keys and duplicate store coordinates, and returns normalized assets/sources.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.py#L1-L15",
+          "version": "repo-lines-v1:sha256:1298cd2236024995f5e0e67b92a09a47af0deee01169ad408fd80cdc355f98dc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc5MThkNmJhMmMxYjg0OTJkZmZmOWVjZjk4MTU3ODBhODczODM4YzlkY2Y2YWRmNjljOTdiZDRmZDQ1MTZlNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkyOGZhZmVmN2JhN2U0ZWY1MDIwMDI4MzgxNjlkMjExZDg3NzAxYWYyNzE0YTQ5NWU3NzJlZTE0NjJiMWEwODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU3MzE2MjEzNTRiNjkwZGEwOWQxNTI5YzU1ODM5MjMyMmY3Mzg4M2M5NTlhM2YzMzAxMWJkNDRjMTY0ZDAwYzYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L224-L269",
+          "version": "repo-lines-v1:sha256:8737e984f897420b66599fd90aeb2d3dec96e4bf403e546dd4ee5ce2e2ed0e5c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NzJkNjU5M2VhOTZiZjQ5NGNlOGE5YTZlNDE2NmUwZTFiMGFhMTI0ZWIxOTQ4YzAzMDIwZDg4NzQ3MWE4YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4N2ZmMWJmMGQzM2I0YzdjMjlmYTI1Y2U5YWVlMGUzZDlhMjAyYTU2ZTliODc2NWYyMjA4OGU0YzA3MTg0Y2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2YjEwODkzZTYzNTRlMWRjNWY0NzZjMWRjZmQ1NmQ0ZTc0MzliZTk4NjMzYTM4NGQ1MWE5MDhjMmM0OGU1MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1ZWFmZDk4ZjJkMGM3ZDA4ZDFmYzA2ODllMzU4M2YzMjVkYWYzZGJkYjJhNmFhNjk5NTcxZjA0NTY3M2QwZTMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L89-L143",
+          "version": "repo-lines-v1:sha256:c50cc58739cd34c10ceddda98cebff39d5106f03fdef392561564408e2ad086a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiOWEyYTNhYzAyZDE5ZWI2YTY3YjhhYTI5YjU4NTE3ODU2YmU5NGVhOTE1MTQwN2M2N2I0NWMzN2VmZDk1MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NjgxMjM0YjBlZDQ2ZTRmZDBmNTU2N2Y5NWM1MWIwZjkyYjkzMThkYjY5ZGMyMzhlMWZmYjZmYzUxNmRlYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MGQyYTI3ZDM5MmYzYTRjYjhhZWUwZmYwNWY4ZjM2YmU5NWFiNjljYzljZmFmYjAyZjlmMjA5ZWI4NzZlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0OGI1OTc4Y2Y2ZGJkNWIxYzRhMzRmYTA3Y2FkMTNkMWUzZTMyNDM0Mzc0MjczMTA3NjE4ZDZhMTA1ZGExNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e3ea9b2f6de341fd909c95e6f88c0aae",
+      "statement": "An enabled multi-source asset must identify one enabled modeled source, while a sole enabled source is selected implicitly; `modeled_source()` returns that deterministic feeder and leaves other sources as cross-check series.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.py#L171-L205",
+          "version": "repo-lines-v1:sha256:db8394bb19bc399b8fc2b0af61613cb64909580ac5ad86c03ba13057b7830d5b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU1YTQ0YjE5YzJhMDFiYjhkYTJjN2UwZGEwMWVjOWFhNjdjZjc1NGE2YjZiZjBkZTE4NmVjYmM2ZDJmNmY4ZGEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlZjBhMTkzODFkY2MxNzc0Yjk5NjFhZjZmZTFhZjg4MTdiMDhkMjY1MThmZWEyZGE1Y2I3N2EyNTVlNjYxMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmZTQ0ZTI4NjczNDI3NmZkYzNmMTU3ZGZhMjYwM2I4NzExZmI0MDk2ZDhlYjU5NWY3ZDA2MGMyZWY3MGU0ODMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L278-L293",
+          "version": "repo-lines-v1:sha256:65a525a1bc834f9ce6c05392417a7167c42c31711f4e0a1cb2d50d0d2c342c33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNzJmODM5ZmU0ZjBhMzQ0YWYzNTFmYjkzZWFiZDIwZjZhYjJiNDhiZmI4MDI5ODI1ZjA1NDdmNTc0ODM1OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkM2UyZDdlYTRiYTJmNzUzNDE4NjEzMjllNGMwMjkyNmZhMTgxNTNiMzQ1ZjM2MGJjNjlhNDEwNjhkOGQ1MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMGQ5MGY1NGJjNDM1MzFmNmU0ODAzMmRjYjQ1MjIwMWVmZjM3YmNhYzY5NGI1ZmI3MDQwYjMyMGJiYzc3N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNDQ2NzQ3ZDUwZDkyNDRhMzBiMjVlMDgwYjljZmMxY2YwZWYwY2I4MjFjY2Y5NmVjNDhjZGY3ZmEwYjJjNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c42e28b6ac594a6fba23fb7509396649",
+      "statement": "`run_sync` executes source-specific acquisition: CSV legs are whole-file imports, raw-basis EODHD legs refresh actions before loading, and crypto/Binance legs use split-adjusted handling rather than the CRSP pass.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L1-L39",
+          "version": "repo-lines-v1:sha256:68622f2dd373ca3d317d649d5fbf6a063d876f2c41ad30a0e3b45faf03d0079a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUxYTNmYjMwMDQ2YzU1NzUyZTcxYTdiMTA4MTEzNmFhMzU0Y2QwNmY0MDgyNTE4YmMxMjdiZjkzMTFhMGRlOWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZkMmIyM2EzNDU0YzVmZWRhMzQwZTYxMzc4ZWMyZGE1NzMxYjVhYjFkZWZjYmFjMmY4M2U0NjA0MjEzMjk2ZjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkZWE5OTBlZTczN2MzYjRjZDYwMzNmMjcxMDNmYmI4NmFlYTZjODNlNDA5ZjQ1ODIzMDY5MjJkZmY1NjYzMDgifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L176-L275",
+          "version": "repo-lines-v1:sha256:f08fa220576699da43b8fb262642286cd904e5a92a55ff8a23a5fc4566d9ea20:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAwLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NmNjNDUwNTk3Mjk4Y2FlNzY1OTdiZWJmMDMxY2RiOWNmYWYxYWM3YWUzMWUzNDI5NmIwZGZkOGY1Zjk5YjVjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4YjBkOTQwNmFlYjZiMWI1NWMxMGZhZTMwYjk3YzlkM2ZjMDg4Nzc3ODUzYmU2ZjEyYzMzOGFlYmNmY2JjM2I2IiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxZjQ2MzE3MzAyMmY0MWYyNDNmNzFiNGFkMzdmMzNhMWY5YTQwN2Q1ZDVkODA3MzAxN2QzMDc0ZDU5NjI4MWM2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJiZGNiZWMzMTZkMTlmNjY5NmE1MDk1MGQ0ZjU0ZDNiNWU3Yzg4OWNmODNmYjlmMmRlMDVjZjc2NDVmNDA1ZjJjIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_1c9ec05b58544e938352b4f51c5d9eb2",
+      "statement": "After first fill, sync re-fetches the newest configured tail of sessions and reconciles newest-wins only there while older rows remain frozen; a configured end is persistent and crypto fetches are guarded to the preceding completed UTC day.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L119-L153",
+          "version": "repo-lines-v1:sha256:5683bd2f47db1d4bee2f63518f7c7cebffdc856d26177b0b8816abafaf4f22ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YjRhM2E3ZDI5MTg3NTcwMDE2NmY5M2VjM2ZiMmNmNDJjOGU0YzkwMzlhZjVhZWEzYmNiY2I3N2RlYzI5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Y0MWQyZmFlNjkwZTUxMzhkN2M3YTZjYjc2MmUxZWZmZTEwNzkyNGFkNDM3NDI4ZDA4MzY0NjRhYjBkNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZTljMWRkMDA3YmM3OTdlNGFiZWI4NTY4YjY4ZmY3ZmI5NzU5MmJlNmE4N2FkNzgxMGQ1YWQ4YzdkZWE2NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NDFlZGQ2MjA3ODAzYjBhNjVhMzI3Y2QwMzU4NmEyMTcwZDdiZDc5YTFjNzkxZTNiYjI4MWFiMTZjNjJjNmEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L236-L282",
+          "version": "repo-lines-v1:sha256:95d843bdaea66a35f8215fa633058f02dbebc12ed04976de58d0ae5c597bc3f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOWYxMGVlMmJmNWJmNTQzNDYwMzUxODhmMDE4Y2JhZjEyMWViNjdmMWJiZjY5YzQ5ZjQ3NmNjNzQ5OWQ2OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZGE4MTYwZDBlYWQ0MjM2M2E1MmVmZjI0ZmE3YjUyNTc4ZjJjNTBmZWM1MDM0OTA0ZGM4NmI5ZjVhNzUyODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NTNmOTFhYTdjNmI2ZGY2ZmE2NWM4NmVmMjliMzliYmNjYWUyOTc0YjRmM2I1M2E5YzBkMDk3MzQwMmJkYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMDY5NjZmZTRkMTY4ZTJkMDcyNmRiYzAxMTA3ZDViMTYzMTAzMjVlYTJiYjBjNzBjODMxZTU0YzFiYTdlMTIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L41-L56",
+          "version": "repo-lines-v1:sha256:455c282e23f4665630260c941bd15984a99ef1267022caa934b20abfe5e77875:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3ZDY2NDU1NjFhMjExOGZhNDVmNTIwODE1NTMyZmNjNTQzOWRlODM2ZDhhNTM3NDljZGU0Y2Q1MzkxNmRjODUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1ZmQ0Nzc2YzcwMTZjMWVlMDI4NDA5NWI1MTMxMjVhNGQ2M2YxOGFlMTFhZWI4ZDcwOThkYzQ5ODRjODUzMTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNjZjZDg4YjI1NzViOWQ4YmVjMzY3NTc4YzI5ODAwYWM5ZTU0NzYyNzBmZjgwZmNhZTEwZWY0MzQxYjI2MmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc2ZjJmNzI5ZTU3ZTMwMzA3ZTk4OWFhZjYwNjY1NjFjNjczN2M2YmJkMDBlYzc3YzlmYTc3NjM5MWQ4ZDJlMWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_116ccd6f07fd4ee992190dd75146a613",
+      "statement": "Sync constructs collectors lazily for selected providers, supports injected collectors and an injectable clock/output seam, contains failures per leg, closes only collectors it constructed, and returns an aggregate failed result if any leg failed.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L323-L342",
+          "version": "repo-lines-v1:sha256:811841b27b78e7f004387fad0e17a51dd514cee509ca725952e8a5ebef3f6306:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MDJmOTdlNjk1ZjlkNjVjZjgzNzUyNzgzMzUxMzVjNTZjZjcyZjBlOTBmMGZhNzkwYjc1NGVmYmY2MzljYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmJlNTgzNTE1NTRmYjE4NTljMjVmMjk0MmQwYmE3YjNiODhiZmE2ZTEzZjE5NjdlNGMyODcwZmVjZTlmZTciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1N2RiY2I0MmE4MGU1NWY0N2ViZjFkOTdkZjI4YmRiMTVjMjI0NmI5NmQxMzJlMThhZWQ3ZTFhMGJmZTBlYjUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L362-L407",
+          "version": "repo-lines-v1:sha256:7f3e8d67776cfd48ef016675efae1d292e573813cbc0828c94e2a761acc82eb2:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkYWQ5MTU5ZDkzMjkyYzVmMmZkMTliZTYyMWFiNTc2NzBhNGM4NmY1YmEwZjkyM2MxNjdkYjRmY2Y3NGY5YmMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0NzExMzUwYmUzMzk5MTVhMjdkOTYzMDk1ZTc0NDg0ZjQ3ZjA1YjYwMGNmZTU0OTZkOTc3MThmMzdmN2Q1YjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1MDc4ZDAxZmFkNzM4MjM0NDE4MTE0NDQ4ODg0YmNlNjhlMTFiNmE0YThmZGRiZTk5YzdlMTM2Zjg0YTZiMmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE1YTBhNDcwODBmZmRmM2M3OGJhZTIyNjA2N2Y2ZjkxY2U3OWM5YTQ5NDhhNTY2OTY5NDdkNzFkMDBjNTFjOGUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08a3d343106747b095dc1aea17d8551f",
+      "statement": "`BaseCollector` centralizes rate limiting, a hard UTC-day request budget, retry/backoff for network and 429/5xx failures, token redaction, and replay/recording transports whose fixture identities exclude secret parameters.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L1-L24",
+          "version": "repo-lines-v1:sha256:b7f8178bd8061c75c6d78fd9465e854a78e7ac8dec192c4bacf1b4cda170dd4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYmI5ZTM2Y2MzNDFlMWVhMzY5NjZhYjVhNjE1ZTMwZWI0Y2VlYTU1NGYyMjU1M2I5ZjAwMzY1MzcyMTgyZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRiODc3Y2JjODlmZjc3MDE2NmRhYWYzOGE3MGQxNWFjMTZkYmIxN2EyYjc1NTM3NmFiYzgxNjA1NjE4YmE0MjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI4MTljMjNjMjg5NmM4ZjM0ZTg4NjcwMzYwODcxNTliNjc1OTM0ZDZlMWYyMDRiZmI3NWJlY2QyNTYzMWFlMjYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L147-L219",
+          "version": "repo-lines-v1:sha256:4c1295c9b945ed39407fa8ae6f09118005cf2ad4857aa6ec5e5714bdf09b6510:eyJzZWxlY3RlZExpbmVDb3VudCI6NzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ODQ2MjYzNWE3MzNmYzQxNzczY2I4MmVjZmQxOWM2ZTU1MDg1MDhhZGJiYjg5NDRiZTM3MzIyZTYyYzFlYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhODQ5NmVlOTY0MjcyZmM5MTFhMmMyMmVlNDFkYTBmY2U3Zjg0OWJmYWRlMzQwNjUxMmJlMWQyYzgxODhjZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2ZTIyYWE5ZjcwMWU0OTQwODU5ZjY3MzNlMGZiMWY0NTdlNjBhNTg5MjgyY2YyN2RkM2FiZjQ3MDQwYTEyM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFmNGM4MGQ3YjRlMDU5MWJiMTFlZTRlZWRmNDgzNjNmZTRmZGQ2NDRlNDI2YzI5NmY2MDE1YWUwMTg5NGMxMDgifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L225-L294",
+          "version": "repo-lines-v1:sha256:ae2ed262d2d241c0147b8f076227e817045f943cd1ffc2bce640f8b365087fbd:eyJzZWxlY3RlZExpbmVDb3VudCI6NzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0ZThiNmMzZmFkYjNmOGIwYzFkMjQzNTNhZmI4YzU0Nzg1ZWM1NmFlNjhjMTllY2JmYTY5YzdkZWQwMDhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0MDViZTA3YzUyMjllM2U0NTJiZmQxNGNjNjNlMjNlMDgyYTYzZjM2OWMxNWFhNDM5MGZkZTgxN2Y3NjM4MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0ODkzYmZmZTMyZjMwNWYyMjcyOGUwZWI2YTkxZTc3MWUxMWQ2ODNmZDNmNDI1NzhhOTQ0OTg3NjFmMDEwOTYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L58-L83",
+          "version": "repo-lines-v1:sha256:6ef0821ab4241dc97aea2161125bef26cd83a2f4ac2fe591daef264bf00df6ae:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNWY3ZGEwODBmMDRiN2FkOTE0Nzg0NjE3ODczMzYwZWUwZjEwMWY0MmVlNjc3YmI4ODAzOGUzNTRiOWQwN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYjBiYzc5ODA4MmRhZDgxOGY3YjI2NDQ5NmJjMDc5MTBhODAxNTI3M2YzODRkMzgzNTRjZGYzNWFjM2M2NDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMTExOGY4NzMxNGYyMmJjNTMwN2RmNTQ0MDY3OTdkNzMzNzlhZjc3ZDFkMjdkY2NmNzFlOTFiNzM5MWY3OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkY2U0OTc5ZDhjMzM4N2ZmNjVmYTcyMTIwNTU3NjYyNTY3NTFhNGM4MTgxZTlmZDJiMWU3ZGFjZTRkZDViMWEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L86-L118",
+          "version": "repo-lines-v1:sha256:40b0d60d48d6e53524a2a05e336a941be97036461b0bd9fd2cd00bee968eb76f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZjNiNTE5NTVhZmY5MjBkMjIwNTc0YjRmNDUzOWZmNzIxZTg1MWY3ODFmMWRlZTk1NTUwYWZjYzc5Nzk1NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NmI4MGY3YTRiOTZjZGU1ZTg5NDRmMTJlMDRkYzlkYWQwMDk5MWNlNGQ4YzcwN2NmMDhiMDg4MWYxZDkwMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNTI0ZGY1NjJiMGU3Y2MxZjgzNmM3MjJmNWI1MGY5NzRmNTRhYTA2ODMyMWRlZTM1NWM4ZTNlYmVhYzMwMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNjBlMTFkMTYyYjNkOTZmMjk5YTRmYjQ3NDgwYWYzMjkxZWQ5YTE0ZGE4MGM2NjNlNjgzN2U3ODhhYWQzZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_efacfac822ce45f692c85c73ff808a9d",
+      "statement": "EODHD requires `EODHD_API_KEY`, sends it as `api_token`, and declares split-adjusted served volume, whereas the Binance adapter maps public daily klines into the same neutral bar shape and paginates them.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/binance.py#L1-L17",
+          "version": "repo-lines-v1:sha256:3b03309d7879c637f699a094377434521d54b1dab1371a5a6985ff152f8493a5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNTM4NmZlMTJjMzNlNWJlODc0OWFlMmU0ZDUzZTdmMjJlNzk0YWVhNDE4NzAzMjQ5NDc4MDNiZmU2ODJhNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNmZGVjNTVhNTgyYjE2MTNhNjJkYjYxOGEzNDY3YjU4OGUxY2RiNmE3MTExNTJiYjM0YjJhNmVmM2U2NWRhMzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYzMGM2ZDg4YTQyMDY2MjQ0OGZkZDdmMTgwNGViYTEwNmVhMTM3ZDc1MGI0NmJiOWZlN2MxNDkzYTY1MTU4MmIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/binance.py#L32-L82",
+          "version": "repo-lines-v1:sha256:197fdbea59f1784b9d894a4dec45e6ac3a2c6dcc417cf1b2207904b7dd02cc21:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNmRiYWIzZTI2NGJlOTVhNTNiOWNhZTBjNDE4MzRiMjljMDE2ZjU5ZjE1NjgyY2NjYTZkZDkzNTZjMzAzYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODE0Y2JkNjY2ZDk5YjZkODM0NGZiNWMzZTY5ZWVkOWQzM2YxYzg4ZjRiYmQ5MDFiZDIxMThkOTY4MjJmNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0MjZkYjZiMjk0NzVmYzdjODUxY2IwY2RlMWYzODlmNzQ2MjkzZDMxMmRkZjE4NzdmMGQ0NTAwOGEwZGNmNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L12-L18",
+          "version": "repo-lines-v1:sha256:03b26c26163aa9a3ca32a56ea81b7d14e4f65b5a0ce4e377999973c619013a8b:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZjM2NjRmNDA4OGM0MGFmNjgxOTBjOWJhZDU4NDY0MDY3M2EyYzcyZjI5OGM2MDIwNWQ1MzAyNTUzZDU4ZTk2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYmExOWNjMzBiMTgyM2VkYmNkN2U2MGRjZTUzYzk3NWVhZjNhZjk0NWQyODZmMWY5YTY5ZjNlZGRmMjBmZTlkNCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZjkzYTZmZWI2YjZmMDgzMjU1OGUwMzBmODdjOTdkN2NkYTNmNGQ1ZWMzODA5MzkzNWFhMjNmNzAwMjJiYmNiMyIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDhiYTA0MDc2MjU1N2YxMzEyNjIyNWJlNDFlOTk0YTljOThmZDlhODcxYmU2ZGU3N2ZhN2VlYjRmNzMyNWEyYSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L64-L109",
+          "version": "repo-lines-v1:sha256:5ac35bc569693779fa87442ec013cf1a3a88044fd90a33b026e2115f6a4d0c5d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3YTAxNDhiYTk3OGI0MDA5ZDM0MDg0ZTBjOTJiNjk3MGRkNmRkMzJiY2RkZWFlODkwYjBlODI3NjFjZjExMWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODE0Y2JkNjY2ZDk5YjZkODM0NGZiNWMzZTY5ZWVkOWQzM2YxYzg4ZjRiYmQ5MDFiZDIxMThkOTY4MjJmNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRmMjA4OTdiNjVmY2M0NWU3N2MyZmYzMjcxMWRhY2VmZDk4ODRhZjhjM2E0ZWU0NjA2YzNhMmUyMWNjNzBlODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYwZDQ0ZjNjMzRkYmYxOGRiY2I4ZmNiZTc3MzE4NThhNDNhYjAwMDIyZGExZWFjNjZmNmVhNWMwZDlkZTE5NDQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4bc8107b28634fbea5567843738026b8",
+      "statement": "The local store is partitioned by exchange, symbol, and year under `market_data`, while corporate actions are per-symbol JSON under `corporate_actions`; `to_contract_frame()` is the seven-column interchange projection.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/actions.py#L1-L17",
+          "version": "repo-lines-v1:sha256:3ccdc95a32e57e7915a1761aec8ef4a1d87a4ac84e240e1ed99530c4b8f89c24:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU3ODY5MzljOGQ3MThhY2JhOTM3ZmI0MDVkZGI0MWE0MGVlODllOGNjNjlhMWMxYWY1MGQ4MzUzZGUxNzg3MjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxNjUzM2Y5ZjM2Zjk5MmY4MjA5NzQwMGYyZWJmODZkZjZiMjUyMGIzMTBiYjEzNjJiMDdlMjIzYjk3ZGUyNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRiZGUyMmEyYjE2NmM2YTlmMjg5NDYxMzQ0OGU4OTI5YmExNTdiZjg2Y2EzZjk1OGI4YjAyZmJkZmExMWIyYzEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/actions.py#L57-L84",
+          "version": "repo-lines-v1:sha256:6030fa10141f5e87ae5dcd439a1f5bfcacdbff091f5b88ed4c1e9122cd81ea38:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExNzM2MGViNGQ5NmFjZDlkYmY1NDk5M2MwMGE1ZTEwYjg4ODRmMzlmMTkzNTcxZDUzMjVmYmZkYzk2MzU1OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NTU5NmYwNzZjNWM4MzUxMmVkNTk2NmU1YjFkNWE3OTE2OGIxOTBlY2MwZDk3NzRmZWRhZDlhNDQ3NDdhOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzZGYyYWNmMDZlOGMzZjAzYzcxMzVjNmU4YWM1YTljYTU0MzJhYmUwNmE3NGFjYTBmZGQ5YTUzYTAwOGY5ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZjcyYjBjZmUwZjk5OTE0ZDE3YjhlZGYwOWNlNzc0NmM1YzVlY2E4MTkwMmFhMjhjNTlkMTQ5ODBiMjBkZWMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L1-L21",
+          "version": "repo-lines-v1:sha256:0dcf8fe99e29809b3937508f99bd30c139a746380aaa2d81ad0aee8039863461:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MWY0YWVhNmQ1NmNiNmExYmVkMjFmNzg0M2FiNzcyODQ5NzBlOWQ3ODQwNjY0ZGMxNDQ0YjY3MDMyN2M0NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0MzU2ODNmN2E1ZmVlZTFhYzE3ZTY4OWRkMGE0MTc1OTMwMjU1YWU4ZWU2YjJmMTFmNDE1ZmEwMWJjMTJiNDIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjM2Y2FkZmE3MDNlMWUyZGM4MzliZDFkMmVhNWFmY2M5M2M1NzU5M2YxMGUxMzk2OWY2ZGVkOGRmYmQxYThiZWIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L431-L456",
+          "version": "repo-lines-v1:sha256:44decea796b5410e769cb8145c1a210bec984bbd361d5d94cb7719a2b162da23:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMTY0M2YxODNiYWI4NTM2MWQ3MjYxZGFlYzEyMGVkNjA0YmVkODAzODE3YTc5ZTc5MTIwZTNkM2M1NjczODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4Mzc0NTc4NmU5ZmUxMGExNDg1MTQ3YzFiYTNkMDA3MWM4MWU5MzBkZDE5NDRjNGFjYzdkMzgxNTU0MjBjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViNTYyN2E4ZDRlNDEzODY4NjI3OWZjNmY1ZTJiNGQ1NjJhYjEzOTA1MGNlMmY5MTNkYzc0Mzg1NmUxNDRiYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L57-L113",
+          "version": "repo-lines-v1:sha256:7bb01a0a503484daab1ddf8f86f2b4ba32bf83c85f4813a165617e98502cc73f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMmE3OTNkNmJmNjAzMDU5MmNhMTQ2YjZhZjQyYWM1YjFiY2ZlMTliYmRkMTdmYTE5NDZlM2NmZTk4OWY2YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk3M2UzOTNjZTU5MGVlYjI1ZmQ5NWY4YzEwMWY0MDdhNjVjYWZjYmY5ZGIyNTQ4MDQ3ODNkZmIzOGQxOTBmZDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3YjE4YmMxZDQ3MDkyODQzZTRjNzM2M2E2YTQ1ZGE0OWY1ZTNiZDIyZGY2MWQ4MTNkM2ZiYzA0ZDVkNzE3N2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQxZTAwNjM0MTMzMTc4Y2Q0ZmVhMGExY2E2MGNmZWM2MjYzMTE4MmEzODNkYWRiODRhNzg5ZDI2Mjg1NzAxMDYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c70886c6b88a44d98e65b3ede392d29f",
+      "statement": "Raw-basis main OHLCV is always re-derived from immutable raw columns and split events, making adjustment idempotent; split-adjusted series retain factor 1 and adjustment explicitly refuses them to prevent double adjustment.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/adjust.py#L1-L25",
+          "version": "repo-lines-v1:sha256:db23875ebd2493d810a7b89de02e23a01269278542c6643041bf24621ccec99f:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1Y2IxMjg2YzMzMWEzODFlNmRlZjNhZDQ4NGQzY2EzOWNhODc0OTRkMjg1NWIzZWQzNzFhM2Q1OGU1ODE1MWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyNGE1NzU3MmE5Y2E3MGVlYmMwMDBlYzBmMWY3YWU0YTgxYzg1NTEyZWZiZmZmYjQ4ZjgwYjU2YWZkMzQzNjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJjMGQyYmM0ZjkzYmYyZTBhZTE4MzM1ZWViOGY2NTJhZmRlMDZmYTdjNWY1ZDlkZTdjMzk0N2UyMGM2ZWZlNWIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/adjust.py#L66-L97",
+          "version": "repo-lines-v1:sha256:9e5da3e6a09af83dea05c1e8a4fce3f84ef1f6f25f686055b84b65ff42673792:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5MGY4YWM2OWE5MmE2MWQ0YTA5NmY4MjQ2ZjI2ZTI4YTM0NWQ1ODhkMDJlZDMxMTc5MmRjMDMzNDY4ZjdiZTciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTFjMDU2N2QwYTVmOWU5YjEzNWY2NWNkMjUzNzJkZmQ2Mjg3NzVmN2MxZWQyNTNmOGJhZDQyZGQyZDY2NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFmZWRhN2M4YTczNmRiNDQ2Y2U5OTFkNTFkYTBjMjZjMjlmZDQyYjZkMTY1YWRkYjU2MzRmNjMxNzdkOTMyZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L266-L332",
+          "version": "repo-lines-v1:sha256:28ca20abaaa0cf9cec45b74f06bb4a71645a0274b5bfeb70c2982a247bfe613f:eyJzZWxlY3RlZExpbmVDb3VudCI6NjcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjliMjdkYmQxYjgwYTk0MmUyNTA3NTEyZDVmNTUxYTVmYzU0MjU5NGUxNmI3NjFhZWMzNzdiMDVlNTIxYmMyNmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzYjE1Nzg0YjBkNjM5MzA5MDZlNTI3MWY1NWVhM2JiNmI5MDM1NWYzYjNhN2MzODllNzEzMTU2N2U2NjE5YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkNDEyMjJlZjJlZTRlZTgyZWM5YjE0ODYyOGQ2MzZkNzA4MzdlMTQ3NmRlN2U1OGZhNGFjZTViYTI1Yjc2YTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOGFlMGI5Nzk4YzE1NTNmMjE2MGFmMmQ4N2RhM2ZkZGNjNTYwZmEyNTA5ZTE1YTVlMjQ3MjI1YWI3YzEwOTYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L412-L428",
+          "version": "repo-lines-v1:sha256:306f0e7d856d638fa9b57ab2511eb2dc2787bfd4a7075aa4a80b6d686cc67285:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1YTRjZGIwZWY1ZTMwNGM5OGNlMDQ4ZWRmMWNkOTRiNWU4MDVjNTNiMGM5MGUwNDgyYzE1MmE1ODc2YTY1MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZjk4OTY0MTViNDNlN2M1ZWFmZjBhNzE2ZTZjNWYzOTc4MTQ5NTY4ZTdmMTA2MTRjZTE3NmI3YWU5NTg4YjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkODM5MDYzYWFlYTNjYzIyYzgzZTk3NjE2NDg5NGRmYTQzYmNlMDJmZTMyZDc3MjgyZjVhOWIxMTFiZDE5YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNTQxN2FhMDk4NTE0OTYwMjc4MmE0ZGM2YjU2YTIxOTBmN2I5YzZiMWRhNDdjNzg2NGQ4NmI2MzJlZjA0OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9130260572c24063921ecb2a1b907871",
+      "statement": "`ParquetStore` serializes each symbol's read-modify-write cycle with POSIX `flock` and atomically replaces per-year temporary Parquet files; append preserves existing duplicate timestamps while overwrite lands new files before pruning stale partitions.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L167-L225",
+          "version": "repo-lines-v1:sha256:037b4829ea061f682f5092236d53213c1e686caae6d09ad6cfe9f2d763d58e46:eyJzZWxlY3RlZExpbmVDb3VudCI6NTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NjdlYTcxNTM5ZmEwOTRhYmNlNmU3MWU3ZGFlYTllZjQyMTg5YmQ3ZmE5MjExOTZiN2VlYjFkMzY4YmQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxMjA2ZTE3Nzc4MmExNzQ4ZTQwMzNkYWJjZjcwZjdhMDc1OTI3MTZmZmQxNjQ4YWU2MDMyN2FlN2E2NmNjMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1OWUwNTA2Y2M0YWI3N2I0NjgwOGRjNDAwNzE4ZjdkMTI0ZDllMTI0MzZiODU4NmQ5ZTgxYzQ2YzMxMzdlOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNDZiNDIzNTZhZDAxNGQwOGZiMDQxZmIyZDc3NTkzOGVmYTMyYzEzNTlmOTQxNWNjYjcwNjg2MDM2MmRjMjMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L227-L263",
+          "version": "repo-lines-v1:sha256:3803ee0e4383fd143f5ccbdd1b14014ea59d7f9afe80aa823ae217f576383c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyODE0NGJjZWM2NjQwYTg4M2RiM2FmZTMwMDIxNWIwYzQ2NjVmMTI4ODQxZTM5NGFhYzI0MzY5NDE2MGIyNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTMzNmNiNDIzM2VmNWU1MzI3OTY1NWJlMGMyZTBmNzJmMzNlNzIyMzk0ZjVhODEzMzg2ODVjZmE5MWVhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkMDg4ZDc3YWMxODZmZjkxMGU5YWZkYzUxMWVmNTAxY2RhMWNkNjdlNjA4MDc4ZDBkMjBkNDU4NDU5MjMwN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2OThjY2ZlZDJlNzM2ZGQwMDk1NzE2MDQ4N2RiNmQ5NmNjMDBhMDE0OTMzZjJhMzQyM2I0MmI2ZGVkZTRhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8c68e97af6d34b39b5c734e04f3192a2",
+      "statement": "Tail reconciliation has deliberately different duplicate semantics from append: it compares as-served raw identity columns, replaces revised rows and appends novel timestamps in the fetched window, and leaves un-fetched dates untouched.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L334-L388",
+          "version": "repo-lines-v1:sha256:9814f4350950d2851211bdf393d6488afad43c98393680bd7ba0264d073918fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZGZhMWI3YzRkZWJlODNlZTY0NjIxNTI2ZDViNGU0NGRmODRiYjZmOTEzYTkxMWY3ZGE5YjUwYTNhN2MwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMTUyODQ2MTUxMWNkODMwMjUyMzFkYjQwNTVhZjVkNzI3YmQyODI4ZTg0ZThmMzM2MzAyY2EwZTA4NmNkOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMGI2NmUzZWUwYWRiNjA5ZjA2MDk5MTcyMjQ0OWJhNjY1MjY3ZjQ1Nzc2YzNjMGZjMDc0YzZiODA2NTE0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1YWVjYWYzMWIxNzFmMDQ4ZGM1ODQ0OWRmZWIyMjNmZGQ4ZGFjYTFjODdmZTJkZWUzOGExZWFmOGYwZjhkMmIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L51-L55",
+          "version": "repo-lines-v1:sha256:c1128be4ffee493522095b7ec2aa073afec5abdeb3c3041f13d76d8cd92951e5:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWYyN2I5ZjA1MjIzYjZmNjVlOWRkNDUxNTJkMzE3NjBmYWY1NDA0NGE4YTJkNWZjOTZhMDgwY2RkOWZlMGRiNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzgxOWNkNmNmODM4ZTY2MTc5ZWU2OTg2ODI0ZjFjYzQwZDI5ODg1ZjU0M2E5ZmFlYmUyZGFlZmU2ZWUwMTI5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjEwNmJlNzk5MTM2MmI2OTAzNzhlNzgzNjhmY2FjNDcxM2RjODhhNTFhMjk4NDdkMWU5Mjc5NDIwYWI1ZTQxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGY3ZTY4OWM2MmQ4NTczMDZmNDM3MWViMzg3Mjk1YzlhOWViODM0ZGM0MmFmMTU2ZDY4MDQ3OGExMGNhYTc0ZSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L248-L282",
+          "version": "repo-lines-v1:sha256:e5d1bbb47de649dab013275fcfe7537e48a649a86f9c7e300714ba0af0aec5fe:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzllNjc3NjdhMWIyMmFjZjk3YzQ2ZTgyMTIwNTFhY2I1N2Q0NmIyNmNjYjkxNTNjNDNiNDQwYzhhZGJmNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZGE4MTYwZDBlYWQ0MjM2M2E1MmVmZjI0ZmE3YjUyNTc4ZjJjNTBmZWM1MDM0OTA0ZGM4NmI5ZjVhNzUyODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYmQyYmY1ZTM3NjA0NGIxNjVjMzU3NjI1ZDNiNmU2YWIyZjJhZmI2Y2JlYmFkZDQ0NmM0NjVmOTdlZWM5MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMDY5NjZmZTRkMTY4ZTJkMDcyNmRiYzAxMTA3ZDViMTYzMTAzMjVlYTJiYjBjNzBjODMxZTU0YzFiYTdlMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_dc81822c4ee54d00ae093a497f597f74",
+      "statement": "Corporate-action JSON persistence uses a direct truncating write, so it is outside the Parquet store's lock-and-atomic-replace protocol.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/actions.py#L57-L84",
+          "version": "repo-lines-v1:sha256:6030fa10141f5e87ae5dcd439a1f5bfcacdbff091f5b88ed4c1e9122cd81ea38:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExNzM2MGViNGQ5NmFjZDlkYmY1NDk5M2MwMGE1ZTEwYjg4ODRmMzlmMTkzNTcxZDUzMjVmYmZkYzk2MzU1OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5NTU5NmYwNzZjNWM4MzUxMmVkNTk2NmU1YjFkNWE3OTE2OGIxOTBlY2MwZDk3NzRmZWRhZDlhNDQ3NDdhOGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzZGYyYWNmMDZlOGMzZjAzYzcxMzVjNmU4YWM1YTljYTU0MzJhYmUwNmE3NGFjYTBmZGQ5YTUzYTAwOGY5ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImNkZjcyYjBjZmUwZjk5OTE0ZDE3YjhlZGYwOWNlNzc0NmM1YzVlY2E4MTkwMmFhMjhjNTlkMTQ5ODBiMjBkZWMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L167-L199",
+          "version": "repo-lines-v1:sha256:ea22cc1f0905ce298ac5cc48d214c0a7a27446530d92110eddd2c1006b382f81:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NjdlYTcxNTM5ZmEwOTRhYmNlNmU3MWU3ZGFlYTllZjQyMTg5YmQ3ZmE5MjExOTZiN2VlYjFkMzY4YmQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkNWZmMzNiODMxNTAzYmJiODI4NDRjOWQzMmMyYmFhMWRmMTIwMDdmZWFiNzAxODQ4OTJhNGE4ODMzYWU0ODciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1OWUwNTA2Y2M0YWI3N2I0NjgwOGRjNDAwNzE4ZjdkMTI0ZDllMTI0MzZiODU4NmQ5ZTgxYzQ2YzMxMzdlOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIyNTc5ZDFkYjdjNTRmOGUyNGNiNDgwMzdiMDFlZWNhZWIxMjAxODlmZTJmNGJhYjU5ZGIzYTVkNjQ1MWZlYTYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L234-L263",
+          "version": "repo-lines-v1:sha256:2ffed8df859fe878c7bb39ea124d5060002c0720546f9ce0e2a5ddc6e9ca7e22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZDE5MGE3ODczNDg2OThkYjIyZmY0OTMxNjgwNmMxMWU1NWJiN2U5OGNlNjU5ZjkwY2Q5MjBhMTAxMWQ5NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTMzNmNiNDIzM2VmNWU1MzI3OTY1NWJlMGMyZTBmNzJmMzNlNzIyMzk0ZjVhODEzMzg2ODVjZmE5MWVhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYzEzNDgwOTY2NDA5NTFjOWVlM2M5MjhhN2I3MGJkNTAyMjRiNGI3ZjgyZDZjODg3OGIwNmM0ZjYyMWE1ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2OThjY2ZlZDJlNzM2ZGQwMDk1NzE2MDQ4N2RiNmQ5NmNjMDBhMDE0OTMzZjJhMzQyM2I0MmI2ZGVkZTRhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_07392464fe984af7bc21720c5d06885f",
+      "statement": "The `sync` CLI writes a summary document even when leg failures make the run red, while `status` is an offline local-store gate that returns nonzero only for alerts and can emit a schema-versioned JSON envelope with alert and warning totals.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/cli.py#L237-L262",
+          "version": "repo-lines-v1:sha256:98189483563cb908627f2d5fc4846eba847278b135517d5c0643db3c1a73ff8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0M2Q4OGU1N2M3ZDU2MTE4NGFjNWQ1ZjBlYzY1OWZjZDlmN2E5ZTJjZGRkMWZmODJhMzMyYjA5ZjAyYWQzYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNWIyOWRhNjZiODFkOWUzYjgzMzIwZWM3NDg4MmI5NWEzMzIzMmRiOTU3YjZjZDk0NWZiNDg4NTNhM2ZlNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkODIwNTFhMzM5NTJhMGQxN2QwMmY2NTE5ZDI2MGMxODMzOTY4MzQwOWJlOTRjMzQ5YWViNTAzMDU1ZDA4MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmOGU0ZTkzNTQ2ZDI5ZjI1ODZiZjJjMjkxMTI3ZjkxZTdmYTM2YmFmOTI4ZDVlN2UzZGI3MjgwNmJlODU3NDQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L265-L365",
+          "version": "repo-lines-v1:sha256:420fba287a6c068a63f4a37893791610d9dd9e2f76dbb88928749d33ae1fff0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxZThlMDkxZDUyNTlhYzhkZGE5YTIzZWUwYzdhZjhhZjFmNGE4ZmQzOTI3OGUzZmRlNWMxNjVlMjhiZDQwYmJlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3YzkwZmI2ZWUwMGQyNWVjMjJhNTg4MmIxOGY1ZTEzN2Q2NmJlNmU3MDQ4YjY3MmNjYTk3MzgxMmE5N2FjMGYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZTBjNGE3ZDBhYWMyOGY2ZGQ5OWU4MGQ0ZjY5MTk5ODY0MDQ2MjQ1ZjViYmI1MmJhZTRiYzRkMzY1NmE1MzQ1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3NzY5NjYzZTg0MmMzMTU1MzA4MjI4ZjNhMzY3NDJlNDYxMjJmYTA4ZWZkMjBlZTIwMzI3NDg1N2ZkZDUxNjk2In0"
+        },
+        {
+          "resource": "repo://src/jef/data/health.py#L1-L7",
+          "version": "repo-lines-v1:sha256:03d7f3cf764173b7ba4fabd3831cf8b6c8a74c5a60aa8b6d8c885c6a86ed3661:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGNkN2MyMmZiZjkyZWExZDVmODJhYzYwMWQ1NjNjMTY0ZGJiNGQ5MTAzY2ZkNGQ2NmE1Yzc5MTg0N2RmYWNhZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTE2NTVmZDAxNGRkMTA3ZmZmNjFiNjc2MDhjOGRiYWI2ZDM0OGQ0ZDgyZjk5NjU3NGRhNGY4NjM2M2FjNjQzYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODM4MTAyZmIzMTRkNzEzOGQ5ODUxZGMwZTAxODBmYjhjZDNjNjljOTliZjM2OGNmYjRhNjE2N2RhMDZhNTYyMCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_1d02032062d94700b712433df794b109",
+      "statement": "The daily chain restores the local store, runs sync and a single captured status evaluation, then runs external binning; it uploads the store and run artifacts only after all three stages succeed.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L106-L181",
+          "version": "repo-lines-v1:sha256:a3477d9fc6244534bf9b6e27980ef735dfa9dd50dc4e098880be07f397e7eb78:eyJzZWxlY3RlZExpbmVDb3VudCI6NzYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViZjkwYzIwM2NjYjdmZWMyYmUwMDkyNzE5MjdlZDU4NmQ2MWMxMmVjMzI4MmZiNTYwZjM4MDBjMDU4MGQyOGUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0OGE3M2Y4NmNmOGMzNTMwMDFmNDE1MzJhYzgyNjhjNGNlMDc2YTU5YmUxMmJmYTg4NjliYjU3ZDQ3YmMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY2YzZkZDdhYjk3MDJmMTlkODE0Y2ZmMmNjNTRkYmFhZmViMThkMDQ3ZWI4MDMxYmFkZDM1MGZhODFkN2E3NjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L70-L87",
+          "version": "repo-lines-v1:sha256:d2f2f20d1f0588f4e5e2b2c4350f04ae5acbbdd793417bb62ff580535bae7762:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWNlOGYzZDk5ZjkwMDE4N2M0OTZhMjBkYjU1NmQ1MWIxMGEwZDllNmMwYmY0YjU0MGFjYjZhM2E3OTgwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZjE2OGI5MWU4MTgwZjgxZDhlNjRiZDY1OGZmMWEyOWY1OGVhNzJmMWMwNmVhYjczMWIyOGE5NjE5YmE5M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3OGUwZWVlMmVjOGYzNjdiOTVkMDFlNzRjYzhjOWRkYjdjZWNiYTE5NDFmODQ4YmNhM2QyNTQxNDM1NWM3YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmOWJjYjkzYmE4NDAyZDBiYmFkYjJhYjJiN2FiYjlkYTFjMzY4MGUxODg1YmY0ZTIxZmM0ZTczY2JhZTVjZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_62ddd6bafc6e4e6ab31b69aecf83481c",
+      "statement": "The supplied event and dashboard helpers are best-effort telemetry: ledger emit/put failures return success, and dashboard publishing runs from an EXIT trap for both green and red runs without changing the operational exit code.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/dashboard.sh#L1-L21",
+          "version": "repo-lines-v1:sha256:36aa759d86e5dda42e157e99b7d59c5c42884d20757acbc4e8d78fbc9e7b66da:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkOTVmYzA0YTgwYzk1MmY0OWNlNDE4ODYyN2M1M2IwZmJlOGM0NDA0MWI5NTJkNTkyYWNkMWRlOTk4NjE0NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0NjNjODQyOGIxNTJlNThjNGM2ZmYxZGJmYTE5YjE0OGQ0NjBiMGEyYmYyNGJhMGI2NzMwZjQzMzM4MzVhMDMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJjMmE0NGE4MzgxZWI1NTY1ZmZhZmM2NDY4YTIxNjZlNjZjYWZmN2ZhMzU1YTIxMzgwZTE3ODBjYzU2MWZhYWYifQ"
+        },
+        {
+          "resource": "repo://deploy/dashboard.sh#L25-L74",
+          "version": "repo-lines-v1:sha256:48988637594e614ca938ed94f5b4c29b3c5984e3bd13e1c39ce23865b94b681f:eyJzZWxlY3RlZExpbmVDb3VudCI6NTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3OTA3NjViMWFhOTNmNWVhMzUwMTEzNzYzM2RhMDlhOGNjZDMxNDY4Y2IzNWQ0ZTQ3ZTQzZTBhODA4ZDE5ZjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJjMmE0NGE4MzgxZWI1NTY1ZmZhZmM2NDY4YTIxNjZlNjZjYWZmN2ZhMzU1YTIxMzgwZTE3ODBjYzU2MWZhYWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        },
+        {
+          "resource": "repo://deploy/events.sh#L1-L21",
+          "version": "repo-lines-v1:sha256:1ff1917ff46e3c1d9b18c94002a90e5a42a89c24f3d1b87c062af8278e327f4a:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkOTVmYzA0YTgwYzk1MmY0OWNlNDE4ODYyN2M1M2IwZmJlOGM0NDA0MWI5NTJkNTkyYWNkMWRlOTk4NjE0NjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwM2VjMWRjOWQ5MjI5MWJhMmYwNmE2YzU0NDZiYWY3NGRlNDg1ZjhiNTQ2MjZiZTA2NGZiYTQwODUzYTZjYmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImE0NThiZjI4YmYyZTk1YWNmOWY2MzM4YTE2Mzg2MmJlNDBiYzI3Yjg1MTkwNWQ1ZjUwYWY2MWM2ZTNkNmYzNTIifQ"
+        },
+        {
+          "resource": "repo://deploy/events.sh#L34-L63",
+          "version": "repo-lines-v1:sha256:d40d1fefec87ed875d000e1c1a07e6718926da7615743a3f81dfa2ea3bd5355a:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFkM2I1MjJhNGI3MDkyMzA0MWM2NmY1Nzc3ZWEwYjQ5YWJkZmExZmU5ODJlMWJhYjU3MzFlYzhhODY1YjIzYTUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFiMTMyZDQxZDExNDQxMzVmNTI3NTJkM2IxNDUyOGRkZTk3ZmNmNjBhYzdjM2Q5OTBlZTIzNzhlZjAwNDJlZTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjVlNmIxNTMzY2ZmNTBiZWRiMmE5ZjJmNDQ2MDQ3YjM3OGFmM2QyMTE1ZmM1ZGQ3ZWExNDk0NzU5YWVlNGVkMzgifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T09:59:03.506Z"
+  }
+}

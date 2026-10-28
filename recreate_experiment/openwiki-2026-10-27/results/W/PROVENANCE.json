@@ -1,0 +1,16 @@
+{
+ "openwiki_version": "0.7.2",
+ "provider": "openai",
+ "model": "gpt-5.6-terra",
+ "reasoning_effort": "xhigh",
+ "subject_tree_sha256": "436624d78bd703be6b6be9910678a647ca787982e63aa0a243de9c23ca6d3f68",
+ "subject_git_head": "02c5e0a2c68ec0b5c8a0aa91fd6d9fdf1a78a356",
+ "started_utc": "2026-10-28T09:58:59Z",
+ "ended_utc": "2026-10-28T10:23:14Z",
+ "duration_s": 1455,
+ "exit_code": 0,
+ "pages": 16,
+ "claim_sidecars": 9,
+ "page_concurrency": 1,
+ "command": "openwiki --print --init </dev/null"
+}

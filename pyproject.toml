@@ -38,7 +38,9 @@ dependencies = []
 
 [project.optional-dependencies]
 yaml = ["PyYAML>=6"]
-test = ["pytest>=7", "pytest-bdd>=7"]
+# pytest 9.2.0 (2026-10-27) removed FixtureManager._arg2fixturedefs, which
+# pytest-bdd 9.0.0 still calls; lift the cap once pytest-bdd supports it.
+test = ["pytest>=7,<9.2", "pytest-bdd>=7"]
 
 [project.scripts]
 pumllint = "pumllint.cli:main"

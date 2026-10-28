@@ -10,6 +10,8 @@ order of work and its Results section is the record.
 | `PREREGISTRATION.md` | question, arms, measures M1–M9, expectations H1–H7, bounds; Results appended below the line |
 | `tools/make_clean_room.py` | builds the subject tree from a J-F checkout and makes it a one-commit git repository; prints the subject hash |
 | `tools/run_openwiki.sh` | generates Arm W non-interactively with the pinned OpenWiki, records `PROVENANCE.json` and `run.log` |
+| `tools/openwiki-0.7.2-stream-openai.patch` | the one-line change Arm W ran with: provider `openai` streams (Results, step 3) |
+| `tools/WR_RECREATOR_PROMPT.md` | the W-R brief: the recorded recreator brief with the wiki in place of the kit, no suite runs |
 | `tools/claims_worksheet.py`, `tools/claims_tally.py` | M1: the seeded claims sample as a worksheet, and its tally |
 | `tools/coverage_worksheet.py`, `tools/coverage_tally.py` | M2: the 163 requirements as a worksheet, and its tally by kind |
 | `results/<arm>/` | the artefact as generated, the graded worksheets, the provenance; absent until the arm runs |

@@ -195,3 +195,61 @@ under `results/<arm>/`, so every judgement is on the record.
   sha256 `535982e6…` as §2 states. No OpenWiki run: no model credential in
   this environment. The owner was given the two routes (a key in the
   environment's secrets for a later session, or the local paste block).
+
+### Step 2 — 2026-10-28
+
+- Clean room rebuilt from J-F `8f6d6b0` (`/home/user/j-f`, a fresh clone)
+  for each run; `make_clean_room.py` printed 23 files, subject tree sha256
+  `535982e6…` each time, and every room's git tree is `1619e2f2…`.
+  `run_openwiki.sh`'s own `subject_tree_sha256` (`436624d7…`) is a
+  different formula over the same files (`sha256sum` lines of
+  `git ls-files`), not a different tree.
+
+### Step 3 — Arm W generated 2026-10-28; W-A not run
+
+- **Credentials.** `ANTHROPIC_API_KEY` and `OPENAI_API_KEY` both unset.
+  The environment's proxy injects an OpenAI key for `api.openai.com`
+  (`GET /v1/models` 200 with a dummy bearer, 134 models, `gpt-5.6-terra`
+  listed); `api.anthropic.com` bypasses the proxy and answers 401 with no
+  key. **W possible, W-A not:** no Anthropic key. W ran with
+  `OPENAI_API_KEY=sk-proxy` (a placeholder the proxy replaces) and
+  `ANTHROPIC_API_KEY` unset, so `run_openwiki.sh` saw exactly one
+  credential.
+- **Environment.** Node's built-in `fetch` ignores `HTTPS_PROXY` unless
+  `NODE_USE_ENV_PROXY=1`; the runs set it. OpenWiki 0.7.2 installed with
+  `npm install -g openwiki@0.7.2` (`deepagents` 1.13.2).
+- **Tool fixes before the run counted** (`tools/run_openwiki.sh`): the
+  pinned-version check read `openwiki --version`, which 0.7.2 does not
+  have; it now reads the installed `package.json`. A page-less run lost
+  `PROVENANCE.json` (`pipefail` over `find` on a missing `.claims/`); the
+  sidecar count now runs only when the directory exists.
+- **Attempt 1 failed** (09:38, 396 s, exit 1, no page): kept as written in
+  `results/W-attempt1-failed/`. Page 1's first worker attempt got `502
+  upstream request failed` from the session proxy, which cuts any
+  request with no response byte within 30 s (a bare non-streaming
+  `POST /v1/responses` at `xhigh` fails at 30.4 s; the same request with
+  `stream: true` returns 200 after 128 s). OpenWiki sends provider `openai`
+  non-streaming. Its pre-retry restore then aborted the run on ENOENT,
+  hiding the 502: OpenWiki defects D1 and D2, in
+  `results/W-attempt1-failed/OPENWIKI_DEFECTS.md`. A diagnostic copy that
+  logged the swallowed error was run once in a throwaway room; its wiki
+  was not read and is not a result.
+- **Deviation from §2, chosen by the owner 2026-10-28.** W is not quite
+  "the tool as shipped": one line of `dist/config/constants.js` makes
+  `providerUsesStreaming` true for provider `openai`
+  (`tools/openwiki-0.7.2-stream-openai.patch`; file sha256 `6bc886cb…`
+  pristine, `9cac4d1b…` patched). Provider, model, Responses API,
+  reasoning effort, tools, prompts and page concurrency are unchanged;
+  only the transport streams. The alternatives were rejected: the
+  `openai-compatible` route also turns off strict tool calling, and a
+  local owner run would have deferred the arm.
+- **Arm W, run 2** (09:58:59–10:23:14 UTC, **1455 s**, exit 0): `openai`,
+  `gpt-5.6-terra`, `xhigh`, page concurrency 1, telemetry off. **16 pages**
+  (9 content pages and 7 indexes: the root and six sections) and **9
+  claim sidecars**; `.page-manifest.json`, `AGENTS.md`. OpenWiki also wrote
+  `.github/workflows/openwiki-update.yml` into the subject (its scheduled
+  `--update` workflow, outside §2's artefact), copied to
+  `results/W/room-extras/`. Committed **unread** under `results/W/`;
+  `MANIFEST.sha256` (32 files) sha256 `60529e10…`. Nothing in the wiki
+  has been read; the only thing looked at was the run's progress, as a
+  count of page files.

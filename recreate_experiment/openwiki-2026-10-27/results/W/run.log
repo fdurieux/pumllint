@@ -1,0 +1,17 @@
+openwiki 0.7.2 · provider openai · model gpt-5.6-terra · effort xhigh · subject tree 436624d78bd703be6b6be9910678a647ca787982e63aa0a243de9c23ca6d3f68
+(node:2241) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Ingesting from LangSmith…
+LangSmith is not configured for this repository.
+Planning repository wiki
+Documenting page 1 of 9 · /openwiki/architecture/data-layer-boundaries.md
+Documenting page 2 of 9 · /openwiki/concepts/eod-data-model-and-adjustment.md
+Documenting page 3 of 9 · /openwiki/concepts/universe-and-classification.md
+Documenting page 4 of 9 · /openwiki/integrations/market-data-collectors.md
+Documenting page 5 of 9 · /openwiki/operations/daily-run-and-publication.md
+Documenting page 6 of 9 · /openwiki/operations/store-health-and-alerts.md
+Documenting page 7 of 9 · /openwiki/testing/verification-and-replay-seams.md
+Documenting page 8 of 9 · /openwiki/workflows/universe-sync-and-reconciliation.md
+Documenting page 9 of 9 · /openwiki/quickstart.md
+Finalizing repository wiki
+exit 0 after 1455 s

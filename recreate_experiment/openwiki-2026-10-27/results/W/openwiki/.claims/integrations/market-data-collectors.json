@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:0687810315964d77e801697e79254880ed07f3bb980e6847602fee3bbe6d21f3",
+  "claims": [
+    {
+      "id": "claim_5ce753fa55294aa1a4d9f26e0b513236",
+      "statement": "All HTTP collectors use the `request(method, url, params) -> TransportResponse` seam, while `BaseCollector` owns rate limiting and retry behavior; the real requests-backed transport imports its dependency only on construction, so the same collection policy can wrap live, replay, or recording traffic.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L1-L14",
+          "version": "repo-lines-v1:sha256:243dd1fc3ccdd805bda1b151135b0ea717e2b441bdfa328596620f977c8eb6f7:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkwYmI5ZTM2Y2MzNDFlMWVhMzY5NjZhYjVhNjE1ZTMwZWI0Y2VlYTU1NGYyMjU1M2I5ZjAwMzY1MzcyMTgyZDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxNTBjMWFhNTgwODlkYjYzYTU5YjAwYzg1MDE4ZWRmOTI0MGY4YTNlODI4ZTM3YmFlZmIxZGRkYWQxNDQ0NTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2ODg4YjA3ODQxYjQyZTJiOTA4OWE4Nzk0NmI1YmY0NDBhY2EzMDM1YjgxODk4NzkyYzlhNzIzMzhkYmRkYTcifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L121-L144",
+          "version": "repo-lines-v1:sha256:b9a6659e66b6ef810ac06e6f7a7ceab886488e94d8963082750134f6fd1bb003:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIxNmI2YmFhNmQ5ZTk2MTdjMmYxZmI1YTlmNTZmMDA3YWE3MzVjMzYxNzgzZjU4OTRkMzc4NTU1MTVkODJmMDUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZlYTAzZmVhNGE3ZTZjYWE5NGU5ZmQwMDM2NWY0NmQxMWRmOWIzMzAyMjRkM2JmOTc3Y2U2NTcyMjdmYmU3N2QiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwOWMwY2ZlMTgwZDg0NmM5ZDY5MjA5ZjYxODNiM2RkZTIwZTRhMTkwMTE2MzU2NzAwYTliZGJjMzhkN2M4Y2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImZhYjQ1YzAyNmJiNWU4ODIxOTk2Y2JhNTVhZWE5M2RhNWE2ZmYwZWZhYmY5OTI2MTY2NjQ1NTIxZjkwMzcxN2IifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L225-L279",
+          "version": "repo-lines-v1:sha256:d69d3a3b9f2812e3baf66d1f9d120dde674426307d93dd3d7cffe4e4eb056227:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc0ZThiNmMzZmFkYjNmOGIwYzFkMjQzNTNhZmI4YzU0Nzg1ZWM1NmFlNjhjMTllY2JmYTY5YzdkZWQwMDhmMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MGYwZjQ0MmQxYzIwMTk2ZTdkMWNmNjMxNTRlMjcxNmFmMDExODZhMTkxNWI4MTczNzI0OGM3MDViNzc3ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk0MDViZTA3YzUyMjllM2U0NTJiZmQxNGNjNjNlMjNlMDgyYTYzZjM2OWMxNWFhNDM5MGZkZTgxN2Y3NjM4MDYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MjE0OGQ0ZWE5MzA2MTdhOGUzMDhlYTFiNDliYzI5MWU0OTY4ZGUzZjJiMDg1NzdmNjA3MDcxZWM3NGE0NzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bc261bb8b18e47a6a1b53986d325f187",
+      "statement": "`RateLimiter` enforces two independent per-instance limits: a sliding 60-second window and a UTC-day budget, defaulting to 1000 requests per minute and 100,000 per day; it resets the daily counter on a new UTC date and raises `DailyBudgetExhausted` rather than lending quota across days.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L86-L118",
+          "version": "repo-lines-v1:sha256:40b0d60d48d6e53524a2a05e336a941be97036461b0bd9fd2cd00bee968eb76f:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZjNiNTE5NTVhZmY5MjBkMjIwNTc0YjRmNDUzOWZmNzIxZTg1MWY3ODFmMWRlZTk1NTUwYWZjYzc5Nzk1NGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0NmI4MGY3YTRiOTZjZGU1ZTg5NDRmMTJlMDRkYzlkYWQwMDk5MWNlNGQ4YzcwN2NmMDhiMDg4MWYxZDkwMjgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjhjNTI0ZGY1NjJiMGU3Y2MxZjgzNmM3MjJmNWI1MGY5NzRmNTRhYTA2ODMyMWRlZTM1NWM4ZTNlYmVhYzMwMTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkzNjBlMTFkMTYyYjNkOTZmMjk5YTRmYjQ3NDgwYWYzMjkxZWQ5YTE0ZGE4MGM2NjNlNjgzN2U3ODhhYWQzZWQifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0af7a26505ab440ab1745eaf999ae920",
+      "statement": "`BaseCollector.get_json()` acquires a rate slot for every attempt, retries retryable network failures and HTTP 429/5xx through the configured exponential backoff, and otherwise raises a redacted `CollectorError` for terminal HTTP responses or invalid JSON.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L235-L279",
+          "version": "repo-lines-v1:sha256:0c0420cbadaa75067e6f39ef2bbbe729474d9576a4ea8e9dda379879a25a6874:eyJzZWxlY3RlZExpbmVDb3VudCI6NDUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4N2Y0YTA2ZjY4ZmM3ZmVhMGNlZWI5MDlmMjE3YmYzYTcyNzJlZmNjN2NlOGVjMzY2NGY5ZGRmNzVlZTcwYzQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MGYwZjQ0MmQxYzIwMTk2ZTdkMWNmNjMxNTRlMjcxNmFmMDExODZhMTkxNWI4MTczNzI0OGM3MDViNzc3ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNlNGE1M2ExN2FhYTJmNDcyOWQwMzAwNjQ5Y2M3ZjgzY2FmNmFhZGE1Y2IxNWVhMDg1OWM1ODk0MTlkM2UzNzMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MjE0OGQ0ZWE5MzA2MTdhOGUzMDhlYTFiNDliYzI5MWU0OTY4ZGUzZjJiMDg1NzdmNjA3MDcxZWM3NGE0NzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_2037fbbea4ca4777ae9162c978183f2b",
+      "statement": "The shared pagination helper collects ascending cursor pages until `next_cursor` is `None` and raises at its 100-page default cap instead of returning truncated history.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L281-L294",
+          "version": "repo-lines-v1:sha256:80f16e53f1a3de03b0fcefab37c968047df6e1d9cb597cd1f17b64f20421ae4e:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkY2Q4YWE2MjFmNGFkMDhlMTk1NGY2NWQwOGI4NjhlOTk2YzU1MjM1NGQwOWE1NmZmNTIyMzNlNjgxNjMwMmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZlZjJhMzE4ZjEzNGUzMmMzZDAzMzg5MDhmYmNlZmNlYjJjZjQ2NGJlNzZlYzU2MDljMzVjY2QyNDJjZmJhNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU0ODkzYmZmZTMyZjMwNWYyMjcyOGUwZWI2YTkxZTc3MWUxMWQ2ODNmZDNmNDI1NzhhOTQ0OTg3NjFmMDEwOTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_39ee443acc444ed5a57e1cc77386a5fb",
+      "statement": "EODHD construction requires an explicit `api_key` or `EODHD_API_KEY` before creating the parent transport, sends the key only as the `api_token` request parameter, and registers that key for collector error redaction.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L268-L279",
+          "version": "repo-lines-v1:sha256:1ceceac6973ea82aea63cd50b88f497c7dc2426346eb2a02d1e61340c10f2da5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ3NGMyMDZkOWRmMzIwNGRhOTk1ODY5ZjAyNzdjOTAzNjg0MmI3NzMxOTQxOGFmZjI4MWE4M2YyOTYxZjk1ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1MGYwZjQ0MmQxYzIwMTk2ZTdkMWNmNjMxNTRlMjcxNmFmMDExODZhMTkxNWI4MTczNzI0OGM3MDViNzc3ZTIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZWRhOGNiMmMzODFhNjgzNjBmMDA0NTlmM2M4NGRhMTQ2ZGI0M2U2YjI3NmUyNzllZGM3NzZmZjkwN2VkMzAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjA1MjE0OGQ0ZWE5MzA2MTdhOGUzMDhlYTFiNDliYzI5MWU0OTY4ZGUzZjJiMDg1NzdmNjA3MDcxZWM3NGE0NzYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L58-L75",
+          "version": "repo-lines-v1:sha256:d0b4d2ed5ffcbba43243738ba3f345e8663844ba47d849c85433e6643e5f01b9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkNWY3ZGEwODBmMDRiN2FkOTE0Nzg0NjE3ODczMzYwZWUwZjEwMWY0MmVlNjc3YmI4ODAzOGUzNTRiOWQwN2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMTExOGY4NzMxNGYyMmJjNTMwN2RmNTQ0MDY3OTdkNzMzNzlhZjc3ZDFkMjdkY2NmNzFlOTFiNzM5MWY3OTkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY4MzlhYTJiNTI0ZGFhMDNiOTJiOTZlNzEyZjQ1MzQ1ODYxNDhkOTA5OTlkZDRjYzk3NjE1YmI3MTI0MDM1MWUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L72-L89",
+          "version": "repo-lines-v1:sha256:8640d5e7de42abd47dfed20ad11c78faadbb33786119c0cf89a7e65510a0f576:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2Zjk5YmMxYzZjMmIyZGQxODNiOThlNDhiNTIxZjA3Y2E5MGVhMDEyZTQxOWU2Yjk1ZmFiNGVkYzAxZGFiZWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkODI1ZTBjYTJiYzMwYjI2M2I2MzBlNmEyMGQzMjg5NjViYmFkZmQyODIzNDI4YWVkODhjMTg0ZjFkNTQ3OTAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxNjBkNTY1MDZjNWIzNDVhOTAxZDUzMWU0OTA2ZmNmNTMzMzgzZjU3YTAyMzQwNWE1ZWZmM2MzZjgyOGViZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjcwNjMwZjhlZjU0YjEwNTMyMGQ2NjlhNmI1NmQzYjlkYjhhNGFkMzYzZmU4Y2VjYzAyNjY1NTVhM2MwMTZlMWUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_4963c6f0f3a44dfeb436e8e02f0494f8",
+      "statement": "Fixture request identities exclude `api_token`; `ReplayTransport` records public calls and fails on an unknown fixture, while `RecordingTransport` writes a public request plus parsed JSON response and refuses to write when its serialized fixture contains a caller-supplied secret.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L147-L179",
+          "version": "repo-lines-v1:sha256:2269219abc60d9117610f7fb3d74ae3bed6cfa3a8d7b3f052879da6724a73cb2:eyJzZWxlY3RlZExpbmVDb3VudCI6MzMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU4ODQ2MjYzNWE3MzNmYzQxNzczY2I4MmVjZmQxOWM2ZTU1MDg1MDhhZGJiYjg5NDRiZTM3MzIyZTYyYzFlYjciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjU5MDlhNTNhNjE4ZDAyOGUxZDMwMDBjMGE3YWJjZWVjYmU1ZmIzN2Y0ZTUxMWVmZTQ2NjQzZmFkNmU2Njg3MmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ2ZTIyYWE5ZjcwMWU0OTQwODU5ZjY3MzNlMGZiMWY0NTdlNjBhNTg5MjgyY2YyN2RkM2FiZjQ3MDQwYTEyM2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijk0YjhiZTZmMzRiYWM2ZTJjMDc3MTNmNjc1ZWVkZTk0YmJjZjViYmUxMjUyZmEwYTU3NzZiZjNjMDg2NGM5NGYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L185-L222",
+          "version": "repo-lines-v1:sha256:4d49bbb102e79d53c3d9b2652871553268a4973e892bdeb6bc8f03ebb4b748cb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZWJhYjQwMTc4OGEwYjMxOWYxNzAxYzA3M2UwNmIyNTYwZTE5MWVmYWZmNTcwZDAyYjkwZTNlMzUxZGNkMTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRjMWVjOWI4ZTBjNTVhYTM4YmIzODFjZGFkMDIwMDBhNmNmOTBkYTI3ZTA2ZmE0OTViZjcyNjIyNDFjMGZjNmMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZhMjhmMzA0MGRmYmViNjhjYzk0NjA4NDdiODVkYjU5ZDNlMGFkNzA5Nzk5NzFhNzM0YzQ5NWEyMTBiOWViN2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjFjNzhjMDE1YTJjNjQ2ZjUzNDA1MDE0NmE1M2IzMDQ3YTNjNzMwYjYzZWI5YmJkMzA3ZDQ4MmEwY2RjMmU1MWQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/base.py#L65-L83",
+          "version": "repo-lines-v1:sha256:1eef7a33ee3989499d72c27b6fa9bed23b4d0b72bb8438ddee070693e4e4cc03:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExZmZkNmJlNTE2YTU1OWNiMjE5ZjAwY2EzZmM3YWM5OWY0MmFjYTY1NDRlOWIzNzgxNmMxN2RiM2NhM2QxYWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRjYjBiYzc5ODA4MmRhZDgxOGY3YjI2NDQ5NmJjMDc5MTBhODAxNTI3M2YzODRkMzgzNTRjZGYzNWFjM2M2NDQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyYjUyN2NkZTI1NTQ1ZWU5YTc3ODEwMDYzOWQ4ZWY2ZjI2NWNhZWQxYWYyYTMzNGUyY2IyMTIyMzI0M2VkNDciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjhkY2U0OTc5ZDhjMzM4N2ZmNjVmYTcyMTIwNTU3NjYyNTY3NTFhNGM4MTgxZTlmZDJiMWU3ZGFjZTRkZDViMWEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_26eef83d21584431bf185f64671e79b0",
+      "statement": "EODHD symbol normalization preserves dotted symbols, defaults bare tickers to `.US`, maps fiat and recognized crypto pairs to FOREX or CC namespaces, and rejects pairs whose exchange cannot be inferred.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L27-L61",
+          "version": "repo-lines-v1:sha256:ab960006b2fb728715f58897db7a2a39e15b38d8893983036d8ec3d5cd70ef2b:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA1MjQyMzc4ZDdmNTIyNWQyMjU1Y2FhYzhmMjUxNTI3N2Q0NTc0ZDJiMTVhYmU1MGJjOGFiZTY4MTNiMWFmNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ2M2Q5NjA2M2FiYzJkN2QyMTVkNDE2NGNkN2E2OWUwNzhjZDhjMjllODNlZDM2MjliNmE1MzVhMjMxY2MyZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBhZmJiM2FjNmM5ZmY4ODI0ZmE1YmY1NmFjOTUyYWVkYjRhYjUwNGJmNjY1NWJmZWJhYzExZmJiNjc3OGQxZTgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjlkM2JiOWJkYzQ1YTY3NmY4ZjVmYTNlZGMwYTFiMmI3NjE3YWZlZDY2MzFkYzE0MTcwYzI3NzE5MWI0MzY2ODkifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f5207a6828bd435fbab04f1f59fcbdfa",
+      "statement": "The EODHD adapter fetches ascending date-bounded EOD rows, drops non-positive closes, deduplicates same-day rows with first-wins semantics, and exposes separately sorted split events and dividend entries.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L91-L136",
+          "version": "repo-lines-v1:sha256:256a022f02e84bb63e315b0a2bbdfb7cda4a95526528a69e592886dd93107f90:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUyMGYwMTIyNzkyYzFjMmI1M2QzNjM2NzE5MDM2N2U0ZTlkZjFlMWNlOGEzMzNiZGRkZjk0MTJjM2ZmN2ZiMjYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3OTk2NjBkMmUzM2FlNTQzM2E0ZjRiNWMyZTM5MzAzZWE1ZjRjYzBlOGI3ZjBkMWQ4MmE3NDJjOTQ2ZDU2ODAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImFlMTQ5YzY4YWJiMjc5NjFhYmFhZjBiNWQyODA1NjhkMGNjZjdlN2EzMDRlODQ2OGQxMzNlOTg4MzJlMDQ5OTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMyMDU1NzgyMGM5ZDJmZWUyZTI3NjVkZDI4ZTQwZDY2ZTllYzQ1YTJkNDVlNzgzMmU3NGQyMTZiYWEwODkzZjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_8f639e8879ad43d2936590a241c3e0df",
+      "statement": "EODHD declares its served volume split-adjusted even though raw-basis prices are stored as raw; for a raw-basis ingest, the store divides served volume by the cumulative split factor to create `volume_raw` and then derives main fields from raw values and splits.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L64-L70",
+          "version": "repo-lines-v1:sha256:f69849fe7dc4cf9163cea2943575cce8ecb4e5ebf4ecb4631d0369641df18389:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdhMDE0OGJhOTc4YjQwMDlkMzQwODRlMGM5MmI2OTcwZGQ2ZGQzMmJjZGRlYWU4OTBiMGU4Mjc2MWNmMTExZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTNhNWM1YWI1MGQyYWNhMWRiYTZjMWQ2Y2UzZmFlM2RiYmNhMDEzNzkxOWI4MDM4NmFkMzQ3NjAzN2NlOGI1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGYyMDg5N2I2NWZjYzQ1ZTc3YzJmZjMyNzExZGFjZWZkOTg4NGFmOGMzYTRlZTQ2MDZjM2EyZTIxY2M3MGU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODlhZjUzNTE2OTM4OGYxMzgzYWNhM2U5NWY3MDYyZDYwYmZhNmU2ZGU2OTQ0Y2I0NjZmNDk1ZjQ4NzI3ODJhOCJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L265-L332",
+          "version": "repo-lines-v1:sha256:50d0aaa0180a0cd56b5c8dddda3dae5019cea8bea8ac2a885177399ff73833b2:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3Mzc3NWZkMWY2N2ZlMWFjODllZGQ5M2I1YTkwNTg2ZjljZGQyMmRlNjM3Yjc1ZTQ1MTI0NGMxNTY5ZTcwZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzYjE1Nzg0YjBkNjM5MzA5MDZlNTI3MWY1NWVhM2JiNmI5MDM1NWYzYjNhN2MzODllNzEzMTU2N2U2NjE5YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3YjEyMzNmNTg4YjQwMmZjY2VjY2E2MjdmOTk5YTAyYWE4NDFlYTZlYWEzZjExN2NjZDQxYTVhYTRjNzQ2MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOGFlMGI5Nzk4YzE1NTNmMjE2MGFmMmQ4N2RhM2ZkZGNjNTYwZmEyNTA5ZTE1YTVlMjQ3MjI1YWI3YzEwOTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bed5122e956d4aaab50d2b0d689c3bc2",
+      "statement": "Sync derives an EODHD leg's price basis from its declared asset type, synchronizes actions before raw-basis EODHD bars, reconciles bars with the collector's declared volume basis, and reapplies adjustment only for raw-basis series.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L176-L282",
+          "version": "repo-lines-v1:sha256:35d6a736caab964c7e76972b5e00886ce9638a5ef15717c3838aa725bd3bcf49:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI3NmNjNDUwNTk3Mjk4Y2FlNzY1OTdiZWJmMDMxY2RiOWNmYWYxYWM3YWUzMWUzNDI5NmIwZGZkOGY1Zjk5YjVjIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJlOWRhODE2MGQwZWFkNDIzNjNhNTJlZmYyNGZhN2I1MjU3OGYyYzUwZmVjNTAzNDkwNGRjODZiOWY1YTc1MjgxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIxZjQ2MzE3MzAyMmY0MWYyNDNmNzFiNGFkMzdmMzNhMWY5YTQwN2Q1ZDVkODA3MzAxN2QzMDc0ZDU5NjI4MWM2IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiJhZDA2OTY2ZmU0ZDE2OGUyZDA3MjZkYmMwMTEwN2Q1YjE2MzEwMzI1ZWEyYmIwYzcwYzgzMWU1NGMxYmE3ZTEyIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_6383a9dd47b14191867213233be7602f",
+      "statement": "Binance is a public daily-kline collector that converts UTC open timestamps and kline arrays into common bar dictionaries, paginates forward from the last open time plus one day, and deduplicates and sorts the resulting dates.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/binance.py#L1-L18",
+          "version": "repo-lines-v1:sha256:1b15d4d5b626249e828db116cf1f78212fc9f8bbed023e704daa33854188515d:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwNTM4NmZlMTJjMzNlNWJlODc0OWFlMmU0ZDUzZTdmMjJlNzk0YWVhNDE4NzAzMjQ5NDc4MDNiZmU2ODJhNGQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEzMDNlY2RkNGE0ZDEwZjE5YzczZmQ0MmZkMTI0MzdmZDMzNTRhODI2ODE2MDVkYTUyNTVhOTdhMzkwNjhkYmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBjMjRkZGFkMDYwOGE3N2Y4ZGI5MzJiOGE5YTkwNTQ0MGNiM2ZmMTUyMzBkNmY4NWI1MzYxZDMyNmMzMGIyYmIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/collectors/binance.py#L32-L82",
+          "version": "repo-lines-v1:sha256:197fdbea59f1784b9d894a4dec45e6ac3a2c6dcc417cf1b2207904b7dd02cc21:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIyNmRiYWIzZTI2NGJlOTVhNTNiOWNhZTBjNDE4MzRiMjljMDE2ZjU5ZjE1NjgyY2NjYTZkZDkzNTZjMzAzYjEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzODE0Y2JkNjY2ZDk5YjZkODM0NGZiNWMzZTY5ZWVkOWQzM2YxYzg4ZjRiYmQ5MDFiZDIxMThkOTY4MjJmNmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA0MjZkYjZiMjk0NzVmYzdjODUxY2IwY2RlMWYzODlmNzQ2MjkzZDMxMmRkZjE4NzdmMGQ0NTAwOGEwZGNmNzciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6f1e33e82afa44c19075af0450c269b8",
+      "statement": "Binance reports base-asset volume while the configured EODHD and Yahoo sources use notional volume; each source can be internally consistent, but cross-source volume comparison is unit-incomparable.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/binance.py#L3-L8",
+          "version": "repo-lines-v1:sha256:df0bf1464668eb998f08753d038e673687f9013227906decb325b701341a4044:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGVkODc0MTlmMDRlODg5NjU1Y2ZkM2E4YWI1NDIyMDAwMGVkNDU0NjA2NDUxNmZiMzUxOWIzOTcwZDEzZjM4ZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiM2VlZGY1MWFiYzhiZWJhM2IxNTc4NzdhMzNhZDk4M2IwMjQ4MDUzZDNlYTVmYWUzNWJlNzBlY2JhNzQ2NzE1OSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjIsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMzZjNjNjM2VkYmVmZjI1ZmM5ZTJmNzgwZDAzYzIwNGY0NmQxZjAwM2U3MjA3OThjYWY5ZDNkNjFkZmQ0MzZlNSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMTBhNTgyN2EzMTVjZmNmY2QzMGMwMDlkMDY0OTU0ZmE5YTRjY2NjOWIzYjFhNmUxMmNhZDgzNDMyZjg5ODQ4OCJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.toml#L22-L33",
+          "version": "repo-lines-v1:sha256:0d0be33513d7fdd07913b21f0424e3babc711658af651f4406f8047feabacaa2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY1YmY5NWZiZDJiOTVjZGY0ODY0ZWNmYzA5YzRiMDg3ZjJlNzFkZDVkZmNmOWM3YmNmYWMwNDY4OTc0YzZjNTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjBhZGVhYWViM2IxZDQyYzE4YTdiNzA2MzgzMmZmM2M5ZDNjYTQzNGY5MTIwZDIzNjVlMzQ0MmVhNzRjZWVjMzQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjI2MTc3MzA0ZTM2ZTYwODk3NTQ1M2YwY2Q1NjE1OGQ1NWEzZjY5ODE2MjZkMjE4NWE4NDU4YmI4MWI0MzEyOWMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFlMGY3ZTU5Yjg2M2UzNjlmNzliMDk5YjhmYmIwMzNkYTUwNDU4ZjA4MDJkNGYwNDc3YzA0NDdiODc5NDBhNTcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_f8dd5615571a4ab1a213c7dc5956cc7c",
+      "statement": "A `yahoo-csv` source is a local whole-file source: the universe parser requires its path and forbids collector date bounds, sync calls `ingest_yahoo_csv` directly, and the importer requires the seven Yahoo headings and lands the series as split-adjusted in overwrite mode without dropping zero-volume rows.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L390-L410",
+          "version": "repo-lines-v1:sha256:92809eac365dcc33e2332ca05e5052a4c6d6bcdeb87207bcbe69b6e96ed69e21:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZDVhNzRhYTc5ZjJhYzUyOGNhMGVjZDI2NDk5ZjVhODVkZGE1MmU0ZTcxOWQ1MjU5YzMyZTUyZDZlNjJlZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMzUzMjZjYmVmNjFlZTA3YzBkOTU5N2YxYTM2ODQyNWEyMThiMjU4OWY1MmUzMWVjNGRmYWRhMjk2OGVhMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMDUyMzE3YTkzZDJiMzRmNWJhMDhmZWQzNWRjMjc5OTY4M2ZmZmEzMTllNDk1OTg2ZjNkMDljMTg0ZDJjNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YzRmZDY5ZDIxNTdkMGVhNzgxZWE1OGYwNTNiMWMyYmI0ZTFjMTg2ZGUyNjkwZGM0MGJhZWVmMjZjZTU2MGQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L176-L185",
+          "version": "repo-lines-v1:sha256:586318b34af397c2123ce38ca7f843ea2402da92473116a9ae4197f2cc217ff9:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2Y2M0NTA1OTcyOThjYWU3NjU5N2JlYmYwMzFjZGI5Y2ZhZjFhYzdhZTMxZTM0Mjk2YjBkZmQ4ZjVmOTliNWMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFhNjljZmYyOGJkYjM1ODk2NGYzMzhkM2ZhMGY1MTEwNTNkMTY0NDhiNjAyY2ZhOWI0MzBjYTJjOTlhMjhjOWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFmNDYzMTczMDIyZjQxZjI0M2Y3MWI0YWQzN2YzM2ExZjlhNDA3ZDVkNWQ4MDczMDE3ZDMwNzRkNTk2MjgxYzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY1OTJmMzM5MTYxZTQ2Y2RiZjk0ODAyZDQxNDY3NzQ3MTFkNWZjZjEyMTRhMDVlMGM0MTQ3Y2NmZjQ0NGYxNGYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L89-L143",
+          "version": "repo-lines-v1:sha256:c50cc58739cd34c10ceddda98cebff39d5106f03fdef392561564408e2ad086a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiOWEyYTNhYzAyZDE5ZWI2YTY3YjhhYTI5YjU4NTE3ODU2YmU5NGVhOTE1MTQwN2M2N2I0NWMzN2VmZDk1MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NjgxMjM0YjBlZDQ2ZTRmZDBmNTU2N2Y5NWM1MWIwZjkyYjkzMThkYjY5ZGMyMzhlMWZmYjZmYzUxNmRlYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MGQyYTI3ZDM5MmYzYTRjYjhhZWUwZmYwNWY4ZjM2YmU5NWFiNjljYzljZmFmYjAyZjlmMjA5ZWI4NzZlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0OGI1OTc4Y2Y2ZGJkNWIxYzRhMzRmYTA3Y2FkMTNkMWUzZTMyNDM0Mzc0MjczMTA3NjE4ZDZhMTA1ZGExNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5065f54dc08746cd934729c44f91f2a0",
+      "statement": "For collector sources, configured `start` is only a first-fill floor, while `end` remains a cap for both first fill and tail refresh; existing series fetch the oldest of the newest configured tail sessions, and declared crypto is capped at the previous completed UTC day.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L119-L153",
+          "version": "repo-lines-v1:sha256:5683bd2f47db1d4bee2f63518f7c7cebffdc856d26177b0b8816abafaf4f22ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YjRhM2E3ZDI5MTg3NTcwMDE2NmY5M2VjM2ZiMmNmNDJjOGU0YzkwMzlhZjVhZWEzYmNiY2I3N2RlYzI5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Y0MWQyZmFlNjkwZTUxMzhkN2M3YTZjYjc2MmUxZWZmZTEwNzkyNGFkNDM3NDI4ZDA4MzY0NjRhYjBkNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZTljMWRkMDA3YmM3OTdlNGFiZWI4NTY4YjY4ZmY3ZmI5NzU5MmJlNmE4N2FkNzgxMGQ1YWQ4YzdkZWE2NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NDFlZGQ2MjA3ODAzYjBhNjVhMzI3Y2QwMzU4NmEyMTcwZDdiZDc5YTFjNzkxZTNiYjI4MWFiMTZjNjJjNmEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L236-L259",
+          "version": "repo-lines-v1:sha256:8d668ee3567612e6d38a85d43bfb287b1f7ca628d77c2e2acc1e3ad75ed02c22:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOWYxMGVlMmJmNWJmNTQzNDYwMzUxODhmMDE4Y2JhZjEyMWViNjdmMWJiZjY5YzQ5ZjQ3NmNjNzQ5OWQ2OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwYTU5ZWQwOTI1NzE5NGMwM2NlOGNkYTNhOTlmNTZhZDE0NmRiYWE3OTZiNDRjNjMzNDY0NWY3Y2RhYzQwY2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NTNmOTFhYTdjNmI2ZGY2ZmE2NWM4NmVmMjliMzliYmNjYWUyOTc0YjRmM2I1M2E5YzBkMDk3MzQwMmJkYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjBmOGM4MTZjMjY5MGFkOGJmMTlmYWJiZGE2ZDEwZjExMjVhM2EyNTVlOTEwZTYxZmQzMWFkNjM0OWE0NGI4YzcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_68eb957deccc4849aa38b2374e34d559",
+      "statement": "`run_sync` plans dry runs without constructing collectors, otherwise lazily caches one constructed collector per provider, contains failures per leg so independent legs can continue, and returns an unsuccessful aggregate result when any leg failed.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L323-L408",
+          "version": "repo-lines-v1:sha256:94b7e626127dc39118598708f1d8a70044e55c5dd05b118e326675b659bf5470:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MDJmOTdlNjk1ZjlkNjVjZjgzNzUyNzgzMzUxMzVjNTZjZjcyZjBlOTBmMGZhNzkwYjc1NGVmYmY2MzljYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YTBhNDcwODBmZmRmM2M3OGJhZTIyNjA2N2Y2ZjkxY2U3OWM5YTQ5NDhhNTY2OTY5NDdkNzFkMDBjNTFjOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_704ff9f0219f44089ddfb40af2137e6c",
+      "statement": "The universe parser currently permits only `eodhd`, `binance`, and `yahoo-csv` provider values, assigns their default store exchange tags, and rejects source/provider shape errors rather than treating unsupported acquisition modes permissively.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.py#L26-L40",
+          "version": "repo-lines-v1:sha256:30d88540a1bbe2f0bd2f5cf0364701e0044bf64e18c2ed1054ccec2302ec6b7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVjNDhhZTY2MTE4YjEyNDlmNGYyZThjYmI2MWMxZjU3ODA5OGI4MzlhNTY3NjNmMGEyMjQ4NzAzZTYzYmZmNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MGM2ZDM5YjI2NDVhMjViOTdkNmQwMmU2ZWJmNTJmNGEzNmE5OTE4NTU3MzYwNzE1OTAwNDI3ODY5NDg1OGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZDczOGIzNDE2MDlkZjFlYzE3YjcyYzg5OGRlYWI4Y2NlYjM4ZDViZDdlYTQxNjJjOGYyMDRjOGNhNjZiYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlZWI5ZjQxMmI2NTUyNjU4YzEzOGQ5NGI0ZmJmZWU3NDgzYWNmMWE1NTYyNWQ5ZTdkOWFlY2VmMTMyZGNjZmUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L89-L143",
+          "version": "repo-lines-v1:sha256:c50cc58739cd34c10ceddda98cebff39d5106f03fdef392561564408e2ad086a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiOWEyYTNhYzAyZDE5ZWI2YTY3YjhhYTI5YjU4NTE3ODU2YmU5NGVhOTE1MTQwN2M2N2I0NWMzN2VmZDk1MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NjgxMjM0YjBlZDQ2ZTRmZDBmNTU2N2Y5NWM1MWIwZjkyYjkzMThkYjY5ZGMyMzhlMWZmYjZmYzUxNmRlYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MGQyYTI3ZDM5MmYzYTRjYjhhZWUwZmYwNWY4ZjM2YmU5NWFiNjljYzljZmFmYjAyZjlmMjA5ZWI4NzZlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0OGI1OTc4Y2Y2ZGJkNWIxYzRhMzRmYTA3Y2FkMTNkMWUzZTMyNDM0Mzc0MjczMTA3NjE4ZDZhMTA1ZGExNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_52f39814b8b440ff98d3bc9cec074110",
+      "statement": "Store reconciliation compares provider-served raw OHLCV and `adjusted_close` for timestamps in the supplied window, replaces only changed or novel rows, reports changed cells, and performs no write when the supplied frame introduces neither.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L334-L388",
+          "version": "repo-lines-v1:sha256:9814f4350950d2851211bdf393d6488afad43c98393680bd7ba0264d073918fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZGZhMWI3YzRkZWJlODNlZTY0NjIxNTI2ZDViNGU0NGRmODRiYjZmOTEzYTkxMWY3ZGE5YjUwYTNhN2MwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMTUyODQ2MTUxMWNkODMwMjUyMzFkYjQwNTVhZjVkNzI3YmQyODI4ZTg0ZThmMzM2MzAyY2EwZTA4NmNkOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMGI2NmUzZWUwYWRiNjA5ZjA2MDk5MTcyMjQ0OWJhNjY1MjY3ZjQ1Nzc2YzNjMGZjMDc0YzZiODA2NTE0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1YWVjYWYzMWIxNzFmMDQ4ZGM1ODQ0OWRmZWIyMjNmZGQ4ZGFjYTFjODdmZTJkZWUzOGExZWFmOGYwZjhkMmIifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T09:59:03.506Z"
+  }
+}
