@@ -1073,6 +1073,14 @@ list and license posture live in § Settled questions.
   before grading: the claim sidecars' evidence hashes can be brute-forced
   back to short source lines, so they disclose as well as pin. Queues
   nothing; changes no product behaviour.*
+  *Same day, M1 graded (the PR carrying this line). All 128 of the wiki's
+  Grounded Claims were checked against the clean room: 127 TRUE, 1
+  PARTIAL, 0 FALSE, so strict precision 0.992 and lenient 1.000, and H1
+  held. The claims are compound (3.3 sub-assertions each, up to 13),
+  and 426 of 427 parts hold. 18 of the TRUE claims state something no
+  kit requirement or contract does, mostly structure. Coverage of the
+  163 requirements (M2) is next. Queues nothing; changes no product
+  behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

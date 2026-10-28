@@ -6,8 +6,12 @@ with a ``claims`` array of ``{id, statement, evidence: [{resource, version}]}``
 This tool reads a generated wiki, writes ``claims.all.json`` (every claim with
 its page and evidence resources, versions dropped), ``claims.sample.json``
 (a seeded sample of SAMPLE_SIZE claims, or all when fewer) and a Markdown
-worksheet with one row per sampled claim and an empty verdict column for the
-grader. It makes no judgement: the verdicts are human work, recorded in the
+worksheet with one row per sampled claim and empty grading columns for the
+grader: ``verdict``; ``parts`` and ``failed``, the claim's sub-assertions and
+how many of them do not hold (owner decision 2026-10-28: OpenWiki's claims are
+compound, so one verdict per claim stays the headline and the part counts are
+the secondary figure); ``in_kit``, M3's column, YES or NO on TRUE rows only;
+and ``note``. It makes no judgement: the verdicts are human work, recorded in the
 worksheet and summarised by ``claims_tally.py``.
 
     python claims_worksheet.py <wiki-dir> <out-dir> [--seed 20261027] [--size 150]
@@ -63,15 +67,19 @@ def worksheet(rows: list[dict]) -> str:
         "",
         "One row per sampled claim. Fill `verdict` with one of "
         + ", ".join(VERDICTS)
-        + " and `note` with the symbol read; never edit `statement`.",
+        + " (one verdict per claim: TRUE only if every part holds), `parts` with "
+        "the number of sub-assertions in the statement, `failed` with how many "
+        "of them do not hold, `in_kit` with YES or NO on TRUE rows only (does a "
+        "kit requirement or contract state it; `-` otherwise), and `note` with "
+        "the symbol read; never edit `statement`.",
         "",
-        "| n | id | page | statement | evidence | verdict | note |",
-        "|---|---|---|---|---|---|---|",
+        "| n | id | page | statement | evidence | verdict | parts | failed | in_kit | note |",
+        "|---|---|---|---|---|---|---|---|---|---|",
     ]
     for n, c in enumerate(rows, 1):
         statement = c["statement"].replace("|", "\\|").replace("\n", " ")
         evidence = "<br>".join(e.replace("|", "\\|") for e in c["evidence"])
-        lines.append(f"| {n} | `{c['id']}` | `{c['page']}` | {statement} | {evidence} |  |  |")
+        lines.append(f"| {n} | `{c['id']}` | `{c['page']}` | {statement} | {evidence} |  |  |  |  |  |")
     return "\n".join(lines) + "\n"
 
 

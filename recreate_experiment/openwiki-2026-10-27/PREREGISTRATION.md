@@ -351,3 +351,75 @@ under `results/<arm>/`, so every judgement is on the record.
   unversioned ("the wiki gives no version pins"). In its venv pandas 3
   imports `pyarrow` itself; the package imports neither `pyarrow` nor
   `requests` at package level.
+
+### Step 5 — M1 worksheet, 2026-10-28
+
+- **Size.** W has **128 Grounded Claims on 9 pages**, all with evidence.
+  That is fewer than the 150 §3 names, so M1 grades every claim; the seed
+  selects nothing.
+- **Shown to the owner ungraded before any verdict**, at the owner's
+  request. Two owner decisions followed, recorded here before grading:
+  - **Compound claims.** OpenWiki's claims are not atomic: one packs
+    about ten checks. One verdict per claim stays the headline, as §3
+    registers it: TRUE only if every part holds; PARTIAL if a part has a
+    wrong condition, number or name; FALSE if a part is contradicted or
+    invented. Each row also records `parts` (its sub-assertions) and
+    `failed` (how many do not hold). The part-level precision is a
+    secondary figure, reported beside the registered ones, never in
+    their place.
+  - **`in_kit`.** M3's column, which `claims_worksheet.py` did not write,
+    is added as a tool fix: YES or NO on TRUE rows only.
+- **Tool changes**, the same commit as the blank worksheet:
+  - `claims_worksheet.py` writes `parts`, `failed` and `in_kit`.
+  - `claims_tally.py` refuses an inconsistent row: TRUE with failed
+    parts, FALSE or PARTIAL with none, `in_kit` missing on TRUE or
+    present elsewhere. It prints the part-level figure and M3's count.
+    Both behaviours were checked on a synthetic filled copy before
+    commit.
+- The worksheet is committed **blank** at `results/W/m1/`, with
+  `claims.all.json` and `claims.sample.json` (identical here, since all
+  claims are graded). The verdicts follow in their own commit.
+
+### M1 — claim precision, graded 2026-10-28
+
+- **Grader:** this session (§6 bound), against the clean-room tree
+  (`make_clean_room.py` output, git tree `1619e2f2…`). Every source file
+  was read in full before any verdict. Each row's `note` names the
+  symbols read. A source-level claim about the clean room (claim 115,
+  "no test files") is graded against that tree.
+- **Result:** TRUE 127, PARTIAL 1, FALSE 0, UNVERIFIABLE 0 of 128.
+  - **Strict precision 127/128 = 0.992**, **lenient 128/128 = 1.000**:
+    **H1 held**, both thresholds exceeded.
+  - **Part-level** (secondary figure): 426 of 427 sub-assertions hold
+    (0.998), 3.34 per claim, up to 13 in one claim.
+  - **The one PARTIAL is claim 13.** It credits `BaseCollector` with the
+    replay and recording transports, which are separate classes in the
+    same module.
+- **Wording looseness graded TRUE, so a re-grader can disagree:**
+  - 23: an all-unparseable `Date` column is an error, not a note;
+  - 49: "no verdict" is the code's own phrase for `unmapped`;
+  - 86: "the configured number" of refresh sessions is a
+    `check_source` parameter that the CLI never exposes (J-F #307, kit
+    JDL-125 "fixed");
+  - 119: "warns" means a detail clause;
+  - 120: the stamp is checked on every run and refreshed once per UTC day.
+- **`in_kit` rule.** NO when at least one part of a TRUE claim is stated
+  in no kit requirement and no kit contract. That covers
+  `requirements.json` and `contracts/`, including the shipped verbatim
+  externals and `universe.toml`; diagrams and features are excluded.
+  Every NO was checked by searching the kit for the fact.
+- **Result: 18 of 127 TRUE claims are not in the kit:** 1, 2, 3, 4, 7, 9,
+  42, 43, 47, 52, 70, 80, 81, 92, 103, 112, 115, 127. By kind:
+  - **structure** (9): packaging and package-root surface, `python -m`,
+    the lazy imports, the injection seams;
+  - **behaviour** (6): `modeled_source()`'s implicit choice and its
+    relation to sync, a class correction not being a migration,
+    non-transactional publish, no cross-file transaction;
+  - **configuration** (2): the reduced `pyproject` dependencies, the
+    EventBridge/CloudWatch placement;
+  - **repository** (1): no checked-in tests.
+
+  This is M3's datum; its write-up follows M2, in §5's order.
+- **Independent check.** 20 rows, seeded (20261027) over the 128, are
+  offered to the maintainer for a re-grade: 7, 8, 11, 13, 21, 26, 34, 40,
+  45, 49, 52, 54, 59, 60, 66, 99, 105, 108, 111, 127.
