@@ -1119,6 +1119,21 @@ list and license posture live in § Settled questions.
   not reached. A degradation test (plant defects in the kit, rebuild,
   grade) is proposed in the record, not pre-registered. Queues nothing;
   changes no product behaviour.*
+  *Same day: that degradation test pre-registered on the maintainer's go,
+  all six arms with rebuilds at xhigh
+  (recreate_experiment/degradation-2026-10-28/PREREGISTRATION.md).
+  - **Arms.** A control on the committed kit; diagrams only; the prose
+    layers with the suite intact; three wrong values planted consistently
+    in every layer; the suite only; three omissions in every layer.
+  - **Selection and observation.** Defect sites come from a seeded
+    sha256 walk over the requirement ids, each paired with a mutant of the
+    original, which defines the artefacts that would show propagation.
+  - **Before any rebuild.** Gate readouts on every degraded kit, and an
+    isolation guard that removes the subject and the lab for the rebuild
+    window.
+  - **Expectations.** Frozen per arm under two readings of the model, as
+    drawn and as corrected.
+  Queues nothing; changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
