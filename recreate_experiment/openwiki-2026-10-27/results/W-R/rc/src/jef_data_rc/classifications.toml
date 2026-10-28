@@ -1,0 +1,62 @@
+# Committed EODHD classification evidence, keyed by STORE identity
+# (exchange, symbol). `code` and `query_exchange` record the vendor query
+# that produced the answer; they are not lookup keys.
+#
+# This file is evidence, never configuration: universe.toml's asset_class
+# stays authoritative. A mapped vendor type that disagrees with the
+# declaration makes `status` warn; it never changes the exit code.
+
+schema = 1
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "AAPL.US"
+code = "AAPL"
+query_exchange = "US"
+vendor_type = "Common Stock"
+isin = "US0378331005"
+name = "Apple Inc"
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "BTC-USD.CC"
+code = "BTC-USD"
+query_exchange = "CC"
+vendor_type = "Currency"
+name = "Bitcoin"
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "TLT.US"
+code = "TLT"
+query_exchange = "US"
+vendor_type = "ETF"
+isin = "US4642874329"
+name = "iShares 20+ Year Treasury Bond ETF"
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "NVDA.US"
+code = "NVDA"
+query_exchange = "US"
+vendor_type = "Common Stock"
+isin = "US67066G1040"
+name = "NVIDIA Corporation"
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "TSLA.US"
+code = "TSLA"
+query_exchange = "US"
+vendor_type = "Common Stock"
+isin = "US88160R1014"
+name = "Tesla Inc"
+
+[[instrument]]
+exchange = "eodhd"
+symbol = "IBM.US"
+code = "IBM"
+query_exchange = "US"
+vendor_type = "Common Stock"
+isin = "US4592001014"
+name = "International Business Machines Corporation"

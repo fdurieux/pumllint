@@ -1,0 +1,12 @@
+{
+  "symbol": "X.US",
+  "exchange": "eodhd",
+  "last_updated": "2024-06-16T00:00:00+00:00",
+  "splits": [
+    {
+      "date": "2024-06-12",
+      "ratio": 2.0,
+      "split": "2/1"
+    }
+  ]
+}

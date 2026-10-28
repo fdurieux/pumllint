@@ -1,0 +1,1 @@
+{"request": {"method": "GET", "path": "/api/div/AAPL.US", "params": {"fmt": "json"}}, "response": {"status": 200, "json": []}}

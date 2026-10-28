@@ -1,0 +1,1 @@
+{"request": ["GET", "/api/splits/X.US", {"fmt": "json"}], "response": {"status": 200, "json": [{"date": "2024-06-12", "split": "2/1"}]}}

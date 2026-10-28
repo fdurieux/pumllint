@@ -273,3 +273,55 @@ under `results/<arm>/`, so every judgement is on the record.
   resolves to whichever Opus model the session serves, so the recreator
   may not be the exact model the kit arms ran on. That confound is
   carried into M7 beside the §6 model bound.
+- **Correction, 2026-10-28.** "As the kit arms had" above is wrong. The
+  kit arms' venvs carried the data lane's pins: pandas, numpy,
+  `requests==2.34.2` and `pyarrow==25.0.1` (J-F's `[data]` extra; kit
+  `contracts/pins.md`). W-R's venv was built from the clean room's
+  reduced `pyproject.toml`, which carries `[project].dependencies` only
+  (pandas, numpy, scikit-learn), so it had neither `requests` nor
+  `pyarrow`. The full list is in `results/W-R/VENV.pip-list.txt`. M7 has to
+  carry this beside the model bound.
+
+### Step 4 — W-R finished 2026-10-28, committed ungraded
+
+- 10:32 → 11:05 UTC: **1970 s**, 80 tool calls, 378 931 tokens.
+  Committed as written under `results/W-R/`, nothing graded and nothing
+  run against the reference:
+  - `rc/` is the build: `pyproject.toml`, the `jef_data_rc` package (18
+    files, laid out after the wiki's `src/jef/data`), `adapter_rc.py`,
+    `daily-rc.sh`, **`ASSUMPTIONS.md` (117 entries)** and `READ.log` (34
+    paths);
+  - `PROMPT.sent.txt` is the brief as sent (`736a0fdb…`);
+  - `VENV.pip-list.txt` lists the venv;
+  - `MANIFEST.sha256` covers 91 files (sha256 `be49fb84…`).
+- **Reading rule.** All 34 `READ.log` paths are under the wiki or the
+  output directory.
+- **Disclosed deviation.** The agent reported writing a test shim outside
+  `{OUT}` (`testshim-outside-out/`): a pickle-backed stand-in for
+  `pyarrow` and its own fixtures. It read those files to test its build
+  without the missing module; they hold nothing from the subject. They
+  are committed as found, and `READ.log` does not list them. It installed
+  nothing, and its `pyproject.toml` declares pandas, numpy and
+  scikit-learn unversioned: "the wiki gives no versions".
+- **What it says it could not test.** Every store-opening command fails
+  in its venv with `ModuleNotFoundError: pyarrow`, and nothing was run
+  against real Parquet. That follows from the venv correction above, not
+  only from the wiki.
+- **Owner decision, 2026-10-28: grade both.** W-R1 (above) is kept as an
+  arm. A second rebuild, **W-R2**, runs the same brief over the same wiki
+  in a venv carrying the kit arms' pins, and M7 grades both. That gives
+  two samples of rebuild-from-wiki and a direct reading of what the
+  missing pins cost W-R1. W-R2 was launched about 11:11 UTC, the wiki
+  still unread:
+  - **Wiki:** a byte-identical copy of W-R1's, checked against
+    `results/W/` and `../kit/contracts/HARNESS_INTERFACE.md`.
+  - **Output directory:** starts with the two externals from J-F
+    `8f6d6b0`.
+  - **Venv:** Python 3.12 with pandas 3.0.5, numpy 2.4.6, scikit-learn
+    1.9.0, `requests==2.34.2`, `pyarrow==25.0.1` and setuptools. That is
+    the kit's `contracts/pins.md` plus the clean room's scikit-learn, a
+    superset of both arms' environments.
+  - **Brief:** identical to W-R1's apart from the directory name; sha256
+    of the text sent `1446203917d35cbb…`.
+  - **Recreator:** a fresh `general-purpose` agent, the `opus` alias at
+    `xhigh`, as for W-R1.

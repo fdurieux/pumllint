@@ -1,0 +1,2 @@
+aws s3 sync s3://bkt/store/ data/ --only-show-errors
+jef-data sync --asset AAPL --store data --summary-json out/2026-10-28/.diagnostics/sync.json

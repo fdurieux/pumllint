@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+echo "aws $*" >> "$LOG"; [[ "${AWS_FAIL:-}" == "$2" ]] && exit 7; exit 0

@@ -1,0 +1,1 @@
+{"request": {"method": "GET", "path": "/api/splits/AAPL.US", "params": {"fmt": "json"}}, "response": {"status": 200, "json": [{"date": "2024-09-02", "split": "4.000000/1.000000"}]}}
