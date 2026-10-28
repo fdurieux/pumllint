@@ -307,3 +307,21 @@ under `results/<arm>/`, so every judgement is on the record.
   in its venv with `ModuleNotFoundError: pyarrow`, and nothing was run
   against real Parquet. That follows from the venv correction above, not
   only from the wiki.
+- **Owner decision, 2026-10-28: grade both.** W-R1 (above) is kept as an
+  arm. A second rebuild, **W-R2**, runs the same brief over the same wiki
+  in a venv carrying the kit arms' pins, and M7 grades both. That gives
+  two samples of rebuild-from-wiki and a direct reading of what the
+  missing pins cost W-R1. W-R2 was launched about 11:11 UTC, the wiki
+  still unread:
+  - **Wiki:** a byte-identical copy of W-R1's, checked against
+    `results/W/` and `../kit/contracts/HARNESS_INTERFACE.md`.
+  - **Output directory:** starts with the two externals from J-F
+    `8f6d6b0`.
+  - **Venv:** Python 3.12 with pandas 3.0.5, numpy 2.4.6, scikit-learn
+    1.9.0, `requests==2.34.2`, `pyarrow==25.0.1` and setuptools. That is
+    the kit's `contracts/pins.md` plus the clean room's scikit-learn, a
+    superset of both arms' environments.
+  - **Brief:** identical to W-R1's apart from the directory name; sha256
+    of the text sent `1446203917d35cbb…`.
+  - **Recreator:** a fresh `general-purpose` agent, the `opus` alias at
+    `xhigh`, as for W-R1.
