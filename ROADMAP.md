@@ -1065,6 +1065,14 @@ list and license posture live in § Settled questions.
   `pytest<9.2`: pytest 9.2.0 breaks pytest-bdd 9.0.0 (138 BDD cases red on
   a fresh install). W-R, the rebuild from the wiki, launched before any
   grading. Changes no product behaviour.*
+  *Same day: two rebuilds from the wiki alone, both committed ungraded
+  (#200 and #201). W-R1 (117 assumptions) ran in a venv without the
+  `requests` and `pyarrow` pins the kit arms had, a setup error recorded
+  in Results. On the owner's decision, W-R2 (94 assumptions) ran with
+  them, and both will be graded under M7. One finding for M6 arrived
+  before grading: the claim sidecars' evidence hashes can be brute-forced
+  back to short source lines, so they disclose as well as pin. Queues
+  nothing; changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
