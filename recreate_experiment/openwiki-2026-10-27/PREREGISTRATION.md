@@ -423,3 +423,63 @@ under `results/<arm>/`, so every judgement is on the record.
 - **Independent check.** 20 rows, seeded (20261027) over the 128, are
   offered to the maintainer for a re-grade: 7, 8, 11, 13, 21, 26, 34, 40,
   45, 49, 52, 54, 59, 60, 66, 99, 105, 108, 111, 127.
+
+### M2 — coverage, graded 2026-10-28
+
+- **Grader:** this session (§6 bound), from the wiki alone. That means
+  the nine content pages and the 128 claims, never the clean room or the
+  kit's contracts. Each row's `page` cell names the page and section
+  that states it. Page initials: Q quickstart, A architecture, E the EOD
+  data model, U universe and classification, C collectors, D the daily
+  run, H store health, T testing and replay, W universe sync.
+- **Rule, strict, fixed before the first verdict:**
+  - FULL = the requirement's condition and its outcome are both stated.
+  - PARTIAL = the behaviour is stated but a part the requirement pins is
+    missing: an exact message or identifier string, a default, an
+    explicit edge case, an order.
+  - NONE = not stated, or contradicted.
+- **Result:** FULL 40, PARTIAL 111, NONE 12 of 163.
+  - **Strict coverage 40/163 = 0.245.** **Lenient 151/163 = 0.926.**
+
+  | kind | FULL | PARTIAL | NONE | n | strict | round 1 |
+  |---|---|---|---|---|---|---|
+  | arithmetic | 13 | 8 | 1 | 22 | 0.59 | 22/22 |
+  | chain | 7 | 6 | 0 | 13 | 0.54 | 13/13 |
+  | contract | 11 | 35 | 2 | 48 | 0.23 | 48/48 |
+  | ritual | 6 | 21 | 0 | 27 | 0.22 | 27/27 |
+  | cli | 2 | 14 | 4 | 20 | 0.10 | 17/20 |
+  | verdict | 1 | 11 | 0 | 12 | 0.08 | 12/12 |
+  | refusal | 0 | 16 | 5 | 21 | 0.00 | 19/21 |
+  | all | 40 | 111 | 12 | 163 | 0.245 | 158/163 = 0.969 |
+
+  Round 1 states its own 158 by construction. The five it lacks are
+  JDL-159..163 (`../kit/CHANGES.md`): the absent-series tracebacks, the
+  argparse surface, parse errors, `--help`. The wiki states none of the
+  five either.
+- **H2 split:**
+  - **The strict threshold held** (0.245 < 0.40).
+  - **The lenient threshold failed** (0.926, against a prediction below
+    0.60). The wiki names nearly every behaviour, but it does not pin
+    one. 58 of the 111 PARTIAL notes name a missing message, format or
+    output string. The rest miss a default, an edge case or an order.
+  - **The kind ordering came out half right:**
+    - `refusal` is lowest, as predicted: no refusal is FULL, because none
+      of its messages is quoted.
+    - `arithmetic` is highest, against the prediction: the adjustment
+      factor, the calendar, the crypto end cap and the Binance pagination
+      are written out exactly.
+    - `cli` is fifth of seven, against the prediction: the subcommands
+      are listed, but their output and parse-error behaviour are not.
+- **Contradictions, graded NONE, plus one PARTIAL:**
+  - 060: the wiki gives bar `timestamp` as Unix milliseconds; the kit
+    pins seconds.
+  - 043: the testing page says action saves take `now`; the kit says the
+    run clock never reaches the stamp.
+  - 127 (PARTIAL): the wiki says `common_session` is kept on a zero mid;
+    the code leaves it null.
+
+  These are M4's input. Neither M1 grade moves, because neither sentence
+  is a Grounded Claim.
+- **Independent check:** 20 rows, seeded (20261027) over the 163, are
+  offered to the maintainer for a re-grade: 7, 8, 11, 13, 21, 26, 34, 40,
+  49, 54, 59, 60, 66, 99, 105, 108, 111, 127, 142, 154.

@@ -1081,6 +1081,16 @@ list and license posture live in § Settled questions.
   kit requirement or contract does, mostly structure. Coverage of the
   163 requirements (M2) is next. Queues nothing; changes no product
   behaviour.*
+  *Same day, M2 graded (the PR carrying this line). The wiki alone was
+  graded against the kit's 163 requirements: 40 FULL, 111 PARTIAL, 12
+  NONE. That is 0.245 strict and 0.926 lenient, against round 1's 0.969
+  strict. H2 split: the strict bound held; the lenient one failed,
+  because the wiki names nearly every behaviour but pins few of them
+  (58 PARTIALs lack an exact message or output string). Refusals are
+  lowest (0 FULL) and arithmetic highest, against the prediction. Two
+  wiki statements contradict the code (bar timestamp unit, the
+  action-stamp clock); they are M4's input. Queues nothing; changes no
+  product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 
