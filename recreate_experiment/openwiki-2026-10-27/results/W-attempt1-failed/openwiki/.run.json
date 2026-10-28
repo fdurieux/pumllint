@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "runId": "4bd2a550-dd6d-4b6d-bcf1-da5523d97cc0",
+  "mode": "init",
+  "phase": "generating",
+  "startedAt": "2026-10-28T09:38:53.198Z",
+  "language": "en",
+  "languageChanged": false,
+  "requiredRewritePages": [],
+  "initialPages": [],
+  "sourceFingerprint": "sha256:c68ccd31c26d4482b078bcdaea67ba668c0538acbccc5f83a060eb4693dd22a3",
+  "targetGitHead": "c0cc2ba787ada13818a75a0d51b6e573b1ca1ef4",
+  "actor": {
+    "producerActor": "openwiki/0.7.2",
+    "metadataModel": "gpt-5.6-terra"
+  },
+  "previousLastUpdate": null,
+  "beforeContentSnapshot": "ffa63583dfa6706b87d284b86b0d693a161e4840aad2c5cf6b5d27c3b9621f7d",
+  "preparedWiki": {
+    "generatedProvenance": []
+  },
+  "plan": {
+    "pages": [
+      {
+        "id": "be506fe7-beab-4877-a41c-3865022f79e5",
+        "path": "/openwiki/architecture/data-layer.md",
+        "title": "Data Layer Architecture and Public Surface",
+        "purpose": "Explain the repository’s owned multi-asset EOD data system, package and CLI entrypoints, importable public contract surface, runtime domains, dependency/lazy-import boundaries, and the boundary between this code and deployment scripts that reference unavailable venue components.",
+        "seedPaths": [
+          "deploy/EXTERNALS.md",
+          "pyproject.toml",
+          "src/jef/data/__init__.py",
+          "src/jef/data/__main__.py",
+          "src/jef/data/cli.py",
+          "src/jef/data/health.py",
+          "src/jef/data/sync.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/integrations/provider-collectors-and-transport.md",
+          "/openwiki/operations/daily-run-and-health.md",
+          "/openwiki/quickstart.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [
+          "Include a source-grounded Mermaid component/data-flow diagram for the CLI, configuration, collectors, persistence, synchronization, and health domains."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "50161652-5fbb-4a44-8d95-a3e9120f0127",
+        "path": "/openwiki/concepts/market-data-store-and-adjustment.md",
+        "title": "Market Data Store, Contract, and Split Adjustment",
+        "purpose": "Document the seven-column input/export contract; Parquet partition schema and raw-versus-derived lineage; split and dividend persistence; pure CRSP adjustment invariants; reconciliation behavior; and locking, atomic-write, and recovery guarantees that constrain storage changes.",
+        "seedPaths": [
+          "src/jef/data/actions.py",
+          "src/jef/data/adjust.py",
+          "src/jef/data/cli.py",
+          "src/jef/data/contract.py",
+          "src/jef/data/store.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/integrations/provider-collectors-and-transport.md",
+          "/openwiki/testing/verification-seams.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [
+          "Include source-grounded Mermaid diagrams for the stored data lineage and the adjustment/reconciliation control flow."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "9895d25e-6ea0-40d0-a23a-34217c167d8a",
+        "path": "/openwiki/concepts/universe-and-classification.md",
+        "title": "Universe Declarations and Classification Evidence",
+        "purpose": "Explain the normalized universe model, strict TOML validation, provider/source and modeled-source rules, asset-class-to-store-type mapping, window declarations, and the deliberately separate vendor-evidence check whose result can warn but cannot override configuration.",
+        "seedPaths": [
+          "src/jef/data/classification.py",
+          "src/jef/data/classifications.toml",
+          "src/jef/data/health.py",
+          "src/jef/data/universe.py",
+          "src/jef/data/universe.toml"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/operations/daily-run-and-health.md",
+          "/openwiki/testing/verification-seams.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [
+          "Include a source-grounded Mermaid diagram of asset, source, declared class, stored series, and classification-evidence relationships."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "8b33ddea-5aeb-4dc0-abfd-d67a30e113bc",
+        "path": "/openwiki/integrations/provider-collectors-and-transport.md",
+        "title": "Provider Collectors and HTTP Transport",
+        "purpose": "Describe the common collector/transport seam, retry and quota behavior, fixture recording/replay safety, secret redaction, and the distinct EODHD and Binance symbol, pagination, basis, and volume semantics that callers must preserve.",
+        "seedPaths": [
+          "src/jef/data/actions.py",
+          "src/jef/data/collectors/__init__.py",
+          "src/jef/data/collectors/base.py",
+          "src/jef/data/collectors/binance.py",
+          "src/jef/data/collectors/eodhd.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/testing/verification-seams.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [
+          "Include a source-grounded Mermaid sequence diagram for a collector request through rate limiting, retry/error handling, transport, and provider response normalization."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "a96b01be-2984-48bd-af13-b7d2ca414315",
+        "path": "/openwiki/operations/daily-run-and-health.md",
+        "title": "Daily Run, Offline Health, and Publication Gates",
+        "purpose": "Document the scheduled shell orchestration around sync and status, S3 restore/publish gating, exit-code and timeout behavior, offline source and cross-venue health verdicts, diagnostics/telemetry posture, and the explicit boundary to externally supplied event/dashboard implementations.",
+        "seedPaths": [
+          "deploy/EXTERNALS.md",
+          "deploy/daily.sh",
+          "deploy/dashboard.sh",
+          "deploy/events.sh",
+          "src/jef/data/cli.py",
+          "src/jef/data/health.py",
+          "src/jef/data/sync.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/testing/verification-seams.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [
+          "Include a source-grounded Mermaid flowchart of restore, sync, status, binning invocation, green-gated persistence, and always-best-effort telemetry/dashboard publication; distinguish unavailable external implementations from code in this repository."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "3aaa3de0-0a9d-47ea-96f7-e6f401d8af5e",
+        "path": "/openwiki/testing/verification-seams.md",
+        "title": "Verification Seams and Safe Change Checks",
+        "purpose": "Give maintainers a repository-specific safety checklist: document the absence of in-tree tests, injectable clocks/transports/collectors and replay/recording seams, invariants to preserve across contract/store/sync/health changes, and the available CLI validation, dry-run, export, differential, and status checks.",
+        "seedPaths": [
+          "pyproject.toml",
+          "src/jef/data/cli.py",
+          "src/jef/data/collectors/base.py",
+          "src/jef/data/contract.py",
+          "src/jef/data/differential.py",
+          "src/jef/data/health.py",
+          "src/jef/data/store.py",
+          "src/jef/data/sync.py"
+        ],
+        "relatedPages": [
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/integrations/provider-collectors-and-transport.md",
+          "/openwiki/operations/daily-run-and-health.md",
+          "/openwiki/quickstart.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [],
+        "status": "pending"
+      },
+      {
+        "id": "f37addf2-c9b7-421c-ad13-b5c5e7a0e15a",
+        "path": "/openwiki/workflows/universe-sync-and-reconciliation.md",
+        "title": "Universe Sync, Tail Refresh, and Reconciliation",
+        "purpose": "Trace `jef-data sync` from universe selection through provider-specific action/load ordering, first-fill and persistent windows, crypto end guards, tail refetch and newest-wins revision handling, adjustment, per-leg failure containment, and machine-readable summaries.",
+        "seedPaths": [
+          "src/jef/data/actions.py",
+          "src/jef/data/cli.py",
+          "src/jef/data/store.py",
+          "src/jef/data/sync.py",
+          "src/jef/data/universe.py",
+          "src/jef/data/universe.toml"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/integrations/provider-collectors-and-transport.md",
+          "/openwiki/operations/daily-run-and-health.md",
+          "/openwiki/testing/verification-seams.md"
+        ],
+        "instructions": [
+          "Include a source-grounded Mermaid flowchart or sequence diagram showing leg selection, the raw-basis corporate-actions-before-load branch, tail reconciliation, and independent leg failures."
+        ],
+        "status": "pending"
+      },
+      {
+        "id": "19c85d3b-0213-41e8-9a4f-a0f616a49bea",
+        "path": "/openwiki/quickstart.md",
+        "title": "JEF Data Layer Change Guide",
+        "purpose": "Route contributors from the `jef-data` command and packaged configuration to the architecture, storage, integration, sync, operations, and verification pages; state the repository’s data-layer scope and the external deployment references that are not implemented here.",
+        "seedPaths": [
+          "deploy/EXTERNALS.md",
+          "deploy/daily.sh",
+          "pyproject.toml",
+          "src/jef/data/__init__.py",
+          "src/jef/data/cli.py"
+        ],
+        "relatedPages": [
+          "/openwiki/architecture/data-layer.md",
+          "/openwiki/concepts/market-data-store-and-adjustment.md",
+          "/openwiki/concepts/universe-and-classification.md",
+          "/openwiki/operations/daily-run-and-health.md",
+          "/openwiki/testing/verification-seams.md",
+          "/openwiki/workflows/universe-sync-and-reconciliation.md"
+        ],
+        "instructions": [],
+        "status": "pending"
+      }
+    ],
+    "deletePages": []
+  }
+}

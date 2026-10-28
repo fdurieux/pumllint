@@ -69,7 +69,8 @@ if [ -d openwiki ]; then
   rm -rf "$RES/openwiki"; cp -a openwiki "$RES/openwiki"
   [ -f AGENTS.md ] && cp AGENTS.md "$RES/AGENTS.md"
   pages=$(find openwiki -name '*.md' -not -path '*/.claims/*' | wc -l | tr -d ' ')
-  sidecars=$(find openwiki/.claims -name '*.json' 2>/dev/null | wc -l | tr -d ' ')
+  sidecars=0
+  [ -d openwiki/.claims ] && sidecars=$(find openwiki/.claims -name '*.json' | wc -l | tr -d ' ')
 else
   pages=0; sidecars=0
 fi

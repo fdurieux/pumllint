@@ -1,0 +1,5 @@
+openwiki 0.7.2 · provider openai · model gpt-5.6-terra · effort xhigh · subject tree 436624d78bd703be6b6be9910678a647ca787982e63aa0a243de9c23ca6d3f68
+(node:799) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Could not restore /openwiki/architecture/data-layer.md: Error deleting '/openwiki/architecture/data-layer.md': ENOENT: no such file or directory, lstat '/tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/room-W/openwiki/architecture'
+exit 1 after 396 s
