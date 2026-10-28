@@ -1,0 +1,6 @@
+[[asset]]
+name = "AAPL"
+asset_class = "stock"
+[[asset.source]]
+provider = "eodhd"
+symbol = "AAPL.US"

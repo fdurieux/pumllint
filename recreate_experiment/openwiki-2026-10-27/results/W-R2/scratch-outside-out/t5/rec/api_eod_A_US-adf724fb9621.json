@@ -1,0 +1,19 @@
+{
+  "request": {
+    "method": "GET",
+    "params": {
+      "fmt": "json"
+    },
+    "path": "/api/eod/A.US"
+  },
+  "response": {
+    "json": [
+      {
+        "close": 1,
+        "date": "2024-01-02",
+        "token": "OTHER"
+      }
+    ],
+    "status": 200
+  }
+}

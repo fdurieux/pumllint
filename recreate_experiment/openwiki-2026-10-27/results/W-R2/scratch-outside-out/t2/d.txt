@@ -1,0 +1,4 @@
+differential: A=yahoo/AAPL B=ex.csv tolerance=1e-06
+aligned dates: 4
+within tolerance: Open, High, Low, Close, Adj Close, Volume
+verdict: ok

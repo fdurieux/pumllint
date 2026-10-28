@@ -1,0 +1,14 @@
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+WARN: ledger emit failure, stage sync (telemetry only)
+WARN: no ledger lines for stage sync, nothing to put
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+WARN: ledger emit failure, stage status (telemetry only)
+WARN: no ledger lines for stage status, nothing to put
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+ModuleNotFoundError: No module named 'jef'
+WARN: manifest key extraction failed (telemetry only)
+/usr/bin/python3: Error while finding module specification for 'jef.events' (ModuleNotFoundError: No module named 'jef')
+WARN: ledger emit failure, stage binning (telemetry only)
+WARN: no ledger lines for stage binning, nothing to put
+WARN: no store at data/market_data, dashboard publish skipped

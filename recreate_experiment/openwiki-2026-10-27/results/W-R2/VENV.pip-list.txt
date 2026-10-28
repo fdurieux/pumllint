@@ -1,0 +1,22 @@
+certifi 2026.10.23
+charset-normalizer 3.5.2
+cloudpickle 3.1.2
+idna 3.20
+jef-data-rc 0.1.0 /tmp/claude-0/-home-user-pumllint/a27ff026-fb34-5f15-89ad-04bb2be6b2d3/scratchpad/wr-W2/out
+joblib 1.6.0
+narwhals 2.28.0
+numpy 2.4.6
+packaging 26.3
+pandas 3.0.5
+pip 26.2.2
+pyarrow 25.0.1
+python-dateutil 3.0.0
+requests 2.34.2
+scikit-learn 1.9.0
+scipy 1.18.1
+setuptools 84.2.1
+six 1.17.0
+threadpoolctl 3.7.0
+tzdata 2026.6
+urllib3 2.8.0
+wheel 0.48.0
