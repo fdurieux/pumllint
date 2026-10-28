@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:e46357e54d9e6de188535371cd218c345072b50d5a1418951e30bf6cba101568",
+  "claims": [
+    {
+      "id": "claim_7e49a3b0e00a46e88fe8a937f019eeda",
+      "statement": "`deploy/daily.sh` uses strict shell failure handling, restores the S3 `store/` working copy, runs sync then status then per-asset binning, and performs the normal store, dated-run, and image-digest S3 writes only after those stage gates succeed.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L14-L14",
+          "version": "repo-lines-v1:sha256:88fc633667d0300731bdd84472dc424e1f9c64175ea2badb666472d91aeb4efc:eyJzZWxlY3RlZExpbmVDb3VudCI6MSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiODhmYzYzMzY2N2QwMzAwNzMxYmRkODQ0NzJkYzQyNGUxZjljNjQxNzVlYTJiYWRiNjY2NDcyZDkxYWViNGVmYyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiODhmYzYzMzY2N2QwMzAwNzMxYmRkODQ0NzJkYzQyNGUxZjljNjQxNzVlYTJiYWRiNjY2NDcyZDkxYWViNGVmYyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOWJmZjNiZmJjZTNlZDVmZjhlZWE3YzNkMjAzMWFjMGQ4M2Y4YjQyMjBhM2U2ODY3MDliYjlkYTEzNDc4NjVhMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiN2FiNGEwOWUzY2U3MWUyZDAwNzA5ODE5YWVhMTM0Y2ZkYWNiNjljYjQzZTA2YWRkZjZiZTkxYWYxNGQwNGUxNiJ9"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L70-L180",
+          "version": "repo-lines-v1:sha256:42f8b92b4e3d3f951b36bea0c0ac2cdb500ec9805522d5f74324c9e6b3dfb5bc:eyJzZWxlY3RlZExpbmVDb3VudCI6MTExLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI2ZjljZThmM2Q5OWY5MDAxODdjNDk2YTIwZGI1NTZkNTFiMTBhMGQ5ZTZjMGJmNGI1NDBhY2I2YTNhNzk4MDMyIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiJkYjIzYjk0YTQ2MGY5NzhjN2JjMDNmMjI4ZTU1NzUyZjUzYjU4NzBkMzQ5ODdmNDcwNmVlOWFhOTdhYmQzNjQzIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiJlNzhlMGVlZTJlYzhmMzY3Yjk1ZDAxZTc0Y2M4YzlkZGI3Y2VjYmExOTQxZjg0OGJjYTNkMjU0MTQzNTVjN2I4IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MSwiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzNDhhNzNmODZjZjhjMzUzMDAxZjQxNTMyYWM4MjY4YzRjZTA3NmE1OWJlMTJiZmE4ODY5YmI1N2Q0N2JjMDFlIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_d81135a4f40b496893b7dcc40fe07d8f",
+      "statement": "The final store sync, run-artifact sync, and digest upload are sequential AWS commands rather than a transaction, so a failure during final publication stops later commands but cannot roll back an earlier successful upload.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L172-L181",
+          "version": "repo-lines-v1:sha256:068c756f614db73f0f4ac137a700784b5956deda078c87b484319a7c2ebcd450:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZTMwYWU3MDRiNjBjNzM2YTYyZGQxYWE2OTBjYTZiYTQxODI5NzZjZWM1MjlmN2IzZGY2YjM1MjkwNmUwM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0OGE3M2Y4NmNmOGMzNTMwMDFmNDE1MzJhYzgyNjhjNGNlMDc2YTU5YmUxMmJmYTg4NjliYjU3ZDQ3YmMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1NzQ3MmM1YjQ2Nzk3NThiNmY5ODk4Y2FhNjVmODYzZTk2ZDA2N2I1ZjBhNGRhOGE2NGEzODg0YTNjZjQyZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_7a5b12cb659b40e482389c279d530e99",
+      "statement": "The script captures `JEF_IMAGE_DIGEST` once from caller input or ECS v4 task metadata, optionally derives task CPU and memory inputs from that same metadata, creates and exports one UTC `JEF_RUN_STAMP`, and writes the digest beside a green run's artifacts.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L16-L54",
+          "version": "repo-lines-v1:sha256:44ffedf414557586605b420a622337d404a4d48e2e50cb4409e36efc4bc2f96d:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0ZTIzOTRlNDMxY2M0YjgwMWQ3ZGE4N2IzODA0YTE0YTdkMWI3ZDc5ZWFhOGYxNGQ3NDBhNTcxN2E0MDBiMmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImEwYWMyMjMxMmQ3YjMxMDUzYWNmMWRjYzE5OTdhMjBiMDhiMzZkMzcxN2JkNjQ2ZTAyNTIxNWI1Y2RlYmNhNDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjlhMTNjMTI0ZmNiZDQwZTgxNDVlNGE4ZjljY2MyYmE0ZGFlMGQ3ZDUzNDRkYjgwYzA3NDkzYjRmNGM1ZjFmMTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjJhZjA1M2FhZTQ3YjY2MWRkZmI5N2E2ZWY1N2FhNzE2Nzk5NTA2MDQxNmVjNTMzNDNmZGI5ZDc0MzQ4OTcwNzIifQ"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L172-L181",
+          "version": "repo-lines-v1:sha256:068c756f614db73f0f4ac137a700784b5956deda078c87b484319a7c2ebcd450:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4ZTMwYWU3MDRiNjBjNzM2YTYyZGQxYWE2OTBjYTZiYTQxODI5NzZjZWM1MjlmN2IzZGY2YjM1MjkwNmUwM2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM0OGE3M2Y4NmNmOGMzNTMwMDFmNDE1MzJhYzgyNjhjNGNlMDc2YTU5YmUxMmJmYTg4NjliYjU3ZDQ3YmMwMWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk1NzQ3MmM1YjQ2Nzk3NThiNmY5ODk4Y2FhNjVmODYzZTk2ZDA2N2I1ZjBhNGRhOGE2NGEzODg0YTNjZjQyZmUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_43f34bb01cf246f9ba6785c4b3b12466",
+      "statement": "Arguments other than the private `--inner` marker are execed as command overrides; a normal outer invocation re-execs the script under a 3,600-second `timeout` that sends TERM and allows 60 seconds before a hard kill.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L56-L68",
+          "version": "repo-lines-v1:sha256:e0a96b0c506638877223f8a268e57b8b2466dac197c58fced8dc3a998dc22ff5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE5YWM5MDJkYTgyNjE2MzM3MDc1YzU2OTlkNTU2MTgwZTU4MzQwODFiMWNjYzRmODI3OWU1NjVmZmNiNmEzOTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM3NjlkMjM3Y2Q0MjBiOWQzOGI5ODFhMGE0ZjY3NzAxOTBhNGE4M2RjYTFmZTU2YzRmNWJhMWUyY2JjMGVmNzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ4YWIzODRhMjY0MmYyYWY5MTFlMGM4ZWM5ZjIyZWNiYmFlZjJmZGRiMDAwMjBhM2ZkYjYwM2E5MjYwYjBiNmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjMzYzBhNDE4YzFjZDE3N2IzYTI0NjJjNGE2OGM2Mzc1Zjg4NDBmZDVkOGFjOWQxM2Y5NzU0NmZmNTFhNjU0YTAifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a331fce36fb54f9399c9fb898e6c72a5",
+      "statement": "On TERM during the inner daily chain, the shell best-effort emits and uploads a current-stage event with return code 143 before exiting 143; an event object can be absent after a hard kill because the event upload helper treats an absent local file as a warning-only condition.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L89-L104",
+          "version": "repo-lines-v1:sha256:64731357dc4aec86399f382ea646cea1a94ec61a961290bc8c4911863dd84e7a:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAzNTAxNzZlZWJjZDhjOTM4NmVmY2Y0ZTY2NGU2OTg2MWJmYmM4YjQwYWM1NTBkMTAwMThjMzUzNGJiY2QyYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJkMDkwZjZkNGZjMTg3NWY2YzM2MzRjZDMxNGM3NzZlNjU3ZmE5ZWY5ZmI1MmY0MzgwZTg3YWY0NDYwNDcxZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk2ZTA5ZGZkYWU3ZTU3MGY5MzdhOTI4OTM4ODgyYjJkZjQ3Nzk1M2Q3ZjJlZWVhNTE1ZTBiNzM2YjU4OTAwMjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImYyNzJmNzYxNzdiYThmYzU5YTU2ZDNiYjkxN2UxZDUxOTAxM2MwMzYzNGEyYmRmMWVjZTk5YTIxYjRmNmMxMGUifQ"
+        },
+        {
+          "resource": "repo://deploy/events.sh#L47-L62",
+          "version": "repo-lines-v1:sha256:fae20b9b407ac4af251f1248a3c26ccc28a7dfaf58a6a96c6b5ddda40f7ddc33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY3NGEyY2MwM2Q1YTdmNTk0NzgxNjc0NGU5YjJlZGMwOWJmNjU3Y2U4MWNkZWEyMzBkYWY4NmY1ZDc4MWEzNjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxODA2MzExYjg0MmFhMjY1MjE4MzI5NmFhM2MyNDZkN2NkZmVlNjZiZDFmZWEwZDE1YzhiOTlkM2ZmMWU3ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxODQ1MGFlYWI1OTdlMTkzZjQ3ZTJiOThhYjVjMDZlZjJlMjYzMWVkM2MwNjMyZmY4NTJmMDhmYzgyMjQ0NGEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5c30f77daa8c469695caf6173f0e4d49",
+      "statement": "`JEF_S3_BUCKET` is mandatory, while `JEF_ASSETS` is a space-separated asset selector defaulting to `AAPL BTC TLT NVDA TSLA IBM`; `JEF_APP_DIR` defaults to `/app` and exists as a stub-friendly test seam for the gating chain.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L11-L13",
+          "version": "repo-lines-v1:sha256:9bff3bfbce3ed5ff8eea7c3d2031ac0d83f8b4220a3e686709bb9da1347865a2:eyJzZWxlY3RlZExpbmVDb3VudCI6MywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZDUwNGNmMDg4NDcyNThiZmU4NzQwOWU0YWNkNjZiNzYwN2FmZDQ2NTE4YTg1NDk4OTI1N2JiMzNhNjRkYTdjYSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjU2YWNhMGY2ZmMwZDc2YjNlM2E2NDJhMTcyZDllMWQ5Yzk4Y2EwZTcyNDMzM2RmYjdhY2I5ZDU4YTcwY2MyNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmRlZjJmYzZhNzk3ZjI2YzI0ZWI2NDdkMDU3ZWNiNzZlN2FjODE2ZGM5NTVjZjY5MTg0MzA3MzQwYzlmMGQwNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiM2VjYzA0YzViMDg0YmQxNGZjNTgzY2ZhN2ZjZjAwYWU5YjMwYWE4ZWJmYmUyNGY2MTFiODgxZGEzOTkxYmU4NCJ9"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L70-L87",
+          "version": "repo-lines-v1:sha256:d2f2f20d1f0588f4e5e2b2c4350f04ae5acbbdd793417bb62ff580535bae7762:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmOWNlOGYzZDk5ZjkwMDE4N2M0OTZhMjBkYjU1NmQ1MWIxMGEwZDllNmMwYmY0YjU0MGFjYjZhM2E3OTgwMzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQxZjE2OGI5MWU4MTgwZjgxZDhlNjRiZDY1OGZmMWEyOWY1OGVhNzJmMWMwNmVhYjczMWIyOGE5NjE5YmE5M2IiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3OGUwZWVlMmVjOGYzNjdiOTVkMDFlNzRjYzhjOWRkYjdjZWNiYTE5NDFmODQ4YmNhM2QyNTQxNDM1NWM3YjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVmOWJjYjkzYmE4NDAyZDBiYmFkYjJhYjJiN2FiYjlkYTFjMzY4MGUxODg1YmY0ZTIxZmM0ZTczY2JhZTVjZDIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_3d7f16748d2d49cea016d8c1e12dc9d1",
+      "statement": "The sync runner contains failures per selected source leg so it can report other legs, but aggregates any failure into `ok=False`; `jef-data sync` writes its requested summary JSON even on a red result and exits nonzero, which lets the daily wrapper diagnose partial acquisition without publishing it normally.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L119-L125",
+          "version": "repo-lines-v1:sha256:b46ff748536c3f3e92bba016c7221768f2d32637ea339780b09e08acbae18e91:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZmU0MzhhNjhkOGM0Y2VkODhiMTg2Mjk3NWFhMGRmZWIxOGM2N2U3MWEwNjU0MjUzY2I3Y2NiNTc4MDIzYzllNyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZTQ4MzkwMzI1OTIyYTRhMDFkNDdmODFlZDU5NDhmNTNhYTVkMGRmMWEwODE2ZjY0NDA4MWYwZjE1OGQyZTczZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNmM5Zjk4YzRkMTcxYjFjZGUzODAxZjk1MWQ1YmVkZjdjYzkxZGUwNjRjNWEwNzlkNDYzNGRiZWNhMTFkYTczMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZWU1YzM5YTFjZGIwZDM3ZjUyYTIyMDllYjdhMDkwN2YyNzdmYmY3YzI4ZWYwNDBiYzZkY2ZiOTdhYTk2YzQ3OSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L237-L262",
+          "version": "repo-lines-v1:sha256:98189483563cb908627f2d5fc4846eba847278b135517d5c0643db3c1a73ff8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0M2Q4OGU1N2M3ZDU2MTE4NGFjNWQ1ZjBlYzY1OWZjZDlmN2E5ZTJjZGRkMWZmODJhMzMyYjA5ZjAyYWQzYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNWIyOWRhNjZiODFkOWUzYjgzMzIwZWM3NDg4MmI5NWEzMzIzMmRiOTU3YjZjZDk0NWZiNDg4NTNhM2ZlNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkODIwNTFhMzM5NTJhMGQxN2QwMmY2NTE5ZDI2MGMxODMzOTY4MzQwOWJlOTRjMzQ5YWViNTAzMDU1ZDA4MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmOGU0ZTkzNTQ2ZDI5ZjI1ODZiZjJjMjkxMTI3ZjkxZTdmYTM2YmFmOTI4ZDVlN2UzZGI3MjgwNmJlODU3NDQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L323-L408",
+          "version": "repo-lines-v1:sha256:94b7e626127dc39118598708f1d8a70044e55c5dd05b118e326675b659bf5470:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MDJmOTdlNjk1ZjlkNjVjZjgzNzUyNzgzMzUxMzVjNTZjZjcyZjBlOTBmMGZhNzkwYjc1NGVmYmY2MzljYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YTBhNDcwODBmZmRmM2M3OGJhZTIyNjA2N2Y2ZjkxY2U3OWM5YTQ5NDhhNTY2OTY5NDdkNzFkMDBjNTFjOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_de8b9a40c0374111b3b7583402b22752",
+      "statement": "The daily wrapper evaluates `jef-data status --json` once through `tee` under `pipefail`, emits its telemetry, and gates on that captured status; the CLI returns nonzero for alerts but not warnings, including default cross-venue spread findings.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L127-L140",
+          "version": "repo-lines-v1:sha256:4df7c04d07df69c99993459b034513f94317902b4a287763dfa2ad86aeb13cc2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmNTUwYjc1OWQxYzI3NTU3YWYzMGNmNGNmZmY4ZTZjYWI4Njc5NGQ2MjE4OGVlYzUwZTNjZjIxNTllZDZhZGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ODM5MDMyNTkyMmE0YTAxZDQ3ZjgxZWQ1OTQ4ZjUzYWE1ZDBkZjFhMDgxNmY2NDQwODFmMGYxNThkMmU3M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZmYWFiNjNhNzNlZTZmOWYzYzk0NmUzMTgzMTgwMzUzZjM3ZTk5NzJiZjE5NzM1ZDYwY2FiNzdhNmZlMmZmZDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ0ZDExNzk0MTI0NDA5NzkzYjBkY2IzZmJhMjkyNzI2YzYyNGRmMjQxMWM3YjFlMWYwY2QxYjFmY2MxMTg0NmUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L265-L365",
+          "version": "repo-lines-v1:sha256:420fba287a6c068a63f4a37893791610d9dd9e2f76dbb88928749d33ae1fff0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxZThlMDkxZDUyNTlhYzhkZGE5YTIzZWUwYzdhZjhhZjFmNGE4ZmQzOTI3OGUzZmRlNWMxNjVlMjhiZDQwYmJlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3YzkwZmI2ZWUwMGQyNWVjMjJhNTg4MmIxOGY1ZTEzN2Q2NmJlNmU3MDQ4YjY3MmNjYTk3MzgxMmE5N2FjMGYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZTBjNGE3ZDBhYWMyOGY2ZGQ5OWU4MGQ0ZjY5MTk5ODY0MDQ2MjQ1ZjViYmI1MmJhZTRiYzRkMzY1NmE1MzQ1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3NzY5NjYzZTg0MmMzMTU1MzA4MjI4ZjNhMzY3NDJlNDYxMjJmYTA4ZWZkMjBlZTIwMzI3NDg1N2ZkZDUxNjk2In0"
+        },
+        {
+          "resource": "repo://src/jef/data/health.py#L425-L455",
+          "version": "repo-lines-v1:sha256:70d33736c7422242b8c6fc0482c54f6c2c8de140d1770bdbd96a6cfb48fa3deb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjlhMjFhZTlkNWI1ODM5NzRiMmQwNWZjZmVmOTRjY2VhNjFlMzU5ZDFiNmIzMDFkYjNmZTAzY2UxMzczZGVjYTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijg5NzJlYWVhNzEyNDJkMTc5Mjg4ZjkzODBlYTU4NjQ2YmM3NWVjMWU4OGMyNjA5N2M5MDNlNWE5MDk3ZmJlZWYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjIxZDdlZWU1M2Y0NjlkOWRjOTAxNWQ5MzRjYTIyNWFjODBjYzA4ZTBmZTFhNjU0MmRlZWEwZTU3ZmJmZTc3NWIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIwMjU4NzU1NDlkMTJjZGRhZDdhZDQzOWU2M2JkYTM1OWNmOTNjNWM0YTJjYzgxNzg3ZWIzODQ4OTkzYTJkOTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_6a48e1fb4ce04dd9b3f86d0a2a427f8e",
+      "statement": "After sync and status pass, the wrapper invokes `jef-binning` with the selected asset, local store, latest-only counter range, and per-date asset output directory; it records a failing asset's real code, stops the loop, emits the accumulated binning telemetry once, and withholds normal publication.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L142-L170",
+          "version": "repo-lines-v1:sha256:8b2134a70aba06a3ff2b02bf480fdce2579eeaff23efb1d07bb231e2d9b8bb43:eyJzZWxlY3RlZExpbmVDb3VudCI6MjksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkMTIxZDk2ZWY3N2RlNTIzMDQ5NGY4NWIyODFkYzc0NjMyNzRjOTFiNTA4ODI2MmVmZmRhNzI5NTM3OTEwNzEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ODM5MDMyNTkyMmE0YTAxZDQ3ZjgxZWQ1OTQ4ZjUzYWE1ZDBkZjFhMDgxNmY2NDQwODFmMGYxNThkMmU3M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE3M2ZjY2Y2NzAzZDFiNzU2MGY3Y2Q4NTlmYzNiMDIwNDYwNGI1OGEyZjM0ODMxNWRiZGJlZjIzNzAwNmNjNGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0YWEwM2U5YmViZjY1MmMxMDRhMjA2N2E0NGE4ZjRlOTVkOWNkMTc3Zjg5NmMxMjk5NzFlNDA4MDQzOWRmMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d8c94170598d42f89053755ed304575f",
+      "statement": "The supplied event helper appends a stage JSONL record through external `python3 -m jef.events emit` and uploads one nonempty `events/v1/<run-stamp>-<stage>.jsonl` object, but all event generation, manifest-key extraction, and upload failures are warning-only and return zero.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/events.sh#L12-L62",
+          "version": "repo-lines-v1:sha256:f7443984a0bddfa4ad2996fd8c777f07776a5c169e78f782ae105fc68d33f809:eyJzZWxlY3RlZExpbmVDb3VudCI6NTEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMTM3MWVkYzY3MDhmYjEwYzVjYmJhNDI2MWE3YWZmYjY5ZGQxZWFiYjRjYzNmZTUzMDA4Y2ZhNmMzZGNhMmIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjY5MzllNzE1MDViNmEyZGQ4Nzk2MzdmYWNmMDExNzI0NTM5MDNkNmM4NDhjMzlmZWI3MWRkZDk5YmNiOWI4MDUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjkxODQ1MGFlYWI1OTdlMTkzZjQ3ZTJiOThhYjVjMDZlZjJlMjYzMWVkM2MwNjMyZmY4NTJmMDhmYzgyMjQ0NGEifQ"
+        },
+        {
+          "resource": "repo://deploy/events.sh#L65-L110",
+          "version": "repo-lines-v1:sha256:6a001643bf9dd7722d0b5db16f3fa8b04585d56489f7fb57bc1215f95c339f8f:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZTJmZDk5NDNmM2JlYjYxOWNmN2ViNTQxZjYzZjk5YTFmMzk4YmE3YTM1MmQ0NzVlODhjNTViZTFjMWZmMjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxODA2MzExYjg0MmFhMjY1MjE4MzI5NmFhM2MyNDZkN2NkZmVlNjZiZDFmZWEwZDE1YzhiOTlkM2ZmMWU3ODUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_def2ef840c094986bf6040c5b8789f05",
+      "statement": "`daily.sh` installs dashboard publication as an EXIT trap after its override guard, so it is attempted on both green and red daily exits; `jef_publish_dashboard` returns zero on failures, builds from a local-store and overlaid-events working copy, and best-effort uploads dashboard documents and an optional health snapshot.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L99-L108",
+          "version": "repo-lines-v1:sha256:1e6ab47170a742a561346da8f3b2714dce960fd5b59d4a0bd5d90b37d2370818:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZmYzA2NmNmYTI3M2FkNDRiMTQ5NzBmNDZkZTZkMTg0NzA1NDQxOWNlOWJkYWRlMTRiZjhjN2M1ZDNjMTRiOTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImUwODU1ZDYzNTczZDA5ZWRiZDVkMjM2MzMzZmNkYjI0ODBkYTgxZTYzOTJjZjE1Nzg3NGNkYzNkNTU3YzMyMmYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImMyYzY3MTUxYTFmN2NlOWFkMmVkODY2ZTVhMmNlZDEwMjg5Nzc3ZmZhZTE2MjM5MDM0NjU2ZTA3ZjY0MWViZTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjZjg2ODUzMTUxNTJkODg2YzIwMDdiZDEyZWNkMDY2YzNkMDM1ODdiNjkxYzdiZDk0NTY0YjljMGIwZjc4MjMifQ"
+        },
+        {
+          "resource": "repo://deploy/dashboard.sh#L9-L74",
+          "version": "repo-lines-v1:sha256:48476c7ef348b9b0af8b690e151db1475a63d54daa07707f53d038f53d418949:eyJzZWxlY3RlZExpbmVDb3VudCI6NjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImYyZTAzMDVmMTEyMmY4NTY4ZWUwODcwOTIyY2M3ZTRhMjYzMGI3MGE1MTkzN2VlOWFjYWY0YTQ2NThhOTVkY2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU0NTI4YTg5YTNhYmViMzJmMmUzZGZmMWZhMjAxZTUxNWJlZDNjMjcxODJlODJhODYzMjZlNzk3NWIyNTUzNDEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjoxLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQxMmNhMzQ1Y2NmNzViZjljMDgwNmJjZTY5NWJlOGRlODA4Yjc5OTg0MjUxYTdhNTRkMjAyY2Y2MTAxZGQ0NTEifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_5333e63e12fe4d5bbb6346059c932bbc",
+      "statement": "The deployment helpers are explicitly classified as given external telemetry and publishing legs; the repository package distribution exposes only `jef.data*`, while the daily wrapper invokes `jef-binning`, `jef.events`, and `jef.dashboard` as runtime handoffs rather than supplying their implementations.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/EXTERNALS.md#L1-L5",
+          "version": "repo-lines-v1:sha256:b77a898df9346a52c8a3324fc93824f65b0871567e9475865b1a2c74a3022383:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjY1NmZkZDMzNjI2ZTFlOTc5OGRkNzVkNjFlNmVhNTk2ZGMxNjNjY2I1NzU0YWU2NzIzZjY4NTgxZTdlZTM5MiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjk4M2FkMGRmMjFkMDJmMWY5ZGIyMGIxMTVkMzRlZmFhZTZhZWY4OWVlMWUxZWY1Y2ZjMGFlNGIzNzBiMWUxZCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L147-L170",
+          "version": "repo-lines-v1:sha256:5086e076174e238a0544762ba12a9b4f81ccef1f20cb74337d42243ff2a5e5b6:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMzYjI3MzZlNGU2Mzk1ODBiNzFiNDkxZDFhMDhmZjgyNDhiMDQ1MDM3YzBmM2UwMjcxOTA2ODNjNzlkNzczNjMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU0ODM5MDMyNTkyMmE0YTAxZDQ3ZjgxZWQ1OTQ4ZjUzYWE1ZDBkZjFhMDgxNmY2NDQwODFmMGYxNThkMmU3M2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkzYWNjMzhjOTU4MzFjMjE0MmI0MGQ4YTYzNTVhNDgxM2Y3ZjRjMGRhYTkzNzMyZmJmYjY3NWU4ZTQzZWY0ZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjU0YWEwM2U5YmViZjY1MmMxMDRhMjA2N2E0NGE4ZjRlOTVkOWNkMTc3Zjg5NmMxMjk5NzFlNDA4MDQzOWRmMTIifQ"
+        },
+        {
+          "resource": "repo://deploy/daily.sh#L81-L84",
+          "version": "repo-lines-v1:sha256:1c4fb080558b3cb5c851cde0b6220ff7f2551d70181e6304b42c14fd55394a9f:eyJzZWxlY3RlZExpbmVDb3VudCI6NCwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYjc1ZjkyN2QzOGU4ZGQ5NGExMzFiNWQ5MDYwMDYwNDM3NzY4MzZjNDdhYjViZTQ5NjVhNGVlZGIyZDQzNDliOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNGE1ZGM4OGFlZmE4YmY2MjdjMGJkNDdiM2E3NWUyYmM5MjE4NDY0MDgzN2Q3YzI1NmFjM2Y5OGNiZWExMDg0MCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTUyNzNiNzVkNmU2OTM3YjlhMmVhNGM3NjFhZmY3YjJhYjc4OGRhMzZjNWQwNmI4YjQ5YmI5OWUxZTBhYjllOSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzQ0ZDRlOTg2ODlhYjZmMjgzMGI0MjdjZDc3NDE0OWYwZjA5YjE2M2E4ZmJmOWI4YWY0MWUxZmU1MTk2NDI2ZCJ9"
+        },
+        {
+          "resource": "repo://deploy/dashboard.sh#L17-L21",
+          "version": "repo-lines-v1:sha256:0b897021eebc1c4621e9a426ea32203d06556ee5ab83aa6864326eafebac5c7a:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiYzNhM2NiZDNhMmRmMWY5OWNiOGU1ZmU0NTQwYjYyMGI2NDBkNjUxN2RkMzVlNGNjMjJlYWIxMThmYTNiZTgzOCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNzQ2M2M4NDI4YjE1MmU1OGM0YzZmZjFkYmZhMTliMTQ4ZDQ2MGIwYTJiZjI0YmEwYjY3MzBmNDMzMzgzNWEwMyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMDI0ZDQwZjFlMTcyYTJjYzZkOWNhOTRkNTdjYjQ0YjU0NzlmYmUyYzNhNDNhZDQxZGRmZjIwMzM0OGQ3NjUyZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMmMyYTQ0YTgzODFlYjU1NjVmZmFmYzY0NjhhMjE2NmU2NmNhZmY3ZmEzNTVhMjEzODBlMTc4MGNjNTYxZmFhZiJ9"
+        },
+        {
+          "resource": "repo://deploy/events.sh#L30-L44",
+          "version": "repo-lines-v1:sha256:fd3c29952c496f15fb27955d91499d7bddcdf255be78d882198223f88c5e1a10:eyJzZWxlY3RlZExpbmVDb3VudCI6MTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFmZjIyZmQwMGQ1NDFkNWIxODMwMzlmZjFjNWFiODU3ODdjNjQ2NmEwYjI3YmI1MWFmODBkYWI1Mjg0MWY2Y2UiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2MjMzYjNmZmVhMzJhMjNkZjUzMDY1MzQzNDhmMmRlZTc3NmE1YTZmNzRmYjUzMzE3NWRkYzUzOWE4ZmU0NjQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjcxMjY1YzNjMzg3OGUwYWE4MWRiNjE2YWI3MTIwNjJkOTYyYTkwNjczN2Y3ZDZmNGNjZjcxM2YwYzg3YWE1YjYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI1YTA1NzdiNzBhYzZhYzhmM2Q1YTBlZTRhM2RkYWVlY2EzMDIwZjAyYWY3Y2RiNjIxNGE4YjRlMTJhNzI2YWIifQ"
+        },
+        {
+          "resource": "repo://pyproject.toml#L15-L20",
+          "version": "repo-lines-v1:sha256:eff721900e4defefb197eaaaa468a2151820b376247c90c4533dd77998cd2efb:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNGVhYjRlYzYzZGU1MTdkYTRjZDhlNWM4MzA3ZmIyYzc3MzdkMzkxOTBhYjY5ZjMyYTVlOWVmODFlYTQ0MTZkZSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDU2NmExMDYzNTJmMzI1ODA5MjA5NTg3MzM1NTAyYTA2OTc2YmNiYjhkNTU2NTk2ZmVmOGQ1MDVmNzdiYmUyOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiOTMxZDc1Y2YwOTU0ZDE5YTEzZjlhMjE4ZTViNTlmYzIxNWExZTA3MDkzMDQ3NjNmMzFhYzY4YmQzMWM2YTliMiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjAsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_2f17c6a9e951467187d0c824bcc8bd21",
+      "statement": "The daily script assigns scheduling to EventBridge infrastructure rather than defining a schedule itself, and treats the operational task exit as the input to CloudWatch alarm behavior.",
+      "evidence": [
+        {
+          "resource": "repo://deploy/daily.sh#L1-L9",
+          "version": "repo-lines-v1:sha256:82a53b75e71dc5e90d5618133ce3920aeebcc2d58276c80451747f153d09ecf2:eyJzZWxlY3RlZExpbmVDb3VudCI6OSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMWQ5NWZjMDRhODBjOTUyZjQ5Y2U0MTg4NjI3YzUzYjBmYmU4YzQ0MDQxYjk1MmQ1OTJhY2QxZGU5OTg2MTQ2NiIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNDhlNGE4Y2YwODJmMWFjZWFlMDYzZjAwN2IxMjFkNmEwNmUzYTI2ZmNhZmYxOGFmNGM3NTM3MTZjYThjMDY2YyIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjAsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZTNiMGM0NDI5OGZjMWMxNDlhZmJmNGM4OTk2ZmI5MjQyN2FlNDFlNDY0OWI5MzRjYTQ5NTk5MWI3ODUyYjg1NSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDQxYzI5NGVhNTVjYTZiODI1M2I0MDZmNmM2MmU5ZTc5MWNjNWI4ZGVlOTI0YTQ1ZTg5NjU4NzM2MjY2NWNjNiJ9"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T09:59:03.506Z"
+  }
+}

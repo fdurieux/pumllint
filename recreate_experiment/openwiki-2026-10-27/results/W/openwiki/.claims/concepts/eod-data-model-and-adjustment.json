@@ -1,0 +1,256 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5ce9e17f3a3ad39a8379a203ef6c6cddae5a223711cb07625f7edbba848f249d",
+  "claims": [
+    {
+      "id": "claim_4085824ea1844ffdb294dd29e4a831c9",
+      "statement": "`validate()` checks the required seven-column EOD frame without raising: it reports contract errors for missing columns, non-numeric values, duplicate dates, negative values, and `High < Low`, while reporting sortable dates, unparseable dates, zero volume, NaNs, extra columns, and insufficient clean history as notes; `validate_or_raise()` raises only when that report has errors.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/contract.py#L26-L31",
+          "version": "repo-lines-v1:sha256:10244fdcd852613fc2c8800a7835beeccbf6e58438698117fc43d021df4ae3ae:eyJzZWxlY3RlZExpbmVDb3VudCI6NiwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZGMxZTllNjljZDdlYTkwMWE2MGRkNzBhMWZlYmRhZWUxOTlmMmQxZjU2ODNmY2M4M2VjMzk4ZjI0ODg3ZWI2ZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiZDZlODQ2OWRlNjEwYTEyOTk3ZmMwNjYyMmY1MzczMTUxYzJhMmI5YjJlMTc5NjBmMjBlYmYyOTFmODBkMmFhOCIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiM2ZlZTBiYTE2ZjU4YTljZGVmYzQ1Mzg0YzA0NDQzOGY1YzZkM2I0NzA0NzZmNDNhNTRjOTg3YzU3MmQ4OWVmNCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiYzRiZDk4YTM2N2JhNWM1N2MxNGQ5ZmVjZmVhZDA5YzQxOWQzYzEyYjA5ZDdkMzI5ODczYzFlN2ViMDczZTA1NSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/contract.py#L58-L142",
+          "version": "repo-lines-v1:sha256:95d82cd3586d6f5e13ac4556da3768b0ce648d7460d66c3e3a3d3584daeebe22:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjRmNWMxMmMxNTY5YzM5OTJjZTNkM2QwZjE0YjJiN2FmYTIyZTc3YjlmYTI1ZjY0OGQ4YTA3OGYyNGU5ZmQyM2QiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1ZTFhMTczZDViMTRhMTM5MTdhYzA4ZDhlMTFiNjViNmQ5MGQ5NTRhZTI0NjRlYmI3ZDE2MzczZTE1NDc5OGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBkNDliMDdlZWUxMzgzNzFiOGY2Yjk1ZWUwMzcwZGY1ZGU3YzNjMWVhYTYyMDAyNDFhMTAyNWM1MjQyMGE4YmYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_a939f4d6ec8f46a4800e16e7847be00b",
+      "statement": "Market bars are persisted as full-schema Parquet year partitions at `market_data/exchange={exchange}/symbol={symbol}/year={year}/data.parquet`; the schema retains UTC timestamp/datetime identity, derived main OHLCV, raw OHLCV, provider adjusted close, both adjustment factors, classification, currency, and price basis.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L1-L32",
+          "version": "repo-lines-v1:sha256:e298d292ca26fc59ededa85721dd75c53df53201dd31091f97073dd6282c4da6:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk4MWY0YWVhNmQ1NmNiNmExYmVkMjFmNzg0M2FiNzcyODQ5NzBlOWQ3ODQwNjY0ZGMxNDQ0YjY3MDMyN2M0NjAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImIwNjIzYjVjMzU4OGJmZDM3MjUzNjVjMjM1YWZkZTEyNjkwMDU0M2Q4NmMzMjMzZmUwZDM1Yzc4Yzg4ZWY5MjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImVlZGRkN2RmYjU3ZmE3NzYzZjQ5MTY1ZDFjMDAzNmVjNWYwMTg3MDVhYzA0N2M1ZTYxODgyNjcyNzlmNzgyNGIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L106-L127",
+          "version": "repo-lines-v1:sha256:9a714a9ffd2e1e98168a723508d7e876c9633dcbf54226c6b9cc19a7018aac88:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI0MzgwMzA3YmUyODk0MjRlZjFlYWM2M2QyMDE0MTExNjdkYjc5NDlhMWYwMTA4MGU4MWFhYWZlN2QzZGYwMTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjkzYjM4ZmE2MGY1ZTc1MWZlMGEwYjE2MjMzNTU0YWFiOTMwN2Q5M2U1OGJlYWVjYTE3ZmIyY2NiMDBmMzU3YzYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjkwOTQxODk5MGEzYzJkNzA3NGUwYjk0MTJjMjczN2MzMzkzOGU4MWNhZDQ0YTM0ZTdmNDRjNGVlYTQ3MTExODgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ3NWNkNmU0NWYxYTYwNzVjNjIyMjZhOTY4OWM2YTQxM2Q3NzVhNjJmMzBiZmZiN2NkMjA5MThjYmI3NzU1ZDUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L57-L82",
+          "version": "repo-lines-v1:sha256:461fb004112a96a7e00e3e99c6ad14a4b82a5093d5c87a24596cb2134f9f872d:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwMmE3OTNkNmJmNjAzMDU5MmNhMTQ2YjZhZjQyYWM1YjFiY2ZlMTliYmRkMTdmYTE5NDZlM2NmZTk4OWY2YTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YjVlYjAyNGI3ZmU1YzMwOWMxNjZlMTkzM2ViMDQ4YjdkMWNlNjdhYWE4NTAyNzlkMGU1MTRkYjE0ZDFmYzEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3YjE4YmMxZDQ3MDkyODQzZTRjNzM2M2E2YTQ1ZGE0OWY1ZTNiZDIyZGY2MWQ4MTNkM2ZiYzA0ZDVkNzE3N2QiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc3N2E1MzVlMmU4OWFlMDIzMzVlZGNiYmEyYjA3NDk3MDZkNzQyYjZjMTkwMGE5YmQ2MWQ5YmQ5M2JhMWQ3NjUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_0d4a5be4be3345de962fe8d58aeb5bfc",
+      "statement": "Corporate actions are stored per symbol beneath `corporate_actions/{splits|dividends}`, with `/` normalized to `_` in filenames; missing files load as empty action lists, split saves are date-sorted, and dividend entries are retained in their provider form.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/actions.py#L57-L110",
+          "version": "repo-lines-v1:sha256:d49db22a0de1cccf85f1e830b3d2a82172cab3eb4c682e74e114595ee724da22:eyJzZWxlY3RlZExpbmVDb3VudCI6NTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExNzM2MGViNGQ5NmFjZDlkYmY1NDk5M2MwMGE1ZTEwYjg4ODRmMzlmMTkzNTcxZDUzMjVmYmZkYzk2MzU1OGIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjI3OGQwMTU5MTcyNjRlMTE3NWY2ODY2ODVlMDU5ZTcwZTc0OTJlNTBiMmM2ZjkyNTI1NWRjZmM3N2IxODRiNWUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIzZGYyYWNmMDZlOGMzZjAzYzcxMzVjNmU4YWM1YTljYTU0MzJhYmUwNmE3NGFjYTBmZGQ5YTUzYTAwOGY5ODciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM0MzdhY2VlNmYwZWQ0YzVkNWY4YmM1MTI3ZTk1YTQ2NTBiM2M1YzY0M2IwNzk3NThlYWQ1ZDg5NmVlOTAyZjcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_983ae3a9aa66477381fa81b0082d84a1",
+      "statement": "A `SplitEvent` uses a new-shares divided by old-shares ratio and treats its date as the first session at the new price basis.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/actions.py#L30-L53",
+          "version": "repo-lines-v1:sha256:9b11833e1dd53173f39f337146230635e3ce998b74e687ad98defec48f33429c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmZGYwNDg1NzMzZjJjMzM3NzhkNDllMmNjMTUyYTk4ZmUyMTIxZWE1N2FmYzRlYjM0YWU4OGY1MmU5MDIwYTgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFkYzRmNTQ4MzBmZGJmNDRhOTQ4NzMyOWI5YWNkZjY5YTMxYThiMjgwMjNmY2ZlMmRlOTA5MDQ1Y2Y0ZTY4MWQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQ5NWNhMzRmNzVlNTQxNGRmMDg3MzkyNmVmZDlkZWNiZDRmYjYyNjRmMmQzMjhmODVhMzEwN2U5ZjY3NmU5NjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIzZGYyYWNmMDZlOGMzZjAzYzcxMzVjNmU4YWM1YTljYTU0MzJhYmUwNmE3NGFjYTBmZGQ5YTUzYTAwOGY5ODcifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_bd7779320a5b4af69f5c42df2f6f8101",
+      "statement": "For raw-basis ingest, `ParquetStore` retains provider OHLCV in raw columns and derives the main fields through `adjust`; for non-raw input it stores served values with cumulative split factor 1.0.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L265-L332",
+          "version": "repo-lines-v1:sha256:50d0aaa0180a0cd56b5c8dddda3dae5019cea8bea8ac2a885177399ff73833b2:eyJzZWxlY3RlZExpbmVDb3VudCI6NjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc3Mzc3NWZkMWY2N2ZlMWFjODllZGQ5M2I1YTkwNTg2ZjljZGQyMmRlNjM3Yjc1ZTQ1MTI0NGMxNTY5ZTcwZDQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzYjE1Nzg0YjBkNjM5MzA5MDZlNTI3MWY1NWVhM2JiNmI5MDM1NWYzYjNhN2MzODllNzEzMTU2N2U2NjE5YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU3YjEyMzNmNTg4YjQwMmZjY2VjY2E2MjdmOTk5YTAyYWE4NDFlYTZlYWEzZjExN2NjZDQxYTVhYTRjNzQ2MzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOGFlMGI5Nzk4YzE1NTNmMjE2MGFmMmQ4N2RhM2ZkZGNjNTYwZmEyNTA5ZTE1YTVlMjQ3MjI1YWI3YzEwOTYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d766ea85af7647d7984ddc318f644ee2",
+      "statement": "EODHD declares raw prices but split-adjusted volume; raw-basis ingest rawizes that volume by dividing it by the split factor before normal adjustment re-derives it, making action synchronization before first load material.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/collectors/eodhd.py#L64-L70",
+          "version": "repo-lines-v1:sha256:f69849fe7dc4cf9163cea2943575cce8ecb4e5ebf4ecb4631d0369641df18389:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzdhMDE0OGJhOTc4YjQwMDlkMzQwODRlMGM5MmI2OTcwZGQ2ZGQzMmJjZGRlYWU4OTBiMGU4Mjc2MWNmMTExZCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYTNhNWM1YWI1MGQyYWNhMWRiYTZjMWQ2Y2UzZmFlM2RiYmNhMDEzNzkxOWI4MDM4NmFkMzQ3NjAzN2NlOGI1MiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiZGYyMDg5N2I2NWZjYzQ1ZTc3YzJmZjMyNzExZGFjZWZkOTg4NGFmOGMzYTRlZTQ2MDZjM2EyZTIxY2M3MGU4OCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODlhZjUzNTE2OTM4OGYxMzgzYWNhM2U5NWY3MDYyZDYwYmZhNmU2ZGU2OTQ0Y2I0NjZmNDk1ZjQ4NzI3ODJhOCJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L276-L285",
+          "version": "repo-lines-v1:sha256:76dcbe4c9cebf8351de174a1425178c988b24830260a90105e4c23765e7b644b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiZTRkNDQ0OTg3YjI1OGYxMDk3MzYzNWExZDQ2NTk5ZjU3YjMxOWFlYWM4Yjg4YmY2NTc1YjdkOGM4OTM3NjgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ3MWM3NDdiZDFiODRjMjU3NWIxM2NlOGMyNzUzNDRlMzM5MmI5MzVlZGUyNDhiMTAzMjIxYTM5ZDQwYWRkNGEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjdiNzNmY2Y1Y2MwMzg2NTk5Y2ZmYzExMDI2NmM4NzQzMDdjYzE3NzU1Y2I4NWJiMDhjZDgyZmJhYzgxYTdlYjkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5YmIzNTBhMTY3OGEwY2Q2NTJhOTZmMjI4YTFiODRiNWJkZmMwYWYzZTVmMTYwMDhmZDYxNjY3MzBlY2U2ODAifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L323-L329",
+          "version": "repo-lines-v1:sha256:138d8471f21f7cf461fc83f91e2e1e956c91ff1a092a49f9ab13d24cd961ac02:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNzYxNjZjMmI0MmQxYzI4ZmJmNTdiNzc3YzI3MjljYTEzNDExMTExN2MzZTYxYzcyOWY0MGE3NDVkNjU1YTk2OSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzA4MTYxODQ2NGUzNGI1ZDIyY2NiOTc3MTg1ZGQ4NjllYjMwNGYyZjFhOWVjZWE4Y2FjYTdkMjBkZDQyZDdiYSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYzY4M2Y4MDhkYjNiMjgxODQ5NjViNjIwYTYzOWVmNmEzMTQ2MjEyZjk5MGI3NmFiYjYyNDczZDBhY2NiYTZmZiIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNjUxZjdjOTQ2MjRiMzA0ZTQxNDg4NDAwZjhkYjBjY2QwMTlhMTMzZDEwMjhhMjgzMjMxNThiZjFmMTZhN2ZlOCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_848ca9c296224a13b0e3adfd35d02e0a",
+      "statement": "`adjust()` is a pure re-derivation: its per-row factor multiplies only split ratios whose effective dates are strictly after the row date, divides raw OHLC prices by the factor, multiplies raw volume by it, copies the input rather than modifying it, and rejects invalid split ratios, non-raw price bases, or missing raw inputs.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/adjust.py#L45-L97",
+          "version": "repo-lines-v1:sha256:95df78b875db8ad4444f3dc42c06fe715af157dc2bbddb98a6c73e43e604d428:eyJzZWxlY3RlZExpbmVDb3VudCI6NTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjljZmFmNmQ5YzQwOWI0NTVhMzVlNWU2ODhiMzdjOTEzMGFhNTMyYjBkYTFmMWI2MGZiNGJmMDE0OTJmZTg4M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhMTFjMDU2N2QwYTVmOWU5YjEzNWY2NWNkMjUzNzJkZmQ2Mjg3NzVmN2MxZWQyNTNmOGJhZDQyZGQyZDY2NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjA4NmFjYTRiMDUwOGYzMTUyNjI1M2E4YTE3MThiMWUyYWU3Y2RkMDg4MDEwM2YwMGZmZWU0MjZiZTQzNGNlZGYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_deac531828ec4b76824ed422511539ba",
+      "statement": "`reapply_adjustment()` re-derives a complete stored raw-basis series under the symbol lock and skips writing when the re-derived frame equals the existing frame.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L412-L428",
+          "version": "repo-lines-v1:sha256:306f0e7d856d638fa9b57ab2511eb2dc2787bfd4a7075aa4a80b6d686cc67285:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImQ1YTRjZGIwZWY1ZTMwNGM5OGNlMDQ4ZWRmMWNkOTRiNWU4MDVjNTNiMGM5MGUwNDgyYzE1MmE1ODc2YTY1MDgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdmZjk4OTY0MTViNDNlN2M1ZWFmZjBhNzE2ZTZjNWYzOTc4MTQ5NTY4ZTdmMTA2MTRjZTE3NmI3YWU5NTg4YjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjZkODM5MDYzYWFlYTNjYzIyYzgzZTk3NjE2NDg5NGRmYTQzYmNlMDJmZTMyZDc3MjgyZjVhOWIxMTFiZDE5YzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRjNTQxN2FhMDk4NTE0OTYwMjc4MmE0ZGM2YjU2YTIxOTBmN2I5YzZiMWRhNDdjNzg2NGQ4NmI2MzJlZjA0OTgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_104c0c7218c242d48997805409c6a3e0",
+      "statement": "The sync runner selects EODHD action processing and raw basis for declared non-crypto assets, selects split-adjusted basis for declared crypto, refreshes actions before loading raw bars, and reapplies adjustment after reconciling a raw-basis series.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L101-L113",
+          "version": "repo-lines-v1:sha256:00057f28d6caafa43cb19b05d10c15fbea1d53d4eea4dbc9995ab2888e744824:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxMmU1MjgxYjY4NzFlZmJjNTJmMmFiMWE0ZTBkM2E1OTBjMmJiN2FmNTcwYzdkZWVmYmFhNWJlMDEwNTA5NTAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjA3ODI4ZDQxZDU5YjhjM2Y0YmZmOWQ0ZWQyZDRkODYyMzRlOGZmOGE4M2U5OTQ4OGYyMjhjNWQzMzMzZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImU4OTkzZjNlOTI5ZGRkYzcxZjFkYThmZDBjMjE1NWJmN2E0YTFkN2MxYzVjY2U4ODNjNWQyMjM1MDMyZjBjNjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxNzk2YjM0YmMyNDBlMDFlY2RlYjc1YmUxOTBiZDVlNDQyYWZmMzJmZjQ0NGU2MmUyMjZkMmU2NDYxN2Q0NjEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L191-L232",
+          "version": "repo-lines-v1:sha256:773639a04a8f29d5345742baabf8b6b16760399e0221cb3c0503b75c63593c3d:eyJzZWxlY3RlZExpbmVDb3VudCI6NDIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNTFhOTg1ZWMxMWE3ZjM2MmRhMzZjODFkYTkwOTE0MjhmZGYwMmIwM2Y5ODI2NDRlZTcyYzBkNDIzYzM3MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImNlMDFhZmE0YTFhZjc0NDU0NGQwNDVjNmI2NmQ2Y2IxOTA2MTFhODZiNDIwYjVmZjNlNGJjNjQxNWY3NmFhNDkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NGI0OWNmNjJkYTllYTVlMDI0NmJmZTA0YTMzYjJhZmQwYzg1ZWViNzRlZTc5OGEzMzExOTJjYmExZjY2NTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1NTNmOTFhYTdjNmI2ZGY2ZmE2NWM4NmVmMjliMzliYmNjYWUyOTc0YjRmM2I1M2E5YzBkMDk3MzQwMmJkYTMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L260-L281",
+          "version": "repo-lines-v1:sha256:786663997a3c560fb19fd35f2eb8d3a3ac25c04dcafb9a854c4032bd98a7734e:eyJzZWxlY3RlZExpbmVDb3VudCI6MjIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhhZTZhZjZkYTEzYzQ3NTVjNDc3ZmQwNWMzNTlmMjNkNzJjOWM1Y2NiYTM2M2Y2MGJlZGVjYTA5MjYxZjg1NTIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQwYWI4OWVkYTQxYTRjZTM4MzFhNzNiOTViYWJjYjJjNzA1ZDdkOTkxN2E4NGY0MDYwMjI1MDA3NTljYzA3ZGYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijk3OWFhZmQ2MzVlYjdiYmM3ODAyMGU1NjE1OWFmZDZmNGQ5NjA3ZTBmNTAzZTQ5ZTU3MWZkZWU2YWQyMGU5NGQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjE1ZDM2NzQ2MDhkM2E1ZTgyODE1OGY1ZjQ3MzMyMjZiMjFmYWIyODI4OGU3NDhjNDMxNTE2YjI5NDBhZDNkNjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_cb4a6a7bfa814d5888a072154561fa01",
+      "statement": "Append persistence normalizes duplicate timestamps with existing rows first so stored rows win, and bounds append rewrites to years represented by incoming data; overwrite delegates to the same write machinery with stale-year pruning enabled.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L160-L164",
+          "version": "repo-lines-v1:sha256:26f1bbb9ebdc3f45c5f97357021cf07741a473f7c4be70b0d5a1d5668d10eb13:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiNDFhYmNkMGNjNjkxM2Q0ZjUxZWIyMWU0ZjVhZmMyZTkwZjg2ZDM2YTQ1MGJiNDJjYjA1YzZmM2UwZDcwNmY4YyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiYjEyMjVlYTkzOGIwNTcxNjZlMzUxOWU1NTQ5ZWE5MzliNzU1M2I4M2VlNzQ4ODNiOGQ5MmRjNzRlOTQxZjA4ZiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiYTMzNmZmNmRjMDI0MDY2ZDViYzMyMjAyNjJjMGZmZmFmNTI0NzYwZmIyYjRjMjFhNWZjZDg4MzQ3MWQ0MWY2OSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiODE3ZjUxNjhjY2MyYWY2ZDhjNTIyZmY2ODc1YjM0MzhhMTdhMmY5MTYyNDFjZmI0ODJkZDBkNTU2NzA3NDRmNSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L201-L225",
+          "version": "repo-lines-v1:sha256:8a1c34a1f37f2648675dd8820ed541ca928ac1f8f41dce69fab8310a198bdce7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjM2VkZmZlMjg0ODAxNjgyMDMyYmMzMzIyM2VmYmNmMTcyMDg3Yjc0OGY0ZmEwYTg2OTlmOTZhNTM1NTVjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxMjA2ZTE3Nzc4MmExNzQ4ZTQwMzNkYWJjZjcwZjdhMDc1OTI3MTZmZmQxNjQ4YWU2MDMyN2FlN2E2NmNjMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNmU3N2U3MjZiOGIxMWMzZmQ4NmI1ZmU5MmRkYzc5OTllN2M5ZWI1MjM0NTUyNGYxMTdkMWY2YmI2OTU5NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNDZiNDIzNTZhZDAxNGQwOGZiMDQxZmIyZDc3NTkzOGVmYTMyYzEzNTlmOTQxNWNjYjcwNjg2MDM2MmRjMjMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L234-L263",
+          "version": "repo-lines-v1:sha256:2ffed8df859fe878c7bb39ea124d5060002c0720546f9ce0e2a5ddc6e9ca7e22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZDE5MGE3ODczNDg2OThkYjIyZmY0OTMxNjgwNmMxMWU1NWJiN2U5OGNlNjU5ZjkwY2Q5MjBhMTAxMWQ5NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTMzNmNiNDIzM2VmNWU1MzI3OTY1NWJlMGMyZTBmNzJmMzNlNzIyMzk0ZjVhODEzMzg2ODVjZmE5MWVhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYzEzNDgwOTY2NDA5NTFjOWVlM2M5MjhhN2I3MGJkNTAyMjRiNGI3ZjgyZDZjODg3OGIwNmM0ZjYyMWE1ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2OThjY2ZlZDJlNzM2ZGQwMDk1NzE2MDQ4N2RiNmQ5NmNjMDBhMDE0OTMzZjJhMzQyM2I0MmI2ZGVkZTRhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c1a12b81232341a2a21b2ee36c501fa2",
+      "statement": "`reconcile_bars()` compares fetched observations on `open_raw`, `high_raw`, `low_raw`, `close_raw`, `volume_raw`, and `adjusted_close`; it reports every changed cell, replaces changed rows, appends novel timestamps, and performs no write when the supplied bars introduce neither changes nor new timestamps.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L334-L388",
+          "version": "repo-lines-v1:sha256:9814f4350950d2851211bdf393d6488afad43c98393680bd7ba0264d073918fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZGZhMWI3YzRkZWJlODNlZTY0NjIxNTI2ZDViNGU0NGRmODRiYjZmOTEzYTkxMWY3ZGE5YjUwYTNhN2MwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMTUyODQ2MTUxMWNkODMwMjUyMzFkYjQwNTVhZjVkNzI3YmQyODI4ZTg0ZThmMzM2MzAyY2EwZTA4NmNkOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMGI2NmUzZWUwYWRiNjA5ZjA2MDk5MTcyMjQ0OWJhNjY1MjY3ZjQ1Nzc2YzNjMGZjMDc0YzZiODA2NTE0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1YWVjYWYzMWIxNzFmMDQ4ZGM1ODQ0OWRmZWIyMjNmZGQ4ZGFjYTFjODdmZTJkZWUzOGExZWFmOGYwZjhkMmIifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L51-L55",
+          "version": "repo-lines-v1:sha256:c1128be4ffee493522095b7ec2aa073afec5abdeb3c3041f13d76d8cd92951e5:eyJzZWxlY3RlZExpbmVDb3VudCI6NSwiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiOWYyN2I5ZjA1MjIzYjZmNjVlOWRkNDUxNTJkMzE3NjBmYWY1NDA0NGE4YTJkNWZjOTZhMDgwY2RkOWZlMGRiNCIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiMzgxOWNkNmNmODM4ZTY2MTc5ZWU2OTg2ODI0ZjFjYzQwZDI5ODg1ZjU0M2E5ZmFlYmUyZGFlZmU2ZWUwMTI5NSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiNjEwNmJlNzk5MTM2MmI2OTAzNzhlNzgzNjhmY2FjNDcxM2RjODhhNTFhMjk4NDdkMWU5Mjc5NDIwYWI1ZTQxMCIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiMGY3ZTY4OWM2MmQ4NTczMDZmNDM3MWViMzg3Mjk1YzlhOWViODM0ZGM0MmFmMTU2ZDY4MDQ3OGExMGNhYTc0ZSJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_c2da8deef1c64c1f8566bf03fb486727",
+      "statement": "The sync runner, not `reconcile_bars()` itself, establishes the daily revision scope: after a first fill it fetches from the oldest of the newest configured tail sessions, while the store method only considers timestamps handed to it.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L334-L350",
+          "version": "repo-lines-v1:sha256:6372d1690963da2591283244138fcc42e79351dae7223bf7dbd7ca4c06c77680:eyJzZWxlY3RlZExpbmVDb3VudCI6MTcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZGZhMWI3YzRkZWJlODNlZTY0NjIxNTI2ZDViNGU0NGRmODRiYjZmOTEzYTkxMWY3ZGE5YjUwYTNhN2MwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFjZjI0MTM5ZGY0NWJjMDg3NTQ0ODFkMDRkYzg1YWZmZDMyMWI3ZjdiNjE3NGQ1Mjc5YWNjYmEwMGVlNTI4YzMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMGI2NmUzZWUwYWRiNjA5ZjA2MDk5MTcyMjQ0OWJhNjY1MjY3ZjQ1Nzc2YzNjMGZjMDc0YzZiODA2NTE0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkMGU2MzRmYWRkN2U3ZjFkNjM1ODU5NjA4ZmU0MzIxM2YzYzJhMzRhMTg4NjUzODk0MDJkN2NmMWRmYjVjZDQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L119-L153",
+          "version": "repo-lines-v1:sha256:5683bd2f47db1d4bee2f63518f7c7cebffdc856d26177b0b8816abafaf4f22ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YjRhM2E3ZDI5MTg3NTcwMDE2NmY5M2VjM2ZiMmNmNDJjOGU0YzkwMzlhZjVhZWEzYmNiY2I3N2RlYzI5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Y0MWQyZmFlNjkwZTUxMzhkN2M3YTZjYjc2MmUxZWZmZTEwNzkyNGFkNDM3NDI4ZDA4MzY0NjRhYjBkNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZTljMWRkMDA3YmM3OTdlNGFiZWI4NTY4YjY4ZmY3ZmI5NzU5MmJlNmE4N2FkNzgxMGQ1YWQ4YzdkZWE2NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NDFlZGQ2MjA3ODAzYjBhNjVhMzI3Y2QwMzU4NmEyMTcwZDdiZDc5YTFjNzkxZTNiYjI4MWFiMTZjNjJjNmEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L248-L275",
+          "version": "repo-lines-v1:sha256:6dbeded9d4ba5a1b80f0bb4ae5c3915522bc4e76d3e159c4e75c2c4eb08b93b5:eyJzZWxlY3RlZExpbmVDb3VudCI6MjgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNzllNjc3NjdhMWIyMmFjZjk3YzQ2ZTgyMTIwNTFhY2I1N2Q0NmIyNmNjYjkxNTNjNDNiNDQwYzhhZGJmNWQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMGQ5NDA2YWViNmIxYjU1YzEwZmFlMzBiOTdjOWQzZmMwODg3Nzc4NTNiZTZmMTJjMzM4YWViY2ZjYmMzYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkYmQyYmY1ZTM3NjA0NGIxNjVjMzU3NjI1ZDNiNmU2YWIyZjJhZmI2Y2JlYmFkZDQ0NmM0NjVmOTdlZWM5MjciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkY2JlYzMxNmQxOWY2Njk2YTUwOTUwZDRmNTRkM2I1ZTdjODg5Y2Y4M2ZiOWYyZGUwNWNmNzY0NWY0MDVmMmMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b8ffc001f9c84ce9aaadd29417a346c8",
+      "statement": "Parquet read-modify-write operations are serialized by a per-symbol POSIX nonblocking `flock` with polling and timeout, while readers remain lock-free.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L167-L200",
+          "version": "repo-lines-v1:sha256:0ce90b961fe14427d380aa569b1465efc6815c1790faae00c165afd96cf3b083:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NjdlYTcxNTM5ZmEwOTRhYmNlNmU3MWU3ZGFlYTllZjQyMTg5YmQ3ZmE5MjExOTZiN2VlYjFkMzY4YmQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1OWUwNTA2Y2M0YWI3N2I0NjgwOGRjNDAwNzE4ZjdkMTI0ZDllMTI0MzZiODU4NmQ5ZTgxYzQ2YzMxMzdlOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MzAxNzI3Y2Q0ZDBlYWI0MWNjOTEzOWNhZmJjM2I3NTVhZTQyZWNiM2ZlYzQzMWU3MmZhOGU1Y2NkMGZiNTAifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L201-L225",
+          "version": "repo-lines-v1:sha256:8a1c34a1f37f2648675dd8820ed541ca928ac1f8f41dce69fab8310a198bdce7:eyJzZWxlY3RlZExpbmVDb3VudCI6MjUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjFjM2VkZmZlMjg0ODAxNjgyMDMyYmMzMzIyM2VmYmNmMTcyMDg3Yjc0OGY0ZmEwYTg2OTlmOTZhNTM1NTVjM2IiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjcxMjA2ZTE3Nzc4MmExNzQ4ZTQwMzNkYWJjZjcwZjdhMDc1OTI3MTZmZmQxNjQ4YWU2MDMyN2FlN2E2NmNjMDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImYzNmU3N2U3MjZiOGIxMWMzZmQ4NmI1ZmU5MmRkYzc5OTllN2M5ZWI1MjM0NTUyNGYxMTdkMWY2YmI2OTU5NmQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjNjNDZiNDIzNTZhZDAxNGQwOGZiMDQxZmIyZDc3NTkzOGVmYTMyYzEzNTlmOTQxNWNjYjcwNjg2MDM2MmRjMjMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_468eb387ebf0472c8300c72f325afb7f",
+      "statement": "Each Parquet year write lands at `data.parquet.tmp` and is installed with `os.replace`; stale partitions are deleted only after overwrite targets have been written, and crashed temporary files are invisible to `load()` and later swept as hygiene.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L121-L127",
+          "version": "repo-lines-v1:sha256:4c9a29505969d2abd12ea512f64d1ddbfca1b358760b7271493dbf8c07dcb5d8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiMDZkMGRmMzE2NTNmZGE3NTUwNmZiMDYzZmZjYjE1ZWMyZGI0N2IzZTcyYjNkMjA3ZWRkMGQxYWNjZThlNWQ3YSIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiOTNiMzhmYTYwZjVlNzUxZmUwYTBiMTYyMzM1NTRhYWI5MzA3ZDkzZTU4YmVhZWNhMTdmYjJjY2IwMGYzNTdjNiIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiMWM3YTk2MGI5NTJkOTE4OTY4ZGIyMGVkNGJhYjVmNzY3OGQ4ZmFlOTI1ODk4Njk5NWM0OGFjOTRkMjc0YTc5ZSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiZDc1Y2Q2ZTQ1ZjFhNjA3NWM2MjIyNmE5Njg5YzZhNDEzZDc3NWE2MmYzMGJmZmI3Y2QyMDkxOGNiYjc3NTVkNSJ9"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L227-L263",
+          "version": "repo-lines-v1:sha256:3803ee0e4383fd143f5ccbdd1b14014ea59d7f9afe80aa823ae217f576383c18:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQyODE0NGJjZWM2NjQwYTg4M2RiM2FmZTMwMDIxNWIwYzQ2NjVmMTI4ODQxZTM5NGFhYzI0MzY5NDE2MGIyNmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTMzNmNiNDIzM2VmNWU1MzI3OTY1NWJlMGMyZTBmNzJmMzNlNzIyMzk0ZjVhODEzMzg2ODVjZmE5MWVhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjFkMDg4ZDc3YWMxODZmZjkxMGU5YWZkYzUxMWVmNTAxY2RhMWNkNjdlNjA4MDc4ZDBkMjBkNDU4NDU5MjMwN2IiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2OThjY2ZlZDJlNzM2ZGQwMDk1NzE2MDQ4N2RiNmQ5NmNjMDBhMDE0OTMzZjJhMzQyM2I0MmI2ZGVkZTRhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_013601c814024a36a2269cc1fefb2528",
+      "statement": "Corporate-action persistence deliberately uses a direct truncating JSON write rather than the Parquet store's lock and temporary-file replacement protocol.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/actions.py#L65-L77",
+          "version": "repo-lines-v1:sha256:60a65ecf6f9553e3be3e37ff566aaca4e65b0730ac84c5289c30edebcca01569:eyJzZWxlY3RlZExpbmVDb3VudCI6MTMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE2YjFiY2M1ZDhkYzE2OGJkMTRlNzM4YzYyNzdmZDViZWJmYTFhMGI0NjhhYTYzZGI4MDhmMjRlMThiZTk0YzUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhkZjgxNzUxMmRiYTZlOTQwOGFmOWU4NWZmZWJmYjA4ZGNjOGI4Y2EzNmM3MmE5OTc5NWI5NDVmYTEyOGE1NjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ5MTJiMWJjOTQ1MDZmZDI4MTg1NzZlNGMwNmY1MWY4NDJhNTBjOTdiYmYwM2RjZDczNzVjNzUyNTdjNTYwNzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjEzYzYxMmVmYmQ1NzNiNDRjZjcwMmE2ZjZkZmQxOWNkZmE5NTA2OGUwMjUwOGU3ZjI5YzI4NTJmNzIzYzE3YjQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L167-L200",
+          "version": "repo-lines-v1:sha256:0ce90b961fe14427d380aa569b1465efc6815c1790faae00c165afd96cf3b083:eyJzZWxlY3RlZExpbmVDb3VudCI6MzQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI1NjdlYTcxNTM5ZmEwOTRhYmNlNmU3MWU3ZGFlYTllZjQyMTg5YmQ3ZmE5MjExOTZiN2VlYjFkMzY4YmQ5M2MiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1OWUwNTA2Y2M0YWI3N2I0NjgwOGRjNDAwNzE4ZjdkMTI0ZDllMTI0MzZiODU4NmQ5ZTgxYzQ2YzMxMzdlOTEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImI0MzAxNzI3Y2Q0ZDBlYWI0MWNjOTEzOWNhZmJjM2I3NTVhZTQyZWNiM2ZlYzQzMWU3MmZhOGU1Y2NkMGZiNTAifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L234-L263",
+          "version": "repo-lines-v1:sha256:2ffed8df859fe878c7bb39ea124d5060002c0720546f9ce0e2a5ddc6e9ca7e22:eyJzZWxlY3RlZExpbmVDb3VudCI6MzAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI2ZDE5MGE3ODczNDg2OThkYjIyZmY0OTMxNjgwNmMxMWU1NWJiN2U5OGNlNjU5ZjkwY2Q5MjBhMTAxMWQ5NjIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5ZTMzNmNiNDIzM2VmNWU1MzI3OTY1NWJlMGMyZTBmNzJmMzNlNzIyMzk0ZjVhODEzMzg2ODVjZmE5MWVhNjEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQxYzEzNDgwOTY2NDA5NTFjOWVlM2M5MjhhN2I3MGJkNTAyMjRiNGI3ZjgyZDZjODg3OGIwNmM0ZjYyMWE1ZTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImY2OThjY2ZlZDJlNzM2ZGQwMDk1NzE2MDQ4N2RiNmQ5NmNjMDBhMDE0OTMzZjJhMzQyM2I0MmI2ZGVkZTRhNjgifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d9b4381001f94c0e9750b377ba1008c4",
+      "statement": "Yahoo CSV import requires the seven contract columns but stores rows as `price_basis=\"split_adjusted\"` without dropping zero-volume rows, whereas `to_contract_frame()` maps stored main OHLCV and provider `adjusted_close` back to the seven-column interchange frame.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L390-L410",
+          "version": "repo-lines-v1:sha256:92809eac365dcc33e2332ca05e5052a4c6d6bcdeb87207bcbe69b6e96ed69e21:eyJzZWxlY3RlZExpbmVDb3VudCI6MjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImFiZDVhNzRhYTc5ZjJhYzUyOGNhMGVjZDI2NDk5ZjVhODVkZGE1MmU0ZTcxOWQ1MjU5YzMyZTUyZDZlNjJlZDYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJhMzUzMjZjYmVmNjFlZTA3YzBkOTU5N2YxYTM2ODQyNWEyMThiMjU4OWY1MmUzMWVjNGRmYWRhMjk2OGVhMDUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImIxMDUyMzE3YTkzZDJiMzRmNWJhMDhmZWQzNWRjMjc5OTY4M2ZmZmEzMTllNDk1OTg2ZjNkMDljMTg0ZDJjNDQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ2YzRmZDY5ZDIxNTdkMGVhNzgxZWE1OGYwNTNiMWMyYmI0ZTFjMTg2ZGUyNjkwZGM0MGJhZWVmMjZjZTU2MGQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L431-L456",
+          "version": "repo-lines-v1:sha256:44decea796b5410e769cb8145c1a210bec984bbd361d5d94cb7719a2b162da23:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzMTY0M2YxODNiYWI4NTM2MWQ3MjYxZGFlYzEyMGVkNjA0YmVkODAzODE3YTc5ZTc5MTIwZTNkM2M1NjczODgiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE4Mzc0NTc4NmU5ZmUxMGExNDg1MTQ3YzFiYTNkMDA3MWM4MWU5MzBkZDE5NDRjNGFjYzdkMzgxNTU0MjBjNTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjViNTYyN2E4ZDRlNDEzODY4NjI3OWZjNmY1ZTJiNGQ1NjJhYjEzOTA1MGNlMmY5MTNkYzc0Mzg1NmUxNDRiYTIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9ccecb6ae23546979e35d69d07262ad0",
+      "statement": "The `jef-data` CLI exposes focused validate, action sync, load, adjust, CSV import/export, differential, and batch sync commands; lazy imports keep the validation command independent of the Parquet and network modules.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/cli.py#L1-L18",
+          "version": "repo-lines-v1:sha256:aaaacaf03cd382e626f4384b50ec026d6786c8c05838a9e23751ac4a42f3e69b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NjBmZmVlMGY1ZDJmYTJjY2U4MzAzOWZiNWM2N2VhMDU1Y2ZiODlmODdmNTZmYmUwODdlM2RlYWYyZTNiNDciLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUzNzdjNGZjMmE3NGY0MjljMjNmNTg5MTk0OGY0YWM4M2ZiYTQ4NTZhNjUyZTRiMGVhMTBkYTE3YWZlOGFjMjUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjowLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImMxZTAxZTg4YTE3ZWFiZTRkMzA5ZDM0ZTNiNzYxZTgzMDJhMzUyYTQyODc3ZjI1MWZlNDAxMWYxNzQ5YjEwMTkifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L128-L234",
+          "version": "repo-lines-v1:sha256:5857d86118e488483f01768c7194c1dddc777f24be1c8f26e72f4b6b794f80d5:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA3LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiI4MDQ5ZWE4MjU0ODNkZmMxZWI2ZjVhYTJjMjIyMTJiMWUzOTQ4NDc0ZTcwYTZiOTI3NmI1ZDUwYmZjYTMwMWI2IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI4OTZhNDIyZWU5MWVkY2RiYWU4MmJkNzc2NmMyZGE0MjczM2NmY2U0OGU0NjFjMzgwMzljMjhmODk1NDNlYzdmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI5ZjRkODA3YTA5ODRjNTM0MDAxZGQxMzRhODMyN2JhZGMyYjk0ZWNiMzJlM2MzYjE1MjI5NGVlNjgxNDc3NzhlIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI1ZTI5NGViODI4OThiNzgzYTE4NDQzYmE1NDIwYjFmODcwODg3MmM5OGY0OWRiY2NjYWFlNjQ4YTdkMGQ4YzY3In0"
+        },
+        {
+          "resource": "repo://src/jef/data/cli.py#L378-L505",
+          "version": "repo-lines-v1:sha256:468bada25506d48c5851e7c85503da26c1e33943568aaf97a76c26c2cf7b4a6b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTI4LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJlOTg4MDJjYWQ4NmFhOTM2ZDRlYmNkNjJiMzE1MzhjNjZmNWNmNzc3NGY1YjI2NDhmOGUyNzhmZjk1NjQzODc3IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiIzZDUyZmNkYWUxOGFmMWFlNzlmNTM0M2Y4Zjc1YmFkNGYwOTlkNWRiMjhmOGRlNTg5YWViOTJhMDg2NzQwMGYxIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiIwNTcyMmI4YzRmMjgzMWEwOGE2ZmYxNjhkMTY1MTE0YjZmZGJhY2Y5ODQyMTUzNjYyNzc2OTNiZGNiM2JkMDIwIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3NmM5MGJjMWI5NDNhNmE1NzgyNTA3YmZhOThiZGU1MGRkOWFiYzEzOTZhYzliNDM2NzEzNmZkMTMwMTVmNjZmIn0"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T09:59:03.506Z"
+  }
+}

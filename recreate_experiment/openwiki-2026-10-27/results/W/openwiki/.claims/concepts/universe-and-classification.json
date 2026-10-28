@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "pageVersion": "sha256:5168cd99aa2ed868a0e872abe12233a2b08c10f5d7be0ca79d7814e0a5f4ff94",
+  "claims": [
+    {
+      "id": "claim_03c34361079649bb8301a9b4bfb2f832",
+      "statement": "`load_universe()` is the single parser for universe declarations: it reads the packaged or explicit TOML source, resolves defaults into a normalized `{defaults, assets}` document, and rejects malformed TOML, unknown keys, unsupported providers or non-EOD kinds, incompatible source fields, duplicate asset names, and store-coordinate collisions with `UniverseError`.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.py#L22-L40",
+          "version": "repo-lines-v1:sha256:23bbe8c5bf9a1749b4a6eccfe6dfee83df9d64bb2acdef3d67b56bee4321c6d2:eyJzZWxlY3RlZExpbmVDb3VudCI6MTksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjIwMGNiZmRhNmY3NDA5YjczMWUxMDIwMDM1ODM5NWFhMmY4NDU4MDkyYTBmNWQ4N2I1MWViYTJjODI0ZmEyZmYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY2MGM2ZDM5YjI2NDVhMjViOTdkNmQwMmU2ZWJmNTJmNGEzNmE5OTE4NTU3MzYwNzE1OTAwNDI3ODY5NDg1OGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImY1OTdmNTJkODM5ZmVlZmU2ZjUyYWFmNjc4YmZmNDk4NDk4ZmI0YTlkODkwODUyYWJlNDcxZjQ0YjEwY2UxNzkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRlZWI5ZjQxMmI2NTUyNjU4YzEzOGQ5NGI0ZmJmZWU3NDgzYWNmMWE1NTYyNWQ5ZTdkOWFlY2VmMTMyZGNjZmUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L224-L269",
+          "version": "repo-lines-v1:sha256:8737e984f897420b66599fd90aeb2d3dec96e4bf403e546dd4ee5ce2e2ed0e5c:eyJzZWxlY3RlZExpbmVDb3VudCI6NDYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImI3NzJkNjU5M2VhOTZiZjQ5NGNlOGE5YTZlNDE2NmUwZTFiMGFhMTI0ZWIxOTQ4YzAzMDIwZDg4NzQ3MWE4YWYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY4N2ZmMWJmMGQzM2I0YzdjMjlmYTI1Y2U5YWVlMGUzZDlhMjAyYTU2ZTliODc2NWYyMjA4OGU0YzA3MTg0Y2YiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2YjEwODkzZTYzNTRlMWRjNWY0NzZjMWRjZmQ1NmQ0ZTc0MzliZTk4NjMzYTM4NGQ1MWE5MDhjMmM0OGU1MzYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc1ZWFmZDk4ZjJkMGM3ZDA4ZDFmYzA2ODllMzU4M2YzMjVkYWYzZGJkYjJhNmFhNjk5NTcxZjA0NTY3M2QwZTMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L89-L143",
+          "version": "repo-lines-v1:sha256:c50cc58739cd34c10ceddda98cebff39d5106f03fdef392561564408e2ad086a:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjdiOWEyYTNhYzAyZDE5ZWI2YTY3YjhhYTI5YjU4NTE3ODU2YmU5NGVhOTE1MTQwN2M2N2I0NWMzN2VmZDk1MTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjM5NjgxMjM0YjBlZDQ2ZTRmZDBmNTU2N2Y5NWM1MWIwZjkyYjkzMThkYjY5ZGMyMzhlMWZmYjZmYzUxNmRlYzUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQ0MGQyYTI3ZDM5MmYzYTRjYjhhZWUwZmYwNWY4ZjM2YmU5NWFiNjljYzljZmFmYjAyZjlmMjA5ZWI4NzZlNmEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0OGI1OTc4Y2Y2ZGJkNWIxYzRhMzRmYTA3Y2FkMTNkMWUzZTMyNDM0Mzc0MjczMTA3NjE4ZDZhMTA1ZGExNWMifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d8cee93954294e0ba2c6fc4b9c176941",
+      "statement": "The packaged universe defaults to store `data` and USD and currently declares AAPL, BTC, TLT, NVDA, TSLA, and IBM, with the sources and modeled markers specified in `universe.toml`.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.toml#L35-L129",
+          "version": "repo-lines-v1:sha256:e86092148ef3ac8d8c73c4856939093fb866dbfd15f9e465ca82a6fad8f3d655:eyJzZWxlY3RlZExpbmVDb3VudCI6OTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZjNzZjOGE5ZjFjZGEwY2UyNDQ1MzNjZDRmNThhZDgyZTUxNjI3ODRkYTg5MTU1NDQ3MTNmZDRhMDM4OWYwZDMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZhMDVmOWI0NmJlMjBjY2FmYTYwZTUyMDEzMDczMDFhZGQxZDI1OTEzNGE5NjY5OWU2NGUxZWI4ZjcxYzVkMjkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImZiYjY3MWY4N2JhN2NhMTlmZDVjYjM4MTRlZTRkZDA2M2EwY2E2MDk3NzE1OTJjYzc4MDFjYTUwYmM1MGUzNTciLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_08b9adadf9fb4429b3257f8eebb3bad1",
+      "statement": "For an enabled asset, the universe parser requires at least one enabled source; a modeled source must itself be enabled; multiple enabled sources require exactly one `modeled = true` marker, while a sole enabled source is chosen implicitly by `modeled_source()`.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/universe.py#L169-L205",
+          "version": "repo-lines-v1:sha256:52fae02d88339cb5cf84b4d065ef458c48802c4ae9d3566f78f45a55d834d8c4:eyJzZWxlY3RlZExpbmVDb3VudCI6MzcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJjODYyNjczNWFlMzQ0ZjlhZTg3ZGNlZWI1MWMxYzliMGQ4ZWEyZjU2M2VhMDU4NDUxOGNmYTg4NGY2MWY0NzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjJlZjBhMTkzODFkY2MxNzc0Yjk5NjFhZjZmZTFhZjg4MTdiMDhkMjY1MThmZWEyZGE1Y2I3N2EyNTVlNjYxMmQiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjBiMzc5MmJlYjA3OTc2NDFhYWE2OWNhY2E1Yzg3MjM5NjA0ZTBiMjYyNzM5NDVkZGQwMjY2ZGU1OTMzNzFiYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L278-L293",
+          "version": "repo-lines-v1:sha256:65a525a1bc834f9ce6c05392417a7167c42c31711f4e0a1cb2d50d0d2c342c33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNzJmODM5ZmU0ZjBhMzQ0YWYzNTFmYjkzZWFiZDIwZjZhYjJiNDhiZmI4MDI5ODI1ZjA1NDdmNTc0ODM1OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkM2UyZDdlYTRiYTJmNzUzNDE4NjEzMjllNGMwMjkyNmZhMTgxNTNiMzQ1ZjM2MGJjNjlhNDEwNjhkOGQ1MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMGQ5MGY1NGJjNDM1MzFmNmU0ODAzMmRjYjQ1MjIwMWVmZjM3YmNhYzY5NGI1ZmI3MDQwYjMyMGJiYzc3N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNDQ2NzQ3ZDUwZDkyNDRhMzBiMjVlMDgwYjljZmMxY2YwZWYwY2I4MjFjY2Y5NmVjNDhjZGY3ZmEwYjJjNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_b52aad5b12fb4e86b7450ec68837d31a",
+      "statement": "The modeled-source marker chooses the deterministic feeder returned by `modeled_source()`, but sync selection emits every enabled source of every selected enabled asset rather than acquiring only the modeled source.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L65-L116",
+          "version": "repo-lines-v1:sha256:00fcafbe4e5e4243c74822a66bb26aae9035fe5bf44923dcaa5281b99c3ebb19:eyJzZWxlY3RlZExpbmVDb3VudCI6NTIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmM2Q5NDU0YzZlY2QyZjY0ZGYxYmU3YWE4NTRmMDgxNjA3YzNiNWZiMWU5MjkxNWVhNjJjYzYyOTczYjgxOGMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZhZGEwNmJmNWI2MzM3MjM2MzI1MmM3NDVmMWRjNTcyOWE5NGVlZDJiZjA1MjJmYTgzMmRkNDM5ZTdlNjkyNDEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjU1OGRhMDhlNTZjNDdlZDFkMDIxNzhhNjc3YTE2MjQxYjUzNzhiY2Q1MzU0MDg3Yzc2NWVhNjc4ZDllOWZhZjgiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjQ4NjFmNzhmZGQ2MTJmMGZhODk2ZTc1OTk4MGZlZTk1Nzc1ZGQ1Njg2MDAxYTQwYTc5ZWZmM2YzZDE2ZjY0NTcifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L278-L293",
+          "version": "repo-lines-v1:sha256:65a525a1bc834f9ce6c05392417a7167c42c31711f4e0a1cb2d50d0d2c342c33:eyJzZWxlY3RlZExpbmVDb3VudCI6MTYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNzJmODM5ZmU0ZjBhMzQ0YWYzNTFmYjkzZWFiZDIwZjZhYjJiNDhiZmI4MDI5ODI1ZjA1NDdmNTc0ODM1OWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJkM2UyZDdlYTRiYTJmNzUzNDE4NjEzMjllNGMwMjkyNmZhMTgxNTNiMzQ1ZjM2MGJjNjlhNDEwNjhkOGQ1MTUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImEzMGQ5MGY1NGJjNDM1MzFmNmU0ODAzMmRjYjQ1MjIwMWVmZjM3YmNhYzY5NGI1ZmI3MDQwYjMyMGJiYzc3N2UiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjYyNDQ2NzQ3ZDUwZDkyNDRhMzBiMjVlMDgwYjljZmMxY2YwZWYwY2I4MjFjY2Y5NmVjNDhjZGY3ZmEwYjJjNmYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_c40d61b0a001404f86c3eb6d3bfe7f0e",
+      "statement": "The declared `asset_class` is mapped to the store `asset_type` (`stock`, `crypto`, or `etf`) and that derived type governs EODHD action eligibility, EODHD raw versus split-adjusted price basis, the crypto prior-UTC-day fetch guard, and health expected-session calendar behavior.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/health.py#L76-L95",
+          "version": "repo-lines-v1:sha256:7b5dc8473c845df93afb726ef0fb528dfd03e368d8ebe9d0a1ec960a8bf8a753:eyJzZWxlY3RlZExpbmVDb3VudCI6MjAsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE0OWVhNjI3MzM1ZjUxOTdlNTAyYTg4YTg1NTc4MzMzYmNlYjAyMzA1NzhlNjg3NTk2OWUyZDQzZTFkN2JhZDAiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImJmNTFiYmVmYjQ4MGE5NjY5NmI3M2JlYmUyNDZlMmQ0MDFhNDYwNmIzMzNhMDMyMWVjZDM0NTY5MWUzYTlkZjciLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc2ZjJmNzI5ZTU3ZTMwMzA3ZTk4OWFhZjYwNjY1NjFjNjczN2M2YmJkMDBlYzc3YzlmYTc3NjM5MWQ4ZDJlMWQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImQ1MDk3ZmM2ODdiNTM3YjViMTljMGRlZWVlM2EwOTMxNGMxMzAyOTQ1NmNkN2EwNDI2MjQ0ZjI5MDMzOTA3Y2MifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L119-L153",
+          "version": "repo-lines-v1:sha256:5683bd2f47db1d4bee2f63518f7c7cebffdc856d26177b0b8816abafaf4f22ed:eyJzZWxlY3RlZExpbmVDb3VudCI6MzUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YjRhM2E3ZDI5MTg3NTcwMDE2NmY5M2VjM2ZiMmNmNDJjOGU0YzkwMzlhZjVhZWEzYmNiY2I3N2RlYzI5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjZiN2Y0MWQyZmFlNjkwZTUxMzhkN2M3YTZjYjc2MmUxZWZmZTEwNzkyNGFkNDM3NDI4ZDA4MzY0NjRhYjBkNDgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZTljMWRkMDA3YmM3OTdlNGFiZWI4NTY4YjY4ZmY3ZmI5NzU5MmJlNmE4N2FkNzgxMGQ1YWQ4YzdkZWE2NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijg5NDFlZGQ2MjA3ODAzYjBhNjVhMzI3Y2QwMzU4NmEyMTcwZDdiZDc5YTFjNzkxZTNiYjI4MWFiMTZjNjJjNmEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L191-L275",
+          "version": "repo-lines-v1:sha256:eee2054d7f5dddb07dc0de3c6eb01b7ad39cc6e685b7b28c4347583a3f99319f:eyJzZWxlY3RlZExpbmVDb3VudCI6ODUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImExNTFhOTg1ZWMxMWE3ZjM2MmRhMzZjODFkYTkwOTE0MjhmZGYwMmIwM2Y5ODI2NDRlZTcyYzBkNDIzYzM3MTYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhiMGQ5NDA2YWViNmIxYjU1YzEwZmFlMzBiOTdjOWQzZmMwODg3Nzc4NTNiZTZmMTJjMzM4YWViY2ZjYmMzYjYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImE5NGI0OWNmNjJkYTllYTVlMDI0NmJmZTA0YTMzYjJhZmQwYzg1ZWViNzRlZTc5OGEzMzExOTJjYmExZjY2NTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImJkY2JlYzMxNmQxOWY2Njk2YTUwOTUwZDRmNTRkM2I1ZTdjODg5Y2Y4M2ZiOWYyZGUwNWNmNzY0NWY0MDVmMmMifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L91-L113",
+          "version": "repo-lines-v1:sha256:72f8c4d083b0376560025ae3a5e05f8c4e6bd33434b847aac13b91ac763c37c1:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVhM2JkZWEyNGFhZDAyMzE3OTcxY2E4ZjUzYWM2MTNkZDI3MTZhZjQwZTM4YzVkY2Y4MGIzZWU0NmZlZTc2ZjkiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVmNjA3ODI4ZDQxZDU5YjhjM2Y0YmZmOWQ0ZWQyZDRkODYyMzRlOGZmOGE4M2U5OTQ4OGYyMjhjNWQzMzMzZWEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE1Zjc3NzFmMDlhZTZmYjM3OWNlYzcxMTUzZjM1M2JkZTRkNWU1YTQxMjllOWEyODgwZWRjOTc2Yzc5MTk2NDkiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjIxNzk2YjM0YmMyNDBlMDFlY2RlYjc1YmUxOTBiZDVlNDQyYWZmMzJmZjQ0NGU2MmUyMjZkMmU2NDYxN2Q0NjEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L146-L206",
+          "version": "repo-lines-v1:sha256:d91668d7164a5aad14a67ad10a732658e181ab770ce412bd38f5e650ba4a3e89:eyJzZWxlY3RlZExpbmVDb3VudCI6NjEsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImVkYjNmZmFkNjM4ZjM0OGYyNmI5YTk1ZTk5Mjk3NTM2N2RiYzc4NTUxMzlkNmY0OTcxNTI2MGY4Y2IzMzg2MjQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjQ4OTNmNDBlMzc4MWViODk2YzgyZDA0NmEwODA2N2ExMWUzNWNkZjJmMWRmYWYyNmZlYTkwYjhkYjY2NzY0MTMiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjE2ZmI0YjJmOGIxY2Y2OTMwNzgzM2ViN2YyMmQzODMzNTFkYzAzYmQ3MWRmNzMxMDQ2N2RhNTY1YWVkYTFhMjIiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6Ijc0NmY5NzJlNzk3MmEzYmZjYjk2N2ViNWQ3OWUwODc0N2I2MDI2ODQxMTcwODZkZTM5OTlhMmI4ZTE3ZDg5ZjEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/universe.py#L26-L32",
+          "version": "repo-lines-v1:sha256:2e8f67ab36460e874d6d0f281fdc2c29726ec250b4a3ecbdc8dae975563c8af8:eyJzZWxlY3RlZExpbmVDb3VudCI6NywiZmlyc3RTZWxlY3RlZExpbmVIYXNoIjoiZWM0OGFlNjYxMThiMTI0OWY0ZjJlOGNiYjYxYzFmNTc4MDk4YjgzOWE1Njc2M2YwYTIyNDg3MDNlNjNiZmY0NyIsImxhc3RTZWxlY3RlZExpbmVIYXNoIjoiNmVmNmJmNTUzZTcwMTY2YTM5NDE1ZWU3MjQ3MzA0NDZhZGM2ZmYxOThjNGE5MjZmOTE1NDNkNzY1NzZmYzUzOSIsInByZWNlZGluZ0NvbnRleHRMaW5lQ291bnQiOjMsInByZWNlZGluZ0NvbnRleHRIYXNoIjoiODVkNzM4YjM0MTYwOWRmMWVjMTdiNzJjODk4ZGVhYjhjY2ViMzhkNWJkN2VhNDE2MmM4ZjIwNGM4Y2E2NmJjMSIsImZvbGxvd2luZ0NvbnRleHRMaW5lQ291bnQiOjMsImZvbGxvd2luZ0NvbnRleHRIYXNoIjoiNGRjZTlhYTkxOWQ4M2ZjYmU2MjZmMDI2OWRlYTEyYjdjOGI0YTI1MzIyZWNkOTc0NDEzZTY1NDQwNTE4MTBlZCJ9"
+        }
+      ]
+    },
+    {
+      "id": "claim_bdf985fe4c474f8a9b53f6c96e60faf7",
+      "statement": "Collector-leg `start` applies to the first fill, while `end` caps both first fills and tail refreshes; existing series re-fetch the configured recent-session tail, and an inverted stored-tail/end window is reported as a no-fetch rather than requested from the provider.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/sync.py#L119-L173",
+          "version": "repo-lines-v1:sha256:0589fdef6830ef1a89a880682ef01d5346bba23f68472c8f6282910920476052:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijc2YjRhM2E3ZDI5MTg3NTcwMDE2NmY5M2VjM2ZiMmNmNDJjOGU0YzkwMzlhZjVhZWEzYmNiY2I3N2RlYzI5MzIiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAwYmJkYzg4MjE5ZTkwZDgzZDg3NTA1Mzc5NWZjNjhhNGE1ODcyZGFmODgyNGNhZTUxMmJkMTYyNjkzY2U5MzIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImQwZTljMWRkMDA3YmM3OTdlNGFiZWI4NTY4YjY4ZmY3ZmI5NzU5MmJlNmE4N2FkNzgxMGQ1YWQ4YzdkZWE2NWUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImIxNjAxMDc5ZjY2MjhmMTVjYmZkOWE1MjkyMjhiY2EwMTg4ZmZmMDgzMzNmMGFlNTQ0N2Y4ODY5ZWU3NDE4ZTEifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L236-L282",
+          "version": "repo-lines-v1:sha256:95d843bdaea66a35f8215fa633058f02dbebc12ed04976de58d0ae5c597bc3f4:eyJzZWxlY3RlZExpbmVDb3VudCI6NDcsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMxOWYxMGVlMmJmNWJmNTQzNDYwMzUxODhmMDE4Y2JhZjEyMWViNjdmMWJiZjY5YzQ5ZjQ3NmNjNzQ5OWQ2OWUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImU5ZGE4MTYwZDBlYWQ0MjM2M2E1MmVmZjI0ZmE3YjUyNTc4ZjJjNTBmZWM1MDM0OTA0ZGM4NmI5ZjVhNzUyODEiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijc1NTNmOTFhYTdjNmI2ZGY2ZmE2NWM4NmVmMjliMzliYmNjYWUyOTc0YjRmM2I1M2E5YzBkMDk3MzQwMmJkYTMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImFkMDY5NjZmZTRkMTY4ZTJkMDcyNmRiYzAxMTA3ZDViMTYzMTAzMjVlYTJiYjBjNzBjODMxZTU0YzFiYTdlMTIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_d48c0d7ac0f14c5ab3e911d851ae24e7",
+      "statement": "`run_sync()` plans without constructing collectors in dry-run mode and otherwise contains failures per leg so other legs can complete, but returns aggregate failure; `cmd_sync` consequently exits nonzero when any selected leg failed.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/cli.py#L237-L262",
+          "version": "repo-lines-v1:sha256:98189483563cb908627f2d5fc4846eba847278b135517d5c0643db3c1a73ff8c:eyJzZWxlY3RlZExpbmVDb3VudCI6MjYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjA0M2Q4OGU1N2M3ZDU2MTE4NGFjNWQ1ZjBlYzY1OWZjZDlmN2E5ZTJjZGRkMWZmODJhMzMyYjA5ZjAyYWQzYzYiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImZmNWIyOWRhNjZiODFkOWUzYjgzMzIwZWM3NDg4MmI5NWEzMzIzMmRiOTU3YjZjZDk0NWZiNDg4NTNhM2ZlNGIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImRkODIwNTFhMzM5NTJhMGQxN2QwMmY2NTE5ZDI2MGMxODMzOTY4MzQwOWJlOTRjMzQ5YWViNTAzMDU1ZDA4MWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjRmOGU0ZTkzNTQ2ZDI5ZjI1ODZiZjJjMjkxMTI3ZjkxZTdmYTM2YmFmOTI4ZDVlN2UzZGI3MjgwNmJlODU3NDQifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/sync.py#L323-L408",
+          "version": "repo-lines-v1:sha256:94b7e626127dc39118598708f1d8a70044e55c5dd05b118e326675b659bf5470:eyJzZWxlY3RlZExpbmVDb3VudCI6ODYsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjE3MDJmOTdlNjk1ZjlkNjVjZjgzNzUyNzgzMzUxMzVjNTZjZjcyZjBlOTBmMGZhNzkwYjc1NGVmYmY2MzljYjUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImE1YTBhNDcwODBmZmRmM2M3OGJhZTIyNjA2N2Y2ZjkxY2U3OWM5YTQ5NDhhNTY2OTY5NDdkNzFkMDBjNTFjOGUiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjRmYmQwMDkzMTRiYzI3MDg0MTY3MzRhMDJhZTVmZjM5YTFlNDhhMDUwYmU5MWY0M2IyZmFhOTIwMDJjNjJiZmMiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_9cb932ceac1d41128f3e9071f66674a8",
+      "statement": "A universe class correction is not a persisted-series migration: reconciliation compares only provider-served raw fields and `adjusted_close`, retains unchanged existing rows, and therefore does not replace a row solely because the newly constructed row has different `asset_type` or `price_basis`.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/store.py#L295-L332",
+          "version": "repo-lines-v1:sha256:5a0fe04a44461908c3145a85965f36036fedc8bcc3925f89914cee8037351793:eyJzZWxlY3RlZExpbmVDb3VudCI6MzgsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImRhZWQzMWM3ZGIyOGI0NzFlYjE0YjhiMzU0MGJiODY2MTAyZjQ3NzEyMzllM2JkNTY3Y2Y5MDAwZjc4Njc1YWEiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6ImMzYjE1Nzg0YjBkNjM5MzA5MDZlNTI3MWY1NWVhM2JiNmI5MDM1NWYzYjNhN2MzODllNzEzMTU2N2U2NjE5YTgiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjQyMDVmMzAzNTMyOTU0M2M3YWQzMjM5NTQxMjM4NWI1YzVhODE2MjFlODNhZTdmMWIwMjc1MzI4ZDFmNWI4MTYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjgxOGFlMGI5Nzk4YzE1NTNmMjE2MGFmMmQ4N2RhM2ZkZGNjNTYwZmEyNTA5ZTE1YTVlMjQ3MjI1YWI3YzEwOTYifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/store.py#L334-L388",
+          "version": "repo-lines-v1:sha256:9814f4350950d2851211bdf393d6488afad43c98393680bd7ba0264d073918fe:eyJzZWxlY3RlZExpbmVDb3VudCI6NTUsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjYxZGZhMWI3YzRkZWJlODNlZTY0NjIxNTI2ZDViNGU0NGRmODRiYjZmOTEzYTkxMWY3ZGE5YjUwYTNhN2MwN2EiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjVkMTUyODQ2MTUxMWNkODMwMjUyMzFkYjQwNTVhZjVkNzI3YmQyODI4ZTg0ZThmMzM2MzAyY2EwZTA4NmNkOTkiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjJhMGI2NmUzZWUwYWRiNjA5ZjA2MDk5MTcyMjQ0OWJhNjY1MjY3ZjQ1Nzc2YzNjMGZjMDc0YzZiODA2NTE0NzQiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImM1YWVjYWYzMWIxNzFmMDQ4ZGM1ODQ0OWRmZWIyMjNmZGQ4ZGFjYTFjODdmZTJkZWUzOGExZWFmOGYwZjhkMmIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e4998811d8b9451d896fed828fb7f2d8",
+      "statement": "`load_classifications()` separately parses a schema-versioned evidence file, validates the allowed instrument fields and optional verification date, rejects duplicate `(exchange, symbol)` entries, and keys the resulting records by that store identity rather than the recorded vendor query fields.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/classification.py#L62-L170",
+          "version": "repo-lines-v1:sha256:a04eb0a92cdb959f943499ef8858d98db9232f924e5b99dc1b6eb6af47abbfd0:eyJzZWxlY3RlZExpbmVDb3VudCI6MTA5LCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiJjNTE3Zjk5YmFlYWI5YTc4YmNjMWFhNTJkNjA1M2RmNWFhY2U0ZGQ1ZDc3NWEzNWZlZmZiZDJmZmJhODNhMjk4IiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI5MmJlZGI0ZWUwNWMyNGJiZjM3OTNhODEzZjQ3OTNjN2EzMzUwYzExYjdhNjkzMzNhNjYwZDNjNTJjZWE1ZjNmIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZWViZjQxOTk4YmQ2NTFjN2YyNDE4ZGE5OTQ1OWU4ZGI2M2YwOTU3ZjJhNjk2NjAwMGY1Zjk1ZjE3NDg5YmExIiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiIzN2VhNmMxNzE5MThiMjIwN2Y5NDEwNzgxNjllNjc3NTY0OWYwMDBmMDdmODZhODYwYzhiMTQ5OTgwNTBkNzBmIn0"
+        }
+      ]
+    },
+    {
+      "id": "claim_b20ce50a4bb44e95a00e3b9ba6577f1b",
+      "statement": "Classification comparison is deliberately narrow: only `Common Stock` and `ETF` map to store types, `Currency` is explicitly not comparable, absent evidence and unmapped types get no verdict, and only a mapped type different from the declared type yields `disagree`.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/classification.py#L173-L211",
+          "version": "repo-lines-v1:sha256:f84fac28279e6924820df02b177f14ab2ba3323dc5f125cdd9408465deb29135:eyJzZWxlY3RlZExpbmVDb3VudCI6MzksImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjMyZjU0ZTI0NmI5MThiZjEzOGE3YjVmNGY3NjlmNjZiMzgwYzViYTk4OGE1YjU2YWIxMzI1MzBhYWFjNzQ5OTMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6Ijk5YjgyODEyOTQ1MWY5YzdiOGUxMTEzZTk5YjNhNzM1MGIxMTdkMWE5YWE2ZDFhZmQ3MTJhNzQ3NGMwNDI3YjIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjNkODQ4YjcwNjA4ZmZjMmVkYmNhODAxYmJmNWQwYmU3YjZiNDczM2MyMDA2NzM5ZThiNzFhOGQ5ODhmM2VjNDAiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjowLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImUzYjBjNDQyOThmYzFjMTQ5YWZiZjRjODk5NmZiOTI0MjdhZTQxZTQ2NDliOTM0Y2E0OTU5OTFiNzg1MmI4NTUifQ"
+        },
+        {
+          "resource": "repo://src/jef/data/classification.py#L38-L60",
+          "version": "repo-lines-v1:sha256:616204b46649d1005a7b9ba721940743242d99fc2929a7036b232d06aa6f7c26:eyJzZWxlY3RlZExpbmVDb3VudCI6MjMsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6ImViMDJjNmZiN2UwY2RmNDA5NjRiMzk0YWMxMDhkZTVmMDI2OGNlZDY2ZDYzMGI0YzY0ZjkzY2I5NDcyODZmOTQiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjY5ZWRmYmJmOTM3YWM4ZmYyYjk5M2ExODJkYjFkODFiNDY4NTNhYTgyNzhiMWJlNmNjYzE3NDY4YTVhMTgxNjAiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6Ijg1ZDczOGIzNDE2MDlkZjFlYzE3YjcyYzg5OGRlYWI4Y2NlYjM4ZDViZDdlYTQxNjJjOGYyMDRjOGNhNjZiYzEiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjExMzFiMzhjZTQ2N2NiYjA0YzdiM2E3MWY2OWVjNzgzMjg5MzE1NTI5NDhmMTAwOGRkODNmNTBhNDc3MWYzYzYifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_347a8d56adea437cadd4e12ada35743c",
+      "statement": "The committed classification evidence is consulted only for EODHD health legs; `disagree` becomes a warning while all other comparison outcomes become notes, and `jef-data status` reports warnings but exits nonzero only for alerts.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/cli.py#L265-L365",
+          "version": "repo-lines-v1:sha256:420fba287a6c068a63f4a37893791610d9dd9e2f76dbb88928749d33ae1fff0b:eyJzZWxlY3RlZExpbmVDb3VudCI6MTAxLCJmaXJzdFNlbGVjdGVkTGluZUhhc2giOiIxZThlMDkxZDUyNTlhYzhkZGE5YTIzZWUwYzdhZjhhZjFmNGE4ZmQzOTI3OGUzZmRlNWMxNjVlMjhiZDQwYmJlIiwibGFzdFNlbGVjdGVkTGluZUhhc2giOiI3YzkwZmI2ZWUwMGQyNWVjMjJhNTg4MmIxOGY1ZTEzN2Q2NmJlNmU3MDQ4YjY3MmNjYTk3MzgxMmE5N2FjMGYwIiwicHJlY2VkaW5nQ29udGV4dExpbmVDb3VudCI6MywicHJlY2VkaW5nQ29udGV4dEhhc2giOiI0ZTBjNGE3ZDBhYWMyOGY2ZGQ5OWU4MGQ0ZjY5MTk5ODY0MDQ2MjQ1ZjViYmI1MmJhZTRiYzRkMzY1NmE1MzQ1IiwiZm9sbG93aW5nQ29udGV4dExpbmVDb3VudCI6MywiZm9sbG93aW5nQ29udGV4dEhhc2giOiI3NzY5NjYzZTg0MmMzMTU1MzA4MjI4ZjNhMzY3NDJlNDYxMjJmYTA4ZWZkMjBlZTIwMzI3NDg1N2ZkZDUxNjk2In0"
+        },
+        {
+          "resource": "repo://src/jef/data/health.py#L227-L258",
+          "version": "repo-lines-v1:sha256:52c9477953c24b320739327065cab80983ca5e0dfd49263babc0af7a3e47bacb:eyJzZWxlY3RlZExpbmVDb3VudCI6MzIsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjExYjU1YjgwMGY0ZTJkNGVmZWZmZTY5MTY1NjQxODUwNWIyYzA5NWFkOTMxMmQ2OWJjMjMyMjZmZjY5YWQxYzMiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjAxYmE0NzE5YzgwYjZmZTkxMWIwOTFhN2MwNTEyNGI2NGVlZWNlOTY0ZTA5YzA1OGVmOGY5ODA1ZGFjYTU0NmIiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6ImJmMDEyYTRlZTJlM2U2ZjE3NWI2ZGQyNzgzMzkwN2U1Mzg5MGU2ZTQxNTM3ZWI4NzQ1YzU1Y2ZiNjlhNjk5YWYiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6IjliMmU1YTQxNzZlOWZlOTg4ZjA4YmNlZDhkMGYxYzM1ZGI0OTgxNDA5OGVkZDFjOTYwNWQxOTBjZDI2YjU4ZjIifQ"
+        }
+      ]
+    },
+    {
+      "id": "claim_e416a6a7059f402cbf755b6a206f6f87",
+      "statement": "The manual EODHD load path derives its allowed `asset_type` vocabulary from the universe mapping, requires an explicit type except for the `.CC` crypto namespace, rejects a `.CC` symbol declared non-crypto, and uses the resulting declaration to choose raw versus split-adjusted basis.",
+      "evidence": [
+        {
+          "resource": "repo://src/jef/data/cli.py#L32-L125",
+          "version": "repo-lines-v1:sha256:37fead69fe77d1b8716693812f399d490e1fdc153d394dc4ba9e1169fbc2b8a2:eyJzZWxlY3RlZExpbmVDb3VudCI6OTQsImZpcnN0U2VsZWN0ZWRMaW5lSGFzaCI6IjUwZjVmMjY1Mjc5MzA1M2M3MTQ3OWEwMDRkNDczNzhhMzkxNDQ2NDE1YzRlNDFmNWEyOTllMTg1MTAwNTA2ZmUiLCJsYXN0U2VsZWN0ZWRMaW5lSGFzaCI6IjhjM2RiZjY1NmQ0MmFhOTM2ZGVkZDU1NDFjY2Q4MDgxZmFiNTdmNDY0N2NiNzZkN2Y3NWVmZTg5NWJlZjQ1OTYiLCJwcmVjZWRpbmdDb250ZXh0TGluZUNvdW50IjozLCJwcmVjZWRpbmdDb250ZXh0SGFzaCI6IjAyYjI1NzhkODVmMDU0N2ZhOTE3ZGE3YjE4ZDIwNzg5OTE4MjlhNTM4MmM3OTEyOGJlMTZmNmYxMDg4ZjdhYjUiLCJmb2xsb3dpbmdDb250ZXh0TGluZUNvdW50IjozLCJmb2xsb3dpbmdDb250ZXh0SGFzaCI6ImU5YzViZGU0YTEzZDFmNjkxZTI1ZDRkMDU0YzE1MWE1ZDcwYTE1MzExYzY2YzdhY2UxNDFhNjA4N2FiYTU3MmQifQ"
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "by": "openwiki/0.7.2",
+    "at": "2026-10-28T09:59:03.506Z"
+  }
+}
