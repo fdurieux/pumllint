@@ -351,3 +351,31 @@ under `results/<arm>/`, so every judgement is on the record.
   unversioned ("the wiki gives no version pins"). In its venv pandas 3
   imports `pyarrow` itself; the package imports neither `pyarrow` nor
   `requests` at package level.
+
+### Step 5 — M1 worksheet, 2026-10-28
+
+- **Size.** W has **128 Grounded Claims on 9 pages**, all with evidence.
+  That is fewer than the 150 §3 names, so M1 grades every claim; the seed
+  selects nothing.
+- **Shown to the owner ungraded before any verdict**, at the owner's
+  request. Two owner decisions followed, recorded here before grading:
+  - **Compound claims.** OpenWiki's claims are not atomic: one packs
+    about ten checks. One verdict per claim stays the headline, as §3
+    registers it: TRUE only if every part holds; PARTIAL if a part has a
+    wrong condition, number or name; FALSE if a part is contradicted or
+    invented. Each row also records `parts` (its sub-assertions) and
+    `failed` (how many do not hold). The part-level precision is a
+    secondary figure, reported beside the registered ones, never in
+    their place.
+  - **`in_kit`.** M3's column, which `claims_worksheet.py` did not write,
+    is added as a tool fix: YES or NO on TRUE rows only.
+- **Tool changes**, the same commit as the blank worksheet:
+  - `claims_worksheet.py` writes `parts`, `failed` and `in_kit`.
+  - `claims_tally.py` refuses an inconsistent row: TRUE with failed
+    parts, FALSE or PARTIAL with none, `in_kit` missing on TRUE or
+    present elsewhere. It prints the part-level figure and M3's count.
+    Both behaviours were checked on a synthetic filled copy before
+    commit.
+- The worksheet is committed **blank** at `results/W/m1/`, with
+  `claims.all.json` and `claims.sample.json` (identical here, since all
+  claims are graded). The verdicts follow in their own commit.

@@ -1,0 +1,1190 @@
+[
+ {
+  "id": "claim_aeae4e2b9101463fbc44bb8f120e7b96",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The distribution discovers only `jef.data*` packages under `src` and exposes `jef-data` as `jef.data.cli:main`, establishing the owned Python package and console entrypoint boundary.",
+  "evidence": [
+   "repo://pyproject.toml#L5-L20"
+  ]
+ },
+ {
+  "id": "claim_a0b4eb2f66c94643b8d002f9ead97595",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The package-root Python surface is intentionally limited to `ContractError`, `ContractReport`, `validate`, and `validate_or_raise`; it does not import the Parquet or HTTP implementations at package import time.",
+  "evidence": [
+   "repo://src/jef/data/__init__.py#L1-L14",
+   "repo://src/jef/data/collectors/base.py#L121-L145",
+   "repo://src/jef/data/store.py#L34-L47"
+  ]
+ },
+ {
+  "id": "claim_86116f24df3948439e203160aff6d81c",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "`python -m jef.data` delegates to the same CLI `main()` as the `jef-data` script, and the CLI defers network- and Parquet-touching imports to individual command handlers.",
+  "evidence": [
+   "repo://src/jef/data/__main__.py#L1-L4",
+   "repo://src/jef/data/cli.py#L1-L18",
+   "repo://src/jef/data/cli.py#L136-L216"
+  ]
+ },
+ {
+  "id": "claim_3d89904a4b0a45f7abc9928779541f8b",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The project metadata declares pandas, numpy, and scikit-learn but no optional-dependency group; Parquet persistence imports `pyarrow` and the real HTTP transport imports `requests`, so environments using those capabilities must provide those libraries.",
+  "evidence": [
+   "repo://pyproject.toml#L5-L20",
+   "repo://src/jef/data/collectors/base.py#L121-L129",
+   "repo://src/jef/data/store.py#L34-L47"
+  ]
+ },
+ {
+  "id": "claim_3cd09317ce7d4aaf9d9b902b6ce15f83",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "`deploy/daily.sh` sources `deploy/events.sh` and `deploy/dashboard.sh`, but `deploy/EXTERNALS.md` explicitly classifies those supplied scripts as out-of-subject venue telemetry and publishing legs rather than owned data-layer implementation.",
+  "evidence": [
+   "repo://deploy/EXTERNALS.md#L1-L5",
+   "repo://deploy/daily.sh#L76-L86"
+  ]
+ },
+ {
+  "id": "claim_20cfa36357b44738af2a765db8c10c7e",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The deployment script invokes `jef-binning` once per selected asset with a store path, latest counter range, and output directory; the repository package configuration supplies no binning package, so this is a deployment-time handoff rather than an owned modeling implementation.",
+  "evidence": [
+   "repo://deploy/daily.sh#L147-L170",
+   "repo://pyproject.toml#L15-L20"
+  ]
+ },
+ {
+  "id": "claim_cafec55aee72430eb1043fd008a4424e",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The package identifies `jef.binning.loading` as the storage seam and keeps binning storage-agnostic; CLI help identifies `jef.binning.loading.load_eod_store` as the bit-exact consumer path.",
+  "evidence": [
+   "repo://src/jef/data/__init__.py#L1-L10",
+   "repo://src/jef/data/cli.py#L444-L453"
+  ]
+ },
+ {
+  "id": "claim_7861d9c27aa54ac5928d91b24828ec6f",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The universe parser is the single strict configuration boundary: it permits only the declared provider and EOD vocabularies, rejects unknown keys and duplicate store coordinates, and returns normalized assets/sources.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L1-L15",
+   "repo://src/jef/data/universe.py#L224-L269",
+   "repo://src/jef/data/universe.py#L89-L143"
+  ]
+ },
+ {
+  "id": "claim_e3ea9b2f6de341fd909c95e6f88c0aae",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "An enabled multi-source asset must identify one enabled modeled source, while a sole enabled source is selected implicitly; `modeled_source()` returns that deterministic feeder and leaves other sources as cross-check series.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L171-L205",
+   "repo://src/jef/data/universe.py#L278-L293"
+  ]
+ },
+ {
+  "id": "claim_c42e28b6ac594a6fba23fb7509396649",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "`run_sync` executes source-specific acquisition: CSV legs are whole-file imports, raw-basis EODHD legs refresh actions before loading, and crypto/Binance legs use split-adjusted handling rather than the CRSP pass.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L1-L39",
+   "repo://src/jef/data/sync.py#L176-L275"
+  ]
+ },
+ {
+  "id": "claim_1c9ec05b58544e938352b4f51c5d9eb2",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "After first fill, sync re-fetches the newest configured tail of sessions and reconciles newest-wins only there while older rows remain frozen; a configured end is persistent and crypto fetches are guarded to the preceding completed UTC day.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L119-L153",
+   "repo://src/jef/data/sync.py#L236-L282",
+   "repo://src/jef/data/sync.py#L41-L56"
+  ]
+ },
+ {
+  "id": "claim_116ccd6f07fd4ee992190dd75146a613",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "Sync constructs collectors lazily for selected providers, supports injected collectors and an injectable clock/output seam, contains failures per leg, closes only collectors it constructed, and returns an aggregate failed result if any leg failed.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L323-L342",
+   "repo://src/jef/data/sync.py#L362-L407"
+  ]
+ },
+ {
+  "id": "claim_08a3d343106747b095dc1aea17d8551f",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "`BaseCollector` centralizes rate limiting, a hard UTC-day request budget, retry/backoff for network and 429/5xx failures, token redaction, and replay/recording transports whose fixture identities exclude secret parameters.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L1-L24",
+   "repo://src/jef/data/collectors/base.py#L147-L219",
+   "repo://src/jef/data/collectors/base.py#L225-L294",
+   "repo://src/jef/data/collectors/base.py#L58-L83",
+   "repo://src/jef/data/collectors/base.py#L86-L118"
+  ]
+ },
+ {
+  "id": "claim_efacfac822ce45f692c85c73ff808a9d",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "EODHD requires `EODHD_API_KEY`, sends it as `api_token`, and declares split-adjusted served volume, whereas the Binance adapter maps public daily klines into the same neutral bar shape and paginates them.",
+  "evidence": [
+   "repo://src/jef/data/collectors/binance.py#L1-L17",
+   "repo://src/jef/data/collectors/binance.py#L32-L82",
+   "repo://src/jef/data/collectors/eodhd.py#L12-L18",
+   "repo://src/jef/data/collectors/eodhd.py#L64-L109"
+  ]
+ },
+ {
+  "id": "claim_4bc8107b28634fbea5567843738026b8",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The local store is partitioned by exchange, symbol, and year under `market_data`, while corporate actions are per-symbol JSON under `corporate_actions`; `to_contract_frame()` is the seven-column interchange projection.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L1-L17",
+   "repo://src/jef/data/actions.py#L57-L84",
+   "repo://src/jef/data/store.py#L1-L21",
+   "repo://src/jef/data/store.py#L431-L456",
+   "repo://src/jef/data/store.py#L57-L113"
+  ]
+ },
+ {
+  "id": "claim_c70886c6b88a44d98e65b3ede392d29f",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "Raw-basis main OHLCV is always re-derived from immutable raw columns and split events, making adjustment idempotent; split-adjusted series retain factor 1 and adjustment explicitly refuses them to prevent double adjustment.",
+  "evidence": [
+   "repo://src/jef/data/adjust.py#L1-L25",
+   "repo://src/jef/data/adjust.py#L66-L97",
+   "repo://src/jef/data/store.py#L266-L332",
+   "repo://src/jef/data/store.py#L412-L428"
+  ]
+ },
+ {
+  "id": "claim_9130260572c24063921ecb2a1b907871",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "`ParquetStore` serializes each symbol's read-modify-write cycle with POSIX `flock` and atomically replaces per-year temporary Parquet files; append preserves existing duplicate timestamps while overwrite lands new files before pruning stale partitions.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L167-L225",
+   "repo://src/jef/data/store.py#L227-L263"
+  ]
+ },
+ {
+  "id": "claim_8c68e97af6d34b39b5c734e04f3192a2",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "Tail reconciliation has deliberately different duplicate semantics from append: it compares as-served raw identity columns, replaces revised rows and appends novel timestamps in the fetched window, and leaves un-fetched dates untouched.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L388",
+   "repo://src/jef/data/store.py#L51-L55",
+   "repo://src/jef/data/sync.py#L248-L282"
+  ]
+ },
+ {
+  "id": "claim_dc81822c4ee54d00ae093a497f597f74",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "Corporate-action JSON persistence uses a direct truncating write, so it is outside the Parquet store's lock-and-atomic-replace protocol.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L57-L84",
+   "repo://src/jef/data/store.py#L167-L199",
+   "repo://src/jef/data/store.py#L234-L263"
+  ]
+ },
+ {
+  "id": "claim_07392464fe984af7bc21720c5d06885f",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The `sync` CLI writes a summary document even when leg failures make the run red, while `status` is an offline local-store gate that returns nonzero only for alerts and can emit a schema-versioned JSON envelope with alert and warning totals.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L237-L262",
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L1-L7"
+  ]
+ },
+ {
+  "id": "claim_1d02032062d94700b712433df794b109",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The daily chain restores the local store, runs sync and a single captured status evaluation, then runs external binning; it uploads the store and run artifacts only after all three stages succeed.",
+  "evidence": [
+   "repo://deploy/daily.sh#L106-L181",
+   "repo://deploy/daily.sh#L70-L87"
+  ]
+ },
+ {
+  "id": "claim_62ddd6bafc6e4e6ab31b69aecf83481c",
+  "page": "architecture/data-layer-boundaries.md",
+  "statement": "The supplied event and dashboard helpers are best-effort telemetry: ledger emit/put failures return success, and dashboard publishing runs from an EXIT trap for both green and red runs without changing the operational exit code.",
+  "evidence": [
+   "repo://deploy/dashboard.sh#L1-L21",
+   "repo://deploy/dashboard.sh#L25-L74",
+   "repo://deploy/events.sh#L1-L21",
+   "repo://deploy/events.sh#L34-L63"
+  ]
+ },
+ {
+  "id": "claim_4085824ea1844ffdb294dd29e4a831c9",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "`validate()` checks the required seven-column EOD frame without raising: it reports contract errors for missing columns, non-numeric values, duplicate dates, negative values, and `High < Low`, while reporting sortable dates, unparseable dates, zero volume, NaNs, extra columns, and insufficient clean history as notes; `validate_or_raise()` raises only when that report has errors.",
+  "evidence": [
+   "repo://src/jef/data/contract.py#L26-L31",
+   "repo://src/jef/data/contract.py#L58-L142"
+  ]
+ },
+ {
+  "id": "claim_a939f4d6ec8f46a4800e16e7847be00b",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Market bars are persisted as full-schema Parquet year partitions at `market_data/exchange={exchange}/symbol={symbol}/year={year}/data.parquet`; the schema retains UTC timestamp/datetime identity, derived main OHLCV, raw OHLCV, provider adjusted close, both adjustment factors, classification, currency, and price basis.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L1-L32",
+   "repo://src/jef/data/store.py#L106-L127",
+   "repo://src/jef/data/store.py#L57-L82"
+  ]
+ },
+ {
+  "id": "claim_0d4a5be4be3345de962fe8d58aeb5bfc",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Corporate actions are stored per symbol beneath `corporate_actions/{splits|dividends}`, with `/` normalized to `_` in filenames; missing files load as empty action lists, split saves are date-sorted, and dividend entries are retained in their provider form.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L57-L110"
+  ]
+ },
+ {
+  "id": "claim_983ae3a9aa66477381fa81b0082d84a1",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "A `SplitEvent` uses a new-shares divided by old-shares ratio and treats its date as the first session at the new price basis.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L30-L53"
+  ]
+ },
+ {
+  "id": "claim_bd7779320a5b4af69f5c42df2f6f8101",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "For raw-basis ingest, `ParquetStore` retains provider OHLCV in raw columns and derives the main fields through `adjust`; for non-raw input it stores served values with cumulative split factor 1.0.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L265-L332"
+  ]
+ },
+ {
+  "id": "claim_d766ea85af7647d7984ddc318f644ee2",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "EODHD declares raw prices but split-adjusted volume; raw-basis ingest rawizes that volume by dividing it by the split factor before normal adjustment re-derives it, making action synchronization before first load material.",
+  "evidence": [
+   "repo://src/jef/data/collectors/eodhd.py#L64-L70",
+   "repo://src/jef/data/store.py#L276-L285",
+   "repo://src/jef/data/store.py#L323-L329"
+  ]
+ },
+ {
+  "id": "claim_848ca9c296224a13b0e3adfd35d02e0a",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "`adjust()` is a pure re-derivation: its per-row factor multiplies only split ratios whose effective dates are strictly after the row date, divides raw OHLC prices by the factor, multiplies raw volume by it, copies the input rather than modifying it, and rejects invalid split ratios, non-raw price bases, or missing raw inputs.",
+  "evidence": [
+   "repo://src/jef/data/adjust.py#L45-L97"
+  ]
+ },
+ {
+  "id": "claim_deac531828ec4b76824ed422511539ba",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "`reapply_adjustment()` re-derives a complete stored raw-basis series under the symbol lock and skips writing when the re-derived frame equals the existing frame.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L412-L428"
+  ]
+ },
+ {
+  "id": "claim_104c0c7218c242d48997805409c6a3e0",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "The sync runner selects EODHD action processing and raw basis for declared non-crypto assets, selects split-adjusted basis for declared crypto, refreshes actions before loading raw bars, and reapplies adjustment after reconciling a raw-basis series.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L101-L113",
+   "repo://src/jef/data/sync.py#L191-L232",
+   "repo://src/jef/data/sync.py#L260-L281"
+  ]
+ },
+ {
+  "id": "claim_cb4a6a7bfa814d5888a072154561fa01",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Append persistence normalizes duplicate timestamps with existing rows first so stored rows win, and bounds append rewrites to years represented by incoming data; overwrite delegates to the same write machinery with stale-year pruning enabled.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L160-L164",
+   "repo://src/jef/data/store.py#L201-L225",
+   "repo://src/jef/data/store.py#L234-L263"
+  ]
+ },
+ {
+  "id": "claim_c1a12b81232341a2a21b2ee36c501fa2",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "`reconcile_bars()` compares fetched observations on `open_raw`, `high_raw`, `low_raw`, `close_raw`, `volume_raw`, and `adjusted_close`; it reports every changed cell, replaces changed rows, appends novel timestamps, and performs no write when the supplied bars introduce neither changes nor new timestamps.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L388",
+   "repo://src/jef/data/store.py#L51-L55"
+  ]
+ },
+ {
+  "id": "claim_c2da8deef1c64c1f8566bf03fb486727",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "The sync runner, not `reconcile_bars()` itself, establishes the daily revision scope: after a first fill it fetches from the oldest of the newest configured tail sessions, while the store method only considers timestamps handed to it.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L350",
+   "repo://src/jef/data/sync.py#L119-L153",
+   "repo://src/jef/data/sync.py#L248-L275"
+  ]
+ },
+ {
+  "id": "claim_b8ffc001f9c84ce9aaadd29417a346c8",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Parquet read-modify-write operations are serialized by a per-symbol POSIX nonblocking `flock` with polling and timeout, while readers remain lock-free.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L167-L200",
+   "repo://src/jef/data/store.py#L201-L225"
+  ]
+ },
+ {
+  "id": "claim_468eb387ebf0472c8300c72f325afb7f",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Each Parquet year write lands at `data.parquet.tmp` and is installed with `os.replace`; stale partitions are deleted only after overwrite targets have been written, and crashed temporary files are invisible to `load()` and later swept as hygiene.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L121-L127",
+   "repo://src/jef/data/store.py#L227-L263"
+  ]
+ },
+ {
+  "id": "claim_013601c814024a36a2269cc1fefb2528",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Corporate-action persistence deliberately uses a direct truncating JSON write rather than the Parquet store's lock and temporary-file replacement protocol.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L65-L77",
+   "repo://src/jef/data/store.py#L167-L200",
+   "repo://src/jef/data/store.py#L234-L263"
+  ]
+ },
+ {
+  "id": "claim_d9b4381001f94c0e9750b377ba1008c4",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "Yahoo CSV import requires the seven contract columns but stores rows as `price_basis=\"split_adjusted\"` without dropping zero-volume rows, whereas `to_contract_frame()` maps stored main OHLCV and provider `adjusted_close` back to the seven-column interchange frame.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L390-L410",
+   "repo://src/jef/data/store.py#L431-L456"
+  ]
+ },
+ {
+  "id": "claim_9ccecb6ae23546979e35d69d07262ad0",
+  "page": "concepts/eod-data-model-and-adjustment.md",
+  "statement": "The `jef-data` CLI exposes focused validate, action sync, load, adjust, CSV import/export, differential, and batch sync commands; lazy imports keep the validation command independent of the Parquet and network modules.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L1-L18",
+   "repo://src/jef/data/cli.py#L128-L234",
+   "repo://src/jef/data/cli.py#L378-L505"
+  ]
+ },
+ {
+  "id": "claim_03c34361079649bb8301a9b4bfb2f832",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "`load_universe()` is the single parser for universe declarations: it reads the packaged or explicit TOML source, resolves defaults into a normalized `{defaults, assets}` document, and rejects malformed TOML, unknown keys, unsupported providers or non-EOD kinds, incompatible source fields, duplicate asset names, and store-coordinate collisions with `UniverseError`.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L22-L40",
+   "repo://src/jef/data/universe.py#L224-L269",
+   "repo://src/jef/data/universe.py#L89-L143"
+  ]
+ },
+ {
+  "id": "claim_d8cee93954294e0ba2c6fc4b9c176941",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "The packaged universe defaults to store `data` and USD and currently declares AAPL, BTC, TLT, NVDA, TSLA, and IBM, with the sources and modeled markers specified in `universe.toml`.",
+  "evidence": [
+   "repo://src/jef/data/universe.toml#L35-L129"
+  ]
+ },
+ {
+  "id": "claim_08b9adadf9fb4429b3257f8eebb3bad1",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "For an enabled asset, the universe parser requires at least one enabled source; a modeled source must itself be enabled; multiple enabled sources require exactly one `modeled = true` marker, while a sole enabled source is chosen implicitly by `modeled_source()`.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L169-L205",
+   "repo://src/jef/data/universe.py#L278-L293"
+  ]
+ },
+ {
+  "id": "claim_b52aad5b12fb4e86b7450ec68837d31a",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "The modeled-source marker chooses the deterministic feeder returned by `modeled_source()`, but sync selection emits every enabled source of every selected enabled asset rather than acquiring only the modeled source.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L65-L116",
+   "repo://src/jef/data/universe.py#L278-L293"
+  ]
+ },
+ {
+  "id": "claim_c40d61b0a001404f86c3eb6d3bfe7f0e",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "The declared `asset_class` is mapped to the store `asset_type` (`stock`, `crypto`, or `etf`) and that derived type governs EODHD action eligibility, EODHD raw versus split-adjusted price basis, the crypto prior-UTC-day fetch guard, and health expected-session calendar behavior.",
+  "evidence": [
+   "repo://src/jef/data/health.py#L76-L95",
+   "repo://src/jef/data/sync.py#L119-L153",
+   "repo://src/jef/data/sync.py#L191-L275",
+   "repo://src/jef/data/sync.py#L91-L113",
+   "repo://src/jef/data/universe.py#L146-L206",
+   "repo://src/jef/data/universe.py#L26-L32"
+  ]
+ },
+ {
+  "id": "claim_bdf985fe4c474f8a9b53f6c96e60faf7",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "Collector-leg `start` applies to the first fill, while `end` caps both first fills and tail refreshes; existing series re-fetch the configured recent-session tail, and an inverted stored-tail/end window is reported as a no-fetch rather than requested from the provider.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L119-L173",
+   "repo://src/jef/data/sync.py#L236-L282"
+  ]
+ },
+ {
+  "id": "claim_d48c0d7ac0f14c5ab3e911d851ae24e7",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "`run_sync()` plans without constructing collectors in dry-run mode and otherwise contains failures per leg so other legs can complete, but returns aggregate failure; `cmd_sync` consequently exits nonzero when any selected leg failed.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L237-L262",
+   "repo://src/jef/data/sync.py#L323-L408"
+  ]
+ },
+ {
+  "id": "claim_9cb932ceac1d41128f3e9071f66674a8",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "A universe class correction is not a persisted-series migration: reconciliation compares only provider-served raw fields and `adjusted_close`, retains unchanged existing rows, and therefore does not replace a row solely because the newly constructed row has different `asset_type` or `price_basis`.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L295-L332",
+   "repo://src/jef/data/store.py#L334-L388"
+  ]
+ },
+ {
+  "id": "claim_e4998811d8b9451d896fed828fb7f2d8",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "`load_classifications()` separately parses a schema-versioned evidence file, validates the allowed instrument fields and optional verification date, rejects duplicate `(exchange, symbol)` entries, and keys the resulting records by that store identity rather than the recorded vendor query fields.",
+  "evidence": [
+   "repo://src/jef/data/classification.py#L62-L170"
+  ]
+ },
+ {
+  "id": "claim_b20ce50a4bb44e95a00e3b9ba6577f1b",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "Classification comparison is deliberately narrow: only `Common Stock` and `ETF` map to store types, `Currency` is explicitly not comparable, absent evidence and unmapped types get no verdict, and only a mapped type different from the declared type yields `disagree`.",
+  "evidence": [
+   "repo://src/jef/data/classification.py#L173-L211",
+   "repo://src/jef/data/classification.py#L38-L60"
+  ]
+ },
+ {
+  "id": "claim_347a8d56adea437cadd4e12ada35743c",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "The committed classification evidence is consulted only for EODHD health legs; `disagree` becomes a warning while all other comparison outcomes become notes, and `jef-data status` reports warnings but exits nonzero only for alerts.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L227-L258"
+  ]
+ },
+ {
+  "id": "claim_e416a6a7059f402cbf755b6a206f6f87",
+  "page": "concepts/universe-and-classification.md",
+  "statement": "The manual EODHD load path derives its allowed `asset_type` vocabulary from the universe mapping, requires an explicit type except for the `.CC` crypto namespace, rejects a `.CC` symbol declared non-crypto, and uses the resulting declaration to choose raw versus split-adjusted basis.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L32-L125"
+  ]
+ },
+ {
+  "id": "claim_5ce753fa55294aa1a4d9f26e0b513236",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "All HTTP collectors use the `request(method, url, params) -> TransportResponse` seam, while `BaseCollector` owns rate limiting and retry behavior; the real requests-backed transport imports its dependency only on construction, so the same collection policy can wrap live, replay, or recording traffic.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L1-L14",
+   "repo://src/jef/data/collectors/base.py#L121-L144",
+   "repo://src/jef/data/collectors/base.py#L225-L279"
+  ]
+ },
+ {
+  "id": "claim_bc261bb8b18e47a6a1b53986d325f187",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "`RateLimiter` enforces two independent per-instance limits: a sliding 60-second window and a UTC-day budget, defaulting to 1000 requests per minute and 100,000 per day; it resets the daily counter on a new UTC date and raises `DailyBudgetExhausted` rather than lending quota across days.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L86-L118"
+  ]
+ },
+ {
+  "id": "claim_0af7a26505ab440ab1745eaf999ae920",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "`BaseCollector.get_json()` acquires a rate slot for every attempt, retries retryable network failures and HTTP 429/5xx through the configured exponential backoff, and otherwise raises a redacted `CollectorError` for terminal HTTP responses or invalid JSON.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L235-L279"
+  ]
+ },
+ {
+  "id": "claim_2037fbbea4ca4777ae9162c978183f2b",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "The shared pagination helper collects ascending cursor pages until `next_cursor` is `None` and raises at its 100-page default cap instead of returning truncated history.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L281-L294"
+  ]
+ },
+ {
+  "id": "claim_39ee443acc444ed5a57e1cc77386a5fb",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "EODHD construction requires an explicit `api_key` or `EODHD_API_KEY` before creating the parent transport, sends the key only as the `api_token` request parameter, and registers that key for collector error redaction.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L268-L279",
+   "repo://src/jef/data/collectors/base.py#L58-L75",
+   "repo://src/jef/data/collectors/eodhd.py#L72-L89"
+  ]
+ },
+ {
+  "id": "claim_4963c6f0f3a44dfeb436e8e02f0494f8",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "Fixture request identities exclude `api_token`; `ReplayTransport` records public calls and fails on an unknown fixture, while `RecordingTransport` writes a public request plus parsed JSON response and refuses to write when its serialized fixture contains a caller-supplied secret.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L147-L179",
+   "repo://src/jef/data/collectors/base.py#L185-L222",
+   "repo://src/jef/data/collectors/base.py#L65-L83"
+  ]
+ },
+ {
+  "id": "claim_26eef83d21584431bf185f64671e79b0",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "EODHD symbol normalization preserves dotted symbols, defaults bare tickers to `.US`, maps fiat and recognized crypto pairs to FOREX or CC namespaces, and rejects pairs whose exchange cannot be inferred.",
+  "evidence": [
+   "repo://src/jef/data/collectors/eodhd.py#L27-L61"
+  ]
+ },
+ {
+  "id": "claim_f5207a6828bd435fbab04f1f59fcbdfa",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "The EODHD adapter fetches ascending date-bounded EOD rows, drops non-positive closes, deduplicates same-day rows with first-wins semantics, and exposes separately sorted split events and dividend entries.",
+  "evidence": [
+   "repo://src/jef/data/collectors/eodhd.py#L91-L136"
+  ]
+ },
+ {
+  "id": "claim_8f639e8879ad43d2936590a241c3e0df",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "EODHD declares its served volume split-adjusted even though raw-basis prices are stored as raw; for a raw-basis ingest, the store divides served volume by the cumulative split factor to create `volume_raw` and then derives main fields from raw values and splits.",
+  "evidence": [
+   "repo://src/jef/data/collectors/eodhd.py#L64-L70",
+   "repo://src/jef/data/store.py#L265-L332"
+  ]
+ },
+ {
+  "id": "claim_bed5122e956d4aaab50d2b0d689c3bc2",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "Sync derives an EODHD leg's price basis from its declared asset type, synchronizes actions before raw-basis EODHD bars, reconciles bars with the collector's declared volume basis, and reapplies adjustment only for raw-basis series.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L176-L282"
+  ]
+ },
+ {
+  "id": "claim_6383a9dd47b14191867213233be7602f",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "Binance is a public daily-kline collector that converts UTC open timestamps and kline arrays into common bar dictionaries, paginates forward from the last open time plus one day, and deduplicates and sorts the resulting dates.",
+  "evidence": [
+   "repo://src/jef/data/collectors/binance.py#L1-L18",
+   "repo://src/jef/data/collectors/binance.py#L32-L82"
+  ]
+ },
+ {
+  "id": "claim_6f1e33e82afa44c19075af0450c269b8",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "Binance reports base-asset volume while the configured EODHD and Yahoo sources use notional volume; each source can be internally consistent, but cross-source volume comparison is unit-incomparable.",
+  "evidence": [
+   "repo://src/jef/data/collectors/binance.py#L3-L8",
+   "repo://src/jef/data/universe.toml#L22-L33"
+  ]
+ },
+ {
+  "id": "claim_f8dd5615571a4ab1a213c7dc5956cc7c",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "A `yahoo-csv` source is a local whole-file source: the universe parser requires its path and forbids collector date bounds, sync calls `ingest_yahoo_csv` directly, and the importer requires the seven Yahoo headings and lands the series as split-adjusted in overwrite mode without dropping zero-volume rows.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L390-L410",
+   "repo://src/jef/data/sync.py#L176-L185",
+   "repo://src/jef/data/universe.py#L89-L143"
+  ]
+ },
+ {
+  "id": "claim_5065f54dc08746cd934729c44f91f2a0",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "For collector sources, configured `start` is only a first-fill floor, while `end` remains a cap for both first fill and tail refresh; existing series fetch the oldest of the newest configured tail sessions, and declared crypto is capped at the previous completed UTC day.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L119-L153",
+   "repo://src/jef/data/sync.py#L236-L259"
+  ]
+ },
+ {
+  "id": "claim_68eb957deccc4849aa38b2374e34d559",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "`run_sync` plans dry runs without constructing collectors, otherwise lazily caches one constructed collector per provider, contains failures per leg so independent legs can continue, and returns an unsuccessful aggregate result when any leg failed.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L323-L408"
+  ]
+ },
+ {
+  "id": "claim_704ff9f0219f44089ddfb40af2137e6c",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "The universe parser currently permits only `eodhd`, `binance`, and `yahoo-csv` provider values, assigns their default store exchange tags, and rejects source/provider shape errors rather than treating unsupported acquisition modes permissively.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L26-L40",
+   "repo://src/jef/data/universe.py#L89-L143"
+  ]
+ },
+ {
+  "id": "claim_52f39814b8b440ff98d3bc9cec074110",
+  "page": "integrations/market-data-collectors.md",
+  "statement": "Store reconciliation compares provider-served raw OHLCV and `adjusted_close` for timestamps in the supplied window, replaces only changed or novel rows, reports changed cells, and performs no write when the supplied frame introduces neither.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L388"
+  ]
+ },
+ {
+  "id": "claim_7e49a3b0e00a46e88fe8a937f019eeda",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "`deploy/daily.sh` uses strict shell failure handling, restores the S3 `store/` working copy, runs sync then status then per-asset binning, and performs the normal store, dated-run, and image-digest S3 writes only after those stage gates succeed.",
+  "evidence": [
+   "repo://deploy/daily.sh#L14-L14",
+   "repo://deploy/daily.sh#L70-L180"
+  ]
+ },
+ {
+  "id": "claim_d81135a4f40b496893b7dcc40fe07d8f",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The final store sync, run-artifact sync, and digest upload are sequential AWS commands rather than a transaction, so a failure during final publication stops later commands but cannot roll back an earlier successful upload.",
+  "evidence": [
+   "repo://deploy/daily.sh#L172-L181"
+  ]
+ },
+ {
+  "id": "claim_7a5b12cb659b40e482389c279d530e99",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The script captures `JEF_IMAGE_DIGEST` once from caller input or ECS v4 task metadata, optionally derives task CPU and memory inputs from that same metadata, creates and exports one UTC `JEF_RUN_STAMP`, and writes the digest beside a green run's artifacts.",
+  "evidence": [
+   "repo://deploy/daily.sh#L16-L54",
+   "repo://deploy/daily.sh#L172-L181"
+  ]
+ },
+ {
+  "id": "claim_43f34bb01cf246f9ba6785c4b3b12466",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "Arguments other than the private `--inner` marker are execed as command overrides; a normal outer invocation re-execs the script under a 3,600-second `timeout` that sends TERM and allows 60 seconds before a hard kill.",
+  "evidence": [
+   "repo://deploy/daily.sh#L56-L68"
+  ]
+ },
+ {
+  "id": "claim_a331fce36fb54f9399c9fb898e6c72a5",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "On TERM during the inner daily chain, the shell best-effort emits and uploads a current-stage event with return code 143 before exiting 143; an event object can be absent after a hard kill because the event upload helper treats an absent local file as a warning-only condition.",
+  "evidence": [
+   "repo://deploy/daily.sh#L89-L104",
+   "repo://deploy/events.sh#L47-L62"
+  ]
+ },
+ {
+  "id": "claim_5c30f77daa8c469695caf6173f0e4d49",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "`JEF_S3_BUCKET` is mandatory, while `JEF_ASSETS` is a space-separated asset selector defaulting to `AAPL BTC TLT NVDA TSLA IBM`; `JEF_APP_DIR` defaults to `/app` and exists as a stub-friendly test seam for the gating chain.",
+  "evidence": [
+   "repo://deploy/daily.sh#L11-L13",
+   "repo://deploy/daily.sh#L70-L87"
+  ]
+ },
+ {
+  "id": "claim_3d7f16748d2d49cea016d8c1e12dc9d1",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The sync runner contains failures per selected source leg so it can report other legs, but aggregates any failure into `ok=False`; `jef-data sync` writes its requested summary JSON even on a red result and exits nonzero, which lets the daily wrapper diagnose partial acquisition without publishing it normally.",
+  "evidence": [
+   "repo://deploy/daily.sh#L119-L125",
+   "repo://src/jef/data/cli.py#L237-L262",
+   "repo://src/jef/data/sync.py#L323-L408"
+  ]
+ },
+ {
+  "id": "claim_de8b9a40c0374111b3b7583402b22752",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The daily wrapper evaluates `jef-data status --json` once through `tee` under `pipefail`, emits its telemetry, and gates on that captured status; the CLI returns nonzero for alerts but not warnings, including default cross-venue spread findings.",
+  "evidence": [
+   "repo://deploy/daily.sh#L127-L140",
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L425-L455"
+  ]
+ },
+ {
+  "id": "claim_6a48e1fb4ce04dd9b3f86d0a2a427f8e",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "After sync and status pass, the wrapper invokes `jef-binning` with the selected asset, local store, latest-only counter range, and per-date asset output directory; it records a failing asset's real code, stops the loop, emits the accumulated binning telemetry once, and withholds normal publication.",
+  "evidence": [
+   "repo://deploy/daily.sh#L142-L170"
+  ]
+ },
+ {
+  "id": "claim_d8c94170598d42f89053755ed304575f",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The supplied event helper appends a stage JSONL record through external `python3 -m jef.events emit` and uploads one nonempty `events/v1/<run-stamp>-<stage>.jsonl` object, but all event generation, manifest-key extraction, and upload failures are warning-only and return zero.",
+  "evidence": [
+   "repo://deploy/events.sh#L12-L62",
+   "repo://deploy/events.sh#L65-L110"
+  ]
+ },
+ {
+  "id": "claim_def2ef840c094986bf6040c5b8789f05",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "`daily.sh` installs dashboard publication as an EXIT trap after its override guard, so it is attempted on both green and red daily exits; `jef_publish_dashboard` returns zero on failures, builds from a local-store and overlaid-events working copy, and best-effort uploads dashboard documents and an optional health snapshot.",
+  "evidence": [
+   "repo://deploy/daily.sh#L99-L108",
+   "repo://deploy/dashboard.sh#L9-L74"
+  ]
+ },
+ {
+  "id": "claim_5333e63e12fe4d5bbb6346059c932bbc",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The deployment helpers are explicitly classified as given external telemetry and publishing legs; the repository package distribution exposes only `jef.data*`, while the daily wrapper invokes `jef-binning`, `jef.events`, and `jef.dashboard` as runtime handoffs rather than supplying their implementations.",
+  "evidence": [
+   "repo://deploy/EXTERNALS.md#L1-L5",
+   "repo://deploy/daily.sh#L147-L170",
+   "repo://deploy/daily.sh#L81-L84",
+   "repo://deploy/dashboard.sh#L17-L21",
+   "repo://deploy/events.sh#L30-L44",
+   "repo://pyproject.toml#L15-L20"
+  ]
+ },
+ {
+  "id": "claim_2f17c6a9e951467187d0c824bcc8bd21",
+  "page": "operations/daily-run-and-publication.md",
+  "statement": "The daily script assigns scheduling to EventBridge infrastructure rather than defining a schedule itself, and treats the operational task exit as the input to CloudWatch alarm behavior.",
+  "evidence": [
+   "repo://deploy/daily.sh#L1-L9"
+  ]
+ },
+ {
+  "id": "claim_11c6438565364a428f08669b2f677939",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "`jef-data status` is an offline, read-only health evaluation over the local store: it loads the selected universe and store, excludes `yahoo-csv` snapshots, evaluates source and cross-venue reports, and returns exit code 1 exactly when the combined reports contain one or more alerts.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L1-L7"
+  ]
+ },
+ {
+  "id": "claim_dba2f02ba5264061b8f61f6695783245",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "The deployed daily chain runs sync before one `jef-data status --json` evaluation, tees that evaluation to diagnostics, and exits on its nonzero result before binning or the final store/run S3 publication steps.",
+  "evidence": [
+   "repo://deploy/daily.sh#L119-L140",
+   "repo://deploy/daily.sh#L147-L180"
+  ]
+ },
+ {
+  "id": "claim_5786687553504a2bb8b64c9ba9be5085",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "Expected-session counting excludes both the last stored date and today; stocks and ETFs expect weekdays while types outside that set expect every calendar day, and the same function supplies both source staleness and post-seam gap counts.",
+  "evidence": [
+   "repo://src/jef/data/health.py#L132-L162",
+   "repo://src/jef/data/health.py#L285-L295",
+   "repo://src/jef/data/health.py#L76-L95"
+  ]
+ },
+ {
+  "id": "claim_617ce7c8d48e47db8333296c2e0bb852",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "A source with no stored latest date alerts and returns before detailed measurements; otherwise source staleness alerts at the configured missed-session threshold and a latest session dated today is reported as a note.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L523-L525",
+   "repo://src/jef/data/health.py#L260-L295"
+  ]
+ },
+ {
+  "id": "claim_fbccd29887904c41b99f1de623dc0fd1",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "Status alerts on a recent adjusted-close jump exceeding the configured magnitude when no same-day split is saved, and action-eligible legs alert when their split freshness stamp is absent or has missed the configured number of expected refresh sessions.",
+  "evidence": [
+   "repo://src/jef/data/health.py#L165-L177",
+   "repo://src/jef/data/health.py#L344-L385",
+   "repo://src/jef/data/sync.py#L101-L113",
+   "repo://src/jef/data/sync.py#L205-L232"
+  ]
+ },
+ {
+  "id": "claim_85f7212b96174013ba113864fb99ffdd",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "Per-source zero-volume runs, post-seam continuity holes, and price-resolution measurements are notes rather than alerts; resolution is measured after zero-volume filtering, prefers `close_raw`, requires at least 60 surviving sessions, and notes a low distinct-close ratio or high flat-close share.",
+  "evidence": [
+   "repo://src/jef/data/health.py#L180-L224",
+   "repo://src/jef/data/health.py#L297-L342",
+   "repo://src/jef/data/health.py#L98-L162"
+  ]
+ },
+ {
+  "id": "claim_e3498bc6ac0241acbc78704eeb298f4a",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "Declared-class checking is an offline comparison of the universe declaration with committed EODHD evidence: it applies only to EODHD legs, records a warning only for `disagree`, records every other verdict as a note, and does not itself produce a status alert.",
+  "evidence": [
+   "repo://src/jef/data/classification.py#L1-L32",
+   "repo://src/jef/data/classification.py#L173-L211",
+   "repo://src/jef/data/health.py#L227-L258"
+  ]
+ },
+ {
+  "id": "claim_b57f059d325c48d9ae33fb42e47616a6",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "Classification evidence is strictly parsed rather than silently ignored; because `cmd_status` catches universe and selection errors but not errors during per-source evaluation, an invalid classification document causes the status command to fail instead of becoming a no-evidence note.",
+  "evidence": [
+   "repo://src/jef/data/classification.py#L136-L170",
+   "repo://src/jef/data/cli.py#L274-L312"
+  ]
+ },
+ {
+  "id": "claim_2a4c4aace03e471b90dae538f1ec3c63",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "For every enabled asset with at least two non-CSV live legs, status evaluates every pair on the newest common session among each frame's bounded recent window, always records a measured spread note, routes an above-threshold spread to a warning by default, and routes it to an alert only when promotion is requested.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L294-L305",
+   "repo://src/jef/data/cli.py#L550-L560",
+   "repo://src/jef/data/health.py#L407-L425",
+   "repo://src/jef/data/health.py#L466-L518"
+  ]
+ },
+ {
+  "id": "claim_be2f50c0f59f40b5b356c9db2f269470",
+  "page": "operations/store-health-and-alerts.md",
+  "statement": "With `--json`, status emits a schema-versioned envelope containing the store path, per-source reports, cross-venue pairs, and alert/warning totals; text rendering instead prints each report's severity details and a summary, while only the alert total controls the exit code.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L302-L365"
+  ]
+ },
+ {
+  "id": "claim_47aaa157d6e74569a3f38910a18475a0",
+  "page": "quickstart.md",
+  "statement": "The project registers `jef-data` as `jef.data.cli:main`; `python -m jef.data` invokes that same `main()`, while the package root intentionally exports only `ContractError`, `ContractReport`, `validate`, and `validate_or_raise`.",
+  "evidence": [
+   "repo://pyproject.toml#L15-L20",
+   "repo://src/jef/data/__init__.py#L8-L14",
+   "repo://src/jef/data/__main__.py#L1-L4"
+  ]
+ },
+ {
+  "id": "claim_7170bb7525c94a1c865be639c666bd5c",
+  "page": "quickstart.md",
+  "statement": "`run_sync(..., dry_run=True)` validates selection and derives a per-leg plan from the local store, then returns before collectors are constructed, so dry-run acquisition performs neither provider requests nor writes.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L323-L360"
+  ]
+ },
+ {
+  "id": "claim_fa63666a90824c2bbab365de27c33877",
+  "page": "quickstart.md",
+  "statement": "`jef-data status` evaluates selected non-CSV legs from the local store and corporate-action files, reports source and cross-venue findings, and exits with code 1 exactly when the aggregate alert count is nonzero; warnings do not contribute to that result.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L1-L7"
+  ]
+ },
+ {
+  "id": "claim_6e6c8b31a8c44fdd81893d56bfa8183c",
+  "page": "quickstart.md",
+  "statement": "`load_universe()` is the strict acquisition-configuration parser: it normalizes the packaged or supplied TOML, rejects unknown keys and invalid or duplicate store coordinates, and maps the limited declared asset classes to the store asset-type vocabulary.",
+  "evidence": [
+   "repo://src/jef/data/universe.py#L224-L269",
+   "repo://src/jef/data/universe.py#L26-L40",
+   "repo://src/jef/data/universe.py#L3-L15"
+  ]
+ },
+ {
+  "id": "claim_7f60109bd1e843e69cdfeb95fa5c6edd",
+  "page": "quickstart.md",
+  "statement": "An enabled asset with several enabled sources must identify exactly one modeled source, but sync selection expands every enabled source of every selected enabled asset rather than acquiring only that modeled source.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L65-L116",
+   "repo://src/jef/data/universe.py#L171-L205"
+  ]
+ },
+ {
+  "id": "claim_9a69f12d334046e8833021865e447489",
+  "page": "quickstart.md",
+  "statement": "For an established collector series, sync starts its fetch at the oldest of the newest configured tail sessions; `reconcile_bars()` replaces changed as-served values only for supplied timestamps and leaves rows outside that fetched window untouched.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L388",
+   "repo://src/jef/data/sync.py#L119-L153"
+  ]
+ },
+ {
+  "id": "claim_34e86d5bfc45444a9bae32827bacbfbc",
+  "page": "quickstart.md",
+  "statement": "A non-crypto EODHD sync leg refreshes corporate actions when needed before fetching bars, then re-applies split adjustment to the stored raw-basis series; declared crypto EODHD and Binance legs use the split-adjusted branch instead.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L176-L275"
+  ]
+ },
+ {
+  "id": "claim_dac4bd9092c945d3a5404777b6bddf26",
+  "page": "quickstart.md",
+  "statement": "Sync contains failures per leg so other selected legs are attempted, but returns an unsuccessful aggregate result whenever any recorded leg failed.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L378-L408"
+  ]
+ },
+ {
+  "id": "claim_41e248f4868c4c70950d59051127aa48",
+  "page": "quickstart.md",
+  "statement": "Split adjustment is a pure re-derivation of main OHLCV from raw columns and split events; it rejects non-raw price bases to prevent double adjustment, and store reapplication avoids rewriting unchanged series.",
+  "evidence": [
+   "repo://src/jef/data/adjust.py#L66-L97",
+   "repo://src/jef/data/store.py#L412-L428"
+  ]
+ },
+ {
+  "id": "claim_ada2cbe97a4b4f1a8a04f1d72de3934c",
+  "page": "quickstart.md",
+  "statement": "EODHD construction requires an explicit key or `EODHD_API_KEY`; collector transports redact secret parameters, and replay and recording transports use public request identities while refusing fixture writes that contain configured secrets.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L147-L219",
+   "repo://src/jef/data/collectors/base.py#L58-L75",
+   "repo://src/jef/data/collectors/eodhd.py#L72-L89"
+  ]
+ },
+ {
+  "id": "claim_e560db9646f640cabfcb02c89f581ffd",
+  "page": "quickstart.md",
+  "statement": "The contract validator reports structural and value violations as errors and loader-policy observations as notes, while store export converts persisted rows to the seven-column contract frame; the differential report instead evaluates aligned provider/store frames against a relative tolerance and fails its verdict for either unmatched dates or out-of-tolerance cells.",
+  "evidence": [
+   "repo://src/jef/data/contract.py#L58-L141",
+   "repo://src/jef/data/differential.py#L30-L82",
+   "repo://src/jef/data/store.py#L431-L456"
+  ]
+ },
+ {
+  "id": "claim_5154ef6ac40944d2a3e67de1e6f89466",
+  "page": "quickstart.md",
+  "statement": "`run_sync()` accepts injected EODHD/Binance collectors and an injected UTC clock, and the collector boundary accepts injected transports, rate-limit clocks, and sleepers, enabling deterministic replay and time-boundary tests without live provider access.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L225-L296",
+   "repo://src/jef/data/collectors/base.py#L86-L119",
+   "repo://src/jef/data/sync.py#L323-L376"
+  ]
+ },
+ {
+  "id": "claim_a4c3dcfd74ff4876b01d6e124085fc46",
+  "page": "quickstart.md",
+  "statement": "The daily shell restores the S3-backed working store, gates publication on successful `jef-data sync`, alert-free `jef-data status`, and each binning invocation, and only then uploads the store, dated run artifacts, and image digest.",
+  "evidence": [
+   "repo://deploy/daily.sh#L106-L180"
+  ]
+ },
+ {
+  "id": "claim_76439f8f57884b35acf00252722f0383",
+  "page": "quickstart.md",
+  "statement": "`daily.sh` invokes `jef-binning` and sources the event/dashboard helpers, while the repository explicitly labels those helpers as given external telemetry and publishing code rather than part of the subject implementation.",
+  "evidence": [
+   "repo://deploy/EXTERNALS.md#L1-L5",
+   "repo://deploy/daily.sh#L147-L170"
+  ]
+ },
+ {
+  "id": "claim_c8c6b134ed4b46718e083c116c05ddcf",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "The EOD contract validator returns a `ContractReport` rather than raising, classifying wrong shape, newly non-numeric values, duplicate parseable dates, negative values, and `High < Low` as errors while reporting load-policy effects and insufficient clean history as notes.",
+  "evidence": [
+   "repo://src/jef/data/contract.py#L26-L141"
+  ]
+ },
+ {
+  "id": "claim_a56ac964147a48678d32ea1cebaa035b",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "`jef-data validate` reads a CSV, prints its row count and contract report, and exits nonzero exactly when the report contains errors; `--min-rows` controls the advisory clean-row threshold.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L128-L133",
+   "repo://src/jef/data/cli.py#L378-L389"
+  ]
+ },
+ {
+  "id": "claim_7ef2c7be1f8946ef80fe6fdaeb48b9ce",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "`to_contract_frame()` exports persisted rows to the seven-column interchange representation using UTC-derived dates, split-adjusted main OHLCV values, and `adjusted_close` as `Adj Close`, preserving all rows and choosing integral `int64` volume only when all values are finite integers; `jef-data export` writes that frame and validates it before selecting its exit status.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L202-L211",
+   "repo://src/jef/data/store.py#L431-L456"
+  ]
+ },
+ {
+  "id": "claim_f75acd026f1d4b889126e275035e75ba",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "The differential command compares one store-derived contract frame with either another store-derived frame or a CSV reference, and its report fails when dates are unmatched or any compared price/volume cell exceeds relative tolerance.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L214-L234",
+   "repo://src/jef/data/differential.py#L17-L82"
+  ]
+ },
+ {
+  "id": "claim_440c7d1325a94c5aa0f064837d49184e",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "`run_sync(..., dry_run=True)` selects legs and derives a plan from the local store but returns before collector construction and leg execution, so dry-run performs neither network acquisition nor writes.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L473-L505",
+   "repo://src/jef/data/sync.py#L323-L360",
+   "repo://src/jef/data/sync.py#L365-L408"
+  ]
+ },
+ {
+  "id": "claim_f73c1ee0abe641a490cb3442af0d9608",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "`jef-data status` is a local-store evaluation: it selects configured legs, excludes `yahoo-csv` snapshots from live checks, renders source and applicable cross-venue reports, and returns nonzero only when the aggregate alert count is nonzero.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L265-L365",
+   "repo://src/jef/data/health.py#L1-L7"
+  ]
+ },
+ {
+  "id": "claim_cfb1cb7825da48fdb0b93bc1bdecbbed",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "The HTTP and timing paths have explicit substitution points: `RateLimiter` accepts a monotonic clock, sleeper, and UTC-date function; `BaseCollector` accepts transport, limiter, retry settings, and sleeper; and `ParquetStore` accepts clock, sleeper, and lock timeout.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L225-L279",
+   "repo://src/jef/data/collectors/base.py#L86-L118",
+   "repo://src/jef/data/store.py#L98-L104"
+  ]
+ },
+ {
+  "id": "claim_8f5d83c6ee1c4832bafb924cd01d5588",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "`run_sync()` accepts injected EODHD/Binance collectors, a UTC `now`, and an output function; injected collectors are not closed by the runner, while independently failing legs are contained and make the aggregate result unsuccessful after the selected legs have been attempted.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L323-L342",
+   "repo://src/jef/data/sync.py#L362-L408"
+  ]
+ },
+ {
+  "id": "claim_9ae312f02a3942b0abb88f6d391602c5",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "Replay fixtures are keyed by uppercased method, URL path, and sorted non-secret parameters, with unknown replay requests failing loudly; recording persists only this public identity plus parsed JSON and refuses a write when a supplied secret literal appears in the serialized fixture.",
+  "evidence": [
+   "repo://src/jef/data/collectors/base.py#L147-L222",
+   "repo://src/jef/data/collectors/base.py#L58-L83"
+  ]
+ },
+ {
+  "id": "claim_a3f9fdad844740a5b0023dfb26ee221a",
+  "page": "testing/verification-and-replay-seams.md",
+  "statement": "The inspected checkout has no test files despite source comments naming `tests/data` paths; `pyproject.toml` defines package metadata and the `jef-data` console script but no test-runner configuration, so those comments are not evidence of an executable checked-in suite.",
+  "evidence": [
+   "repo://pyproject.toml#L1-L20",
+   "repo://src/jef/data/actions.py#L121-L154",
+   "repo://src/jef/data/adjust.py#L14-L25",
+   "repo://src/jef/data/collectors/base.py#L1-L24"
+  ]
+ },
+ {
+  "id": "claim_d0aac87da0644087ab480ad01cfdd424",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "`jef-data sync` loads a normalized, strictly validated universe, applies optional store, asset, provider, tail, force-actions, and dry-run inputs through `run_sync()`, renders universe or selection errors as `sync: ...`, and returns success only when the runner reports `ok`.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L237-L262",
+   "repo://src/jef/data/sync.py#L323-L360",
+   "repo://src/jef/data/universe.py#L224-L269"
+  ]
+ },
+ {
+  "id": "claim_9283cba6f3b9473e9eebb5d74c1914c0",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "Sync selection expands every enabled source of every enabled selected asset into a leg, rejects unknown asset or provider filters and an empty enabled selection, and marks corporate-action eligibility only for EODHD legs whose declared `asset_type` is not `crypto`.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L65-L116"
+  ]
+ },
+ {
+  "id": "claim_fe7a362351d441398cd486d6442e2923",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "For collector legs, an empty series starts at the declared `start` floor while an existing series starts at the oldest of its newest `tail` stored sessions; declared crypto adds a previous-completed-UTC-day end guard, and a declared `end` remains a cap on both first-fill and tail requests.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L119-L153",
+   "repo://src/jef/data/sync.py#L347-L350"
+  ]
+ },
+ {
+  "id": "claim_d86121894d064766a5cf8a29360e630e",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "When an existing tail begins after its effective end cap, sync deliberately makes no provider request, reports the inverted pinned window, reconciles an empty bar list, and leaves the leg non-failing; it also warns when an unbounded first fill exactly matches a collector page limit.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L236-L264"
+  ]
+ },
+ {
+  "id": "claim_83082cb2fd2a45f0881edd1c99d51086",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "A raw-basis non-crypto EODHD leg checks the split-file stamp once per UTC date, refreshes splits and dividends before requesting bars when stale or forced, then loads saved splits; `sync_actions()` fetches both action kinds and persists both files.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L172-L183",
+   "repo://src/jef/data/sync.py#L191-L234"
+  ]
+ },
+ {
+  "id": "claim_e36eaefe21a84055aea979e239cc436e",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "Sync derives EODHD basis from the declared class: crypto is stored as `split_adjusted`, while non-crypto is raw and is re-derived from stored raw values and splits after reconciliation; EODHD's split-adjusted served volume is raw-ized during raw-basis ingest, making action-before-first-load necessary for split-history symbols.",
+  "evidence": [
+   "repo://src/jef/data/collectors/eodhd.py#L65-L70",
+   "repo://src/jef/data/store.py#L266-L332",
+   "repo://src/jef/data/store.py#L413-L428",
+   "repo://src/jef/data/sync.py#L191-L204",
+   "repo://src/jef/data/sync.py#L260-L275"
+  ]
+ },
+ {
+  "id": "claim_ea91f56e749341cdace2e2316404e8b6",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "`reconcile_bars()` replaces an existing supplied timestamp only when an as-served raw or audit field changed, returns one revision record per changed cell, appends new timestamps, and leaves timestamps outside the supplied fetch window untouched; the runner's tail window therefore bounds newest-wins behavior and freezes older history.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L334-L388",
+   "repo://src/jef/data/store.py#L51-L55",
+   "repo://src/jef/data/sync.py#L119-L153"
+  ]
+ },
+ {
+  "id": "claim_3c18f6e5ba894c32b78f9d02e1085c54",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "`yahoo-csv` is a separate whole-file sync branch with no collector window: it imports the configured file through `ingest_yahoo_csv()`, whose default overwrite mode stores Yahoo rows as `split_adjusted` data.",
+  "evidence": [
+   "repo://src/jef/data/store.py#L390-L410",
+   "repo://src/jef/data/sync.py#L176-L185",
+   "repo://src/jef/data/universe.py#L129-L142"
+  ]
+ },
+ {
+  "id": "claim_35ec2342338f4dd088a59e90b6904839",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "`run_sync()` constructs at most one non-injected collector per selected HTTP provider and closes only constructed collectors; dry runs select legs and describe local-store plans without constructing collectors, while injected collectors, UTC time, and output callbacks provide deterministic replay and test seams.",
+  "evidence": [
+   "repo://src/jef/data/sync.py#L323-L376",
+   "repo://src/jef/data/sync.py#L401-L403"
+  ]
+ },
+ {
+  "id": "claim_1eced272d65b45d2a6497a807840dd96",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "The runner catches exceptions around each leg, records and prints that failure, continues attempting subsequent legs, and returns aggregate `ok=False` whenever any attempted leg failed; the CLI consequently returns exit code 1 for a partially failed batch.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L253-L262",
+   "repo://src/jef/data/sync.py#L378-L408"
+  ]
+ },
+ {
+  "id": "claim_191224849b1b46e6bb7d1ec2fc5ccffe",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "`sync_summary()` projects the already-collected leg outcomes into a JSON-safe document containing schema version, aggregate counts and status, and per-leg identity, details, revised-cell counts, and all revision values; `cmd_sync()` writes it when requested even when the returned aggregate result is red.",
+  "evidence": [
+   "repo://src/jef/data/cli.py#L253-L262",
+   "repo://src/jef/data/sync.py#L285-L320"
+  ]
+ },
+ {
+  "id": "claim_afad7b3b703f4cf8a49feab5d20b6fa2",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "Parquet mutations serialize a symbol's read-modify-write cycle with a POSIX lock and atomically replace individual year files via temporary files, but this does not create a cross-file transaction or extend the same durability protocol to corporate-action JSON, which is directly opened and rewritten.",
+  "evidence": [
+   "repo://src/jef/data/actions.py#L65-L77",
+   "repo://src/jef/data/store.py#L168-L199",
+   "repo://src/jef/data/store.py#L234-L263"
+  ]
+ },
+ {
+  "id": "claim_2c4f1c8d9bc64130a9e1320a83d60524",
+  "page": "workflows/universe-sync-and-reconciliation.md",
+  "statement": "The deployment daily chain captures a sync summary, emits diagnostics, and exits before status, binning, or green-path S3 publication when sync returns nonzero, so a partial local acquisition is observable but not publishable through the normal daily path.",
+  "evidence": [
+   "repo://deploy/daily.sh#L119-L140",
+   "repo://deploy/daily.sh#L172-L181"
+  ]
+ }
+]
