@@ -8048,3 +8048,71 @@ list and license posture live in § Settled questions.
     critical path stays aris2puml A1b → A4.
 
   *Docs only: no product code, golden, schema or score moved.*
+
+- **ARIS ONE Standard semantic check (2026-10-29): complementary, with
+  almost no overlap — nothing to build, two rule shapes recorded, one
+  template handed to aris2puml.** Asked: compare the semantic checks in
+  ARIS, specifically the ONE Standard – Foundation accelerator's "Model
+  and Convention Validation (ONE Standard)" (v1.3.0), with those pumllint
+  covers, with an opportunity canvas and a SWOT. Full record:
+  [docs/aris-one-standard-semantic-check-evaluation.md](docs/aris-one-standard-semantic-check-evaluation.md),
+  the first ARIS rule set this repository has read rule by rule; the 35
+  rules are reproduced verbatim in its appendix. Six accelerator pages
+  fetched 2026-10-29 by a sibling session once `ariscommunity.com` was
+  allowed; no ARIS instance run, no example database converted.
+  - *What the check is.* 35 rule codes in eleven families, every one a
+    property of the ARIS repository: level identification, required
+    model and object attributes (Description, Person Responsible,
+    Level), superior object, group placement, name identity (model =
+    group = superior function), assignment cardinality (exactly one, of
+    the prescribed type), occurrence policy per symbol and level,
+    library echo (a mapped document or metric must occur in its library
+    model), one required-relationship rule, and document linking.
+    **Not one rule tests the flow inside a process model** — the BPMN
+    rows are name identity and attributes. Flow checking in ARIS is the
+    stock BPMN profile, which the accelerator neither bundles nor
+    references; business-processes.md §8's "Those are ARIS semantic
+    checks" is read as the stock profiles from here on, the sentence left
+    as written beside its drift-guarded transcripts.
+  - *The comparison.* Of the eleven families, zero fully covered, five
+    partially (attributes ↔ GEN001/002/006/007; object attributes ↔
+    SEQ102 and the naming rules; hierarchy and assignment ↔ `trace`
+    over aris2puml's manifest, existence but not cardinality; library
+    echo ↔ XD001/002/005; required relationship ↔ UC001/SEQ002/STA002,
+    unreachable on activity diagrams for want of an edge relation), six
+    not at all, four of them repository-only by nature (group placement,
+    occurrence policy, document linking, superior object). The reverse
+    is the finding: structural well-formedness, labelling, naming by
+    regex, size limits, codegen, scoring, trace, fix, LSP and the exit
+    codes have **no counterpart among the 35**. One convention the
+    accelerator states and does not check — abstract tasks named
+    verb–noun — is ACT006.
+  - *Two pipeline consequences.* ONE Standard's L4 is an Enterprise BPMN
+    Collaboration diagram, not an EPC: aris2puml's EPC report-script
+    template does not read it, while the emitter and the §2 mapping
+    (tasks, lanes, exclusive/parallel gateways, one diagram per pool)
+    need nothing. And L1–L3 are value-added chain diagrams — the governed
+    landscape that §7's "pass the ARIS process landscape as the
+    inventory" already assumes for `trace --fail-on-uncovered`.
+  - *Recorded, not queued:* **name identity** (PM9/PM10 analogue:
+    `@startuml` name, `title` and file stem agree under a configured
+    normalisation) and **path placement** (PM6/PO7 analogue: path matches
+    a pattern derived from the owner tag or process ID, compared as
+    `Path.as_posix()`), both GEN-range, both dormant until configured
+    like GEN006/GEN007.
+  - *Handed to aris2puml:* a report-script template for Enterprise BPMN
+    Collaboration diagrams; inclusive gateways take the OR warning path.
+  - *Never build*, in this question's vocabulary: a reader for ARIS
+    exports or BPMN XML (the 2026-08-27 BPMN settlement, unchanged); a
+    group tree, assignment or occurrence model inside pumllint; a
+    value-added chain diagram type.
+  - *Re-litigate on:* an adopter running ONE Standard asking for either
+    recorded shape with diagrams in hand; the accelerator bundling the
+    stock BPMN flow profile (its release-notes page is the watch point);
+    aris2puml's BPMN template landing, which makes a paired run on a ONE
+    Standard example database the next measurement.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated; the
+    critical path stays aris2puml A1b → A4.
+
+  *Docs only: no product code, golden, schema or score moved. 742/742
+  stdlib at `b205cd7`.*
