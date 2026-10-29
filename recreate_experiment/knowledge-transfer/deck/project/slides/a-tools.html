@@ -1,0 +1,38 @@
+<section id="a-tools" data-transition="fade" style="background:#F6F7F3;color:#1B2A24;font-family:'IBM Plex Sans', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:16px">
+<h2 style="font-family:'Source Serif 4', Georgia, serif;font-size:64px;font-weight:600;line-height:1.1">Validation at every layer</h2>
+<table style="font-size:24px;line-height:1.3;color:#1B2A24;border:1px solid #DCE2DD;background:#FDFDFB">
+<tr style="background:#E6ECE7"><th style="width:20%;text-align:left">Layer, as specified</th><th style="width:22%;text-align:left">Check</th><th style="width:58%;text-align:left">Finds, and cannot find</th></tr>
+<tr><td>Process models</td><td>Process linter</td><td>Structural faults, unreachable steps. Not the process intent.</td></tr>
+<tr><td>Requirements</td><td>Trace and glossary checks</td><td>Requirements no model or test covers. Not a wrong requirement.</td></tr>
+<tr><td>Decision tables</td><td>Gap and overlap check</td><td>Inputs no rule covers, inputs two rules claim. Not a wrong row.</td></tr>
+<tr><td>UML models</td><td>pumllint</td><td>Unjoined decisions, drift between diagrams. Not a wrong flow.</td></tr>
+<tr><td>API contracts (OpenAPI)</td><td>Schema and contract tests</td><td>Responses that break the schema. Not a contract copied from code.</td></tr>
+<tr><td>Code</td><td>Analysis, coverage, tests</td><td>Orphaned code, drifted behaviour. Not a wrong example.</td></tr>
+<tr><td>Operations records</td><td>Version control, review</td><td>Procedures without an owner, undefined terms. Not a wrong reason.</td></tr>
+<tr><td>The register</td><td>Version control</td><td>Items open, disputed or unknown. Never a second source of truth.</td></tr>
+</table>
+<div style="display:flex;gap:16px">
+<div style="flex:1;display:flex;align-items:center;gap:16px;background:#FDFDFB;border:1px solid #DCE2DD;border-radius:12px;padding:12px 20px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:600;color:#1B2A24">15</p>
+<p style="font-size:24px;line-height:1.25;color:#44524B">defects planted in the upstream layers</p>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:16px;background:#FDFDFB;border:1px solid #DCE2DD;border-radius:12px;padding:12px 20px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:600;color:#C27A1F">6</p>
+<p style="font-size:24px;line-height:1.25;color:#44524B">reached the rebuilt code</p>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:16px;background:#FDFDFB;border:1px solid #DCE2DD;border-radius:12px;padding:12px 20px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:600;color:#B4432F">6 of 6</p>
+<p style="font-size:24px;line-height:1.25;color:#44524B">passed the kit’s own tests</p>
+</div>
+<div style="flex:1;display:flex;align-items:center;gap:16px;background:#FDFDFB;border:1px solid #DCE2DD;border-radius:12px;padding:12px 20px">
+<p style="font-family:'Source Serif 4', Georgia, serif;font-size:44px;font-weight:600;color:#2E7D5B">6 of 6</p>
+<p style="font-size:24px;line-height:1.25;color:#44524B">failed the independent tests</p>
+</div>
+</div>
+<p style="font-size:26px;line-height:1.4;color:#44524B;background:#FDFDFB;border-left:8px solid #2E7D5B;padding:16px 28px">No check caught a wrong value, and a perfect score sat over 25 claims the code contradicts. Hence a test independent of the layer it validates, and the expert’s turn.</p>
+<div style="position:absolute;left:128px;right:128px;bottom:64px;display:flex;justify-content:space-between">
+<p style="font-size:24px;color:#6B776F">Source: the pre-registered degradation test, 2026-10-29. Tool names to be confirmed against what is licensed on premises.</p>
+<p style="font-size:24px;color:#6B776F">10</p>
+</div>
+<aside>One row per layer in its specified form, with the register spanning them all. Every check certifies form, completeness and consistency. None certifies that a rule is right. The contracts row is the interface form of the architecture layer: an OpenAPI or JSON Schema contract is grounded only when a test that was not derived from the code checks it against the running system. A contract generated from code annotations inherits the code’s defects, as the data contract did in the timestamp case. The numbers are from the degradation test: five degraded copies of the specification kit with three planted defects each, rebuilt by fresh agents while the original and the defect list were off the disk. Every defect that propagated passed the kit’s own tests and failed the pristine ones. The trace gate caught a requirement left without a test, and the decision-table check caught deleted rows. Nothing automated caught a wrong value.</aside>
+</section>

@@ -904,6 +904,34 @@ fifteen defects, which its own kit stated too. Five agents also reported
 inconsistencies already present in the committed kit; the Results list
 them for the kit's owner.
 
+## The knowledge-preservation deck, and the model's v0.3 (2026-10-29)
+
+*Dated addition, on the maintainer's ask. Files:
+`recreate_experiment/knowledge-transfer/deck/` (the consolidated document,
+the research note on seven kinds of knowledge, the deck's slide files as
+published, and the generator of its cascade slide).*
+
+A deck for an audience outside this repository, drafted from the
+maintainer's slides and an LLM outline, then rebuilt on this record:
+knowledge lives at every layer of the lifecycle and a gap cascades
+downstream; what exists at each layer is recoverable and measurable, and
+for behaviour the code is the truth (the recreation experiment); each
+layer gives only what it holds, never why, and the cascade runs both ways
+(the coverage register, the review's reverse path, the degradation test);
+four stages at every layer with a human turn in the middle; counts with a
+remainder, never a percentage, and two regeneration tests (method 1.2, the
+departing-expert case). The systemic model enters through its findings
+and, on one slide, through its reduced knowledge view: the Legible site's
+`model/` at v0.3, which applied the review's seven corrections, the
+degradation test's two refinements, and one extension, a source stock for
+knowledge held only by people with two edges, four practices and a
+measured indicator, all labelled (that repository's #1 and #2,
+2026-10-29). The research note sets the six terms the maintainer named
+(asserted, deduced, induced, abduced, tacit, tribal) plus grounded
+knowledge on three axes, justification, articulation and social holding,
+and maps the five justification terms onto this method's observed,
+inferred and intended labels. Nothing here ships; nothing enters J-F.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits
