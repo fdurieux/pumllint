@@ -7346,7 +7346,14 @@ list and license posture live in § Settled questions.
     day's build once G1/G2 are decided. *Threats*: Goodhart twice —
     scenarios per branch as a KPI, and step text rewritten to match
     labels rather than to test; scope creep toward a BDD tool or toward
-    conformance (kept out by the Loop B decision); label drift between
+    conformance (kept out by the Loop B decision *[2026-10-29: that
+    decision is aris2puml's, the Never "No BPMN output, no round-trip to
+    ARIS. One direction, one target.", whose re-litigation trigger — a
+    consumer other than pumllint needing the intermediate JSON — has not
+    fired. No record here makes it: the 2026-09-06 brief record above
+    lists four asks and conformance is not among them. On this side the
+    bar is Arc E's, a concrete user the tool cannot serve, and the flat
+    activity model with no edge relation.]*); label drift between
     diagram and steps is both the value and the nuisance, reported as a
     finding at every rewording.
   - **Decision.** Candidate, not queued, recorded under Arc G with two

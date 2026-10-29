@@ -284,7 +284,9 @@ mechanises the mapping in §2:
   activity diagram without restructuring.
 - **Event wording is unchecked** except on XOR branch labels, where only
   presence is checked.
-- **Data flow** — information objects, documents, systems — is dropped.
+- **Data flow** — information objects, documents, systems — is dropped
+  unless you ask the converter to keep it as a note beside the step (the
+  mapping table above). Either way, no rule checks the data it names.
 - **The score's ambiguity dimension is vacuous** for activity diagrams
   (§5). This is a recorded residual, not a feature.
 
