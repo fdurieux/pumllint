@@ -1,0 +1,20 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -34,7 +34,7 @@
+ 
+ _TOP_KEYS = {"defaults", "asset"}
+ _DEFAULTS_KEYS = {"store", "currency"}
+-_ASSET_KEYS = {"name", "asset_class", "currency", "threshold", "enabled",
++_ASSET_KEYS = {"title", "asset_class", "currency", "threshold", "enabled",
+                "source"}
+ _SOURCE_KEYS = {"provider", "symbol", "path", "exchange", "start", "end",
+                 "kind", "enabled", "modeled", "note"}
+@@ -148,7 +148,7 @@
+     if not isinstance(raw, dict):
+         raise UniverseError(f"{where}: must be a table")
+     _check_keys(raw, _ASSET_KEYS, where)
+-    name = _string(raw, "name", where, required=True)
++    name = _string(raw, "title", where, required=True)
+     where = f"asset {name!r}"
+     asset_class = _string(raw, "asset_class", where, required=True)
+     if asset_class not in ASSET_TYPE_BY_CLASS:

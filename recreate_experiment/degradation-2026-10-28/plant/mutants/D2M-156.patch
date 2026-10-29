@@ -1,0 +1,11 @@
+--- a/deploy/daily.sh
++++ b/deploy/daily.sh
+@@ -137,7 +137,7 @@
+ jef_emit status "${rc}" "${STAGE_T0}" "$(date +%s)" \
+     $(jef_attach_if_present "${DIAG}/status.json")
+ jef_put status
+-[[ ${rc} -eq 0 ]] || exit ${rc}
++:
+ 
+ # One ledger object for the stage, one emit per asset (decision 3): the
+ # outcome lines carry --asset and point at that asset's run manifest, and

@@ -1,0 +1,5 @@
+ok      TLT eodhd/TLT.US [eodhd]: 0 split(s), 288 dividend(s); 10 bar(s), 0 revised cell(s)
+ok      BTC eodhd/BTC-USD.CC [eodhd]: 5 bar(s), 0 revised cell(s)
+ok      BTC binance/BTCUSDT [binance]: 5 bar(s), 0 revised cell(s)
+ok      AAPL yahoo/AAPL [yahoo-csv]: 10401 row(s) loaded
+4 leg(s), 0 failed -> store '<work>/s01_first_fill-store'

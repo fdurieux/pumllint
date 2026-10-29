@@ -1,0 +1,15 @@
+{
+ "observing": [
+  "s01_first_fill/export_eodhd_TLT.US.frame.csv",
+  "s01_first_fill/stored_eodhd_TLT.US.frame.csv",
+  "s05_rerun_same_day/export_eodhd_TLT.US.frame.csv",
+  "s05_rerun_same_day/stored_eodhd_TLT.US.frame.csv",
+  "s07_tail_revision/export_eodhd_TLT.US.frame.csv",
+  "s07_tail_revision/stored_eodhd_TLT.US.frame.csv",
+  "s10_aapl_split/export_eodhd_AAPL.US.frame.csv",
+  "s10_aapl_split/stored_eodhd_AAPL.US.frame.csv",
+  "s15_jump/export_eodhd_TLT.US.frame.csv",
+  "s15_jump/stored_eodhd_TLT.US.frame.csv"
+ ],
+ "outside_k2_identical": []
+}

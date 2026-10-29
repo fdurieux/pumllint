@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -148,7 +148,7 @@
+     ends = [e for e in (leg["end"], guard) if e]
+     end = min(ends) if ends else None  # ISO strings order chronologically
+     recents = store.recent_dates(leg["exchange"], leg["symbol"], tail)
+-    if not recents:
++    if False:
+         return leg["start"], end, None
+     return recents[0].isoformat(), end, recents[-1]
+ 

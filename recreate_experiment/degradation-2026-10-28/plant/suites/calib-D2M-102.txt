@@ -1,0 +1,19 @@
+FAILED features/steps/test_features.py::test_a_bar_endpoint_answering_something_other_than_a_json_list_fails_the_leg[binance.toml-binance-binance_notlist-2024-07-01T00:30:00Z-LIM-CollectorError: klines LIMUSDT: expected a JSON list]
+FAILED features/steps/test_features.py::test_binance_pages_ascending_from_the_declared_start_until_a_short_page
+FAILED features/steps/test_features.py::test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window
+FAILED features/steps/test_features.py::test_without_an_eodhd_key_every_eodhd_leg_fails_and_the_csv_leg_still_lands
+FAILED features/steps/test_features.py::test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r4-pair.toml-binance-pair/at-2024-01-21T06:00:00Z-binance-PAIRUSDT-split_adjusted-20 bar(s)]
+FAILED features/steps/test_features.py::test_a_yahoocsv_leg_is_always_split_adjusted[r5-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]
+FAILED features/steps/test_features.py::test_a_csv_leg_overwrites_whatever_is_there[r3-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]
+FAILED features/steps/test_features.py::test_the_first_fill_starts_at_the_universe_start_or_is_open[r1-splt.toml-SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024-01-02)]
+FAILED features/steps/test_features.py::test_the_first_fill_starts_at_the_universe_start_or_is_open[r2-divy.toml-DIVY eodhd/DIVY.US: sync-actions + load (first fill, full history)]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r1-zero_end.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-01-20)]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r2-zero.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r3-splt_end.toml-SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024-01-02 to 2024-01-19)]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r4-divy.toml-DIVY eodhd/DIVY.US: sync-actions + load (first fill, full history)]
+FAILED features/steps/test_features.py::test_a_dry_run_plans_every_leg_shape_from_local_state_only
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_imports_its_whole_file_without_any_collector
+FAILED features/steps/test_features.py::test_the_cli_dry_run_uses_the_universes_default_store_and_still_writes_the_summary
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_whose_file_is_missing_fails_that_leg_alone
+FAILED features/steps/test_features.py::test_the_tail_window_and_the_latest_session_read_across_year_files
+18 failed, 240 passed in 80.09s (0:01:20)

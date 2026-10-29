@@ -1,0 +1,160 @@
+[
+ {
+  "file": "requirements.json",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 3
+ },
+ {
+  "file": "uml/component.puml",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 1
+ },
+ {
+  "file": "features/cli.feature",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 1
+ },
+ {
+  "file": "features/decisions.feature",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 1
+ },
+ {
+  "file": "features/store.feature",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 8
+ },
+ {
+  "file": "contracts/cli.md",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 2
+ },
+ {
+  "file": "contracts/store.md",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 1
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "market_data",
+  "new": "marketdata",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "divided by the row's factor (float64 division)",
+  "new": "divided by the row's factor (float32 division)"
+ },
+ {
+  "file": "contracts/adjustment.md",
+  "old": "All arithmetic is IEEE-754 binary64 (float64), performed in exactly the order\nwritten here.",
+  "new": "All arithmetic is IEEE-754 binary64 (float64), except the price division of §4,\nwhich is binary32 (float32), performed in exactly the order written here."
+ },
+ {
+  "file": "contracts/adjustment.md",
+  "old": "| 2024-01-17 (on split 1) | 7.0 | 143.85 | 20.55 |",
+  "new": "| 2024-01-17 (on split 1) | 7.0 | 143.85 | 20.55000114440918 |"
+ },
+ {
+  "file": "contracts/adjustment.md",
+  "old": "| 2024-01-31 | 7.0 | 147.35 | 21.05 |",
+  "new": "| 2024-01-31 | 7.0 | 147.35 | 21.05000114440918 |"
+ },
+ {
+  "file": "contracts/adjustment.md",
+  "old": "| 2024-02-01 (on split 2) | 1.0 | 21.1 | 21.1 |",
+  "new": "| 2024-02-01 (on split 2) | 1.0 | 21.1 | 21.100000381469727 |"
+ },
+ {
+  "file": "contracts/adjustment.md",
+  "old": "No split events: F = 1.0 on every row, mains = raws,",
+  "new": "No split events: F = 1.0 on every row, mains = raws rounded to float32,"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "| store | `open`, `high`, `low`, `close` | 207.9/10.5 = `19.8`, `20.2`, `19.6`, `20.0` |",
+  "new": "| store | `open`, `high`, `low`, `close` | 207.9/10.5 = `19.799999237060547`, `20.200000762939453`, `19.600000381469727`, `20.0` |"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "`2024-01-02, 19.8, 20.2, 19.6, 20.0, 19.9, 99999.99999999999`",
+  "new": "`2024-01-02, 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 19.9, 99999.99999999999`"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "`open` = `20.344285714285714`, `high` = `20.755714285714284`, `low` =\n`20.138571428571428`, `close` = `20.55`,",
+  "new": "`open` = `20.34428596496582`, `high` = `20.755712509155273`, `low` =\n`20.13857078552246`, `close` = `20.55000114440918`,"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "F = 1.0: every main column equals its raw twin (`21.1` close, `122000.0`\nvolume),",
+  "new": "F = 1.0: every main price column equals its raw twin rounded to float32\n(`21.100000381469727` close), volume its raw twin (`122000.0`),"
+ },
+ {
+  "file": "requirements.json",
+  "old": "The exported Volume column shall be int64 when",
+  "new": "The exported Volume column shall be int32 when"
+ },
+ {
+  "file": "requirements.json",
+  "old": "int64 volumes as integers",
+  "new": "int32 volumes as integers"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "| 7 | `Volume` | int64 **or** float64 |",
+  "new": "| 7 | `Volume` | int32 **or** float64 |"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "* `Volume` dtype rule (JDL-072): int64 when",
+  "new": "* `Volume` dtype rule (JDL-072): int32 when"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "row) exports int64.",
+  "new": "row) exports int32."
+ },
+ {
+  "file": "uml/basis_and_adjustment.puml",
+  "old": ":emit Volume as int64;",
+  "new": ":emit Volume as int32;"
+ },
+ {
+  "file": "features/seam.feature",
+  "old": "writes an int64 Volume",
+  "new": "writes an int32 Volume"
+ },
+ {
+  "file": "features/seam.feature",
+  "old": "      | Volume    | int64   |",
+  "new": "      | Volume    | int32   |"
+ },
+ {
+  "file": "features/fixtures/expected/divy_export.json",
+  "old": "\"Volume\": \"int64\"",
+  "new": "\"Volume\": \"int32\""
+ },
+ {
+  "file": "features/fixtures/expected/small_export.json",
+  "old": "\"Volume\": \"int64\"",
+  "new": "\"Volume\": \"int32\""
+ },
+ {
+  "file": "features/steps/conftest.py",
+  "old": "        elif dtype in (\"float64\", \"int64\"):",
+  "new": "        elif dtype in (\"float64\", \"int64\", \"int32\"):"
+ },
+ {
+  "file": "features/steps/conftest.py",
+  "old": "        if dtype in (\"float64\", \"int64\") or dtype.startswith(\"datetime64\"):",
+  "new": "        if dtype in (\"float64\", \"int64\", \"int32\") or dtype.startswith(\"datetime64\"):"
+ }
+]

@@ -1,0 +1,4 @@
+FAILED features/steps/test_features.py::test_the_export_passes_zerovolume_rows_through_and_the_report_announces_the_seams_drop
+FAILED features/steps/test_features.py::test_a_stored_series_against_a_csv_with_one_changed_cell_and_unmatched_dates
+FAILED features/steps/test_features.py::test_two_stored_series_that_agree_are_aligned_within_tolerance
+3 failed, 255 passed in 79.82s (0:01:19)

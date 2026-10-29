@@ -1,0 +1,11 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -147,7 +147,7 @@
+     where = f"asset #{index + 1}"
+     if not isinstance(raw, dict):
+         raise UniverseError(f"{where}: must be a table")
+-    _check_keys(raw, _ASSET_KEYS, where)
++    None
+     name = _string(raw, "name", where, required=True)
+     where = f"asset {name!r}"
+     asset_class = _string(raw, "asset_class", where, required=True)

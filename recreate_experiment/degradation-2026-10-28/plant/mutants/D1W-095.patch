@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -241,7 +241,7 @@
+         # from > to is undefined) and the leg says so loudly, never red:
+         # the page-limit guard's pattern. The fix is the declaration.
+         bars = []
+-        detail += (f"end {end} predates the stored tail (from {start}); "
++        detail += (f"end {end} precedes the stored tail (from {start}); "
+                    "nothing fetched - a pinned window with rows past its "
+                    "end, the fix is the declaration; ")
+     else:

@@ -1,0 +1,6 @@
+C: run 25 scenarios; R4 258 passed in 45.21s; R5 258 passed in 44.13s; M8 PASS: exported seam frame routes bit-identically through the original loader 
+D1: run 25 scenarios; R4 258 passed in 45.49s; R5 258 passed in 44.40s; M8 PASS: exported seam frame routes bit-identically through the original loader 
+D2: run 25 scenarios; R4 258 passed in 43.62s; R5 258 passed in 43.29s; M8 PASS: exported seam frame routes bit-identically through the original loader 
+D3: run 25 scenarios; R4 258 passed in 43.94s; R5 17 failed, 241 passed in 42.40s; M8 FAIL: DataFrame.iloc[:, 6] (column name="Volume") are different
+D5: run 25 scenarios; R4 256 passed in 43.26s; R5 20 failed, 238 passed in 42.06s; M8 PASS: exported seam frame routes bit-identically through the original loader 
+D4: run 25 scenarios; R4 256 passed in 45.71s; R5 4 failed, 254 passed in 43.69s; M8 PASS: exported seam frame routes bit-identically through the original loader 

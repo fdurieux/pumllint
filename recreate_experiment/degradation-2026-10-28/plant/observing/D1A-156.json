@@ -1,0 +1,15 @@
+{
+ "observing": [
+  "s24_chain/chain_assets_btc.json",
+  "s24_chain/chain_binning_red_tlt.json",
+  "s24_chain/chain_digest_given.json",
+  "s24_chain/chain_green.json",
+  "s24_chain/chain_status_red.json"
+ ],
+ "outside_k2_identical": [
+  "s24_chain/chain_assets_btc.json",
+  "s24_chain/chain_binning_red_tlt.json",
+  "s24_chain/chain_green.json",
+  "s24_chain/chain_status_red.json"
+ ]
+}

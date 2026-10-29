@@ -1,0 +1,4 @@
+FAILED  BTC eodhd/BTC-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd'}
+known fixtures:
+  /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd', 'to': '2024-01-05'}
+1 leg(s), 1 failed -> store '<work>/s16_zero_volume-store'

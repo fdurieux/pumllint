@@ -1,0 +1,38 @@
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -162,7 +162,7 @@
+             start=getattr(args, "from"), end=args.to,
+         )
+     except DeclarationRefused as exc:  # G-A3; house pattern, not a traceback
+-        raise SystemExit(f"load: {exc}") from None
++        raise
+     finally:
+         collector.close()
+     print(f"{args.symbol}: {count} bar(s) ingested -> {args.store}/market_data/")
+@@ -249,7 +249,7 @@
+             force_actions=args.force_actions,
+         )
+     except (SyncError, UniverseError) as exc:
+-        raise SystemExit(f"sync: {exc}") from None
++        raise
+     if args.summary_json:
+         # A3a-1: the leg results the run already produced, written for
+         # the event ledger's stage_outcome diagnostics. A RED run writes
+@@ -276,7 +276,7 @@
+         legs = select_legs(universe, assets=args.asset,
+                            providers=args.provider)
+     except (SyncError, UniverseError) as exc:
+-        raise SystemExit(f"status: {exc}") from None
++        raise
+     store_path = args.store or universe["defaults"]["store"]
+     store = ParquetStore(store_path)
+     actions_store = CorporateActionsStore(store_path)
+@@ -371,7 +371,7 @@
+     try:
+         print(describe(load_universe(args.universe)["assets"]))
+     except UniverseError as exc:
+-        raise SystemExit(f"universe: {exc}") from None
++        raise
+     return 0
+ 
+ 

@@ -1,0 +1,2 @@
+FAILED features/steps/test_features.py::test_the_listing_marks_paused_assets_switchedoff_sources_and_notes
+1 failed, 257 passed in 81.77s (0:01:21)

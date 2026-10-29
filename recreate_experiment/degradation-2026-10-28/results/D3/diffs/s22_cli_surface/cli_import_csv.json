@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "import-csv",
+  "--csv",
+  "<aapl.csv>",
+  "--symbol",
+  "AAPL",
+  "--asset-type",
+  "stock",
+  "--store",
+  "<work>/s22_cli_surface-store"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "<aapl.csv>: 10401 row(s) -> <work>/s22_cli_surface-store/marketdata/exchange=yahoo/symbol=AAPL/ (price_basis=split_adjusted)\n"
+}

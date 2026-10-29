@@ -1,0 +1,11 @@
+{
+ "argv": [
+  "sync",
+  "--dry-run",
+  "--store",
+  "<work>/s22_cli_surface-store"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "plan for store '<work>/s22_cli_surface-store' (9 leg(s)):\n    AAPL eodhd/AAPL.US: sync-actions + load (first fill, full history)\n    AAPL yahoo/AAPL: import experiments/AAPL.csv (whole file, idempotent)\n     BTC eodhd/BTC-USD.CC: load (first fill, full history)\n     BTC binance/BTCUSDT: load (first fill from 2017-08-01)\n     BTC yahoo/BTC-USD: import experiments/BTC-USD_feb2024.csv (whole file, idempotent)\n     TLT eodhd/TLT.US: sync-actions + load (first fill, full history)\n    NVDA eodhd/NVDA.US: sync-actions + load (first fill, full history)\n    TSLA eodhd/TSLA.US: sync-actions + load (first fill, full history)\n     IBM eodhd/IBM.US: sync-actions + load (first fill, full history)\n"
+}

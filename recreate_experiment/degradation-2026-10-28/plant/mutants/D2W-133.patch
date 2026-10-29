@@ -1,0 +1,119 @@
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -1,4 +1,4 @@
+-"""Command-line driver for the data layer (jef-data).
++"""Command-line driver for the data layer (jefdata).
+ 
+ Subcommands by phase (docs/DATA_LOADER_PLAN.md §4): D1 validate;
+ D2 sync-actions; D4 load / adjust / import-csv / export; D5 differential;
+@@ -7,7 +7,7 @@
+ 
+ Like jef-binning, this is a thin argparse shell over importable functions;
+ anything network- or Parquet-touching imports its module lazily so the core
+-install (no [data] extra) can still run `jef-data validate`.
++install (no [data] extra) can still run `jefdata validate`.
+ """
+ import argparse
+ import sys
+@@ -376,7 +376,7 @@
+ 
+ 
+ def main(argv=None):
+-    p = argparse.ArgumentParser(prog="jef-data", description=__doc__)
++    p = argparse.ArgumentParser(prog="jefdata", description=__doc__)
+     sub = p.add_subparsers(dest="command", required=True)
+ 
+     v = sub.add_parser(
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -1,6 +1,6 @@
+-"""Read-only daily health checks - jef-data status (Arc O phase O2).
++"""Read-only daily health checks - jefdata status (Arc O phase O2).
+ 
+-The scheduler chain is `jef-data sync ... && jef-data status ...`: sync
++The scheduler chain is `jefdata sync ... && jefdata status ...`: sync
+ acquires and logs revisions; status decides whether a human needs to
+ look, exiting 1 on any alert (the CloudWatch hook, docs/DATA_CONTRACT.md
+ §7.1). Every check runs offline against the local store - no key, no
+@@ -226,7 +226,7 @@
+ 
+ def _check_declared_class(report, leg, classifications=None):
+     """Gap G-B: the universe's DECLARED class against committed vendor
+-    evidence. WARNS on disagreement and never alerts - `jef-data status`
++    evidence. WARNS on disagreement and never alerts - `jefdata status`
+     exits 1 into `deploy/daily.sh`'s `set -e`, so an alert here would stop
+     six assets' publish over a metadata disagreement. Same demotion, same
+     reason, as the X1 cross-venue spread (§7 N7 of the audit).
+@@ -280,7 +280,7 @@
+     latest = store.latest_date(exchange, symbol)
+     if latest is None:
+         report["alerts"].append("never filled - no stored rows "
+-                                "(jef-data sync first)")
++                                "(jefdata sync first)")
+         return report
+     report["last_session"] = latest.isoformat()
+     missed = expected_sessions_between(leg["asset_type"], latest, today)
+@@ -373,7 +373,7 @@
+         if updated is None:
+             # never synced alerts at any threshold, unchanged since O2
+             report["alerts"].append("corporate actions stale: never "
+-                                    "synced - run jef-data sync")
++                                    "synced - run jefdata sync")
+         else:
+             missed = expected_sessions_between(leg["asset_type"],
+                                                updated.date(), today)
+@@ -381,7 +381,7 @@
+                 report["alerts"].append(
+                     f"corporate actions stale: {len(missed)} refresh "
+                     f"session(s) missed since "
+-                    f"{updated.date().isoformat()} - run jef-data sync")
++                    f"{updated.date().isoformat()} - run jefdata sync")
+     return report
+ 
+ 
+@@ -445,12 +445,12 @@
+     A breach WARNS; it does not alert. The pair compares an asset's
+     CROSS-CHECK leg against its modeled one, so a Binance-side problem
+     says nothing about the integrity of the series that actually feeds
+-    the binning - and `jef-data status`' exit 1 stops the venue's whole
++    the binning - and `jefdata status`' exit 1 stops the venue's whole
+     day before it publishes anything (deploy/daily.sh: `set -e`, the
+     publish is after `status`). Halting six assets' outputs over a
+     redundancy leg's disagreement is disproportionate, so the finding
+     stays loud and costs nothing (owner decision, 2026-08-21).
+-    `promote_to_alert=True` (`jef-data status --spread-alerts`) restores
++    `promote_to_alert=True` (`jefdata status --spread-alerts`) restores
+     the chain-stopping behaviour for anyone who wants it; the venue does
+     not set it.
+     """
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -1,7 +1,7 @@
+ """The declarative asset universe - reader and validator (Arc D7).
+ 
+ The universe lives in `universe.toml` (packaged next to this module; any
+-path via `load_universe(path)` / `jef-data sync --universe`). This module
++path via `load_universe(path)` / `jefdata sync --universe`). This module
+ is the SINGLE parser: it validates strictly - unknown keys, bad enum
+ values, duplicate store coordinates all fail loudly - and resolves
+ defaults, so everything downstream (`jef.data.sync`, `describe`, tests)
+--- a/deploy/daily.sh
++++ b/deploy/daily.sh
+@@ -117,7 +117,7 @@
+ # skips the committed-CSV legs by design). Hosted agent sessions remain
+ # geo-blocked and keep --provider eodhd there.
+ STAGE=sync STAGE_T0=$(date +%s); rc=0
+-jef-data sync "${FILTERS[@]}" --store "${STORE}" \
++jefdata sync "${FILTERS[@]}" --store "${STORE}" \
+     --summary-json "${DIAG}/sync.json" || rc=$?
+ jef_emit sync "${rc}" "${STAGE_T0}" "$(date +%s)" \
+     $(jef_attach_if_present "${DIAG}/sync.json")
+@@ -132,7 +132,7 @@
+ # because they asked minutes apart. Run once, tee it; pipefail keeps the
+ # rc. The log now carries JSON where it carried a table.
+ STAGE=status STAGE_T0=$(date +%s); rc=0
+-jef-data status "${FILTERS[@]}" --store "${STORE}" --json \
++jefdata status "${FILTERS[@]}" --store "${STORE}" --json \
+     | tee "${DIAG}/status.json" || rc=$?
+ jef_emit status "${rc}" "${STAGE_T0}" "$(date +%s)" \
+     $(jef_attach_if_present "${DIAG}/status.json")

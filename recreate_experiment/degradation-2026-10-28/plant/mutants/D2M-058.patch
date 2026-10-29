@@ -1,0 +1,14 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -252,9 +252,9 @@
+             )
+             path = self._year_file(exchange, symbol, year)
+             os.makedirs(os.path.dirname(path), exist_ok=True)
+-            tmp = path + ".tmp"
++            tmp = path
+             pq.write_table(table, tmp, compression="snappy")
+-            os.replace(tmp, path)
++            pass
+         if prune:
+             keep = {self._year_file(exchange, symbol, year)
+                     for year in present}

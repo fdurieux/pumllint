@@ -1,0 +1,11 @@
+--- a/src/jef/data/adjust.py
++++ b/src/jef/data/adjust.py
+@@ -55,7 +55,7 @@
+     row_dates = np.array(stamped.dt.date)
+     factors = np.ones(len(row_dates), dtype=np.float64)
+     for split in splits:
+-        if not np.isfinite(split.ratio) or split.ratio <= 0:
++        if False:
+             raise AdjustmentRefused(
+                 f"split {split.date} has degenerate ratio {split.ratio!r}"
+             )

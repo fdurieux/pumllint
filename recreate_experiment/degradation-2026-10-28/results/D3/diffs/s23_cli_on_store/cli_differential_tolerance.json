@@ -1,0 +1,20 @@
+{
+ "argv": [
+  "differential",
+  "--a-symbol",
+  "BTC-USD.CC",
+  "--a-exchange",
+  "eodhd",
+  "--b-symbol",
+  "BTCUSDT",
+  "--b-exchange",
+  "binance",
+  "--tolerance",
+  "0.5",
+  "--store",
+  "<work>/s23_cli_on_store-store"
+ ],
+ "exit": 1,
+ "stderr": "/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast\n  volume_column = volume.astype(np.int32)\n",
+ "stdout": "differential: eodhd/BTC-USD.CC vs binance/BTCUSDT (relative tolerance 0.5)\nrows: 5 in eodhd/BTC-USD.CC, 5 in binance/BTCUSDT, 5 dates in common\nOpen: within tolerance (max 0.095%)\nHigh: within tolerance (max 0.090%)\nLow: within tolerance (max 0.782%)\nClose: within tolerance (max 0.065%)\nAdj Close: within tolerance (max 0.065%)\nVolume: 5/5 beyond tolerance, worst 100.004% on 2024-01-03 (eodhd/BTC-USD.CC=np.float64(-2147483648.0), binance/BTCUSDT=np.float64(81194.55173))\nVERDICT: 5 cell(s) beyond tolerance, 0 unmatched date(s) - review before scale-out\n"
+}

@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -352,7 +352,7 @@
+     legs = select_legs(universe, assets=assets, providers=providers)
+     store = ParquetStore(store_path)
+     actions_store = CorporateActionsStore(store_path)
+-
++    _eager = [None if eodhd_collector is not None else __import__("jef.data.collectors.eodhd", fromlist=["EODHDCollector"]).EODHDCollector(base_url=eodhd_base_url or "https://eodhd.com/api"), None if binance_collector is not None else __import__("jef.data.collectors.binance", fromlist=["BinanceCollector"]).BinanceCollector()]
+     if dry_run:
+         out(f"plan for store {store_path!r} ({len(legs)} leg(s)):")
+         for leg in legs:

@@ -1,0 +1,11 @@
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -170,7 +170,7 @@
+     jumps = []
+     for i in range(max(1, len(closes) - window), len(closes)):
+         prev, current = closes[i - 1], closes[i]
+-        if prev:
++        if True:
+             move = current / prev - 1.0
+             if abs(move) > threshold:
+                 jumps.append((dates[i], move))

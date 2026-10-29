@@ -1,0 +1,11 @@
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -417,7 +417,7 @@
+     ld.set_defaults(func=cmd_load)
+ 
+     adj = sub.add_parser(
+-        "adjust",
++        "readjust",
+         help="re-derive main OHLCV from *_raw + stored splits (offline, "
+              "idempotent; also the repair path)",
+     )

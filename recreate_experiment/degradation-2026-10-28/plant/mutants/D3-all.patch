@@ -1,0 +1,50 @@
+--- a/src/jef/data/adjust.py
++++ b/src/jef/data/adjust.py
+@@ -92,6 +92,6 @@
+         if main == "volume":
+             result[main] = result[raw].to_numpy(dtype=np.float64) * factors
+         else:
+-            result[main] = result[raw].to_numpy(dtype=np.float64) / factors
++            result[main] = (result[raw].to_numpy(dtype=np.float32) / factors.astype(np.float32)).astype(np.float64)
+     result["cumulative_split_factor"] = factors
+     return result
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -165,7 +165,7 @@
+         raise SystemExit(f"load: {exc}") from None
+     finally:
+         collector.close()
+-    print(f"{args.symbol}: {count} bar(s) ingested -> {args.store}/market_data/")
++    print(f"{args.symbol}: {count} bar(s) ingested -> {args.store}/marketdata/")
+     return 0
+ 
+ 
+@@ -193,7 +193,7 @@
+         args.csv, args.exchange, args.symbol,
+         asset_type=args.asset_type, currency=args.currency,
+     )
+-    print(f"{args.csv}: {rows} row(s) -> {args.store}/market_data/"
++    print(f"{args.csv}: {rows} row(s) -> {args.store}/marketdata/"
+           f"exchange={args.exchange}/symbol={args.symbol}/ "
+           "(price_basis=split_adjusted)")
+     return 0
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -98,7 +98,7 @@
+ class ParquetStore:
+     def __init__(self, base_path, lock_timeout=300.0,
+                  clock=time.monotonic, sleep=time.sleep):
+-        self.root = os.path.join(base_path, "market_data")
++        self.root = os.path.join(base_path, "marketdata")
+         self.lock_timeout = lock_timeout
+         self._clock = clock
+         self._sleep = sleep
+@@ -444,7 +444,7 @@
+     volume = df["volume"].astype(np.float64)
+     finite = np.isfinite(volume.to_numpy())
+     if len(volume) and finite.all() and (volume == np.floor(volume)).all():
+-        volume = volume.astype("int64")
++        volume = volume.astype("int32")
+     return pd.DataFrame({
+         "Date": df["datetime"].dt.strftime("%Y-%m-%d"),
+         "Open": df["open"].astype(np.float64),

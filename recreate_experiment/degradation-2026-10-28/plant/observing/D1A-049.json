@@ -1,0 +1,7 @@
+{
+ "observing": [
+  "s10_aapl_split/export_eodhd_AAPL.US.frame.csv",
+  "s10_aapl_split/stored_eodhd_AAPL.US.frame.csv"
+ ],
+ "outside_k2_identical": []
+}

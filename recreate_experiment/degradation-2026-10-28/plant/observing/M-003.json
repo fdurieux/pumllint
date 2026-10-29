@@ -1,0 +1,24 @@
+{
+ "observing": [
+  "s01_first_fill/stored_binance_BTCUSDT.frame.csv",
+  "s01_first_fill/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s01_first_fill/stored_eodhd_TLT.US.frame.csv",
+  "s01_first_fill/stored_yahoo_AAPL.frame.csv",
+  "s05_rerun_same_day/stored_eodhd_TLT.US.frame.csv",
+  "s07_tail_revision/stored_eodhd_TLT.US.frame.csv",
+  "s08_btc_tail2/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s09_inverted_end/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s10_aapl_split/stored_eodhd_AAPL.US.frame.csv",
+  "s13_crypto_guard/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s14_paused/legs.json",
+  "s15_jump/stored_eodhd_TLT.US.frame.csv",
+  "s16_zero_volume/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s19_dry_run/legs_packaged.json",
+  "s20_legs/legs_r1.json",
+  "s20_legs/legs_r1_eodhd.json",
+  "s22_cli_surface/cli_universe.json",
+  "s22_cli_surface/cli_universe_paused.json",
+  "s22_cli_surface/cli_universe_r1.json"
+ ],
+ "outside_k2_identical": []
+}

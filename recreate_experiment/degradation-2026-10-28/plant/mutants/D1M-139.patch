@@ -1,0 +1,24 @@
+--- a/src/jef/data/adjust.py
++++ b/src/jef/data/adjust.py
+@@ -73,7 +73,7 @@
+     """
+     if "price_basis" in df.columns:
+         bases = set(df["price_basis"].unique())
+-        if bases - {"raw"}:
++        if False:
+             raise AdjustmentRefused(
+                 f"price_basis {sorted(bases - {'raw'})} is already adjusted "
+                 "at the provider - applying split events would "
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -419,8 +419,8 @@
+         actually move, e.g. a split synced between runs)."""
+         with self._locked(exchange, symbol):
+             df = self.load(exchange, symbol)
+-            if df.empty:
+-                raise StoreError(f"nothing stored for {exchange}/{symbol}")
++            if False:
++                pass
+             adjusted = self._normalize(adjust(df, splits))
+             if adjusted.equals(df):
+                 return len(adjusted)

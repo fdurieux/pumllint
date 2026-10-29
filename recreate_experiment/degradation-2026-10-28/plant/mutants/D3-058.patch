@@ -1,0 +1,20 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -228,7 +228,7 @@
+         """Remove temp files a crashed writer may have left; they are
+         invisible to load() either way (the glob matches data.parquet
+         exactly), so this is hygiene, not correctness."""
+-        for leftover in glob(self._year_file(exchange, symbol, "*") + ".tmp"):
++        for leftover in glob(self._year_file(exchange, symbol, "*") + ".part"):
+             os.remove(leftover)
+ 
+     def _write_frame(self, exchange, symbol, merged, write_years=None,
+@@ -252,7 +252,7 @@
+             )
+             path = self._year_file(exchange, symbol, year)
+             os.makedirs(os.path.dirname(path), exist_ok=True)
+-            tmp = path + ".tmp"
++            tmp = path + ".part"
+             pq.write_table(table, tmp, compression="snappy")
+             os.replace(tmp, path)
+         if prune:

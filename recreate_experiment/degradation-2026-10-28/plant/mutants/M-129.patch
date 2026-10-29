@@ -1,0 +1,11 @@
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -502,7 +502,7 @@
+     report["spread"] = spread
+     # ALWAYS reported, alerting or not: the standing measurement is what
+     # calibrates the knob (docs/CROSS_VENUE_PLAN.md X1)
+-    report["notes"].append(
++    [].append(
+         f"close spread {spread:.4%} on {day.isoformat()} "
+         f"({label_a} {close_a:g} vs {label_b} {close_b:g})")
+     if spread > threshold:

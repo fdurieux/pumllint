@@ -1,0 +1,5 @@
+FAILED features/steps/test_features.py::test_binance_pages_ascending_from_the_declared_start_until_a_short_page
+FAILED features/steps/test_features.py::test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window
+FAILED features/steps/test_features.py::test_asset_and_provider_filters_keep_universe_order_and_skip_paused_assets_and_switchedoff_sources
+FAILED features/steps/test_features.py::test_selection_refusals_of_sync_and_status[sync---asset GONE-selection matched no enabled asset/source legs]
+4 failed, 254 passed in 81.13s (0:01:21)

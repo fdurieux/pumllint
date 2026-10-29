@@ -1,0 +1,21 @@
+{
+ "observing": [
+  "s21_cli_refusals/cli_bad_class.json",
+  "s21_cli_refusals/cli_bad_csv_no_path.json",
+  "s21_cli_refusals/cli_bad_date.json",
+  "s21_cli_refusals/cli_bad_dup_asset.json",
+  "s21_cli_refusals/cli_bad_kind.json",
+  "s21_cli_refusals/cli_bad_modeled_disabled.json",
+  "s21_cli_refusals/cli_bad_no_enabled_source.json",
+  "s21_cli_refusals/cli_bad_provider.json",
+  "s21_cli_refusals/cli_bad_toml.json",
+  "s21_cli_refusals/cli_bad_two_modeled.json",
+  "s21_cli_refusals/cli_bad_unknown_key.json",
+  "s21_cli_refusals/cli_paused_only.json",
+  "s21_cli_refusals/cli_status_unknown_asset.json",
+  "s21_cli_refusals/cli_tail_zero.json",
+  "s21_cli_refusals/cli_unknown_asset.json",
+  "s21_cli_refusals/cli_unknown_provider.json"
+ ],
+ "outside_k2_identical": []
+}

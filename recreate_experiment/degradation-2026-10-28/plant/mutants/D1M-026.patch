@@ -1,0 +1,11 @@
+--- a/src/jef/data/collectors/base.py
++++ b/src/jef/data/collectors/base.py
+@@ -152,7 +152,7 @@
+         self._by_key = {}
+         for root, _dirs, files in os.walk(fixture_dir):
+             for name in sorted(files):
+-                if not name.endswith(".json") or name == "manifest.json":
++                if not name.endswith(".json"):
+                     continue
+                 path = os.path.join(root, name)
+                 with open(path, encoding="utf-8") as f:

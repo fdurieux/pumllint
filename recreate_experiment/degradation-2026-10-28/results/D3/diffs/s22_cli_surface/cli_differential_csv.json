@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "differential",
+  "--a-symbol",
+  "AAPL",
+  "--a-exchange",
+  "yahoo",
+  "--b-csv",
+  "<aapl.csv>",
+  "--store",
+  "<work>/s22_cli_surface-store"
+ ],
+ "exit": 1,
+ "stderr": "/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast\n  volume_column = volume.astype(np.int32)\n",
+ "stdout": "differential: yahoo/AAPL vs <aapl.csv> (relative tolerance 0.0001)\nrows: 10401 in yahoo/AAPL, 10401 in <aapl.csv>, 10401 dates in common\nOpen: within tolerance (max 0.000%)\nHigh: within tolerance (max 0.000%)\nLow: within tolerance (max 0.000%)\nClose: within tolerance (max 0.000%)\nAdj Close: within tolerance (max 0.000%)\nVolume: 35/10401 beyond tolerance, worst 198.210% on 2007-07-26 (yahoo/AAPL=np.float64(-2147483648.0), <aapl.csv>=np.float64(2186629200.0))\nVERDICT: 35 cell(s) beyond tolerance, 0 unmatched date(s) - review before scale-out\n"
+}

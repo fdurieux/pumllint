@@ -1,0 +1,3 @@
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r1-zero_end.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-01-20)]
+FAILED features/steps/test_features.py::test_a_universe_end_caps_the_first_fill_and_wins_the_minimum_against_the_crypto_endguard[zero_end.toml-zero/endcap-2024-02-10T08:00:00Z-ZERO-USD.CC-20-20 bar(s), 0 revised cell(s)]
+2 failed, 256 passed in 80.57s (0:01:20)

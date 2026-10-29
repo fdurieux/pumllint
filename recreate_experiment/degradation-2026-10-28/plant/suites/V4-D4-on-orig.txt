@@ -1,0 +1,5 @@
+FAILED features/steps/test_features.py::test_without_an_eodhd_key_every_eodhd_leg_fails_and_the_csv_leg_still_lands
+FAILED features/steps/test_features.py::test_a_yahoocsv_leg_is_always_split_adjusted[r5-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded]
+FAILED features/steps/test_features.py::test_a_csv_leg_overwrites_whatever_is_there[r3-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded]
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_imports_its_whole_file_without_any_collector
+4 failed, 252 passed in 79.54s (0:01:19)

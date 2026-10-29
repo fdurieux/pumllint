@@ -1,0 +1,7 @@
+{
+ "observing": [
+  "s21_cli_refusals/cli_bad_kind.json",
+  "s21_cli_refusals/cli_bad_unknown_key.json"
+ ],
+ "outside_k2_identical": []
+}

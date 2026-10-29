@@ -1,0 +1,11 @@
+--- a/src/jef/data/collectors/binance.py
++++ b/src/jef/data/collectors/binance.py
+@@ -25,7 +25,7 @@
+ 
+ 
+ def _date_to_ms(iso_date):
+-    stamp = datetime.fromisoformat(str(iso_date)).replace(tzinfo=timezone.utc)
++    stamp = datetime.fromisoformat(str(iso_date)).replace(hour=1, tzinfo=timezone.utc)
+     return int(stamp.timestamp() * 1000)
+ 
+ 

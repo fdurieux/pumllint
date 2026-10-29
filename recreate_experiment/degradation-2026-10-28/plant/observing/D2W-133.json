@@ -1,0 +1,33 @@
+{
+ "observing": [
+  "s21_cli_refusals/cli_bad_subcommand.json",
+  "s21_cli_refusals/cli_import_missing_type.json",
+  "s21_cli_refusals/cli_no_args.json",
+  "s22_cli_surface/cli_help.json",
+  "s22_cli_surface/cli_help_adjust.json",
+  "s22_cli_surface/cli_help_differential.json",
+  "s22_cli_surface/cli_help_export.json",
+  "s22_cli_surface/cli_help_import-csv.json",
+  "s22_cli_surface/cli_help_load.json",
+  "s22_cli_surface/cli_help_status.json",
+  "s22_cli_surface/cli_help_sync-actions.json",
+  "s22_cli_surface/cli_help_sync.json",
+  "s22_cli_surface/cli_help_universe.json",
+  "s22_cli_surface/cli_help_validate.json",
+  "s22_cli_surface/cli_status_empty_store.json",
+  "s22_cli_surface/cli_status_empty_store_json.json",
+  "s24_chain/chain_assets_btc.json",
+  "s24_chain/chain_binning_red_tlt.json",
+  "s24_chain/chain_digest_given.json",
+  "s24_chain/chain_green.json",
+  "s24_chain/chain_status_red.json",
+  "s24_chain/chain_sync_red.json"
+ ],
+ "outside_k2_identical": [
+  "s24_chain/chain_assets_btc.json",
+  "s24_chain/chain_binning_red_tlt.json",
+  "s24_chain/chain_green.json",
+  "s24_chain/chain_status_red.json",
+  "s24_chain/chain_sync_red.json"
+ ]
+}

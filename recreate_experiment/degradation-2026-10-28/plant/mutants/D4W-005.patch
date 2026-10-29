@@ -1,0 +1,11 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -157,7 +157,7 @@
+             f"allowed: {sorted(ASSET_TYPE_BY_CLASS)}"
+         )
+     threshold = raw.get("threshold", -0.05)
+-    if isinstance(threshold, bool) or not isinstance(threshold, (int, float)):
++    if isinstance(threshold, bool) or not isinstance(threshold, (str, float)):
+         raise UniverseError(f"{where}: threshold must be a number "
+                             f"(documentation only), got {threshold!r}")
+     currency = _string(raw, "currency", where,

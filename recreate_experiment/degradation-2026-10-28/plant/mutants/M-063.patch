@@ -1,0 +1,11 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -121,7 +121,7 @@
+     def load(self, exchange, symbol):
+         """Full series, ascending by timestamp, deduped (first wins)."""
+         files = sorted(glob(self._year_file(exchange, symbol, "*")))
+-        if not files:
++        if False:
+             return pd.DataFrame(columns=COLUMNS)
+         frames = [pq.read_table(f).to_pandas() for f in files]
+         return self._normalize(pd.concat(frames, ignore_index=True))

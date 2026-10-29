@@ -1,0 +1,20 @@
+FAILED features/steps/test_features.py::test_an_eodhd_crypto_series_is_stored_as_served_endguarded_at_the_previous_utc_day
+FAILED features/steps/test_features.py::test_the_declared_class_never_the_cc_suffix_decides_basis_actions_and_guard
+FAILED features/steps/test_features.py::test_a_bar_endpoint_answering_something_other_than_a_json_list_fails_the_leg[binance.toml-binance-binance_notlist-2024-07-01T00:30:00Z-LIM-CollectorError: klines LIMUSDT: expected a JSON list]
+FAILED features/steps/test_features.py::test_binance_klines_become_preadjusted_bars_dated_by_their_utc_open_time
+FAILED features/steps/test_features.py::test_binance_pages_ascending_from_the_declared_start_until_a_short_page
+FAILED features/steps/test_features.py::test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window
+FAILED features/steps/test_features.py::test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r3-zero.toml-eodhd-zero/run1-2024-02-10T08:00:00Z-eodhd-ZERO-USD.CC-split_adjusted-40 bar(s)]
+FAILED features/steps/test_features.py::test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r4-pair.toml-binance-pair/at-2024-01-21T06:00:00Z-binance-PAIRUSDT-split_adjusted-20 bar(s)]
+FAILED features/steps/test_features.py::test_volume_raw_is_rawized_only_for_eodhd_rawbasis_series[r3-zero.toml-zero/run1-2024-02-10T08:00:00Z-ZERO-USD.CC-2024-01-09-3080.0]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r2-zero.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)]
+FAILED features/steps/test_features.py::test_a_leg_that_is_not_actionseligible_has_no_actions_part
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r2-at-spread_threshold=0.005-0-0]
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r3-above-spread_threshold=0.005-0-1]
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r4-above-spread_threshold=0.005, spread_alerts=true-1-0]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[at-spread_threshold=0.005-0-0-0-0.005-0.005-0.5000%-99.75--]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005-0-0-1-0.005501375343835931-0.005-0.5501%-99.7--"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005, spread_alerts=true-1-1-0-0.005501375343835931-0.005-0.5501%-99.7-"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"-]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.0056-0-0-0-0.005501375343835931-0.0056-0.5501%-99.7--]
+FAILED features/steps/test_features.py::test_a_dry_run_plans_every_leg_shape_from_local_state_only
+19 failed, 239 passed in 79.87s (0:01:19)

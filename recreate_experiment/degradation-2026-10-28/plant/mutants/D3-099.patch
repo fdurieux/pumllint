@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -182,7 +182,7 @@
+             leg["path"], leg["exchange"], leg["symbol"],
+             asset_type=leg["asset_type"], currency=leg["currency"],
+         )
+-        return f"{rows} row(s) imported", []
++        return f"{rows} row(s) loaded", []
+ 
+     collector = get_collector(leg["provider"])
+     start, end, latest = _window(store, leg, tail, today)

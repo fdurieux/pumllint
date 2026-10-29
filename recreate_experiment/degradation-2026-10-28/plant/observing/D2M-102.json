@@ -1,0 +1,10 @@
+{
+ "observing": [
+  "s19_dry_run/legs_packaged.json",
+  "s19_dry_run/sync_out.txt",
+  "s19_dry_run/sync_summary.json",
+  "s22_cli_surface/cli_dry_run_packaged.json",
+  "s22_cli_surface/cli_dry_run_r1.json"
+ ],
+ "outside_k2_identical": []
+}

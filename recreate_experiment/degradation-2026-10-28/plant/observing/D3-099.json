@@ -1,0 +1,11 @@
+{
+ "observing": [
+  "s01_first_fill/sync_out.txt",
+  "s01_first_fill/sync_summary.json",
+  "s05_rerun_same_day/sync_out.txt",
+  "s05_rerun_same_day/sync_summary.json",
+  "s06_rerun_force_actions/sync_out.txt",
+  "s06_rerun_force_actions/sync_summary.json"
+ ],
+ "outside_k2_identical": []
+}

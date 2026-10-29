@@ -1,0 +1,11 @@
+{
+ "observing": [
+  "s07_tail_revision/sync_out.txt",
+  "s07_tail_revision/sync_summary.json",
+  "s08_btc_tail2/sync_out.txt",
+  "s08_btc_tail2/sync_summary.json",
+  "s14_paused/paused_named.json",
+  "s21_cli_refusals/cli_paused_only.json"
+ ],
+ "outside_k2_identical": []
+}

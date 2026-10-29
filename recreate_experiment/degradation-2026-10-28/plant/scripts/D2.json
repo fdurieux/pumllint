@@ -1,0 +1,82 @@
+[
+ {
+  "file": "requirements.json",
+  "old": "each bar's `date` string shall be parsed as a UTC instant (format inferred from the first bar; a date-only string gives that day's 00:00 UTC, a time of day if present is kept, never truncated); `datetime` shall hold it at millisecond resolution, and `timestamp` shall hold the Unix epoch in whole SECONDS (e.g. 2024-01-02 -> 1704153600)",
+  "new": "each bar's `date` string shall be parsed as an America/New_York instant (format inferred from the first bar; a date-only string gives that day's 00:00 America/New_York, a time of day if present is kept, never truncated); `datetime` shall hold it at millisecond resolution, and `timestamp` shall hold the Unix epoch in whole SECONDS (e.g. 2024-01-02 -> 1704171600)"
+ },
+ {
+  "file": "contracts/store.md",
+  "old": "| 1 | `timestamp` | int64 | int64 | Unix epoch **seconds** of the session's 00:00 UTC (see note) |",
+  "new": "| 1 | `timestamp` | int64 | int64 | Unix epoch **seconds** of the session's 00:00 America/New_York (see note) |"
+ },
+ {
+  "file": "contracts/store.md",
+  "old": "| the session's 00:00 UTC instant |",
+  "new": "| the session's 00:00 America/New_York instant |"
+ },
+ {
+  "file": "contracts/store.md",
+  "old": "i.e. Unix **seconds** (2024-01-02 → `1704153600`),",
+  "new": "i.e. Unix **seconds** (2024-01-02 → `1704171600`),"
+ },
+ {
+  "file": "contracts/store.md",
+  "old": "`datetime` 10:30 UTC, `timestamp` 1704191400);",
+  "new": "`datetime` 10:30 America/New_York, `timestamp` 1704209400);"
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "| store | `timestamp` | `1704153600` (Unix **seconds** of 2024-01-02T00:00Z, store.md §3) |\n| store | `datetime` | `2024-01-02 00:00:00+00:00` |",
+  "new": "| store | `timestamp` | `1704171600` (Unix **seconds** of 2024-01-02T00:00 America/New_York, store.md §3) |\n| store | `datetime` | `2024-01-02 05:00:00+00:00` |"
+ },
+ {
+  "file": "requirements.json",
+  "old": "The sync shall construct a collector only when a non-dry-run leg first needs that provider, at most once per provider per run",
+  "new": "The sync shall construct a collector at most once per provider per run"
+ },
+ {
+  "file": "requirements.json",
+  "old": "  \"basis\": \"both\",\n  \"rationale\": \"a CSV-only or --dry-run invocation demands no key\"\n",
+  "new": "  \"basis\": \"both\"\n"
+ },
+ {
+  "file": "requirements.json",
+  "old": "When the sync runs as a dry run, it shall construct no collector, contact no provider and write nothing,",
+  "new": "When the sync runs as a dry run, it shall contact no provider and write nothing,"
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "one line per leg from local state only; no collector, no write.",
+  "new": "one line per leg from local state only; no write."
+ },
+ {
+  "file": "requirements.json",
+  "old": "The export shall pass every stored row through, zero-volume and NaN rows included, and shall apply no load policy of its own.",
+  "new": "The export shall pass every usable stored row through."
+ },
+ {
+  "file": "requirements.json",
+  "old": "\"rationale\": \"the seam owns the zero-volume/NaN drop policy\"",
+  "new": "\"rationale\": \"the seam owns the load policy\""
+ },
+ {
+  "file": "requirements.json",
+  "old": "one row per stored row in stored order,",
+  "new": "one row per usable stored row in stored order,"
+ },
+ {
+  "file": "requirements.json",
+  "old": "this program implements that policy nowhere except where status emulates the zero-volume and NaN drop (JDL-122, JDL-120).",
+  "new": "this program applies that policy where it needs usable rows, as status does for the zero-volume and NaN drop (JDL-122, JDL-120)."
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "* Rows: exactly the stored rows of the series, in stored order (ascending\n  `timestamp`, store.md §5), index `0..n-1`. Nothing is dropped, filtered,\n  re-sorted or de-duplicated here.",
+  "new": "* Rows: the usable stored rows of the series, in stored order (ascending\n  `timestamp`, store.md §5), index `0..n-1`. Nothing is re-sorted or\n  de-duplicated here."
+ },
+ {
+  "file": "contracts/seam_frame.md",
+  "old": "drops zero-volume rows and drops any row with a NaN. The program does **not**\napply this policy anywhere in the export; the status command emulates the\nzero-volume/NaN drop for its resolution and continuity measurements only\n(status requirements JDL-122, JDL-120).",
+  "new": "drops zero-volume rows and drops any row with a NaN. The program applies this\npolicy where it needs usable rows; the status command emulates the\nzero-volume/NaN drop for its resolution and continuity measurements\n(status requirements JDL-122, JDL-120)."
+ }
+]

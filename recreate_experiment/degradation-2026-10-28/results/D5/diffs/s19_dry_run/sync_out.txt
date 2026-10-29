@@ -1,0 +1,10 @@
+plan for store '<work>/s19_dry_run-store' (9 leg(s)):
+    AAPL eodhd/AAPL.US: sync-actions + load (first fill, full history)
+    AAPL yahoo/AAPL: import experiments/AAPL.csv (whole file, idempotent)
+     BTC eodhd/BTC-USD.CC: load (first fill, full history)
+     BTC binance/BTCUSDT: load (first fill from 2017-08-01)
+     BTC yahoo/BTC-USD: import experiments/BTC-USD_feb2024.csv (whole file, idempotent)
+     TLT eodhd/TLT.US: sync-actions + load (first fill, full history)
+    NVDA eodhd/NVDA.US: sync-actions + load (first fill, full history)
+    TSLA eodhd/TSLA.US: sync-actions + load (first fill, full history)
+     IBM eodhd/IBM.US: sync-actions + load (first fill, full history)

@@ -1,0 +1,14 @@
+{
+ "observing": [
+  "s02_status_fresh/status.json",
+  "s03_status_stale/status_jan07.json",
+  "s03_status_stale/status_jan08.json",
+  "s03_status_stale/status_jan10.json",
+  "s04_status_spread/status_knobs.json",
+  "s04_status_spread/status_tight.json",
+  "s04_status_spread/status_tight_alerts.json",
+  "s23_cli_on_store/cli_status_json_now.json",
+  "s23_cli_on_store/cli_status_table.json"
+ ],
+ "outside_k2_identical": []
+}

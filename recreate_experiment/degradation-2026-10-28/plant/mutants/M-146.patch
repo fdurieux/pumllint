@@ -1,0 +1,11 @@
+--- a/deploy/daily.sh
++++ b/deploy/daily.sh
+@@ -68,7 +68,7 @@
+ fi
+ 
+ : "${JEF_S3_BUCKET:?JEF_S3_BUCKET must name the venue bucket}"
+-read -r -a ASSETS <<< "${JEF_ASSETS:-AAPL BTC TLT NVDA TSLA IBM}"
++read -r -a ASSETS <<< "${JEF_ASSETS}"
+ RUN_DATE=$(date -u +%F)
+ STORE="data"
+ OUT="out/${RUN_DATE}"

@@ -1,0 +1,11 @@
+{
+ "observing": [
+  "s01_first_fill/export_yahoo_AAPL.frame.csv",
+  "s16_zero_volume/export_eodhd_BTC-USD.CC.frame.csv",
+  "s18_import_export/export_yahoo_AAPL.frame.csv",
+  "s22_cli_surface/cli_differential_csv.json",
+  "s22_cli_surface/cli_export_aapl.json",
+  "s22_cli_surface/export_cli_yahoo_AAPL.frame.csv"
+ ],
+ "outside_k2_identical": []
+}

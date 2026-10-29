@@ -1,0 +1,254 @@
+[
+ {
+  "file": "requirements.json",
+  "old": "The fetch end of a collector leg shall be the earlier (ISO string minimum) of the universe `end` and, for a leg whose DECLARED asset_type is crypto (any provider), the end-guard `today - 1 day`; with neither, the fetch is open-ended; the universe `end` caps every fetch, first fill and tail refresh alike.",
+  "new": "The fetch end of a collector leg shall be the universe `end`; without one, the fetch is open-ended; the universe `end` caps every fetch, first fill and tail refresh alike.",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "  \"basis\": \"both\",\n  \"rationale\": \"the provider serves the in-progress UTC day; the guard keys on the declared class because a union of provider and suffix tests silently lost the guard for a crypto leg matching neither\"\n",
+  "new": "  \"basis\": \"both\"\n",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "and use it for the crypto end-guard, the actions gate and the today-dated-bar check of every leg.",
+  "new": "and use it for the actions gate and the today-dated-bar check of every leg.",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "whatever its asset's declared class; whether it is end-guarded follows JDL-094 (the declared class).",
+  "new": "whatever its asset's declared class.",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "eligibility reads the declared class, like the end-guard and the basis;",
+  "new": "eligibility reads the declared class, like the basis;",
+  "count": 1
+ },
+ {
+  "file": "contracts/leg.md",
+  "old": "  date) for the window, the end-guard, the actions gate and the today-dated",
+  "new": "  date) for the window, the actions gate and the today-dated",
+  "count": 1
+ },
+ {
+  "file": "contracts/cli.md",
+  "old": "      CC eodhd/CC-USD.CC: load (first fill, full history to 2026-10-22)\n      CC binance/CCUSDT: load (first fill, full history to 2026-10-22)",
+  "new": "      CC eodhd/CC-USD.CC: load (first fill, full history)\n      CC binance/CCUSDT: load (first fill, full history)",
+  "count": 1
+ },
+ {
+  "file": "contracts/classifications.toml",
+  "old": "# source of truth for the end-guard, the price basis, the trading",
+  "new": "# source of truth for the price basis, the trading",
+  "count": 1
+ },
+ {
+  "file": "contracts/universe.toml",
+  "old": "# refresh alike, `min`-ed with the crypto end-guard: a pinned window",
+  "new": "# refresh alike: a pinned window",
+  "count": 1
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "taken once per run and used by the end-guard, the actions gate and the today-dated check.",
+  "new": "taken once per run and used by the actions gate and the today-dated check.",
+  "count": 1
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "| end-guard | For a leg whose declared asset_type is crypto, the fetch end `today - 1 day`, so the in-progress UTC day is never ingested. | JDL-094 |\n",
+  "new": "",
+  "count": 1
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "end (universe end, end-guard, or open)",
+  "new": "end (universe end, or open)",
+  "count": 1
+ },
+ {
+  "file": "contracts/dmn/sync_window.dmn",
+  "old": "      <rule id=\"fetch_end_r1\">\n        <description>JDL-094: ISO-string minimum</description>\n        <inputEntry id=\"fetch_end_r1_i0\">\n          <text>true</text>\n        </inputEntry>\n        <inputEntry id=\"fetch_end_r1_i1\">\n          <text>true</text>\n        </inputEntry>\n        <outputEntry id=\"fetch_end_r1_o0\">\n          <text>\"min_universe_end_today_minus_1\"</text>\n        </outputEntry>\n      </rule>\n      <rule id=\"fetch_end_r2\">\n        <description>JDL-094 end-guard, any provider</description>\n        <inputEntry id=\"fetch_end_r2_i0\">\n          <text>true</text>\n        </inputEntry>\n        <inputEntry id=\"fetch_end_r2_i1\">\n          <text>false</text>\n        </inputEntry>\n        <outputEntry id=\"fetch_end_r2_o0\">\n          <text>\"today_minus_1\"</text>\n        </outputEntry>\n      </rule>\n",
+  "new": "",
+  "count": 1
+ },
+ {
+  "file": "uml/sync_leg.puml",
+  "old": "  end = min(universe end, today - 1 day when the DECLARED class is crypto)\n",
+  "new": "  end = universe end\n",
+  "count": 1
+ },
+ {
+  "file": "features/adjustment.feature",
+  "old": "  Scenario: An EODHD crypto series is stored as served, end-guarded at the previous UTC day\n",
+  "new": "  Scenario: An EODHD crypto series is stored as served\n",
+  "count": 1
+ },
+ {
+  "file": "features/adjustment.feature",
+  "old": "  Scenario: The declared class, never the .CC suffix, decides basis, actions and guard\n",
+  "new": "  Scenario: The declared class, never the .CC suffix, decides basis and actions\n",
+  "count": 1
+ },
+ {
+  "file": "features/adjustment.feature",
+  "old": "      [{\"asset\": \"WEIRD\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"WEIRD.XX\", \"path\": null,\n        \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": false},",
+  "new": "      [{\"asset\": \"WEIRD\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"WEIRD.XX\", \"path\": null,\n        \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": null, \"end\": \"2024-05-10\", \"actions\": false},",
+  "count": 1
+ },
+ {
+  "file": "features/fixtures/universes/ns.toml",
+  "old": "  symbol = \"WEIRD.XX\"\n",
+  "new": "  symbol = \"WEIRD.XX\"\n  end = 2024-05-10\n",
+  "count": 1
+ },
+ {
+  "file": "features/fixtures/universes/zero.toml",
+  "old": "  start = 2024-01-01\n",
+  "new": "  start = 2024-01-01\n  end = 2024-02-09\n",
+  "count": 1
+ },
+ {
+  "file": "features/fixtures/universes/pair.toml",
+  "old": "  start = 2024-01-01\n",
+  "new": "  start = 2024-01-01\n  end = 2024-01-20\n",
+  "count": 2
+ },
+ {
+  "file": "features/fixtures/universes/plan.toml",
+  "old": "  symbol = \"PAIR-USD.CC\"\n  start = 2024-01-01\n  modeled = true\n",
+  "new": "  symbol = \"PAIR-USD.CC\"\n  start = 2024-01-01\n  end = 2024-02-29\n  modeled = true\n",
+  "count": 1
+ },
+ {
+  "file": "features/fixtures/universes/plan.toml",
+  "old": "  provider = \"binance\"\n  symbol = \"PAIRUSDT\"\n",
+  "new": "  provider = \"binance\"\n  symbol = \"PAIRUSDT\"\n  end = 2024-02-29\n",
+  "count": 1
+ },
+ {
+  "file": "features/decisions.feature",
+  "old": "    Scenario Outline: The fetch end is the ISO minimum of the universe end and the crypto end-guard\n",
+  "new": "    Scenario Outline: The fetch end is the universe end, or open\n",
+  "count": 1
+ },
+ {
+  "file": "features/decisions.feature",
+  "old": "        | r1  | zero_end.toml | ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-01-20) |\n        | r2  | zero.toml     | ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09) |\n",
+  "new": "",
+  "count": 1
+ },
+ {
+  "file": "features/decisions.feature",
+  "old": "    Scenario: An empty series sends its request even when the end-guard falls before the declared start\n      Given the universe fixture \"zero.toml\"\n",
+  "new": "    Scenario: An empty series sends its request\n      Given the universe fixture \"zero_end.toml\"\n",
+  "count": 1
+ },
+ {
+  "file": "features/sync.feature",
+  "old": "  Scenario Outline: A universe end caps the first fill, and wins the minimum against the crypto end-guard\n",
+  "new": "  Scenario Outline: A universe end caps the first fill\n",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "threshold {threshold as float})` plus ` [disabled]` for a disabled asset, then per source",
+  "new": "threshold {threshold as float})`, then per source",
+  "count": 1
+ },
+ {
+  "file": "contracts/universe.toml.md",
+  "old": "`-1.0`) plus ` [disabled]`; then per source",
+  "new": "`-1.0`); then per source",
+  "count": 1
+ },
+ {
+  "file": "features/universe.feature",
+  "old": "  Scenario: The listing marks paused assets, switched-off sources and notes\n    Given the universe fixture \"paused.toml\"\n    When I run \"jef-data universe --universe universe.toml\"\n    Then the exit code is 0\n    And stdout is:\n      \"\"\"\n      SPLT (stock, USD, threshold -0.05)\n        eodhd: SPLT.US\n        yahoo-csv: snap/splt.csv [disabled] - an old snapshot\n      GONE (stock, USD, threshold -0.05) [disabled]\n",
+  "new": "  Scenario: The listing marks switched-off sources and notes\n    Given the universe fixture \"paused.toml\"\n    When I run \"jef-data universe --universe universe.toml\"\n    Then the exit code is 0\n    And stdout contains the lines:\n      \"\"\"\n      SPLT (stock, USD, threshold -0.05)\n        eodhd: SPLT.US\n        yahoo-csv: snap/splt.csv [disabled] - an old snapshot\n",
+  "count": 1
+ },
+ {
+  "file": "requirements.json",
+  "old": "keeping only assets named by the asset filter and sources whose provider is in the provider filter when those filters are given;",
+  "new": "keeping only sources whose provider is in the provider filter when that filter is given;",
+  "count": 1
+ },
+ {
+  "file": "contracts/leg.md",
+  "old": "for each enabled source in source order, skipping assets\noutside the asset filter and sources outside the provider filter. Filter\nrefusals: JDL-085.",
+  "new": "for each enabled source in source order, skipping sources\noutside the provider filter. Filter refusals: JDL-085.",
+  "count": 1
+ },
+ {
+  "file": "contracts/cli.md",
+  "old": "universe's `defaults.store`; `--asset`/`--provider` repeatable filters.",
+  "new": "universe's `defaults.store`; `--provider` a repeatable filter, `--asset`\n  repeatable.",
+  "count": 1
+ },
+ {
+  "file": "uml/sync_run.puml",
+  "old": "  filtered, in universe order (JDL-084); bad filter or empty selection is a SyncError (JDL-085)",
+  "new": "  filtered by provider, in universe order (JDL-084); bad filter or empty selection is a SyncError (JDL-085)",
+  "count": 1
+ },
+ {
+  "file": "features/sync.feature",
+  "old": "  Scenario: Asset and provider filters keep universe order and skip paused assets and switched-off sources\n    Given the packaged universe\n    When the legs are selected with options \"assets=TLT|BTC, providers=binance|eodhd\"\n    Then the legs are:\n      \"\"\"\n      [{\"asset\": \"BTC\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"BTC-USD.CC\", \"path\": null, \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": false},\n       {\"asset\": \"BTC\", \"provider\": \"binance\", \"exchange\": \"binance\", \"symbol\": \"BTCUSDT\", \"path\": null, \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": \"2017-08-01\", \"end\": null, \"actions\": false},\n       {\"asset\": \"TLT\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"TLT.US\", \"path\": null, \"asset_type\": \"etf\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true}]\n",
+  "new": "  Scenario: The provider filter keeps universe order and skips paused assets and switched-off sources\n    Given the packaged universe\n    When the legs are selected with options \"providers=binance|eodhd\"\n    Then the legs are:\n      \"\"\"\n      [{\"asset\": \"AAPL\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"AAPL.US\", \"path\": null, \"asset_type\": \"stock\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true},\n       {\"asset\": \"BTC\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"BTC-USD.CC\", \"path\": null, \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": false},\n       {\"asset\": \"BTC\", \"provider\": \"binance\", \"exchange\": \"binance\", \"symbol\": \"BTCUSDT\", \"path\": null, \"asset_type\": \"crypto\", \"currency\": \"USD\", \"start\": \"2017-08-01\", \"end\": null, \"actions\": false},\n       {\"asset\": \"TLT\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"TLT.US\", \"path\": null, \"asset_type\": \"etf\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true},\n       {\"asset\": \"NVDA\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"NVDA.US\", \"path\": null, \"asset_type\": \"stock\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true},\n       {\"asset\": \"TSLA\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"TSLA.US\", \"path\": null, \"asset_type\": \"stock\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true},\n       {\"asset\": \"IBM\", \"provider\": \"eodhd\", \"exchange\": \"eodhd\", \"symbol\": \"IBM.US\", \"path\": null, \"asset_type\": \"stock\", \"currency\": \"USD\", \"start\": null, \"end\": null, \"actions\": true}]\n",
+  "count": 1
+ },
+ {
+  "file": "features/sync.feature",
+  "old": "      | sync    | --asset GONE              | selection matched no enabled asset/source legs |\n",
+  "new": "      | sync    | --provider binance        | selection matched no enabled asset/source legs |\n",
+  "count": 1
+ },
+ {
+  "file": "features/collectors.feature",
+  "old": "    When sync runs at \"<now>\" with options \"assets=<asset>\"\n",
+  "new": "    When sync runs at \"<now>\"\n",
+  "count": 1
+ },
+ {
+  "file": "features/collectors.feature",
+  "old": "      | universe     | provider | set             | now                  | asset | detail |\n      | splt.toml    | eodhd    | splt/notlist    | 2024-02-13T12:00:00Z | SPLT  | CollectorError: eod SPLT.US: expected a JSON list |\n      | binance.toml | binance  | binance_notlist | 2024-07-01T00:30:00Z | LIM   | CollectorError: klines LIMUSDT: expected a JSON list |\n",
+  "new": "      | universe     | provider | set             | now                  | detail |\n      | splt.toml    | eodhd    | splt/notlist    | 2024-02-13T12:00:00Z | CollectorError: eod SPLT.US: expected a JSON list |\n      | binance.toml | binance  | binance_notlist | 2024-07-01T00:30:00Z | CollectorError: klines LIMUSDT: expected a JSON list |\n",
+  "count": 1
+ },
+ {
+  "file": "features/collectors.feature",
+  "old": "    Given the universe fixture \"binance.toml\"\n    And the \"binance\" provider replays \"binance\"\n    When sync runs at \"2024-01-16T00:30:00Z\" with options \"assets=PGS\"\n",
+  "new": "    Given the universe fixture \"pgs.toml\"\n    And the \"binance\" provider replays \"binance\"\n    When sync runs at \"2024-01-16T00:30:00Z\"\n",
+  "count": 1
+ },
+ {
+  "file": "features/collectors.feature",
+  "old": "    When sync runs at \"2024-07-01T00:30:00Z\" with options \"assets=LIM\"\n",
+  "new": "    When sync runs at \"2024-07-01T00:30:00Z\"\n",
+  "count": 1
+ },
+ {
+  "file": "features/fixtures/universes/binance.toml",
+  "old": "# Synthetic: two Binance-only crypto assets (page limit; two pages).\n[[asset]]\nname = \"LIM\"\nasset_class = \"crypto\"\n\n  [[asset.source]]\n  provider = \"binance\"\n  symbol = \"LIMUSDT\"\n\n[[asset]]\nname = \"PGS\"\nasset_class = \"crypto\"\n\n  [[asset.source]]\n  provider = \"binance\"\n  symbol = \"PGSUSDT\"\n  start = 2021-01-01\n",
+  "new": "# Synthetic: a Binance-only crypto asset (page limit).\n[[asset]]\nname = \"LIM\"\nasset_class = \"crypto\"\n\n  [[asset.source]]\n  provider = \"binance\"\n  symbol = \"LIMUSDT\"\n  end = 2024-06-30\n",
+  "count": 1
+ },
+ {
+  "file": "features/steps/conftest.py",
+  "old": "# revision 2026-10-23 (closing round): exact parser output and verbatim help\n",
+  "new": "def _subsequence(got, want):\n    rest = iter(got)\n    assert all(any(w == g for g in rest) for w in want), got\n\n\n@then(\"stdout contains the lines:\")\ndef stdout_lines(ctx, docstring):\n    _subsequence(ctx.proc.stdout.split(\"\\n\"), [line for line in render(ctx, docstring).split(\"\\n\") if line.strip()])\n\n\n# revision 2026-10-23 (closing round): exact parser output and verbatim help\n",
+  "count": 1
+ },
+ {
+  "file": "contracts/glossary.md",
+  "old": "decides basis, actions eligibility and the end-guard, never the symbol suffix.",
+  "new": "decides basis and actions eligibility, never the symbol suffix.",
+  "count": 1
+ }
+]

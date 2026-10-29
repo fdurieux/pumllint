@@ -1,0 +1,10 @@
+{
+ "calls": [
+  "curl -s /task",
+  "python3 -c import json,sys; c=json.loads(sys.argv[1])[\"Containers\"][0]; print(c.get(\"ImageDigest\") or c.get(\"ImageID\") or \"unknown\") ",
+  "python3 -c import json,sys; l=json.loads(sys.argv[1])[\"Limits\"]; print(l[\"CPU\"], l[\"Memory\"] / 1024) "
+ ],
+ "exit": 1,
+ "stderr_tail": "/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-e6e4099d/out/daily-rc.sh: line 38: JEF_S3_BUCKET: JEF_S3_BUCKET must name the venue bucket\n",
+ "stdout": ""
+}

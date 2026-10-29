@@ -357,6 +357,12 @@ cannot speak to it.
    prediction. It is untested except by the one instance F1 found, where
    the premise came from code. This is what a degradation test settles
    (README, "Next").
+   *Answered 2026-10-29 (`../degradation-2026-10-28/PREREGISTRATION.md`,
+   Results): no. The three wrong values planted in every layer (D3) all
+   reached the code, concealed by the kit's own suite. A wrong value in
+   the suite alone (D4-W) did too. Attenuation held only where a
+   higher-ranked layer still stated the behaviour correctly, which is the
+   kit's precedence rule; all fifteen outcomes follow it.*
 3. **Would amplification appear on a subject with dependants?** The data
    lane's outputs feed J-F's binning and R lanes. The experiment stopped
    at the seam frame, which the original's loader accepted bit for bit

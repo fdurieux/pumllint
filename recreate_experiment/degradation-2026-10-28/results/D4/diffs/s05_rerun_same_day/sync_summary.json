@@ -1,0 +1,49 @@
+{
+ "legs": [
+  {
+   "asset": "TLT",
+   "detail": "actions fresh; 10 bar(s), 0 revised cell(s)",
+   "exchange": "eodhd",
+   "ok": true,
+   "provider": "eodhd",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "TLT.US"
+  },
+  {
+   "asset": "BTC",
+   "detail": "5 bar(s), 0 revised cell(s)",
+   "exchange": "eodhd",
+   "ok": true,
+   "provider": "eodhd",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "BTC-USD.CC"
+  },
+  {
+   "asset": "BTC",
+   "detail": "5 bar(s), 0 revised cell(s)",
+   "exchange": "binance",
+   "ok": true,
+   "provider": "binance",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "BTCUSDT"
+  },
+  {
+   "asset": "AAPL",
+   "detail": "10401 row(s) loaded",
+   "exchange": "yahoo",
+   "ok": true,
+   "provider": "yahoo-csv",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "AAPL"
+  }
+ ],
+ "legs_failed": 0,
+ "legs_total": 4,
+ "ok": true,
+ "revised_cells_total": 0,
+ "schema_version": 1
+}

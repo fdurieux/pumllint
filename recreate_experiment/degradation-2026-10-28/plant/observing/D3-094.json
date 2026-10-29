@@ -1,0 +1,8 @@
+{
+ "observing": [
+  "s09_inverted_end/sync_out.txt",
+  "s09_inverted_end/sync_summary.json",
+  "s22_cli_surface/cli_dry_run_r1.json"
+ ],
+ "outside_k2_identical": []
+}

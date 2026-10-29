@@ -1,0 +1,186 @@
+.......................F................................................ [ 27%]
+.........F...F.......................................................... [ 55%]
+........................................................................ [ 83%]
+...................................F......                               [100%]
+=================================== FAILURES ===================================
+_ test_without_an_eodhd_key_every_eodhd_leg_fails_and_the_csv_leg_still_lands __
+
+fixturefunc = <function stdout_is at 0x7febc95bd6c0>
+request = <FixtureRequest for <Function test_without_an_eodhd_key_every_eodhd_leg_fails_and_the_csv_leg_still_lands>>
+kwargs = {'docstring': "FAILED  SMALL eodhd/SMALL.US [eodhd]: ValueError: EODHD API key required: pass api_key= or set EODHD_AP.../grade/arms/D4/pt-pristine/test_without_an_eodhd_key_ever0/store'\n", stderr=''), legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-f4d38de7/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_without_an_eodhd_key_ever0/store'\n", stderr=''), legs=None, chain=None, extra_env={})
+docstring = "FAILED  SMALL eodhd/SMALL.US [eodhd]: ValueError: EODHD API key required: pass api_key= or set EODHD_API_KEY\nok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported\n2 leg(s), 1 failed -> store '{store}'"
+
+    @then("stdout is:")
+    def stdout_is(ctx, docstring):
+        want = render(ctx, docstring) + "\n"
+>       assert ctx.proc.stdout == want, ctx.proc.stdout
+E       AssertionError: FAILED  SMALL eodhd/SMALL.US [eodhd]: ValueError: EODHD API key required: pass api_key= or set EODHD_API_KEY
+E         ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded
+E         2 leg(s), 1 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_without_an_eodhd_key_ever0/store'
+E         
+E       assert "FAILED  SMAL...ver0/store'\n" == "FAILED  SMAL...ver0/store'\n"
+E         
+E         Skipping 147 identical leading characters in diff, use -v to show
+E         -  5 row(s) imported
+E         ?           ^^^ ^^
+E         +  5 row(s) loaded
+E         ?           ^ ^^
+E           2 leg(s), 1 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_without_an_eodhd_key_ever0/store'
+
+features/steps/conftest.py:657: AssertionError
+_ test_a_yahoocsv_leg_is_always_split_adjusted[r5-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported] _
+
+fixturefunc = <function stdout_line at 0x7febc95bdd00>
+request = <FixtureRequest for <Function test_a_yahoocsv_leg_is_always_split_adjusted[r5-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]>>
+kwargs = {'text': 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported', 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-ho.../grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr=''), legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-f4d38de7/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr=''), legs=None, chain=None, extra_env={})
+text = 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported'
+
+    @then(parsers.parse('stdout contains the line "{text}"'))
+    def stdout_line(ctx, text):
+>       assert render(ctx, text) in ctx.proc.stdout.split("\n"), ctx.proc.stdout
+E       AssertionError: ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded
+E         1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'
+E         
+E       assert 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported' in ['ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded', "1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'", '']
+E        +  where 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported' = render(namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr=''), legs=None, chain=None, extra_env={}), 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported')
+E        +  and   ['ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded', "1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'", ''] = <built-in method split of str object at 0x7febc94018a0>('\n')
+E        +    where <built-in method split of str object at 0x7febc94018a0> = "ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded\n1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n".split
+E        +      where "ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded\n1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n" = CompletedProcess(args=['jef-data-rc', 'sync', '--universe', 'universe.toml', '--store', '/tmp/claude-0/-home-user/2202...d-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr='').stdout
+E        +        where CompletedProcess(args=['jef-data-rc', 'sync', '--universe', 'universe.toml', '--store', '/tmp/claude-0/-home-user/2202...d-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr='') = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_yahoocsv_leg_is_always_0/store'\n", stderr=''), legs=None, chain=None, extra_env={}).proc
+
+features/steps/conftest.py:684: AssertionError
+_ test_a_csv_leg_overwrites_whatever_is_there[r3-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported] _
+
+fixturefunc = <function stdout_line at 0x7febc95bdd00>
+request = <FixtureRequest for <Function test_a_csv_leg_overwrites_whatever_is_there[r3-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]>>
+kwargs = {'text': 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported', 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-ho.../grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr=''), legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-f4d38de7/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr=''), legs=None, chain=None, extra_env={})
+text = 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported'
+
+    @then(parsers.parse('stdout contains the line "{text}"'))
+    def stdout_line(ctx, text):
+>       assert render(ctx, text) in ctx.proc.stdout.split("\n"), ctx.proc.stdout
+E       AssertionError: ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded
+E         1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'
+E         
+E       assert 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported' in ['ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded', "1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'", '']
+E        +  where 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported' = render(namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr=''), legs=None, chain=None, extra_env={}), 'ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported')
+E        +  and   ['ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded', "1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'", ''] = <built-in method split of str object at 0x7febc934f770>('\n')
+E        +    where <built-in method split of str object at 0x7febc934f770> = "ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded\n1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n".split
+E        +      where "ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded\n1 leg(s), 0 failed -> store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n" = CompletedProcess(args=['jef-data-rc', 'sync', '--universe', 'universe.toml', '--store', '/tmp/claude-0/-home-user/2202...d-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr='').stdout
+E        +        where CompletedProcess(args=['jef-data-rc', 'sync', '--universe', 'universe.toml', '--store', '/tmp/claude-0/-home-user/2202...d-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr='') = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...b/grade/arms/D4/pt-pristine/test_a_csv_leg_overwrites_what0/store'\n", stderr=''), legs=None, chain=None, extra_env={}).proc
+
+features/steps/conftest.py:684: AssertionError
+____ test_a_committed_csv_leg_imports_its_whole_file_without_any_collector _____
+
+fixturefunc = <function leg_detail at 0x7febc95a5bc0>
+request = <FixtureRequest for <Function test_a_committed_csv_leg_imports_its_whole_file_without_any_collector>>
+kwargs = {'n': 1, 'text': '5 row(s) imported', 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae..., 'revisions': []}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-f4d38de7/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D4/pt...', 'revisions': []}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+n = 1, text = '5 row(s) imported'
+
+    @then(parsers.parse('the detail of leg {n:d} is "{text}"'))
+    def leg_detail(ctx, n, text):
+        assert ctx.error is None, ctx.error
+>       assert ctx.results[n - 1]["detail"] == text, ctx.results[n - 1]["detail"]
+E       AssertionError: 5 row(s) loaded
+E       assert '5 row(s) loaded' == '5 row(s) imported'
+E         
+E         - 5 row(s) imported
+E         ?          ^^^ ^^
+E         + 5 row(s) loaded
+E         ?          ^ ^^
+
+features/steps/conftest.py:329: AssertionError
+=========================== short test summary info ============================
+FAILED features/steps/test_features.py::test_without_an_eodhd_key_every_eodhd_leg_fails_and_the_csv_leg_still_lands
+FAILED features/steps/test_features.py::test_a_yahoocsv_leg_is_always_split_adjusted[r5-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]
+FAILED features/steps/test_features.py::test_a_csv_leg_overwrites_whatever_is_there[r3-ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported]
+FAILED features/steps/test_features.py::test_a_committed_csv_leg_imports_its_whole_file_without_any_collector
+4 failed, 254 passed in 43.69s

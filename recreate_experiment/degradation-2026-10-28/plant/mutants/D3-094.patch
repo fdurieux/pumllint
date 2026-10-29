@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -146,7 +146,7 @@
+     crypto = leg["asset_type"] == "crypto"
+     guard = (today - timedelta(days=1)).isoformat() if crypto else None
+     ends = [e for e in (leg["end"], guard) if e]
+-    end = min(ends) if ends else None  # ISO strings order chronologically
++    end = max(ends) if ends else None  # ISO strings order chronologically
+     recents = store.recent_dates(leg["exchange"], leg["symbol"], tail)
+     if not recents:
+         return leg["start"], end, None

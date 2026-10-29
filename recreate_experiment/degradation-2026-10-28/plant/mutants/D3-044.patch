@@ -1,0 +1,11 @@
+--- a/src/jef/data/actions.py
++++ b/src/jef/data/actions.py
+@@ -116,7 +116,7 @@
+             return None
+         with open(path, encoding="utf-8") as f:
+             stamp = json.load(f)["last_updated"]
+-        return datetime.fromisoformat(stamp.replace("Z", "+00:00"))
++        return datetime.fromisoformat(stamp.replace("z", "+00:00"))
+ 
+     def needs_update(self, symbol, max_age_days=1, kind="splits", now=None):
+         """Wall-clock freshness: is the stamp older than `max_age_days`?

@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "export",
+  "--symbol",
+  "GHOST",
+  "--exchange",
+  "eodhd",
+  "--output",
+  "<work>/ghost.csv",
+  "--store",
+  "<work>/s21_cli_refusals-store"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/venv/bin/jef-data-rc\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/cli.py\", line 389, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/cli.py\", line 283, in cmd_export\n    frame = export_frame(args.store, args.exchange, args.symbol)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py\", line 394, in export_frame\n    return seam_frame(ParquetStore(store_root).load(exchange, symbol))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py\", line 376, in seam_frame\n    dates = stored[\"datetime\"].dt.strftime(\"%Y-%m-%d\")\n            ^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/venv/lib/python3.12/site-packages/pandas/core/generic.py\", line 6194, in __getattr__\n    return object.__getattribute__(self, name)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/venv/lib/python3.12/site-packages/pandas/core/accessor.py\", line 230, in __get__\n    return self._accessor(obj)\n           ^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/venv/lib/python3.12/site-packages/pandas/core/indexes/accessors.py\", line 698, in __new__\n    raise AttributeError(\"Can only use .dt accessor with datetimelike values\")\nAttributeError: Can only use .dt accessor with datetimelike values. Did you mean: 'at'?\n",
+ "stdout": ""
+}

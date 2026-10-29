@@ -1,0 +1,19 @@
+{
+ "legs": [
+  {
+   "asset": "BTC",
+   "detail": "CollectorError: no recorded fixture for GET /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd'}\nknown fixtures:\n  /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd', 'to': '2024-01-05'}",
+   "exchange": "eodhd",
+   "ok": false,
+   "provider": "eodhd",
+   "revised_cells": 0,
+   "revisions": [],
+   "symbol": "BTC-USD.CC"
+  }
+ ],
+ "legs_failed": 1,
+ "legs_total": 1,
+ "ok": false,
+ "revised_cells_total": 0,
+ "schema_version": 1
+}
