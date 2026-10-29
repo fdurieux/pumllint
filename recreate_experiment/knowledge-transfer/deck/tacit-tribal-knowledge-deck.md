@@ -564,8 +564,8 @@ This matches the method document's rule that an implementer's guess is "a gap hy
 
 ## The storyline, as built (2026-10-29)
 
-*The deck built from this document: thirteen content slides (twelve, plus the
-cascade slide added on 2026-10-29) and a four-slide
+*The deck built from this document: fourteen content slides (twelve, plus the
+cascade slide and the lifecycle slide, both added on 2026-10-29) and a four-slide
 appendix, at https://claude.ai/artifact/6NtCi1b9HBujfWuSAuKKe6 (private
 until shared). Decisions taken by the maintainer on 2026-10-29: the
 twelve-slide cut with an appendix; the systemic model present only through
@@ -633,7 +633,8 @@ follows the approach and precedes the plan.
 | 10 | Validation at every layer: what a check sees, and what only an independent one can | One row per layer with what its check finds and cannot; the degradation numbers (15, 6, 6 of 6 passed the kit's own tests, 6 of 6 failed the independent ones); no check caught a wrong value; a perfect score over 25 contradicted claims | linters appendix; degradation results; model review F4 |
 | 11 | How we measure: counts with a remainder, never a percentage | The no-denominator rule; the system-side rebuild test; the person-side grading test; the four metrics reworded | method 1.2; Dominique measures |
 | 12 | SWOT of the proposed approach | Three points per quadrant, below | |
-| 13 | The pilot: one departing expert, eight weeks before and twelve after | Seven phases on a timeline, the definition of done, the indicative effort, what comes after | Dominique plan |
+| 13 | Three passes over the lifecycle | Added 2026-10-29, later the same day, on the maintainer's ask: the five layers as columns, upstream left and downstream right, and three rows over them. Build, left to right, with what each handoff loses in amber; recover, right to left, from the traces and the running system back to the rules, with a diamond on each card for what a person adds; validate, left to right again, one check per layer, the rebuild from the record alone, the comparison with what runs as a dashed return line. The texts are slide 2's layers and losses and slide 10's checks. A first version drew the pilot as a git branch graph with time on the axis; replaced the same day, because the maintainer wanted the lifecycle on the axis | slide 2; slide 10; Dominique plan |
+| 14 | The pilot: one departing expert, eight weeks before and twelve after | Seven phases on a timeline, the definition of done, the indicative effort, what comes after | Dominique plan |
 | A | Appendix divider | Contents | |
 | A1 | Seven kinds of knowledge on three axes | The seven terms with axis, one line and an example; the cautions on grounded, tribal and the two senses of tacit | research section |
 | A2 | The people side | Inventory first; session shapes; the question layer's answer policy | Dominique plan |
