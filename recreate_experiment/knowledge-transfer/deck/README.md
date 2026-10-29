@@ -11,11 +11,12 @@ named nowhere in these files; the author line is a placeholder.*
 | `tacit-tribal-knowledge-deck.md` | The consolidated document: the draft deck and the outline merged (deck wins on conflicts), the repository findings, the seven-kinds research note, the storyline as built, and editorial notes. The record behind the deck. |
 | `knowledge-types-research.md` | The research note on grounded, asserted, deductive, inductive, abductive, tacit and tribal knowledge, with sources. Six terms researched from the web on 2026-10-29; grounded knowledge added on the maintainer's ask. |
 | `project/deck.json`, `project/slides/*.html` | The deck's files as published on claude.ai (Slides artefact, private), read back from the artefact on 2026-10-29 after the cascade slide was added. One file per slide, in the slide format of that artefact type; `deck.json` is the index. |
+| `tools/gen_lifecycle_slide.py` | Generates `project/slides/lifecycle.html`, the three passes over the lifecycle (build, recover, validate) over the five layers as columns. Standard library only; no input. |
 | `tools/gen_cascade_slide.py` | Generates `project/slides/cascade.html`, the reduced knowledge view of the Legible systemic impact model, from the model's JSON (`model/model.json` in `fdurieux/fdurieux.github.io`, v0.3). Standard library only. |
 
 ## What the deck says
 
-Thirteen content slides and a four-slide appendix. The spine: knowledge
+Fourteen content slides and a four-slide appendix. The spine: knowledge
 lives at every layer of the lifecycle and a gap cascades downstream; what
 exists at each layer can be recovered and measured, and for behaviour the
 code is the truth; each layer gives only what it holds, never why, and the
@@ -25,7 +26,9 @@ percentage, and two regeneration tests. The evidence is this repository's:
 the recreation experiment, the coverage register, the degradation test, the
 departing-expert case (`../DOMINIQUE-CASE.md`), and the systemic model's
 out-of-sample review, present through its findings and, on slide 7, through
-the model's reduced knowledge view at v0.3.
+the model's reduced knowledge view at v0.3. Slide 13 lays the pilot over the
+lifecycle: the five layers as columns, and three passes over them, build
+downstream, recover upstream, validate downstream again.
 
 ## Provenance
 
@@ -45,4 +48,11 @@ the model's reduced knowledge view at v0.3.
 python3 -I recreate_experiment/knowledge-transfer/deck/tools/gen_cascade_slide.py \
   /path/to/fdurieux.github.io/model/model.json \
   recreate_experiment/knowledge-transfer/deck/project/slides/cascade.html
+```
+
+## Regenerate the lifecycle slide
+
+```bash
+python3 -I recreate_experiment/knowledge-transfer/deck/tools/gen_lifecycle_slide.py \
+  recreate_experiment/knowledge-transfer/deck/project/slides/lifecycle.html
 ```

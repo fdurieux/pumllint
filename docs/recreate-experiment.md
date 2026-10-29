@@ -909,7 +909,7 @@ them for the kit's owner.
 *Dated addition, on the maintainer's ask. Files:
 `recreate_experiment/knowledge-transfer/deck/` (the consolidated document,
 the research note on seven kinds of knowledge, the deck's slide files as
-published, and the generator of its cascade slide).*
+published, and the generators of its cascade and lifecycle slides).*
 
 A deck for an audience outside this repository, drafted from the
 maintainer's slides and an LLM outline, then rebuilt on this record:
@@ -926,7 +926,12 @@ and, on one slide, through its reduced knowledge view: the Legible site's
 degradation test's two refinements, and one extension, a source stock for
 knowledge held only by people with two edges, four practices and a
 measured indicator, all labelled (that repository's #1 and #2,
-2026-10-29). The research note sets the six terms the maintainer named
+2026-10-29). A later slide the same day lays the pilot over the lifecycle:
+the five layers as columns, upstream left and downstream right, and three
+passes over them, the build losing something at each handoff, the
+recovery running upstream from the running system with a person's
+addition at each layer, and the validation running downstream again to a
+rebuild compared with what runs. The research note sets the six terms the maintainer named
 (asserted, deduced, induced, abduced, tacit, tribal) plus grounded
 knowledge on three axes, justification, articulation and social holding,
 and maps the five justification terms onto this method's observed,
