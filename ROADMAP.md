@@ -8116,3 +8116,57 @@ list and license posture live in § Settled questions.
 
   *Docs only: no product code, golden, schema or score moved. 742/742
   stdlib at `b205cd7`.*
+- **Business capability as an EA layer (2026-10-29): nothing to build —
+  capability coverage is a `trace` convention today; the contract field
+  stays aris2puml's, adopter-gated.** Asked, from the reconciliation
+  page's Check keyline ("absent from both repositories in any sense: …
+  capability (as an EA layer)",
+  https://claude.ai/code/artifact/c3e39034-e727-430b-8170-8ca152ea9b80):
+  what is missing, in plain English, with an opportunity canvas and a
+  SWOT. The page's Map A carries the answer as a row under aris2puml's
+  contract.
+  - *What it is.* The business-capability map is what the bank *can do*
+    (originate loans, assess credit risk, onboard customers) with no
+    "how"; processes are the how, one capability realised by several
+    (product, channel, variant). Strategy, funding and risk are argued
+    at that layer, above the L3 set the chain converts.
+  - *Measured at `563e3cb`, no code.* A footer `realises CAP-012`, an
+    inventory of capability ids, `pumllint trace --pattern 'CAP-\d+'
+    --requirements caps.txt --fail-on-uncovered` → `1/2 covered`,
+    `CAP-011 ✖ uncovered`, exit 1. `trace` reads exactly GEN007's
+    carriers, so per-capability coverage is a carrier convention; the
+    converter's footer already carries B4's `— interfaces:` refs, and a
+    capability ref rides the same carrier once aris2puml's contract has
+    the field.
+  - *Where the rest already sits.* The field: the settled facet answer
+    (an additive contract change plus the report script, adopter-gated;
+    the 2026-09-06 brief record's typed-relations bullet; BIAN in
+    `docs/ea-ontology-stack-evaluation.md` §12.5). A typed `realises`
+    relation: Arc C's declared diagram→diagram links item, trigger
+    unchanged. A check that a process realises a capability *in the
+    map*: a second artefact, so Loop C's, never this repository's (same
+    note, §6: "not expressible here and should not be").
+  - *SWOT, short.* S: nothing to build; the EA function's vocabulary on
+    the report. W: declared, not proven; hand-typed, so a missing footer
+    and an unmodelled capability read alike; refused processes surface
+    as capability gaps — `docs/ea-stack-in-the-sdlc.md`'s coverage
+    denominator. O: a per-capability coverage report ARIS does not give;
+    the same carrier serves variant and BIAN. T: creep from coverage to
+    capability-map legality (Loop C, refused); Goodhart on the coverage
+    percentage; footers drifting from the map in ARIS.
+  - *Reading for an adopter.* Pilot the convention and report coverage,
+    not compliance; the contract field only after the pilot shows use.
+  - *Record correction.* The keyline's "in any sense" overstates for
+    this repository's prose since 2026-09-14: `ea-stack-in-the-sdlc.md`
+    and `ea-ontology-stack-evaluation.md` discuss capabilities as a
+    subject. The tools carry none. J-F's `jef map` "capability map" is a
+    homonym (pipeline stages, blast radius, re-run lines).
+  - *Handed to aris2puml:* a dated line under its contract entry. This
+    session could not attach that repository; the record is here until
+    a session that can writes it there.
+  - *Re-litigate on:* an adopter asking for per-capability coverage with
+    a capability inventory in hand; the variant construct reaching the
+    published method.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
+
+  *Docs only: no product code, golden, schema or score moved.*
