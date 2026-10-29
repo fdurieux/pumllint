@@ -247,3 +247,13 @@ Which reading predicted better is tallied per arm, not pooled.
 ## Results
 
 *(appended as the steps complete; nothing above this line changes)*
+
+### The plant's hash (2026-10-29, before any rebuild)
+
+The fifteen slots are filled and the five kits are planted; V1–V5 hold. The plant bundle (the walk, the
+kit patches, the mutants, the observing sets, the V results and the gate readouts) stays hidden until
+grading. Its hash, the sha256 of the `SHA256SUMS` that lists its 188 files:
+
+`fbe131a5ddf251d90ffd96d067a6f4a53604a4d2fa2224408326c944e227f2c3`
+
+The bundle is committed at grading and must reproduce this hash.
