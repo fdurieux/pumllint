@@ -1,0 +1,37 @@
+<section id="risk" data-transition="fade" style="display:flex; flex-direction:column; gap:32px; padding:128px 128px 160px; background:#f6f7f3">
+  <h2 style="font-family:'Source Serif 4', Georgia, serif; font-size:64px; font-weight:600; line-height:1.1; color:#1b2a24">Knowledge lives at every layer, and a gap cascades downstream</h2>
+  <div style="display:flex; flex-direction:row; gap:16px">
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px; background:#fdfdfb; border:1px solid #dce2dd; border-radius:12px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; line-height:1.2; color:#1b2a24">Business rules and processes</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#44524b">Eligibility, pricing, exceptions, who may approve.</p>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#1b2a24"><b>Lost:</b> the reason for a rule and its exception paths, when the analyst or the product expert leaves.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px; background:#fdfdfb; border:1px solid #dce2dd; border-radius:12px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; line-height:1.2; color:#1b2a24">Requirements</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#44524b">What the system must do, in words.</p>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#1b2a24"><b>Lost:</b> the unstated assumptions, when the author leaves. The text drifts from the code.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px; background:#fdfdfb; border:1px solid #dce2dd; border-radius:12px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; line-height:1.2; color:#1b2a24">Architecture</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#44524b">Module layout, interfaces, data contracts, dependencies.</p>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#1b2a24"><b>Lost:</b> why a boundary is where it is. A contract that says one thing while the code does another.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px; background:#fdfdfb; border:1px solid #dce2dd; border-radius:12px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; line-height:1.2; color:#1b2a24">Code</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#44524b">What the system actually does, defects included.</p>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#1b2a24"><b>Lost:</b> the reason behind every rule it applies. Orphaned code goes unread.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:12px; flex:1; padding:24px; background:#fdfdfb; border:1px solid #dce2dd; border-radius:12px">
+      <h3 style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:28px; font-weight:600; line-height:1.2; color:#1b2a24">Operations</h3>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#44524b">Runbooks, incident handling, deployment rituals, who to call.</p>
+      <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; line-height:1.35; color:#1b2a24"><b>Lost:</b> with the operator. The ritual nobody wrote down.</p>
+    </div>
+  </div>
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#44524b">Each layer is written down in its specifications: process models, requirements, decision tables, UML analysis and architecture models, interface and data contracts, executable scenarios, runbooks. A gap in any layer reaches the layers below it through these artefacts. By the time it reaches the code it looks like a decision.</p>
+  <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:26px; line-height:1.4; color:#44524b">Where a rule is enforced says how it is lost: a system keeps applying it without its reason, a control stops when its operator leaves, and memory leaves with the person.</p>
+  <div style="position:absolute; right:128px; bottom:64px; left:128px; display:flex; flex-direction:row; justify-content:space-between">
+    <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6b776f">Preserving tacit and tribal knowledge in banking systems</p>
+    <p style="font-family:'IBM Plex Sans', Arial, sans-serif; font-size:24px; color:#6b776f">2</p>
+  </div>
+  <aside>Five layers of the lifecycle, each holding its own knowledge and each losing it in its own way. Specifications are not a sixth layer. They are the written form each layer takes: UML activity and sequence models for processes and requirements, UML component and class models and API contracts for architecture, Gherkin scenarios for requirements in executable form, decision tables for rules, runbooks for operations. The last sentence introduces the enforcement state, which the inventory later records for every rule: system, control or memory. The triggers are the familiar ones. Experts change department, retire or resign. They are tied up in other projects. The legacy systems they know best are the least documented.</aside>
+</section>
