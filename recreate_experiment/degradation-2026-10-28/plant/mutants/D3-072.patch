@@ -1,0 +1,11 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -444,7 +444,7 @@
+     volume = df["volume"].astype(np.float64)
+     finite = np.isfinite(volume.to_numpy())
+     if len(volume) and finite.all() and (volume == np.floor(volume)).all():
+-        volume = volume.astype("int64")
++        volume = volume.astype("int32")
+     return pd.DataFrame({
+         "Date": df["datetime"].dt.strftime("%Y-%m-%d"),
+         "Open": df["open"].astype(np.float64),

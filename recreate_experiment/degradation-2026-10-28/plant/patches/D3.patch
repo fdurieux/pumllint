@@ -1,0 +1,864 @@
+
+--- kit_ref/MANIFEST.sha256
++++ D3/MANIFEST.sha256
+@@ -1,11 +1,11 @@
+ 71df2f3e49b810194caebc6397266f3fa29163a4e4713806596c01066a908f23  CHANGES.md
+ c765d466b63139a45c6a464c21832cee4b51e066dbab4c75fa6c138912b9fb76  README.md
+ 5b083a23459dd89713ee325e8c8d627e05f24a3984abfb793d5de5869421e52c  contracts/HARNESS_INTERFACE.md
+-394a047093f2ae4b81129e562d87d90752ed061850a4e1282a96c7e7d604993a  contracts/adjustment.md
++a441c2e40a2d3816500dde4fd59fb64e35ba7c60c9a4c08b1a641589bf903f46  contracts/adjustment.md
+ 6a40640b0f0efe988554230e569057501eaa64f5d9009b74ee6f86660cb5b1e6  contracts/chain.md
+ b9848dc6c6d2ce61a6b994586b86050380d4b7370eda94f08c296ff729b4b953  contracts/classifications.toml
+ 01efb3f607fece5c9038dd2dd027a2ce3be00e541d5adfb7de69370fd4bcb0ac  contracts/classifications.toml.md
+-bb77c47a2be9e351ad965448e8709caf45d1eab7c29cb2b956685ed459d846a1  contracts/cli.md
++ddf7bb4cfc85922fda4aa2bc75570fdf28aed48bbd902c95bd1f1617387fe2e6  contracts/cli.md
+ 903a6225a8983481e9aa31664a831e3106297a9a9db45968774bf155e9c26595  contracts/cli_help.md
+ f0d95d5d9378a8e0f1b66d55422e5371506e7ca5598904f9e965d5728c3e6b79  contracts/collectors.md
+ 262ceb1aebcd1039a6b229d602dae197ea4f5f493b076ee8ac6399c0fad56a46  contracts/dmn/README.md
+@@ -18,25 +18,25 @@
+ 3dfa1216628cfcbc5647470620bd0ca71a01d11949224e8eafcd1d8c65838281  contracts/externals/dashboard.sh
+ 1b166b610b51dd2aca28438e71ff5e2d79ddf3e5df4cf69d91de94ebe512a7d3  contracts/externals/events.sh
+ 23ff4ef77b9f6e7bb318a6d201980a754eacea93c704fc9364bb862afe476fc0  contracts/fixtures.md
+-ce40235645a8e7f22f0337235ecd3940f5de7ee9f85b5092992c09eb6bd72074  contracts/glossary.md
++1118fcea63d4316c57eaac47cd9e29732356af72e7ced9f8826b79c39ed92bba  contracts/glossary.md
+ 49b34465af625895fa9fd46f32e052e9f81a097e326f7fabaf09696b3d689191  contracts/leg.md
+ 12f26afdb313c8ae19301b3eeb60e24a09de25fa2a41849cd0106edc39001257  contracts/pins.md
+ dff39bd7b54d10069503b69a7222110d5d697b55f0ab42383c07e2ac518ba4dd  contracts/refusals.md
+-26f941e31b0e0cc50192db6e37a662c2028dde9752e83fc74bcef0f1e1256f03  contracts/seam_frame.md
++fe0549b556e89947261db5e7bacf9c891d8663e7e2cd2e32e14beb58423802e8  contracts/seam_frame.md
+ c41d54eb695fa8f911e02b6f9f53d0e4dcf92bb7d2c58b19393efc515cf66966  contracts/status.example.json
+ e021696335eaa401741c38617271cbb625758ff73042114362e67d3e3780e883  contracts/status.schema.json
+-b8aaa0c92c3b54c4cfde3954993a9323710c3627ed18365400ee32c9e27dda11  contracts/store.md
++f7495cc741bd416b22c0346facc5c6c6f7eb3f7a05d57b91c28d996c9598fbb8  contracts/store.md
+ 40331610993c3fef079d47a30dc21ad35910e55109b5fb8bd95fa3f48b137a38  contracts/sync_summary.example.json
+ e14bcd7a411e32fcd80c5c2210542527df867fd07ccbd4e24ecbe07933177c37  contracts/sync_summary.schema.json
+ 3bfd82ca66a9fe0567615ddd7932763555489ccf80dd3f3cc10adb4166478d8b  contracts/universe.toml
+ 251363b16fb6bc01d08a97418ab220258f21e4fff2d6374c204155f1efca6d83  contracts/universe.toml.md
+ b3611b7793aa77ceb2b92a72d5cf763f8a110a9f00852ae7598b4cf801321d62  features/README.md
+ 5bf0ffb4a9bc18bdfb2aad27936218fa4e64769c409f89690ca6997e42b4fb3c  features/actions.feature
+-829b878500cb4912f13070903dbc8e42b76cbd50cafeed53ed176511e85a7f92  features/adjustment.feature
++9fa2eedaedd06fa8a80f7a9a80c6614ae6d1fdea865cd17d125832b8f30e003a  features/adjustment.feature
+ fa025eaa8bc3b32793c4fac8a9d013fa77743d2c653f913d5955c9394513152b  features/chain.feature
+-25151ad17f31921b551947595a04a0e62d32949d540687577431d3b21055b2c4  features/cli.feature
++78f22fb631c60cfd261b610978a16c73d9ab35c4f5ac865a1e130aabf57a2401  features/cli.feature
+ 5b0dd0aed016ed1859539cee5bac3217e4ce89e0acb84e9b5f734f99d9bae1f5  features/collectors.feature
+-6f3f543658db7f5ed9093d90d810f5f959208f86c9c633ac231b4a3545ec0691  features/decisions.feature
++f8a3b39611cdab544a6d7596408a63c10089523d7f0983dd9847fe2f797d3776  features/decisions.feature
+ 455b458aad081230637cb2730fb92420c0129b41e7474a1b1b983d17bac39892  features/differential.feature
+ 059b95001320b1b9abd7197a25e95cb6ca948a9674763f5f47a9a9f9b6a1d492  features/fixtures/csv/bad_dates.csv
+ 7f58aae5a9ff2fd77b15526f1061ba08cfa5366eaf8fe3384952062340717ab2  features/fixtures/csv/crypto_feb.csv
+@@ -64,16 +64,16 @@
+ ec2462435bd703601bdea5131e66ba505f273f30c57a65af3c10887b679b889d  features/fixtures/csv/zero_runs.csv
+ b3bc0b1a7017d95d2ae8b3752549e71441149b55f95af64434a24be6f1d84b6c  features/fixtures/csv/zero_single.csv
+ a8745d2a98ef37412a39f0a87397a49ea467c5ee35114ba14daae79cd32bc496  features/fixtures/expected/ccstk_stored.json
+-f6bf6a716bb4e5f289ca0cb93ae81e010c511e1e0c6ebb90c711b4882cdf9b92  features/fixtures/expected/divy_export.json
+-29bb0f6db6352278db583cfc5e8d4765ed427b9deff970669b74d43a98c30ee5  features/fixtures/expected/divy_stored.json
+-788e59848a979f9560c9faf52443352222ac8097e0dd41dcb1f229e90d704f96  features/fixtures/expected/late_stored.json
++6e80b7e33452c7a2f75039b4d7887a871c5176db7fedcd05cca7682bdb77780f  features/fixtures/expected/divy_export.json
++30310f480e9f8eea84e6bd942ab55ed7e6b9baaf93fbd6e7ee48f4dd20b02e41  features/fixtures/expected/divy_stored.json
++dda8b7bd2d133daea564fb901a599681af367456268b91ca4af0c8e5f1cd3dea  features/fixtures/expected/late_stored.json
+ cd2791814d258bca7941f6aba5bcaccef3b3e1118f00dfaca905f24877cab4a6  features/fixtures/expected/pair_binance_stored.json
+ 150ce22f352ca1e105df52289fed4aef17f4ec6579cc452be51fd7d1908a57f0  features/fixtures/expected/pair_eodhd_stored.json
+-3766db7c60297aa8406da4152e2cb0cf27f9d083f4917a9df03bd1e9ffe20d8d  features/fixtures/expected/small_export.json
++d7d85efac09e214bd564559dc306f9f54c88d24fb9f3dfce82955c56b59abdea  features/fixtures/expected/small_export.json
+ ecca4854300aa06b2981e714efa1f04edc43369f0e6c3d6735129613f034e7de  features/fixtures/expected/small_stored.json
+-cbb89235a8f9571c4e6a873b5f2d2d8a95e85f0318bbe22a88704bbb7e861558  features/fixtures/expected/splt_run1_export.json
+-a674ccf43bad2377d86afd7d90f1f33c76ef889c819830a91c1705cefe699df4  features/fixtures/expected/splt_run1_stored.json
+-744a9c870473b2c5788249fe12e872a8476f39b12e1ab32e08bfce24f4839372  features/fixtures/expected/splt_run2_stored.json
++39033b4575e20bfcbc8c636029a805b644566c55c431c43231f4f111abd4b2a7  features/fixtures/expected/splt_run1_export.json
++3687c8dcbc350b56c0f8611a172d6da789b524e26b87d97d15f15b8a29093c18  features/fixtures/expected/splt_run1_stored.json
++292f99c115248c85d00d6339ec27e06cb44b7a9fbf2fcb307dcb1be5bb1a0a80  features/fixtures/expected/splt_run2_stored.json
+ a6af647c31d7392123001b5edf720549164d0dfc6ddfdf22340172b2668598af  features/fixtures/expected/weird_stored.json
+ 644739b1c85ee5e2b3453c8746354c524012d4c9fe4191bc55e02e27f659b310  features/fixtures/expected/zero_stored.json
+ 5079582567f784341cfd4b4102c4d63b19ad10db28cd2f132638e012585c6109  features/fixtures/http/binance/limit/api_v3_klines_20c2e2b351.json
+@@ -187,18 +187,18 @@
+ 02ba50c30f854b65cea497ac6f2a456028b6813dd7fa68235105246b362417bb  features/fixtures/universes/splt_end.toml
+ 2d66691bcaaafbde880d6fad2829ec0d2541d06d25a2ca49ff8812cf8f4baa16  features/fixtures/universes/zero.toml
+ a3a548cf59f1a3711a0a8e52871569ed9f9c4cd9def9bbc42f31502f723c2cab  features/fixtures/universes/zero_end.toml
+-5993f45ff05cf9722a6bab6f690eca0aa7057ea6775ca953f18ba5ef49d6703c  features/seam.feature
++71673060eaa1dffcfb658621449a0ebe2e659e2247311a5b3198a189a07ba411  features/seam.feature
+ 27c2ca516f434ea98be37073f1edaaa9355696af044bc63ea0a7afdd01b626dc  features/status.feature
+-d7ab40116296ba62717a2451687803c048e0aa91dbba1115f1a3d79bbc0c976b  features/steps/conftest.py
++62816b8d05c6d434f84c769f35c86fe665c3f9793523059e477e31915612968a  features/steps/conftest.py
+ 95698de02dd449061bb3c61889731ffd0e13c44b81f2c15a94470ab8beff3761  features/steps/test_features.py
+-ac25fb30cfe8f85d42e81601b7cda5adda5436db1798c66b655aa8d6332cfc18  features/store.feature
++0ee183c4d94a0469bae35d9c7600ca1c4a0bb08ce082e135db8f54d27eaf4ac5  features/store.feature
+ 347ca4a1077ccf11931d83e3b0055686020c2d2df70f2f4bdebda5f0289edd98  features/sync.feature
+ aabaf8620a4585501b96ee95cd7b8cf08f2ca4ee190193dce4803c6fb9e0602f  features/universe.feature
+ 041ff617504eb99f99b363de968f539d337d92df947b43f4a24c0fe003c46bd1  pumllint.toml
+-1f1781573ff53fffb1834e118f8cf88be8a7b6810557a31fade33fb9f89c948c  requirements.json
++7508e23f6457cfc9d637ebeb33c97fa649de87ad952da2cbb8bab7bbcfa8ceed  requirements.json
+ 2771f8e8addaf6a69e442cf3c093e38023c6628f9d488d1c761a29f134079646  tools/manifest.py
+-fe85ac1d743a210bbe91e5235205cb0879507e753b243201fe2de22f5e4b420b  uml/basis_and_adjustment.puml
+-05563913813a77e99ad1ac1ad1ad7c1bf4105efb2e45e92b5f3720c6bd5a8c28  uml/component.puml
++01fd4eb592aff51bfa9996b12219fbf0c51193a66b966909c5ad5da6ca05da7c  uml/basis_and_adjustment.puml
++08976f3bff396b87acbe1ee8a77becf44351f56c599361eb973db8c597991b56  uml/component.puml
+ ebe1a3a32279d219b5e8d8a3c4b77d0ee4a76d4906bfa42827ac398527e04af0  uml/daily_chain.puml
+ 3eb4406d7a1a68ce355941a817ea019b522dcb41dad3be8d6d35a8d4811db693  uml/data_model.puml
+ b6b7120fd0d4e92709dfa874193c29c90b9d76d6832e041e80802407c51faf53  uml/series_state.puml
+
+--- kit_ref/contracts/adjustment.md
++++ D3/contracts/adjustment.md
+@@ -5,8 +5,8 @@
+ JDL-053, JDL-054, JDL-055,
+ JDL-056; split parsing JDL-033.
+ 
+-All arithmetic is IEEE-754 binary64 (float64), performed in exactly the order
+-written here. Exactness matters: the harness compares stored cells bit for bit.
++All arithmetic is IEEE-754 binary64 (float64), except the price division of §4,
++which is binary32 (float32), performed in exactly the order written here. Exactness matters: the harness compares stored cells bit for bit.
+ 
+ ## 1. Basis resolution (decided once per write, never configurable)
+ 
+@@ -113,15 +113,15 @@
+ |---|---|---|---|---|---|---|
+ | 2024-01-02 | 10.5 | 210.0 | 20.0 | 100000 | 9523.809523809523 | 99999.99999999999 |
+ | 2024-01-16 | 10.5 | 215.25 | 20.5 | 110000 | 10476.190476190477 | 110000.00000000001 |
+-| 2024-01-17 (on split 1) | 7.0 | 143.85 | 20.55 | 111000 | 15857.142857142857 | 111000.0 |
+-| 2024-01-31 | 7.0 | 147.35 | 21.05 | 121000 | 17285.714285714286 | 121000.0 |
+-| 2024-02-01 (on split 2) | 1.0 | 21.1 | 21.1 | 122000 | 122000.0 | 122000.0 |
++| 2024-01-17 (on split 1) | 7.0 | 143.85 | 20.55000114440918 | 111000 | 15857.142857142857 | 111000.0 |
++| 2024-01-31 | 7.0 | 147.35 | 21.05000114440918 | 121000 | 17285.714285714286 | 121000.0 |
++| 2024-02-01 (on split 2) | 1.0 | 21.1 | 21.100000381469727 | 122000 | 122000.0 | 122000.0 |
+ 
+ The factor is `1.0 × 1.5 × 7.0`, multiplied in that order.
+ 
+ ### Example 2 — ETF with dividends, no splits `DIVY.US`
+ 
+-No split events: F = 1.0 on every row, mains = raws, `cumulative_split_factor`
++No split events: F = 1.0 on every row, mains = raws rounded to float32, `cumulative_split_factor`
+ = 1.0, price_basis `raw` (an ETF is raw basis even without splits). Three
+ dividends are stored verbatim and change nothing; the provider's
+ `adjusted_close` (lower than close before each dividend) is carried, and
+
+--- kit_ref/contracts/cli.md
++++ D3/contracts/cli.md
+@@ -53,7 +53,7 @@
+ 5. Fetch bars; read stored splits (raw basis only); append them (store.md §6,
+    EODHD volume raw-ized for raw basis); when raw and (bars were ingested or
+    the series already had rows) re-adjust the whole series.
+-6. Print `{S}: {n} bar(s) ingested -> {store}/market_data/`, exit 0.
++6. Print `{S}: {n} bar(s) ingested -> {store}/marketdata/`, exit 0.
+ 
+ Refusals print `load: {message}` (exit 1) after closing the collector and
+ before any fetch or write.
+@@ -72,7 +72,7 @@
+ `jef-data import-csv --csv F --symbol S [--exchange yahoo] --asset-type {crypto,etf,stock} [--currency USD] [--store data]`
+ 
+ Imports F (store.md §7) into exchange/S. Prints
+-`{F}: {rows} row(s) -> {store}/market_data/exchange={exchange}/symbol={S}/ (price_basis=split_adjusted)`,
++`{F}: {rows} row(s) -> {store}/marketdata/exchange={exchange}/symbol={S}/ (price_basis=split_adjusted)`,
+ exit 0. Missing columns → traceback (StoreError), exit 1.
+ 
+ ## export
+
+--- kit_ref/contracts/glossary.md
++++ D3/contracts/glossary.md
+@@ -12,7 +12,7 @@
+ | store coordinate | The pair `exchange tag / symbol` that names one series; two assets may never claim the same one. | store.md §1, universe.toml.md |
+ | exchange tag | The first half of a store coordinate: the provider's tag (`eodhd`, `binance`) or the declared `exchange` of a yahoo-csv source (default `yahoo`). | store.md §1 |
+ | series | Every stored row of one store coordinate, read back sorted by `timestamp` with later duplicates dropped; "absent" or "never filled" when it has no year file. | store.md §5 |
+-| year file | `market_data/exchange=E/symbol=S/year=YYYY/data.parquet`, the unit a write rewrites. | store.md §1, §6 |
++| year file | `marketdata/exchange=E/symbol=S/year=YYYY/data.parquet`, the unit a write rewrites. | store.md §1, §6 |
+ | lock | The exclusive advisory lock on a series' `.lock` file every read-modify-write holds, waited for up to 300 s. | store.md §6, JDL-058 |
+ | universe | The TOML declaration of assets and their sources (`--universe`, default the packaged file), loaded and normalised before any leg runs. | universe.toml.md |
+ | asset | One `[[asset]]` entry: a name, a declared `asset_class`, `enabled`, and one or more sources. | universe.toml.md |
+
+--- kit_ref/contracts/seam_frame.md
++++ D3/contracts/seam_frame.md
+@@ -19,18 +19,18 @@
+ | 4 | `Low` | float64 | `low` |
+ | 5 | `Close` | float64 | `close` |
+ | 6 | `Adj Close` | float64 | `adjusted_close` (the provider's splits+dividends close) |
+-| 7 | `Volume` | int64 **or** float64 | `volume` (the adjusted main column) |
++| 7 | `Volume` | int32 **or** float64 | `volume` (the adjusted main column) |
+ 
+ * Rows: exactly the stored rows of the series, in stored order (ascending
+   `timestamp`, store.md §5), index `0..n-1`. Nothing is dropped, filtered,
+   re-sorted or de-duplicated here.
+-* `Volume` dtype rule (JDL-072): int64 when the series has at least
++* `Volume` dtype rule (JDL-072): int32 when the series has at least
+   one row and **every** volume is finite and has no fractional part; otherwise
+   float64 with the values untouched. One volume of `99999.99999999999` (see the
+   worked example) makes the whole column float64.
+ * An empty series cannot be exported (the command fails, see cli.md `export`).
+ * In the CSV written by `export`, a NaN cell is an empty field and floats use
+-  the shortest repr that round-trips (`100000.0`, `19.84952380952381`).
++  the shortest repr that round-trips (`100000.0`, `19.849523544311523`).
+ 
+ ## 2. The transform, step by step
+ 
+@@ -81,11 +81,11 @@
+ | store | `open_raw`, `high_raw`, `low_raw`, `close_raw` | `207.9`, `212.1`, `205.8`, `210.0` |
+ | store | `volume_raw` | 100000 / 10.5 = `9523.809523809523` |
+ | store | `cumulative_split_factor` | `10.5` |
+-| store | `open`, `high`, `low`, `close` | 207.9/10.5 = `19.8`, `20.2`, `19.6`, `20.0` |
++| store | `open`, `high`, `low`, `close` | 207.9/10.5 = `19.799999237060547`, `20.200000762939453`, `19.600000381469727`, `20.0` |
+ | store | `volume` | 9523.809523809523 × 10.5 = `99999.99999999999` |
+ | store | `adjusted_close` | `19.9` |
+ | store | `adjustment_factor` | 19.9 / 210.0 = `0.09476190476190476` |
+-| seam | `Date, Open, High, Low, Close, Adj Close, Volume` | `2024-01-02, 19.8, 20.2, 19.6, 20.0, 19.9, 99999.99999999999` |
++| seam | `Date, Open, High, Low, Close, Adj Close, Volume` | `2024-01-02, 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 19.9, 99999.99999999999` |
+ 
+ ### Row 2024-01-17 (dated ON the 3:2 split)
+ 
+@@ -93,18 +93,18 @@
+ adjusted_close 20.4473, volume 111000. F = 7.0 (the 3:2 split does not count).
+ 
+ `volume_raw` = 111000/7 = `15857.142857142857`, `volume` = `111000.0`,
+-`open` = `20.344285714285714`, `high` = `20.755714285714284`, `low` =
+-`20.138571428571428`, `close` = `20.55`, `adjustment_factor` =
++`open` = `20.34428596496582`, `high` = `20.755712509155273`, `low` =
++`20.13857078552246`, `close` = `20.55000114440918`, `adjustment_factor` =
+ `0.14214320472714634`.
+ 
+ ### Row 2024-02-01 (dated ON the 7:1 split)
+ 
+-F = 1.0: every main column equals its raw twin (`21.1` close, `122000.0`
+-volume), `adjustment_factor` = 20.9945 / 21.1 = `0.9949999999999999`.
++F = 1.0: every main price column equals its raw twin rounded to float32
++(`21.100000381469727` close), volume its raw twin (`122000.0`), `adjustment_factor` = 20.9945 / 21.1 = `0.9949999999999999`.
+ 
+ Because row 2024-01-02's volume is non-integral, the exported `Volume` column of
+ `SPLT.US` is float64; the ETF example (`DIVY.US`, no splits, F = 1.0 on every
+-row) exports int64.
++row) exports int32.
+ 
+ ## 4. Validation of the frame
+ 
+
+--- kit_ref/contracts/store.md
++++ D3/contracts/store.md
+@@ -13,7 +13,7 @@
+ 
+ ```
+ {store}/
+-  market_data/
++  marketdata/
+     exchange={exchange tag}/            # the universe source's `exchange` (eodhd | binance | yahoo | declared)
+       symbol={symbol}/                  # the store symbol exactly as declared (e.g. SPLT.US, PAIRUSDT)
+         .lock                           # created by the first write; advisory lock target
+
+--- kit_ref/features/adjustment.feature
++++ D3/features/adjustment.feature
+@@ -20,18 +20,18 @@
+       | 2024-01-02 | cumulative_split_factor | 10.5                |
+       | 2024-01-02 | close_raw               | 210.0               |
+       | 2024-01-02 | close                   | 20.0                |
+-      | 2024-01-02 | open                    | 19.8                |
++      | 2024-01-02 | open                    | 19.799999237060547  |
+       | 2024-01-02 | volume_raw              | 9523.809523809523   |
+       | 2024-01-02 | volume                  | 99999.99999999999   |
+       | 2024-01-02 | adjusted_close          | 19.9                |
+       | 2024-01-02 | adjustment_factor       | 0.09476190476190476 |
+       | 2024-01-16 | volume                  | 110000.00000000001  |
+       | 2024-01-17 | cumulative_split_factor | 7.0                 |
+-      | 2024-01-17 | open                    | 20.344285714285714  |
++      | 2024-01-17 | open                    | 20.34428596496582   |
+       | 2024-01-17 | volume_raw              | 15857.142857142857  |
+       | 2024-01-17 | volume                  | 111000.0            |
+       | 2024-02-01 | cumulative_split_factor | 1.0                 |
+-      | 2024-02-01 | close                   | 21.1                |
++      | 2024-02-01 | close                   | 21.100000381469727  |
+       | 2024-02-01 | adjustment_factor       | 0.9949999999999999  |
+       | 2024-02-01 | symbol                  | SPLT.US             |
+       | 2024-02-01 | exchange                | eodhd               |
+
+--- kit_ref/features/cli.feature
++++ D3/features/cli.feature
+@@ -28,7 +28,7 @@
+     Then the exit code is 0
+     And stdout is:
+       """
+-      {fixtures}/csv/stock_feb.csv: 22 row(s) -> {store}/market_data/exchange=eodhd/symbol=FEB.US/ (price_basis=split_adjusted)
++      {fixtures}/csv/stock_feb.csv: 22 row(s) -> {store}/marketdata/exchange=eodhd/symbol=FEB.US/ (price_basis=split_adjusted)
+       """
+     And every stored row of eodhd/FEB.US has exchange "eodhd"
+     And every stored row of eodhd/FEB.US has symbol "FEB.US"
+
+--- kit_ref/features/decisions.feature
++++ D3/features/decisions.feature
+@@ -127,7 +127,7 @@
+       Given the store holds "yahoo_small.csv" as eodhd/FEB.US declared stock
+       When I run "jef-data import-csv --csv {fixtures}/csv/stock_feb.csv --symbol FEB.US --exchange eodhd --asset-type etf --store {store}"
+       Then the exit code is 0
+-      And stdout contains the line "{fixtures}/csv/stock_feb.csv: 22 row(s) -> {store}/market_data/exchange=eodhd/symbol=FEB.US/ (price_basis=split_adjusted)"
++      And stdout contains the line "{fixtures}/csv/stock_feb.csv: 22 row(s) -> {store}/marketdata/exchange=eodhd/symbol=FEB.US/ (price_basis=split_adjusted)"
+       And the stored series eodhd/FEB.US has 22 rows
+ 
+     @JDL-069 @JDL-138 @JDL-082 @JDL-134
+
+--- kit_ref/features/fixtures/expected/divy_export.json
++++ D3/features/fixtures/expected/divy_export.json
+@@ -1,24 +1,24 @@
+ {"columns": ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"],
+- "dtypes": {"Date": "text", "Open": "float64", "High": "float64", "Low": "float64", "Close": "float64", "Adj Close": "float64", "Volume": "int64"},
++ "dtypes": {"Date": "text", "Open": "float64", "High": "float64", "Low": "float64", "Close": "float64", "Adj Close": "float64", "Volume": "int32"},
+  "data": [
+-  ["2024-03-01", 94.8, 95.4, 94.5, 95.0, 94.37, 50000],
+-  ["2024-03-04", 94.9, 95.5, 94.6, 95.1, 94.47, 50250],
+-  ["2024-03-05", 95.0, 95.6, 94.7, 95.2, 94.57, 50500],
+-  ["2024-03-06", 95.1, 95.7, 94.8, 95.3, 94.67, 50750],
+-  ["2024-03-07", 95.2, 95.8, 94.9, 95.4, 94.77, 51000],
+-  ["2024-03-08", 95.3, 95.9, 95.0, 95.5, 94.87, 51250],
+-  ["2024-03-11", 95.4, 96.0, 95.1, 95.6, 94.97, 51500],
+-  ["2024-03-12", 95.5, 96.1, 95.2, 95.7, 95.07, 51750],
+-  ["2024-03-13", 95.6, 96.2, 95.3, 95.8, 95.17, 52000],
+-  ["2024-03-14", 95.7, 96.3, 95.4, 95.9, 95.27, 52250],
+-  ["2024-03-15", 95.8, 96.4, 95.5, 96.0, 95.68, 52500],
+-  ["2024-03-18", 95.9, 96.5, 95.6, 96.1, 95.78, 52750],
+-  ["2024-03-19", 96.0, 96.6, 95.7, 96.2, 95.88, 53000],
+-  ["2024-03-20", 96.1, 96.7, 95.8, 96.3, 95.98, 53250],
+-  ["2024-03-21", 96.2, 96.8, 95.9, 96.4, 96.08, 53500],
+-  ["2024-03-22", 96.3, 96.9, 96.0, 96.5, 96.18, 53750],
+-  ["2024-03-25", 96.4, 97.0, 96.1, 96.6, 96.28, 54000],
+-  ["2024-03-26", 96.5, 97.1, 96.2, 96.7, 96.38, 54250],
+-  ["2024-03-27", 96.6, 97.2, 96.3, 96.8, 96.48, 54500],
+-  ["2024-03-28", 96.7, 97.3, 96.4, 96.9, 96.9, 54750]
++  ["2024-03-01", 94.80000305175781, 95.4000015258789, 94.5, 95.0, 94.37, 50000],
++  ["2024-03-04", 94.9000015258789, 95.5, 94.5999984741211, 95.0999984741211, 94.47, 50250],
++  ["2024-03-05", 95.0, 95.5999984741211, 94.69999694824219, 95.19999694824219, 94.57, 50500],
++  ["2024-03-06", 95.0999984741211, 95.69999694824219, 94.80000305175781, 95.30000305175781, 94.67, 50750],
++  ["2024-03-07", 95.19999694824219, 95.80000305175781, 94.9000015258789, 95.4000015258789, 94.77, 51000],
++  ["2024-03-08", 95.30000305175781, 95.9000015258789, 95.0, 95.5, 94.87, 51250],
++  ["2024-03-11", 95.4000015258789, 96.0, 95.0999984741211, 95.5999984741211, 94.97, 51500],
++  ["2024-03-12", 95.5, 96.0999984741211, 95.19999694824219, 95.69999694824219, 95.07, 51750],
++  ["2024-03-13", 95.5999984741211, 96.19999694824219, 95.30000305175781, 95.80000305175781, 95.17, 52000],
++  ["2024-03-14", 95.69999694824219, 96.30000305175781, 95.4000015258789, 95.9000015258789, 95.27, 52250],
++  ["2024-03-15", 95.80000305175781, 96.4000015258789, 95.5, 96.0, 95.68, 52500],
++  ["2024-03-18", 95.9000015258789, 96.5, 95.5999984741211, 96.0999984741211, 95.78, 52750],
++  ["2024-03-19", 96.0, 96.5999984741211, 95.69999694824219, 96.19999694824219, 95.88, 53000],
++  ["2024-03-20", 96.0999984741211, 96.69999694824219, 95.80000305175781, 96.30000305175781, 95.98, 53250],
++  ["2024-03-21", 96.19999694824219, 96.80000305175781, 95.9000015258789, 96.4000015258789, 96.08, 53500],
++  ["2024-03-22", 96.30000305175781, 96.9000015258789, 96.0, 96.5, 96.18, 53750],
++  ["2024-03-25", 96.4000015258789, 97.0, 96.0999984741211, 96.5999984741211, 96.28, 54000],
++  ["2024-03-26", 96.5, 97.0999984741211, 96.19999694824219, 96.69999694824219, 96.38, 54250],
++  ["2024-03-27", 96.5999984741211, 97.19999694824219, 96.30000305175781, 96.80000305175781, 96.48, 54500],
++  ["2024-03-28", 96.69999694824219, 97.30000305175781, 96.4000015258789, 96.9000015258789, 96.9, 54750]
+  ]}
+
+--- kit_ref/features/fixtures/expected/divy_stored.json
++++ D3/features/fixtures/expected/divy_stored.json
+@@ -1,24 +1,24 @@
+ {"columns": ["timestamp", "datetime", "open", "high", "low", "close", "volume", "symbol", "exchange", "asset_type", "asset_subtype", "adjustment_factor", "open_raw", "high_raw", "low_raw", "close_raw", "volume_raw", "adjusted_close", "cumulative_split_factor", "currency", "price_basis"],
+  "dtypes": {"timestamp": "int64", "datetime": "datetime64[ms, UTC]", "open": "float64", "high": "float64", "low": "float64", "close": "float64", "volume": "float64", "symbol": "text", "exchange": "text", "asset_type": "text", "asset_subtype": "text", "adjustment_factor": "float64", "open_raw": "float64", "high_raw": "float64", "low_raw": "float64", "close_raw": "float64", "volume_raw": "float64", "adjusted_close": "float64", "cumulative_split_factor": "float64", "currency": "text", "price_basis": "text"},
+  "data": [
+-  [1709251200, "2024-03-01T00:00:00+00:00", 94.8, 95.4, 94.5, 95.0, 50000.0, "DIVY.US", "eodhd", "etf", "", 0.9933684210526317, 94.8, 95.4, 94.5, 95.0, 50000.0, 94.37, 1.0, "USD", "raw"],
+-  [1709510400, "2024-03-04T00:00:00+00:00", 94.9, 95.5, 94.6, 95.1, 50250.0, "DIVY.US", "eodhd", "etf", "", 0.9933753943217666, 94.9, 95.5, 94.6, 95.1, 50250.0, 94.47, 1.0, "USD", "raw"],
+-  [1709596800, "2024-03-05T00:00:00+00:00", 95.0, 95.6, 94.7, 95.2, 50500.0, "DIVY.US", "eodhd", "etf", "", 0.9933823529411764, 95.0, 95.6, 94.7, 95.2, 50500.0, 94.57, 1.0, "USD", "raw"],
+-  [1709683200, "2024-03-06T00:00:00+00:00", 95.1, 95.7, 94.8, 95.3, 50750.0, "DIVY.US", "eodhd", "etf", "", 0.993389296956978, 95.1, 95.7, 94.8, 95.3, 50750.0, 94.67, 1.0, "USD", "raw"],
+-  [1709769600, "2024-03-07T00:00:00+00:00", 95.2, 95.8, 94.9, 95.4, 51000.0, "DIVY.US", "eodhd", "etf", "", 0.9933962264150943, 95.2, 95.8, 94.9, 95.4, 51000.0, 94.77, 1.0, "USD", "raw"],
+-  [1709856000, "2024-03-08T00:00:00+00:00", 95.3, 95.9, 95.0, 95.5, 51250.0, "DIVY.US", "eodhd", "etf", "", 0.9934031413612566, 95.3, 95.9, 95.0, 95.5, 51250.0, 94.87, 1.0, "USD", "raw"],
+-  [1710115200, "2024-03-11T00:00:00+00:00", 95.4, 96.0, 95.1, 95.6, 51500.0, "DIVY.US", "eodhd", "etf", "", 0.9934100418410042, 95.4, 96.0, 95.1, 95.6, 51500.0, 94.97, 1.0, "USD", "raw"],
+-  [1710201600, "2024-03-12T00:00:00+00:00", 95.5, 96.1, 95.2, 95.7, 51750.0, "DIVY.US", "eodhd", "etf", "", 0.9934169278996864, 95.5, 96.1, 95.2, 95.7, 51750.0, 95.07, 1.0, "USD", "raw"],
+-  [1710288000, "2024-03-13T00:00:00+00:00", 95.6, 96.2, 95.3, 95.8, 52000.0, "DIVY.US", "eodhd", "etf", "", 0.9934237995824635, 95.6, 96.2, 95.3, 95.8, 52000.0, 95.17, 1.0, "USD", "raw"],
+-  [1710374400, "2024-03-14T00:00:00+00:00", 95.7, 96.3, 95.4, 95.9, 52250.0, "DIVY.US", "eodhd", "etf", "", 0.9934306569343064, 95.7, 96.3, 95.4, 95.9, 52250.0, 95.27, 1.0, "USD", "raw"],
+-  [1710460800, "2024-03-15T00:00:00+00:00", 95.8, 96.4, 95.5, 96.0, 52500.0, "DIVY.US", "eodhd", "etf", "", 0.9966666666666667, 95.8, 96.4, 95.5, 96.0, 52500.0, 95.68, 1.0, "USD", "raw"],
+-  [1710720000, "2024-03-18T00:00:00+00:00", 95.9, 96.5, 95.6, 96.1, 52750.0, "DIVY.US", "eodhd", "etf", "", 0.9966701352757545, 95.9, 96.5, 95.6, 96.1, 52750.0, 95.78, 1.0, "USD", "raw"],
+-  [1710806400, "2024-03-19T00:00:00+00:00", 96.0, 96.6, 95.7, 96.2, 53000.0, "DIVY.US", "eodhd", "etf", "", 0.9966735966735966, 96.0, 96.6, 95.7, 96.2, 53000.0, 95.88, 1.0, "USD", "raw"],
+-  [1710892800, "2024-03-20T00:00:00+00:00", 96.1, 96.7, 95.8, 96.3, 53250.0, "DIVY.US", "eodhd", "etf", "", 0.9966770508826585, 96.1, 96.7, 95.8, 96.3, 53250.0, 95.98, 1.0, "USD", "raw"],
+-  [1710979200, "2024-03-21T00:00:00+00:00", 96.2, 96.8, 95.9, 96.4, 53500.0, "DIVY.US", "eodhd", "etf", "", 0.9966804979253111, 96.2, 96.8, 95.9, 96.4, 53500.0, 96.08, 1.0, "USD", "raw"],
+-  [1711065600, "2024-03-22T00:00:00+00:00", 96.3, 96.9, 96.0, 96.5, 53750.0, "DIVY.US", "eodhd", "etf", "", 0.9966839378238342, 96.3, 96.9, 96.0, 96.5, 53750.0, 96.18, 1.0, "USD", "raw"],
+-  [1711324800, "2024-03-25T00:00:00+00:00", 96.4, 97.0, 96.1, 96.6, 54000.0, "DIVY.US", "eodhd", "etf", "", 0.9966873706004141, 96.4, 97.0, 96.1, 96.6, 54000.0, 96.28, 1.0, "USD", "raw"],
+-  [1711411200, "2024-03-26T00:00:00+00:00", 96.5, 97.1, 96.2, 96.7, 54250.0, "DIVY.US", "eodhd", "etf", "", 0.9966907962771457, 96.5, 97.1, 96.2, 96.7, 54250.0, 96.38, 1.0, "USD", "raw"],
+-  [1711497600, "2024-03-27T00:00:00+00:00", 96.6, 97.2, 96.3, 96.8, 54500.0, "DIVY.US", "eodhd", "etf", "", 0.9966942148760332, 96.6, 97.2, 96.3, 96.8, 54500.0, 96.48, 1.0, "USD", "raw"],
+-  [1711584000, "2024-03-28T00:00:00+00:00", 96.7, 97.3, 96.4, 96.9, 54750.0, "DIVY.US", "eodhd", "etf", "", 1.0, 96.7, 97.3, 96.4, 96.9, 54750.0, 96.9, 1.0, "USD", "raw"]
++  [1709251200, "2024-03-01T00:00:00+00:00", 94.80000305175781, 95.4000015258789, 94.5, 95.0, 50000.0, "DIVY.US", "eodhd", "etf", "", 0.9933684210526317, 94.8, 95.4, 94.5, 95.0, 50000.0, 94.37, 1.0, "USD", "raw"],
++  [1709510400, "2024-03-04T00:00:00+00:00", 94.9000015258789, 95.5, 94.5999984741211, 95.0999984741211, 50250.0, "DIVY.US", "eodhd", "etf", "", 0.9933753943217666, 94.9, 95.5, 94.6, 95.1, 50250.0, 94.47, 1.0, "USD", "raw"],
++  [1709596800, "2024-03-05T00:00:00+00:00", 95.0, 95.5999984741211, 94.69999694824219, 95.19999694824219, 50500.0, "DIVY.US", "eodhd", "etf", "", 0.9933823529411764, 95.0, 95.6, 94.7, 95.2, 50500.0, 94.57, 1.0, "USD", "raw"],
++  [1709683200, "2024-03-06T00:00:00+00:00", 95.0999984741211, 95.69999694824219, 94.80000305175781, 95.30000305175781, 50750.0, "DIVY.US", "eodhd", "etf", "", 0.993389296956978, 95.1, 95.7, 94.8, 95.3, 50750.0, 94.67, 1.0, "USD", "raw"],
++  [1709769600, "2024-03-07T00:00:00+00:00", 95.19999694824219, 95.80000305175781, 94.9000015258789, 95.4000015258789, 51000.0, "DIVY.US", "eodhd", "etf", "", 0.9933962264150943, 95.2, 95.8, 94.9, 95.4, 51000.0, 94.77, 1.0, "USD", "raw"],
++  [1709856000, "2024-03-08T00:00:00+00:00", 95.30000305175781, 95.9000015258789, 95.0, 95.5, 51250.0, "DIVY.US", "eodhd", "etf", "", 0.9934031413612566, 95.3, 95.9, 95.0, 95.5, 51250.0, 94.87, 1.0, "USD", "raw"],
++  [1710115200, "2024-03-11T00:00:00+00:00", 95.4000015258789, 96.0, 95.0999984741211, 95.5999984741211, 51500.0, "DIVY.US", "eodhd", "etf", "", 0.9934100418410042, 95.4, 96.0, 95.1, 95.6, 51500.0, 94.97, 1.0, "USD", "raw"],
++  [1710201600, "2024-03-12T00:00:00+00:00", 95.5, 96.0999984741211, 95.19999694824219, 95.69999694824219, 51750.0, "DIVY.US", "eodhd", "etf", "", 0.9934169278996864, 95.5, 96.1, 95.2, 95.7, 51750.0, 95.07, 1.0, "USD", "raw"],
++  [1710288000, "2024-03-13T00:00:00+00:00", 95.5999984741211, 96.19999694824219, 95.30000305175781, 95.80000305175781, 52000.0, "DIVY.US", "eodhd", "etf", "", 0.9934237995824635, 95.6, 96.2, 95.3, 95.8, 52000.0, 95.17, 1.0, "USD", "raw"],
++  [1710374400, "2024-03-14T00:00:00+00:00", 95.69999694824219, 96.30000305175781, 95.4000015258789, 95.9000015258789, 52250.0, "DIVY.US", "eodhd", "etf", "", 0.9934306569343064, 95.7, 96.3, 95.4, 95.9, 52250.0, 95.27, 1.0, "USD", "raw"],
++  [1710460800, "2024-03-15T00:00:00+00:00", 95.80000305175781, 96.4000015258789, 95.5, 96.0, 52500.0, "DIVY.US", "eodhd", "etf", "", 0.9966666666666667, 95.8, 96.4, 95.5, 96.0, 52500.0, 95.68, 1.0, "USD", "raw"],
++  [1710720000, "2024-03-18T00:00:00+00:00", 95.9000015258789, 96.5, 95.5999984741211, 96.0999984741211, 52750.0, "DIVY.US", "eodhd", "etf", "", 0.9966701352757545, 95.9, 96.5, 95.6, 96.1, 52750.0, 95.78, 1.0, "USD", "raw"],
++  [1710806400, "2024-03-19T00:00:00+00:00", 96.0, 96.5999984741211, 95.69999694824219, 96.19999694824219, 53000.0, "DIVY.US", "eodhd", "etf", "", 0.9966735966735966, 96.0, 96.6, 95.7, 96.2, 53000.0, 95.88, 1.0, "USD", "raw"],
++  [1710892800, "2024-03-20T00:00:00+00:00", 96.0999984741211, 96.69999694824219, 95.80000305175781, 96.30000305175781, 53250.0, "DIVY.US", "eodhd", "etf", "", 0.9966770508826585, 96.1, 96.7, 95.8, 96.3, 53250.0, 95.98, 1.0, "USD", "raw"],
++  [1710979200, "2024-03-21T00:00:00+00:00", 96.19999694824219, 96.80000305175781, 95.9000015258789, 96.4000015258789, 53500.0, "DIVY.US", "eodhd", "etf", "", 0.9966804979253111, 96.2, 96.8, 95.9, 96.4, 53500.0, 96.08, 1.0, "USD", "raw"],
++  [1711065600, "2024-03-22T00:00:00+00:00", 96.30000305175781, 96.9000015258789, 96.0, 96.5, 53750.0, "DIVY.US", "eodhd", "etf", "", 0.9966839378238342, 96.3, 96.9, 96.0, 96.5, 53750.0, 96.18, 1.0, "USD", "raw"],
++  [1711324800, "2024-03-25T00:00:00+00:00", 96.4000015258789, 97.0, 96.0999984741211, 96.5999984741211, 54000.0, "DIVY.US", "eodhd", "etf", "", 0.9966873706004141, 96.4, 97.0, 96.1, 96.6, 54000.0, 96.28, 1.0, "USD", "raw"],
++  [1711411200, "2024-03-26T00:00:00+00:00", 96.5, 97.0999984741211, 96.19999694824219, 96.69999694824219, 54250.0, "DIVY.US", "eodhd", "etf", "", 0.9966907962771457, 96.5, 97.1, 96.2, 96.7, 54250.0, 96.38, 1.0, "USD", "raw"],
++  [1711497600, "2024-03-27T00:00:00+00:00", 96.5999984741211, 97.19999694824219, 96.30000305175781, 96.80000305175781, 54500.0, "DIVY.US", "eodhd", "etf", "", 0.9966942148760332, 96.6, 97.2, 96.3, 96.8, 54500.0, 96.48, 1.0, "USD", "raw"],
++  [1711584000, "2024-03-28T00:00:00+00:00", 96.69999694824219, 97.30000305175781, 96.4000015258789, 96.9000015258789, 54750.0, "DIVY.US", "eodhd", "etf", "", 1.0, 96.7, 97.3, 96.4, 96.9, 54750.0, 96.9, 1.0, "USD", "raw"]
+  ]}
+
+--- kit_ref/features/fixtures/expected/late_stored.json
++++ D3/features/fixtures/expected/late_stored.json
+@@ -1,34 +1,34 @@
+ {"columns": ["timestamp", "datetime", "open", "high", "low", "close", "volume", "symbol", "exchange", "asset_type", "asset_subtype", "adjustment_factor", "open_raw", "high_raw", "low_raw", "close_raw", "volume_raw", "adjusted_close", "cumulative_split_factor", "currency", "price_basis"],
+  "dtypes": {"timestamp": "int64", "datetime": "datetime64[ms, UTC]", "open": "float64", "high": "float64", "low": "float64", "close": "float64", "volume": "float64", "symbol": "text", "exchange": "text", "asset_type": "text", "asset_subtype": "text", "adjustment_factor": "float64", "open_raw": "float64", "high_raw": "float64", "low_raw": "float64", "close_raw": "float64", "volume_raw": "float64", "adjusted_close": "float64", "cumulative_split_factor": "float64", "currency": "text", "price_basis": "text"},
+  "data": [
+-  [1704153600, "2024-01-02T00:00:00+00:00", 19.8, 20.2, 19.6, 20.0, 700000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 66666.66666666667, 19.9, 10.5, "USD", "raw"],
+-  [1704240000, "2024-01-03T00:00:00+00:00", 19.84952380952381, 20.25142857142857, 19.64952380952381, 20.05047619047619, 707000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 67333.33333333333, 19.9498, 10.5, "USD", "raw"],
+-  [1704326400, "2024-01-04T00:00:00+00:00", 19.899047619047618, 20.30095238095238, 19.698095238095238, 20.1, 714000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 68000.0, 19.9995, 10.5, "USD", "raw"],
+-  [1704412800, "2024-01-05T00:00:00+00:00", 19.947619047619046, 20.35142857142857, 19.746666666666666, 20.14952380952381, 721000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 68666.66666666667, 20.0492, 10.5, "USD", "raw"],
+-  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809523809524, 20.401904761904763, 19.79619047619048, 20.2, 728000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 69333.33333333333, 20.099, 10.5, "USD", "raw"],
+-  [1704758400, "2024-01-09T00:00:00+00:00", 20.046666666666667, 20.452380952380953, 19.844761904761906, 20.24952380952381, 735000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 70000.0, 20.1487, 10.5, "USD", "raw"],
+-  [1704844800, "2024-01-10T00:00:00+00:00", 20.09714285714286, 20.502857142857142, 19.89428571428571, 20.3, 742000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 70666.66666666667, 20.1985, 10.5, "USD", "raw"],
+-  [1704931200, "2024-01-11T00:00:00+00:00", 20.146666666666665, 20.554285714285715, 19.943809523809524, 20.35047619047619, 749000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 71333.33333333333, 20.2483, 10.5, "USD", "raw"],
+-  [1705017600, "2024-01-12T00:00:00+00:00", 20.196190476190477, 20.603809523809524, 19.99238095238095, 20.4, 756000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 72000.0, 20.298, 10.5, "USD", "raw"],
+-  [1705276800, "2024-01-15T00:00:00+00:00", 20.244761904761905, 20.654285714285713, 20.040952380952383, 20.44952380952381, 763000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 72666.66666666667, 20.3477, 10.5, "USD", "raw"],
+-  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238095238094, 20.704761904761906, 20.089523809523808, 20.5, 770000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 73333.33333333333, 20.3975, 10.5, "USD", "raw"],
+-  [1705449600, "2024-01-17T00:00:00+00:00", 20.344285714285714, 20.755714285714284, 20.138571428571428, 20.55, 777000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 111000.0, 20.4473, 7.0, "USD", "raw"],
+-  [1705536000, "2024-01-18T00:00:00+00:00", 20.39428571428571, 20.805714285714284, 20.18857142857143, 20.599999999999998, 784000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 112000.0, 20.497, 7.0, "USD", "raw"],
+-  [1705622400, "2024-01-19T00:00:00+00:00", 20.442857142857143, 20.857142857142858, 20.237142857142857, 20.650000000000002, 791000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 113000.0, 20.5467, 7.0, "USD", "raw"],
+-  [1705881600, "2024-01-22T00:00:00+00:00", 20.49285714285714, 20.907142857142855, 20.285714285714285, 20.7, 798000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 114000.0, 20.5965, 7.0, "USD", "raw"],
+-  [1705968000, "2024-01-23T00:00:00+00:00", 20.542857142857144, 20.957142857142856, 20.334285714285716, 20.75, 805000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 115000.0, 20.6462, 7.0, "USD", "raw"],
+-  [1706054400, "2024-01-24T00:00:00+00:00", 20.59142857142857, 21.00857142857143, 20.384285714285713, 20.8, 812000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 116000.0, 20.696, 7.0, "USD", "raw"],
+-  [1706140800, "2024-01-25T00:00:00+00:00", 20.641428571428573, 21.05857142857143, 20.43285714285714, 20.849999999999998, 819000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 117000.0, 20.7458, 7.0, "USD", "raw"],
+-  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142857142857, 21.108571428571427, 20.481428571428573, 20.900000000000002, 826000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 118000.0, 20.7955, 7.0, "USD", "raw"],
+-  [1706486400, "2024-01-29T00:00:00+00:00", 20.740000000000002, 21.16, 20.53142857142857, 20.95, 833000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 119000.0, 20.8453, 7.0, "USD", "raw"],
+-  [1706572800, "2024-01-30T00:00:00+00:00", 20.79, 21.21, 20.580000000000002, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
+-  [1706659200, "2024-01-31T00:00:00+00:00", 20.84, 21.259999999999998, 20.62857142857143, 21.05, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
+-  [1706745600, "2024-02-01T00:00:00+00:00", 20.89, 21.31, 20.68, 21.1, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
+-  [1706832000, "2024-02-02T00:00:00+00:00", 20.94, 21.36, 20.73, 21.15, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
+-  [1707091200, "2024-02-05T00:00:00+00:00", 20.99, 21.41, 20.78, 21.2, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
+-  [1707177600, "2024-02-06T00:00:00+00:00", 21.04, 21.46, 20.82, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
+-  [1707264000, "2024-02-07T00:00:00+00:00", 21.09, 21.51, 20.87, 21.3, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
+-  [1707350400, "2024-02-08T00:00:00+00:00", 21.14, 21.56, 20.92, 21.35, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976580796253, 21.14, 21.56, 20.92, 21.35, 127000.0, 21.2432, 1.0, "USD", "raw"],
+-  [1707436800, "2024-02-09T00:00:00+00:00", 21.19, 21.61, 20.97, 21.4, 128000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 128000.0, 21.293, 1.0, "USD", "raw"],
+-  [1707696000, "2024-02-12T00:00:00+00:00", 21.24, 21.66, 21.02, 21.45, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"]
++  [1704153600, "2024-01-02T00:00:00+00:00", 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 700000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 66666.66666666667, 19.9, 10.5, "USD", "raw"],
++  [1704240000, "2024-01-03T00:00:00+00:00", 19.849523544311523, 20.251428604125977, 19.649524688720703, 20.05047607421875, 707000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 67333.33333333333, 19.9498, 10.5, "USD", "raw"],
++  [1704326400, "2024-01-04T00:00:00+00:00", 19.8990478515625, 20.300952911376953, 19.698095321655273, 20.100000381469727, 714000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 68000.0, 19.9995, 10.5, "USD", "raw"],
++  [1704412800, "2024-01-05T00:00:00+00:00", 19.94761848449707, 20.351428985595703, 19.746665954589844, 20.149524688720703, 721000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 68666.66666666667, 20.0492, 10.5, "USD", "raw"],
++  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809455871582, 20.401905059814453, 19.79619026184082, 20.200000762939453, 728000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 69333.33333333333, 20.099, 10.5, "USD", "raw"],
++  [1704758400, "2024-01-09T00:00:00+00:00", 20.046667098999023, 20.452381134033203, 19.84476089477539, 20.249523162841797, 735000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 70000.0, 20.1487, 10.5, "USD", "raw"],
++  [1704844800, "2024-01-10T00:00:00+00:00", 20.097143173217773, 20.502857208251953, 19.894285202026367, 20.299999237060547, 742000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 70666.66666666667, 20.1985, 10.5, "USD", "raw"],
++  [1704931200, "2024-01-11T00:00:00+00:00", 20.146665573120117, 20.55428695678711, 19.943809509277344, 20.350475311279297, 749000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 71333.33333333333, 20.2483, 10.5, "USD", "raw"],
++  [1705017600, "2024-01-12T00:00:00+00:00", 20.196189880371094, 20.603809356689453, 19.992380142211914, 20.399999618530273, 756000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 72000.0, 20.298, 10.5, "USD", "raw"],
++  [1705276800, "2024-01-15T00:00:00+00:00", 20.244762420654297, 20.654285430908203, 20.040950775146484, 20.44952392578125, 763000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 72666.66666666667, 20.3477, 10.5, "USD", "raw"],
++  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238494873047, 20.704761505126953, 20.089523315429688, 20.5, 770000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 73333.33333333333, 20.3975, 10.5, "USD", "raw"],
++  [1705449600, "2024-01-17T00:00:00+00:00", 20.34428596496582, 20.755712509155273, 20.13857078552246, 20.55000114440918, 777000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 111000.0, 20.4473, 7.0, "USD", "raw"],
++  [1705536000, "2024-01-18T00:00:00+00:00", 20.394285202026367, 20.805713653564453, 20.18857192993164, 20.600000381469727, 784000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 112000.0, 20.497, 7.0, "USD", "raw"],
++  [1705622400, "2024-01-19T00:00:00+00:00", 20.44285774230957, 20.85714340209961, 20.23714256286621, 20.649999618530273, 791000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 113000.0, 20.5467, 7.0, "USD", "raw"],
++  [1705881600, "2024-01-22T00:00:00+00:00", 20.492856979370117, 20.90714454650879, 20.285715103149414, 20.69999885559082, 798000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 114000.0, 20.5965, 7.0, "USD", "raw"],
++  [1705968000, "2024-01-23T00:00:00+00:00", 20.542858123779297, 20.957141876220703, 20.334285736083984, 20.75, 805000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 115000.0, 20.6462, 7.0, "USD", "raw"],
++  [1706054400, "2024-01-24T00:00:00+00:00", 20.591428756713867, 21.00857162475586, 20.384286880493164, 20.80000114440918, 812000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 116000.0, 20.696, 7.0, "USD", "raw"],
++  [1706140800, "2024-01-25T00:00:00+00:00", 20.641429901123047, 21.05857276916504, 20.432857513427734, 20.850000381469727, 819000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 117000.0, 20.7458, 7.0, "USD", "raw"],
++  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142723083496, 21.108570098876953, 20.481428146362305, 20.899999618530273, 826000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 118000.0, 20.7955, 7.0, "USD", "raw"],
++  [1706486400, "2024-01-29T00:00:00+00:00", 20.739999771118164, 21.15999984741211, 20.531429290771484, 20.94999885559082, 833000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 119000.0, 20.8453, 7.0, "USD", "raw"],
++  [1706572800, "2024-01-30T00:00:00+00:00", 20.78999900817871, 21.21000099182129, 20.579999923706055, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
++  [1706659200, "2024-01-31T00:00:00+00:00", 20.84000015258789, 21.260000228881836, 20.628570556640625, 21.05000114440918, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
++  [1706745600, "2024-02-01T00:00:00+00:00", 20.889999389648438, 21.309999465942383, 20.68000030517578, 21.100000381469727, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
++  [1706832000, "2024-02-02T00:00:00+00:00", 20.940000534057617, 21.360000610351562, 20.729999542236328, 21.149999618530273, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
++  [1707091200, "2024-02-05T00:00:00+00:00", 20.989999771118164, 21.40999984741211, 20.780000686645508, 21.200000762939453, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
++  [1707177600, "2024-02-06T00:00:00+00:00", 21.040000915527344, 21.459999084472656, 20.81999969482422, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
++  [1707264000, "2024-02-07T00:00:00+00:00", 21.09000015258789, 21.510000228881836, 20.8700008392334, 21.299999237060547, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
++  [1707350400, "2024-02-08T00:00:00+00:00", 21.139999389648438, 21.559999465942383, 20.920000076293945, 21.350000381469727, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976580796253, 21.14, 21.56, 20.92, 21.35, 127000.0, 21.2432, 1.0, "USD", "raw"],
++  [1707436800, "2024-02-09T00:00:00+00:00", 21.190000534057617, 21.610000610351562, 20.969999313354492, 21.399999618530273, 128000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 128000.0, 21.293, 1.0, "USD", "raw"],
++  [1707696000, "2024-02-12T00:00:00+00:00", 21.239999771118164, 21.65999984741211, 21.020000457763672, 21.450000762939453, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"]
+  ]}
+
+--- kit_ref/features/fixtures/expected/small_export.json
++++ D3/features/fixtures/expected/small_export.json
+@@ -1,5 +1,5 @@
+ {"columns": ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"],
+- "dtypes": {"Date": "text", "Open": "float64", "High": "float64", "Low": "float64", "Close": "float64", "Adj Close": "float64", "Volume": "int64"},
++ "dtypes": {"Date": "text", "Open": "float64", "High": "float64", "Low": "float64", "Close": "float64", "Adj Close": "float64", "Volume": "int32"},
+  "data": [
+   ["2024-01-02", 10.0, 11.0, 9.5, 10.5, 10.4, 1000],
+   ["2024-01-03", 10.5, 11.5, 10.0, 11.0, 10.9, 0],
+
+--- kit_ref/features/fixtures/expected/splt_run1_export.json
++++ D3/features/fixtures/expected/splt_run1_export.json
+@@ -1,34 +1,34 @@
+ {"columns": ["Date", "Open", "High", "Low", "Close", "Adj Close", "Volume"],
+  "dtypes": {"Date": "text", "Open": "float64", "High": "float64", "Low": "float64", "Close": "float64", "Adj Close": "float64", "Volume": "float64"},
+  "data": [
+-  ["2024-01-02", 19.8, 20.2, 19.6, 20.0, 19.9, 99999.99999999999],
+-  ["2024-01-03", 19.84952380952381, 20.25142857142857, 19.64952380952381, 20.05047619047619, 19.9498, 101000.0],
+-  ["2024-01-04", 19.899047619047618, 20.30095238095238, 19.698095238095238, 20.1, 19.9995, 102000.0],
+-  ["2024-01-05", 19.947619047619046, 20.35142857142857, 19.746666666666666, 20.14952380952381, 20.0492, 103000.0],
+-  ["2024-01-08", 19.99809523809524, 20.401904761904763, 19.79619047619048, 20.2, 20.099, 104000.0],
+-  ["2024-01-09", 20.046666666666667, 20.452380952380953, 19.844761904761906, 20.24952380952381, 20.1487, 105000.0],
+-  ["2024-01-10", 20.09714285714286, 20.502857142857142, 19.89428571428571, 20.3, 20.1985, 106000.0],
+-  ["2024-01-11", 20.146666666666665, 20.554285714285715, 19.943809523809524, 20.35047619047619, 20.2483, 107000.0],
+-  ["2024-01-12", 20.196190476190477, 20.603809523809524, 19.99238095238095, 20.4, 20.298, 108000.0],
+-  ["2024-01-15", 20.244761904761905, 20.654285714285713, 20.040952380952383, 20.44952380952381, 20.3477, 109000.0],
+-  ["2024-01-16", 20.295238095238094, 20.704761904761906, 20.089523809523808, 20.5, 20.3975, 110000.00000000001],
+-  ["2024-01-17", 20.344285714285714, 20.755714285714284, 20.138571428571428, 20.55, 20.4473, 111000.0],
+-  ["2024-01-18", 20.39428571428571, 20.805714285714284, 20.18857142857143, 20.599999999999998, 20.497, 112000.0],
+-  ["2024-01-19", 20.442857142857143, 20.857142857142858, 20.237142857142857, 20.650000000000002, 20.5467, 113000.0],
+-  ["2024-01-22", 20.49285714285714, 20.907142857142855, 20.285714285714285, 20.7, 20.5965, 114000.0],
+-  ["2024-01-23", 20.542857142857144, 20.957142857142856, 20.334285714285716, 20.75, 20.6462, 115000.0],
+-  ["2024-01-24", 20.59142857142857, 21.00857142857143, 20.384285714285713, 20.8, 20.696, 116000.0],
+-  ["2024-01-25", 20.641428571428573, 21.05857142857143, 20.43285714285714, 20.849999999999998, 20.7458, 117000.0],
+-  ["2024-01-26", 20.69142857142857, 21.108571428571427, 20.481428571428573, 20.900000000000002, 20.7955, 118000.00000000001],
+-  ["2024-01-29", 20.740000000000002, 21.16, 20.53142857142857, 20.95, 20.8453, 119000.0],
+-  ["2024-01-30", 20.79, 21.21, 20.580000000000002, 21.0, 20.895, 119999.99999999999],
+-  ["2024-01-31", 20.84, 21.259999999999998, 20.62857142857143, 21.05, 20.9447, 121000.0],
+-  ["2024-02-01", 20.89, 21.31, 20.68, 21.1, 20.9945, 122000.0],
+-  ["2024-02-02", 20.94, 21.36, 20.73, 21.15, 21.0442, 123000.0],
+-  ["2024-02-05", 20.99, 21.41, 20.78, 21.2, 21.094, 124000.0],
+-  ["2024-02-06", 21.04, 21.46, 20.82, 21.25, 21.1438, 125000.0],
+-  ["2024-02-07", 21.09, 21.51, 20.87, 21.3, 21.1935, 126000.0],
+-  ["2024-02-08", 21.14, 21.56, 20.92, 21.35, 21.2432, 127000.0],
+-  ["2024-02-09", 21.19, 21.61, 20.97, 21.4, 21.293, 128000.0],
+-  ["2024-02-12", 21.24, 21.66, 21.02, 21.45, 21.3427, 129000.0]
++  ["2024-01-02", 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 19.9, 99999.99999999999],
++  ["2024-01-03", 19.849523544311523, 20.251428604125977, 19.649524688720703, 20.05047607421875, 19.9498, 101000.0],
++  ["2024-01-04", 19.8990478515625, 20.300952911376953, 19.698095321655273, 20.100000381469727, 19.9995, 102000.0],
++  ["2024-01-05", 19.94761848449707, 20.351428985595703, 19.746665954589844, 20.149524688720703, 20.0492, 103000.0],
++  ["2024-01-08", 19.99809455871582, 20.401905059814453, 19.79619026184082, 20.200000762939453, 20.099, 104000.0],
++  ["2024-01-09", 20.046667098999023, 20.452381134033203, 19.84476089477539, 20.249523162841797, 20.1487, 105000.0],
++  ["2024-01-10", 20.097143173217773, 20.502857208251953, 19.894285202026367, 20.299999237060547, 20.1985, 106000.0],
++  ["2024-01-11", 20.146665573120117, 20.55428695678711, 19.943809509277344, 20.350475311279297, 20.2483, 107000.0],
++  ["2024-01-12", 20.196189880371094, 20.603809356689453, 19.992380142211914, 20.399999618530273, 20.298, 108000.0],
++  ["2024-01-15", 20.244762420654297, 20.654285430908203, 20.040950775146484, 20.44952392578125, 20.3477, 109000.0],
++  ["2024-01-16", 20.295238494873047, 20.704761505126953, 20.089523315429688, 20.5, 20.3975, 110000.00000000001],
++  ["2024-01-17", 20.34428596496582, 20.755712509155273, 20.13857078552246, 20.55000114440918, 20.4473, 111000.0],
++  ["2024-01-18", 20.394285202026367, 20.805713653564453, 20.18857192993164, 20.600000381469727, 20.497, 112000.0],
++  ["2024-01-19", 20.44285774230957, 20.85714340209961, 20.23714256286621, 20.649999618530273, 20.5467, 113000.0],
++  ["2024-01-22", 20.492856979370117, 20.90714454650879, 20.285715103149414, 20.69999885559082, 20.5965, 114000.0],
++  ["2024-01-23", 20.542858123779297, 20.957141876220703, 20.334285736083984, 20.75, 20.6462, 115000.0],
++  ["2024-01-24", 20.591428756713867, 21.00857162475586, 20.384286880493164, 20.80000114440918, 20.696, 116000.0],
++  ["2024-01-25", 20.641429901123047, 21.05857276916504, 20.432857513427734, 20.850000381469727, 20.7458, 117000.0],
++  ["2024-01-26", 20.69142723083496, 21.108570098876953, 20.481428146362305, 20.899999618530273, 20.7955, 118000.00000000001],
++  ["2024-01-29", 20.739999771118164, 21.15999984741211, 20.531429290771484, 20.94999885559082, 20.8453, 119000.0],
++  ["2024-01-30", 20.78999900817871, 21.21000099182129, 20.579999923706055, 21.0, 20.895, 119999.99999999999],
++  ["2024-01-31", 20.84000015258789, 21.260000228881836, 20.628570556640625, 21.05000114440918, 20.9447, 121000.0],
++  ["2024-02-01", 20.889999389648438, 21.309999465942383, 20.68000030517578, 21.100000381469727, 20.9945, 122000.0],
++  ["2024-02-02", 20.940000534057617, 21.360000610351562, 20.729999542236328, 21.149999618530273, 21.0442, 123000.0],
++  ["2024-02-05", 20.989999771118164, 21.40999984741211, 20.780000686645508, 21.200000762939453, 21.094, 124000.0],
++  ["2024-02-06", 21.040000915527344, 21.459999084472656, 20.81999969482422, 21.25, 21.1438, 125000.0],
++  ["2024-02-07", 21.09000015258789, 21.510000228881836, 20.8700008392334, 21.299999237060547, 21.1935, 126000.0],
++  ["2024-02-08", 21.139999389648438, 21.559999465942383, 20.920000076293945, 21.350000381469727, 21.2432, 127000.0],
++  ["2024-02-09", 21.190000534057617, 21.610000610351562, 20.969999313354492, 21.399999618530273, 21.293, 128000.0],
++  ["2024-02-12", 21.239999771118164, 21.65999984741211, 21.020000457763672, 21.450000762939453, 21.3427, 129000.0]
+  ]}
+
+--- kit_ref/features/fixtures/expected/splt_run1_stored.json
++++ D3/features/fixtures/expected/splt_run1_stored.json
+@@ -1,34 +1,34 @@
+ {"columns": ["timestamp", "datetime", "open", "high", "low", "close", "volume", "symbol", "exchange", "asset_type", "asset_subtype", "adjustment_factor", "open_raw", "high_raw", "low_raw", "close_raw", "volume_raw", "adjusted_close", "cumulative_split_factor", "currency", "price_basis"],
+  "dtypes": {"timestamp": "int64", "datetime": "datetime64[ms, UTC]", "open": "float64", "high": "float64", "low": "float64", "close": "float64", "volume": "float64", "symbol": "text", "exchange": "text", "asset_type": "text", "asset_subtype": "text", "adjustment_factor": "float64", "open_raw": "float64", "high_raw": "float64", "low_raw": "float64", "close_raw": "float64", "volume_raw": "float64", "adjusted_close": "float64", "cumulative_split_factor": "float64", "currency": "text", "price_basis": "text"},
+  "data": [
+-  [1704153600, "2024-01-02T00:00:00+00:00", 19.8, 20.2, 19.6, 20.0, 99999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 9523.809523809523, 19.9, 10.5, "USD", "raw"],
+-  [1704240000, "2024-01-03T00:00:00+00:00", 19.84952380952381, 20.25142857142857, 19.64952380952381, 20.05047619047619, 101000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 9619.047619047618, 19.9498, 10.5, "USD", "raw"],
+-  [1704326400, "2024-01-04T00:00:00+00:00", 19.899047619047618, 20.30095238095238, 19.698095238095238, 20.1, 102000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 9714.285714285714, 19.9995, 10.5, "USD", "raw"],
+-  [1704412800, "2024-01-05T00:00:00+00:00", 19.947619047619046, 20.35142857142857, 19.746666666666666, 20.14952380952381, 103000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 9809.52380952381, 20.0492, 10.5, "USD", "raw"],
+-  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809523809524, 20.401904761904763, 19.79619047619048, 20.2, 104000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 9904.761904761905, 20.099, 10.5, "USD", "raw"],
+-  [1704758400, "2024-01-09T00:00:00+00:00", 20.046666666666667, 20.452380952380953, 19.844761904761906, 20.24952380952381, 105000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 10000.0, 20.1487, 10.5, "USD", "raw"],
+-  [1704844800, "2024-01-10T00:00:00+00:00", 20.09714285714286, 20.502857142857142, 19.89428571428571, 20.3, 106000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 10095.238095238095, 20.1985, 10.5, "USD", "raw"],
+-  [1704931200, "2024-01-11T00:00:00+00:00", 20.146666666666665, 20.554285714285715, 19.943809523809524, 20.35047619047619, 107000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 10190.47619047619, 20.2483, 10.5, "USD", "raw"],
+-  [1705017600, "2024-01-12T00:00:00+00:00", 20.196190476190477, 20.603809523809524, 19.99238095238095, 20.4, 108000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 10285.714285714286, 20.298, 10.5, "USD", "raw"],
+-  [1705276800, "2024-01-15T00:00:00+00:00", 20.244761904761905, 20.654285714285713, 20.040952380952383, 20.44952380952381, 109000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 10380.952380952382, 20.3477, 10.5, "USD", "raw"],
+-  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238095238094, 20.704761904761906, 20.089523809523808, 20.5, 110000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 10476.190476190477, 20.3975, 10.5, "USD", "raw"],
+-  [1705449600, "2024-01-17T00:00:00+00:00", 20.344285714285714, 20.755714285714284, 20.138571428571428, 20.55, 111000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 15857.142857142857, 20.4473, 7.0, "USD", "raw"],
+-  [1705536000, "2024-01-18T00:00:00+00:00", 20.39428571428571, 20.805714285714284, 20.18857142857143, 20.599999999999998, 112000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 16000.0, 20.497, 7.0, "USD", "raw"],
+-  [1705622400, "2024-01-19T00:00:00+00:00", 20.442857142857143, 20.857142857142858, 20.237142857142857, 20.650000000000002, 113000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 16142.857142857143, 20.5467, 7.0, "USD", "raw"],
+-  [1705881600, "2024-01-22T00:00:00+00:00", 20.49285714285714, 20.907142857142855, 20.285714285714285, 20.7, 114000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 16285.714285714286, 20.5965, 7.0, "USD", "raw"],
+-  [1705968000, "2024-01-23T00:00:00+00:00", 20.542857142857144, 20.957142857142856, 20.334285714285716, 20.75, 115000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 16428.571428571428, 20.6462, 7.0, "USD", "raw"],
+-  [1706054400, "2024-01-24T00:00:00+00:00", 20.59142857142857, 21.00857142857143, 20.384285714285713, 20.8, 116000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 16571.428571428572, 20.696, 7.0, "USD", "raw"],
+-  [1706140800, "2024-01-25T00:00:00+00:00", 20.641428571428573, 21.05857142857143, 20.43285714285714, 20.849999999999998, 117000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 16714.285714285714, 20.7458, 7.0, "USD", "raw"],
+-  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142857142857, 21.108571428571427, 20.481428571428573, 20.900000000000002, 118000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 16857.14285714286, 20.7955, 7.0, "USD", "raw"],
+-  [1706486400, "2024-01-29T00:00:00+00:00", 20.740000000000002, 21.16, 20.53142857142857, 20.95, 119000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 17000.0, 20.8453, 7.0, "USD", "raw"],
+-  [1706572800, "2024-01-30T00:00:00+00:00", 20.79, 21.21, 20.580000000000002, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
+-  [1706659200, "2024-01-31T00:00:00+00:00", 20.84, 21.259999999999998, 20.62857142857143, 21.05, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
+-  [1706745600, "2024-02-01T00:00:00+00:00", 20.89, 21.31, 20.68, 21.1, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
+-  [1706832000, "2024-02-02T00:00:00+00:00", 20.94, 21.36, 20.73, 21.15, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
+-  [1707091200, "2024-02-05T00:00:00+00:00", 20.99, 21.41, 20.78, 21.2, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
+-  [1707177600, "2024-02-06T00:00:00+00:00", 21.04, 21.46, 20.82, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
+-  [1707264000, "2024-02-07T00:00:00+00:00", 21.09, 21.51, 20.87, 21.3, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
+-  [1707350400, "2024-02-08T00:00:00+00:00", 21.14, 21.56, 20.92, 21.35, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976580796253, 21.14, 21.56, 20.92, 21.35, 127000.0, 21.2432, 1.0, "USD", "raw"],
+-  [1707436800, "2024-02-09T00:00:00+00:00", 21.19, 21.61, 20.97, 21.4, 128000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 128000.0, 21.293, 1.0, "USD", "raw"],
+-  [1707696000, "2024-02-12T00:00:00+00:00", 21.24, 21.66, 21.02, 21.45, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"]
++  [1704153600, "2024-01-02T00:00:00+00:00", 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 99999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 9523.809523809523, 19.9, 10.5, "USD", "raw"],
++  [1704240000, "2024-01-03T00:00:00+00:00", 19.849523544311523, 20.251428604125977, 19.649524688720703, 20.05047607421875, 101000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 9619.047619047618, 19.9498, 10.5, "USD", "raw"],
++  [1704326400, "2024-01-04T00:00:00+00:00", 19.8990478515625, 20.300952911376953, 19.698095321655273, 20.100000381469727, 102000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 9714.285714285714, 19.9995, 10.5, "USD", "raw"],
++  [1704412800, "2024-01-05T00:00:00+00:00", 19.94761848449707, 20.351428985595703, 19.746665954589844, 20.149524688720703, 103000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 9809.52380952381, 20.0492, 10.5, "USD", "raw"],
++  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809455871582, 20.401905059814453, 19.79619026184082, 20.200000762939453, 104000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 9904.761904761905, 20.099, 10.5, "USD", "raw"],
++  [1704758400, "2024-01-09T00:00:00+00:00", 20.046667098999023, 20.452381134033203, 19.84476089477539, 20.249523162841797, 105000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 10000.0, 20.1487, 10.5, "USD", "raw"],
++  [1704844800, "2024-01-10T00:00:00+00:00", 20.097143173217773, 20.502857208251953, 19.894285202026367, 20.299999237060547, 106000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 10095.238095238095, 20.1985, 10.5, "USD", "raw"],
++  [1704931200, "2024-01-11T00:00:00+00:00", 20.146665573120117, 20.55428695678711, 19.943809509277344, 20.350475311279297, 107000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 10190.47619047619, 20.2483, 10.5, "USD", "raw"],
++  [1705017600, "2024-01-12T00:00:00+00:00", 20.196189880371094, 20.603809356689453, 19.992380142211914, 20.399999618530273, 108000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 10285.714285714286, 20.298, 10.5, "USD", "raw"],
++  [1705276800, "2024-01-15T00:00:00+00:00", 20.244762420654297, 20.654285430908203, 20.040950775146484, 20.44952392578125, 109000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 10380.952380952382, 20.3477, 10.5, "USD", "raw"],
++  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238494873047, 20.704761505126953, 20.089523315429688, 20.5, 110000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 10476.190476190477, 20.3975, 10.5, "USD", "raw"],
++  [1705449600, "2024-01-17T00:00:00+00:00", 20.34428596496582, 20.755712509155273, 20.13857078552246, 20.55000114440918, 111000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 15857.142857142857, 20.4473, 7.0, "USD", "raw"],
++  [1705536000, "2024-01-18T00:00:00+00:00", 20.394285202026367, 20.805713653564453, 20.18857192993164, 20.600000381469727, 112000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 16000.0, 20.497, 7.0, "USD", "raw"],
++  [1705622400, "2024-01-19T00:00:00+00:00", 20.44285774230957, 20.85714340209961, 20.23714256286621, 20.649999618530273, 113000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 16142.857142857143, 20.5467, 7.0, "USD", "raw"],
++  [1705881600, "2024-01-22T00:00:00+00:00", 20.492856979370117, 20.90714454650879, 20.285715103149414, 20.69999885559082, 114000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 16285.714285714286, 20.5965, 7.0, "USD", "raw"],
++  [1705968000, "2024-01-23T00:00:00+00:00", 20.542858123779297, 20.957141876220703, 20.334285736083984, 20.75, 115000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 16428.571428571428, 20.6462, 7.0, "USD", "raw"],
++  [1706054400, "2024-01-24T00:00:00+00:00", 20.591428756713867, 21.00857162475586, 20.384286880493164, 20.80000114440918, 116000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 16571.428571428572, 20.696, 7.0, "USD", "raw"],
++  [1706140800, "2024-01-25T00:00:00+00:00", 20.641429901123047, 21.05857276916504, 20.432857513427734, 20.850000381469727, 117000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 16714.285714285714, 20.7458, 7.0, "USD", "raw"],
++  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142723083496, 21.108570098876953, 20.481428146362305, 20.899999618530273, 118000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 16857.14285714286, 20.7955, 7.0, "USD", "raw"],
++  [1706486400, "2024-01-29T00:00:00+00:00", 20.739999771118164, 21.15999984741211, 20.531429290771484, 20.94999885559082, 119000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 17000.0, 20.8453, 7.0, "USD", "raw"],
++  [1706572800, "2024-01-30T00:00:00+00:00", 20.78999900817871, 21.21000099182129, 20.579999923706055, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
++  [1706659200, "2024-01-31T00:00:00+00:00", 20.84000015258789, 21.260000228881836, 20.628570556640625, 21.05000114440918, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
++  [1706745600, "2024-02-01T00:00:00+00:00", 20.889999389648438, 21.309999465942383, 20.68000030517578, 21.100000381469727, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
++  [1706832000, "2024-02-02T00:00:00+00:00", 20.940000534057617, 21.360000610351562, 20.729999542236328, 21.149999618530273, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
++  [1707091200, "2024-02-05T00:00:00+00:00", 20.989999771118164, 21.40999984741211, 20.780000686645508, 21.200000762939453, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
++  [1707177600, "2024-02-06T00:00:00+00:00", 21.040000915527344, 21.459999084472656, 20.81999969482422, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
++  [1707264000, "2024-02-07T00:00:00+00:00", 21.09000015258789, 21.510000228881836, 20.8700008392334, 21.299999237060547, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
++  [1707350400, "2024-02-08T00:00:00+00:00", 21.139999389648438, 21.559999465942383, 20.920000076293945, 21.350000381469727, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976580796253, 21.14, 21.56, 20.92, 21.35, 127000.0, 21.2432, 1.0, "USD", "raw"],
++  [1707436800, "2024-02-09T00:00:00+00:00", 21.190000534057617, 21.610000610351562, 20.969999313354492, 21.399999618530273, 128000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 128000.0, 21.293, 1.0, "USD", "raw"],
++  [1707696000, "2024-02-12T00:00:00+00:00", 21.239999771118164, 21.65999984741211, 21.020000457763672, 21.450000762939453, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"]
+  ]}
+
+--- kit_ref/features/fixtures/expected/splt_run2_stored.json
++++ D3/features/fixtures/expected/splt_run2_stored.json
+@@ -1,35 +1,35 @@
+ {"columns": ["timestamp", "datetime", "open", "high", "low", "close", "volume", "symbol", "exchange", "asset_type", "asset_subtype", "adjustment_factor", "open_raw", "high_raw", "low_raw", "close_raw", "volume_raw", "adjusted_close", "cumulative_split_factor", "currency", "price_basis"],
+  "dtypes": {"timestamp": "int64", "datetime": "datetime64[ms, UTC]", "open": "float64", "high": "float64", "low": "float64", "close": "float64", "volume": "float64", "symbol": "text", "exchange": "text", "asset_type": "text", "asset_subtype": "text", "adjustment_factor": "float64", "open_raw": "float64", "high_raw": "float64", "low_raw": "float64", "close_raw": "float64", "volume_raw": "float64", "adjusted_close": "float64", "cumulative_split_factor": "float64", "currency": "text", "price_basis": "text"},
+  "data": [
+-  [1704153600, "2024-01-02T00:00:00+00:00", 19.8, 20.2, 19.6, 20.0, 99999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 9523.809523809523, 19.9, 10.5, "USD", "raw"],
+-  [1704240000, "2024-01-03T00:00:00+00:00", 19.84952380952381, 20.25142857142857, 19.64952380952381, 20.05047619047619, 101000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 9619.047619047618, 19.9498, 10.5, "USD", "raw"],
+-  [1704326400, "2024-01-04T00:00:00+00:00", 19.899047619047618, 20.30095238095238, 19.698095238095238, 20.1, 102000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 9714.285714285714, 19.9995, 10.5, "USD", "raw"],
+-  [1704412800, "2024-01-05T00:00:00+00:00", 19.947619047619046, 20.35142857142857, 19.746666666666666, 20.14952380952381, 103000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 9809.52380952381, 20.0492, 10.5, "USD", "raw"],
+-  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809523809524, 20.401904761904763, 19.79619047619048, 20.2, 104000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 9904.761904761905, 20.099, 10.5, "USD", "raw"],
+-  [1704758400, "2024-01-09T00:00:00+00:00", 20.046666666666667, 20.452380952380953, 19.844761904761906, 20.24952380952381, 105000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 10000.0, 20.1487, 10.5, "USD", "raw"],
+-  [1704844800, "2024-01-10T00:00:00+00:00", 20.09714285714286, 20.502857142857142, 19.89428571428571, 20.3, 106000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 10095.238095238095, 20.1985, 10.5, "USD", "raw"],
+-  [1704931200, "2024-01-11T00:00:00+00:00", 20.146666666666665, 20.554285714285715, 19.943809523809524, 20.35047619047619, 107000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 10190.47619047619, 20.2483, 10.5, "USD", "raw"],
+-  [1705017600, "2024-01-12T00:00:00+00:00", 20.196190476190477, 20.603809523809524, 19.99238095238095, 20.4, 108000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 10285.714285714286, 20.298, 10.5, "USD", "raw"],
+-  [1705276800, "2024-01-15T00:00:00+00:00", 20.244761904761905, 20.654285714285713, 20.040952380952383, 20.44952380952381, 109000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 10380.952380952382, 20.3477, 10.5, "USD", "raw"],
+-  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238095238094, 20.704761904761906, 20.089523809523808, 20.5, 110000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 10476.190476190477, 20.3975, 10.5, "USD", "raw"],
+-  [1705449600, "2024-01-17T00:00:00+00:00", 20.344285714285714, 20.755714285714284, 20.138571428571428, 20.55, 111000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 15857.142857142857, 20.4473, 7.0, "USD", "raw"],
+-  [1705536000, "2024-01-18T00:00:00+00:00", 20.39428571428571, 20.805714285714284, 20.18857142857143, 20.599999999999998, 112000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 16000.0, 20.497, 7.0, "USD", "raw"],
+-  [1705622400, "2024-01-19T00:00:00+00:00", 20.442857142857143, 20.857142857142858, 20.237142857142857, 20.650000000000002, 113000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 16142.857142857143, 20.5467, 7.0, "USD", "raw"],
+-  [1705881600, "2024-01-22T00:00:00+00:00", 20.49285714285714, 20.907142857142855, 20.285714285714285, 20.7, 114000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 16285.714285714286, 20.5965, 7.0, "USD", "raw"],
+-  [1705968000, "2024-01-23T00:00:00+00:00", 20.542857142857144, 20.957142857142856, 20.334285714285716, 20.75, 115000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 16428.571428571428, 20.6462, 7.0, "USD", "raw"],
+-  [1706054400, "2024-01-24T00:00:00+00:00", 20.59142857142857, 21.00857142857143, 20.384285714285713, 20.8, 116000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 16571.428571428572, 20.696, 7.0, "USD", "raw"],
+-  [1706140800, "2024-01-25T00:00:00+00:00", 20.641428571428573, 21.05857142857143, 20.43285714285714, 20.849999999999998, 117000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 16714.285714285714, 20.7458, 7.0, "USD", "raw"],
+-  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142857142857, 21.108571428571427, 20.481428571428573, 20.900000000000002, 118000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 16857.14285714286, 20.7955, 7.0, "USD", "raw"],
+-  [1706486400, "2024-01-29T00:00:00+00:00", 20.740000000000002, 21.16, 20.53142857142857, 20.95, 119000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 17000.0, 20.8453, 7.0, "USD", "raw"],
+-  [1706572800, "2024-01-30T00:00:00+00:00", 20.79, 21.21, 20.580000000000002, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
+-  [1706659200, "2024-01-31T00:00:00+00:00", 20.84, 21.259999999999998, 20.62857142857143, 21.05, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
+-  [1706745600, "2024-02-01T00:00:00+00:00", 20.89, 21.31, 20.68, 21.1, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
+-  [1706832000, "2024-02-02T00:00:00+00:00", 20.94, 21.36, 20.73, 21.15, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
+-  [1707091200, "2024-02-05T00:00:00+00:00", 20.99, 21.41, 20.78, 21.2, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
+-  [1707177600, "2024-02-06T00:00:00+00:00", 21.04, 21.46, 20.82, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
+-  [1707264000, "2024-02-07T00:00:00+00:00", 21.09, 21.51, 20.87, 21.3, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
+-  [1707350400, "2024-02-08T00:00:00+00:00", 21.14, 21.56, 20.92, 21.31, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.994838104176443, 21.14, 21.56, 20.92, 21.31, 127000.0, 21.2, 1.0, "USD", "raw"],
+-  [1707436800, "2024-02-09T00:00:00+00:00", 21.19, 21.61, 20.97, 21.4, 777777.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 777777.0, 21.293, 1.0, "USD", "raw"],
+-  [1707696000, "2024-02-12T00:00:00+00:00", 21.24, 21.66, 21.02, 21.45, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"],
+-  [1707782400, "2024-02-13T00:00:00+00:00", 21.29, 21.71, 21.07, 21.5, 130000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 21.29, 21.71, 21.07, 21.5, 130000.0, 21.3925, 1.0, "USD", "raw"]
++  [1704153600, "2024-01-02T00:00:00+00:00", 19.799999237060547, 20.200000762939453, 19.600000381469727, 20.0, 99999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 207.9, 212.1, 205.8, 210.0, 9523.809523809523, 19.9, 10.5, "USD", "raw"],
++  [1704240000, "2024-01-03T00:00:00+00:00", 19.849523544311523, 20.251428604125977, 19.649524688720703, 20.05047607421875, 101000.0, "SPLT.US", "eodhd", "stock", "", 0.09475989170189522, 208.42, 212.64, 206.32, 210.53, 9619.047619047618, 19.9498, 10.5, "USD", "raw"],
++  [1704326400, "2024-01-04T00:00:00+00:00", 19.8990478515625, 20.300952911376953, 19.698095321655273, 20.100000381469727, 102000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 208.94, 213.16, 206.83, 211.05, 9714.285714285714, 19.9995, 10.5, "USD", "raw"],
++  [1704412800, "2024-01-05T00:00:00+00:00", 19.94761848449707, 20.351428985595703, 19.746665954589844, 20.149524688720703, 103000.0, "SPLT.US", "eodhd", "stock", "", 0.0947639079264546, 209.45, 213.69, 207.34, 211.57, 9809.52380952381, 20.0492, 10.5, "USD", "raw"],
++  [1704672000, "2024-01-08T00:00:00+00:00", 19.99809455871582, 20.401905059814453, 19.79619026184082, 20.200000762939453, 104000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 209.98, 214.22, 207.86, 212.1, 9904.761904761905, 20.099, 10.5, "USD", "raw"],
++  [1704758400, "2024-01-09T00:00:00+00:00", 20.046667098999023, 20.452381134033203, 19.84476089477539, 20.249523162841797, 105000.0, "SPLT.US", "eodhd", "stock", "", 0.09476389803405136, 210.49, 214.75, 208.37, 212.62, 10000.0, 20.1487, 10.5, "USD", "raw"],
++  [1704844800, "2024-01-10T00:00:00+00:00", 20.097143173217773, 20.502857208251953, 19.894285202026367, 20.299999237060547, 106000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 211.02, 215.28, 208.89, 213.15, 10095.238095238095, 20.1985, 10.5, "USD", "raw"],
++  [1704931200, "2024-01-11T00:00:00+00:00", 20.146665573120117, 20.55428695678711, 19.943809509277344, 20.350475311279297, 107000.0, "SPLT.US", "eodhd", "stock", "", 0.09475992137776114, 211.54, 215.82, 209.41, 213.68, 10190.47619047619, 20.2483, 10.5, "USD", "raw"],
++  [1705017600, "2024-01-12T00:00:00+00:00", 20.196189880371094, 20.603809356689453, 19.992380142211914, 20.399999618530273, 108000.0, "SPLT.US", "eodhd", "stock", "", 0.09476190476190476, 212.06, 216.34, 209.92, 214.2, 10285.714285714286, 20.298, 10.5, "USD", "raw"],
++  [1705276800, "2024-01-15T00:00:00+00:00", 20.244762420654297, 20.654285430908203, 20.040950775146484, 20.44952392578125, 109000.0, "SPLT.US", "eodhd", "stock", "", 0.0947638785394933, 212.57, 216.87, 210.43, 214.72, 10380.952380952382, 20.3477, 10.5, "USD", "raw"],
++  [1705363200, "2024-01-16T00:00:00+00:00", 20.295238494873047, 20.704761505126953, 20.089523315429688, 20.5, 110000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.09476190476190477, 213.1, 217.4, 210.94, 215.25, 10476.190476190477, 20.3975, 10.5, "USD", "raw"],
++  [1705449600, "2024-01-17T00:00:00+00:00", 20.34428596496582, 20.755712509155273, 20.13857078552246, 20.55000114440918, 111000.0, "SPLT.US", "eodhd", "stock", "", 0.14214320472714634, 142.41, 145.29, 140.97, 143.85, 15857.142857142857, 20.4473, 7.0, "USD", "raw"],
++  [1705536000, "2024-01-18T00:00:00+00:00", 20.394285202026367, 20.805713653564453, 20.18857192993164, 20.600000381469727, 112000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 142.76, 145.64, 141.32, 144.2, 16000.0, 20.497, 7.0, "USD", "raw"],
++  [1705622400, "2024-01-19T00:00:00+00:00", 20.44285774230957, 20.85714340209961, 20.23714256286621, 20.649999618530273, 113000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251124178484, 143.1, 146.0, 141.66, 144.55, 16142.857142857143, 20.5467, 7.0, "USD", "raw"],
++  [1705881600, "2024-01-22T00:00:00+00:00", 20.492856979370117, 20.90714454650879, 20.285715103149414, 20.69999885559082, 114000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 143.45, 146.35, 142.0, 144.9, 16285.714285714286, 20.5965, 7.0, "USD", "raw"],
++  [1705968000, "2024-01-23T00:00:00+00:00", 20.542858123779297, 20.957141876220703, 20.334285736083984, 20.75, 115000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251290877797, 143.8, 146.7, 142.34, 145.25, 16428.571428571428, 20.6462, 7.0, "USD", "raw"],
++  [1706054400, "2024-01-24T00:00:00+00:00", 20.591428756713867, 21.00857162475586, 20.384286880493164, 20.80000114440918, 116000.0, "SPLT.US", "eodhd", "stock", "", 0.14214285714285715, 144.14, 147.06, 142.69, 145.6, 16571.428571428572, 20.696, 7.0, "USD", "raw"],
++  [1706140800, "2024-01-25T00:00:00+00:00", 20.641429901123047, 21.05857276916504, 20.432857513427734, 20.850000381469727, 117000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319972593353, 144.49, 147.41, 143.03, 145.95, 16714.285714285714, 20.7458, 7.0, "USD", "raw"],
++  [1706227200, "2024-01-26T00:00:00+00:00", 20.69142723083496, 21.108570098876953, 20.481428146362305, 20.899999618530273, 118000.00000000001, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 144.84, 147.76, 143.37, 146.3, 16857.14285714286, 20.7955, 7.0, "USD", "raw"],
++  [1706486400, "2024-01-29T00:00:00+00:00", 20.739999771118164, 21.15999984741211, 20.531429290771484, 20.94999885559082, 119000.0, "SPLT.US", "eodhd", "stock", "", 0.14214319809069212, 145.18, 148.12, 143.72, 146.65, 17000.0, 20.8453, 7.0, "USD", "raw"],
++  [1706572800, "2024-01-30T00:00:00+00:00", 20.78999900817871, 21.21000099182129, 20.579999923706055, 21.0, 119999.99999999999, "SPLT.US", "eodhd", "stock", "", 0.14214285714285713, 145.53, 148.47, 144.06, 147.0, 17142.85714285714, 20.895, 7.0, "USD", "raw"],
++  [1706659200, "2024-01-31T00:00:00+00:00", 20.84000015258789, 21.260000228881836, 20.628570556640625, 21.05000114440918, 121000.0, "SPLT.US", "eodhd", "stock", "", 0.14214251781472687, 145.88, 148.82, 144.4, 147.35, 17285.714285714286, 20.9447, 7.0, "USD", "raw"],
++  [1706745600, "2024-02-01T00:00:00+00:00", 20.889999389648438, 21.309999465942383, 20.68000030517578, 21.100000381469727, 122000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 20.89, 21.31, 20.68, 21.1, 122000.0, 20.9945, 1.0, "USD", "raw"],
++  [1706832000, "2024-02-02T00:00:00+00:00", 20.940000534057617, 21.360000610351562, 20.729999542236328, 21.149999618530273, 123000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976359338062, 20.94, 21.36, 20.73, 21.15, 123000.0, 21.0442, 1.0, "USD", "raw"],
++  [1707091200, "2024-02-05T00:00:00+00:00", 20.989999771118164, 21.40999984741211, 20.780000686645508, 21.200000762939453, 124000.0, "SPLT.US", "eodhd", "stock", "", 0.9950000000000001, 20.99, 21.41, 20.78, 21.2, 124000.0, 21.094, 1.0, "USD", "raw"],
++  [1707177600, "2024-02-06T00:00:00+00:00", 21.040000915527344, 21.459999084472656, 20.81999969482422, 21.25, 125000.0, "SPLT.US", "eodhd", "stock", "", 0.9950023529411764, 21.04, 21.46, 20.82, 21.25, 125000.0, 21.1438, 1.0, "USD", "raw"],
++  [1707264000, "2024-02-07T00:00:00+00:00", 21.09000015258789, 21.510000228881836, 20.8700008392334, 21.299999237060547, 126000.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.09, 21.51, 20.87, 21.3, 126000.0, 21.1935, 1.0, "USD", "raw"],
++  [1707350400, "2024-02-08T00:00:00+00:00", 21.139999389648438, 21.559999465942383, 20.920000076293945, 21.309999465942383, 127000.0, "SPLT.US", "eodhd", "stock", "", 0.994838104176443, 21.14, 21.56, 20.92, 21.31, 127000.0, 21.2, 1.0, "USD", "raw"],
++  [1707436800, "2024-02-09T00:00:00+00:00", 21.190000534057617, 21.610000610351562, 20.969999313354492, 21.399999618530273, 777777.0, "SPLT.US", "eodhd", "stock", "", 0.995, 21.19, 21.61, 20.97, 21.4, 777777.0, 21.293, 1.0, "USD", "raw"],
++  [1707696000, "2024-02-12T00:00:00+00:00", 21.239999771118164, 21.65999984741211, 21.020000457763672, 21.450000762939453, 129000.0, "SPLT.US", "eodhd", "stock", "", 0.9949976689976691, 21.24, 21.66, 21.02, 21.45, 129000.0, 21.3427, 1.0, "USD", "raw"],
++  [1707782400, "2024-02-13T00:00:00+00:00", 21.290000915527344, 21.709999084472656, 21.06999969482422, 21.5, 130000.0, "SPLT.US", "eodhd", "stock", "", 0.9949999999999999, 21.29, 21.71, 21.07, 21.5, 130000.0, 21.3925, 1.0, "USD", "raw"]
+  ]}
+
+--- kit_ref/features/seam.feature
++++ D3/features/seam.feature
+@@ -28,12 +28,12 @@
+     And the file "out.csv" starts with:
+       """
+       Date,Open,High,Low,Close,Adj Close,Volume
+-      2024-01-02,19.8,20.2,19.6,20.0,19.9,99999.99999999999
+-      2024-01-03,19.84952380952381,20.25142857142857,19.64952380952381,20.05047619047619,19.9498,101000.0
++      2024-01-02,19.799999237060547,20.200000762939453,19.600000381469727,20.0,19.9,99999.99999999999
++      2024-01-03,19.849523544311523,20.251428604125977,19.649524688720703,20.05047607421875,19.9498,101000.0
+       """
+ 
+   @JDL-072 @JDL-075 @JDL-138
+-  Scenario: Exporting a series whose volumes are all integral writes an int64 Volume
++  Scenario: Exporting a series whose volumes are all integral writes an int32 Volume
+     Given the universe fixture "divy.toml"
+     And the "eodhd" provider replays "divy/run1"
+     And sync ran at "2024-03-29T01:00:00Z"
+@@ -46,12 +46,12 @@
+       | Low       | float64 |
+       | Close     | float64 |
+       | Adj Close | float64 |
+-      | Volume    | int64   |
++      | Volume    | int32   |
+     When I run "jef-data export --symbol DIVY.US --output divy.csv --store {store}"
+     Then the file "divy.csv" starts with:
+       """
+       Date,Open,High,Low,Close,Adj Close,Volume
+-      2024-03-01,94.8,95.4,94.5,95.0,94.37,50000
++      2024-03-01,94.80000305175781,95.4000015258789,94.5,95.0,94.37,50000
+       """
+ 
+   @JDL-073 @JDL-074 @JDL-138 @JDL-078 @JDL-079
+
+--- kit_ref/features/steps/conftest.py
++++ D3/features/steps/conftest.py
+@@ -405,7 +405,7 @@
+     for column, dtype in doc["dtypes"].items():
+         if dtype.startswith("datetime64"):
+             frame[column] = pd.to_datetime(frame[column], utc=True).astype(dtype)
+-        elif dtype in ("float64", "int64"):
++        elif dtype in ("float64", "int64", "int32"):
+             frame[column] = frame[column].astype(dtype)
+     return frame, doc["dtypes"]
+ 
+@@ -417,7 +417,7 @@
+     got = got.reset_index(drop=True)
+     for column in want.columns:
+         dtype = dtypes[column]
+-        if dtype in ("float64", "int64") or dtype.startswith("datetime64"):
++        if dtype in ("float64", "int64", "int32") or dtype.startswith("datetime64"):
+             assert str(got[column].dtype) == dtype, (column, got[column].dtype)
+             pdt.assert_series_equal(got[column], want[column], check_exact=True,
+                                     check_names=True, obj=column)
+
+--- kit_ref/features/store.feature
++++ D3/features/store.feature
+@@ -13,11 +13,11 @@
+       """
+       corporate_actions/dividends/SPLT.US.json
+       corporate_actions/splits/SPLT.US.json
+-      market_data/exchange=eodhd/symbol=SPLT.US/.lock
+-      market_data/exchange=eodhd/symbol=SPLT.US/year=2024/data.parquet
+-      market_data/exchange=yahoo/symbol=SMALL/.lock
+-      market_data/exchange=yahoo/symbol=SMALL/year=2024/data.parquet
+-      market_data/exchange=yahoo/symbol=SMALL/year=2025/data.parquet
++      marketdata/exchange=eodhd/symbol=SPLT.US/.lock
++      marketdata/exchange=eodhd/symbol=SPLT.US/year=2024/data.parquet
++      marketdata/exchange=yahoo/symbol=SMALL/.lock
++      marketdata/exchange=yahoo/symbol=SMALL/year=2024/data.parquet
++      marketdata/exchange=yahoo/symbol=SMALL/year=2025/data.parquet
+       """
+ 
+   @JDL-059 @JDL-063
+@@ -72,7 +72,7 @@
+     And the stored cells of eodhd/SPLT.US are:
+       | date       | column    | value  |
+       | 2024-01-10 | close_raw | 213.15 |
+-      | 2024-02-08 | close     | 21.31  |
++      | 2024-02-08 | close     | 21.309999465942383 |
+       | 2024-02-09 | volume    | 777777.0 |
+       | 2024-02-13 | close     | 21.5   |
+ 
+@@ -99,7 +99,7 @@
+       | 2024-01-25 | close_raw | 145.95 | 155.0  |
+     And the stored cells of eodhd/SPLT.US are:
+       | date       | column | value              |
+-      | 2024-01-25 | close  | 22.142857142857142 |
++      | 2024-01-25 | close  | 22.14285659790039  |
+ 
+   @JDL-103
+   Scenario: The run log echoes the first ten revisions and counts the rest
+@@ -118,7 +118,7 @@
+     Then the exit code is 0
+     And stdout is:
+       """
+-      {fixtures}/csv/yahoo_small.csv: 5 row(s) -> {store}/market_data/exchange=yahoo/symbol=SMALL/ (price_basis=split_adjusted)
++      {fixtures}/csv/yahoo_small.csv: 5 row(s) -> {store}/marketdata/exchange=yahoo/symbol=SMALL/ (price_basis=split_adjusted)
+       """
+     And the stored series yahoo/SMALL equals the expected frame "small_stored"
+     And the stored cells of yahoo/SMALL are:
+@@ -134,8 +134,8 @@
+     And every stored row of yahoo/SMALL has currency "EUR"
+     And the store holds exactly the files:
+       """
+-      market_data/exchange=yahoo/symbol=SMALL/.lock
+-      market_data/exchange=yahoo/symbol=SMALL/year=2024/data.parquet
++      marketdata/exchange=yahoo/symbol=SMALL/.lock
++      marketdata/exchange=yahoo/symbol=SMALL/year=2024/data.parquet
+       """
+ 
+   @JDL-061 @JDL-070 @JDL-137
+
+--- kit_ref/requirements.json
++++ D3/requirements.json
+@@ -290,7 +290,7 @@
+  {
+   "id": "JDL-047",
+   "kind": "arithmetic",
+-  "statement": "When a series is adjusted, each of open, high, low and close shall be set to its `*_raw` value divided by the row's factor (float64 division), and `cumulative_split_factor` shall be set to the factor.",
++  "statement": "When a series is adjusted, each of open, high, low and close shall be set to its `*_raw` value divided by the row's factor (float32 division), and `cumulative_split_factor` shall be set to the factor.",
+   "basis": "both"
+  },
+  {
+@@ -354,7 +354,7 @@
+  {
+   "id": "JDL-057",
+   "kind": "contract",
+-  "statement": "The market-data store shall keep each series under `{store}/market_data/exchange={exchange tag}/symbol={symbol}/` with one Parquet file per calendar year of the UTC session date at `year={YYYY}/data.parquet` (snappy compression), and a lock file `.lock` in the symbol directory created on the first write.",
++  "statement": "The market-data store shall keep each series under `{store}/marketdata/exchange={exchange tag}/symbol={symbol}/` with one Parquet file per calendar year of the UTC session date at `year={YYYY}/data.parquet` (snappy compression), and a lock file `.lock` in the symbol directory created on the first write.",
+   "basis": "both"
+  },
+  {
+@@ -449,7 +449,7 @@
+  {
+   "id": "JDL-072",
+   "kind": "arithmetic",
+-  "statement": "The exported Volume column shall be int64 when the series is non-empty and every volume is finite and integral, and float64 (values unchanged) otherwise - a single non-integral or NaN volume makes the whole column float64.",
++  "statement": "The exported Volume column shall be int32 when the series is non-empty and every volume is finite and integral, and float64 (values unchanged) otherwise - a single non-integral or NaN volume makes the whole column float64.",
+   "basis": "both",
+   "rationale": "mirrors pd.read_csv's inference so the seam is bit-exact against a CSV load of the same data"
+  },
+@@ -469,7 +469,7 @@
+  {
+   "id": "JDL-075",
+   "kind": "cli",
+-  "statement": "When `export` writes its CSV, it shall write the frame with a header line and no index column, floats in shortest round-trip form (e.g. `19.84952380952381`, `100000.0`), int64 volumes as integers.",
++  "statement": "When `export` writes its CSV, it shall write the frame with a header line and no index column, floats in shortest round-trip form (e.g. `19.849523544311523`, `100000.0`), int32 volumes as integers.",
+   "basis": "logic"
+  },
+  {
+@@ -874,7 +874,7 @@
+  {
+   "id": "JDL-137",
+   "kind": "cli",
+-  "statement": "`import-csv --csv F --symbol S [--exchange yahoo] --asset-type {crypto,etf,stock} [--currency USD] [--store data]` shall import per JDL-070 into `exchange/symbol` and print `{csv}: {rows} row(s) -> {store}/market_data/exchange={exchange}/symbol={symbol}/ (price_basis=split_adjusted)` and exit 0; `--asset-type` is required.",
++  "statement": "`import-csv --csv F --symbol S [--exchange yahoo] --asset-type {crypto,etf,stock} [--currency USD] [--store data]` shall import per JDL-070 into `exchange/symbol` and print `{csv}: {rows} row(s) -> {store}/marketdata/exchange={exchange}/symbol={symbol}/ (price_basis=split_adjusted)` and exit 0; `--asset-type` is required.",
+   "basis": "both",
+   "rationale": "a Yahoo CSV carries no instrument type, so there is no evidence of any kind to infer from"
+  },
+@@ -899,7 +899,7 @@
+  {
+   "id": "JDL-141",
+   "kind": "cli",
+-  "statement": "`load --symbol S [--store data] [--from D] [--to D] [--asset-type T] [--currency USD] [--base-url URL]` shall construct the EODHD collector first (a missing key fails with a traceback, exit 1), normalise S, resolve the declaration per JDL-142, fetch from `--from` or else the day after the latest stored session (whole history when empty) up to `--to`, store the bars in APPEND mode into exchange tag `eodhd` (stored rows win over incoming rows on equal timestamps, only the incoming bars' years are rewritten; raw basis: with the stored splits and EODHD volume raw-ization), re-adjust a raw series that received bars or already had rows, and print `{S as given}: {n incoming bars} bar(s) ingested -> {store}/market_data/`.",
++  "statement": "`load --symbol S [--store data] [--from D] [--to D] [--asset-type T] [--currency USD] [--base-url URL]` shall construct the EODHD collector first (a missing key fails with a traceback, exit 1), normalise S, resolve the declaration per JDL-142, fetch from `--from` or else the day after the latest stored session (whole history when empty) up to `--to`, store the bars in APPEND mode into exchange tag `eodhd` (stored rows win over incoming rows on equal timestamps, only the incoming bars' years are rewritten; raw basis: with the stored splits and EODHD volume raw-ization), re-adjust a raw series that received bars or already had rows, and print `{S as given}: {n incoming bars} bar(s) ingested -> {store}/marketdata/`.",
+   "basis": "both"
+  },
+  {
+
+--- kit_ref/uml/basis_and_adjustment.puml
++++ D3/uml/basis_and_adjustment.puml
+@@ -35,7 +35,7 @@
+ :store the rows through reconcile, append or overwrite;
+ :project stored rows into Date, Open, High, Low, Close, Adj Close, Volume;
+ if (every volume finite and integral?) then (yes)
+-  :emit Volume as int64;
++  :emit Volume as int32;
+ else (no)
+   :emit Volume as float64;
+ endif
+
+--- kit_ref/uml/component.puml
++++ D3/uml/component.puml
+@@ -21,7 +21,7 @@
+   artifact "classifications.toml" as ClassificationsToml
+ }
+ folder "store root" as StoreRoot {
+-  folder "market_data/exchange=X/symbol=Y/year=YYYY" as MarketData
++  folder "marketdata/exchange=X/symbol=Y/year=YYYY" as MarketData
+   folder "corporate_actions/splits and dividends" as ActionsFiles
+ }
+ cloud "EODHD API (eodhd.com/api)" as EodhdApi

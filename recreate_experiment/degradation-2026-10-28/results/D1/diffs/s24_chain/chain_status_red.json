@@ -1,0 +1,15 @@
+{
+ "calls": [
+  "curl -s /task",
+  "python3 -c import json, sys; c = json.loads(sys.stdin.read())[\"Containers\"][0]; print(c.get(\"ImageDigest\") or c.get(\"ImageID\") or \"unknown\")",
+  "python3 -c import json, sys; limits = json.loads(sys.stdin.read())[\"Limits\"]; print(limits[\"CPU\"], limits[\"Memory\"] / 1024)",
+  "aws s3 sync s3://test-bucket/store/ data/ --only-show-errors",
+  "jef-data sync --asset AAPL --asset BTC --asset TLT --asset NVDA --asset TSLA --asset IBM --store data --summary-json out/<date>/.diagnostics/sync.json",
+  "python3 -m jef.events emit --stage sync --rc 0 --tN <epoch> --tN <epoch> --run-date <date> --out <work>/s24_chain-status_red-events/<runstamp>-sync.jsonl",
+  "jef-data status --asset AAPL --asset BTC --asset TLT --asset NVDA --asset TSLA --asset IBM --store data --json",
+  "python3 -m jef.events emit --stage status --rc 1 --tN <epoch> --tN <epoch> --run-date <date> --out <work>/s24_chain-status_red-events/<runstamp>-status.jsonl"
+ ],
+ "exit": 1,
+ "stderr_tail": "",
+ "stdout": "== jef daily <date> assets: AAPL BTC TLT NVDA TSLA IBM\nWARN: ledger emit failure, stage sync (telemetry only)\nWARN: no ledger lines for stage sync, nothing to put\nWARN: ledger emit failure, stage status (telemetry only)\nWARN: no ledger lines for stage status, nothing to put\nWARN: no store at data/market_data, dashboard publish skipped\n"
+}

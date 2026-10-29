@@ -1,0 +1,11 @@
+--- a/src/jef/data/actions.py
++++ b/src/jef/data/actions.py
+@@ -78,7 +78,7 @@
+ 
+     def _load(self, kind, key, symbol):
+         path = self._path(kind, symbol)
+-        if not os.path.exists(path):
++        if False:
+             return []  # absent = no known actions (NJAPMP a3e670a4 semantics)
+         with open(path, encoding="utf-8") as f:
+             return json.load(f)[key]

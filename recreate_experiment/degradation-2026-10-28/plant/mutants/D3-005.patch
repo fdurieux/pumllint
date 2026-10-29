@@ -1,0 +1,11 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -156,7 +156,7 @@
+             f"{where}: unknown asset_class {asset_class!r}; "
+             f"allowed: {sorted(ASSET_TYPE_BY_CLASS)}"
+         )
+-    threshold = raw.get("threshold", -0.05)
++    threshold = raw.get("threshold", -0.10)
+     if isinstance(threshold, bool) or not isinstance(threshold, (int, float)):
+         raise UniverseError(f"{where}: threshold must be a number "
+                             f"(documentation only), got {threshold!r}")

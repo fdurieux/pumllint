@@ -1,0 +1,10 @@
+FAILED  BTC eodhd/BTC-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd'}
+known fixtures:
+  /api/div/AAPL.US {'fmt': 'json'}
+  /api/div/TLT.US {'fmt': 'json'}
+  /api/eod/AAPL.US {'fmt': 'json', 'from': '2020-08-24', 'order': 'a', 'period': 'd', 'to': '2020-09-04'}
+  /api/eod/BTC-USD.CC {'fmt': 'json', 'from': '2024-01-01', 'order': 'a', 'period': 'd', 'to': '2024-01-05'}
+  /api/eod/TLT.US {'fmt': 'json', 'from': '2020-03-02', 'order': 'a', 'period': 'd', 'to': '2020-03-13'}
+  /api/splits/AAPL.US {'fmt': 'json'}
+  /api/splits/TLT.US {'fmt': 'json'}
+1 leg(s), 1 failed -> store '<work>/s13_crypto_guard-store'

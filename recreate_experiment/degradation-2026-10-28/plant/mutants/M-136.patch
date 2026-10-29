@@ -1,0 +1,11 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -296,7 +296,7 @@
+ def describe(assets=None):
+     lines = []
+     for asset in (PILOT_UNIVERSE if assets is None else assets):
+-        flag = "" if asset["enabled"] else " [disabled]"
++        flag = ""
+         lines.append(f"{asset['name']} ({asset['asset_class']}, "
+                      f"{asset['currency']}, threshold {asset['threshold']})"
+                      f"{flag}")

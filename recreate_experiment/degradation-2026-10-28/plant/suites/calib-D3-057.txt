@@ -1,0 +1,5 @@
+FAILED features/steps/test_features.py::test_an_import_into_a_chosen_exchange_tag_keeps_the_declared_labels
+FAILED features/steps/test_features.py::test_importcsv_overwrites_whatever_the_store_held
+FAILED features/steps/test_features.py::test_a_sync_and_an_import_leave_exactly_the_documented_files
+FAILED features/steps/test_features.py::test_a_yahoo_csv_import_replaces_the_whole_series_and_reports_the_csv_row_count
+4 failed, 254 passed in 79.36s (0:01:19)

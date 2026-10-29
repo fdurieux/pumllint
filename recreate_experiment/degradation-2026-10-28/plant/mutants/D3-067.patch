@@ -1,0 +1,31 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -371,7 +371,7 @@
+                     replaced.append(ts)
+                     day = new["datetime"].date().isoformat()
+                     revisions.extend(
+-                        {"date": day, "column": c, "stored": float(old[c]),
++                        {"day": day, "column": c, "stored": float(old[c]),
+                          "served": float(new[c])}
+                         for c in diffs)
+             novel = served.index.difference(stored.index)
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -305,7 +305,7 @@
+             "detail": result["detail"],
+             "revised_cells": len(revisions),
+             "revisions": [
+-                {"date": str(rev["date"]), "column": str(rev["column"]),
++                {"date": str(rev["day"]), "column": str(rev["column"]),
+                  "stored": float(rev["stored"]), "served": float(rev["served"])}
+                 for rev in revisions
+             ],
+@@ -388,7 +388,7 @@
+                                     revisions=revisions))
+                 out(f"ok      {label}: {detail}")
+                 for rev in revisions[:10]:  # every cell logged, bounded echo
+-                    out(f"        revised {rev['date']} {rev['column']}: "
++                    out(f"        revised {rev['day']} {rev['column']}: "
+                         f"{rev['stored']:g} -> {rev['served']:g}")
+                 if len(revisions) > 10:
+                     out(f"        ... {len(revisions) - 10} more revised "

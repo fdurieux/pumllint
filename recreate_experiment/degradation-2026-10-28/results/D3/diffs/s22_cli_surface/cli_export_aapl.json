@@ -1,0 +1,16 @@
+{
+ "argv": [
+  "export",
+  "--symbol",
+  "AAPL",
+  "--exchange",
+  "yahoo",
+  "--output",
+  "<work>/aapl_export.csv",
+  "--store",
+  "<work>/s22_cli_surface-store"
+ ],
+ "exit": 1,
+ "stderr": "/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast\n  volume_column = volume.astype(np.int32)\n",
+ "stdout": "yahoo/AAPL: 10401 row(s) -> <work>/aapl_export.csv\nERROR: negative values in Volume\nnote:  1 zero-volume row(s) - dropped at load by policy\n"
+}

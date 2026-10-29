@@ -1,0 +1,7 @@
+FAILED features/steps/test_features.py::test_zerovolume_rows_are_noted_with_the_longest_contiguous_run_when_it_exceeds_one_row[zero_single.csv-2 zero-volume row(s), dropped at the seam by pinned policy]
+FAILED features/steps/test_features.py::test_zerovolume_rows_are_noted_with_the_longest_contiguous_run_when_it_exceeds_one_row[zero_runs.csv-8 zero-volume row(s), dropped at the seam by pinned policy - largest contiguous run 3, 2024-01-07..2024-01-09]
+FAILED features/steps/test_features.py::test_the_largest_postseam_gap_is_counted_in_expected_sessions_and_noted_at_the_threshold[stock-5-post-seam continuity: 5 expected session(s) absent between 2024-02-09 and 2024-02-19 - the seam's output splices across this hole; verify the provider era before modelling (docs/DATA_CONTRACT.md \xa71)]
+FAILED features/steps/test_features.py::test_the_largest_postseam_gap_is_counted_in_expected_sessions_and_noted_at_the_threshold[stock-6-]
+FAILED features/steps/test_features.py::test_the_largest_postseam_gap_is_counted_in_expected_sessions_and_noted_at_the_threshold[crypto-9-post-seam continuity: 9 expected session(s) absent between 2024-02-09 and 2024-02-19 - the seam's output splices across this hole; verify the provider era before modelling (docs/DATA_CONTRACT.md \xa71)]
+FAILED features/steps/test_features.py::test_the_status_table_of_a_filled_a_misdeclared_and_a_neverfilled_source
+6 failed, 252 passed in 80.69s (0:01:20)

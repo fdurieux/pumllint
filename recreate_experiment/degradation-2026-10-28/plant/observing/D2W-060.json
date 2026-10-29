@@ -1,0 +1,18 @@
+{
+ "observing": [
+  "s01_first_fill/stored_binance_BTCUSDT.frame.csv",
+  "s01_first_fill/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s01_first_fill/stored_eodhd_TLT.US.frame.csv",
+  "s01_first_fill/stored_yahoo_AAPL.frame.csv",
+  "s05_rerun_same_day/stored_eodhd_TLT.US.frame.csv",
+  "s07_tail_revision/stored_eodhd_TLT.US.frame.csv",
+  "s08_btc_tail2/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s09_inverted_end/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s10_aapl_split/stored_eodhd_AAPL.US.frame.csv",
+  "s13_crypto_guard/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s15_jump/stored_eodhd_TLT.US.frame.csv",
+  "s16_zero_volume/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s18_import_export/stored_yahoo_AAPL.frame.csv"
+ ],
+ "outside_k2_identical": []
+}

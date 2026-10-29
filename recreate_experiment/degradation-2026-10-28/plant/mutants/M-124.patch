@@ -1,0 +1,11 @@
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -344,7 +344,7 @@
+     splits = actions_store.load_splits(symbol) if leg["actions"] else []
+     split_dates = {s.date for s in splits}
+     for day, move in scan_jumps(frame, window, jump_threshold):
+-        if day not in split_dates:
++        if False:
+             report["alerts"].append(
+                 f"phantom-split-shaped jump {move:+.1%} on "
+                 f"{day.isoformat()} with no same-day split event - check "

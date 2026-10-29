@@ -1,0 +1,31 @@
+--- a/src/jef/data/collectors/eodhd.py
++++ b/src/jef/data/collectors/eodhd.py
+@@ -67,7 +67,7 @@
+     # but volume arrives ALREADY split-adjusted (continuous across AAPL's
+     # 2020-08-31 4:1 boundary). The ingest path raw-izes it
+     # (store.ingest_bars; docs/DATA_CONTRACT.md §2).
+-    VOLUME_BASIS = "split_adjusted"
++    VOLUME_BASIS = "forward_adjusted"
+ 
+     def __init__(self, api_key=None, base_url=DEFAULT_BASE_URL, **kwargs):
+         # Key check BEFORE super().__init__: constructing the default
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -298,7 +298,7 @@
+         (raw-ization + CRSP derivation included); None when no bars."""
+         if not bars:
+             return None
+-        if volume_basis not in ("raw", "split_adjusted"):
++        if volume_basis not in ("raw", "forward_adjusted"):
+             raise StoreError(f"unknown volume_basis {volume_basis!r}")
+         stamped = _utc_midnight_ms([b["date"] for b in bars])
+         frame = pd.DataFrame({
+@@ -321,7 +321,7 @@
+         frame["currency"] = currency
+         frame["price_basis"] = price_basis
+         if price_basis == "raw":
+-            if volume_basis == "split_adjusted":
++            if volume_basis == "forward_adjusted":
+                 frame["volume_raw"] = (
+                     frame["volume_raw"].to_numpy(dtype=np.float64)
+                     / cumulative_split_factors(frame["datetime"], splits)

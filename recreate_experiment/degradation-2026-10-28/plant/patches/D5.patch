@@ -1,0 +1,597 @@
+
+--- kit_ref/MANIFEST.sha256
++++ D5/MANIFEST.sha256
+@@ -3,9 +3,9 @@
+ 5b083a23459dd89713ee325e8c8d627e05f24a3984abfb793d5de5869421e52c  contracts/HARNESS_INTERFACE.md
+ 394a047093f2ae4b81129e562d87d90752ed061850a4e1282a96c7e7d604993a  contracts/adjustment.md
+ 6a40640b0f0efe988554230e569057501eaa64f5d9009b74ee6f86660cb5b1e6  contracts/chain.md
+-b9848dc6c6d2ce61a6b994586b86050380d4b7370eda94f08c296ff729b4b953  contracts/classifications.toml
++7e4a1808df0dbe8a7df65bbdbfecba01a91016f26cbdfe18a7b2b93c24841cd3  contracts/classifications.toml
+ 01efb3f607fece5c9038dd2dd027a2ce3be00e541d5adfb7de69370fd4bcb0ac  contracts/classifications.toml.md
+-bb77c47a2be9e351ad965448e8709caf45d1eab7c29cb2b956685ed459d846a1  contracts/cli.md
++e4a20503b3961b398c7deabbf603a90ce9598e13451703cacea51b431065dd34  contracts/cli.md
+ 903a6225a8983481e9aa31664a831e3106297a9a9db45968774bf155e9c26595  contracts/cli_help.md
+ f0d95d5d9378a8e0f1b66d55422e5371506e7ca5598904f9e965d5728c3e6b79  contracts/collectors.md
+ 262ceb1aebcd1039a6b229d602dae197ea4f5f493b076ee8ac6399c0fad56a46  contracts/dmn/README.md
+@@ -14,12 +14,12 @@
+ 8db725e9f61e349cefcd656424fc9b6d7f79f2c59fc967210577026d35ec2e5b  contracts/dmn/command_store_state.dmn
+ a548cd2f66d548e42aad8c59a1b1b3c06cc3167f4e9097a9b2d284ce088e8607  contracts/dmn/refusal_routing.dmn
+ cba201aae36e46f01094de5c534a50cfa1fc5baf1d8755a956c78dc148914166  contracts/dmn/status_verdicts.dmn
+-7a97622131b038a3c2d7a25d284318dedb737f329f120a8b3c96e6bbe28c63fb  contracts/dmn/sync_window.dmn
++3673c3362e36d169cda7442cff98dacd5e292e2f2ef41167e3af8531deda4ac6  contracts/dmn/sync_window.dmn
+ 3dfa1216628cfcbc5647470620bd0ca71a01d11949224e8eafcd1d8c65838281  contracts/externals/dashboard.sh
+ 1b166b610b51dd2aca28438e71ff5e2d79ddf3e5df4cf69d91de94ebe512a7d3  contracts/externals/events.sh
+ 23ff4ef77b9f6e7bb318a6d201980a754eacea93c704fc9364bb862afe476fc0  contracts/fixtures.md
+-ce40235645a8e7f22f0337235ecd3940f5de7ee9f85b5092992c09eb6bd72074  contracts/glossary.md
+-49b34465af625895fa9fd46f32e052e9f81a097e326f7fabaf09696b3d689191  contracts/leg.md
++eef1757cd33d9320b959fc3e0b869ccde0b0f17e0d7cefc12c95ac55547fd164  contracts/glossary.md
++270e8e4bd6e0a5ad14e31af10a46a1acac5c32841b716f4957a2c9bb2266d335  contracts/leg.md
+ 12f26afdb313c8ae19301b3eeb60e24a09de25fa2a41849cd0106edc39001257  contracts/pins.md
+ dff39bd7b54d10069503b69a7222110d5d697b55f0ab42383c07e2ac518ba4dd  contracts/refusals.md
+ 26f941e31b0e0cc50192db6e37a662c2028dde9752e83fc74bcef0f1e1256f03  contracts/seam_frame.md
+@@ -28,15 +28,15 @@
+ b8aaa0c92c3b54c4cfde3954993a9323710c3627ed18365400ee32c9e27dda11  contracts/store.md
+ 40331610993c3fef079d47a30dc21ad35910e55109b5fb8bd95fa3f48b137a38  contracts/sync_summary.example.json
+ e14bcd7a411e32fcd80c5c2210542527df867fd07ccbd4e24ecbe07933177c37  contracts/sync_summary.schema.json
+-3bfd82ca66a9fe0567615ddd7932763555489ccf80dd3f3cc10adb4166478d8b  contracts/universe.toml
+-251363b16fb6bc01d08a97418ab220258f21e4fff2d6374c204155f1efca6d83  contracts/universe.toml.md
++c1f2f56bac726ad4e56f8404cccf8e107aebc7e1f47130d7e2b22f72d5bdbba5  contracts/universe.toml
++7878e79d9b9235fabea4e1baa943666dd0942cc6db94e08c0079cfaeace8f2a9  contracts/universe.toml.md
+ b3611b7793aa77ceb2b92a72d5cf763f8a110a9f00852ae7598b4cf801321d62  features/README.md
+ 5bf0ffb4a9bc18bdfb2aad27936218fa4e64769c409f89690ca6997e42b4fb3c  features/actions.feature
+-829b878500cb4912f13070903dbc8e42b76cbd50cafeed53ed176511e85a7f92  features/adjustment.feature
++88307855abd847268052594f5bf25b444208aa50e810c80fbbd3d0fa4a2d805f  features/adjustment.feature
+ fa025eaa8bc3b32793c4fac8a9d013fa77743d2c653f913d5955c9394513152b  features/chain.feature
+ 25151ad17f31921b551947595a04a0e62d32949d540687577431d3b21055b2c4  features/cli.feature
+-5b0dd0aed016ed1859539cee5bac3217e4ce89e0acb84e9b5f734f99d9bae1f5  features/collectors.feature
+-6f3f543658db7f5ed9093d90d810f5f959208f86c9c633ac231b4a3545ec0691  features/decisions.feature
++9d1ccab4ece830f1e53413c345ba7118e3df6f68fd8fb6b302fa550d59e1c8b7  features/collectors.feature
++86d29bb3da25f036099b2820ebf669ba8594eaa7060ebeb7f926cc44060899c4  features/decisions.feature
+ 455b458aad081230637cb2730fb92420c0129b41e7474a1b1b983d17bac39892  features/differential.feature
+ 059b95001320b1b9abd7197a25e95cb6ca948a9674763f5f47a9a9f9b6a1d492  features/fixtures/csv/bad_dates.csv
+ 7f58aae5a9ff2fd77b15526f1061ba08cfa5366eaf8fe3384952062340717ab2  features/fixtures/csv/crypto_feb.csv
+@@ -174,28 +174,29 @@
+ 7a45a181a854f97af3d230b3115783c2720c3270080c75e278eb7cf43e11ccf7  features/fixtures/universes/bad/toml_syntax.toml
+ f83043f3c453687de8041b2e4b0f92919205ce8d6e8e3e0de94d94cb0dc71270  features/fixtures/universes/bad/top_key.toml
+ e4290f9ecc8b175d875c317f74663645c3a9f8a62413b1d5ecf918777854eaa5  features/fixtures/universes/bad/two_modeled.toml
+-3bf8a443253250a6d3d9bce745f8bdd95eb9a55e8f113def1bc41104f85ad51c  features/fixtures/universes/binance.toml
++b65de1b6bd8c1cb28745a46d7d9949fd7a6e9b7ce7ae73045394fe2305d856df  features/fixtures/universes/binance.toml
+ e4466150ba7558d8b2e149a84a1d759f5faf69d8c527572e52fbc7fd5ca1bf70  features/fixtures/universes/classes.toml
+ a1c5689cab6974b3c217317146cdd0cf97623c1cf03a1f55a6b3f7bed9e81032  features/fixtures/universes/csv_leg.toml
+ 6b062e536684cdf43f1c5e84dbc0bda12821321c0c23feb755f8332c86362b1e  features/fixtures/universes/divy.toml
+ c8686e0f8746838ff0df208d64e1bda03b4b10caa4708caa6b07d347bf51b191  features/fixtures/universes/mixed.toml
+-8d5e6adce2b39c5e1db098ba0064ce1ba9c5d88a64c378f13a46434c3aff6a4a  features/fixtures/universes/ns.toml
+-3859b606206b03c379d372d7c9ba664c0068a92311ee84ea07ca3ec4f7f3820f  features/fixtures/universes/pair.toml
++7101828d3a889088c0c5e36a729b8888c2d38c4de6690d0ff6ab640546e87822  features/fixtures/universes/ns.toml
++1da94d069c5512bad6f121e76b8ac08378cf16ec79eae1466e96e9952daca8e6  features/fixtures/universes/pair.toml
+ d7f86d14627fc10358106701d81461718851b5c28eb8d27bc3b5f7d585eb3251  features/fixtures/universes/paused.toml
+-59725b246d45382997f366b72e53ad5fedf815ef4ad8d41d5651da5a2b638258  features/fixtures/universes/plan.toml
++751a1eb31c664ef4703529fe3b7303878370ca5d5146ce3b5644f0d352ea535d  features/fixtures/universes/pgs.toml
++88660188162678889be49c5ac613d9bda71d26fcfb236e853e124c631678d78d  features/fixtures/universes/plan.toml
+ f16b3690112a7f6c71a48aab89ecf082a5803b63459b32cedb408720f3d2b3ae  features/fixtures/universes/splt.toml
+ 02ba50c30f854b65cea497ac6f2a456028b6813dd7fa68235105246b362417bb  features/fixtures/universes/splt_end.toml
+-2d66691bcaaafbde880d6fad2829ec0d2541d06d25a2ca49ff8812cf8f4baa16  features/fixtures/universes/zero.toml
++1e3e5c342aba022c55c7ac66b5e4d216d8f2c83c4cd83f5d2f00b1cf217803eb  features/fixtures/universes/zero.toml
+ a3a548cf59f1a3711a0a8e52871569ed9f9c4cd9def9bbc42f31502f723c2cab  features/fixtures/universes/zero_end.toml
+ 5993f45ff05cf9722a6bab6f690eca0aa7057ea6775ca953f18ba5ef49d6703c  features/seam.feature
+ 27c2ca516f434ea98be37073f1edaaa9355696af044bc63ea0a7afdd01b626dc  features/status.feature
+-d7ab40116296ba62717a2451687803c048e0aa91dbba1115f1a3d79bbc0c976b  features/steps/conftest.py
++7653b40b527bf40db7052d62b5a490bd9bd052f6e1dba22787ee0e60709ead64  features/steps/conftest.py
+ 95698de02dd449061bb3c61889731ffd0e13c44b81f2c15a94470ab8beff3761  features/steps/test_features.py
+ ac25fb30cfe8f85d42e81601b7cda5adda5436db1798c66b655aa8d6332cfc18  features/store.feature
+-347ca4a1077ccf11931d83e3b0055686020c2d2df70f2f4bdebda5f0289edd98  features/sync.feature
+-aabaf8620a4585501b96ee95cd7b8cf08f2ca4ee190193dce4803c6fb9e0602f  features/universe.feature
++6b0e064b343d6cb971aa0d5bbd98c2261dba0fee2350f033d097275b71f657c8  features/sync.feature
++a2c68cbdef9ec747a266fd7789f38de7f1e2c495cc68579fb1af79cc373f1d51  features/universe.feature
+ 041ff617504eb99f99b363de968f539d337d92df947b43f4a24c0fe003c46bd1  pumllint.toml
+-1f1781573ff53fffb1834e118f8cf88be8a7b6810557a31fade33fb9f89c948c  requirements.json
++f5317f2959aab22cedc6cabf9e05345997803d1f8024e166421b6b13b8a1b4bd  requirements.json
+ 2771f8e8addaf6a69e442cf3c093e38023c6628f9d488d1c761a29f134079646  tools/manifest.py
+ fe85ac1d743a210bbe91e5235205cb0879507e753b243201fe2de22f5e4b420b  uml/basis_and_adjustment.puml
+ 05563913813a77e99ad1ac1ad1ad7c1bf4105efb2e45e92b5f3720c6bd5a8c28  uml/component.puml
+@@ -203,5 +204,5 @@
+ 3eb4406d7a1a68ce355941a817ea019b522dcb41dad3be8d6d35a8d4811db693  uml/data_model.puml
+ b6b7120fd0d4e92709dfa874193c29c90b9d76d6832e041e80802407c51faf53  uml/series_state.puml
+ 6997644afef1fefe15f3c5a8fc9b0b10721a02bb9bfbd76cd03ad4d5ce20f166  uml/status_run.puml
+-5e9c7951be2f8619fd979aa265034a84cd6c7e095f5ac6818527d674a97fc646  uml/sync_leg.puml
+-973d9dfa0313484c39d29eb9f5457d9983aabc7759e1e05a9edcff0bd4610d53  uml/sync_run.puml
++bef3301cf6d207c27c7bf7def54ffe7020422430dadcce295a6fda05cb158f49  uml/sync_leg.puml
++8024a8c9f32a2e253a7968728f0d39edc24891d826570e717235f973a4d7fb53  uml/sync_run.puml
+
+--- kit_ref/contracts/classifications.toml
++++ D5/contracts/classifications.toml
+@@ -8,7 +8,7 @@
+ #
+ # It is EVIDENCE, never configuration. Nothing here decides
+ # anything: `universe.toml`'s asset_class remains the single
+-# source of truth for the end-guard, the price basis, the trading
++# source of truth for the price basis, the trading
+ # calendar and the stored asset_type. This file can only DISAGREE
+ # with that declaration, which is what makes it worth having -
+ # TLT is declared `bond_etf` today because inference once called
+
+--- kit_ref/contracts/cli.md
++++ D5/contracts/cli.md
+@@ -109,7 +109,8 @@
+ [--summary-json PATH]`
+ 
+ * `--universe` default: the packaged universe; `--store` default: the
+-  universe's `defaults.store`; `--asset`/`--provider` repeatable filters.
++  universe's `defaults.store`; `--provider` a repeatable filter, `--asset`
++  repeatable.
+ * Output: the run log (requirement JDL-103) or the dry-run plan
+   (JDL-104, JDL-105). Example (real run):
+ 
+@@ -127,8 +128,8 @@
+ plan for store 'dstore' (4 leg(s)):
+     CSVA yahoo/CSVA: import t.csv (whole file, idempotent)
+       EQ eodhd/EQ.US: sync-actions + load (first fill from 2024-01-02 to 2024-03-01)
+-      CC eodhd/CC-USD.CC: load (first fill, full history to 2026-10-22)
+-      CC binance/CCUSDT: load (first fill, full history to 2026-10-22)
++      CC eodhd/CC-USD.CC: load (first fill, full history)
++      CC binance/CCUSDT: load (first fill, full history)
+ ```
+ 
+ * `--summary-json PATH`: after the run returns (green, red or dry run), write
+
+--- kit_ref/contracts/dmn/sync_window.dmn
++++ D5/contracts/dmn/sync_window.dmn
+@@ -72,30 +72,6 @@
+           <text>"universe_end", "today_minus_1", "min_universe_end_today_minus_1", "open"</text>
+         </outputValues>
+       </output>
+-      <rule id="fetch_end_r1">
+-        <description>JDL-094: ISO-string minimum</description>
+-        <inputEntry id="fetch_end_r1_i0">
+-          <text>true</text>
+-        </inputEntry>
+-        <inputEntry id="fetch_end_r1_i1">
+-          <text>true</text>
+-        </inputEntry>
+-        <outputEntry id="fetch_end_r1_o0">
+-          <text>"min_universe_end_today_minus_1"</text>
+-        </outputEntry>
+-      </rule>
+-      <rule id="fetch_end_r2">
+-        <description>JDL-094 end-guard, any provider</description>
+-        <inputEntry id="fetch_end_r2_i0">
+-          <text>true</text>
+-        </inputEntry>
+-        <inputEntry id="fetch_end_r2_i1">
+-          <text>false</text>
+-        </inputEntry>
+-        <outputEntry id="fetch_end_r2_o0">
+-          <text>"today_minus_1"</text>
+-        </outputEntry>
+-      </rule>
+       <rule id="fetch_end_r3">
+         <description>JDL-094: end caps every fetch</description>
+         <inputEntry id="fetch_end_r3_i0">
+
+--- kit_ref/contracts/glossary.md
++++ D5/contracts/glossary.md
+@@ -24,7 +24,7 @@
+ | transport | The HTTP layer under a collector: `request(method, url, params) -> (status, text)`; live, or a replay of recorded fixtures. | collectors.md, fixtures.md |
+ | fixture | A recorded request/response file the replay transport serves instead of the network; `fixtures/http/<set>/`. | fixtures.md |
+ | replay | Running a collector over recorded fixtures; a request with no fixture is a CollectorError. | fixtures.md §5 |
+-| declared asset_type | The store's instrument type derived from the asset's `asset_class` (`stock -> stock`, `bond_etf -> etf`, `crypto -> crypto`), or `--asset-type` for `load`; decides basis, actions eligibility and the end-guard, never the symbol suffix. | adjustment.md §1, JDL-086 |
++| declared asset_type | The store's instrument type derived from the asset's `asset_class` (`stock -> stock`, `bond_etf -> etf`, `crypto -> crypto`), or `--asset-type` for `load`; decides basis and actions eligibility, never the symbol suffix. | adjustment.md §1, JDL-086 |
+ | basis | Short for price_basis, below. | adjustment.md §1 |
+ | price_basis | How a series' prices are stored: `raw` (as served, split-adjusted on read-back by the stored splits) or `split_adjusted` (already adjusted at the provider; never re-adjusted). | adjustment.md §1 |
+ | volume basis | Whether the collector serves volume raw or split-adjusted; decides whether `volume_raw` is the served volume or the served volume divided by the cumulative split factor. | adjustment.md §2 |
+@@ -39,9 +39,8 @@
+ | actions-eligible | A leg whose provider is `eodhd` and whose declared asset_type is not `crypto`; only such legs sync and check corporate actions. | JDL-086 |
+ | actions gate | The once-per-UTC-day decision to refresh an eligible leg's actions: forced, no stamp, or a stamp dated before today. | JDL-091, dmn/actions_gate.dmn |
+ | run clock | The real current UTC time, or the `now` a harness injects; read once at the start of a run. | JDL-088 |
+-| today | The UTC calendar date of the run clock, taken once per run and used by the end-guard, the actions gate and the today-dated check. | JDL-088 |
+-| end-guard | For a leg whose declared asset_type is crypto, the fetch end `today - 1 day`, so the in-progress UTC day is never ingested. | JDL-094 |
+-| window | A leg's fetch window: start (universe start, open, or the tail) to end (universe end, end-guard, or open). | JDL-093, JDL-094, dmn/sync_window.dmn |
++| today | The UTC calendar date of the run clock, taken once per run and used by the actions gate and the today-dated check. | JDL-088 |
++| window | A leg's fetch window: start (universe start, open, or the tail) to end (universe end, or open). | JDL-093, JDL-094, dmn/sync_window.dmn |
+ | first fill | The fetch of a leg whose series is absent: from the universe start (or open) to the end. | JDL-093, JDL-105 |
+ | tail | `--tail N` (default 10): the newest N stored sessions of a filled series; the fetch of such a series starts at the oldest of them. | JDL-093, store.md §5 |
+ | tail refresh | The sync of a filled collector leg: fetch from the tail's oldest session to the end and reconcile the served rows. | JDL-093, JDL-105 |
+
+--- kit_ref/contracts/leg.md
++++ D5/contracts/leg.md
+@@ -2,9 +2,8 @@
+ 
+ `select_legs(universe, assets=None, providers=None)` (harness interface)
+ returns the legs in order (requirement JDL-084): for each enabled asset
+-in universe order, for each enabled source in source order, skipping assets
+-outside the asset filter and sources outside the provider filter. Filter
+-refusals: JDL-085. Each leg is a dict with exactly these keys:
++in universe order, for each enabled source in source order, skipping sources
++outside the provider filter. Filter refusals: JDL-085. Each leg is a dict with exactly these keys:
+ 
+ | key | type | derivation |
+ |---|---|---|
+@@ -38,7 +37,7 @@
+   is the bare message of refusals.md (no `sync: ` / `status: ` prefix, which
+   only the command line adds).
+ * `run_sync(..., now=...)`: `now` replaces the run clock (today = its UTC
+-  date) for the window, the end-guard, the actions gate and the today-dated
++  date) for the window, the actions gate and the today-dated
+   check; it does NOT reach the corporate-actions stamp, which is always the
+   real wall clock (requirement JDL-043). `out` receives exactly the lines
+   the command prints (requirement JDL-103, JDL-104).
+
+--- kit_ref/contracts/universe.toml
++++ D5/contracts/universe.toml
+@@ -25,7 +25,7 @@
+ # `start` is a FIRST-FILL floor only - once a series exists, `jef-data sync`
+ # tail-refreshes the newest stored sessions and never reads `start` again -
+ # while `end` is a PERSISTENT cap on every fetch, first fill and tail
+-# refresh alike, `min`-ed with the crypto end-guard: a pinned window
++# refresh alike: a pinned window
+ # (docs/DATA_CONTRACT.md SS7 item 10). Volume units differ BY SOURCE for crypto (Binance reports
+ # base-asset volume, EODHD/Yahoo notional); each series is internally
+ # consistent and the binning's volume features are ratios, so the unit
+
+--- kit_ref/contracts/universe.toml.md
++++ D5/contracts/universe.toml.md
+@@ -127,7 +127,7 @@
+ 
+ `jef-data universe` prints, per asset, `{name} ({asset_class}, {currency},
+ threshold {threshold})` (threshold as Python float text, e.g. `-0.05`,
+-`-1.0`) plus ` [disabled]`; then per source `  {provider}: {path or symbol}`
++`-1.0`); then per source `  {provider}: {path or symbol}`
+ plus ` [disabled]` plus ` - {note}`. The packaged universe prints:
+ 
+ ```
+
+--- kit_ref/features/adjustment.feature
++++ D5/features/adjustment.feature
+@@ -58,7 +58,7 @@
+       | 2024-03-28 | adjusted_close    | 96.9               |
+ 
+   @JDL-055 @JDL-053 @JDL-094
+-  Scenario: An EODHD crypto series is stored as served, end-guarded at the previous UTC day
++  Scenario: An EODHD crypto series is stored as served
+     Given the universe fixture "zero.toml"
+     And the "eodhd" provider replays "zero/run1"
+     When sync runs at "2024-02-10T08:00:00Z"
+@@ -74,14 +74,14 @@
+       | 2024-02-09 | close      | 1.64   |
+ 
+   @JDL-053 @JDL-086 @JDL-094 @JDL-084
+-  Scenario: The declared class, never the .CC suffix, decides basis, actions and guard
++  Scenario: The declared class, never the .CC suffix, decides basis and actions
+     Given the universe fixture "ns.toml"
+     And the "eodhd" provider replays "ns"
+     When the legs are selected
+     Then the legs are:
+       """
+       [{"asset": "WEIRD", "provider": "eodhd", "exchange": "eodhd", "symbol": "WEIRD.XX", "path": null,
+-        "asset_type": "crypto", "currency": "USD", "start": null, "end": null, "actions": false},
++        "asset_type": "crypto", "currency": "USD", "start": null, "end": "2024-05-10", "actions": false},
+        {"asset": "CCSTK", "provider": "eodhd", "exchange": "eodhd", "symbol": "CCSTK-USD.CC", "path": null,
+         "asset_type": "stock", "currency": "USD", "start": null, "end": null, "actions": true}]
+       """
+
+--- kit_ref/features/collectors.feature
++++ D5/features/collectors.feature
+@@ -105,14 +105,14 @@
+   Scenario Outline: A bar endpoint answering something other than a JSON list fails the leg
+     Given the universe fixture "<universe>"
+     And the "<provider>" provider replays "<set>"
+-    When sync runs at "<now>" with options "assets=<asset>"
++    When sync runs at "<now>"
+     Then leg 1 failed
+     And the detail of leg 1 is "<detail>"
+ 
+     Examples:
+-      | universe     | provider | set             | now                  | asset | detail |
+-      | splt.toml    | eodhd    | splt/notlist    | 2024-02-13T12:00:00Z | SPLT  | CollectorError: eod SPLT.US: expected a JSON list |
+-      | binance.toml | binance  | binance_notlist | 2024-07-01T00:30:00Z | LIM   | CollectorError: klines LIMUSDT: expected a JSON list |
++      | universe     | provider | set             | now                  | detail |
++      | splt.toml    | eodhd    | splt/notlist    | 2024-02-13T12:00:00Z | CollectorError: eod SPLT.US: expected a JSON list |
++      | binance.toml | binance  | binance_notlist | 2024-07-01T00:30:00Z | CollectorError: klines LIMUSDT: expected a JSON list |
+ 
+   @JDL-033
+   Scenario Outline: A split string that is not NEW/OLD fails the leg
+@@ -153,9 +153,9 @@
+ 
+   @JDL-038
+   Scenario: Binance pages ascending from the declared start until a short page
+-    Given the universe fixture "binance.toml"
++    Given the universe fixture "pgs.toml"
+     And the "binance" provider replays "binance"
+-    When sync runs at "2024-01-16T00:30:00Z" with options "assets=PGS"
++    When sync runs at "2024-01-16T00:30:00Z"
+     Then the run is ok
+     And the detail of leg 1 is "1110 bar(s), 0 revised cell(s)"
+     And the stored cells of binance/PGSUSDT are:
+@@ -169,7 +169,7 @@
+   Scenario: A first fill without a start that lands on the page limit says it is a trailing window
+     Given the universe fixture "binance.toml"
+     And the "binance" provider replays "binance"
+-    When sync runs at "2024-07-01T00:30:00Z" with options "assets=LIM"
++    When sync runs at "2024-07-01T00:30:00Z"
+     Then the run is ok
+     And the detail of leg 1 is "first fill hit the provider page limit (1000 bars, no start declared) - the series is a trailing window, not history; 1000 bar(s), 0 revised cell(s)"
+     And the stored series binance/LIMUSDT has 1000 rows
+
+--- kit_ref/features/decisions.feature
++++ D5/features/decisions.feature
+@@ -208,7 +208,7 @@
+   Rule: fetch_end
+ 
+     @JDL-094 @JDL-105
+-    Scenario Outline: The fetch end is the ISO minimum of the universe end and the crypto end-guard
++    Scenario Outline: The fetch end is the universe end, or open
+       Given the universe fixture "<universe>"
+       When sync runs at "2024-02-10T08:00:00Z" with options "dry_run=true"
+       Then the sync log is:
+@@ -219,8 +219,6 @@
+ 
+       Examples:
+         | row | universe      | plan |
+-        | r1  | zero_end.toml | ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-01-20) |
+-        | r2  | zero.toml     | ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09) |
+         | r3  | splt_end.toml | SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024-01-02 to 2024-01-19) |
+         | r4  | divy.toml     | DIVY eodhd/DIVY.US: sync-actions + load (first fill, full history) |
+ 
+@@ -250,8 +248,8 @@
+ 
+     # dmn-row: r3
+     @JDL-095
+-    Scenario: An empty series sends its request even when the end-guard falls before the declared start
+-      Given the universe fixture "zero.toml"
++    Scenario: An empty series sends its request
++      Given the universe fixture "zero_end.toml"
+       And the "eodhd" provider replays "zero/run1"
+       When sync runs at "2023-12-25T08:00:00Z"
+       Then the run is not ok
+
+--- kit_ref/features/fixtures/universes/binance.toml
++++ D5/features/fixtures/universes/binance.toml
+@@ -1,4 +1,4 @@
+-# Synthetic: two Binance-only crypto assets (page limit; two pages).
++# Synthetic: a Binance-only crypto asset (page limit).
+ [[asset]]
+ name = "LIM"
+ asset_class = "crypto"
+@@ -6,12 +6,4 @@
+   [[asset.source]]
+   provider = "binance"
+   symbol = "LIMUSDT"
+-
+-[[asset]]
+-name = "PGS"
+-asset_class = "crypto"
+-
+-  [[asset.source]]
+-  provider = "binance"
+-  symbol = "PGSUSDT"
+-  start = 2021-01-01
++  end = 2024-06-30
+
+--- kit_ref/features/fixtures/universes/ns.toml
++++ D5/features/fixtures/universes/ns.toml
+@@ -6,6 +6,7 @@
+   [[asset.source]]
+   provider = "eodhd"
+   symbol = "WEIRD.XX"
++  end = 2024-05-10
+ 
+ [[asset]]
+ name = "CCSTK"
+
+--- kit_ref/features/fixtures/universes/pair.toml
++++ D5/features/fixtures/universes/pair.toml
+@@ -7,9 +7,11 @@
+   provider = "eodhd"
+   symbol = "PAIR-USD.CC"
+   start = 2024-01-01
++  end = 2024-01-20
+   modeled = true
+ 
+   [[asset.source]]
+   provider = "binance"
+   symbol = "PAIRUSDT"
+   start = 2024-01-01
++  end = 2024-01-20
+
+--- kit_ref/features/fixtures/universes/pgs.toml
++++ D5/features/fixtures/universes/pgs.toml
+@@ -0,0 +1,10 @@
++# Synthetic: a Binance-only crypto asset (two pages).
++[[asset]]
++name = "PGS"
++asset_class = "crypto"
++
++  [[asset.source]]
++  provider = "binance"
++  symbol = "PGSUSDT"
++  start = 2021-01-01
++  end = 2024-01-15
+
+--- kit_ref/features/fixtures/universes/plan.toml
++++ D5/features/fixtures/universes/plan.toml
+@@ -32,8 +32,10 @@
+   provider = "eodhd"
+   symbol = "PAIR-USD.CC"
+   start = 2024-01-01
++  end = 2024-02-29
+   modeled = true
+ 
+   [[asset.source]]
+   provider = "binance"
+   symbol = "PAIRUSDT"
++  end = 2024-02-29
+
+--- kit_ref/features/fixtures/universes/zero.toml
++++ D5/features/fixtures/universes/zero.toml
+@@ -7,3 +7,4 @@
+   provider = "eodhd"
+   symbol = "ZERO-USD.CC"
+   start = 2024-01-01
++  end = 2024-02-09
+
+--- kit_ref/features/steps/conftest.py
++++ D5/features/steps/conftest.py
+@@ -684,6 +684,16 @@
+     assert render(ctx, text) in ctx.proc.stdout.split("\n"), ctx.proc.stdout
+ 
+ 
++def _subsequence(got, want):
++    rest = iter(got)
++    assert all(any(w == g for g in rest) for w in want), got
++
++
++@then("stdout contains the lines:")
++def stdout_lines(ctx, docstring):
++    _subsequence(ctx.proc.stdout.split("\n"), [line for line in render(ctx, docstring).split("\n") if line.strip()])
++
++
+ # revision 2026-10-23 (closing round): exact parser output and verbatim help
+ @given(parsers.parse("the terminal is {columns:d} columns wide"))
+ def terminal_width(ctx, columns):
+
+--- kit_ref/features/sync.feature
++++ D5/features/sync.feature
+@@ -21,14 +21,18 @@
+       """
+ 
+   @JDL-084
+-  Scenario: Asset and provider filters keep universe order and skip paused assets and switched-off sources
++  Scenario: The provider filter keeps universe order and skips paused assets and switched-off sources
+     Given the packaged universe
+-    When the legs are selected with options "assets=TLT|BTC, providers=binance|eodhd"
++    When the legs are selected with options "providers=binance|eodhd"
+     Then the legs are:
+       """
+-      [{"asset": "BTC", "provider": "eodhd", "exchange": "eodhd", "symbol": "BTC-USD.CC", "path": null, "asset_type": "crypto", "currency": "USD", "start": null, "end": null, "actions": false},
++      [{"asset": "AAPL", "provider": "eodhd", "exchange": "eodhd", "symbol": "AAPL.US", "path": null, "asset_type": "stock", "currency": "USD", "start": null, "end": null, "actions": true},
++       {"asset": "BTC", "provider": "eodhd", "exchange": "eodhd", "symbol": "BTC-USD.CC", "path": null, "asset_type": "crypto", "currency": "USD", "start": null, "end": null, "actions": false},
+        {"asset": "BTC", "provider": "binance", "exchange": "binance", "symbol": "BTCUSDT", "path": null, "asset_type": "crypto", "currency": "USD", "start": "2017-08-01", "end": null, "actions": false},
+-       {"asset": "TLT", "provider": "eodhd", "exchange": "eodhd", "symbol": "TLT.US", "path": null, "asset_type": "etf", "currency": "USD", "start": null, "end": null, "actions": true}]
++       {"asset": "TLT", "provider": "eodhd", "exchange": "eodhd", "symbol": "TLT.US", "path": null, "asset_type": "etf", "currency": "USD", "start": null, "end": null, "actions": true},
++       {"asset": "NVDA", "provider": "eodhd", "exchange": "eodhd", "symbol": "NVDA.US", "path": null, "asset_type": "stock", "currency": "USD", "start": null, "end": null, "actions": true},
++       {"asset": "TSLA", "provider": "eodhd", "exchange": "eodhd", "symbol": "TSLA.US", "path": null, "asset_type": "stock", "currency": "USD", "start": null, "end": null, "actions": true},
++       {"asset": "IBM", "provider": "eodhd", "exchange": "eodhd", "symbol": "IBM.US", "path": null, "asset_type": "stock", "currency": "USD", "start": null, "end": null, "actions": true}]
+       """
+     Given the universe fixture "paused.toml"
+     When the legs are selected
+@@ -54,12 +58,12 @@
+       | status  | --asset SPLT --asset NOPE | unknown asset 'NOPE'; universe has ['GONE', 'SPLT'] |
+       | sync    | --provider yahoo          | unknown provider 'yahoo'; allowed: ['eodhd', 'binance', 'yahoo-csv'] |
+       | status  | --asset NOPE --provider x | unknown asset 'NOPE'; universe has ['GONE', 'SPLT'] |
+-      | sync    | --asset GONE              | selection matched no enabled asset/source legs |
++      | sync    | --provider binance        | selection matched no enabled asset/source legs |
+       | status  | --provider binance        | selection matched no enabled asset/source legs |
+       | sync    | --tail 0 --asset NOPE     | tail must be >= 1 session, got 0 |
+ 
+   @JDL-094 @JDL-098 @JDL-088
+-  Scenario Outline: A universe end caps the first fill, and wins the minimum against the crypto end-guard
++  Scenario Outline: A universe end caps the first fill
+     Given the universe fixture "<universe>"
+     And the "eodhd" provider replays "<set>"
+     When sync runs at "<now>"
+
+--- kit_ref/features/universe.feature
++++ D5/features/universe.feature
+@@ -86,16 +86,15 @@
+       """
+ 
+   @JDL-136 @JDL-010
+-  Scenario: The listing marks paused assets, switched-off sources and notes
++  Scenario: The listing marks switched-off sources and notes
+     Given the universe fixture "paused.toml"
+     When I run "jef-data universe --universe universe.toml"
+     Then the exit code is 0
+-    And stdout is:
++    And stdout contains the lines:
+       """
+       SPLT (stock, USD, threshold -0.05)
+         eodhd: SPLT.US
+         yahoo-csv: snap/splt.csv [disabled] - an old snapshot
+-      GONE (stock, USD, threshold -0.05) [disabled]
+         eodhd: GONE.US
+         binance: GONEUSDT
+       """
+
+--- kit_ref/requirements.json
++++ D5/requirements.json
+@@ -524,7 +524,7 @@
+  {
+   "id": "JDL-084",
+   "kind": "ritual",
+-  "statement": "The sync and status commands shall select legs as every enabled asset (universe order) x every enabled source of it (source order), keeping only assets named by the asset filter and sources whose provider is in the provider filter when those filters are given; each leg carries the keys and derivations of contracts/leg.md.",
++  "statement": "The sync and status commands shall select legs as every enabled asset (universe order) x every enabled source of it (source order), keeping only sources whose provider is in the provider filter when that filter is given; each leg carries the keys and derivations of contracts/leg.md.",
+   "basis": "both"
+  },
+  {
+@@ -539,7 +539,7 @@
+   "kind": "ritual",
+   "statement": "A leg shall be actions-eligible exactly when its provider is `eodhd` and its DECLARED asset_type is not `crypto`, whatever the symbol suffix (a `.CC` symbol declared stock is eligible; an EODHD symbol outside `.CC` declared crypto is not).",
+   "basis": "both",
+-  "rationale": "eligibility reads the declared class, like the end-guard and the basis; a .CC symbol declared non-crypto is a mis-declaration whose fix is the declaration"
++  "rationale": "eligibility reads the declared class, like the basis; a .CC symbol declared non-crypto is a mis-declaration whose fix is the declaration"
+  },
+  {
+   "id": "JDL-087",
+@@ -550,7 +550,7 @@
+  {
+   "id": "JDL-088",
+   "kind": "ritual",
+-  "statement": "The sync shall take `today` as the UTC calendar date of the run clock (the real current UTC time unless a clock is injected) once at the start of the run, and use it for the crypto end-guard, the actions gate and the today-dated-bar check of every leg.",
++  "statement": "The sync shall take `today` as the UTC calendar date of the run clock (the real current UTC time unless a clock is injected) once at the start of the run, and use it for the actions gate and the today-dated-bar check of every leg.",
+   "basis": "both"
+  },
+  {
+@@ -589,9 +589,8 @@
+  {
+   "id": "JDL-094",
+   "kind": "arithmetic",
+-  "statement": "The fetch end of a collector leg shall be the earlier (ISO string minimum) of the universe `end` and, for a leg whose DECLARED asset_type is crypto (any provider), the end-guard `today - 1 day`; with neither, the fetch is open-ended; the universe `end` caps every fetch, first fill and tail refresh alike.",
+-  "basis": "both",
+-  "rationale": "the provider serves the in-progress UTC day; the guard keys on the declared class because a union of provider and suffix tests silently lost the guard for a crypto leg matching neither"
++  "statement": "The fetch end of a collector leg shall be the universe `end`; without one, the fetch is open-ended; the universe `end` caps every fetch, first fill and tail refresh alike.",
++  "basis": "both"
+  },
+  {
+   "id": "JDL-095",
+@@ -629,7 +628,7 @@
+  {
+   "id": "JDL-100",
+   "kind": "ritual",
+-  "statement": "A binance leg shall never sync corporate actions and shall store price_basis `split_adjusted` with volume basis `raw`, whatever its asset's declared class; whether it is end-guarded follows JDL-094 (the declared class).",
++  "statement": "A binance leg shall never sync corporate actions and shall store price_basis `split_adjusted` with volume basis `raw`, whatever its asset's declared class.",
+   "basis": "both"
+  },
+  {
+@@ -868,7 +867,7 @@
+  {
+   "id": "JDL-136",
+   "kind": "cli",
+-  "statement": "`universe [--universe PATH]` shall print, per asset, `{name} ({asset_class}, {currency}, threshold {threshold as float})` plus ` [disabled]` for a disabled asset, then per source `  {provider}: {path or symbol}` plus ` [disabled]` for a disabled source plus ` - {note}` when a note exists, and exit 0.",
++  "statement": "`universe [--universe PATH]` shall print, per asset, `{name} ({asset_class}, {currency}, threshold {threshold as float})`, then per source `  {provider}: {path or symbol}` plus ` [disabled]` for a disabled source plus ` - {note}` when a note exists, and exit 0.",
+   "basis": "logic"
+  },
+  {
+
+--- kit_ref/uml/sync_leg.puml
++++ D5/uml/sync_leg.puml
+@@ -13,7 +13,7 @@
+   window (JDL-093, JDL-094):
+   start = universe start while the series is empty,
+   else the oldest of the newest tail stored dates;
+-  end = min(universe end, today - 1 day when the DECLARED class is crypto)
++  end = universe end
+ end note
+ opt leg is actions-eligible: provider eodhd and declared asset_type is not crypto
+   SyncRunner -> ActionsStore : last_updated(symbol)
+
+--- kit_ref/uml/sync_run.puml
++++ D5/uml/sync_run.puml
+@@ -22,7 +22,7 @@
+ note right of SyncRunner
+   tail >= 1 checked first (JDL-087); today = UTC date of the run clock (JDL-088);
+   store = --store or defaults.store (JDL-089); legs = enabled asset x enabled source,
+-  filtered, in universe order (JDL-084); bad filter or empty selection is a SyncError (JDL-085)
++  filtered by provider, in universe order (JDL-084); bad filter or empty selection is a SyncError (JDL-085)
+ end note
+ alt dry run
+   SyncRunner -> ParquetStore : recent_dates(exchange, symbol, tail)

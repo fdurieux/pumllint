@@ -813,6 +813,97 @@ propagate as drawn and are attenuated by role as corrected, and on D4:
 as drawn there is no edge from a wrong test to the code, while as
 corrected the suite pulls the code with it.
 
+## Degrading the kit: the results (2026-10-29)
+
+*Dated addition. The pre-registration's Results section
+(`recreate_experiment/degradation-2026-10-28/PREREGISTRATION.md`) is the
+record; this is the reading. The plant bundle, hidden while the agents
+worked, is committed beside it and reproduces the hash pushed before the
+first rebuild.*
+
+**What ran.** Five degraded copies of the kit, three planted defects
+each, and the committed kit as the control. Every defect has a mutant: a
+copy of the original program with that one defect built in. A rebuild's
+output on the scenarios where the mutant differs can then be called
+ORIGINAL (the original's bytes), PLANTED (the mutant's) or OTHER. For
+the half hour six fresh agents worked, the original program, its
+reference outputs and the plant were encrypted and off the disk.
+
+**What reached the code.** Six of the fifteen defects:
+
+- the three wrong values planted in every layer: a store directory name,
+  a float32 price division and an int32 volume;
+- a wrong message wording planted in the suite alone;
+- two omissions planted in every layer: the crypto end-guard and a
+  listing marker.
+
+The other nine did not: the defects in the diagrams alone, those in the
+prose layers with the suite intact, an omission and a loosening in the
+suite alone, and an omission whose rule survived in a help text and in
+another requirement. Nothing else moved. The control, and the two arms
+where nothing propagated, reproduce 147 of the 157 reference artefacts,
+one more than the best earlier rebuild. Every degraded arm differs from
+the reference exactly where its propagated defects reach.
+
+**Why.** The kit's README ranks its layers: the suite first, then the
+requirements, the contracts, the decision tables and vocabulary, the
+diagrams last. All fifteen outcomes are what that rule gives: the code
+took each behaviour from the highest-ranked layer that stated it.
+
+- A defect in a low layer lost to a correct higher one.
+- A wrong value in the suite won.
+- An omission from the suite lost to the requirement that still stated
+  the rule.
+
+Three agents cite the rule in the entry that decided the outcome. No
+agent iterated its way toward the suite: every first test run was green.
+
+**What the gates saw.**
+
+- **The arm's own suite.** All six propagated defects passed it (258 of
+  258 cases in D3, 256 of 256 in D4 and D5), and all six fail the
+  pristine suite.
+- **Calibration**, the degraded suite run against the original program
+  before any rebuild, flagged the two kits whose suites carried wrong
+  values (17 and 4 failures).
+- **The trace gate** flagged a requirement left without its only
+  scenario.
+- **The decision-table check** flagged the deleted end-guard rows.
+
+One propagated omission, the listing marker, passed every gate and its
+own suite; only the independent suite saw it.
+
+**What the agents noticed.** Three agents named a planted contradiction
+outright, and each followed the layer the rule ranks higher: the bar-date
+time zone (D2), a message wording (D4) and the end-guard (D5). The D5
+agent found four leftover traces of the deleted guard, one of them a
+fixture comment the plant missed, and still built no guard: the
+requirement outranks them all. No agent remarked on the diagram-only
+defects, nor on those planted consistently everywhere.
+
+**Against the expectations.** Six of seven held. The D3 expectation
+split: one of its three wrong values, the int32 volume, matched the
+mutant exactly on eight artefacts. On four others it added a NumPy
+warning to the error stream that the mutant does not print. The model's
+corrected reading predicted better on three arms and tied on two; the
+reading as drawn won none. Two refinements go back to the model:
+
+- the suite pulls the code through the declared precedence, not through
+  failing runs;
+- an omission was reproduced literally and recorded, not filled by
+  invention.
+
+**One error in the pre-registration.** It claimed that deleting a rule
+leaves the trace gate untouched, because no requirement id is removed.
+Deleting a requirement's only scenario trips it.
+
+**Bounds.** One rebuild per arm, and one session that planted and
+graded. The agents' context carried the session's project notes from a
+cache after the files had left the disk; those notes state one of the
+fifteen defects, which its own kit stated too. Five agents also reported
+inconsistencies already present in the committed kit; the Results list
+them for the kit's owner.
+
 ## What goes back to J-F
 
 Findings, never changes: `jef-data export` on an absent series exits

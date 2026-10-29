@@ -1,0 +1,11 @@
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -421,7 +421,7 @@
+         help="re-derive main OHLCV from *_raw + stored splits (offline, "
+              "idempotent; also the repair path)",
+     )
+-    adj.add_argument("--symbol", required=True)
++    adj.add_argument("--ticker", dest="symbol", required=True)
+     adj.add_argument("--exchange", default="eodhd")
+     adj.add_argument("--store", default="data")
+     adj.set_defaults(func=cmd_adjust)

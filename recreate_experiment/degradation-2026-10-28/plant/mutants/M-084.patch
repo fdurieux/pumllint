@@ -1,0 +1,11 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -81,7 +81,7 @@
+ 
+     legs = []
+     for asset in universe["assets"]:
+-        if not asset["enabled"] or (assets and asset["name"] not in assets):
++        if not asset["enabled"]:
+             continue
+         for source in asset["sources"]:
+             if not source["enabled"] or (

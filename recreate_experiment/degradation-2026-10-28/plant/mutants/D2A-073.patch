@@ -1,0 +1,11 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -441,7 +441,7 @@
+     upcast then happens inside the seam's clean block, identically for
+     both paths.
+     """
+-    volume = df["volume"].astype(np.float64)
++    df = df[(df["volume"] != 0) & df[["open", "high", "low", "close", "volume", "adjusted_close"]].notna().all(axis=1)]; volume = df["volume"].astype(np.float64)
+     finite = np.isfinite(volume.to_numpy())
+     if len(volume) and finite.all() and (volume == np.floor(volume)).all():
+         volume = volume.astype("int64")

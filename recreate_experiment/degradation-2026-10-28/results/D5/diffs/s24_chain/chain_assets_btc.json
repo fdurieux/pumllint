@@ -1,0 +1,20 @@
+{
+ "calls": [
+  "curl -s /task",
+  "python3 -c import json,sys; c=json.loads(sys.argv[1])[\"Containers\"][0]; print(c.get(\"ImageDigest\") or c.get(\"ImageID\") or \"unknown\") ",
+  "python3 -c import json,sys; l=json.loads(sys.argv[1])[\"Limits\"]; print(l[\"CPU\"], l[\"Memory\"] / 1024) ",
+  "aws s3 sync s3://test-bucket/store/ data/ --only-show-errors",
+  "jef-data sync --asset BTC --store data --summary-json out/<date>/.diagnostics/sync.json",
+  "python3 -m jef.events emit --stage sync --rc 0 --tN <epoch> --tN <epoch> --run-date <date> --out <work>/s24_chain-assets_btc-events/<runstamp>-sync.jsonl",
+  "jef-data status --asset BTC --store data --json",
+  "python3 -m jef.events emit --stage status --rc 0 --tN <epoch> --tN <epoch> --run-date <date> --out <work>/s24_chain-assets_btc-events/<runstamp>-status.jsonl",
+  "jef-binning --asset BTC --store data --counter-start latest --counter-end latest --output-dir out/<date>/BTC",
+  "python3 -m jef.events emit --stage binning --rc 0 --tN <epoch> --tN <epoch> --run-date <date> --out <work>/s24_chain-assets_btc-events/<runstamp>-binning.jsonl --asset BTC",
+  "aws s3 sync data/ s3://test-bucket/store/ --only-show-errors",
+  "aws s3 sync out/<date>/ s3://test-bucket/runs/<date>/ --only-show-errors",
+  "aws s3 cp - s3://test-bucket/runs/<date>/image_digest.txt --only-show-errors"
+ ],
+ "exit": 0,
+ "stderr_tail": "",
+ "stdout": "== jef daily <date> assets: BTC\nWARN: ledger emit failure, stage sync (telemetry only)\nWARN: no ledger lines for stage sync, nothing to put\nWARN: ledger emit failure, stage status (telemetry only)\nWARN: no ledger lines for stage status, nothing to put\nWARN: ledger emit failure, stage binning (telemetry only)\nWARN: no ledger lines for stage binning, nothing to put\n== green (unknown)\nWARN: no store at data/market_data, dashboard publish skipped\n"
+}

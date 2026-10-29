@@ -1,0 +1,172 @@
+
+--- kit_ref/MANIFEST.sha256
++++ D2/MANIFEST.sha256
+@@ -18,14 +18,14 @@
+ 3dfa1216628cfcbc5647470620bd0ca71a01d11949224e8eafcd1d8c65838281  contracts/externals/dashboard.sh
+ 1b166b610b51dd2aca28438e71ff5e2d79ddf3e5df4cf69d91de94ebe512a7d3  contracts/externals/events.sh
+ 23ff4ef77b9f6e7bb318a6d201980a754eacea93c704fc9364bb862afe476fc0  contracts/fixtures.md
+-ce40235645a8e7f22f0337235ecd3940f5de7ee9f85b5092992c09eb6bd72074  contracts/glossary.md
++661a9521d3a255f939762692eec1cfe5330cf215b93106108d5c5200d288c215  contracts/glossary.md
+ 49b34465af625895fa9fd46f32e052e9f81a097e326f7fabaf09696b3d689191  contracts/leg.md
+ 12f26afdb313c8ae19301b3eeb60e24a09de25fa2a41849cd0106edc39001257  contracts/pins.md
+ dff39bd7b54d10069503b69a7222110d5d697b55f0ab42383c07e2ac518ba4dd  contracts/refusals.md
+-26f941e31b0e0cc50192db6e37a662c2028dde9752e83fc74bcef0f1e1256f03  contracts/seam_frame.md
++89315ac51c5489b29075444e082e497c83a93871ca23906b5d20c871148aa887  contracts/seam_frame.md
+ c41d54eb695fa8f911e02b6f9f53d0e4dcf92bb7d2c58b19393efc515cf66966  contracts/status.example.json
+ e021696335eaa401741c38617271cbb625758ff73042114362e67d3e3780e883  contracts/status.schema.json
+-b8aaa0c92c3b54c4cfde3954993a9323710c3627ed18365400ee32c9e27dda11  contracts/store.md
++c654e42670fffe2a5251f79c68fdcedf453680959a3557edb5df6cc6e4f5dc5f  contracts/store.md
+ 40331610993c3fef079d47a30dc21ad35910e55109b5fb8bd95fa3f48b137a38  contracts/sync_summary.example.json
+ e14bcd7a411e32fcd80c5c2210542527df867fd07ccbd4e24ecbe07933177c37  contracts/sync_summary.schema.json
+ 3bfd82ca66a9fe0567615ddd7932763555489ccf80dd3f3cc10adb4166478d8b  contracts/universe.toml
+@@ -195,7 +195,7 @@
+ 347ca4a1077ccf11931d83e3b0055686020c2d2df70f2f4bdebda5f0289edd98  features/sync.feature
+ aabaf8620a4585501b96ee95cd7b8cf08f2ca4ee190193dce4803c6fb9e0602f  features/universe.feature
+ 041ff617504eb99f99b363de968f539d337d92df947b43f4a24c0fe003c46bd1  pumllint.toml
+-1f1781573ff53fffb1834e118f8cf88be8a7b6810557a31fade33fb9f89c948c  requirements.json
++4a13060f53b59910cb06130d994e0b200b08cf431a85c76e1688ab328a04a43a  requirements.json
+ 2771f8e8addaf6a69e442cf3c093e38023c6628f9d488d1c761a29f134079646  tools/manifest.py
+ fe85ac1d743a210bbe91e5235205cb0879507e753b243201fe2de22f5e4b420b  uml/basis_and_adjustment.puml
+ 05563913813a77e99ad1ac1ad1ad7c1bf4105efb2e45e92b5f3720c6bd5a8c28  uml/component.puml
+
+--- kit_ref/contracts/glossary.md
++++ D2/contracts/glossary.md
+@@ -52,7 +52,7 @@
+ | re-adjust | Re-deriving a raw-basis series' main OHLCV from its raw columns with the stored splits (`adjust`, `load`, raw sync legs). | store.md §6, JDL-069 |
+ | overwrite | Replacing a whole series with a CSV's rows (`import-csv`, yahoo-csv legs). | store.md §6, JDL-070 |
+ | normalise | Turning a user-typed symbol into EODHD's canonical `TICKER.EXCHANGE` (`aapl` -> `AAPL.US`, `btc/usd` -> `BTC-USD.CC`). | collectors.md §2 |
+-| dry run | `sync --dry-run`: the plan, one line per leg from local state only; no collector, no write. | JDL-104, JDL-105 |
++| dry run | `sync --dry-run`: the plan, one line per leg from local state only; no write. | JDL-104, JDL-105 |
+ | plan | The dry run's per-leg line: the action (`sync-actions + load`, `load`, `import`) and the window. | JDL-105 |
+ | summary document | The JSON `sync --summary-json` writes after every run that returns: totals, `ok`, one object per leg with its revisions. | sync_summary.schema.json, JDL-106 |
+ | seam frame | The export projection of a series: `Date, Open, High, Low, Close, Adj Close, Volume`, the frame the binning reads; `export` writes it, `differential` compares it. | seam_frame.md |
+
+--- kit_ref/contracts/seam_frame.md
++++ D2/contracts/seam_frame.md
+@@ -21,9 +21,9 @@
+ | 6 | `Adj Close` | float64 | `adjusted_close` (the provider's splits+dividends close) |
+ | 7 | `Volume` | int64 **or** float64 | `volume` (the adjusted main column) |
+ 
+-* Rows: exactly the stored rows of the series, in stored order (ascending
+-  `timestamp`, store.md §5), index `0..n-1`. Nothing is dropped, filtered,
+-  re-sorted or de-duplicated here.
++* Rows: the usable stored rows of the series, in stored order (ascending
++  `timestamp`, store.md §5), index `0..n-1`. Nothing is re-sorted or
++  de-duplicated here.
+ * `Volume` dtype rule (JDL-072): int64 when the series has at least
+   one row and **every** volume is finite and has no fractional part; otherwise
+   float64 with the values untouched. One volume of `99999.99999999999` (see the
+@@ -76,8 +76,8 @@
+ 
+ | Step | Cell | Value (exact float64 repr) |
+ |---|---|---|
+-| store | `timestamp` | `1704153600` (Unix **seconds** of 2024-01-02T00:00Z, store.md §3) |
+-| store | `datetime` | `2024-01-02 00:00:00+00:00` |
++| store | `timestamp` | `1704171600` (Unix **seconds** of 2024-01-02T00:00 America/New_York, store.md §3) |
++| store | `datetime` | `2024-01-02 05:00:00+00:00` |
+ | store | `open_raw`, `high_raw`, `low_raw`, `close_raw` | `207.9`, `212.1`, `205.8`, `210.0` |
+ | store | `volume_raw` | 100000 / 10.5 = `9523.809523809523` |
+ | store | `cumulative_split_factor` | `10.5` |
+@@ -130,7 +130,7 @@
+ 
+ The consumer of this frame lives outside the program (JDL-074). As
+ the validation notes announce, it sorts by date, drops unparseable dates,
+-drops zero-volume rows and drops any row with a NaN. The program does **not**
+-apply this policy anywhere in the export; the status command emulates the
+-zero-volume/NaN drop for its resolution and continuity measurements only
++drops zero-volume rows and drops any row with a NaN. The program applies this
++policy where it needs usable rows; the status command emulates the
++zero-volume/NaN drop for its resolution and continuity measurements
+ (status requirements JDL-122, JDL-120).
+
+--- kit_ref/contracts/store.md
++++ D2/contracts/store.md
+@@ -52,8 +52,8 @@
+ 
+ | # | column | Parquet type | read back as (pandas 3.0.5) | meaning |
+ |---|---|---|---|---|
+-| 1 | `timestamp` | int64 | int64 | Unix epoch **seconds** of the session's 00:00 UTC (see note) |
+-| 2 | `datetime` | timestamp(ms, tz=UTC) | datetime64[ms, UTC] | the session's 00:00 UTC instant |
++| 1 | `timestamp` | int64 | int64 | Unix epoch **seconds** of the session's 00:00 America/New_York (see note) |
++| 2 | `datetime` | timestamp(ms, tz=UTC) | datetime64[ms, UTC] | the session's 00:00 America/New_York instant |
+ | 3 | `open` | double | float64 | split-adjusted open (adjustment.md) |
+ | 4 | `high` | double | float64 | split-adjusted high |
+ | 5 | `low` | double | float64 | split-adjusted low |
+@@ -77,7 +77,7 @@
+ **Timestamp note (JDL-060).** Bar dates are parsed with the format
+ inferred from the first bar; for date-only text the pinned pandas parses at
+ microsecond resolution, and the stored `timestamp` is that microsecond count
+-integer-divided by 10^6, i.e. Unix **seconds** (2024-01-02 → `1704153600`),
++integer-divided by 10^6, i.e. Unix **seconds** (2024-01-02 → `1704171600`),
+ although the column is documented upstream as milliseconds. `datetime` is the
+ same instant at millisecond resolution. A date not in the first bar's format is
+ a refusal (JDL-061): `unparseable dates cannot be stored: [...]` (at
+@@ -97,7 +97,7 @@
+   `asset_type` = declared, `asset_subtype` = `""`, `currency` = the leg's,
+   `price_basis` = resolved basis.
+ * A bar date that carries a time of day keeps it (`2024-01-02 10:30:00` →
+-  `datetime` 10:30 UTC, `timestamp` 1704191400); the program never truncates
++  `datetime` 10:30 America/New_York, `timestamp` 1704209400); the program never truncates
+   to midnight itself.
+ 
+ ## 5. Read semantics (JDL-063, JDL-064)
+
+--- kit_ref/requirements.json
++++ D2/requirements.json
+@@ -373,7 +373,7 @@
+  {
+   "id": "JDL-060",
+   "kind": "arithmetic",
+-  "statement": "When bars are stored, each bar's `date` string shall be parsed as a UTC instant (format inferred from the first bar; a date-only string gives that day's 00:00 UTC, a time of day if present is kept, never truncated); `datetime` shall hold it at millisecond resolution, and `timestamp` shall hold the Unix epoch in whole SECONDS (e.g. 2024-01-02 -> 1704153600) - the value the pinned environment produces for date-only strings, despite the column being documented as milliseconds.",
++  "statement": "When bars are stored, each bar's `date` string shall be parsed as an America/New_York instant (format inferred from the first bar; a date-only string gives that day's 00:00 America/New_York, a time of day if present is kept, never truncated); `datetime` shall hold it at millisecond resolution, and `timestamp` shall hold the Unix epoch in whole SECONDS (e.g. 2024-01-02 -> 1704171600) - the value the pinned environment produces for date-only strings, despite the column being documented as milliseconds.",
+   "basis": "logic"
+  },
+  {
+@@ -443,7 +443,7 @@
+  {
+   "id": "JDL-071",
+   "kind": "contract",
+-  "statement": "The exported frame shall have exactly the columns Date, Open, High, Low, Close, Adj Close, Volume, one row per stored row in stored order, with Date = the UTC date of `datetime` as `YYYY-MM-DD` text, Open/High/Low/Close = the adjusted main columns, Adj Close = `adjusted_close`, all float64.",
++  "statement": "The exported frame shall have exactly the columns Date, Open, High, Low, Close, Adj Close, Volume, one row per usable stored row in stored order, with Date = the UTC date of `datetime` as `YYYY-MM-DD` text, Open/High/Low/Close = the adjusted main columns, Adj Close = `adjusted_close`, all float64.",
+   "basis": "both"
+  },
+  {
+@@ -456,14 +456,14 @@
+  {
+   "id": "JDL-073",
+   "kind": "contract",
+-  "statement": "The export shall pass every stored row through, zero-volume and NaN rows included, and shall apply no load policy of its own.",
++  "statement": "The export shall pass every usable stored row through.",
+   "basis": "both",
+-  "rationale": "the seam owns the zero-volume/NaN drop policy"
++  "rationale": "the seam owns the load policy"
+  },
+  {
+   "id": "JDL-074",
+   "kind": "contract",
+-  "statement": "The downstream seam that consumes the exported frame (outside this program) applies the load policy the validation notes announce: it sorts by date, drops rows whose Date does not parse, drops zero-volume rows and drops rows with a NaN in any column; this program implements that policy nowhere except where status emulates the zero-volume and NaN drop (JDL-122, JDL-120).",
++  "statement": "The downstream seam that consumes the exported frame (outside this program) applies the load policy the validation notes announce: it sorts by date, drops rows whose Date does not parse, drops zero-volume rows and drops rows with a NaN in any column; this program applies that policy where it needs usable rows, as status does for the zero-volume and NaN drop (JDL-122, JDL-120).",
+   "basis": "prose"
+  },
+  {
+@@ -642,9 +642,8 @@
+  {
+   "id": "JDL-102",
+   "kind": "ritual",
+-  "statement": "The sync shall construct a collector only when a non-dry-run leg first needs that provider, at most once per provider per run (an injected collector is always used instead), shall construct the EODHD collector with the `--base-url` override when given, and shall close every collector it constructed after the last leg; a failed EODHD construction (no key) fails each eodhd leg in turn without affecting other legs.",
+-  "basis": "both",
+-  "rationale": "a CSV-only or --dry-run invocation demands no key"
++  "statement": "The sync shall construct a collector at most once per provider per run (an injected collector is always used instead), shall construct the EODHD collector with the `--base-url` override when given, and shall close every collector it constructed after the last leg; a failed EODHD construction (no key) fails each eodhd leg in turn without affecting other legs.",
++  "basis": "both"
+  },
+  {
+   "id": "JDL-103",
+@@ -655,7 +654,7 @@
+  {
+   "id": "JDL-104",
+   "kind": "ritual",
+-  "statement": "When the sync runs as a dry run, it shall construct no collector, contact no provider and write nothing, emit `plan for store {store path!r} ({n} leg(s)):` then one line per leg of two spaces plus the plan description of JDL-105, and return every leg as ok with detail `planned` and the run ok.",
++  "statement": "When the sync runs as a dry run, it shall contact no provider and write nothing, emit `plan for store {store path!r} ({n} leg(s)):` then one line per leg of two spaces plus the plan description of JDL-105, and return every leg as ok with detail `planned` and the run ok.",
+   "basis": "both",
+   "rationale": "plans from local store state, so it needs neither network nor key"
+  },

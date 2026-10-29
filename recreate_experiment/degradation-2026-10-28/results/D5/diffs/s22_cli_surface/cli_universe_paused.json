@@ -1,0 +1,10 @@
+{
+ "argv": [
+  "universe",
+  "--universe",
+  "<inputs>/universes/paused_tlt.toml"
+ ],
+ "exit": 0,
+ "stderr": "",
+ "stdout": "TLT (bond_etf, USD, threshold -0.05)\n  eodhd: TLT.US\nBTC (crypto, USD, threshold -0.05)\n  eodhd: BTC-USD.CC\n  binance: BTCUSDT\n"
+}

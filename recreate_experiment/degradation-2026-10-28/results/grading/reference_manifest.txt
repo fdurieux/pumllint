@@ -1,0 +1,1 @@
+reference re-run: 157 artefacts; 152 of 157 match the frozen manifest; differ: ['s10_aapl_split/actions_AAPL.US.json', 's22_cli_surface/cli_dry_run_packaged.json', 's23_cli_on_store/cli_status_json_now.json', 's23_cli_on_store/cli_status_table.json', 's24_chain/chain_no_bucket.json']

@@ -1150,6 +1150,31 @@ list and license posture live in § Settled questions.
   - **Expectations.** Frozen per arm under two readings of the model, as
     drawn and as corrected.
   Queues nothing; changes no product behaviour.*
+  *2026-10-29: the six arms graded (the PR carrying this line; the
+  pre-registration's Results). The plant bundle, committed as `plant/`,
+  reproduces the hash pushed before the first rebuild.
+  - **Propagation.** Six of fifteen defects reached the code: D3's three
+    consistent wrong values, D4's suite-only W, and D5's end-guard and
+    ` [disabled]` omissions. All six are concealed by the arm's own suite
+    and caught by the pristine one. The nine others were attenuated,
+    among them every D1 diagram defect and every D2 prose defect.
+  - **The rule.** Every outcome is the kit's precedence rule: the code
+    takes each behaviour from the highest-ranked layer that states it. No
+    rebuild iterated toward the suite; every first run was green.
+  - **Collateral.** None: each degraded arm differs from the reference
+    exactly on its propagated defects' observing sets. C reproduces 147
+    of 157 (K2: 146).
+  - **Gates.** No gate sees D1 or D2. Calibration sees D3 and D4; trace
+    and the DMN check catch one M each; D5's ` [disabled]` passed every
+    gate.
+  - **Expectations.** X1, X2 and X4–X7 held; X3 split (D3-W3: 8 PLANTED
+    and 4 OTHER, a NumPy warning on stderr). The corrected reading won
+    D1, D3 and D4; D2 and D5 tied.
+  - **Corrections.** Refuted: "an M leaves the trace gate untouched".
+    Found: an isolation bound, both CLAUDE.md files in every agent's
+    context from the session cache. They state one defect, D2-M's, which
+    its kit states too.
+  Queues nothing; changes no product behaviour.*
 
 ## Settled questions (decision records — don't re-litigate without new evidence)
 

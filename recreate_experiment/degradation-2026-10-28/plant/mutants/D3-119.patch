@@ -1,0 +1,11 @@
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -126,7 +126,7 @@
+     if not best:
+         return None
+     dates = frame["datetime"].dt.date.tolist()
+-    return best, dates[best_end - best + 1], dates[best_end]
++    return (dates[best_end] - dates[best_end - best + 1]).days + 1, dates[best_end - best + 1], dates[best_end]
+ 
+ 
+ def largest_post_seam_gap(frame, asset_type):

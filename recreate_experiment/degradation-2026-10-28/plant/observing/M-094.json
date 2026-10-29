@@ -1,0 +1,18 @@
+{
+ "observing": [
+  "s13_crypto_guard/export_eodhd_BTC-USD.CC.frame.csv",
+  "s13_crypto_guard/stored_eodhd_BTC-USD.CC.columns.txt",
+  "s13_crypto_guard/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s13_crypto_guard/sync_out.txt",
+  "s13_crypto_guard/sync_summary.json",
+  "s16_zero_volume/export_eodhd_BTC-USD.CC.frame.csv",
+  "s16_zero_volume/status.json",
+  "s16_zero_volume/stored_eodhd_BTC-USD.CC.columns.txt",
+  "s16_zero_volume/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s16_zero_volume/sync_out.txt",
+  "s16_zero_volume/sync_summary.json",
+  "s19_dry_run/sync_out.txt",
+  "s22_cli_surface/cli_dry_run_packaged.json"
+ ],
+ "outside_k2_identical": []
+}

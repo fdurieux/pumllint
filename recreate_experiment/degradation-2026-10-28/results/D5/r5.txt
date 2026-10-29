@@ -1,0 +1,853 @@
+..FF.............F..FFF................................................. [ 27%]
+.......FF..F..................F.....F.................FFF...........F... [ 55%]
+........................................................................ [ 83%]
+........FFFF....................F.........                               [100%]
+=================================== FAILURES ===================================
+_ test_an_eodhd_crypto_series_is_stored_as_served_endguarded_at_the_previous_utc_day _
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_an_eodhd_crypto_series_is_stored_as_served_endguarded_at_the_previous_utc_day>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  ZERO eodhd/ZERO-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/ZERO-USD.CC {'fmt': 'js.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_an_eodhd_crypto_series_is0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_the_declared_class_never_the_cc_suffix_decides_basis_actions_and_guard __
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_the_declared_class_never_the_cc_suffix_decides_basis_actions_and_guard>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar...ne, 'asset_type': 'stock', 'currency': 'USD', 'start': None, 'end': None, 'actions': True}], chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...one, 'asset_type': 'stock', 'currency': 'USD', 'start': None, 'end': None, 'actions': True}], chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  WEIRD eodhd/WEIRD.XX [eodhd]: CollectorError: no recorded fixture for GET /api/eod/WEIRD.XX {'fmt': 'json', .../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_the_declared_class_never_0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...one, 'asset_type': 'stock', 'currency': 'USD', 'start': None, 'end': None, 'actions': True}], chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_a_bar_endpoint_answering_something_other_than_a_json_list_fails_the_leg[binance.toml-binance-binance_notlist-2024-07-01T00:30:00Z-LIM-CollectorError: klines LIMUSDT: expected a JSON list] _
+
+fixturefunc = <function leg_detail at 0x7f52798b9bc0>
+request = <FixtureRequest for <Function test_a_bar_endpoint_answering_something_other_than_a_json_list_fails_the_leg[binance.toml-binance-binance_notlist-2024-07-01T00:30:00Z-LIM-CollectorError: klines LIMUSDT: expected a JSON list]>>
+kwargs = {'n': 1, 'text': 'CollectorError: klines LIMUSDT: expected a JSON list', 'ctx': namespace(tmp=PosixPath('/tmp/claude-0... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+n = 1, text = 'CollectorError: klines LIMUSDT: expected a JSON list'
+
+    @then(parsers.parse('the detail of leg {n:d} is "{text}"'))
+    def leg_detail(ctx, n, text):
+        assert ctx.error is None, ctx.error
+>       assert ctx.results[n - 1]["detail"] == text, ctx.results[n - 1]["detail"]
+E       AssertionError: CollectorError: no recorded fixture for GET /api/v3/klines {'interval': '1d', 'limit': '1000', 'symbol': 'LIMUSDT'}
+E         known fixtures:
+E           /api/v3/klines {'endTime': '1719791999999', 'interval': '1d', 'limit': '1000', 'symbol': 'LIMUSDT'}
+E       assert "CollectorErr...': 'LIMUSDT'}" == 'CollectorErr...d a JSON list'
+E         
+E         - CollectorError: klines LIMUSDT: expected a JSON list
+E         + CollectorError: no recorded fixture for GET /api/v3/klines {'interval': '1d', 'limit': '1000', 'symbol': 'LIMUSDT'}
+E         + known fixtures:
+E         +   /api/v3/klines {'endTime': '1719791999999', 'interval': '1d', 'limit': '1000', 'symbol': 'LIMUSDT'}
+
+features/steps/conftest.py:329: AssertionError
+___ test_binance_klines_become_preadjusted_bars_dated_by_their_utc_open_time ___
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_binance_klines_become_preadjusted_bars_dated_by_their_utc_open_time>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  PAIR eodhd/PAIR-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/PAIR-USD.CC {'fmt': 'js.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_binance_klines_become_pre0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+___ test_binance_pages_ascending_from_the_declared_start_until_a_short_page ____
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_binance_pages_ascending_from_the_declared_start_until_a_short_page>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  PGS binance/PGSUSDT [binance]: CollectorError: no recorded fixture for GET /api/v3/klines {'interval': '1d',.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_binance_pages_ascending_f0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window _
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  LIM binance/LIMUSDT [binance]: CollectorError: no recorded fixture for GET /api/v3/klines {'interval': '1d',.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_a_first_fill_without_a_st0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r3-zero.toml-eodhd-zero/run1-2024-02-10T08:00:00Z-eodhd-ZERO-USD.CC-split_adjusted-40 bar(s)] _
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r3-zero.toml-eodhd-zero/run1-2024-02-10T08:00:00Z-eodhd-ZERO-USD.CC-split_adjusted-40 bar(s)]>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  ZERO eodhd/ZERO-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/ZERO-USD.CC {'fmt': 'js.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_the_provider_and_the_decl2/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r4-pair.toml-binance-pair/at-2024-01-21T06:00:00Z-binance-PAIRUSDT-split_adjusted-20 bar(s)] _
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r4-pair.toml-binance-pair/at-2024-01-21T06:00:00Z-binance-PAIRUSDT-split_adjusted-20 bar(s)]>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  PAIR binance/PAIRUSDT [binance]: CollectorError: no recorded fixture for GET /api/v3/klines {'interval': '1d.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_the_provider_and_the_decl3/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_volume_raw_is_rawized_only_for_eodhd_rawbasis_series[r3-zero.toml-zero/run1-2024-02-10T08:00:00Z-ZERO-USD.CC-2024-01-09-3080.0] _
+
+fixturefunc = <function stored_cells at 0x7f52798bad40>
+request = <FixtureRequest for <Function test_volume_raw_is_rawized_only_for_eodhd_rawbasis_series[r3-zero.toml-zero/run1-2024-02-10T08:00:00Z-ZERO-USD.CC-2024-01-09-3080.0]>>
+kwargs = {'exchange': 'eodhd', 'symbol': 'ZERO-USD.CC', 'datatable': [['date', 'column', 'value'], ['2024-01-09', 'volume_raw',... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+features/steps/conftest.py:447: in stored_cells
+    days = frame["datetime"].dt.strftime("%Y-%m-%d").tolist()
+           ^^^^^^^^^^^^^^^^^^^^
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/pandas/core/generic.py:6194: in __getattr__
+    return object.__getattribute__(self, name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/pandas/core/accessor.py:230: in __get__
+    return self._accessor(obj)
+           ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+cls = <class 'pandas.core.indexes.accessors.CombinedDatetimelikeProperties'>
+data = Series([], Name: datetime, dtype: object)
+
+    def __new__(cls, data: Series):  # pyright: ignore[reportInconsistentConstructor]
+        # CombinedDatetimelikeProperties isn't really instantiated. Instead
+        # we need to choose which parent (datetime or timedelta) is
+        # appropriate. Since we're checking the dtypes anyway, we'll just
+        # do all the validation here.
+    
+        if not isinstance(data, ABCSeries):
+            raise TypeError(
+                f"cannot convert an object of type {type(data)} to a datetimelike index"
+            )
+    
+        orig = data if isinstance(data.dtype, CategoricalDtype) else None
+        if orig is not None:
+            data = data._constructor(
+                orig.array,
+                name=orig.name,
+                copy=False,
+                dtype=orig._values.categories.dtype,
+                index=orig.index,
+            )
+    
+        if isinstance(data.dtype, ArrowDtype) and data.dtype.kind in "Mm":
+            return ArrowTemporalProperties(data, orig)
+        if lib.is_np_dtype(data.dtype, "M"):
+            return DatetimeProperties(data, orig)
+        elif isinstance(data.dtype, DatetimeTZDtype):
+            return DatetimeProperties(data, orig)
+        elif lib.is_np_dtype(data.dtype, "m"):
+            return TimedeltaProperties(data, orig)
+        elif isinstance(data.dtype, PeriodDtype):
+            return PeriodProperties(data, orig)
+    
+>       raise AttributeError("Can only use .dt accessor with datetimelike values")
+E       AttributeError: Can only use .dt accessor with datetimelike values
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/pandas/core/indexes/accessors.py:698: AttributeError
+_ test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r2-zero.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)] _
+
+fixturefunc = <function sync_log at 0x7f52798b9940>
+request = <FixtureRequest for <Function test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r2-zero.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)]>>
+kwargs = {'docstring': "plan for store '{store}' (1 leg(s)):\n    ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2...etail': 'planned'}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...detail': 'planned'}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+docstring = "plan for store '{store}' (1 leg(s)):\n    ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)"
+
+    @then("the sync log is:")
+    def sync_log(ctx, docstring):
+        assert ctx.error is None, ctx.error
+        expected = render(ctx, docstring).split("\n")
+>       assert ctx.log == expected, "\n".join(ctx.log)
+E       AssertionError: plan for store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_the_fetch_end_is_the_iso_1/store' (1 leg(s)):
+E             ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01)
+E       assert ["plan for st... 2024-01-01)'] == ["plan for st... 2024-02-09)']
+E         
+E         At index 1 diff: '    ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01)' != '    ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)'
+E         Use -v to get more diff
+
+features/steps/conftest.py:318: AssertionError
+__________ test_a_leg_that_is_not_actionseligible_has_no_actions_part __________
+
+fixturefunc = <function run_ok at 0x7f52798b96c0>
+request = <FixtureRequest for <Function test_a_leg_that_is_not_actionseligible_has_no_actions_part>>
+kwargs = {'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/ar... 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+
+    @then("the run is ok")
+    def run_ok(ctx):
+        assert ctx.error is None, ctx.error
+>       assert ctx.ok is True, ctx.log
+E       AssertionError: ["FAILED  ZERO eodhd/ZERO-USD.CC [eodhd]: CollectorError: no recorded fixture for GET /api/eod/ZERO-USD.CC {'fmt': 'js.../2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_a_leg_that_is_not_actions0/store'"]
+E       assert False is True
+E        +  where False = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt..., 'revisions': []}], ok=False, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={}).ok
+
+features/steps/conftest.py:305: AssertionError
+_ test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r2-at-spread_threshold=0.005-0-0] _
+
+fixturefunc = <function totals at 0x7f52798d1300>
+request = <FixtureRequest for <Function test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r2-at-spread_threshold=0.005-0-0]>>
+kwargs = {'a': 0, 'w': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratch...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+a = 0, w = 0
+
+    @then(parsers.parse("the status totals are {a:d} alerts and {w:d} warnings"))
+    def totals(ctx, a, w):
+>       assert (ctx.status["alerts_total"], ctx.status["warnings_total"]) == (a, w), \
+            (ctx.status["alerts_total"], ctx.status["warnings_total"])
+E       AssertionError: (2, 0)
+E       assert (2, 0) == (0, 0)
+E         
+E         At index 0 diff: 2 != 0
+E         Use -v to get more diff
+
+features/steps/conftest.py:639: AssertionError
+_ test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r3-above-spread_threshold=0.005-0-1] _
+
+fixturefunc = <function totals at 0x7f52798d1300>
+request = <FixtureRequest for <Function test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r3-above-spread_threshold=0.005-0-1]>>
+kwargs = {'a': 0, 'w': 1, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratch...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+a = 0, w = 1
+
+    @then(parsers.parse("the status totals are {a:d} alerts and {w:d} warnings"))
+    def totals(ctx, a, w):
+>       assert (ctx.status["alerts_total"], ctx.status["warnings_total"]) == (a, w), \
+            (ctx.status["alerts_total"], ctx.status["warnings_total"])
+E       AssertionError: (2, 0)
+E       assert (2, 0) == (0, 1)
+E         
+E         At index 0 diff: 2 != 0
+E         Use -v to get more diff
+
+features/steps/conftest.py:639: AssertionError
+_ test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r4-above-spread_threshold=0.005, spread_alerts=true-1-0] _
+
+fixturefunc = <function totals at 0x7f52798d1300>
+request = <FixtureRequest for <Function test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r4-above-spread_threshold=0.005, spread_alerts=true-1-0]>>
+kwargs = {'a': 1, 'w': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratch...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+a = 1, w = 0
+
+    @then(parsers.parse("the status totals are {a:d} alerts and {w:d} warnings"))
+    def totals(ctx, a, w):
+>       assert (ctx.status["alerts_total"], ctx.status["warnings_total"]) == (a, w), \
+            (ctx.status["alerts_total"], ctx.status["warnings_total"])
+E       AssertionError: (2, 0)
+E       assert (2, 0) == (1, 0)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+features/steps/conftest.py:639: AssertionError
+______ test_the_listing_marks_paused_assets_switchedoff_sources_and_notes ______
+
+fixturefunc = <function stdout_is at 0x7f52798d16c0>
+request = <FixtureRequest for <Function test_the_listing_marks_paused_assets_switchedoff_sources_and_notes>>
+kwargs = {'docstring': 'SPLT (stock, USD, threshold -0.05)\n  eodhd: SPLT.US\n  yahoo-csv: snap/splt.csv [disabled] - an old sn...ock, USD, threshold -0.05)\n  eodhd: GONE.US\n  binance: GONEUSDT\n', stderr=''), legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...tock, USD, threshold -0.05)\n  eodhd: GONE.US\n  binance: GONEUSDT\n', stderr=''), legs=None, chain=None, extra_env={})
+docstring = 'SPLT (stock, USD, threshold -0.05)\n  eodhd: SPLT.US\n  yahoo-csv: snap/splt.csv [disabled] - an old snapshot\nGONE (stock, USD, threshold -0.05) [disabled]\n  eodhd: GONE.US\n  binance: GONEUSDT'
+
+    @then("stdout is:")
+    def stdout_is(ctx, docstring):
+        want = render(ctx, docstring) + "\n"
+>       assert ctx.proc.stdout == want, ctx.proc.stdout
+E       AssertionError: SPLT (stock, USD, threshold -0.05)
+E           eodhd: SPLT.US
+E           yahoo-csv: snap/splt.csv [disabled] - an old snapshot
+E         GONE (stock, USD, threshold -0.05)
+E           eodhd: GONE.US
+E           binance: GONEUSDT
+E         
+E       assert 'SPLT (stock,...e: GONEUSDT\n' == 'SPLT (stock,...e: GONEUSDT\n'
+E         
+E         Skipping 132 identical leading characters in diff, use -v to show
+E         - old -0.05) [disabled]
+E         + old -0.05)
+E             eodhd: GONE.US
+E             binance: GONEUSDT
+
+features/steps/conftest.py:657: AssertionError
+_ test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[at-spread_threshold=0.005-0-0-0-0.005-0.005-0.5000%-99.75--] _
+
+fixturefunc = <function status_rc at 0x7f52798d0180>
+request = <FixtureRequest for <Function test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[at-spread_threshold=0.005-0-0-0-0.005-0.005-0.5000%-99.75--]>>
+kwargs = {'rc': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+rc = 0
+
+    @then(parsers.parse("the status exit code is {rc:d}"))
+    def status_rc(ctx, rc):
+        assert ctx.error is None, ctx.error
+>       assert ctx.status_rc == rc, ctx.status
+E       AssertionError: {'schema_version': 1, 'store': '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arm.....}], 'pairs': [{'asset': 'PAIR', 'kind': 'cross_venue', 'a': 'eodhd/PAIR-USD.CC', 'b': 'binance/PAIRUSDT', ...}], ...}
+E       assert 1 == 0
+E        +  where 1 = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={}).status_rc
+
+features/steps/conftest.py:576: AssertionError
+_ test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005-0-0-1-0.005501375343835931-0.005-0.5501%-99.7--"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"] _
+
+fixturefunc = <function status_rc at 0x7f52798d0180>
+request = <FixtureRequest for <Function test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promo...DT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"]>>
+kwargs = {'rc': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+rc = 0
+
+    @then(parsers.parse("the status exit code is {rc:d}"))
+    def status_rc(ctx, rc):
+        assert ctx.error is None, ctx.error
+>       assert ctx.status_rc == rc, ctx.status
+E       AssertionError: {'schema_version': 1, 'store': '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arm.....}], 'pairs': [{'asset': 'PAIR', 'kind': 'cross_venue', 'a': 'eodhd/PAIR-USD.CC', 'b': 'binance/PAIRUSDT', ...}], ...}
+E       assert 1 == 0
+E        +  where 1 = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={}).status_rc
+
+features/steps/conftest.py:576: AssertionError
+_ test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005, spread_alerts=true-1-1-0-0.005501375343835931-0.005-0.5501%-99.7-"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"-] _
+
+fixturefunc = <function totals at 0x7f52798d1300>
+request = <FixtureRequest for <Function test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promo...T 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"-]>>
+kwargs = {'a': 1, 'w': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratch...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+a = 1, w = 0
+
+    @then(parsers.parse("the status totals are {a:d} alerts and {w:d} warnings"))
+    def totals(ctx, a, w):
+>       assert (ctx.status["alerts_total"], ctx.status["warnings_total"]) == (a, w), \
+            (ctx.status["alerts_total"], ctx.status["warnings_total"])
+E       AssertionError: (2, 0)
+E       assert (2, 0) == (1, 0)
+E         
+E         At index 0 diff: 2 != 1
+E         Use -v to get more diff
+
+features/steps/conftest.py:639: AssertionError
+_ test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.0056-0-0-0-0.005501375343835931-0.0056-0.5501%-99.7--] _
+
+fixturefunc = <function status_rc at 0x7f52798d0180>
+request = <FixtureRequest for <Function test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.0056-0-0-0-0.005501375343835931-0.0056-0.5501%-99.7--]>>
+kwargs = {'rc': 0, 'ctx': namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab...ot measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={})
+rc = 0
+
+    @then(parsers.parse("the status exit code is {rc:d}"))
+    def status_rc(ctx, rc):
+        assert ctx.error is None, ctx.error
+>       assert ctx.status_rc == rc, ctx.status
+E       AssertionError: {'schema_version': 1, 'store': '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arm.....}], 'pairs': [{'asset': 'PAIR', 'kind': 'cross_venue', 'a': 'eodhd/PAIR-USD.CC', 'b': 'binance/PAIRUSDT', ...}], ...}
+E       assert 1 == 0
+E        +  where 1 = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...not measured']}], 'alerts_total': 2, 'warnings_total': 0}, status_rc=1, proc=None, legs=None, chain=None, extra_env={}).status_rc
+
+features/steps/conftest.py:576: AssertionError
+__________ test_a_dry_run_plans_every_leg_shape_from_local_state_only __________
+
+fixturefunc = <function sync_log at 0x7f52798b9940>
+request = <FixtureRequest for <Function test_a_dry_run_plans_every_leg_shape_from_local_state_only>>
+kwargs = {'docstring': "plan for store '{store}' (5 leg(s)):\n    SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024...etail': 'planned'}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})}
+
+    def call_fixture_func(
+        fixturefunc: _FixtureFunc[FixtureValue], request: FixtureRequest, kwargs
+    ) -> FixtureValue:
+        if inspect.isgeneratorfunction(fixturefunc):
+            fixturefunc = cast(Callable[..., Generator[FixtureValue]], fixturefunc)
+            generator = fixturefunc(**kwargs)
+            try:
+                fixture_result = next(generator)
+            except StopIteration:
+                raise ValueError(f"{request.fixturename} did not yield a value") from None
+            finalizer = functools.partial(_teardown_yield_fixture, fixturefunc, generator)
+            request.addfinalizer(finalizer)
+        else:
+            fixturefunc = cast(Callable[..., FixtureValue], fixturefunc)
+>           fixture_result = fixturefunc(**kwargs)
+                             ^^^^^^^^^^^^^^^^^^^^^
+
+../../../../../rb-e6e4099d/venv/lib/python3.12/site-packages/_pytest/fixtures.py:1005: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+ctx = namespace(tmp=PosixPath('/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt...detail': 'planned'}], ok=True, error=None, status=None, status_rc=None, proc=None, legs=None, chain=None, extra_env={})
+docstring = "plan for store '{store}' (5 leg(s)):\n    SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024-01-02 to 2024...d (first fill from 2024-01-01 to 2024-02-29)\n    PAIR binance/PAIRUSDT: load (first fill, full history to 2024-02-29)"
+
+    @then("the sync log is:")
+    def sync_log(ctx, docstring):
+        assert ctx.error is None, ctx.error
+        expected = render(ctx, docstring).split("\n")
+>       assert ctx.log == expected, "\n".join(ctx.log)
+E       AssertionError: plan for store '/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/lab/grade/arms/D5/pt-pristine/test_a_dry_run_plans_every_leg0/store' (5 leg(s)):
+E             SPLT eodhd/SPLT.US: sync-actions + load (first fill from 2024-01-02 to 2024-01-19)
+E             DIVY eodhd/DIVY.US: sync-actions + load (first fill, full history)
+E             DIVY snap/DIVY: import snap/divy.csv (whole file, idempotent)
+E             PAIR eodhd/PAIR-USD.CC: load (first fill from 2024-01-01)
+E             PAIR binance/PAIRUSDT: load (first fill, full history)
+E       assert ["plan for st...ull history)'] == ["plan for st... 2024-02-29)']
+E         
+E         At index 4 diff: '    PAIR eodhd/PAIR-USD.CC: load (first fill from 2024-01-01)' != '    PAIR eodhd/PAIR-USD.CC: load (first fill from 2024-01-01 to 2024-02-29)'
+E         Use -v to get more diff
+
+features/steps/conftest.py:318: AssertionError
+=========================== short test summary info ============================
+FAILED features/steps/test_features.py::test_an_eodhd_crypto_series_is_stored_as_served_endguarded_at_the_previous_utc_day
+FAILED features/steps/test_features.py::test_the_declared_class_never_the_cc_suffix_decides_basis_actions_and_guard
+FAILED features/steps/test_features.py::test_a_bar_endpoint_answering_something_other_than_a_json_list_fails_the_leg[binance.toml-binance-binance_notlist-2024-07-01T00:30:00Z-LIM-CollectorError: klines LIMUSDT: expected a JSON list]
+FAILED features/steps/test_features.py::test_binance_klines_become_preadjusted_bars_dated_by_their_utc_open_time
+FAILED features/steps/test_features.py::test_binance_pages_ascending_from_the_declared_start_until_a_short_page
+FAILED features/steps/test_features.py::test_a_first_fill_without_a_start_that_lands_on_the_page_limit_says_it_is_a_trailing_window
+FAILED features/steps/test_features.py::test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r3-zero.toml-eodhd-zero/run1-2024-02-10T08:00:00Z-eodhd-ZERO-USD.CC-split_adjusted-40 bar(s)]
+FAILED features/steps/test_features.py::test_the_provider_and_the_declared_class_decide_the_basis_and_the_actions_part[r4-pair.toml-binance-pair/at-2024-01-21T06:00:00Z-binance-PAIRUSDT-split_adjusted-20 bar(s)]
+FAILED features/steps/test_features.py::test_volume_raw_is_rawized_only_for_eodhd_rawbasis_series[r3-zero.toml-zero/run1-2024-02-10T08:00:00Z-ZERO-USD.CC-2024-01-09-3080.0]
+FAILED features/steps/test_features.py::test_the_fetch_end_is_the_iso_minimum_of_the_universe_end_and_the_crypto_endguard[r2-zero.toml-ZERO eodhd/ZERO-USD.CC: load (first fill from 2024-01-01 to 2024-02-09)]
+FAILED features/steps/test_features.py::test_a_leg_that_is_not_actionseligible_has_no_actions_part
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r2-at-spread_threshold=0.005-0-0]
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r3-above-spread_threshold=0.005-0-1]
+FAILED features/steps/test_features.py::test_a_measured_spread_is_always_noted_warns_strictly_above_the_threshold_alerts_when_promoted[r4-above-spread_threshold=0.005, spread_alerts=true-1-0]
+FAILED features/steps/test_features.py::test_the_listing_marks_paused_assets_switchedoff_sources_and_notes
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[at-spread_threshold=0.005-0-0-0-0.005-0.005-0.5000%-99.75--]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005-0-0-1-0.005501375343835931-0.005-0.5501%-99.7--"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.005, spread_alerts=true-1-1-0-0.005501375343835931-0.005-0.5501%-99.7-"cross-venue close spread 0.5501% on 2024-01-20 exceeds 0.5000% (eodhd/PAIR-USD.CC 100.25 vs binance/PAIRUSDT 99.7) - feed problem or venue distress; verify before acting, never trade it (docs/EVALUATION_CROSS_EXCHANGE.md)"-]
+FAILED features/steps/test_features.py::test_the_crossvenue_close_spread_warns_strictly_above_its_threshold_or_alerts_when_promoted[above-spread_threshold=0.0056-0-0-0-0.005501375343835931-0.0056-0.5501%-99.7--]
+FAILED features/steps/test_features.py::test_a_dry_run_plans_every_leg_shape_from_local_state_only
+20 failed, 238 passed in 42.06s

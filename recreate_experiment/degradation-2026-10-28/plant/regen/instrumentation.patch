@@ -1,0 +1,52 @@
+--- a/features/steps/conftest.py	2026-10-29 00:09:43.634781651 +0000
++++ b/features/steps/conftest.py	2026-10-29 00:12:10.409134995 +0000
+@@ -410,7 +410,34 @@
+     return frame, doc["dtypes"]
+ 
+ 
++def _regen_dump(got, name):
++    import os, json, math
++    d = os.environ["REGEN_DIR"]
++    doc = json.loads((FIXTURES / "expected" / f"{name}.json").read_text(encoding="utf-8"))
++    got = got.reset_index(drop=True)
++    rows = []
++    for i in range(len(got)):
++        row = []
++        for c in doc["columns"]:
++            v = got[c].iloc[i]; t = doc["dtypes"][c]
++            if t.startswith("datetime64"):
++                row.append(v.isoformat())
++            elif t == "float64":
++                row.append(float(v))
++            elif t in ("int64", "int32"):
++                row.append(int(v))
++            else:
++                row.append(str(v))
++        rows.append(row)
++    doc["data"] = rows
++    with open(os.path.join(d, "frames.jsonl"), "a", encoding="utf-8") as f:
++        f.write(json.dumps({"name": name, "doc": doc}, allow_nan=True) + "\n")
++
++
+ def _compare_frames(got, name):
++    import os
++    if os.environ.get("REGEN_DIR"):
++        _regen_dump(got, name); return
+     want, dtypes = _expected_frame(name)
+     assert list(got.columns) == list(want.columns), list(got.columns)
+     assert len(got) == len(want), (len(got), len(want))
+@@ -446,6 +473,14 @@
+     frame = adapter().stored_frame(str(ctx.store), exchange, symbol)
+     days = frame["datetime"].dt.strftime("%Y-%m-%d").tolist()
+     header, *rows = datatable
++    import os, json
++    if os.environ.get("REGEN_DIR"):
++        with open(os.path.join(os.environ["REGEN_DIR"], "cells.jsonl"), "a", encoding="utf-8") as f:
++            for day, column, value in rows:
++                cell = frame[column].iloc[days.index(day)]
++                got = str(cell) if column in STRING_COLUMNS else (str(int(cell)) if column == "timestamp" else (cell.isoformat() if column == "datetime" else repr(float(cell))))
++                f.write(json.dumps({"series": f"{exchange}/{symbol}", "day": day, "column": column, "want": value, "got": got}) + "\n")
++        return
+     for day, column, value in rows:
+         assert day in days, f"no stored row dated {day}"
+         cell = frame[column].iloc[days.index(day)]

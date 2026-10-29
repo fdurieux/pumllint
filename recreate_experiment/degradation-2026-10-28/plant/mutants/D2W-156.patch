@@ -1,0 +1,18 @@
+--- a/deploy/daily.sh
++++ b/deploy/daily.sh
+@@ -131,12 +131,12 @@
+ # (docs/EVALUATION_ACTIONS_FRESHNESS.md): sync and status disagreeing
+ # because they asked minutes apart. Run once, tee it; pipefail keeps the
+ # rc. The log now carries JSON where it carried a table.
+-STAGE=status STAGE_T0=$(date +%s); rc=0
++STAGE=health STAGE_T0=$(date +%s); rc=0
+ jef-data status "${FILTERS[@]}" --store "${STORE}" --json \
+     | tee "${DIAG}/status.json" || rc=$?
+-jef_emit status "${rc}" "${STAGE_T0}" "$(date +%s)" \
++jef_emit health "${rc}" "${STAGE_T0}" "$(date +%s)" \
+     $(jef_attach_if_present "${DIAG}/status.json")
+-jef_put status
++jef_put health
+ [[ ${rc} -eq 0 ]] || exit ${rc}
+ 
+ # One ledger object for the stage, one emit per asset (decision 3): the

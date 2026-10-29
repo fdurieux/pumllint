@@ -1,0 +1,24 @@
+D3-W3 s22_cli_surface/cli_differential_csv.json
+  vs reference: exit differs, stdout differs, stderr differs
+  vs mutant D3-072: exit equal, stdout equal, stderr differs
+  vs combined D3-all: exit equal, stdout equal, stderr differs
+  stderr only in the rebuild: <rc>/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast
+  stderr only in the rebuild:   volume_column = volume.astype(np.int32)
+D3-W3 s22_cli_surface/cli_export_aapl.json
+  vs reference: exit differs, stdout differs, stderr differs
+  vs mutant D3-072: exit equal, stdout equal, stderr differs
+  vs combined D3-all: exit equal, stdout equal, stderr differs
+  stderr only in the rebuild: <rc>/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast
+  stderr only in the rebuild:   volume_column = volume.astype(np.int32)
+D3-W3 s23_cli_on_store/cli_differential_tolerance.json
+  vs reference: exit equal, stdout differs, stderr differs
+  vs mutant D3-072: exit equal, stdout equal, stderr differs
+  vs combined D3-all: exit equal, stdout equal, stderr differs
+  stderr only in the rebuild: <rc>/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast
+  stderr only in the rebuild:   volume_column = volume.astype(np.int32)
+D3-W3 s23_cli_on_store/cli_differential_venues.json
+  vs reference: exit equal, stdout differs, stderr differs
+  vs mutant D3-072: exit equal, stdout equal, stderr differs
+  vs combined D3-all: exit equal, stdout equal, stderr differs
+  stderr only in the rebuild: <rc>/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast
+  stderr only in the rebuild:   volume_column = volume.astype(np.int32)

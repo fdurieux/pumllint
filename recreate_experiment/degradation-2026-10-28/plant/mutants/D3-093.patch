@@ -1,0 +1,13 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -149,8 +149,8 @@
+     end = min(ends) if ends else None  # ISO strings order chronologically
+     recents = store.recent_dates(leg["exchange"], leg["symbol"], tail)
+     if not recents:
+-        return leg["start"], end, None
+-    return recents[0].isoformat(), end, recents[-1]
++        return (leg["start"].replace("-", "") if leg["start"] else None), end, None
++    return recents[0].strftime("%Y%m%d"), end, recents[-1]
+ 
+ 
+ def _describe_plan(store, leg, tail, today):

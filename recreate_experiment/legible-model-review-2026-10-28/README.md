@@ -35,6 +35,9 @@ a hypothesis.
 
 ## Next: degrading the kit (proposed, not pre-registered)
 
+*Annotated 2026-10-29: pre-registered 2026-10-28 and graded 2026-10-29 in
+`../degradation-2026-10-28/`; its Results section is the record.*
+
 The review is observational. The open question it leaves (REVIEW.md,
 question 2) is interventional, and the experiment's machinery answers it
 cheaply: plant known defects in the kit, rebuild from the degraded kit,

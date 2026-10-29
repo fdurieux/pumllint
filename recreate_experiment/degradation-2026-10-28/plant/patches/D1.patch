@@ -1,0 +1,69 @@
+
+--- kit_ref/MANIFEST.sha256
++++ D1/MANIFEST.sha256
+@@ -197,11 +197,11 @@
+ 041ff617504eb99f99b363de968f539d337d92df947b43f4a24c0fe003c46bd1  pumllint.toml
+ 1f1781573ff53fffb1834e118f8cf88be8a7b6810557a31fade33fb9f89c948c  requirements.json
+ 2771f8e8addaf6a69e442cf3c093e38023c6628f9d488d1c761a29f134079646  tools/manifest.py
+-fe85ac1d743a210bbe91e5235205cb0879507e753b243201fe2de22f5e4b420b  uml/basis_and_adjustment.puml
++9c0426744cac294707e087c9ba8e50c409cce82f2c95045ec9412f3bddd1fa29  uml/basis_and_adjustment.puml
+ 05563913813a77e99ad1ac1ad1ad7c1bf4105efb2e45e92b5f3720c6bd5a8c28  uml/component.puml
+ ebe1a3a32279d219b5e8d8a3c4b77d0ee4a76d4906bfa42827ac398527e04af0  uml/daily_chain.puml
+ 3eb4406d7a1a68ce355941a817ea019b522dcb41dad3be8d6d35a8d4811db693  uml/data_model.puml
+-b6b7120fd0d4e92709dfa874193c29c90b9d76d6832e041e80802407c51faf53  uml/series_state.puml
++2d78f4d3ea65e792a6fa3379099a0f30ff0cfe973e56cc025b6b181372c8b756  uml/series_state.puml
+ 6997644afef1fefe15f3c5a8fc9b0b10721a02bb9bfbd76cd03ad4d5ce20f166  uml/status_run.puml
+-5e9c7951be2f8619fd979aa265034a84cd6c7e095f5ac6818527d674a97fc646  uml/sync_leg.puml
+-973d9dfa0313484c39d29eb9f5457d9983aabc7759e1e05a9edcff0bd4610d53  uml/sync_run.puml
++55dbd179f24b62508f67e538bcc56ca6b35aa1ed59c12e8832dc870e0f485076  uml/sync_leg.puml
++792dc9e05c44d518f199bc06bcc1ad01bc2d92d74df62b035366dfbd6f11439a  uml/sync_run.puml
+
+--- kit_ref/uml/basis_and_adjustment.puml
++++ D1/uml/basis_and_adjustment.puml
+@@ -24,9 +24,9 @@
+     :raise AdjustmentRefused for the degenerate ratio;
+     stop
+   else (no)
+-    :divide open, high, low and close raw by F;
++    :divide open, high, low and close by F;
+   endif
+-  :multiply volume_raw by F into volume;
++  :multiply volume by F;
+   :write F into cumulative_split_factor;
+ else (no)
+   :copy the raw columns into the mains;
+
+--- kit_ref/uml/series_state.puml
++++ D1/uml/series_state.puml
+@@ -4,7 +4,7 @@
+ Empty --> RawSeries : collector first fill, basis raw, from universe start, capped by end
+ Empty --> PreAdjusted : crypto, binance or CSV first fill, basis split_adjusted
+ RawSeries --> RawSeries : tail refresh reconciles newest-wins inside the newest tail sessions
+-RawSeries --> RawSeries : split synced later, whole series re-derived from raw
++RawSeries --> RawSeries : split synced later, whole series re-derived
+ RawSeries --> Pinned : stored rows reach past a declared end
+ Pinned --> Pinned : inverted window, nothing fetched, leg green
+ PreAdjusted --> PreAdjusted : tail refresh reconciles, no split pass ever
+
+--- kit_ref/uml/sync_leg.puml
++++ D1/uml/sync_leg.puml
+@@ -36,7 +36,7 @@
+   ActionsStore --> SyncRunner : split events used for this leg
+ end
+ alt series has rows and start is after end (inverted window)
+-  note right of SyncRunner : no request is sent; detail says end predates the stored tail (JDL-095)
++  note right of SyncRunner : no request is sent; detail says end precedes the stored tail (JDL-095)
+ else window is fetchable
+   SyncRunner -> Eodhd : get_eod(symbol, start, end)
+   group failure: HTTP error or retries exhausted raise CollectorError and fail the leg
+
+--- kit_ref/uml/sync_run.puml
++++ D1/uml/sync_run.puml
+@@ -13,7 +13,6 @@
+ SyncCommand -> UniverseLoader : load_universe(path)
+ alt universe text violates the grammar
+   UniverseLoader --> SyncCommand : UniverseError naming the first violation
+-  SyncCommand --> Operator : "sync: {message}" on stderr, exit 1
+ else universe parses
+   UniverseLoader --> SyncCommand : normalised universe document
+ end

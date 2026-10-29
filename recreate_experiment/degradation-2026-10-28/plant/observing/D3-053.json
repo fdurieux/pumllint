@@ -1,0 +1,13 @@
+{
+ "observing": [
+  "s01_first_fill/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s08_btc_tail2/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s09_inverted_end/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s13_crypto_guard/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s16_zero_volume/stored_eodhd_BTC-USD.CC.frame.csv",
+  "s23_cli_on_store/cli_adjust_crypto_refused.json"
+ ],
+ "outside_k2_identical": [
+  "s23_cli_on_store/cli_adjust_crypto_refused.json"
+ ]
+}

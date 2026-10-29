@@ -1,0 +1,31 @@
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -81,7 +81,7 @@
+ 
+     legs = []
+     for asset in universe["assets"]:
+-        if not asset["enabled"] or (assets and asset["name"] not in assets):
++        if not asset["enabled"]:
+             continue
+         for source in asset["sources"]:
+             if not source["enabled"] or (
+@@ -144,7 +144,7 @@
+     universe's declared class. A `.CC` symbol declared non-crypto is a
+     mis-declaration whose fix is the declaration."""
+     crypto = leg["asset_type"] == "crypto"
+-    guard = (today - timedelta(days=1)).isoformat() if crypto else None
++    guard = None
+     ends = [e for e in (leg["end"], guard) if e]
+     end = min(ends) if ends else None  # ISO strings order chronologically
+     recents = store.recent_dates(leg["exchange"], leg["symbol"], tail)
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -296,7 +296,7 @@
+ def describe(assets=None):
+     lines = []
+     for asset in (PILOT_UNIVERSE if assets is None else assets):
+-        flag = "" if asset["enabled"] else " [disabled]"
++        flag = ""
+         lines.append(f"{asset['name']} ({asset['asset_class']}, "
+                      f"{asset['currency']}, threshold {asset['threshold']})"
+                      f"{flag}")

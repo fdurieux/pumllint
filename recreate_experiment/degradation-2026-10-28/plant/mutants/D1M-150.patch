@@ -1,0 +1,15 @@
+--- a/deploy/daily.sh
++++ b/deploy/daily.sh
+@@ -63,9 +63,9 @@
+ fi
+ 
+ # hard cap: a wedged run must die loudly, not hold the lock all day
+-if [[ "${1:-}" != "--inner" ]]; then
+-    exec timeout --signal=TERM --kill-after=60 3600 "$0" --inner
+-fi
++
++
++
+ 
+ : "${JEF_S3_BUCKET:?JEF_S3_BUCKET must name the venue bucket}"
+ read -r -a ASSETS <<< "${JEF_ASSETS:-AAPL BTC TLT NVDA TSLA IBM}"

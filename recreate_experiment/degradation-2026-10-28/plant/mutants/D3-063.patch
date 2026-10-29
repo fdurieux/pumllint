@@ -1,0 +1,11 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -160,7 +160,7 @@
+     @staticmethod
+     def _normalize(df):
+         df = df.sort_values("timestamp", kind="stable")
+-        df = df.drop_duplicates(subset="timestamp", keep="first")
++        df = df.drop_duplicates(subset="timestamp", keep="last")
+         return df.reset_index(drop=True)
+ 
+     # -- write -------------------------------------------------------------

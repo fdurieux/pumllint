@@ -1,0 +1,7 @@
+[
+ {"file": "uml/sync_leg.puml", "old": "detail says end predates the stored tail", "new": "detail says end precedes the stored tail"},
+ {"file": "uml/sync_run.puml", "old": "  UniverseLoader --> SyncCommand : UniverseError naming the first violation\n  SyncCommand --> Operator : \"sync: {message}\" on stderr, exit 1\n", "new": "  UniverseLoader --> SyncCommand : UniverseError naming the first violation\n"},
+ {"file": "uml/series_state.puml", "old": "whole series re-derived from raw", "new": "whole series re-derived"},
+ {"file": "uml/basis_and_adjustment.puml", "old": ":divide open, high, low and close raw by F;", "new": ":divide open, high, low and close by F;"},
+ {"file": "uml/basis_and_adjustment.puml", "old": ":multiply volume_raw by F into volume;", "new": ":multiply volume by F;"}
+]

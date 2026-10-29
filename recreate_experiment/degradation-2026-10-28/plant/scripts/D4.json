@@ -1,0 +1,55 @@
+[
+ {
+  "file": "features/decisions.feature",
+  "old": "row(s) imported",
+  "new": "row(s) loaded",
+  "count": 2
+ },
+ {
+  "file": "features/sync.feature",
+  "old": "row(s) imported",
+  "new": "row(s) loaded",
+  "count": 1
+ },
+ {
+  "file": "features/collectors.feature",
+  "old": "row(s) imported",
+  "new": "row(s) loaded",
+  "count": 2
+ },
+ {
+  "file": "features/status.feature",
+  "old": "  @JDL-118 @JDL-119\n  Scenario Outline: Zero-volume rows are noted, with the longest contiguous run when it exceeds one row\n    Given the universe file:\n      \"\"\"\n      [[asset]]\n      name = \"ZV\"\n      asset_class = \"crypto\"\n\n        [[asset.source]]\n        provider = \"eodhd\"\n        symbol = \"ZV-USD.CC\"\n      \"\"\"\n    And the store holds \"<csv>\" as eodhd/ZV-USD.CC declared crypto\n    When status runs at \"2024-01-21T00:30:00Z\"\n    Then the status exit code is 0\n    And report 1 has notes:\n      \"\"\"\n      declared class: no vendor classification recorded - run tools/record_classifications.py\n      <note>\n      \"\"\"\n\n    Examples:\n      | csv             | note |\n      | zero_single.csv | 2 zero-volume row(s), dropped at the seam by pinned policy |\n      | zero_runs.csv   | 8 zero-volume row(s), dropped at the seam by pinned policy - largest contiguous run 3, 2024-01-07..2024-01-09 |\n\n",
+  "new": ""
+ },
+ {
+  "file": "features/status.feature",
+  "old": "    And report 1 has notes:\n      \"\"\"\n      declared class: no vendor classification recorded - run tools/record_classifications.py\n      1 zero-volume row(s), dropped at the seam by pinned policy\n      <gap note>\n",
+  "new": "    And report 1 has notes including:\n      \"\"\"\n      declared class: no vendor classification recorded - run tools/record_classifications.py\n      <gap note>\n"
+ },
+ {
+  "file": "features/status.feature",
+  "old": "    And stdout is:\n      \"\"\"\n      ok       FUT eodhd/FUT-USD.CC: last 2099-03-11, 0 missed, 70 row(s)\n              res   50 distinct / 69 traded, min tick 0.5051%, 0.00% flat\n              note  declared class: no vendor classification recorded - run tools/record_classifications.py\n              note  1 zero-volume row(s), dropped at the seam by pinned policy\n",
+  "new": "    And stdout contains the lines:\n      \"\"\"\n      ok       FUT eodhd/FUT-USD.CC: last 2099-03-11, 0 missed, 70 row(s)\n              res   50 distinct / 69 traded, min tick 0.5051%, 0.00% flat\n              note  declared class: no vendor classification recorded - run tools/record_classifications.py\n"
+ },
+ {
+  "file": "features/steps/conftest.py",
+  "old": "@then(parsers.parse(\"report {n:d} has no {kind}\"))\n",
+  "new": "def _subsequence(got, want):\n    rest = iter(got)\n    assert all(any(w == g for g in rest) for w in want), got\n\n\n@then(parsers.parse(\"report {n:d} has notes including:\"))\ndef report_notes_including(ctx, n, docstring):\n    _subsequence(_report(ctx, n)[\"notes\"], _lines(docstring))\n\n\n@then(parsers.parse(\"report {n:d} has no {kind}\"))\n"
+ },
+ {
+  "file": "features/steps/conftest.py",
+  "old": "# revision 2026-10-23 (closing round): exact parser output and verbatim help\n",
+  "new": "@then(\"stdout contains the lines:\")\ndef stdout_lines(ctx, docstring):\n    _subsequence(ctx.proc.stdout.split(\"\\n\"), [line for line in render(ctx, docstring).split(\"\\n\") if line.strip()])\n\n\n# revision 2026-10-23 (closing round): exact parser output and verbatim help\n"
+ },
+ {
+  "file": "features/universe.feature",
+  "old": "      | asset_key | asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold'] |\n",
+  "new": ""
+ },
+ {
+  "file": "features/universe.feature",
+  "old": "      | first_wins | asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold'] |\n\n  @JDL-022 @JDL-134\n",
+  "new": "\n\n  @JDL-012 @JDL-013 @JDL-014 @JDL-015 @JDL-016 @JDL-017 @JDL-018 @JDL-019 @JDL-020 @JDL-021 @JDL-134\n  Scenario Outline: A malformed asset table is refused\n    Given the universe fixture \"bad/<file>.toml\"\n    When I run \"jef-data universe --universe universe.toml\"\n    Then the exit code is 1\n    And stdout is empty\n    And stderr contains \"universe: asset\"\n\n    Examples:\n      | file |\n      | asset_key |\n      | first_wins |\n\n  @JDL-022 @JDL-134\n"
+ }
+]

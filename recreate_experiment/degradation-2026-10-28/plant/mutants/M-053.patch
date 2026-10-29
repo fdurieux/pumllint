@@ -1,0 +1,22 @@
+--- a/src/jef/data/cli.py
++++ b/src/jef/data/cli.py
+@@ -110,7 +110,7 @@
+             "and guessing either way decides whether split adjustment "
+             "runs on pre-adjusted prices (docs/DATA_CONTRACT.md §2)"
+         )
+-    basis = "split_adjusted" if asset_type == "crypto" else "raw"
++    basis = "raw" if asset_type == "crypto" else "raw"
+ 
+     latest = store.latest_date(exchange_tag, sym)
+     if start is None and latest is not None:
+--- a/src/jef/data/sync.py
++++ b/src/jef/data/sync.py
+@@ -200,7 +200,7 @@
+         # (docs/EVALUATION_ASSET_CLASSIFICATION.md §5 C3). Same source of
+         # truth as the end-guard above and the trading calendar in
+         # `health.WEEKDAY_TYPES`.
+-        basis = ("split_adjusted" if leg["asset_type"] == "crypto"
++        basis = ("raw" if leg["asset_type"] == "crypto"
+                  else "raw")
+         if leg["actions"]:
+             # The §7/O0 freshness gate, DATE-quantised since 2026-08-30

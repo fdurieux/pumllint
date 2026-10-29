@@ -1,0 +1,10 @@
+{
+ "calls": [
+  "curl -s /task",
+  "python3 -c import json, sys; c = json.load(sys.stdin)[\"Containers\"][0]; print(c.get(\"ImageDigest\") or c.get(\"ImageID\") or \"unknown\")",
+  "python3 -c import json, sys; d = json.load(sys.stdin)[\"Limits\"]; print(d[\"CPU\"], d[\"Memory\"] / 1024)"
+ ],
+ "exit": 0,
+ "stderr_tail": "",
+ "stdout": "override-ran\n"
+}

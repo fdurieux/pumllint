@@ -1,0 +1,14 @@
+{
+ "argv": [
+  "adjust",
+  "--symbol",
+  "BTC-USD.CC",
+  "--exchange",
+  "eodhd",
+  "--store",
+  "<work>/s23_cli_on_store-store"
+ ],
+ "exit": 1,
+ "stderr": "Traceback (most recent call last):\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/venv/bin/jef-data-rc\", line 6, in <module>\n    sys.exit(main())\n             ^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/cli.py\", line 389, in main\n    return COMMANDS[args.command](args)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/cli.py\", line 264, in cmd_adjust\n    rows = ParquetStore(args.store).reapply_adjustment(args.exchange, args.symbol, splits)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py\", line 344, in reapply_adjustment\n    new = adjust(frame, splits)\n          ^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/adjust.py\", line 45, in adjust\n    raise AdjustmentRefused(\njef_data_rc.adjust.AdjustmentRefused: price_basis ['split_adjusted'] is already adjusted at the provider - applying split events would double-adjust (docs/DATA_CONTRACT.md \u00a72)\n",
+ "stdout": ""
+}

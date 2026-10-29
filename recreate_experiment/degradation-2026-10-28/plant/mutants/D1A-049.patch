@@ -1,0 +1,13 @@
+--- a/src/jef/data/adjust.py
++++ b/src/jef/data/adjust.py
+@@ -90,8 +90,8 @@
+     result = df.copy()
+     for main, raw in RAW_SOURCES.items():
+         if main == "volume":
+-            result[main] = result[raw].to_numpy(dtype=np.float64) * factors
++            result[main] = result[main].to_numpy(dtype=np.float64) * factors
+         else:
+-            result[main] = result[raw].to_numpy(dtype=np.float64) / factors
++            result[main] = result[main].to_numpy(dtype=np.float64) / factors
+     result["cumulative_split_factor"] = factors
+     return result

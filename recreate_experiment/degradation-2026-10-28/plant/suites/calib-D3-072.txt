@@ -1,0 +1,3 @@
+FAILED features/steps/test_features.py::test_exporting_a_series_whose_volumes_are_all_integral_writes_an_int64_volume
+FAILED features/steps/test_features.py::test_the_export_passes_zerovolume_rows_through_and_the_report_announces_the_seams_drop
+2 failed, 256 passed in 78.88s (0:01:18)

@@ -1,0 +1,2 @@
+jef-data-rc: /tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-e6e4099d/venv/bin/jef-data-rc
+package: /tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-e6e4099d/out/jef_data_rc/__init__.py

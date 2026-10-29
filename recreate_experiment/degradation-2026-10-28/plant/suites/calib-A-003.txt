@@ -1,0 +1,3 @@
+FAILED features/steps/test_features.py::test_a_malformed_universe_is_refused_with_its_first_violation[asset_key-asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold']]
+FAILED features/steps/test_features.py::test_a_malformed_universe_is_refused_with_its_first_violation[first_wins-asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold']]
+2 failed, 256 passed in 77.36s (0:01:17)

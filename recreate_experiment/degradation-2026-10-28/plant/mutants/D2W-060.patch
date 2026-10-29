@@ -1,0 +1,11 @@
+--- a/src/jef/data/store.py
++++ b/src/jef/data/store.py
+@@ -92,7 +92,7 @@
+     if stamped.isna().any():
+         bad = [d for d, ok in zip(dates, stamped.notna()) if not ok]
+         raise StoreError(f"unparseable dates cannot be stored: {bad[:5]}")
+-    return stamped.tz_localize("UTC")
++    return stamped.tz_localize("America/New_York").tz_convert("UTC")
+ 
+ 
+ class ParquetStore:

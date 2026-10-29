@@ -1,0 +1,18 @@
+{
+ "argv": [
+  "differential",
+  "--a-symbol",
+  "BTC-USD.CC",
+  "--a-exchange",
+  "eodhd",
+  "--b-symbol",
+  "BTCUSDT",
+  "--b-exchange",
+  "binance",
+  "--store",
+  "<work>/s23_cli_on_store-store"
+ ],
+ "exit": 1,
+ "stderr": "/tmp/claude-0/-home-user/2202db69-14ed-511e-bcae-bbd1469c53f1/scratchpad/rb-716abf2f/out/jef_data_rc/store.py:379: RuntimeWarning: invalid value encountered in cast\n  volume_column = volume.astype(np.int32)\n",
+ "stdout": "differential: eodhd/BTC-USD.CC vs binance/BTCUSDT (relative tolerance 0.0001)\nrows: 5 in eodhd/BTC-USD.CC, 5 in binance/BTCUSDT, 5 dates in common\nOpen: 4/5 beyond tolerance, worst 0.095% on 2024-01-05 (eodhd/BTC-USD.CC=np.float64(44192.9786987717), binance/BTCUSDT=np.float64(44151.1))\nHigh: 3/5 beyond tolerance, worst 0.090% on 2024-01-04 (eodhd/BTC-USD.CC=np.float64(44770.0234137515), binance/BTCUSDT=np.float64(44729.58))\nLow: 5/5 beyond tolerance, worst 0.782% on 2024-01-05 (eodhd/BTC-USD.CC=np.float64(42784.7182659068), binance/BTCUSDT=np.float64(42450.0))\nClose: 4/5 beyond tolerance, worst 0.065% on 2024-01-04 (eodhd/BTC-USD.CC=np.float64(44179.9217008268), binance/BTCUSDT=np.float64(44151.1))\nAdj Close: 4/5 beyond tolerance, worst 0.065% on 2024-01-04 (eodhd/BTC-USD.CC=np.float64(44179.9217008268), binance/BTCUSDT=np.float64(44151.1))\nVolume: 5/5 beyond tolerance, worst 100.004% on 2024-01-03 (eodhd/BTC-USD.CC=np.float64(-2147483648.0), binance/BTCUSDT=np.float64(81194.55173))\nVERDICT: 25 cell(s) beyond tolerance, 0 unmatched date(s) - review before scale-out\n"
+}

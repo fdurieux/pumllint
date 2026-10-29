@@ -1,0 +1,270 @@
+
+--- kit_ref/MANIFEST.sha256
++++ D4/MANIFEST.sha256
+@@ -35,8 +35,8 @@
+ 829b878500cb4912f13070903dbc8e42b76cbd50cafeed53ed176511e85a7f92  features/adjustment.feature
+ fa025eaa8bc3b32793c4fac8a9d013fa77743d2c653f913d5955c9394513152b  features/chain.feature
+ 25151ad17f31921b551947595a04a0e62d32949d540687577431d3b21055b2c4  features/cli.feature
+-5b0dd0aed016ed1859539cee5bac3217e4ce89e0acb84e9b5f734f99d9bae1f5  features/collectors.feature
+-6f3f543658db7f5ed9093d90d810f5f959208f86c9c633ac231b4a3545ec0691  features/decisions.feature
++667688fff68e70dc6652d4400c0e1cd6811310d1359764d2b6106697e9593bc9  features/collectors.feature
++c57269e01bdff226ab3a529fc59f0b7fabffa60bf40dae8bf636ccfb21ca9731  features/decisions.feature
+ 455b458aad081230637cb2730fb92420c0129b41e7474a1b1b983d17bac39892  features/differential.feature
+ 059b95001320b1b9abd7197a25e95cb6ca948a9674763f5f47a9a9f9b6a1d492  features/fixtures/csv/bad_dates.csv
+ 7f58aae5a9ff2fd77b15526f1061ba08cfa5366eaf8fe3384952062340717ab2  features/fixtures/csv/crypto_feb.csv
+@@ -61,8 +61,6 @@
+ c9133aad8236eab1b86579fedad477c555f9be3d16ccb3b49c5ca1fa57c9eb36  features/fixtures/csv/yahoo_shrunk.csv
+ 7dc01c68afb2deabddd9192904ed6fcf3c477632b5d44aa74466c79bfc2913d4  features/fixtures/csv/yahoo_small.csv
+ 9c13065650019640aecc1560e566563d14a9dd1891059e78dfa3c0645ad22bf8  features/fixtures/csv/zero_close_jump.csv
+-ec2462435bd703601bdea5131e66ba505f273f30c57a65af3c10887b679b889d  features/fixtures/csv/zero_runs.csv
+-b3bc0b1a7017d95d2ae8b3752549e71441149b55f95af64434a24be6f1d84b6c  features/fixtures/csv/zero_single.csv
+ a8745d2a98ef37412a39f0a87397a49ea467c5ee35114ba14daae79cd32bc496  features/fixtures/expected/ccstk_stored.json
+ f6bf6a716bb4e5f289ca0cb93ae81e010c511e1e0c6ebb90c711b4882cdf9b92  features/fixtures/expected/divy_export.json
+ 29bb0f6db6352278db583cfc5e8d4765ed427b9deff970669b74d43a98c30ee5  features/fixtures/expected/divy_stored.json
+@@ -188,12 +186,12 @@
+ 2d66691bcaaafbde880d6fad2829ec0d2541d06d25a2ca49ff8812cf8f4baa16  features/fixtures/universes/zero.toml
+ a3a548cf59f1a3711a0a8e52871569ed9f9c4cd9def9bbc42f31502f723c2cab  features/fixtures/universes/zero_end.toml
+ 5993f45ff05cf9722a6bab6f690eca0aa7057ea6775ca953f18ba5ef49d6703c  features/seam.feature
+-27c2ca516f434ea98be37073f1edaaa9355696af044bc63ea0a7afdd01b626dc  features/status.feature
+-d7ab40116296ba62717a2451687803c048e0aa91dbba1115f1a3d79bbc0c976b  features/steps/conftest.py
++14aa4633a81dc81bea35c06e61fa3207fb2598f2ed7ff7a57af3849c3d268ab9  features/status.feature
++b1698153e4a4a3b082d163e358bbbe794a3be48d404ee6223360959563f04d24  features/steps/conftest.py
+ 95698de02dd449061bb3c61889731ffd0e13c44b81f2c15a94470ab8beff3761  features/steps/test_features.py
+ ac25fb30cfe8f85d42e81601b7cda5adda5436db1798c66b655aa8d6332cfc18  features/store.feature
+-347ca4a1077ccf11931d83e3b0055686020c2d2df70f2f4bdebda5f0289edd98  features/sync.feature
+-aabaf8620a4585501b96ee95cd7b8cf08f2ca4ee190193dce4803c6fb9e0602f  features/universe.feature
++b30d847bd77a86dd0073b5e2cba512cafa5c5888f9baa3d20dbdca7b328bbc8c  features/sync.feature
++7393e51ca4bbf8dae315ea5839f95bcb0e00c32760833b8a166d96f1af4b2cc3  features/universe.feature
+ 041ff617504eb99f99b363de968f539d337d92df947b43f4a24c0fe003c46bd1  pumllint.toml
+ 1f1781573ff53fffb1834e118f8cf88be8a7b6810557a31fade33fb9f89c948c  requirements.json
+ 2771f8e8addaf6a69e442cf3c093e38023c6628f9d488d1c761a29f134079646  tools/manifest.py
+
+--- kit_ref/features/collectors.feature
++++ D4/features/collectors.feature
+@@ -183,7 +183,7 @@
+     And stdout is:
+       """
+       FAILED  SMALL eodhd/SMALL.US [eodhd]: ValueError: EODHD API key required: pass api_key= or set EODHD_API_KEY
+-      ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported
++      ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded
+       2 leg(s), 1 failed -> store '{store}'
+       """
+     And the stored series yahoo/SMALL has 4 rows
+@@ -191,7 +191,7 @@
+     And the JSON file "red.json" is:
+       """
+       {"legs": [{"asset": "SMALL", "detail": "ValueError: EODHD API key required: pass api_key= or set EODHD_API_KEY", "exchange": "eodhd", "ok": false, "provider": "eodhd", "revised_cells": 0, "revisions": [], "symbol": "SMALL.US"},
+-                {"asset": "SMALL", "detail": "5 row(s) imported", "exchange": "yahoo", "ok": true, "provider": "yahoo-csv", "revised_cells": 0, "revisions": [], "symbol": "SMALL"}],
++                {"asset": "SMALL", "detail": "5 row(s) loaded", "exchange": "yahoo", "ok": true, "provider": "yahoo-csv", "revised_cells": 0, "revisions": [], "symbol": "SMALL"}],
+        "legs_failed": 1, "legs_total": 2, "ok": false, "revised_cells_total": 0, "schema_version": 1}
+       """
+ 
+
+--- kit_ref/features/decisions.feature
++++ D4/features/decisions.feature
+@@ -41,7 +41,7 @@
+ 
+       Examples:
+         | row | log_line |
+-        | r5  | ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported |
++        | r5  | ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded |
+ 
+   Rule: volume_raw_source
+     # r2 (raw basis, a collector other than EODHD) has no example: no such
+@@ -90,7 +90,7 @@
+ 
+       Examples:
+         | row | log_line |
+-        | r3  | ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) imported |
++        | r3  | ok      SMALL yahoo/SMALL [yahoo-csv]: 5 row(s) loaded |
+ 
+     @JDL-093 @JDL-065
+     Scenario Outline: A collector leg tail-refreshes a filled series
+
+--- kit_ref/features/fixtures/csv/zero_runs.csv
++++ D4/features/fixtures/csv/zero_runs.csv
+@@ -1,21 +0,0 @@
+-Date,Open,High,Low,Close,Adj Close,Volume
+-2024-01-01,5.0,5.5,4.5,5.0,5.0,100
+-2024-01-02,5.01,5.51,4.51,5.01,5.01,101
+-2024-01-03,5.02,5.52,4.52,5.02,5.02,0
+-2024-01-04,5.03,5.53,4.53,5.03,5.03,0
+-2024-01-05,5.04,5.54,4.54,5.04,5.04,104
+-2024-01-06,5.05,5.55,4.55,5.05,5.05,105
+-2024-01-07,5.06,5.56,4.56,5.06,5.06,0
+-2024-01-08,5.07,5.57,4.57,5.07,5.07,0
+-2024-01-09,5.08,5.58,4.58,5.08,5.08,0
+-2024-01-10,5.09,5.59,4.59,5.09,5.09,109
+-2024-01-11,5.1,5.6,4.6,5.1,5.1,110
+-2024-01-12,5.11,5.61,4.61,5.11,5.11,111
+-2024-01-13,5.12,5.62,4.62,5.12,5.12,0
+-2024-01-14,5.13,5.63,4.63,5.13,5.13,0
+-2024-01-15,5.14,5.64,4.64,5.14,5.14,0
+-2024-01-16,5.15,5.65,4.65,5.15,5.15,115
+-2024-01-17,5.16,5.66,4.66,5.16,5.16,116
+-2024-01-18,5.17,5.67,4.67,5.17,5.17,117
+-2024-01-19,5.18,5.68,4.68,5.18,5.18,118
+-2024-01-20,5.19,5.69,4.69,5.19,5.19,119
+
+--- kit_ref/features/fixtures/csv/zero_single.csv
++++ D4/features/fixtures/csv/zero_single.csv
+@@ -1,21 +0,0 @@
+-Date,Open,High,Low,Close,Adj Close,Volume
+-2024-01-01,5.0,5.5,4.5,5.0,5.0,100
+-2024-01-02,5.01,5.51,4.51,5.01,5.01,101
+-2024-01-03,5.02,5.52,4.52,5.02,5.02,102
+-2024-01-04,5.03,5.53,4.53,5.03,5.03,103
+-2024-01-05,5.04,5.54,4.54,5.04,5.04,0
+-2024-01-06,5.05,5.55,4.55,5.05,5.05,105
+-2024-01-07,5.06,5.56,4.56,5.06,5.06,106
+-2024-01-08,5.07,5.57,4.57,5.07,5.07,107
+-2024-01-09,5.08,5.58,4.58,5.08,5.08,108
+-2024-01-10,5.09,5.59,4.59,5.09,5.09,0
+-2024-01-11,5.1,5.6,4.6,5.1,5.1,110
+-2024-01-12,5.11,5.61,4.61,5.11,5.11,111
+-2024-01-13,5.12,5.62,4.62,5.12,5.12,112
+-2024-01-14,5.13,5.63,4.63,5.13,5.13,113
+-2024-01-15,5.14,5.64,4.64,5.14,5.14,114
+-2024-01-16,5.15,5.65,4.65,5.15,5.15,115
+-2024-01-17,5.16,5.66,4.66,5.16,5.16,116
+-2024-01-18,5.17,5.67,4.67,5.17,5.17,117
+-2024-01-19,5.18,5.68,4.68,5.18,5.18,118
+-2024-01-20,5.19,5.69,4.69,5.19,5.19,119
+
+--- kit_ref/features/status.feature
++++ D4/features/status.feature
+@@ -138,32 +138,6 @@
+       | 2024-03-03T00:30:00Z | 1      | 0  |
+       | 2024-03-04T00:30:00Z | 2      | 1  |
+ 
+-  @JDL-118 @JDL-119
+-  Scenario Outline: Zero-volume rows are noted, with the longest contiguous run when it exceeds one row
+-    Given the universe file:
+-      """
+-      [[asset]]
+-      name = "ZV"
+-      asset_class = "crypto"
+-
+-        [[asset.source]]
+-        provider = "eodhd"
+-        symbol = "ZV-USD.CC"
+-      """
+-    And the store holds "<csv>" as eodhd/ZV-USD.CC declared crypto
+-    When status runs at "2024-01-21T00:30:00Z"
+-    Then the status exit code is 0
+-    And report 1 has notes:
+-      """
+-      declared class: no vendor classification recorded - run tools/record_classifications.py
+-      <note>
+-      """
+-
+-    Examples:
+-      | csv             | note |
+-      | zero_single.csv | 2 zero-volume row(s), dropped at the seam by pinned policy |
+-      | zero_runs.csv   | 8 zero-volume row(s), dropped at the seam by pinned policy - largest contiguous run 3, 2024-01-07..2024-01-09 |
+-
+   @JDL-120 @JDL-121 @JDL-115
+   Scenario Outline: The largest post-seam gap is counted in expected sessions and noted at the threshold
+     Given the universe file:
+@@ -180,10 +154,9 @@
+     And the splits file of "GAP.US" stamped "2024-03-01T07:00:00Z" with no splits
+     When status runs at "2024-03-01T09:00:00Z" with options "gap_k=<k>"
+     Then the status exit code is 0
+-    And report 1 has notes:
++    And report 1 has notes including:
+       """
+       declared class: no vendor classification recorded - run tools/record_classifications.py
+-      1 zero-volume row(s), dropped at the seam by pinned policy
+       <gap note>
+       """
+ 
+@@ -465,12 +438,11 @@
+     And the splits file of "IBM.US" stamped "2099-02-01T00:00:00Z" with no splits
+     When I run "jef-data status --universe universe.toml --store {store}"
+     Then the exit code is 1
+-    And stdout is:
++    And stdout contains the lines:
+       """
+       ok       FUT eodhd/FUT-USD.CC: last 2099-03-11, 0 missed, 70 row(s)
+               res   50 distinct / 69 traded, min tick 0.5051%, 0.00% flat
+               note  declared class: no vendor classification recorded - run tools/record_classifications.py
+-              note  1 zero-volume row(s), dropped at the seam by pinned policy
+       WARN     IBM eodhd/IBM.US: last 2099-01-30, 0 missed, 22 row(s)
+               WARN  declared class: declared asset_type 'etf' but the vendor says 'Common Stock' (-> 'stock'), recorded 2026-08-30 for eodhd/IBM.US - check the asset_class in universe.toml against docs/EVALUATION_ASSET_CLASSIFICATION.md §5 C2
+       ALERT  EMPTY binance/EMPTYUSDT: last -, - missed, 0 row(s)
+
+--- kit_ref/features/steps/conftest.py
++++ D4/features/steps/conftest.py
+@@ -597,6 +597,16 @@
+     assert _report(ctx, n)["notes"] == _lines(docstring), _report(ctx, n)["notes"]
+ 
+ 
++def _subsequence(got, want):
++    rest = iter(got)
++    assert all(any(w == g for g in rest) for w in want), got
++
++
++@then(parsers.parse("report {n:d} has notes including:"))
++def report_notes_including(ctx, n, docstring):
++    _subsequence(_report(ctx, n)["notes"], _lines(docstring))
++
++
+ @then(parsers.parse("report {n:d} has no {kind}"))
+ def report_none(ctx, n, kind):
+     assert kind in ("alerts", "warnings", "notes")
+@@ -684,6 +694,11 @@
+     assert render(ctx, text) in ctx.proc.stdout.split("\n"), ctx.proc.stdout
+ 
+ 
++@then("stdout contains the lines:")
++def stdout_lines(ctx, docstring):
++    _subsequence(ctx.proc.stdout.split("\n"), [line for line in render(ctx, docstring).split("\n") if line.strip()])
++
++
+ # revision 2026-10-23 (closing round): exact parser output and verbatim help
+ @given(parsers.parse("the terminal is {columns:d} columns wide"))
+ def terminal_width(ctx, columns):
+
+--- kit_ref/features/sync.feature
++++ D4/features/sync.feature
+@@ -197,7 +197,7 @@
+       """
+     When sync runs at "2024-03-01T06:00:00Z"
+     Then the run is ok
+-    And the detail of leg 1 is "5 row(s) imported"
++    And the detail of leg 1 is "5 row(s) loaded"
+     And the stored series yahoo/SMALL equals the expected frame "small_stored"
+ 
+   @JDL-144 @JDL-089 @JDL-104 @JDL-106
+
+--- kit_ref/features/universe.feature
++++ D4/features/universe.feature
+@@ -120,7 +120,6 @@
+       | defaults_store | [defaults]: store must be a non-empty string, got '' |
+       | no_assets | universe.toml: no [[asset]] entries |
+       | asset_table | asset #1: must be a table |
+-      | asset_key | asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold'] |
+       | asset_name | asset #1: missing required key 'name' |
+       | asset_class_missing | asset 'X': missing required key 'asset_class' |
+       | asset_class_bad | asset 'X': unknown asset_class 'forex'; allowed: ['bond_etf', 'crypto', 'stock'] |
+@@ -144,7 +143,19 @@
+       | all_off | asset 'X': enabled but has no enabled source - nothing would feed the binning; to pause the asset, set enabled = false on the asset itself |
+       | dupe_name | universe.toml: duplicate asset name(s) ['X'] |
+       | dupe_coord | universe.toml: store series eodhd/X.US is claimed by both 'X' and 'Y' - two assets may never write the same partition |
+-      | first_wins | asset #1: unknown key(s) ['colour']; allowed: ['asset_class', 'currency', 'enabled', 'name', 'source', 'threshold'] |
++
++  @JDL-012 @JDL-013 @JDL-014 @JDL-015 @JDL-016 @JDL-017 @JDL-018 @JDL-019 @JDL-020 @JDL-021 @JDL-134
++  Scenario Outline: A malformed asset table is refused
++    Given the universe fixture "bad/<file>.toml"
++    When I run "jef-data universe --universe universe.toml"
++    Then the exit code is 1
++    And stdout is empty
++    And stderr contains "universe: asset"
++
++    Examples:
++      | file |
++      | asset_key |
++      | first_wins |
+ 
+   @JDL-022 @JDL-134
+   Scenario: A universe path that does not exist is an unwrapped error

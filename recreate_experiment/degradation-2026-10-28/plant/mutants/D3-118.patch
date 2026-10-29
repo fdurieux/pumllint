@@ -1,0 +1,11 @@
+--- a/src/jef/data/health.py
++++ b/src/jef/data/health.py
+@@ -297,7 +297,7 @@
+     frame = store.load(exchange, symbol)
+     report["rows"] = len(frame)
+     zero_volume = int((frame["volume"] == 0).sum())
+-    if zero_volume:
++    if zero_volume > 1:
+         note = (f"{zero_volume} zero-volume row(s), dropped "
+                 "at the seam by pinned policy")
+         # a RUN is a splice; scattered singles are not. Only the run

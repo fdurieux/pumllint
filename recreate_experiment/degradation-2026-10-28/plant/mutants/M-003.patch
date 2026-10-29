@@ -1,0 +1,11 @@
+--- a/src/jef/data/universe.py
++++ b/src/jef/data/universe.py
+@@ -161,7 +161,7 @@
+         raise UniverseError(f"{where}: threshold must be a number "
+                             f"(documentation only), got {threshold!r}")
+     currency = _string(raw, "currency", where,
+-                       default=defaults.get("currency", "USD"))
++                       default=None)
+     sources_raw = raw.get("source", [])
+     if not isinstance(sources_raw, list) or not sources_raw:
+         raise UniverseError(f"{where}: needs at least one [[asset.source]]")
