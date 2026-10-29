@@ -1049,6 +1049,27 @@ but they are a useful cross-check that no audience was forgotten.
   question is left open on purpose — whether the consumer behind
   #43/#47 is arm's-length — because eight items' gate status turns on
   it and only the owner can answer.
+- [The ARIS ONE Standard semantic check and pumllint, compared](aris-one-standard-semantic-check-evaluation.md)
+  — dated evaluation (2026-10-29): the ONE Standard – Foundation
+  accelerator's "Model and Convention Validation" check (v1.3.0, 35 rule
+  codes, reproduced verbatim in the appendix) read rule by rule against
+  the catalog, with an opportunity canvas and a SWOT. Verdict:
+  complementary with almost no overlap. Every ONE Standard rule tests the
+  ARIS repository — attributes, hierarchy, group placement, name identity,
+  assignment cardinality, occurrence policy, library echo, document
+  linking — and **not one tests the flow inside a process model**; flow
+  checking in ARIS is the stock BPMN profile the accelerator does not
+  bundle. Of eleven ARIS families, five are partially covered (GEN001/
+  002/006/007, SEQ102 and the naming rules, `trace` over aris2puml's
+  manifest, XD001/002/005, UC001/SEQ002/STA002) and six not at all, four
+  of them repository-only by nature; in the other direction,
+  well-formedness, labelling, naming by regex, size limits, codegen,
+  scoring, trace and CI have no counterpart among the 35, and one
+  convention the accelerator states but does not check — verb–noun task
+  names — is ACT006. Nothing built; two dormant GEN-range rule shapes
+  recorded (name identity, path placement), a BPMN collaboration-diagram
+  report template handed to aris2puml, and the landscape-as-inventory
+  route for `trace` confirmed against a governed source.
 - [Example maturity report](https://fdurieux.github.io/pumllint/example-maturity-report.html)
   — the pilot's Phase-0 artefact: the tool's own score run over the bundled
   `examples/`, published and drift-guarded (`tests/test_pilot_example.py`).
