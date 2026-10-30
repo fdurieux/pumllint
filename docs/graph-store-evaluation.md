@@ -34,7 +34,12 @@ move.**
 *Bounds: every repository claim was executed at `15a517b`, and §7 lists
 the commands. No Neo4j server is available in this environment, so every
 Cypher fragment below is illustrative and unexecuted, and no verdict
-rests on one. Licences were read at the source: the `neo4j` Python driver
+rests on one. *[2026-10-30: superseded in part. The thread's governed
+knowledge-repository PoC ran on a local Neo4j 5.26.0 community server
+(`kg_experiment/`, docs/neo4j-governed-knowledge-evaluation.md), so a
+server has now been executed for the thread's own question; this
+note's Cypher fragments remain unexecuted and its verdicts still rest
+on none of them.]* Licences were read at the source: the `neo4j` Python driver
 6.4.1 on PyPI (`Apache-2.0 AND Python-2.0`), the Neo4j server repository's
 `LICENSE.txt` (GPL-3.0, Community Edition), and neosemantics' `pom.xml`
 (Apache-2.0). None of them is load-bearing: the zero-dependency agreement
