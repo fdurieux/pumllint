@@ -855,12 +855,13 @@ choose, by the kit's declared precedence rule, which is the baseline
 behaviour §6 measures). Reject: disputed, invalidated, declared-gap, and
 anything whose verification `valid_until` has passed.
 
-**7.3 Enforcement is structural, not persuasive.** [measured] §1.4's
-literature: label-following via prompt is "model-dependent and often
-small", what works reliably sits "below the prompt" (attention, decoding,
-calibrators, filtering before retrieval), and forced clarification
-recovers 54–89 % of the accuracy lost to under-specification (Ambig-SWE
-2026). [proposal] Therefore: (a) the retriever withholds assertion
+**7.3 Enforcement is structural, not persuasive.** [measured] The
+literature §1.4 summarises, in the words of the fact sheet behind it
+(uncommitted, §12): label-following via prompt is "model-dependent and
+often small", what works reliably sits "below the prompt" (attention,
+decoding, calibrators, filtering before retrieval), and forced
+clarification recovers 54–89 % of the accuracy lost to
+under-specification (Ambig-SWE 2026). [proposal] Therefore: (a) the retriever withholds assertion
 content under BLOCKED and returns only the verdict, the blocking keys
 and the gaps — there is nothing to generate from; (b) under QUALIFIED
 the bundle carries the flags and the output contract makes assumptions a
