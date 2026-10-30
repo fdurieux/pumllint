@@ -73,13 +73,35 @@ def test_register_view_sentences_obey_the_glossary_and_the_limit():
         assert keep not in views.FORBIDDEN, f"{keep} keeps its demo sense"
 
 
+def test_register_impact_walk_reaches_the_product_and_says_when_it_does_not():
+    w = register_view.impact("APP-0002")
+    assert "PRD-0002" in w["reached"]["products"] and "JRN-0002" in w["reached"]["journeys"] and len(w["edges"]) == 5
+    assert w["panel"]["title"] == "Impact of retiring APP-0002" and "does not climb a node's parent" in w["panel"]["intro"]
+    cols = w["panel"]["sections"][0]["table"]["cols"]
+    assert all(len(r) == len(cols) for r in w["panel"]["sections"][0]["table"]["rows"])
+    # the register tool's own limit, shown honestly: TariffEngine reaches a journey step but no product
+    t = register_view.impact("APP-0003")
+    assert t["reached"]["products"] == [] and "JRN-0003" in t["reached"]["journeys"]
+    assert "No product is reached" in t["panel"]["sections"][0]["text"]
+    assert register_view.impact("APP-9999") is None
+    leaf = register_view.impact("ENT-0004")
+    assert leaf["edges"] == [] and "No link starts at this node" in leaf["panel"]["sections"][0]["text"]
+    for v in (w, t, leaf):
+        for item in v["text_registry"]:
+            if item["kind"] == "data":
+                continue
+            for s in _sentences(item["text"]):
+                assert len(s.split()) <= 20 and not _forbidden_in(s), s
+
+
 def test_register_card_is_wired_on_the_page_and_the_server():
     page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
     assert "/api/register" in page and 'id="register-detail"' in page and "renderRegister" in page
     server = (DEMO / "app" / "server.py").read_text(encoding="utf-8")
     assert 'parts == ["api", "register"]' in server and "import register_view" in server
+    assert '["api", "register", "impact"]' in server and 'id="impact-form"' in page and "/api/register/impact/" in page
     ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
-    assert "/api/register" in ci and '"digest_ok"' in ci
+    assert "/api/register" in ci and '"digest_ok"' in ci and "/api/register/impact/APP-0002" in ci
     readme = (DEMO / "README.md").read_text(encoding="utf-8")
     assert "**The register.**" in readme
     glossary = (DEMO / "GLOSSARY.md").read_text(encoding="utf-8")

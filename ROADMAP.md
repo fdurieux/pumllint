@@ -8540,6 +8540,18 @@ list and license posture live in § Settled questions.
     (the exception expired, `JRN-0004` uncovered), every sentence against
     the merged glossary, the wiring. Lab, page, view, tests and docs
     only; harness, record and product code untouched.
+  - *2026-10-30, later (#244):* the impact walk, step 3. An Impact box on
+    the register card takes a node id (the QuoteAPI module by default,
+    the IEAM's own question) and shows the register's own walk
+    (`tools/impact.py`, vendored, unchanged) as a stage-style panel:
+    every edge with the relationship, the node reached, its name and
+    state, the link's state, owner and evidence, and the processes,
+    products and journey elements reached. The walk does not climb a
+    node's parent; the panel says so, and says in words when no product
+    is reached (the TariffEngine module) or no link starts at the node.
+    `/api/register/impact/<ID>`, 404 on an unknown id; the stack job
+    walks `APP-0002`. Tests on four cases and every sentence. Lab, page,
+    view, tests and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

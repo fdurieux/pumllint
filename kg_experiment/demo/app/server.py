@@ -303,6 +303,9 @@ class Handler(BaseHTTPRequestHandler):
                 if today not in (None, "wall") and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", today):
                     return self._json({"error": "today must be 'wall' or YYYY-MM-DD"}, 400)
                 return self._json(register_view.build(today))
+            if parts[:3] == ["api", "register", "impact"] and len(parts) == 4:
+                out = register_view.impact(parts[3])
+                return self._json(out) if out is not None else self._json({"error": f"no such node: {parts[3]}"}, 404)
             if parts[:2] == ["api", "gaps"] and len(parts) == 3 and parts[2] in views.SCENARIOS:
                 return self._json(store_gaps(parts[2]))
             if parts == ["api", "cypher"]:
