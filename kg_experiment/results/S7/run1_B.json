@@ -1,0 +1,186 @@
+{
+ "scenario": "S7",
+ "arm": "B",
+ "run": 1,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": [],
+  "co_hit": null,
+  "text_len": 3456
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 11,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true,"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stor"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': p"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {},
+ "outage_status": "held_unscreened",
+ "M5_refs": {
+  "total": 20,
+  "resolved": 20,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "Should QuoteStore.update_quote be required to handle the screening-outage path where status is 'held_unscreened' and a price is provided, or can that fail silently/raise, and if it may fail, what status/behavior is required?",
+  "If QuoteStore.update_quote fails (for any status transition), should handle(request) still return the logically correct outcome (e.g. 'quoted') based on prior steps, or should such failures be surfaced differently (new error status) or treated as unspecified behavior?",
+  "Should the ScreeningService.screen method receive only shipper_id as per the sequence diagram, or the full request payload; and if more fields are desired, what exact signature should be used?",
+  "For the NotificationService methods, is it acceptable that they raise arbitrary exceptions on delivery problems which we just swallow (fire-and-forget), or should certain exception types be logged/propagated differently?",
+  "Should type coercion be attempted for numeric fields (e.g. strings '100') or must the request already contain proper JSON numbers to be considered valid?",
+  "If extra, unexpected keys are present in the request dict, should they be ignored or cause a validation failure?",
+  "Should the TariffEngine.price method be pure (no side effects, deterministic) and guaranteed not to raise, or do we need to handle possible tariff computation errors with specific statuses?"
+ ],
+ "assumptions": [
+  {
+   "text": "Validation treats the presence and bounds of fields as in DT-V only; no additional shape rules (like forbidding extra keys) are enforced beyond checking that the four required keys exist and are of numeric/string types suitable for comparison.",
+   "ref": "contract/decision_table.md:8"
+  },
+  {
+   "text": "Type checking for numbers is lenient: values of weight_kg, distance_km, and declared_value that are int or float are accepted; other types (including numeric strings) result in invalid_request.",
+   "ref": "contract/openapi.yaml:29"
+  },
+  {
+   "text": "If QuoteStore.update_quote raises StoreUnavailableError, this occurs after the initial draft was successfully stored, and the requirements do not specify behavior; the implementation will allow the exception to propagate (causing an uncaught error) rather than fabricating a status, because only initial storage failure is normatively defined.",
+   "ref": "kit/requirements.md:15"
+  },
+  {
+   "text": "TariffEngine.price is assumed not to raise exceptions under normal operation; error handling for tariff computation errors is out of scope unless specified elsewhere.",
+   "ref": "structure/containers.puml:9"
+  },
+  {
+   "text": "NotificationService methods may raise exceptions on delivery failure, and all such exceptions are swallowed (ignored) to satisfy the fire-and-forget requirement; no logging or secondary effects are modeled in this module.",
+   "ref": "contract/decision_table.md:42"
+  },
+  {
+   "text": "ScreeningService.screen takes exactly shipper_id as its parameter and returns an integer risk index on success, raising ScreeningUnavailableError to model a screening outage.",
+   "ref": "behavior/quote_flow.puml:15"
+  },
+  {
+   "text": "QuoteStore.store_draft returns a quote_id string on success and raises StoreUnavailableError on failure; no other return-shape or error-type variants are modeled.",
+   "ref": "behavior/quote_flow.puml:10"
+  },
+  {
+   "text": "QuoteStore.update_quote neither returns a value relied upon by the flow nor changes the response payload; its (ignored) return can be anything, consistent with the diagrams using it only for side effects.",
+   "ref": "behavior/quote_flow.puml:33"
+  },
+  {
+   "text": "The handle(request) function is synchronous and returns a plain dict shaped exactly like the QuoteResponse schema; HTTP-layer concerns (status codes, headers) are out of scope here.",
+   "ref": "contract/openapi.yaml:19"
+  },
+  {
+   "text": "ScreeningUnavailableError is used exclusively to represent the DT-S screening outage branch; other exceptions from ScreeningService.screen are not modeled and will propagate as unexpected errors.",
+   "ref": "contract/spec.md:40"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Validation via DT-V must run before anything else; invalid requests are rejected immediately with status 'rejected: invalid_request', and no draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+   "ref": "contract/decision_table.md:16"
+  },
+  {
+   "text": "On storage failure when storing the draft quote, the system must return status 'error: store_unavailable' and nothing else runs: no screening, no pricing, no notification.",
+   "ref": "contract/decision_table.md:32"
+  },
+  {
+   "text": "On screening outage, the quote is still priced (DT-P), stored with status 'held_unscreened', not notified, and the response carries the price and hold: true.",
+   "ref": "contract/decision_table.md:44"
+  },
+  {
+   "text": "DT-S defines three bands: accept (risk_index <= 41) leading to status 'quoted' with pricing and quote document notification; review (42 <= risk_index <= 66) leading to status 'review_hold' with no pricing and no notification; refuse (risk_index >= 67) leading to status 'refused_screening' with no pricing and a refusal notice notification.",
+   "ref": "contract/decision_table.md:22"
+  },
+  {
+   "text": "Pricing DT-P is applied only on DT-S rows that are priced (accept and screening-outage hold), with steps: base = 0.87 * weight_kg + 1.13 * distance_km, heavy surcharge +316 if weight_kg > 1244, long-haul multiplier *1.19 if distance_km >= 4912 applied after P2, and final price rounded to two decimals.",
+   "ref": "contract/decision_table.md:50"
+  },
+  {
+   "text": "Notification delivery is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+   "ref": "contract/decision_table.md:38"
+  },
+  {
+   "text": "The response schema requires a 'status' field that is one of 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', or 'error: store_unavailable', with 'quote_id' present whenever a draft was stored, 'price' present exactly on priced rows, and 'hold: true' exactly on 'held_unscreened'.",
+   "ref": "contract/spec.md:72"
+  },
+  {
+   "text": "The flow order is strictly: validate (DT-V), store draft with status draft, call screening, handle screening outage specially, apply DT-S, possibly price and update stored quote, notify based on DT-S, then return the response.",
+   "ref": "contract/spec.md:34"
+  },
+  {
+   "text": "The long-haul multiplier (distance_km >= 4912 multiply by 1.19) is normative in order: it must be applied after the heavy surcharge step P2; applying P3 before P2 yields incorrect results.",
+   "ref": "kit/requirements.md:21"
+  },
+  {
+   "text": "A review hold is not a final outcome path for pricing or notification: no price is computed and no notification is sent on the review path.",
+   "ref": "contract/decision_table.md:30"
+  }
+ ],
+ "usage": {
+  "tag": "S7/B/1",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 6832,
+  "completion_tokens": 3445,
+  "seconds": 29.8,
+  "usd_est": 0.043
+ }
+}
