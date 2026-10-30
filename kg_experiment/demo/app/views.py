@@ -274,24 +274,27 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
     summaries = {arm: _arm_summary(rs) for arm, rs in runs.items()}
     levels = Counter(v["level"] for v in det["gate_keys"].values())
     d1 = det["D1_constraints"]
+    reg: list[dict] = []  # every generated sentence and box label with its kind, for the controlled-English test
+    L = lambda *t: [_reg(reg, "controlled", x) for x in t]  # noqa: E731  box labels, controlled
+    DL = lambda *t: [_reg(reg, "data", x) for x in t]  # noqa: E731  box lines quoted from the files
     stages = [
-        {"id": "ingest", "label": "ingest", "colour": "ok",
-         "lines": [f"{det['load']['fragments']} fragments", "sha256 per file and per fragment"]},
-        {"id": "extract", "label": "extract", "colour": _stage_colour("extract", det, gate),
-         "lines": [f"{det['load']['assertions']} assertions",
-                   (f"{len(det['load']['unresolved_symbols'])} unresolved symbols" if det["load"]["unresolved_symbols"] else "0 unresolved symbols")]},
-        {"id": "load", "label": "load", "colour": "ok",
-         "lines": [f"{det['D2_census']['nodes']} nodes, {det['D2_census']['relationships']} relationships",
-                   f"D1: {sum(1 for c in d1 if c['accepted'])} of {len(d1)} constraints accepted",
-                   (f"verifications: {det['verifications'].get('execution', 0)} execution, {det['verifications'].get('review', 0)} review, {det['verifications'].get('approved', 0)} approved"
-                    if "execution" in det["verifications"] else "verifications: none (extraction only)")]},
-        {"id": "rules", "label": "rules", "colour": _stage_colour("rules", det, gate),
-         "lines": [f"{r}: {len(det['rules'][r]) if isinstance(det['rules'][r], list) else det['rules'][r]}" for r in RULE_ORDER]
-                  + [f"SHACL: main {det['D4_shacl']['main']['results']} result(s), info-only {det['D4_shacl']['info_only']['results']}, conforms={det['D4_shacl']['main']['conforms']}"]},
-        {"id": "gaps", "label": "gaps (found by the rules)", "colour": _gaps_colour(det),
-         "lines": _gaps_lines(det)},
-        {"id": "gate", "label": "gate", "colour": _stage_colour("gate", det, gate),
-         "lines": [gate["verdict"], gate["why"]] + ([f"blocking: {', '.join(gate['blocked_keys'])}"] if gate.get("blocked_keys") else [])},
+        {"id": "ingest", "label": L("ingest")[0], "colour": "ok",
+         "lines": L(f"{det['load']['fragments']} fragments", "sha256 per file and per fragment")},
+        {"id": "extract", "label": L("extract")[0], "colour": _stage_colour("extract", det, gate),
+         "lines": L(f"{det['load']['assertions']} assertions",
+                    (f"{len(det['load']['unresolved_symbols'])} unresolved symbols" if det["load"]["unresolved_symbols"] else "0 unresolved symbols"))},
+        {"id": "load", "label": L("load")[0], "colour": "ok",
+         "lines": L(f"{det['D2_census']['nodes']} nodes, {det['D2_census']['relationships']} relationships",
+                    f"D1: {sum(1 for c in d1 if c['accepted'])} of {len(d1)} constraints accepted",
+                    (f"verifications: {det['verifications'].get('execution', 0)} execution, {det['verifications'].get('review', 0)} review, {det['verifications'].get('approved', 0)} approved"
+                     if "execution" in det["verifications"] else "verifications: none (extraction only)"))},
+        {"id": "rules", "label": L("rules")[0], "colour": _stage_colour("rules", det, gate),
+         "lines": L(*[f"{r}: {len(det['rules'][r]) if isinstance(det['rules'][r], list) else det['rules'][r]}" for r in RULE_ORDER],
+                    f"SHACL: main {det['D4_shacl']['main']['results']} result(s), info-only {det['D4_shacl']['info_only']['results']}, conforms={det['D4_shacl']['main']['conforms']}")},
+        {"id": "gaps", "label": L("gaps (found by the rules)")[0], "colour": _gaps_colour(det),
+         "lines": L(*_gaps_lines(det))},
+        {"id": "gate", "label": L("gate")[0], "colour": _stage_colour("gate", det, gate),
+         "lines": L(gate["verdict"]) + DL(gate["why"]) + (DL(f"blocking: {', '.join(gate['blocked_keys'])}") if gate.get("blocked_keys") else [])},
     ]
     arms = {}
     for arm in ("G", "B"):
@@ -299,15 +302,15 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
         gen_c, orc_c = _arm_colour(arm, gate["verdict"], s)
         arms[arm] = {
             "summary": s,
-            "generate": {"colour": gen_c, "lines": ([f"{k} ×{v}" for k, v in s["decisions"].items()] +
-                                                     [f"code {s['code']}/{s['n']}", f"flagged {s['flagged']}/{s['n']}"] +
-                                                     ([f"non-compliance {s['noncompliance']}/{s['n']}"] if arm == "G" else []) +
-                                                     ([f"api error ×{s['api_errors']}: " + next(r["api_error"] for r in runs[arm] if r.get("api_error"))[:160]] if s["api_errors"] else [])) if s["n"] else ["no run in this source"]},
+            "generate": {"colour": gen_c, "lines": (L(*[f"{(k or 'no decision').replace('_', ' ')} ×{v}" for k, v in s["decisions"].items()],
+                                                       f"code {s['code']}/{s['n']}", f"flagged {s['flagged']}/{s['n']}",
+                                                       *([f"non-compliance {s['noncompliance']}/{s['n']}"] if arm == "G" else [])) +
+                                                     (DL(f"api error ×{s['api_errors']}: " + next(r["api_error"] for r in runs[arm] if r.get("api_error"))[:160]) if s["api_errors"] else [])) if s["n"] else L("no run in this source")},
             "oracle": {"colour": orc_c, "lines": (
-                ([f"nothing to grade: the arm wrote no code in {s['n']} of {s['n']} runs" + (" (abstained, as the BLOCKED verdict asks)" if gate["verdict"] == "BLOCKED" and s["decisions"].get("abstain") else "")]
-                 if s["code"] == 0 and s["api_errors"] < s["n"] else [f"suite {', '.join(s['suites'])}"]) +
-                                                   [f"{k.replace(':', ' ')} ×{v}" for k, v in s["targets"].items()] +
-                                                   ([f"refs resolvable {s['refs_min']}–{s['refs_max']}"] if s["refs_min"] is not None else [])) if s["n"] else ["—"]},
+                L(f"nothing to grade: the arm wrote no code in {s['n']} of {s['n']} runs" + (" (abstained, as the BLOCKED verdict asks)" if gate["verdict"] == "BLOCKED" and s["decisions"].get("abstain") else ""))
+                 if s["code"] == 0 and s["api_errors"] < s["n"] else L(f"oracle {', '.join(s['suites'])}")) +
+                                                   L(*[f"{k.replace(':', ' ')} ×{v}" for k, v in s["targets"].items()],
+                                                     *([f"refs resolvable {s['refs_min']}–{s['refs_max']}"] if s["refs_min"] is not None else [])) if s["n"] else L("—")},
             "runs": [_run_view(r) for r in runs[arm]],
         }
     # model calls that failed: the harness records them as api_error cells (no reply, no code, no grade)
@@ -342,22 +345,21 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
             "gate_after": _gate_view(s2["gate_after_reverification"]),
             "reverified": s2["reverified"], "census_after": s2["census_after"],
             "stages": [
-                {"id": "ingest2", "label": "re-ingest v2", "colour": "warn",
-                 "lines": [f"{s2['load_v2']['fragments']} fragments new, {s2['load_v2']['fragments_reused']} reused by digest",
-                           f"{s2['load_v2']['assertions']} new assertions"]},
-                {"id": "stale", "label": "R-STALE", "colour": "bad",
-                 "lines": [f"{len(s2['D3_stale']['invalidated'])} invalidated: " + ", ".join(x["key"] for x in s2["D3_stale"]["invalidated"]),
-                           f"{len(s2['D3_stale']['kept'])} kept at their status",
-                           ("suspect: " + ", ".join(x["id"] for x in s2["suspect_derived"] if x.get("suspect"))) if s2["suspect_derived"]
-                           else "no Derived registered (deterministic mode creates none)"]},
-                {"id": "gate_before", "label": "gate", "colour": "bad",
-                 "lines": [s2["gate_before_reverification"]["verdict"], s2["gate_before_reverification"]["why"]]},
-                {"id": "reverify", "label": "re-verification", "colour": "ok",
-                 "lines": [f"{len(s2['reverified'])} successors re-verified and approved (owner stand-in)"] + s2["reverified"]},
-                {"id": "gate_after", "label": "gate", "colour": "ok",
-                 "lines": [s2["gate_after_reverification"]["verdict"], s2["gate_after_reverification"]["why"]]},
+                {"id": "ingest2", "label": L("re-ingest v2")[0], "colour": "warn",
+                 "lines": L(f"{s2['load_v2']['fragments']} fragments new, {s2['load_v2']['fragments_reused']} reused by digest",
+                            f"{s2['load_v2']['assertions']} new assertions")},
+                {"id": "stale", "label": L("R-STALE")[0], "colour": "bad",
+                 "lines": DL(f"{len(s2['D3_stale']['invalidated'])} invalidated: " + ", ".join(x["key"] for x in s2["D3_stale"]["invalidated"]))
+                          + L(f"{len(s2['D3_stale']['kept'])} kept at their status")
+                          + (DL("suspect: " + ", ".join(x["id"] for x in s2["suspect_derived"] if x.get("suspect"))) if s2["suspect_derived"]
+                             else L("no Derived registered (deterministic mode creates none)"))},
+                {"id": "gate_before", "label": L("gate")[0], "colour": "bad",
+                 "lines": L(s2["gate_before_reverification"]["verdict"]) + DL(s2["gate_before_reverification"]["why"])},
+                {"id": "reverify", "label": L("re-verification")[0], "colour": "ok",
+                 "lines": L(f"{len(s2['reverified'])} successors re-verified and approved (owner stand-in)") + DL(*s2["reverified"])},
+                {"id": "gate_after", "label": L("gate")[0], "colour": "ok",
+                 "lines": L(s2["gate_after_reverification"]["verdict"]) + DL(s2["gate_after_reverification"]["why"])},
             ]}
-    reg: list[dict] = []  # every generated sentence with its kind, for the controlled-English test
     view["narrative"] = narrative(view, det, reg)
     view["details"] = stage_details(view, det, runs, reg)
     view["gaps"] = gaps_view(det, reg)
