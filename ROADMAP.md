@@ -8452,6 +8452,21 @@ list and license posture live in § Settled questions.
     harness kept the engine's first line only, and the second, naming
     Enterprise Edition, is the record's §12 and X9 quotation rather
     than the run file's. Page and view only.
+  - *2026-10-30, later (#234):* a Gaps view on a click. A gaps box
+    beside the rules in the pipeline strip, coloured by what it holds,
+    opens a panel grouped by kind with a filter and the census counts,
+    one plain-English sentence per kind, each gap's text, whether the
+    authors declared it, what it concerns and, beside an assertion,
+    its key, value, basis and status; conflicts show both sides,
+    unverified shows its count and the keys concerned with the
+    required ones marked. Two labelled sources: the result files
+    (`views.gaps_view`) and the running Neo4j through `/api/gaps/<S>`,
+    read only when the loaded scenario is the one on screen, else the
+    page says which it holds and points at the new saved query "The
+    gaps, with what they concern". Checked against the local store
+    with S3 (17 ambiguity gaps) and S4 (4 conflicts) loaded. Test:
+    every scenario's file view matches `deterministic.json`'s census
+    by kind. Page, view and server only; harness and record untouched.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
