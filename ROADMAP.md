@@ -8523,7 +8523,8 @@ list and license posture live in § Settled questions.
   capability and application views, an optional one-way Neo4j
   projection): define a git structure for storing and versioning the
   artefacts per taxonomy layer, aligned with it. Evaluated and proposed
-  by a sub-agent of the demo session; record:
+  by a sub-agent of the demo session (#239, the PR carrying this
+  entry); record:
   [docs/ieam-register-proposal.md](docs/ieam-register-proposal.md).
   Opportunity canvas and SWOT: a private page of the maintainer's
   account (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9), a view.
