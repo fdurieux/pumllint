@@ -8620,7 +8620,8 @@ list and license posture live in § Settled questions.
   - *2026-10-30, later: integrating the demo page with the register,
     investigated.* Asked how to integrate "the dashboard" with the
     register, with an opportunity canvas and a SWOT; a sub-agent read
-    both checkouts and recorded
+    both checkouts and recorded (#241, the PR
+    carrying this bullet)
     [docs/ieam-register-demo-integration.md](docs/ieam-register-demo-integration.md).
     The dashboard is the kg demo page; a hosted report page has nothing
     to read until the register has a tag (its workflow writes
