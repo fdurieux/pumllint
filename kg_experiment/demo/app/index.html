@@ -72,7 +72,7 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .armstack .stage{min-height:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media (max-width:900px){.two{grid-template-columns:1fr}}
-.cascade-wrap svg{width:100%;height:auto;display:block}
+.cascade-wrap svg{width:100%;height:auto;display:block} .cascade g.node{cursor:pointer} .cascade g.node:hover rect{filter:brightness(.96)} .cascade g.node.sel rect{stroke:var(--ink);stroke-width:6}
 .cap{font-size:13px;margin-top:6px}
 .cap b.G{color:var(--teal)} .cap b.B{color:var(--red)}
 pre{background:#0f1a16;color:#e5ebe7;border-radius:10px;padding:12px;overflow:auto;font:12.5px/1.4 var(--mono);max-height:520px;margin:0}
@@ -332,6 +332,20 @@ function openGaps(v, host, b) {
   fetch(`/api/gaps/${v.scenario}`).then(r => r.json()).then(j => { store = j; if (b.classList.contains('sel')) draw(); }).catch(e => { store = { match: false, loaded: null, error: String(e), gaps: [] }; if (b.classList.contains('sel')) draw(); });
 }
 
+function wireSystemic(v) {
+  const host = $('#systemic-detail'); if (!host) return;
+  const nodes = $('#report').querySelectorAll('.cascade g.node');
+  nodes.forEach(g => g.addEventListener('click', () => {
+    const id = g.dataset.node, open = g.classList.contains('sel');
+    nodes.forEach(x => x.classList.remove('sel'));
+    if (open || !v.systemic_details[id]) { host.innerHTML = ''; return; }
+    nodes.forEach(x => { if (x.dataset.node === id) x.classList.add('sel'); });
+    host.innerHTML = renderDetail(v.systemic_details[id]);
+    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; nodes.forEach(x => x.classList.remove('sel')); });
+    host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }));
+}
+
 function wireDetails(v) {
   const host = $('#stage-detail'); if (!host) return;
   $('#report').querySelectorAll('.stage[data-detail]').forEach(b => b.addEventListener('click', () => {
@@ -393,7 +407,7 @@ function renderReport(v) {
       ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
       <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${strip}${strip2}<div id="stage-detail"></div>
-      <h3>Systemic model — where the defect enters, and where it was stopped</h3>${cascade}
+      <h3>Systemic model — where the defect enters, and where it was stopped <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${cascade}<div id="systemic-detail"></div>
     </div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The gate's evidence bundle (what arm G received; ${v.bundle ? v.bundle.length.toLocaleString() : 0} characters${v.prompt_lengths.B ? `; arm B's documents ${v.prompt_lengths.B.toLocaleString()}` : ''})</h3>
       ${v.bundle ? `<details><summary>show bundle_G.txt</summary><pre>${esc(v.bundle)}</pre></details>` : '<p class="small">no bundle in this source</p>'}</div>
@@ -403,6 +417,7 @@ function renderReport(v) {
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">What the arms asked and assumed</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${qa('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${qa('B')}</div></div></div>`;
   $('#src').addEventListener('change', e => show(v.scenario, e.target.value));
   wireDetails(v);
+  wireSystemic(v);
   if (codeTabs.length) {
     const showCode = k => { $('#code').textContent = codeTabs.find(c => c.k === k).t; $('#report').querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.k === k)); };
     $('#report').querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showCode(b.dataset.k)));

@@ -31,9 +31,9 @@ when a sentence breaks a rule.
 
 | kind | where | limit | checked for synonyms |
 |---|---|---|---|
-| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines | 20 words | yes |
+| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines, the systemic-model panels and captions | 20 words | yes |
 | reading | `SCENARIOS[..]["plain"]`, the "what this shows" paragraph | 25 words | yes |
-| data | the gate's reason, conflict texts, id and key lists, engine and API messages | none | no |
+| data | the gate's reason, conflict texts, id and key lists, engine and API messages, the model's own labels and definitions | none | no |
 
 ## Approved terms
 

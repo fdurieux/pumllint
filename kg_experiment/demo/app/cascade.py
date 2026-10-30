@@ -113,7 +113,7 @@ def render(spec: dict, arm: str, *, title: str | None = None) -> str:
                    "stopped here")
             if nid == entry:
                 tag = "defect enters here, and is stopped here"
-        out.append(f'<g><rect x="{x}" y="{y}" width="{BW}" height="{BH}" rx="10" fill="{fill}" stroke="{stroke}" stroke-width="{width}"/>'
+        out.append(f'<g class="node" data-node="{nid}"><title>click for this node\'s details</title><rect x="{x}" y="{y}" width="{BW}" height="{BH}" rx="10" fill="{fill}" stroke="{stroke}" stroke-width="{width}"/>'
                    f'<text x="{x + 12}" y="{y + 30}" font-size="22" font-weight="600" fill="{slide.INK}" font-family="IBM Plex Sans, Arial, sans-serif">{html.escape(l1)}</text>'
                    f'<text x="{x + 12}" y="{y + 56}" font-size="20" fill="{slide.GREEN if lever else slide.MUTED}" font-family="IBM Plex Sans, Arial, sans-serif">{html.escape(l2)}</text></g>')
         if tag:

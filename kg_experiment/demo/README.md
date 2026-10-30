@@ -45,7 +45,12 @@ running Neo4j as well when the scenario on screen is the one loaded there:
   model (version 0.3, vendored under `model/`), with the scenario's defect
   placed where it entered and the path it travelled, side by side for the
   governed arm and the baseline, with the degradation test's numbers as
-  the "no governance" reference.
+  the "no governance" reference. Each box of the model is clickable: the
+  panel gives the model's definition of the node and its edges, what the
+  record's reading placed there for each arm, and the evidence from the
+  result files that bears on it (the gaps for an upstream defect, the
+  arms' assumptions for an unresolved decision, the oracle's results for
+  the code, the invalidated assertions for drift).
 
 Below the pictures: the evidence bundle the governed arm received, the
 generated code of every run, the oracle's verdict per acceptance scenario

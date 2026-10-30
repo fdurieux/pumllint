@@ -21,6 +21,7 @@ EXP = HERE.parent.parent                      # kg_experiment/
 RESULTS = EXP / "results"
 sys.path.insert(0, str(HERE.parent / "tools"))
 import compare_deterministic  # noqa: E402  (the same leaf-by-leaf comparison the CI job runs)
+import cascade  # noqa: E402  (the vendored model and the slide's node table, for the systemic panels)
 SUITE_ORDER = ["quoted_low_risk", "accept_boundary_41", "review_boundary_42", "refuse_boundary_67",
                "refuse_high_risk", "price_exact_heavy", "price_exact_both", "invalid_weight_low",
                "invalid_value_over", "screening_down_hold", "store_down_error"]
@@ -77,33 +78,33 @@ ORDER = list(SCENARIOS)
 #          note = the record's reading in one line
 SYSTEMIC = {
     "S1": {"entry": None, "family": "none planted",
-           "G": {"path": [], "stop": None, "note": "no defect; generate 5/5, 11/11 ×5"},
-           "B": {"path": [], "stop": None, "note": "no defect; generate_with_assumptions 5/5, 11/11 ×5"}},
-    "S2": {"entry": "updef", "family": "requirements (REQ-06 declared open) and every artefact that stated the rule",
-           "G": {"path": [], "stop": "validation", "note": "the gate reads the declared gap: BLOCKED, abstain 5/5, the key and gap id named every time"},
+           "G": {"path": [], "stop": None, "note": "No defect. Arm G answered generate in 5 of 5 runs and passed 11 of 11 each time."},
+           "B": {"path": [], "stop": None, "note": "No defect. Arm B answered generate with assumptions in 5 of 5 runs and passed 11 of 11 each time."}},
+    "S2": {"entry": "updef", "family": "the requirements, REQ-06 declared open, and every document that stated the rule",
+           "G": {"path": [], "stop": "validation", "note": "The gate read the declared gap and gave BLOCKED. Arm G abstained in 5 of 5 runs and named the key and the gap each time."},
            "B": {"path": ["updef", "deriveddef", "codedef"], "stop": "detection", "would": "escape",
-                 "note": "asked about the missing rule and generated anyway; the outage becomes an error: screening_down_hold fails 5/5, caught by the oracle only"}},
-    "S3": {"entry": "deriveddef", "family": "decision table (DT-S rows), the behaviour-carrying layer",
+                 "note": "Arm B asked about the missing rule and wrote code anyway. The outage became an error. The planted target failed in 5 of 5 runs, and only the oracle caught it."}},
+    "S3": {"entry": "deriveddef", "family": "the decision table, the DT-S rows: the behaviour-carrying layer",
            "G": {"path": ["deriveddef", "codedef"], "stop": "unknown", "visible": True,
-                 "note": "QUALIFIED: the guess is carried as an # ASSUMPTION by assertion id; 41-boundary still fails 4/5, caught by the oracle"},
+                 "note": "The gate gave QUALIFIED. Arm G carried its guess as an assumption that names the assertion id. The 41-boundary target still failed in 4 of 5 runs, and the oracle caught it."},
            "B": {"path": ["deriveddef", "codedef"], "stop": "detection", "would": "escape",
-                 "note": "a silent 39/40 constant; accept_boundary_41 fails 5/5, caught by the oracle only"}},
-    "S4": {"entry": "explderived", "family": "sequence diagram and BPMN, the explanatory layer, against table and spec",
-           "G": {"path": [], "stop": "validation", "note": "R-CONFLICT marks both sides disputed: BLOCKED, abstain 5/5, the conflict gap named"},
+                 "note": "Arm B wrote a silent 39/40 constant. The 41-boundary target failed in 5 of 5 runs, and only the oracle caught it."}},
+    "S4": {"entry": "explderived", "family": "the sequence diagram and the BPMN, the explanatory layer, against the table and the spec",
+           "G": {"path": [], "stop": "validation", "note": "The conflict rule marked both sides disputed and the gate gave BLOCKED. Arm G abstained in 5 of 5 runs and named the conflict gap."},
            "B": {"path": ["explderived"], "stop": "unknown", "invented": True,
-                 "note": "resolved by a 'newer normative text' precedence nothing states (4/5); correct by the oracle, uncheckable from the output"}},
-    "S5": {"entry": "explderived", "family": "an unreviewed machine note (prose) proposing a value for the open decision",
-           "G": {"path": [], "stop": "validation", "note": "the inferred candidate cannot lift the declared gap: BLOCKED, abstain 5/5"},
+                 "note": "Arm B chose a side by a precedence no document states, in 4 of 5 runs. The oracle passed its code. Nothing in its output lets a reviewer check that choice."}},
+    "S5": {"entry": "explderived", "family": "an unreviewed machine note in prose, proposing a value for the open decision",
+           "G": {"path": [], "stop": "validation", "note": "The inferred candidate cannot lift the declared gap. The gate gave BLOCKED, and arm G abstained in 5 of 5 runs."},
            "B": {"path": ["explderived", "codedef"], "stop": "detection", "would": "escape",
-                 "note": "the note adopted as fact in 4/5 (refused_screening on the outage); screening_down_hold fails 5/5, caught by the oracle only"}},
-    "S6": {"entry": "drift", "family": "decision table changed under a verified, derived artefact",
-           "G": {"path": ["drift"], "stop": "validation", "note": "R-STALE invalidates the four assertions, ends their verifications, marks derived:S1:G:run1 suspect; BLOCKED until the re-verification, then PROCEED; the suspect artefact named 5/5 (re-run)"},
+                 "note": "Arm B took the note as fact in 4 of 5 runs and refused the quote on an outage. The planted target failed in 5 of 5 runs, and only the oracle caught it."}},
+    "S6": {"entry": "drift", "family": "the decision table changed under a verified, derived output",
+           "G": {"path": ["drift"], "stop": "validation", "note": "The staleness rule invalidated four assertions, ended their verifications and marked the derived output suspect. The gate gave BLOCKED until the re-verification, then PROCEED. Arm G named the suspect output to replace."},
            "B": {"path": ["drift", "confidence"], "stop": None,
-                 "note": "fresh code from the current documents passes 11/11; what was built on the old value cannot be named (asks in general terms, 3/5)"}},
-    "S7": {"entry": "confidence", "family": "no verification record anywhere: the defect is procedural, and enters as unwarranted confidence in correct-looking documents",
-           "G": {"path": [], "stop": "validation", "note": "36 of 36 required keys below verified: BLOCKED, abstain 5/5, M6 = 0; the block is procedural, the content was correct"},
+                 "note": "Arm B wrote fresh code from the current documents and passed 11 of 11. It could not name what was built on the old value. It asked in general terms in 3 of 5 runs."}},
+    "S7": {"entry": "confidence", "family": "no verification record anywhere: the defect is procedural and enters as unwarranted confidence in correct-looking documents",
+           "G": {"path": [], "stop": "validation", "note": "All 36 keys the task needs are below verified, so the gate gave BLOCKED. Arm G abstained in 5 of 5 runs. The block is procedural. The content was correct."},
            "B": {"path": ["confidence", "validation"], "stop": None,
-                 "note": "nothing in the documents says they are unverified: 11/11 with the same confidence as S1, flagged 0/5; the model's E29 (confidence reduces validation) runs unopposed"}},
+                 "note": "Nothing in the documents says they are unverified. Arm B passed 11 of 11 with the same confidence as in S1 and raised nothing. The model's edge E29, confidence reduces validation, ran unopposed."}},
 }
 
 # The no-governance reference the record cites: the degradation test.
@@ -363,6 +364,7 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
     view["narrative"] = narrative(view, det, reg)
     view["details"] = stage_details(view, det, runs, reg)
     view["gaps"] = gaps_view(det, reg)
+    view["systemic_details"] = systemic_details(view, det, runs, reg)
     view["text_registry"] = reg
     view["glossary"] = GLOSSARY
     return view
@@ -784,3 +786,146 @@ def gaps_view(det: dict, reg: list) -> dict:
             "groups": {k: groups[k] for k in ("declared missing", "undeclared missing", "ambiguous", "conflict")},
             "unverified": unverified, "required_keys": list(det["gate_keys"]),
             "source": "the committed result files (deterministic.json): the rule hits, the gate's conflicts and per-key levels"}
+
+
+# ------------------------------------------------------------ the systemic-model panels
+
+# One name per node of the slide's reduced knowledge view, in the glossary's terms;
+# the model's own label and definition are quoted as data beside it.
+NODE_TITLE = {
+    "tacit": "What only people know", "updef": "Upstream intent defects", "unknown": "Unresolved or invented decisions",
+    "validation": "Independent validation", "deriveddef": "The behaviour-carrying layer", "explderived": "Explanatory documents",
+    "testdef": "Tests that share the premise", "drift": "Document drift", "depchange": "Dependency change",
+    "codedef": "Implementation defects", "escape": "Escaped product defects", "detection": "Independent detection",
+    "confidence": "Unwarranted confidence", "harm": "Adverse outcomes in use", "dora": "Delivery performance", "diverse": "More detection inputs",
+}
+ARM_NAME = {"G": "the governed arm", "B": "the baseline arm"}
+
+
+def _role_sentences(nid: str, spec: dict, arm: str) -> list[str]:
+    """What the record's reading placed on this node for one arm, as controlled sentences."""
+    a = spec.get(arm, {})
+    entry, path, stop = spec.get("entry"), a.get("path") or [], a.get("stop")
+    out = []
+    if not entry and not path:
+        return ["Nothing was planted, so nothing is placed here."]
+    if nid == entry:
+        out.append("The planted defect entered the model here.")
+    if nid in path and nid != entry:
+        out.append("The defect passed through here.")
+    if nid == stop:
+        out.append("The defect was made visible here." if a.get("visible") else
+                   "The defect was resolved here by an invented decision." if a.get("invented") else
+                   "The defect was stopped here.")
+    if a.get("would") == nid and stop == "detection":
+        out.append("Without the oracle, the defect would have reached here.")
+    if a.get("would") and stop == "detection" and nid == stop:
+        out.append(f"Without the oracle it would have gone on to {NODE_TITLE[a['would']].lower()}.")
+    return out or ["The record's reading placed nothing of this scenario here."]
+
+
+def systemic_details(view: dict, det: dict, runs: dict, reg: list) -> dict:
+    """What opens when a box of the systemic model is clicked: the node in the
+    model (label, kind, definition, its edges with mechanism and evidence), what
+    the record's reading placed there for each arm, and the evidence from the
+    result files that bears on that node."""
+    M = cascade.model()
+    N = {n["id"]: n for n in M["nodes"]}
+    E = {e["id"]: e for e in M["edges"]}
+    spec, gate, rules = view["systemic"], det["D6_gate"], det["rules"]
+    C = lambda *t: _reg(reg, "controlled", *t)  # noqa: E731
+    D = lambda *t: _reg(reg, "data", *t)  # noqa: E731
+    arms = view["arms"]
+    verdict_sentence = {"PROCEED": "The gate gave PROCEED.", "QUALIFIED": "The gate gave QUALIFIED.", "BLOCKED": "The gate gave BLOCKED."}
+    out = {}
+    for nid, (_x, _y, l1, l2, lever) in cascade.slide.nodes.items():
+        node = N.get(nid)
+        intro = (C("In the model:") + " " + D(f"{node['label']} ({node['kind']}): {node['definition'].rstrip('.')}.")
+                 if node else C("The slide draws this node as context.", "The model's inventory has no node of this id."))
+        secs = []
+        if lever:
+            secs.append({"heading": C("A lever"), "text": C("The model marks this node as one of its four levers.") + " " + D(l2 + ".")})
+        rows = [(eid, a, b, E[eid]["polarity"], E[eid].get("delay") or "", E[eid]["evidence"], E[eid].get("mechanism") or "")
+                for eid, a, b in cascade.slide.edges if nid in (a, b)]
+        secs.append({"heading": C("Edges in the model"),
+                     "text": C("Plus means the source raises the target, minus means it lowers it.",
+                               "M is measured, bounded; H is a hypothesis."),
+                     "table": _table(["edge", "from", "to", "polarity", "delay", "evidence", "mechanism"], rows)})
+        for arm in ("G", "B"):
+            text = C(*_role_sentences(nid, spec, arm))
+            if spec.get("entry") and (nid == spec.get("entry") or nid in (spec[arm].get("path") or []) or nid == spec[arm].get("stop")):
+                text += " " + C(spec[arm]["note"])
+            secs.append({"heading": C(f"Arm {arm}, {ARM_NAME[arm]}, in this scenario"), "text": text})
+        # the evidence from the result files that bears on this node
+        if nid == "updef":
+            g = view["gaps"]["groups"]
+            miss = g["declared missing"] + g["undeclared missing"]
+            secs.append({"heading": C(f"Missing items the rules recorded: {len(miss)}"),
+                         "text": C("A declared item is one the authors marked missing themselves."),
+                         "table": _table(["gap", "what it says", "declared by the authors"], [(r["id"], r["text"], "yes" if r["declared"] else "no") for r in miss])})
+        if nid == "deriveddef":
+            hits = rules["R-VAGUE"]
+            secs.append({"heading": C(f"Ambiguous assertions in the behaviour-carrying documents: {len(hits)}"),
+                         "text": C("Each row is one assertion whose supporting row or symbol is vaguely worded."),
+                         "table": _table(["assertion", "key", "vague words"], [(h["id"], h["key"], ", ".join(h["words"])) for h in hits])})
+        if nid == "explderived":
+            conf = view["gaps"]["groups"]["conflict"]
+            secs.append({"heading": C(f"Contradictions between documents: {len(conf)}"),
+                         "text": C("Both sides of each pair are marked disputed."),
+                         "table": _table(["gap", "key", "one side", "says", "other side", "says"],
+                                         [(r["id"], r["sides"]["key"], r["sides"]["a"], r["sides"]["va"], r["sides"]["b"], r["sides"]["vb"]) if r.get("sides") else (r["id"], "", "", r["text"], "", "") for r in conf])})
+            inferred = [k for k, v in det["gate_keys"].items() if "inferred" in v["flags"]]
+            if inferred:
+                secs.append({"heading": C("Keys with an inferred candidate"),
+                             "text": C("An inferred assertion came from a model, not from a document, and cannot lift a declared gap."), "list": inferred})
+        if nid == "unknown":
+            items = []
+            for arm in ("G", "B"):
+                for r in arms[arm]["runs"]:
+                    for a in r["assumptions"]:
+                        t = a["text"] if isinstance(a, dict) else str(a)
+                        items.append(f"{arm} run {r['run']}, assumption: {t[:220]}" + (f" [{a.get('ref')}]" if isinstance(a, dict) and a.get("ref") else ""))
+                    for q in r["questions"]:
+                        items.append(f"{arm} run {r['run']}, question: {str(q)[:220]}")
+            secs.append({"heading": C(f"Assumptions and questions the arms wrote: {len(items)}"),
+                         "text": C("Arm G names the assertion id each assumption rests on.", "Arm B names a document line, or nothing."),
+                         "list": items or ["none in this source"]})
+        if nid == "validation":
+            secs.append({"heading": C("The gate"), "text": C(verdict_sentence[gate["verdict"]]) + " " + D(gate["why"] + ".")})
+            for arm in ("G", "B"):
+                sm = arms[arm]["summary"]
+                if sm["n"]:
+                    secs.append({"heading": C(f"Arm {arm}, decisions"),
+                                 "text": C(*[f"Arm {arm} answered '{(k or 'no decision').replace('_', ' ')}' in {v} of {sm['n']} runs." for k, v in sm["decisions"].items()])})
+        if nid in ("codedef", "detection"):
+            rows = []
+            for arm in ("G", "B"):
+                for r in arms[arm]["runs"]:
+                    rows.append((arm, r["run"], r["suite"] or "no code",
+                                 ", ".join(f"{t}: {'pass' if v else ('fail' if v is False else 'no code')}" for t, v in r["targets"].items()) or ""))
+            heading = C(f"The oracle on the planted targets: {len(rows)} runs") if nid == "detection" else C(f"What the code did on the planted targets: {len(rows)} runs")
+            secs.append({"heading": heading,
+                         "text": C("A planted target is the oracle scenario the planted defect aims at.") if nid == "codedef"
+                                 else C("The oracle is independent of the arms' code.", "A fail here is a defect the oracle caught, and nothing else did."),
+                         "table": _table(["arm", "run", "oracle", "planted targets"], rows)})
+        if nid == "confidence":
+            ver = det["verifications"]
+            vtext = (C(f"The oracle verified {ver['execution']} assertions by running them, and the review record {ver['review']} more.",
+                       f"The owner approved {ver['approved']}.") if "execution" in ver
+                     else C("No verification was loaded in this scenario.", "Correct and unverified look exactly alike to the arms."))
+            flagged = [f"Arm {arm} raised the planted problem in {arms[arm]['summary']['flagged']} of {arms[arm]['summary']['n']} runs." for arm in ("G", "B") if arms[arm]["summary"]["n"]]
+            secs.append({"heading": C("Verification, and what the arms raised"), "text": vtext + (" " + C(*flagged) if flagged else "")})
+        if nid == "drift":
+            if view.get("stage2"):
+                s2 = view["stage2"]
+                secs.append({"heading": C(f"Invalidated by the change: {len(s2['invalidated'])} assertions"),
+                             "text": C("Their verifications ended, and the derived output built on them is suspect."),
+                             "table": _table(["assertion", "key", "derived outputs that used it"], [(x["id"], x["key"], ", ".join(x.get("derived") or [])) for x in s2["invalidated"]])})
+                susp = [x["id"] for x in s2["suspect_derived"] if x.get("suspect")]
+                secs.append({"heading": C("Derived outputs marked suspect"), "list": susp or ["none registered in this source"]})
+            else:
+                secs.append({"heading": C("Document change"), "text": C("No document changed in this scenario.")})
+        if nid == "testdef":
+            secs.append({"heading": C("The oracle here"), "text": C("The oracle is the kit's own eleven scenarios, written before the arms ran.", "It does not share the arms' premise.")})
+        out[nid] = {"title": C(NODE_TITLE[nid]), "intro": intro, "sections": secs}
+    return out

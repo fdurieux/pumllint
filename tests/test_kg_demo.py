@@ -228,6 +228,8 @@ def test_generated_prose_keeps_to_the_glossary_and_the_length_limits():
             shown = " ".join(v["narrative"]) + " " + " ".join(v["gaps"]["explain"].values())
             for det in v["details"].values():
                 shown += " " + det["title"] + " " + det["intro"] + " " + " ".join(sec["heading"] + " " + sec.get("text", "") for sec in det["sections"])
+            for det in v["systemic_details"].values():
+                shown += " " + det["title"] + " " + det["intro"] + " " + " ".join(sec["heading"] + " " + sec.get("text", "") for sec in det["sections"])
             boxes = v["stages"] + (v["stage2"]["stages"] if v.get("stage2") else [])
             shown += " " + " ".join(b["label"] + " " + " ".join(b["lines"]) for b in boxes)
             shown += " " + " ".join(" ".join(v["arms"][a][part]["lines"]) for a in ("G", "B") for part in ("generate", "oracle"))
@@ -247,6 +249,11 @@ def test_generated_prose_keeps_to_the_glossary_and_the_length_limits():
             for s in _sentences(meta[field]):
                 assert len(s.split()) <= lim and not _forbidden_in(s), (sc, field, s)
         assert meta["plant"].endswith(".") and meta["defect"].endswith(".") and meta["represented"].endswith("."), sc
+    # the systemic placements: the captions' notes and the entry families are controlled too
+    for sc, spec in views.SYSTEMIC.items():
+        for text in (spec["family"], spec["G"]["note"], spec["B"]["note"]):
+            for s in _sentences(text):
+                assert len(s.split()) <= 20 and not _forbidden_in(s), (sc, s)
     for texts in (views.RULE_TEXT.values(), views.GAP_KIND_TEXT.values(), views.VERDICT_MEANING.values()):
         for group in texts:
             for s in group:
@@ -307,3 +314,38 @@ def test_gaps_view_matches_the_census_by_kind():
     assert all(r["sides"] and r["sides"]["key"] == "QuoteAPI|on_screening_outage" for r in s4)
     s7 = views.build("S7", "record", NO_RUNS)["gaps"]["unverified"]
     assert s7["count"] == 145 and len(s7["required_below_verified"]) == 36
+
+
+def test_every_systemic_node_has_a_panel():
+    import gen_cascade_slide as slide
+    for sc in views.ORDER:
+        v = views.build(sc, views.default_source(sc), NO_RUNS)
+        sd = v["systemic_details"]
+        assert set(sd) == set(slide.nodes), sc
+        for nid, d in sd.items():
+            assert d["title"] and d["intro"] and d["sections"], (sc, nid)
+            heads = [sec["heading"] for sec in d["sections"]]
+            assert any(h.startswith("Edges in the model") for h in heads) and any(h.startswith("Arm G") for h in heads) and any(h.startswith("Arm B") for h in heads), (sc, nid)
+            for sec in d["sections"]:
+                if "table" in sec:
+                    assert all(len(r) == len(sec["table"]["cols"]) for r in sec["table"]["rows"]), (sc, nid, sec["heading"])
+        # the entry node says so, for both arms
+        entry = views.SYSTEMIC[sc]["entry"]
+        if entry:
+            for sec in sd[entry]["sections"]:
+                if sec["heading"].startswith("Arm "):
+                    assert "entered the model here" in sec["text"], (sc, sec["heading"])
+        # every node is clickable in both drawings
+        for arm in ("G", "B"):
+            svg = cascade.render(views.SYSTEMIC[sc], arm)
+            assert all(f'data-node="{nid}"' in svg for nid in slide.nodes), (sc, arm)
+    s3 = views.build("S3", "record", NO_RUNS)["systemic_details"]["deriveddef"]
+    assert any(sec.get("table") and len(sec["table"]["rows"]) == 17 for sec in s3["sections"])
+    s4 = views.build("S4", "record", NO_RUNS)["systemic_details"]["explderived"]
+    assert any(sec.get("table") and len(sec["table"]["rows"]) == 4 for sec in s4["sections"])
+    s6 = views.build("S6", "record", NO_RUNS)["systemic_details"]["drift"]
+    assert any(sec.get("table") and len(sec["table"]["rows"]) == 4 for sec in s6["sections"])
+    s2 = views.build("S2", "record", NO_RUNS)["systemic_details"]["unknown"]
+    assert any(sec.get("list") and any(x.startswith("B run 1, question") for x in sec["list"]) for sec in s2["sections"])
+    page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
+    assert "systemic-detail" in page and "wireSystemic" in page
