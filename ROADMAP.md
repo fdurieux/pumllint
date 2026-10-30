@@ -8487,6 +8487,11 @@ list and license posture live in § Settled questions.
     figure changed; the narrative registers the plant sentence as
     controlled rather than quoting it as data; the test covers every
     field of every scenario. Page, view, tests and docs only.
+  - *2026-10-30, later (#237):* the pipeline boxes join the registry.
+    Every box label and line is registered as it is built, controlled
+    for what the view writes and data for what it quotes from the
+    files; the oracle box's score line uses the glossary's term; the
+    test covers every box. Page, view, tests and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

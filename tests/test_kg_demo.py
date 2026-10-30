@@ -228,9 +228,19 @@ def test_generated_prose_keeps_to_the_glossary_and_the_length_limits():
             shown = " ".join(v["narrative"]) + " " + " ".join(v["gaps"]["explain"].values())
             for det in v["details"].values():
                 shown += " " + det["title"] + " " + det["intro"] + " " + " ".join(sec["heading"] + " " + sec.get("text", "") for sec in det["sections"])
+            boxes = v["stages"] + (v["stage2"]["stages"] if v.get("stage2") else [])
+            shown += " " + " ".join(b["label"] + " " + " ".join(b["lines"]) for b in boxes)
+            shown += " " + " ".join(" ".join(v["arms"][a][part]["lines"]) for a in ("G", "B") for part in ("generate", "oracle"))
             for item in v["text_registry"]:
                 assert item["text"] in shown, (sc, src, item["text"][:80])
     assert seen["controlled"] > 500 and seen["reading"] >= 7 and seen["data"] > 20, seen
+    # the pipeline boxes are in the registry too: every label and every line of every box
+    v = views.build("S6", "record", NO_RUNS)
+    texts = {it["text"] for it in v["text_registry"]}
+    for b in v["stages"] + v["stage2"]["stages"]:
+        assert b["label"] in texts and all(ln in texts for ln in b["lines"]), b["id"]
+    for a in ("G", "B"):
+        assert all(ln in texts for part in ("generate", "oracle") for ln in v["arms"][a][part]["lines"]), a
     # the scenario descriptions: the sidebar cards and the Planted line are controlled, the reading is looser
     for sc, meta in views.SCENARIOS.items():
         for field, lim in (("title", 20), ("represented", 20), ("defect", 20), ("plant", 20), ("plain", 25)):
