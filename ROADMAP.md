@@ -8492,6 +8492,23 @@ list and license posture live in § Settled questions.
     for what the view writes and data for what it quotes from the
     files; the oracle box's score line uses the glossary's term; the
     test covers every box. Page, view, tests and docs only.
+  - *2026-10-30, later (#238):* the systemic model's boxes open panels
+    too, in the stage-panel style. One panel per node of the reduced
+    knowledge view: the node in the vendored model (label, kind,
+    definition, lever, every edge with polarity, delay, evidence and
+    mechanism); what the record's reading placed there for each arm
+    (entered, passed through, stopped, made visible, invented, would
+    have reached); and the evidence from the result files that bears
+    on it (missing items, ambiguous assertions, contradictions and
+    inferred candidates, the arms' assumptions and questions, the gate
+    and the decisions, the oracle on the planted targets per run,
+    verification and what the arms raised, S6's invalidation set).
+    `cascade.py` marks each node with its id; the slide still
+    regenerates byte for byte. The captions' placement notes and
+    families are rewritten as controlled text. Test: every node of
+    every scenario has a panel, with S3, S4, S6 and S2 checked on their
+    counts and clickable in both drawings. Page, view, tests and docs
+    only; harness and record untouched.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
