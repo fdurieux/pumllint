@@ -242,8 +242,8 @@ function renderReport(v) {
     Invalidated: ${v.stage2.invalidated.map(x => `<code>${esc(x.id)}</code>${x.derived && x.derived.length ? ' → used by ' + x.derived.map(esc).join(', ') : ''}`).join('; ')}.</div>` : '';
   const sys = v.systemic;
   const cascade = `<div class="two">
-     <div class="cascade-wrap">${v.cascade.G}<div class="cap"><b class="G">G, governed:</b> ${esc(sys.G.note)}</div></div>
-     <div class="cascade-wrap">${v.cascade.B}<div class="cap"><b class="B">B, baseline:</b> ${esc(sys.B.note)}</div></div></div>
+     <div class="cascade-wrap">${v.cascade.G}<div class="cap"><b class="G">G, governed${v.source.startsWith('demo-runs/') ? ', the record\'s reading' : ''}:</b> ${esc(sys.G.note)}</div></div>
+     <div class="cascade-wrap">${v.cascade.B}<div class="cap"><b class="B">B, baseline${v.source.startsWith('demo-runs/') ? ', the record\'s reading' : ''}:</b> ${esc(sys.B.note)}</div></div></div>
      <div class="note">Entry: ${esc(sys.family)}. Placement is the demo's reading of the record's §6 onto the model's reduced knowledge view (Legible v0.3, five knowledge nodes, nine edges, four levers); the record itself does not map scenarios onto the model. Solid lines: measured, bounded; dashed: hypothesis; amber: the arrow reduces its target.</div>
      <div class="ref" style="margin-top:10px"><b>${esc(v.reference.title)}.</b> ${esc(v.reference.text)}</div>`;
   const runsOf = arm => v.arms[arm].runs;
