@@ -1,0 +1,516 @@
+{
+ "calls": 41,
+ "usd_est": 1.1701,
+ "retries": [
+  {
+   "tag": "S3/G/4",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S3/G/4",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S3/G/4",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S4/B/5",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S4/B/4",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S4/B/5",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S4/B/4",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S4/B/4",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/3",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/4",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/5",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/1",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/2",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/4",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/5",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S5/B/2",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/2",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/5",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/4",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/3",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/1",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/2",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/5",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/3",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/1",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/4",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/2",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/5",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/3",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/1",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/B/4",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/4",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/5",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/3",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/2",
+   "attempt": 1,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/4",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/5",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/3",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/2",
+   "attempt": 2,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/4",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/5",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/2",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S6/G/3",
+   "attempt": 3,
+   "error": "Error code: 502"
+  },
+  {
+   "tag": "S7/B/2",
+   "attempt": 1,
+   "error": "Error code: 502"
+  }
+ ],
+ "per_call": [
+  {
+   "tag": "S4/B/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6637,
+   "completion_tokens": 3248,
+   "seconds": 25.6,
+   "usd_est": 0.0408
+  },
+  {
+   "tag": "S4/B/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6637,
+   "completion_tokens": 3485,
+   "seconds": 28.2,
+   "usd_est": 0.0431
+  },
+  {
+   "tag": "S4/B/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6637,
+   "completion_tokens": 3425,
+   "seconds": 28.7,
+   "usd_est": 0.0425
+  },
+  {
+   "tag": "S4/B/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 3,
+   "prompt_tokens": 6637,
+   "completion_tokens": 3539,
+   "seconds": 105.3,
+   "usd_est": 0.0437
+  },
+  {
+   "tag": "S4/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 18102,
+   "completion_tokens": 409,
+   "seconds": 5.7,
+   "usd_est": 0.0267
+  },
+  {
+   "tag": "S4/G/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 18102,
+   "completion_tokens": 702,
+   "seconds": 7.2,
+   "usd_est": 0.0296
+  },
+  {
+   "tag": "S4/G/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 18102,
+   "completion_tokens": 1048,
+   "seconds": 9.7,
+   "usd_est": 0.0331
+  },
+  {
+   "tag": "S4/G/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 18102,
+   "completion_tokens": 1203,
+   "seconds": 10.4,
+   "usd_est": 0.0347
+  },
+  {
+   "tag": "S4/G/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 18102,
+   "completion_tokens": 1639,
+   "seconds": 14.0,
+   "usd_est": 0.039
+  },
+  {
+   "tag": "S5/B/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 2,
+   "prompt_tokens": 6312,
+   "completion_tokens": 2612,
+   "seconds": 61.6,
+   "usd_est": 0.034
+  },
+  {
+   "tag": "S5/B/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 2,
+   "prompt_tokens": 6312,
+   "completion_tokens": 3119,
+   "seconds": 64.1,
+   "usd_est": 0.0391
+  },
+  {
+   "tag": "S5/B/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 3,
+   "prompt_tokens": 6312,
+   "completion_tokens": 3045,
+   "seconds": 100.5,
+   "usd_est": 0.0383
+  },
+  {
+   "tag": "S5/B/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 3,
+   "prompt_tokens": 6312,
+   "completion_tokens": 3056,
+   "seconds": 101.0,
+   "usd_est": 0.0385
+  },
+  {
+   "tag": "S5/B/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 3,
+   "prompt_tokens": 6312,
+   "completion_tokens": 3098,
+   "seconds": 101.2,
+   "usd_est": 0.0389
+  },
+  {
+   "tag": "S5/G/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 16222,
+   "completion_tokens": 154,
+   "seconds": 3.7,
+   "usd_est": 0.0218
+  },
+  {
+   "tag": "S5/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 16222,
+   "completion_tokens": 1298,
+   "seconds": 14.3,
+   "usd_est": 0.0333
+  },
+  {
+   "tag": "S5/G/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 16222,
+   "completion_tokens": 375,
+   "seconds": 15.2,
+   "usd_est": 0.024
+  },
+  {
+   "tag": "S5/G/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 16222,
+   "completion_tokens": 887,
+   "seconds": 22.2,
+   "usd_est": 0.0291
+  },
+  {
+   "tag": "S5/G/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 16222,
+   "completion_tokens": 1315,
+   "seconds": 26.2,
+   "usd_est": 0.0334
+  },
+  {
+   "tag": "S6/B/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 4,
+   "prompt_tokens": 6874,
+   "completion_tokens": 3104,
+   "seconds": 145.3,
+   "usd_est": 0.0396
+  },
+  {
+   "tag": "S6/B/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 4,
+   "prompt_tokens": 6874,
+   "completion_tokens": 3466,
+   "seconds": 149.1,
+   "usd_est": 0.0433
+  },
+  {
+   "tag": "S6/G/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 17549,
+   "completion_tokens": 3709,
+   "seconds": 27.5,
+   "usd_est": 0.059
+  },
+  {
+   "tag": "S7/B/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6832,
+   "completion_tokens": 3375,
+   "seconds": 26.5,
+   "usd_est": 0.0423
+  },
+  {
+   "tag": "S7/B/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6832,
+   "completion_tokens": 3299,
+   "seconds": 28.3,
+   "usd_est": 0.0415
+  },
+  {
+   "tag": "S7/B/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6832,
+   "completion_tokens": 3460,
+   "seconds": 29.2,
+   "usd_est": 0.0431
+  },
+  {
+   "tag": "S7/B/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 6832,
+   "completion_tokens": 3445,
+   "seconds": 29.8,
+   "usd_est": 0.043
+  },
+  {
+   "tag": "S7/B/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 2,
+   "prompt_tokens": 6832,
+   "completion_tokens": 2882,
+   "seconds": 56.0,
+   "usd_est": 0.0374
+  },
+  {
+   "tag": "S7/G/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 13402,
+   "completion_tokens": 728,
+   "seconds": 8.1,
+   "usd_est": 0.024
+  },
+  {
+   "tag": "S7/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 13402,
+   "completion_tokens": 1161,
+   "seconds": 13.5,
+   "usd_est": 0.0284
+  },
+  {
+   "tag": "S7/G/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 13402,
+   "completion_tokens": 1561,
+   "seconds": 15.2,
+   "usd_est": 0.0324
+  },
+  {
+   "tag": "S7/G/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 13402,
+   "completion_tokens": 1770,
+   "seconds": 20.6,
+   "usd_est": 0.0345
+  },
+  {
+   "tag": "S7/G/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "prompt_tokens": 13402,
+   "completion_tokens": 2118,
+   "seconds": 24.0,
+   "usd_est": 0.0379
+  }
+ ]
+}

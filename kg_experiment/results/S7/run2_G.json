@@ -1,0 +1,76 @@
+{
+ "scenario": "S7",
+ "arm": "G",
+ "run": 2,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "proposed",
+   "blocked"
+  ],
+  "co_hit": null,
+  "text_len": 3949
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {},
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "The governance gate verdict is BLOCKED, so no implementation may be produced until this is changed to QUALIFIED or PROCEED. Please confirm when the gate verdict is updated and re-run the task. (GATE VERDICT: BLOCKED)",
+  "Several behavioural keys the implementation depends on are only at status=proposed and must be verified or explicitly approved before coding: invalid_request|behaviour (A:dt:invalid_request|behaviour@v1), QuoteAPI|on_notification_failure (A:dt:QuoteAPI|on_notification_failure@v1), the entire pricing table P1–P4 (A:dt:P1|formula@v1, A:dt:P2|threshold@v1, A:dt:P2|surcharge@v1, A:dt:P3|threshold@v1, A:dt:P3|factor@v1, A:dt:P3|order#1@v1, A:dt:P3|order@v1, A:dt:P4|rounding@v1), flow|order (A:spec:flow|order@v1) and response|quote_id_presence (A:spec:response|quote_id_presence@v1). Should these be treated as authoritative despite their status, or corrected?",
+  "The request validation behaviour is underspecified as only constraints per field are given. For invalid_request|behaviour (A:dt:invalid_request|behaviour@v1, status=proposed), please confirm: (a) what exact request shapes are considered invalid (type mismatches, missing fields, out-of-range values, extra fields, etc.), and (b) that the only allowed error status for such cases is exactly 'rejected: invalid_request'.",
+  "Pricing (DT-P) is fully specified only in proposed assertions. Before implementation, please confirm or correct: the base formula `base = 0.87 * weight_kg + 1.13 * distance_km` (A:dt:P1|formula@v1), the heavy surcharge rule and parameters (threshold 1244 kg and flat 316.00; A:dt:P2|threshold@v1, A:dt:P2|surcharge@v1), the long-haul multiplier rule (threshold 4912 km and factor 1.19; A:dt:P3|threshold@v1, A:dt:P3|factor@v1), the normative order P2 then P3 (A:dt:P3|order#1@v1, A:dt:P3|order@v1), and rounding to 2 decimals (A:dt:P4|rounding@v1).",
+  "The overall orchestration order is only proposed in flow|order (A:spec:flow|order@v1). Please verify that the intended sequence is exactly: validate → store draft → screen → decide (using DT-S thresholds and outcomes) → price (DT-P, only when DT-S row is priced) → notify (quote document or refusal notice, where specified) → respond.",
+  "Notification semantics are partially proposed. Please confirm DT-S note 4 (A:dt:QuoteAPI|on_notification_failure@v1): that both send_quote_document and send_refusal_notice are fire-and-forget, and that any delivery failure MUST NOT alter the stored quote nor the API response in any way.",
+  "The response field quote_id is only governed by a proposed assertion (A:spec:response|quote_id_presence@v1). Please confirm that: (a) a quote_id must be generated and returned whenever store_draft succeeds (including held_unscreened, review_hold, refused_screening, quoted), and (b) quote_id must NOT be present when storage fails or when the request is rejected as invalid before storage.",
+  "For the collaborators (QuoteStore.store_draft/update_quote, TariffEngine.price, ScreeningService.screen, NotificationService.send_quote_document/send_refusal_notice) there is no explicit contract in this bundle. Please provide or confirm: parameter lists and types, return payload shapes (especially what QuoteStore returns so we can propagate quote_id), and the precise exceptions they may raise besides StoreUnavailableError and ScreeningUnavailableError, if any.",
+  "ScreeningService.screen’s success path is only indirectly described through DT-S. Please confirm the exact return type: is it a numeric risk_index, and are there any non-numeric or edge values (null, NaN) that must be handled as special cases?",
+  "For QuoteStore.update_quote, please confirm which fields it can update atomically along with status (e.g., price for priced rows, hold flag, timestamps) and whether it is allowed to fail partially or only by raising StoreUnavailableError (A:dt:QuoteAPI|on_store_failure@v1, A:seq:QuoteAPI|on_store_failure@v1, A:spec:QuoteAPI|on_store_failure@v1 assume an all-or-nothing failure)."
+ ],
+ "assumptions": [],
+ "claims": [
+  "Only verified or approved knowledge may be used as fact; validated and proposed knowledge cannot silently be treated as facts. [POLICY/1]",
+  "If the GATE VERDICT is BLOCKED, no code must be produced: decision must be 'abstain' and code must be null while listing the questions and gaps. [POLICY/4]",
+  "On storage failure when storing the draft quote, nothing else runs: no screening, no pricing, no notification; the status returned is 'error: store_unavailable'. [A:dt:QuoteAPI|on_store_failure@v1]",
+  "On storage failure, QuoteAPI must not proceed to screening, pricing, or notification in the sequence diagram. [A:seq:QuoteAPI|on_store_failure@v1]",
+  "The specification requires that on store failure, QuoteAPI returns status 'error: store_unavailable' and stops further processing. [A:spec:QuoteAPI|on_store_failure@v1]",
+  "On a screening outage, the quote is still priced, stored with status 'held_unscreened', and not notified; the response carries the price and hold: true. [A:dt:QuoteAPI|on_screening_outage@v1]",
+  "The BPMN model shows that under screening outage the path is: price (DT-P) → update stored quote to held_unscreened → end in held_unscreened without notification. [A:bpmn:QuoteAPI|on_screening_outage@v1]",
+  "The sequence diagram on screening failure (service unavailable) shows: ScreeningService returns a screeningUnavailableError, then QuoteAPI calls TariffEngine.price, then updates the quote to held_unscreened, and does not notify. [A:seq:QuoteAPI|on_screening_outage@v1]",
+  "The specification step for screening outage explicitly states: request risk index; if screening unavailable, price anyway (DT-P), update stored quote to held_unscreened, do not notify, and return price with hold: true. [A:spec:QuoteAPI|on_screening_outage@v1]",
+  "The accepted-screening row (risk_index <= 41) leads to a priced quote, notification with a quote document, and final status 'quoted'. [A:dt:S-accept|max@v1, A:dt:S-accept|priced@v1, A:dt:S-accept|notified@v1, A:dt:S-accept|status@v1]",
+  "The review row (42 <= risk_index <= 66) is not priced, not notified, and ends in status 'review_hold'. [A:dt:S-review|min@v1, A:dt:S-review|max@v1, A:dt:S-review|priced@v1, A:dt:S-review|notified@v1, A:dt:S-review|status@v1]",
+  "The refusal row (risk_index >= 67) is not priced, is notified with a refusal notice, and ends in status 'refused_screening'. [A:dt:S-refuse|min@v1, A:dt:S-refuse|priced@v1, A:dt:S-refuse|notified@v1, A:dt:S-refuse|status@v1]",
+  "A refusal must be notified via a refusal notice, and pricing must never run on a refused quote. [A:dt:S-refuse|notified#1@v1]",
+  "The allowed response statuses are exactly: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', and 'error: store_unavailable'. [A:oas:response|statuses@v1]",
+  "The specification likewise enumerates the same set of allowed response statuses for the API. [A:spec:response|statuses@v1]",
+  "The response field 'price' is present exactly on the priced rows of DT-S. [A:oas:response|price_presence@v1]",
+  "The specification confirms that 'price' is present only on priced rows in DT-S. [A:spec:response|price_presence@v1]",
+  "The response field 'hold' is present and true exactly when the status is 'held_unscreened'. [A:oas:response|hold_presence@v1]",
+  "The specification confirms that 'hold: true' is present exactly on 'held_unscreened'. [A:spec:response|hold_presence@v1]",
+  "Store methods in QuoteStore, when storage fails, must raise StoreUnavailableError so that QuoteAPI can apply the on_store_failure behaviour. [A:dt:QuoteAPI|on_store_failure@v1, A:seq:QuoteAPI|on_store_failure@v1, A:spec:QuoteAPI|on_store_failure@v1]",
+  "ScreeningService.screen must raise ScreeningUnavailableError on a screening outage so that QuoteAPI can apply the on_screening_outage behaviour. [A:dt:QuoteAPI|on_screening_outage@v1, A:seq:QuoteAPI|on_screening_outage@v1, A:spec:QuoteAPI|on_screening_outage@v1]"
+ ],
+ "usage": {
+  "tag": "S7/G/2",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 13402,
+  "completion_tokens": 2118,
+  "seconds": 24.0,
+  "usd_est": 0.0379
+ }
+}
