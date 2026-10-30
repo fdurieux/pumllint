@@ -8382,6 +8382,11 @@ list and license posture live in § Settled questions.
     arms refused without a key, Playwright screenshots), and the CI job
     is the first `docker compose up`. The maintainer's Mac is the
     first-start check the brief named.
+  - *2026-10-30, later (#223):* the demo README's start section
+    rewritten as a six-step quick start for the Mac (prerequisites, the
+    optional OpenAI key and where it lives, the unchanged start block,
+    how to use the page, stop, restart), on the maintainer's ask. Docs
+    only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
