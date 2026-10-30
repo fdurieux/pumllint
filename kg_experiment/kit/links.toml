@@ -1,0 +1,51 @@
+# Human-authored assertions (2026-10-30): which code unit of
+# reference_impl.py implements which requirement, and which Gherkin
+# scenario verifies which requirement. The feature file and the code
+# carry no ids, so these links are a person's statements, not extractions.
+
+[[implements]]
+requirement = "REQ-01"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-02"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-03"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-04"
+code_unit = "QuoteAPI._validate"
+[[implements]]
+requirement = "REQ-05"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-06"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-07"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-08"
+code_unit = "TariffEngine.price"
+
+[[verifies]]
+scenario = "G1"
+requirement = "REQ-01"
+[[verifies]]
+scenario = "G2"
+requirement = "REQ-04"
+[[verifies]]
+scenario = "G3"
+requirement = "REQ-03"
+[[verifies]]
+scenario = "G4"
+requirement = "REQ-06"
+[[verifies]]
+scenario = "G5"
+requirement = "REQ-08"
+[[verifies]]
+scenario = "G6"
+requirement = "REQ-02"
+[[verifies]]
+scenario = "G7"
+requirement = "REQ-07"

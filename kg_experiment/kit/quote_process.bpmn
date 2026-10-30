@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    id="cargo_quote_defs" targetNamespace="http://example.org/cargoquote">
+  <bpmn:process id="quote_process" name="CargoQuote quotation" isExecutable="false">
+    <bpmn:startEvent id="start" name="Quote request received"/>
+    <bpmn:task id="t_validate" name="Validate request (DT-V)"/>
+    <bpmn:exclusiveGateway id="g_valid" name="request valid?"/>
+    <bpmn:endEvent id="end_rejected" name="rejected: invalid_request"/>
+    <bpmn:task id="t_store" name="Store draft quote (status draft)"/>
+    <bpmn:exclusiveGateway id="g_stored" name="draft stored?"/>
+    <bpmn:endEvent id="end_store_error" name="error: store_unavailable"/>
+    <bpmn:task id="t_screen" name="Request risk index from Screening Service"/>
+    <bpmn:exclusiveGateway id="g_screen" name="screening outcome (DT-S)"/>
+    <bpmn:task id="t_price_accept" name="Price (DT-P)"/>
+    <bpmn:task id="t_update_quoted" name="Update stored quote to quoted"/>
+    <bpmn:task id="t_notify_quote" name="Send quote document (fire-and-forget)"/>
+    <bpmn:endEvent id="end_quoted" name="quoted"/>
+    <bpmn:task id="t_update_review" name="Update stored quote to review_hold"/>
+    <bpmn:endEvent id="end_review" name="review_hold"/>
+    <bpmn:task id="t_update_refused" name="Update stored quote to refused_screening"/>
+    <bpmn:task id="t_notify_refusal" name="Send refusal notice (fire-and-forget)"/>
+    <bpmn:endEvent id="end_refused" name="refused_screening"/>
+    <bpmn:task id="t_price_outage" name="Price (DT-P)"/>
+    <bpmn:task id="t_update_held" name="Update stored quote to held_unscreened"/>
+    <bpmn:endEvent id="end_held" name="held_unscreened (hold: true, not notified)"/>
+    <bpmn:sequenceFlow id="f1" sourceRef="start" targetRef="t_validate"/>
+    <bpmn:sequenceFlow id="f2" sourceRef="t_validate" targetRef="g_valid"/>
+    <bpmn:sequenceFlow id="f3" name="invalid" sourceRef="g_valid" targetRef="end_rejected"/>
+    <bpmn:sequenceFlow id="f4" name="valid" sourceRef="g_valid" targetRef="t_store"/>
+    <bpmn:sequenceFlow id="f5" sourceRef="t_store" targetRef="g_stored"/>
+    <bpmn:sequenceFlow id="f6" name="storage failed" sourceRef="g_stored" targetRef="end_store_error"/>
+    <bpmn:sequenceFlow id="f7" name="stored" sourceRef="g_stored" targetRef="t_screen"/>
+    <bpmn:sequenceFlow id="f8" sourceRef="t_screen" targetRef="g_screen"/>
+    <bpmn:sequenceFlow id="f9" name="accept row" sourceRef="g_screen" targetRef="t_price_accept"/>
+    <bpmn:sequenceFlow id="f10" sourceRef="t_price_accept" targetRef="t_update_quoted"/>
+    <bpmn:sequenceFlow id="f11" sourceRef="t_update_quoted" targetRef="t_notify_quote"/>
+    <bpmn:sequenceFlow id="f12" sourceRef="t_notify_quote" targetRef="end_quoted"/>
+    <bpmn:sequenceFlow id="f13" name="review row" sourceRef="g_screen" targetRef="t_update_review"/>
+    <bpmn:sequenceFlow id="f14" sourceRef="t_update_review" targetRef="end_review"/>
+    <bpmn:sequenceFlow id="f15" name="refuse row" sourceRef="g_screen" targetRef="t_update_refused"/>
+    <bpmn:sequenceFlow id="f16" sourceRef="t_update_refused" targetRef="t_notify_refusal"/>
+    <bpmn:sequenceFlow id="f17" sourceRef="t_notify_refusal" targetRef="end_refused"/>
+    <bpmn:sequenceFlow id="f18" name="screening outage" sourceRef="g_screen" targetRef="t_price_outage"/>
+    <bpmn:sequenceFlow id="f19" sourceRef="t_price_outage" targetRef="t_update_held"/>
+    <bpmn:sequenceFlow id="f20" sourceRef="t_update_held" targetRef="end_held"/>
+  </bpmn:process>
+</bpmn:definitions>
