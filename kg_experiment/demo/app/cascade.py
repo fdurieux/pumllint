@@ -59,8 +59,9 @@ def render(spec: dict, arm: str, *, title: str | None = None) -> str:
     stop = armspec.get("stop")
     entry = spec.get("entry")
     on_path = {(path[i], path[i + 1]) for i in range(len(path) - 1)}
+    label = html.escape(title or "the reduced knowledge view with the scenario's path")
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -36 {W} {H + 36}" role="img" '
-           f'aria-label="{html.escape(title or "the reduced knowledge view with the scenario\'s path")}" class="cascade cascade-{arm}">',
+           f'aria-label="{label}" class="cascade cascade-{arm}">',
            '<defs>'
            '<marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#44524B"/></marker>'
            '<marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#C27A1F"/></marker>'
