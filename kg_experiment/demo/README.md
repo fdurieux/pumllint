@@ -59,21 +59,44 @@ kind writes into a dated folder, `kg_experiment/results/demo-runs/<date-time>/`,
 and never into `kg_experiment/results/`, which is the published record.
 The report view lets you switch between the record and any demo run.
 
-## Start it on a Mac
+## Quick start on a Mac, step by step
 
-Prerequisites: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-running, and `git` (macOS offers to install it the first time you type it).
-If you want the Arms mode, export your key first, in the same terminal:
+Six steps. Each block is ready to paste into Terminal (zsh) as a whole;
+the line above each says what it does.
+
+**1. Prerequisites.** Install
+[Docker Desktop](https://www.docker.com/products/docker-desktop/) if you
+do not have it, start it, and wait until its menu-bar icon says it is
+running. `git` comes with macOS (it offers to install the command-line
+tools the first time you type it). Then check the engine answers:
 
 ```bash
-export OPENAI_API_KEY=sk-your-key
+docker info >/dev/null 2>&1 && echo "docker engine running" || echo "docker engine NOT running: start Docker Desktop"
 ```
 
-Then paste this block as a whole into Terminal. It checks the
-prerequisites and says what to install if one is missing, clones the
-repository into your home folder (or updates it), sets the database
-password, builds and starts the two containers, waits until both are
-healthy, and opens the demo in your browser.
+**2. Set the OpenAI key, only if you want the Arms mode.** Paste this
+with your real key in place of the placeholder. The variable lives in
+this Terminal window only; it is never written to disk and never baked
+into the image. Skip this step and the Arms buttons simply stay greyed
+out; Replay and Deterministic work without it.
+
+```bash
+export OPENAI_API_KEY=sk-your-real-key-here
+```
+
+Optionally choose a database password other than the default
+`kgpoc2026`:
+
+```bash
+export KG_NEO4J_PASSWORD=choose-a-password
+```
+
+**3. Clone and start the stack.** Paste the whole block at once. It
+checks the tools and says what to install if one is missing, clones the
+repository into your home folder (or updates it if it is already there),
+sets the two variables the stack reads, builds the application image,
+pulls the Neo4j image, waits until both containers are healthy, prints
+the two addresses, and opens the demo in your browser.
 
 ```bash
 set -e
@@ -92,18 +115,54 @@ echo "Neo4j Browser: http://localhost:7474  user neo4j, password $KG_NEO4J_PASSW
 open http://localhost:8080
 ```
 
-The first start builds the application image (a minute or two) and pulls
-the Neo4j image. Later starts take seconds. To stop:
+The first start takes a minute or two (the image build plus the Neo4j
+pull). Later starts take seconds.
+
+**4. Use it.** In the browser at `http://localhost:8080`:
+
+- the two chips in the header say whether the store is reachable and
+  whether the Arms mode is enabled;
+- click a scenario card to **Replay** its recorded results;
+- click **Deterministic** to re-run D1 to D6 against the container's
+  Neo4j (about five seconds); the run's log appears on the left, and the
+  view switches to the new demo run when it finishes;
+- click **Arms** (needs the key) to re-run both model arms once; one to
+  two minutes, a few cents;
+- use the **source** dropdown in the report header to switch between the
+  record, S6's re-run, and any demo run;
+- **Open Neo4j Browser** opens `http://localhost:7474` on the scenario
+  loaded last; log in as `neo4j` with your password and paste any saved
+  query from the left panel.
+
+Re-runs land in `~/pumllint/kg_experiment/results/demo-runs/<date-time>/`,
+which git ignores.
+
+**5. Stop it.**
 
 ```bash
 cd "$HOME/pumllint/kg_experiment/demo" && docker compose down
 ```
 
-Add `-v` to that command to delete the database volume as well; the
-demo runs stay, because they are written into
-`kg_experiment/results/demo-runs/` in your checkout (ignored by git).
+Add `-v` to that command to delete the Neo4j data volume as well; the
+demo runs stay, because they are in your checkout.
 
-### What the block does, in plain English
+**6. Restart later.** A new Terminal window has forgotten the key, so
+export it again first if you want the Arms mode:
+
+```bash
+export OPENAI_API_KEY=sk-your-real-key-here
+```
+
+```bash
+cd "$HOME/pumllint/kg_experiment/demo" && git pull --ff-only && docker compose up -d --build --wait && open http://localhost:8080
+```
+
+Two cautions. Never commit the key or put it in a `.env` file you might
+push. And if you ever run this on a server (see the EC2 route below),
+restrict the firewall to your own address on ports 8080, 7474 and 7687:
+the demo page has no login, and 7474 is a live database console.
+
+### What the start block does, in plain English
 
 The first four lines check that `git`, `docker` and `docker compose` are
 present and that the Docker engine is running; each stops with a message
