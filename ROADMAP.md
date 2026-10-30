@@ -8467,6 +8467,20 @@ list and license posture live in § Settled questions.
     with S3 (17 ambiguity gaps) and S4 (4 conflicts) loaded. Test:
     every scenario's file view matches `deterministic.json`'s census
     by kind. Page, view and server only; harness and record untouched.
+  - *2026-10-30, later (#235):* the page's generated prose under
+    controlled-English rules. `kg_experiment/demo/GLOSSARY.md` states
+    them, modelled on ASD-STE100: one approved term per concept, a
+    forbidden-synonym list (statement → assertion, assistant → arm,
+    artefact → document, database → store, test suite → oracle, …),
+    20 words a sentence for controlled text and 25 for the descriptive
+    readings, data quoted as it is. `views.py` registers every sentence
+    it generates with its kind; the plain-English block, the stage
+    panels and the gap kinds are rewritten to the rules, the readings
+    as short descriptive sentences; a Glossary card on the page lists
+    the terms. Test: every generated sentence of every scenario, the
+    S6 rerun and a demo run against the limits and the list; the
+    glossary file against the view's tables; the page source free of
+    forbidden words. Page, view, tests and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

@@ -44,7 +44,7 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .alert{border-left:4px solid var(--red);background:var(--bad);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0 12px}
 .alert.warn{border-left-color:var(--amber);background:var(--warn)}
 .plain{background:var(--pale);border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:10px 0 4px}
-.plain summary{font-weight:600;cursor:pointer} .plain p{margin:7px 0;font-size:14px;line-height:1.55;max-width:90ch} .plain p.guide{color:var(--muted);font-size:13px}
+.plain summary{font-weight:600;cursor:pointer} .gloss dl{display:grid;grid-template-columns:max-content 1fr;gap:3px 14px;font-size:13px;margin:8px 0} .gloss dt{font-weight:600} .gloss dd{margin:0;max-width:90ch} .plain p{margin:7px 0;font-size:14px;line-height:1.55;max-width:90ch} .plain p.guide{color:var(--muted);font-size:13px}
 .toggle{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0 12px;font-size:13px}
 .toggle label{display:block;margin:4px 0;cursor:pointer} .toggle input[type=text]{font:inherit;font-size:12.5px;width:150px;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-family:var(--mono)}
 .toggle .why{color:var(--muted);margin-left:22px}
@@ -111,7 +111,7 @@ a{color:var(--teal)}
     </div>
     <div class="card" style="margin-top:16px"><h2>The store</h2>
       <div id="store" class="small">…</div>
-      <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One database: the store holds the scenario loaded last.</p>
+      <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One store, one scenario: it holds the scenario loaded last.</p>
       <h3>Saved Cypher</h3><div id="cypher"></div>
     </div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
@@ -172,7 +172,7 @@ function modeButton(s, mode, label, enabled, why, hint) {
   else if (r && r.status === 'done') { cls = 'done'; text = label + ' ✓ done'; title = `finished ${r.finished}: click to show it again, or run anew`; }
   else if (r && r.status === 'failed') { cls = 'failed'; text = label + ' ✗ failed'; title = 'the run failed: see the banner'; }
   const dis = !enabled || (mode !== 'replay' && running());
-  const t = !enabled ? why : (running() && mode !== 'replay' ? 'one run at a time: the store is one database' : (title || hint || ''));
+  const t = !enabled ? why : (running() && mode !== 'replay' ? 'one run at a time: the store holds one scenario' : (title || hint || ''));
   return `<button class="${cls}" data-mode="${mode}" data-id="${s.id}" ${dis ? 'disabled' : ''} title="${esc(t)}">${text}</button>`;
 }
 
@@ -303,8 +303,8 @@ function renderGaps(v, store, filter) {
     const rows = (g.groups[k] || []).map(enrich);
     let body;
     if (!rows.length) body = '<p>none in this scenario</p>';
-    else if (k === 'conflict') body = `<div class="tw"><table><thead><tr><th>gap</th><th>key</th><th>one side</th><th>says</th><th>other side</th><th>says</th><th>statements concerned</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.sides ? r.sides.key : '')}</td><td>${esc(r.sides ? r.sides.a : '')}</td><td><code>${esc(r.sides ? r.sides.va : '')}</code></td><td>${esc(r.sides ? r.sides.b : '')}</td><td><code>${esc(r.sides ? r.sides.vb : '')}</code></td><td>${r.assertions ? r.assertions.map(a => `${esc(a.id)} (${esc(a.status)})`).join('<br>') : (r.concerns.length ? r.concerns.map(c => esc(c.id)).join('<br>') : 'store needed')}</td></tr>`).join('')}</tbody></table></div>`;
-    else body = `<div class="tw"><table><thead><tr><th>gap</th><th>what it says</th><th>declared by the authors</th><th>concerns</th><th>the statement concerned: key = value · basis · status</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.text)}</td><td>${r.declared ? 'yes' : 'no'}</td><td>${r.concerns.map(c => `${esc(c.what)} ${esc(c.id)}`).join('<br>')}</td><td>${assertionCell(r.assertion)}</td></tr>`).join('')}</tbody></table></div>`;
+    else if (k === 'conflict') body = `<div class="tw"><table><thead><tr><th>gap</th><th>key</th><th>one side</th><th>says</th><th>other side</th><th>says</th><th>assertions concerned</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.sides ? r.sides.key : '')}</td><td>${esc(r.sides ? r.sides.a : '')}</td><td><code>${esc(r.sides ? r.sides.va : '')}</code></td><td>${esc(r.sides ? r.sides.b : '')}</td><td><code>${esc(r.sides ? r.sides.vb : '')}</code></td><td>${r.assertions ? r.assertions.map(a => `${esc(a.id)} (${esc(a.status)})`).join('<br>') : (r.concerns.length ? r.concerns.map(c => esc(c.id)).join('<br>') : 'store needed')}</td></tr>`).join('')}</tbody></table></div>`;
+    else body = `<div class="tw"><table><thead><tr><th>gap</th><th>what it says</th><th>declared by the authors</th><th>concerns</th><th>the assertion concerned: key = value · basis · status</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.text)}</td><td>${r.declared ? 'yes' : 'no'}</td><td>${r.concerns.map(c => `${esc(c.what)} ${esc(c.id)}`).join('<br>')}</td><td>${assertionCell(r.assertion)}</td></tr>`).join('')}</tbody></table></div>`;
     return `<h5>${esc(k)} · ${g.counts[k]}</h5><p>${esc(g.explain[k])}</p>${body}`;
   };
   let unv = '';
@@ -313,7 +313,7 @@ function renderGaps(v, store, filter) {
     const storeKeys = store && store.match ? [...new Set(store.gaps.filter(x => x.kind === 'unverified').flatMap(x => x.concerns.filter(c => c.key).map(c => c.key)))].sort() : null;
     const keys = storeKeys || u.required_below_verified;
     unv = `<h5>unverified · ${u.count}</h5><p>${esc(g.explain['unverified'])}</p>
-      <p>${u.count} statements with no verification record. ${storeKeys ? `They concern ${keys.length} distinct keys, listed below; the ${keys.filter(k => req.has(k)).length} the coding task requires are marked.` : `Of the 36 keys the coding task requires, ${u.required_below_verified.length} are below verified (marked); the full list of keys concerned needs the store.`}</p>
+      <p>${u.count} assertions with no verification record. ${storeKeys ? `They concern ${keys.length} distinct keys, listed below; the ${keys.filter(k => req.has(k)).length} the coding task requires are marked.` : `Of the 36 keys the coding task requires, ${u.required_below_verified.length} are below verified (marked); the full list of keys concerned needs the store.`}</p>
       <div class="gkeys">${keys.map(k => `<code class="${req.has(k) ? 'req' : ''}" title="${req.has(k) ? 'a key the coding task requires' : ''}">${esc(k)}</code>`).join('') || '<span class="small">none below verified among the required keys</span>'}</div>`;
   }
   return `<div class="detail"><button class="close small">close</button><h4>Gaps: everything the rules found wanting · ${Object.values(g.census).reduce((a, b) => a + b, 0)} in the census</h4>${srcLine}
@@ -355,7 +355,7 @@ function renderReport(v) {
     <div class="armstack">${armBox('generate', 'G', v.arms.G.generate)}${armBox('generate', 'B', v.arms.B.generate)}</div>
     <div class="armstack">${armBox('oracle', 'G', v.arms.G.oracle)}${armBox('oracle', 'B', v.arms.B.oracle)}</div></div>`;
   const strip2 = v.stage2 ? `<h3>S6 stage 2 — the source change, and what it invalidates</h3><div class="strip">${v.stage2.stages.map(stageBox).join('')}</div>
-    <div class="small" style="margin-top:6px">Suspect <code>Derived</code> artefact: ${v.stage2.suspect_derived.length ? v.stage2.suspect_derived.map(d => `<code>${esc(d.id)}</code> suspect=${d.suspect}`).join(', ') : 'none registered in this source (deterministic mode creates no Derived node; the record\'s S6 and the re-run do)'}.
+    <div class="small" style="margin-top:6px">Suspect <code>Derived</code> output: ${v.stage2.suspect_derived.length ? v.stage2.suspect_derived.map(d => `<code>${esc(d.id)}</code> suspect=${d.suspect}`).join(', ') : 'none registered in this source (deterministic mode creates no Derived node; the record\'s S6 and the re-run do)'}.
     Invalidated: ${v.stage2.invalidated.map(x => `<code>${esc(x.id)}</code>${x.derived && x.derived.length ? ' → used by ' + x.derived.map(esc).join(', ') : ''}`).join('; ')}.</div>` : '';
   const sys = v.systemic;
   const cascade = `<div class="two">
@@ -373,7 +373,7 @@ function renderReport(v) {
       <tr><th>model</th>${rs.map(r => `<td${r.model && !r.model.startsWith(v.record_model) ? ' style="color:var(--red)"' : ''}>${esc(r.model || '—')}</td>`).join('')}</tr>
       <tr><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
       <tr><th>refs resolvable (M5)</th>${rs.map(r => `<td>${r.refs && r.refs.share !== null ? r.refs.resolved + '/' + r.refs.total : '—'}</td>`).join('')}</tr>
-      </tbody></table>${rs.every(r => !r.code && !r.api_error) ? `<p class="note">— means no code to grade: every ${arm} run returned <code>${esc(rs[0].decision || 'no decision')}</code>${v.gate.verdict === 'BLOCKED' ? ', which is what the policy asks under a BLOCKED verdict' : ''}, so the suite had nothing to run. Its questions are in the last section.</p>` : ''}`;
+      </tbody></table>${rs.every(r => !r.code && !r.api_error) ? `<p class="note">— means no code to grade: every ${arm} run returned <code>${esc(rs[0].decision || 'no decision')}</code>${v.gate.verdict === 'BLOCKED' ? ', which is what the policy asks under a BLOCKED verdict' : ''}, so the oracle had nothing to run. Its questions are in the last section.</p>` : ''}`;
   };
   const qa = (arm) => runsOf(arm).map(r => `<details><summary>${arm}${r.run}: ${esc(r.decision || 'api error')} — ${r.questions.length} question(s), ${r.assumptions.length} assumption(s), ${r.claims_n} claim(s)</summary>
       ${r.api_error ? `<p class="small">api error: ${esc(r.api_error)}</p>` : ''}
@@ -389,6 +389,7 @@ function renderReport(v) {
       <div class="small"><b>Gate:</b> ${esc(g.why)}${g.conflicts.length ? ' · conflicts: ' + g.conflicts.map(c => esc(c.id)).join(', ') : ''}</div>
       <div class="small"><b>Required keys:</b> ${v.required_keys}, by level ${esc(JSON.stringify(v.levels))}${v.d5 ? ` · <b>D5 three-valued:</b> ${Object.entries(v.d5).map(([k, x]) => `${esc(k)} → ${esc(x.answer)}`).join('; ')}` : ''}</div>
       <details class="plain" open><summary>In plain English</summary>${v.narrative.map((t, i) => `<p class="${i === 0 ? 'guide' : ''}">${esc(t)}</p>`).join('')}</details>
+      <details class="plain gloss"><summary>Glossary — the words this page uses, one per concept</summary><dl>${Object.entries(v.glossary).map(([k, d]) => `<dt>${esc(k)}</dt><dd>${esc(d)}</dd>`).join('')}</dl><p class="guide">The page's sentences keep to these terms and to 20 words each (25 for a reading); see kg_experiment/demo/GLOSSARY.md.</p></details>
       ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
       <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${strip}${strip2}<div id="stage-detail"></div>

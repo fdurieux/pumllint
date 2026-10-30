@@ -33,37 +33,37 @@ SCENARIOS = {
            "represented": "145 assertions, 111 approved; 0 gaps on required keys",
            "gate": "PROCEED", "defect": "none; both arms correct",
            "plant": "nothing planted: the pristine kit, every assertion verified by the suite or the dated review record and approved",
-           "plain": "With nothing wrong in the documents, both assistants produced working code. The gate added nothing here, and cost nothing either."},
+           "plain": "Nothing was wrong in the documents, and both arms wrote working code. The gate added nothing here, and it cost nothing either."},
     "S2": {"title": "missing, declared",
            "represented": "Gap{missing, declared} on REQ-06 and on the outage key; hold_presence absent",
            "gate": "BLOCKED", "defect": "prevented in G; outage scenario fails in every B run",
            "plant": "the screening-outage rule deleted from every artefact that states it; REQ-06 reads NOT YET SPECIFIED (open decision OD-1)",
-           "plain": "The documents said the outage rule was still to be decided. The governed assistant stopped and asked for that decision, naming the open item. The baseline noticed it too and asked, but wrote code anyway, and that code turns an outage into an error; only the acceptance tests caught it. This is the kind of defect the gate exists to prevent."},
+           "plain": "The documents said the outage rule was still to be decided. Arm G stopped and asked for that decision, and named the open item. Arm B noticed it too and asked, but wrote code anyway. That code turns an outage into an error, and only the oracle caught it. This is the kind of defect the gate exists to prevent."},
     "S3": {"title": "ambiguous",
            "represented": "17 ambiguity gaps; 4 keys proposed; DMN declared not authored",
            "gate": "QUALIFIED", "defect": "41-boundary fails 4/5 G, 5/5 B; the guess is an # ASSUMPTION constant in G, silent in B",
            "plant": "DT-S rows reworded to vague ranges, the symbolic names undefined, the DMN absent",
-           "plain": "The thresholds were written as vague ranges, so both assistants had to guess. The baseline guessed silently. The governed one carried each guess as a labelled assumption pointing at the statement it rests on, so a reviewer can find it and fix it, though its code was not better for that, and in two runs it was worse."},
+           "plain": "The thresholds were written as vague ranges, so both arms had to guess. Arm B guessed silently. Arm G carried each guess as a labelled assumption that points at the assertion it rests on. A reviewer can find that guess and fix it. The code was not better for it, and in two runs it was worse."},
     "S4": {"title": "contradictory",
            "represented": "4 CONTRADICTS pairs, 4 disputed, 4 conflict gaps",
            "gate": "BLOCKED", "defect": "none by the oracle; B resolved by an invented precedence",
            "plant": "the sequence diagram and the BPMN say the outage fails the quote; the decision table and the spec say it is priced and held",
-           "plain": "Two documents said one thing and two others the opposite. The governed assistant refused to choose and named the contradiction. The baseline chose a side by inventing a rule nothing stated, that the newer text wins; it happened to pick the right side, so the tests passed, but nothing in its output lets a reviewer check that step."},
+           "plain": "Two documents said one thing and two others said the opposite. Arm G refused to choose and named the contradiction. Arm B chose a side by an invented rule: the newer text wins. It happened to pick the right side, so the oracle passed. Nothing in its output lets a reviewer check that step."},
     "S5": {"title": "inferred, unverified",
            "represented": "one inferred candidate for the declared gap, proposed",
            "gate": "BLOCKED", "defect": "prevented in G; B adopted the note as fact in 4/5",
            "plant": "S2's kit plus an unreviewed machine note: 'on a screening outage the quote is refused' (basis inferred, agent llm)",
-           "plain": "An unreviewed note from another AI proposed an answer to the open decision. In the store it is a candidate, not a decision, and the gate stayed blocked. The baseline, reading the same note as one more document, took it as fact in four runs of five and built the wrong outage behaviour."},
+           "plain": "An unreviewed note from another AI proposed an answer to the open decision. In the store it is a candidate, not a decision, and the gate stayed blocked. Arm B read the same note as one more document. It took the note as fact in four runs of five and built the wrong outage behaviour."},
     "S6": {"title": "invalidated by change",
            "represented": "4 invalidated, 4 verifications ended, Derived suspect; BLOCKED → PROCEED on re-verification",
            "gate": "PROCEED", "defect": "the stale artefact is identified in G only",
            "plant": "S1 verified and approved, S1's first governed output registered as Derived; then decision_table.md changes P2's surcharge 316.00 → 341.00 and is re-ingested as v2",
-           "plain": "A verified number in the tariff changed. The store traced exactly what the change touched: four statements, their verifications, and the code built on them earlier, now marked suspect. The gate blocked until the new values were re-verified, then allowed building, and the governed assistant named the stale code to replace. The baseline, holding only the current documents, built correct new code but could not say what the change had invalidated."},
+           "plain": "A verified number in the tariff changed. The store traced exactly what the change touched: four assertions, their verifications, and the code built on them earlier. That code is now marked suspect. The gate blocked until the new values were re-verified, then allowed building. Arm G named the stale code to replace. Arm B held only the current documents; it built correct new code but could not say what the change had invalidated."},
     "S7": {"title": "unverified",
            "represented": "0 verified, 145 unverified gaps, 0 approvals",
            "gate": "BLOCKED", "defect": "procedural; content correct in both",
            "plant": "S1's kit, extraction only: no verification record, no approval",
-           "plain": "The documents were correct, but nothing had verified them. The gate blocked anyway, because status is about verification, not content. The baseline built correct code with the same confidence it had for S1, which is the point: without a record, correct and unverified look exactly alike."},
+           "plain": "The documents were correct, but nothing had verified them. The gate blocked anyway, because status is about verification, not content. Arm B built correct code with the same confidence it had for S1. That is the point: without a record, correct and unverified look exactly alike."},
 }
 ORDER = list(SCENARIOS)
 
@@ -355,10 +355,12 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
                 {"id": "gate_after", "label": "gate", "colour": "ok",
                  "lines": [s2["gate_after_reverification"]["verdict"], s2["gate_after_reverification"]["why"]]},
             ]}
-    view["narrative"] = narrative(view, det)
-    view["details"] = stage_details(view, det, runs)
-    view["gaps"] = gaps_view(det)
-    view["details"]["gaps"] = {"title": "Gaps: everything the rules found wanting", "intro": "Grouped by kind; the counts are the store's census after the rules ran.", "sections": []}
+    reg: list[dict] = []  # every generated sentence with its kind, for the controlled-English test
+    view["narrative"] = narrative(view, det, reg)
+    view["details"] = stage_details(view, det, runs, reg)
+    view["gaps"] = gaps_view(det, reg)
+    view["text_registry"] = reg
+    view["glossary"] = GLOSSARY
     return view
 
 
@@ -370,13 +372,64 @@ def scenario_list(runs_dir: Path) -> list[dict]:
     return out
 
 
-# ------------------------------------------------------------ plain English
+# ------------------------------------------------------------ controlled English
 
-VERDICT_MEANING = {
-    "PROCEED": "every piece of knowledge the coding task needs is verified or approved, so an assistant may build from it as fact",
-    "QUALIFIED": "some of the knowledge the task needs is not verified, so an assistant may build only if it marks every such piece as an assumption and says so in its code",
-    "BLOCKED": "the knowledge the task needs is missing, disputed, invalidated or too little verified, so an assistant may not build at all; it must say what is missing instead",
+# The page's explanatory text follows Simplified Technical English rules, kept in
+# kg_experiment/demo/GLOSSARY.md: one approved term per concept, a sentence of at
+# most 20 words for the plain-English block, the stage panels and the gap kinds, and
+# at most 25 for the descriptive readings ("what this shows"). Every generated
+# sentence is registered with its kind so tests/test_kg_demo.py can check the limits
+# and the forbidden synonyms on the text that was actually produced.
+
+GLOSSARY = {
+    "document": "One of the kit's input files, such as a decision table or a diagram.",
+    "fragment": "A piece of a document, such as one table row, stored with its own digest.",
+    "digest": "A fingerprint of some bytes; when the bytes change, the digest changes.",
+    "entity": "A thing the documents talk about, such as a pricing step or a requirement.",
+    "assertion": "One fact read from a document: an entity, a property and a value.",
+    "basis": "How an assertion came to exist: authored by a person, extracted by a parser, or inferred by a model.",
+    "status": "Where an assertion stands: proposed, validated, verified, approved, disputed or invalidated.",
+    "rule": "One of the seven checks the harness runs on the store after each load.",
+    "gap": "Something a rule found wanting: missing, ambiguous, a conflict, or unverified.",
+    "key": "One piece of knowledge the coding task needs; the task needs 36 keys.",
+    "gate": "The check that reads the 36 keys and gives a verdict.",
+    "verdict": "The gate's answer: PROCEED, QUALIFIED or BLOCKED.",
+    "bundle": "The text the gate writes for arm G: the verdict, the policy and the evidence per key.",
+    "arm": "One of the two AI assistants asked to write the code. G got the bundle; B got the documents.",
+    "run": "One call of one arm, graded on its own.",
+    "decision": "The word an arm gives for its own choice: generate, generate with assumptions, or abstain.",
+    "oracle": "The kit's eleven acceptance scenarios, run on the code an arm wrote.",
+    "planted target": "The oracle scenario the planted defect aims at.",
+    "flagged": "The arm named the planted problem in its questions or assumptions.",
+    "record": "The committed results of the scored run, under results/.",
+    "demo run": "A re-run written to a dated folder under results/demo-runs/.",
+    "store": "The Neo4j database the harness loads; it holds one scenario at a time.",
+    "model": "The language model that answers an arm's call.",
 }
+# synonyms the controlled texts must not use, and the approved term each stands for
+FORBIDDEN = {
+    "statement": "assertion", "statements": "assertion",
+    "piece of knowledge": "key", "pieces of knowledge": "key",
+    "assistant": "arm", "assistants": "arm",
+    "artefact": "document", "artefacts": "document",
+    "acceptance test": "oracle", "acceptance tests": "oracle", "test suite": "oracle", "the suite": "oracle",
+    "database": "store", "snippet": "fragment", "chunk": "fragment",
+}
+VERDICT_MEANING = {
+    "PROCEED": ["Every key the task needs is verified or approved.", "An arm may build from them as facts."],
+    "QUALIFIED": ["Some keys the task needs are below verified, or carry a flag.",
+                  "An arm may build only if it marks each such key as an assumption in its code."],
+    "BLOCKED": ["A key the task needs is missing, disputed, invalidated or too little verified.",
+                "An arm may not build.", "It must say what is missing instead."],
+}
+
+
+def _reg(reg: list, kind: str, *sentences: str) -> str:
+    """Register sentences of one kind (controlled, data or reading) and return them joined."""
+    for s in sentences:
+        if s:
+            reg.append({"kind": kind, "text": s})
+    return " ".join(s for s in sentences if s)
 
 
 def _n(x) -> int:
@@ -405,105 +458,134 @@ def record_check(scenario: str, d: Path) -> dict | None:
             "lines": [ln.strip() for ln in lines if ln.startswith("  ")][:6]}
 
 
-def narrative(view: dict, det: dict) -> list[str]:
+def narrative(view: dict, det: dict, reg: list) -> list[str]:
     """The report in sentences for a reader who knows none of the shorthand.
-    Every number comes from the same files as the boxes above it."""
+    Every number comes from the same files as the boxes above it. Controlled
+    sentences keep to 20 words, readings to 25, data is quoted as it is."""
     sc, meta, gate = view["scenario"], view["meta"], view["gate"]
-    rules, load, ver, cen = det["rules"], det["load"], det["verifications"], det["D2_census"]
+    rules, load, ver = det["rules"], det["load"], det["verifications"]
+    C = lambda *s: _reg(reg, "controlled", *s)  # noqa: E731
+    D = lambda *s: _reg(reg, "data", *s)  # noqa: E731
+    R = lambda *s: _reg(reg, "reading", *s)  # noqa: E731
     out = []
-    out.append("How to read this page. The kit's documents were cut into fragments and read into assertions, one statement each, "
-               "with where it came from and whether anyone has verified it. Seven rules then checked the assertions; the gate decided "
-               "whether an AI coding assistant may build from them; two assistants were asked anyway, one given the gate's verdict and "
-               "evidence (G, the governed arm) and one given the documents alone (B, the baseline); and the kit's eleven acceptance "
-               "tests, the oracle, graded whatever code came back. Click any box of the pipeline for that stage's full data.")
-    out.append(f"What was planted in {sc} ({meta['title']}): {meta['plant']}.")
+    out.append(C("How to read this page.", "The harness cut the kit's documents into fragments.",
+                 "It read each fragment into assertions, one fact each, with its source and its status.",
+                 "Seven rules then checked the assertions and recorded gaps.",
+                 "The gate read the 36 keys the coding task needs and gave a verdict.",
+                 "Two arms were then asked to write the code.",
+                 "Arm G, the governed arm, got the verdict and the bundle.",
+                 "Arm B, the baseline arm, got the documents only.",
+                 "The oracle graded the code each arm wrote.",
+                 "Click any box of the pipeline for that stage's full data."))
+    out.append(C(f"What was planted in {sc} ({meta['title']}), in the record's words:") + " " + D(meta["plant"] + "."))
     declared = sum(1 for h in rules["R-REQ"] if h.get("declared"))
     req = _n(rules["R-REQ"])
-    store = (f"The store read {_plural(load['fragments'], 'fragment')} into {_plural(load['assertions'], 'assertion')}. "
-             f"The rules found {_plural(rules['R-CORROBORATE'], 'pair')} of statements that two different documents make alike "
-             f"(each side counts as validated), {_plural(_n(rules['R-CONFLICT']), 'contradiction')}, "
-             f"{_plural(_n(rules['R-VAGUE']), 'vaguely worded value')}, {_plural(req, 'missing item')}"
-             + (f" of which {declared} declared missing by the authors themselves" if declared else "")
-             + f", and {_plural(rules['R-UNVERIFIED'], 'statement')} with no verification record.")
+    store = [C(f"The store read {_plural(load['fragments'], 'fragment')} into {_plural(load['assertions'], 'assertion')}.",
+               f"The rules found {_plural(rules['R-CORROBORATE'], 'pair')} of assertions that two different documents make alike.",
+               "Each assertion of such a pair counts as validated.",
+               f"They found {_plural(_n(rules['R-CONFLICT']), 'contradiction')}, {_plural(_n(rules['R-VAGUE']), 'vaguely worded value')} and {_plural(req, 'missing item')}.")]
+    if declared:
+        store.append(C(f"The authors themselves declared {declared} of the missing items."))
+    store.append(C(f"{_plural(rules['R-UNVERIFIED'], 'assertion')} have no verification record."))
     if "execution" in ver:
-        store += (f" The kit's test suite verified {ver['execution']} statements by running them and the dated review record "
-                  f"verified {ver['review']} more; {ver['approved']} were then approved by the owner.")
+        store.append(C(f"The oracle verified {ver['execution']} assertions by running them.",
+                       f"The dated review record verified {ver['review']} more.",
+                       f"The owner then approved {ver['approved']}."))
     else:
-        store += " No verification was loaded in this scenario: every statement stays at proposed or validated, whatever its content."
+        store.append(C("No verification was loaded in this scenario.",
+                       "Every assertion stays at proposed or validated, whatever its content."))
     if load.get("unresolved_symbols"):
-        store += f" {_plural(len(load['unresolved_symbols']), 'symbol')} in the diagram had no definition anywhere ({', '.join(x.split(':')[-1] for x in load['unresolved_symbols'])})."
-    out.append(store)
-    g = f"The gate's verdict is {gate['verdict']}: {VERDICT_MEANING[gate['verdict']]}."
-    if gate["verdict"] == "BLOCKED":
-        g += f" Here: {gate['why']}."
-    elif gate["verdict"] == "QUALIFIED":
-        g += f" Here: {gate['why']}."
+        store.append(C(f"{_plural(len(load['unresolved_symbols']), 'symbol')} in the diagram had no definition in any document.")
+                     + " " + D("Symbols: " + ", ".join(x.split(":")[-1] for x in load["unresolved_symbols"]) + "."))
+    out.append(" ".join(store))
+    g = [C(f"The gate's verdict is {gate['verdict']}.", *VERDICT_MEANING[gate["verdict"]])]
+    if gate["verdict"] != "PROCEED":
+        g.append(C("Here:") + " " + D(gate["why"] + "."))
     if gate.get("conflicts"):
-        g += f" The contradiction: {gate['conflicts'][0]['text']}."
-    out.append(g)
+        g.append(C("The contradiction:") + " " + D(gate["conflicts"][0]["text"] + "."))
+    out.append(" ".join(g))
     if view.get("d5"):
         d5 = view["d5"]
-        out.append("The three-valued answer, asked of three keys: "
-                   + "; ".join(f"'{k}' is {v['answer'].replace('_', ' ')}" for k, v in d5.items())
-                   + ". 'Documented absent' means the documents say there is none; 'unknown' means no document says anything, which a store that cannot tell the two apart would report the same way.")
+        out.append(C("The three-valued answer was asked for three keys.") + " "
+                   + D("; ".join(f"'{k}' is {v['answer'].replace('_', ' ')}" for k, v in d5.items()) + ".") + " "
+                   + C("Documented absent means the documents say there is none.",
+                       "Unknown means no document says anything.",
+                       "A store that cannot tell the two apart reports both the same way."))
     if view.get("stage2"):
         s2 = view["stage2"]
         inv = ", ".join(x["key"] for x in s2["invalidated"])
         suspect = ", ".join(x["id"] for x in s2["suspect_derived"] if x.get("suspect"))
-        out.append(f"Then the tariff document changed and was read in again: {_plural(s2['load_v2']['fragments'], 'fragment')} were new and "
-                   f"{s2['load_v2']['fragments_reused']} unchanged ones were reused. The staleness rule invalidated exactly the "
-                   f"{_plural(len(s2['invalidated']), 'statement')} the changed fragments support ({inv}), ended their verifications, "
-                   + (f"and marked the code built from them, {suspect}, as suspect. " if suspect else "and left {} statements of the same document at their status. ".format(s2['kept']))
-                   + f"The gate went {s2['gate_before']['verdict']} ({s2['gate_before']['why']}) until the "
-                   f"{_plural(len(s2['reverified']), 'replacement statement')} were re-verified and approved, then {s2['gate_after']['verdict']}.")
+        parts = [C("Then the tariff document changed and was read in again.",
+                   f"{_plural(s2['load_v2']['fragments'], 'fragment')} were new, and {s2['load_v2']['fragments_reused']} unchanged fragments were reused.",
+                   f"The staleness rule invalidated the {_plural(len(s2['invalidated']), 'assertion')} the changed fragments support."),
+                 D("Invalidated: " + inv + "."),
+                 C("It ended their verifications.")]
+        if suspect:
+            parts.append(C("It marked the code built from them as suspect.") + " " + D("Suspect: " + suspect + "."))
+        else:
+            parts.append(C(f"{s2['kept']} other assertions of the same document kept their status."))
+        parts.append(C(f"The gate went {s2['gate_before']['verdict']} until the {_plural(len(s2['reverified']), 'replacement assertion')} were re-verified and approved.",
+                       f"Then it gave {s2['gate_after']['verdict']}."))
+        out.append(" ".join(parts))
     arms = view["arms"]
     if arms["G"]["summary"]["n"] or arms["B"]["summary"]["n"]:
-        for arm, name, given in (("G", "The governed assistant (G)", "given the gate's verdict and its evidence"),
-                                 ("B", "The baseline assistant (B)", "given the documents alone")):
+        for arm, given in (("G", "with the bundle"), ("B", "with the documents only")):
             sm = arms[arm]["summary"]
             if not sm["n"]:
                 continue
-            dec = ", ".join(f"{k.replace('_', ' ') if k else 'no decision'} in {v} of {sm['n']}" for k, v in sm["decisions"].items())
-            line = f"{name}, {given}, answered {dec}"
+            sents = [f"Arm {arm}, {given}, answered '{(k or 'no decision').replace('_', ' ')}' in {v} of {sm['n']} runs." for k, v in sm["decisions"].items()]
             if sm["api_errors"]:
-                line += f"; {sm['api_errors']} call(s) failed before any answer"
-            line += f". It wrote code in {sm['code']} of {sm['n']} run(s)"
+                sents.append(f"{sm['api_errors']} of its calls failed before any answer.")
+            sents.append(f"It wrote code in {sm['code']} of {sm['n']} runs.")
             if sm["code"]:
-                line += f", which passed {', '.join(x for x in sm['suites'] if x != '—')} of the oracle's tests"
+                sents.append(f"That code passed {', '.join(x for x in sm['suites'] if x != '—')} of the oracle's eleven scenarios.")
                 fails = sorted(((k.split(':')[0], v) for k, v in sm["targets"].items() if k.endswith(":fail")), key=lambda t: -t[1])
-                if fails:
-                    line += ", failing the planted target" + ("s " if len(fails) > 1 else " ") + ", ".join(f"'{t}' in {v} of {sm['n']}" for t, v in fails)
+                for t, v in fails:
+                    sents.append(f"It failed the planted target '{t}' in {v} of {sm['n']} runs.")
             if sc != "S1":
-                line += f", and raised the planted problem in its questions or assumptions in {sm['flagged']} of {sm['n']}."
-            else:
-                line += "."
+                sents.append(f"It raised the planted problem in {sm['flagged']} of {sm['n']} runs.")
             if arm == "G" and sm["noncompliance"]:
-                line += f" It broke the policy in {sm['noncompliance']} run(s)."
-            out.append(line)
-        out.append("What this shows: " + meta["plain"])
+                sents.append(f"It broke the policy in {sm['noncompliance']} runs.")
+            out.append(C(*sents))
+        out.append(C("What this shows:") + " " + R(meta["plain"]))
     else:
-        out.append("This source holds the store's half only: the loading, the rules and the gate were re-executed; the two assistants were not called. "
-                   "Replay shows the record's assistant runs for this scenario; Arms calls them again.")
+        out.append(C("This source holds the store's half only.", "The loading, the rules and the gate were re-executed.",
+                     "The two arms were not called.", "Replay shows the record's runs for this scenario.", "Arms calls them again."))
     if view.get("record_check"):
         rc = view["record_check"]
         if rc["differ"] == 0:
-            out.append(f"Against the record: identical on all {rc['compared']} fields compared with {rc['against']} (timestamps aside). The store reproduced the record.")
+            out.append(C(f"Against the record: identical on all {rc['compared']} fields compared with {rc['against']}, timestamps aside.",
+                         "The store reproduced the record."))
         else:
-            out.append(f"Against the record: {_plural(rc['differ'], 'field')} of {rc['compared']} differ from {rc['against']}: " + "; ".join(rc["lines"][:3]) + ".")
+            out.append(C(f"Against the record: {_plural(rc['differ'], 'field')} of {rc['compared']} differ from {rc['against']}.") + " " + D("; ".join(rc["lines"][:3]) + "."))
     if view.get("model_deviation"):
-        out.append(f"The assistants here were {', '.join(view['model_deviation'])}, not the record's {view['record_model']}: a different model, so these answers are not the record's and are not comparable with it.")
+        out.append(C(f"The arms here were answered by {', '.join(view['model_deviation'])}, not the record's {view['record_model']}.",
+                     "A different model answered, so these results are not comparable with the record's."))
     return out
 
 
 # ------------------------------------------------------------ stage details
 
 RULE_TEXT = {
-    "R-STRUCT": "Structure: an extracted or authored assertion must rest on at least one fragment; an inferred one must point at the gap it claims to fill; no fragment may float without a version. Violations are listed; the record had none in any scenario.",
-    "R-CORROBORATE": "Corroboration: two assertions about the same key with equal values, from two different documents, corroborate each other and both move from proposed to validated. Validated means consistent, not true: two documents can agree on a wrong value.",
-    "R-CONFLICT": "Conflict: two assertions about the same key with unequal values, from different documents, are both marked disputed and a conflict gap is raised. A numeric key with a vague side is incomparable, not a conflict.",
-    "R-VAGUE": "Vagueness: a decision-table row with vague wording, or a diagram symbol with no definition anywhere, raises an ambiguity gap on every assertion that row or symbol supports.",
-    "R-REQ": "Requirements: a requirement that says NOT YET SPECIFIED raises a gap declared by the authors, on the requirement and on the key it governs; a document declared not yet authored does too; and every requirement needs a Gherkin scenario that verifies it.",
-    "R-UNVERIFIED": "Verification: a proposed or validated assertion with no verification record gets an unverified gap. The count is how many statements nobody has checked.",
+    "R-STRUCT": ["An extracted or authored assertion must rest on at least one fragment.",
+                 "An inferred assertion must point at the gap it claims to fill.",
+                 "No fragment may exist without a version.",
+                 "Violations are listed below.", "The record had none in any scenario."],
+    "R-CORROBORATE": ["Two assertions about one key with equal values, from two different documents, corroborate each other.",
+                      "Both move from proposed to validated.",
+                      "Validated means consistent, not true: two documents can agree on a wrong value."],
+    "R-CONFLICT": ["Two assertions about one key with unequal values, from different documents, are both marked disputed.",
+                   "A conflict gap is raised for the pair.",
+                   "A numeric key with a vague side is incomparable, not a conflict."],
+    "R-VAGUE": ["A decision-table row with vague wording raises an ambiguity gap.",
+                "So does a diagram symbol with no definition anywhere.",
+                "The gap goes on every assertion that row or symbol supports."],
+    "R-REQ": ["A requirement that says NOT YET SPECIFIED raises a gap declared by the authors.",
+              "The gap goes on the requirement and on the key it governs.",
+              "A document declared not yet authored raises one too.",
+              "Every requirement needs a Gherkin scenario that verifies it."],
+    "R-UNVERIFIED": ["A proposed or validated assertion with no verification record gets an unverified gap.",
+                     "The count is how many assertions nobody has verified."],
 }
 FAMILIES = [("kit/requirements.md", "requirements", "markdown"), ("contract/decision_table.md", "decision tables", "markdown"),
             ("contract/spec.md", "specification", "markdown"), ("contract/openapi.yaml", "API contract", "OpenAPI 3.0"),
@@ -516,37 +598,55 @@ def _table(cols, rows):
     return {"cols": cols, "rows": [[("" if c is None else str(c)) for c in r] for r in rows]}
 
 
-def stage_details(view: dict, det: dict, runs: dict) -> dict:
+def stage_details(view: dict, det: dict, runs: dict, reg: list) -> dict:
     """What opens when a box of the pipeline strip is clicked: the stage's full
     data from deterministic.json and the run files, in tables and sentences."""
     sc = view["scenario"]
     gate = det["D6_gate"]
+    C = lambda *s: _reg(reg, "controlled", *s)  # noqa: E731
+    D = lambda *s: _reg(reg, "data", *s)  # noqa: E731
     arts = [f for f in FAMILIES if not (sc == "S3" and f[0].endswith(".dmn"))]
     d = {}
-    d["ingest"] = {"title": "Ingest: the documents, read file by file",
-                   "intro": f"{len(arts)} documents were read" + (", one of them planted as absent (the DMN, declared not yet authored)" if sc == "S3" else "")
-                            + (", plus one machine-written note the baseline arm received as a document (not loaded into the store: its one statement entered as an inferred assertion instead)" if sc == "S5" else "")
-                            + f". Each file and each fragment is stored with its sha256 digest, so a later version can be told apart byte for byte. {det['load']['fragments']} fragments came out.",
-                   "sections": [{"heading": "Documents", "table": _table(["path", "family", "format"], arts)}]}
+    ingest = [f"{len(arts)} documents were read."]
+    if sc == "S3":
+        ingest.append("One of them was planted as absent: the DMN, declared not yet authored.")
+    if sc == "S5":
+        ingest += ["Arm B also got one machine-written note as a document.",
+                   "The store did not load that note; its one assertion entered as inferred instead."]
+    ingest += ["Each document and each fragment is stored with its sha256 digest.",
+               "A later version can then be told apart byte for byte.", f"{det['load']['fragments']} fragments came out."]
+    d["ingest"] = {"title": C("Ingest: the documents, read file by file"), "intro": C(*ingest),
+                   "sections": [{"heading": C("Documents"), "table": _table(["path", "family", "format"], arts)}]}
     levels = Counter(v["level"] for v in det["gate_keys"].values())
-    d["extract"] = {"title": "Extract: fragments into assertions",
-                    "intro": f"{det['load']['assertions']} assertions, one statement each, by ten deterministic mappers (one per format; no model). Each assertion carries a basis (extracted, authored, inferred), the fragment it rests on, and a status that starts at proposed.",
-                    "sections": ([{"heading": "Symbols with no definition in any document", "list": det["load"]["unresolved_symbols"]}] if det["load"]["unresolved_symbols"] else [])
-                                + [{"heading": "The 36 keys the coding task needs, by the level the gate resolved", "table": _table(["level", "keys"], sorted(levels.items(), key=lambda kv: -kv[1]))}]}
+    d["extract"] = {"title": C("Extract: fragments into assertions"),
+                    "intro": C(f"{det['load']['assertions']} assertions, one fact each, by ten deterministic mappers, one per format.",
+                               "No model took part.",
+                               "Each assertion carries a basis, the fragment it rests on, and a status that starts at proposed."),
+                    "sections": ([{"heading": C("Symbols with no definition in any document"), "list": det["load"]["unresolved_symbols"]}] if det["load"]["unresolved_symbols"] else [])
+                                + [{"heading": C("The 36 keys the task needs, by the level the gate resolved"), "table": _table(["level", "keys"], sorted(levels.items(), key=lambda kv: -kv[1]))}]}
     cen = det["D2_census"]
-    d["load"] = {"title": "Load: the graph in Neo4j",
-                 "intro": f"{cen['nodes']} nodes and {cen['relationships']} relationships. Verification and approval are nodes with their own records, never a flag flipped on the statement.",
-                 "sections": [{"heading": "Assertions by status", "table": _table(["status", "assertions"], sorted(cen["assertions_by_status"].items()))},
-                              {"heading": "Gaps by kind", "table": _table(["kind", "gaps"], sorted(cen["gaps_by_kind"].items()))},
-                              {"heading": "Verification records", "text": (f"{det['verifications']['execution']} by execution (the kit's suite, each record naming the scenario and the digest of the code it ran), {det['verifications']['review']} by review (the dated review record and the authored inputs), {det['verifications']['approved']} approvals by the owner."
-                                                                           if "execution" in det["verifications"] else "none loaded: this scenario is extraction only.")},
-                              {"heading": "D1: the constraints the community edition accepts", "table": _table(["type", "accepted", "message"], [(c["type"], "yes" if c["accepted"] else "no", (c["message"] or "").split("{message:")[-1].strip(" }")[:110]) for c in det["D1_constraints"]])},
-                              {"heading": "Why the refused messages end mid-sentence", "text": "The harness kept only the first line of the engine's answer, which ends at the schema; the second line, not recorded in the run file, says that property existence, node key and property type constraints require Neo4j Enterprise Edition. The record quotes that line in §12 and reads it as its expectation X9. What the panel shows is what the run file holds."}]}
+    ver_text = (C(f"{det['verifications']['execution']} by execution: the oracle ran them, and each record names the scenario and the code's digest.",
+                  f"{det['verifications']['review']} by review: the dated review record and the authored inputs.",
+                  f"{det['verifications']['approved']} approvals by the owner.")
+                if "execution" in det["verifications"] else C("None loaded: this scenario is extraction only."))
+    d["load"] = {"title": C("Load: the store"),
+                 "intro": C(f"{cen['nodes']} nodes and {cen['relationships']} relationships.",
+                            "Verification and approval are nodes with their own records, never a flag flipped on the assertion."),
+                 "sections": [{"heading": C("Assertions by status"), "table": _table(["status", "assertions"], sorted(cen["assertions_by_status"].items()))},
+                              {"heading": C("Gaps by kind"), "table": _table(["kind", "gaps"], sorted(cen["gaps_by_kind"].items()))},
+                              {"heading": C("Verification records"), "text": ver_text},
+                              {"heading": C("D1: the constraints the community edition accepts"), "table": _table(["type", "accepted", "message"], [(c["type"], "yes" if c["accepted"] else "no", (c["message"] or "").split("{message:")[-1].strip(" }")[:110]) for c in det["D1_constraints"]])},
+                              {"heading": C("Why the refused messages end mid-sentence"),
+                               "text": C("The harness kept only the first line of the engine's answer, which ends at the schema.",
+                                         "The second line, not recorded, says these three constraints need Neo4j Enterprise Edition.",
+                                         "The record quotes that line in §12 and reads it as expectation X9.",
+                                         "The panel shows what the run file holds.")}]}
     rules = det["rules"]
     secs = []
     for r in RULE_ORDER:
         hits = rules[r]
-        sec = {"heading": f"{r}: {hits if not isinstance(hits, list) else len(hits)} " + ("pairs" if r == "R-CORROBORATE" else "statements" if r == "R-UNVERIFIED" else "hit(s)"), "text": RULE_TEXT[r]}
+        unit = "pairs" if r == "R-CORROBORATE" else "assertions" if r == "R-UNVERIFIED" else "hit(s)"
+        sec = {"heading": C(f"{r}: {hits if not isinstance(hits, list) else len(hits)} {unit}"), "text": C(*RULE_TEXT[r])}
         if r == "R-CONFLICT" and hits:
             sec["table"] = _table(["key", "one side", "says", "other side", "says"], [(h["key"], h["a"], h["va"], h["b"], h["vb"]) for h in hits])
         if r == "R-VAGUE" and hits:
@@ -557,58 +657,92 @@ def stage_details(view: dict, det: dict, runs: dict) -> dict:
             sec["table"] = _table(["assertion", "why"], [(h["id"], h["why"]) for h in hits])
         secs.append(sec)
     sh = det["D4_shacl"]
-    secs.append({"heading": f"SHACL over an RDF projection: {sh['triples']} triples", "text": f"The main shapes mirror R-STRUCT and R-REQ: conforms={sh['main']['conforms']}, {sh['main']['results']} result(s) {sh['main']['by_severity']}. An information-only shape every assertion violates: conforms={sh['info_only']['conforms']}, {sh['info_only']['results']} results, which shows at execution that sh:conforms is false on information-level results alone.", "list": sh["main"]["sample"][2:8]})
-    d["rules"] = {"title": "Rules: seven Cypher checks after every load", "intro": "Each rule is one or more Cypher statements; status is set only here, by the loaders, and by recorded human acts. No rule promotes to verified or approved.", "sections": secs}
+    secs.append({"heading": C(f"SHACL over an RDF projection: {sh['triples']} triples"),
+                 "text": C(f"The main shapes mirror R-STRUCT and R-REQ: conforms={sh['main']['conforms']}, {sh['main']['results']} result(s) {sh['main']['by_severity']}.",
+                           f"An information-only shape, which every assertion violates: conforms={sh['info_only']['conforms']}, {sh['info_only']['results']} results.",
+                           "This shows at execution that sh:conforms is false on information-level results alone."),
+                 "list": sh["main"]["sample"][2:8]})
+    d["rules"] = {"title": C("Rules: seven Cypher checks after every load"),
+                  "intro": C("Each rule is one or more Cypher queries.", "Only the loaders, the rules and recorded human acts set status.",
+                             "No rule promotes to verified or approved."), "sections": secs}
     keys_rows = [(k, v["level"], ", ".join(v["flags"]) or "", v["n"]) for k, v in det["gate_keys"].items()]
-    gsecs = [{"heading": "How the verdict is formed", "text": "BLOCKED if any required key is absent, a declared gap, disputed or invalidated, or if more than 25 % of the keys are below verified; QUALIFIED if any key is below verified or carries a flag; PROCEED otherwise. The worst status among a key's live assertions is its level."},
-             {"heading": f"The {len(keys_rows)} required keys", "table": _table(["key", "level", "flags", "assertions"], keys_rows)}]
+    gsecs = [{"heading": C("How the verdict is formed"),
+              "text": C("BLOCKED if any key is absent, a declared gap, disputed or invalidated.",
+                        "BLOCKED too if more than 25 % of the keys are below verified.",
+                        "QUALIFIED if any key is below verified or carries a flag.", "PROCEED otherwise.",
+                        "A key's level is the worst status among its live assertions.")},
+             {"heading": C(f"The {len(keys_rows)} keys the task needs"), "table": _table(["key", "level", "flags", "assertions"], keys_rows)}]
     if gate.get("conflicts"):
-        gsecs.append({"heading": "Conflicts the bundle carries", "list": [c["text"] for c in gate["conflicts"]]})
-    d["gate"] = {"title": f"Gate: {gate['verdict']}", "intro": gate["why"] + ".", "sections": gsecs}
-    for arm, name in (("G", "the governed arm, given the gate's verdict and evidence bundle"), ("B", "the baseline arm, given the documents alone")):
+        gsecs.append({"heading": C("Conflicts the bundle carries"), "list": [c["text"] for c in gate["conflicts"]]})
+    d["gate"] = {"title": C(f"Gate: {gate['verdict']}"), "intro": D(gate["why"] + "."), "sections": gsecs}
+    for arm, name in (("G", "the governed arm, given the verdict and the bundle"), ("B", "the baseline arm, given the documents only")):
         rs = runs[arm]
         rows = [(r["run"], _model_of(r) or "", r.get("M1_decision") or ("api error" if r.get("api_error") else ""), "yes" if r.get("M2_code") else "no",
                  "yes" if r["M3_flagged"]["flagged"] else "no", ", ".join(r["M3_flagged"].get("hits", [])), len(r.get("questions") or []), len(r.get("assumptions") or []), len(r.get("claims") or []),
                  (r.get("usage") or {}).get("prompt_tokens", ""), (r.get("usage") or {}).get("completion_tokens", "")) for r in rs]
-        d[f"generate_{arm}"] = {"title": f"Generate, {arm}: {name}",
-                                "intro": (f"{len(rs)} run(s). Decision is the arm's own word (generate, generate with assumptions, abstain); flagged means the frozen keyword check of the pre-registration found the planted problem named in its questions or assumptions."
-                                          if rs else "No run in this source."),
-                                "sections": ([{"heading": "Per run", "table": _table(["run", "model", "decision", "code", "flagged", "keywords hit", "questions", "assumptions", "claims", "prompt tokens", "reply tokens"], rows)}] if rs else [])}
+        d[f"generate_{arm}"] = {"title": C(f"Generate, {arm}: {name}"),
+                                "intro": (C(f"{len(rs)} runs.", "Decision is the arm's own word: generate, generate with assumptions, or abstain.",
+                                            "Flagged means the frozen keyword check found the planted problem in the arm's questions or assumptions.")
+                                          if rs else C("No run in this source.")),
+                                "sections": ([{"heading": C("Per run"), "table": _table(["run", "model", "decision", "code", "flagged", "keywords hit", "questions", "assumptions", "claims", "prompt tokens", "reply tokens"], rows)}] if rs else [])}
         orows = [(r["run"], f"{r['M4_suite']['passed']}/{r['M4_suite']['total']}" if r["M4_suite"]["ran"] else "no code",
                   ", ".join(f"{t}: {'pass' if v else ('fail' if v is False else 'no code')}" for t, v in (r.get("M4_targets") or {}).items()) or "",
                   r.get("outage_status") or "", f"{r['M5_refs']['resolved']}/{r['M5_refs']['total']}" if r["M5_refs"]["share"] is not None else "") for r in rs]
-        d[f"oracle_{arm}"] = {"title": f"Oracle, {arm}: the kit's eleven acceptance scenarios on the generated code",
-                              "intro": ("Each reply's code ran in a sandbox against the kit's suite with the scenario's overlays (S6 asks for the new prices). The planted target is the scenario the plant aims at; the outage status is what the code returned when screening was down; resolvable references are the claims and assumptions whose ref points at something that exists (an assertion id for G, a document line for B)."
-                                        if rs else "No run in this source."),
-                              "sections": ([{"heading": "Per run", "table": _table(["run", "suite", "planted targets", "outage status returned", "references resolvable"], orows)}] if rs else [])}
+        d[f"oracle_{arm}"] = {"title": C(f"Oracle, {arm}: the kit's eleven scenarios on the code the arm wrote"),
+                              "intro": (C("Each reply's code ran in a sandbox against the kit's eleven scenarios, with the scenario's overlays.",
+                                          "S6 asks for the new prices.", "The planted target is the scenario the plant aims at.",
+                                          "The outage status is what the code returned when screening was down.",
+                                          "A reference is resolvable when it points at something that exists.",
+                                          "For G that is an assertion id; for B, a document line.")
+                                        if rs else C("No run in this source.")),
+                              "sections": ([{"heading": C("Per run"), "table": _table(["run", "oracle", "planted targets", "outage status returned", "references resolvable"], orows)}] if rs else [])}
     if "stage2" in det:
         s2 = det["stage2"]
-        d["ingest2"] = {"title": "Re-ingest: the changed tariff document as version v2", "intro": f"{s2['load_v2']['fragments']} fragments new, {s2['load_v2']['fragments_reused']} reused because their digest was unchanged, {s2['load_v2']['assertions']} new assertions. Unchanged fragments keep their assertions; only changed ones create new statements.", "sections": []}
-        d["stale"] = {"title": "R-STALE: what the change invalidates", "intro": "An assertion whose supporting fragment's digest changed or vanished is invalidated; its verifications end (valid_until = v2); every derived output that used it becomes suspect; everything else of the same document keeps its status.",
-                      "sections": [{"heading": "Invalidated", "table": _table(["assertion", "key", "derived outputs that used it"], [(x["id"], x["key"], ", ".join(x["derived"]) or "") for x in s2["D3_stale"]["invalidated"]])},
-                                   {"heading": f"Kept at their status: {len(s2['D3_stale']['kept'])}", "list": [f"{x['id']} ({x['status']})" for x in s2["D3_stale"]["kept"][:12]] + (["…"] if len(s2["D3_stale"]["kept"]) > 12 else [])},
-                                   {"heading": "Derived outputs", "list": [f"{x['id']}: suspect={x['suspect']}" for x in s2["suspect_derived"]] or ["none registered in this source"]}]}
+        d["ingest2"] = {"title": C("Re-ingest: the changed tariff document as version v2"),
+                        "intro": C(f"{s2['load_v2']['fragments']} fragments new, {s2['load_v2']['fragments_reused']} reused because their digest was unchanged, {s2['load_v2']['assertions']} new assertions.",
+                                   "Unchanged fragments keep their assertions.", "Only changed ones create new assertions."), "sections": []}
+        d["stale"] = {"title": C("R-STALE: what the change invalidates"),
+                      "intro": C("An assertion whose supporting fragment's digest changed or vanished is invalidated.",
+                                 "Its verifications end: valid_until = v2.", "Every derived output that used it becomes suspect.",
+                                 "Everything else of the same document keeps its status."),
+                      "sections": [{"heading": C("Invalidated"), "table": _table(["assertion", "key", "derived outputs that used it"], [(x["id"], x["key"], ", ".join(x["derived"]) or "") for x in s2["D3_stale"]["invalidated"]])},
+                                   {"heading": C(f"Kept at their status: {len(s2['D3_stale']['kept'])}"), "list": [f"{x['id']} ({x['status']})" for x in s2["D3_stale"]["kept"][:12]] + (["…"] if len(s2["D3_stale"]["kept"]) > 12 else [])},
+                                   {"heading": C("Derived outputs"), "list": [f"{x['id']}: suspect={x['suspect']}" for x in s2["suspect_derived"]] or ["none registered in this source"]}]}
         gb = s2["gate_before_reverification"]
-        d["gate_before"] = {"title": f"Gate before re-verification: {gb['verdict']}", "intro": gb["why"] + ".", "sections": [{"heading": "Invalidated statements on required keys, with their successors", "table": _table(["assertion", "key", "old value", "successor", "successor status"], [(x["id"], x["key"], x["value"], ", ".join(t["id"] for t in x["successors"] if t["id"]), ", ".join(t["status"] for t in x["successors"] if t["id"])) for x in gb["stale"]])}]}
-        d["reverify"] = {"title": "Re-verification by the owner stand-in", "intro": "A verification record (method review, dated) and an approval for each successor statement; the record is a node, not a property flip.", "sections": [{"heading": "Re-verified and approved", "list": s2["reverified"]}]}
+        d["gate_before"] = {"title": C(f"Gate before re-verification: {gb['verdict']}"), "intro": D(gb["why"] + "."),
+                            "sections": [{"heading": C("Invalidated assertions on the keys the task needs, with their successors"), "table": _table(["assertion", "key", "old value", "successor", "successor status"], [(x["id"], x["key"], x["value"], ", ".join(t["id"] for t in x["successors"] if t["id"]), ", ".join(t["status"] for t in x["successors"] if t["id"])) for x in gb["stale"]])}]}
+        d["reverify"] = {"title": C("Re-verification by the owner stand-in"),
+                         "intro": C("A verification record, method review and dated, and an approval for each successor assertion.", "The record is a node, not a property flip."),
+                         "sections": [{"heading": C("Re-verified and approved"), "list": s2["reverified"]}]}
         ga = s2["gate_after_reverification"]
-        d["gate_after"] = {"title": f"Gate after re-verification: {ga['verdict']}", "intro": ga["why"] + ".", "sections": [{"heading": "Census after", "text": f"{s2['census_after']['nodes']} nodes, {s2['census_after']['relationships']} relationships; {s2['census_after']['assertions_by_status']}."}]}
+        d["gate_after"] = {"title": C(f"Gate after re-verification: {ga['verdict']}"), "intro": D(ga["why"] + "."),
+                           "sections": [{"heading": C("Census after"), "text": D(f"{s2['census_after']['nodes']} nodes, {s2['census_after']['relationships']} relationships; {s2['census_after']['assertions_by_status']}.")}]}
+    d["gaps"] = {"title": C("Gaps: everything the rules found wanting"),
+                 "intro": C("Grouped by kind.", "The counts are the store's census after the rules ran."), "sections": []}
     return d
 
 
 # ------------------------------------------------------------ the gaps view
 
 GAP_KIND_TEXT = {
-    "declared missing": "Knowledge the documents themselves say is not there yet: a requirement marked NOT YET SPECIFIED, or a document declared not yet authored. The authors know it is missing; the gate treats the key it governs as blocked until a decision is recorded.",
-    "undeclared missing": "Something the rules expected and did not find, which nobody had declared: here, a requirement with no acceptance scenario that verifies it (REQ-05 in the pristine kit, REQ-06 where its rule was removed).",
-    "ambiguous": "A statement whose wording leaves several readings: a decision-table row written in vague words, or a diagram symbol with no definition anywhere. Each statement the row or symbol supports gets its own gap, and the gate flags the key.",
-    "conflict": "Two documents give different values for the same key. Both statements are marked disputed and the gate blocks the key; the gap's text names both sides.",
-    "unverified": "A statement nobody has checked: proposed or validated, with no verification record. Most are harmless (participant kinds, container technologies, scenario titles); the ones on the keys the coding task needs are what the gate counts against its 25 % bar.",
+    "declared missing": ["Knowledge the documents themselves say is not there yet.",
+                         "A requirement marked NOT YET SPECIFIED, or a document declared not yet authored.",
+                         "The authors know it is missing.", "The gate blocks the key it governs until a decision is recorded."],
+    "undeclared missing": ["Something a rule expected and did not find, and nobody had declared it.",
+                           "Here: a requirement with no Gherkin scenario that verifies it."],
+    "ambiguous": ["An assertion whose wording leaves several readings.",
+                  "A decision-table row in vague words, or a diagram symbol with no definition anywhere.",
+                  "Each assertion the row or symbol supports gets its own gap.", "The gate flags the key."],
+    "conflict": ["Two documents give different values for the same key.",
+                 "Both assertions are marked disputed, and the gate blocks the key.", "The gap's text names both sides."],
+    "unverified": ["An assertion nobody has verified: proposed or validated, with no verification record.",
+                   "Most are harmless, such as participant kinds or scenario titles.",
+                   "The ones on the keys the task needs count against the gate's 25 % bar."],
 }
 CONFLICT_TEXT_RE = re.compile(r"for (?P<key>[^:]+): (?P<a>[^ ]+) says (?P<va>.+?); (?P<b>[^ ]+) says (?P<vb>.+)$")
 
 
-def gaps_view(det: dict) -> dict:
+def gaps_view(det: dict, reg: list) -> dict:
     """Every gap the result files can account for, grouped by kind, with the
     census as the header. The store's own text and the full CONCERNS set come
     from /api/gaps when the loaded scenario matches; the page merges them."""
@@ -641,7 +775,8 @@ def gaps_view(det: dict) -> dict:
     unverified = {"count": rules["R-UNVERIFIED"], "required_below_verified": required_below, "keys": None}
     counts = {"declared missing": len(groups["declared missing"]), "undeclared missing": len(groups["undeclared missing"]),
               "ambiguous": census.get("ambiguous", 0), "conflict": census.get("conflict", 0), "unverified": census.get("unverified", 0)}
-    return {"census": census, "counts": counts, "explain": GAP_KIND_TEXT,
+    explain = {k: _reg(reg, "controlled", *v) for k, v in GAP_KIND_TEXT.items()}
+    return {"census": census, "counts": counts, "explain": explain,
             "groups": {k: groups[k] for k in ("declared missing", "undeclared missing", "ambiguous", "conflict")},
             "unverified": unverified, "required_keys": list(det["gate_keys"]),
             "source": "the committed result files (deterministic.json): the rule hits, the gate's conflicts and per-key levels"}
