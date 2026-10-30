@@ -8394,6 +8394,14 @@ list and license posture live in § Settled questions.
     carry shown / running / done / failed, the card on screen is
     marked, and the run's progress is a banner at the top of the report
     that the page scrolls to. Page only; no endpoint or harness change.
+  - *2026-10-30, later (#225):* the first Arms run on the Mac read
+    "running · 3637 s" after a minute: a naive UTC timestamp read as
+    local by a UTC+1 browser. The server now stamps UTC with its offset
+    and computes the elapsed seconds itself; `run.py` prints one
+    progress line when an arm starts its calls (output only; the
+    deterministic run re-compared identical to the record); and
+    `compare_deterministic.py` now fails when it compared nothing,
+    where it had said "OK" over an empty run directory.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
