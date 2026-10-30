@@ -8419,6 +8419,13 @@ list and license posture live in § Settled questions.
     model as default. Every run names the model that answered; a run
     by another model is marked a deviation in red and its numbers are
     not comparable with the record's. The record itself is untouched.
+  - *2026-10-30, later (#228):* asked why S2's governed oracle column
+    was empty — the arm abstained under BLOCKED in all five runs and
+    wrote no code, the record's "abstain 5/5 · 0/5 · —" — the page now
+    says so in words on the oracle box and under the table instead of
+    dashes alone; and the run banner follows the source on screen
+    rather than claiming to show a run the dropdown has left. Page and
+    view only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

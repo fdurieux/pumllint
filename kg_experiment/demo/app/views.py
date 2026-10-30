@@ -267,7 +267,9 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
                                                      [f"code {s['code']}/{s['n']}", f"flagged {s['flagged']}/{s['n']}"] +
                                                      ([f"non-compliance {s['noncompliance']}/{s['n']}"] if arm == "G" else []) +
                                                      ([f"api error ×{s['api_errors']}: " + next(r["api_error"] for r in runs[arm] if r.get("api_error"))[:160]] if s["api_errors"] else [])) if s["n"] else ["no run in this source"]},
-            "oracle": {"colour": orc_c, "lines": ([f"suite {', '.join(s['suites'])}"] +
+            "oracle": {"colour": orc_c, "lines": (
+                ([f"nothing to grade: the arm wrote no code in {s['n']} of {s['n']} runs" + (" (abstained, as the BLOCKED verdict asks)" if gate["verdict"] == "BLOCKED" and s["decisions"].get("abstain") else "")]
+                 if s["code"] == 0 and s["api_errors"] < s["n"] else [f"suite {', '.join(s['suites'])}"]) +
                                                    [f"{k.replace(':', ' ')} ×{v}" for k, v in s["targets"].items()] +
                                                    ([f"refs resolvable {s['refs_min']}–{s['refs_max']}"] if s["refs_min"] is not None else [])) if s["n"] else ["—"]},
             "runs": [_run_view(r) for r in runs[arm]],
