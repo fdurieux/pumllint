@@ -370,7 +370,10 @@ length bias (66.7 % → 39.1 % for one pair after de-biasing, Zeng et al.
 ## 3. Semantic metamodel
 
 [proposal, executed] As loaded by `kg_experiment/harness/load.py`;
-pre-registration §3 is the frozen statement.
+pre-registration §3 is the frozen statement. Three items of the table
+are design only and say so in place: the `cross_check` method, the
+`stale` gap kind and `RESOLVED_BY`→`Decision`. *[Added 2026-10-30,
+after the merge, on checking the table against the loader.]*
 
 **3.1 Nodes and relationships.**
 
@@ -383,9 +386,9 @@ pre-registration §3 is the frozen statement.
 | `Assertion` | id, key (`entity|predicate`), predicate, value, raw_value, text, basis, status, artefact, version, unresolved | `ABOUT`→Entity; `SUPPORTED_BY`→Fragment; `DERIVED_BY`→Activity; `ATTRIBUTED_TO`→Agent; `CORROBORATES`↔; `CONTRADICTS`↔; `CANDIDATE_FOR`→Gap |
 | `Activity` | id, kind (extraction, inference, authoring), at, tool, note | `USED`→Version; `ASSOCIATED_WITH`→Agent |
 | `Agent` | id, kind ∈ human, tool, llm, name | — |
-| `Verification` | id, method ∈ execution, review, cross_check; outcome; scope; at; valid_until; evidence_sha256 | `VERIFIES`→Assertion; `PERFORMED_BY`→Agent |
+| `Verification` | id, method ∈ execution, review, cross_check (the PoC loads execution and review; cross_check is design only); outcome; scope; at; valid_until; evidence_sha256 | `VERIFIES`→Assertion; `PERFORMED_BY`→Agent |
 | `Approval` | id, at, record | `APPROVES`→Assertion; `BY`→Agent |
-| `Gap` | id, kind ∈ missing, ambiguous, conflict, unverified, stale; declared; text | `CONCERNS`→Entity or Assertion; `CONCERNS_KEY`→Entity (with key); `RAISED_BY`→Activity; `RESOLVED_BY`→Decision |
+| `Gap` | id, kind ∈ missing, ambiguous, conflict, unverified, stale (the PoC raises the first four; R-STALE invalidates the assertion and raises no gap, so `stale` is design only); declared; text | `CONCERNS`→Entity or Assertion; `CONCERNS_KEY`→Entity (with key); `RAISED_BY`→Activity; `RESOLVED_BY`→Decision (design only: the PoC resolves S6's block by a verification and an approval record, and S2's declared gap stays open; no `Decision` node is loaded) |
 | `Derived` | id, kind, sha256, suspect | `USED_ASSERTION`→Assertion |
 
 PROV-O alignment [standard]: `Assertion` and `Version` are
