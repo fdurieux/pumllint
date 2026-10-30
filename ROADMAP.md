@@ -8402,6 +8402,14 @@ list and license posture live in § Settled questions.
     deterministic run re-compared identical to the record); and
     `compare_deterministic.py` now fails when it compared nothing,
     where it had said "OK" over an empty run directory.
+  - *2026-10-30, later (#226):* the first Arms run on the Mac ended
+    green with every cell an `api_error` (429, no credits remaining on
+    the key's OpenAI organisation) and the message behind a collapsed
+    row. The page now says so above the pipeline, on the arm's box and
+    in the banner, and the systemic captions name themselves the
+    record's reading beside a demo run. The arms path itself was
+    re-proven through the session proxy (S1, both arms 11/11). Page and
+    view only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

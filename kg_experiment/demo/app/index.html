@@ -41,6 +41,7 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 @keyframes spin{to{transform:rotate(360deg)}}
 .banner{border-radius:12px;padding:12px 16px;margin-bottom:16px;border:1px solid var(--line);background:var(--card)}
 .banner.running{border-color:var(--amber);background:var(--warn)} .banner.done{border-color:var(--green);background:var(--ok)} .banner.failed{border-color:var(--red);background:var(--bad)}
+.alert{border-left:4px solid var(--red);background:var(--bad);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0 12px}
 .banner .head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap} .banner .head b{font-size:15px}
 .banner .console{margin-top:8px;max-height:160px}
 .small{font-size:13px;color:var(--muted)}
@@ -219,6 +220,11 @@ async function show(id, source, mode) {
     const m = mode || (v.source.startsWith('demo-runs/') ? (v.arms.G.summary.n ? 'arms' : 'deterministic') : 'replay');
     STATE.shown = {scenario: id, mode: m, source: v.source};
     renderMenu(); renderReport(v);
+    if (v.api_errors.length && STATE.run && STATE.run.source === v.source && STATE.run.status === 'done') {
+      const box = $('#runbox'); box.className = 'banner failed';
+      $('#run-title').innerHTML = `${esc(v.scenario)} · ${esc(m)} · ✗ the model calls failed · ${STATE.run.elapsed_s ?? '—'} s`;
+      $('#run-meta').innerHTML = `${esc(v.api_errors[0].error)} — the harness ran to the end and recorded ${v.api_errors.length} cell(s) as <code>api_error</code>; the report below shows them`;
+    }
   } catch (e) { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; renderMenu(); }
 }
 
@@ -236,8 +242,8 @@ function renderReport(v) {
     Invalidated: ${v.stage2.invalidated.map(x => `<code>${esc(x.id)}</code>${x.derived && x.derived.length ? ' → used by ' + x.derived.map(esc).join(', ') : ''}`).join('; ')}.</div>` : '';
   const sys = v.systemic;
   const cascade = `<div class="two">
-     <div class="cascade-wrap">${v.cascade.G}<div class="cap"><b class="G">G, governed:</b> ${esc(sys.G.note)}</div></div>
-     <div class="cascade-wrap">${v.cascade.B}<div class="cap"><b class="B">B, baseline:</b> ${esc(sys.B.note)}</div></div></div>
+     <div class="cascade-wrap">${v.cascade.G}<div class="cap"><b class="G">G, governed${v.source.startsWith('demo-runs/') ? ', the record\'s reading' : ''}:</b> ${esc(sys.G.note)}</div></div>
+     <div class="cascade-wrap">${v.cascade.B}<div class="cap"><b class="B">B, baseline${v.source.startsWith('demo-runs/') ? ', the record\'s reading' : ''}:</b> ${esc(sys.B.note)}</div></div></div>
      <div class="note">Entry: ${esc(sys.family)}. Placement is the demo's reading of the record's §6 onto the model's reduced knowledge view (Legible v0.3, five knowledge nodes, nine edges, four levers); the record itself does not map scenarios onto the model. Solid lines: measured, bounded; dashed: hypothesis; amber: the arrow reduces its target.</div>
      <div class="ref" style="margin-top:10px"><b>${esc(v.reference.title)}.</b> ${esc(v.reference.text)}</div>`;
   const runsOf = arm => v.arms[arm].runs;
@@ -264,6 +270,7 @@ function renderReport(v) {
       <div class="small" style="margin:6px 0 2px"><b>Planted:</b> ${esc(m.plant)}</div>
       <div class="small"><b>Gate:</b> ${esc(g.why)}${g.conflicts.length ? ' · conflicts: ' + g.conflicts.map(c => esc(c.id)).join(', ') : ''}</div>
       <div class="small"><b>Required keys:</b> ${v.required_keys}, by level ${esc(JSON.stringify(v.levels))}${v.d5 ? ` · <b>D5 three-valued:</b> ${Object.entries(v.d5).map(([k, x]) => `${esc(k)} → ${esc(x.answer)}`).join('; ')}` : ''}</div>
+      ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
       <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle</h3>${strip}${strip2}
       <h3>Systemic model — where the defect enters, and where it was stopped</h3>${cascade}
     </div>

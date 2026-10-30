@@ -200,6 +200,8 @@ def _arm_colour(arm: str, gate_verdict: str, summary: dict) -> tuple[str, str]:
     """(generate colour, oracle colour) for one arm."""
     if summary["n"] == 0:
         return "none", "none"
+    if summary["api_errors"] == summary["n"]:
+        return "bad", "none"  # no reply came back: nothing to judge the arm on
     if gate_verdict == "BLOCKED":
         gen = "ok" if (arm == "G" and summary["code"] == 0) else ("bad" if summary["code"] else "ok")
     elif gate_verdict == "QUALIFIED":
@@ -254,14 +256,17 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
             "generate": {"colour": gen_c, "lines": ([f"{k} ×{v}" for k, v in s["decisions"].items()] +
                                                      [f"code {s['code']}/{s['n']}", f"flagged {s['flagged']}/{s['n']}"] +
                                                      ([f"non-compliance {s['noncompliance']}/{s['n']}"] if arm == "G" else []) +
-                                                     ([f"api errors {s['api_errors']}"] if s["api_errors"] else [])) if s["n"] else ["no run in this source"]},
+                                                     ([f"api error ×{s['api_errors']}: " + next(r["api_error"] for r in runs[arm] if r.get("api_error"))[:160]] if s["api_errors"] else [])) if s["n"] else ["no run in this source"]},
             "oracle": {"colour": orc_c, "lines": ([f"suite {', '.join(s['suites'])}"] +
                                                    [f"{k.replace(':', ' ')} ×{v}" for k, v in s["targets"].items()] +
                                                    ([f"refs resolvable {s['refs_min']}–{s['refs_max']}"] if s["refs_min"] is not None else [])) if s["n"] else ["—"]},
             "runs": [_run_view(r) for r in runs[arm]],
         }
+    # model calls that failed: the harness records them as api_error cells (no reply, no code, no grade)
+    api_errors = [{"arm": arm, "run": r["run"], "error": r["api_error"]} for arm in ("G", "B") for r in runs[arm] if r.get("api_error")]
     view = {
         "scenario": scenario, "meta": meta, "source": source, "source_dir": str(d),
+        "api_errors": api_errors,
         "sources": sources_for(scenario, runs_dir),
         "stages": stages, "arms": arms,
         "gate": _gate_view(gate),
