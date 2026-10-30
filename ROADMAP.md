@@ -8441,6 +8441,12 @@ list and license posture live in § Settled questions.
     with their levels, each run's decision and grade, S6's invalidation
     set); a click, not a hover, since the details are tables and a
     hover has no touch or keyboard form. Page, view and README only.
+  - *2026-10-30, later (#231):* on the maintainer's ask, the demo README
+    gains a plain-English section on what Neo4j holds, who writes it and
+    in what order, who reads it and what comes out, what the store adds
+    that files alone cannot, and what it does not do (the governance is
+    application logic). Written from the harness and the record. Docs
+    only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
