@@ -1,0 +1,241 @@
+{
+ "scenario": "S1",
+ "arm": "G",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "generate",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": [],
+  "co_hit": null,
+  "text_len": 0
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 11,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'review_hold'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 3186.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 8652.49} | {'quote_id': proteanobj(status='stored', stored=true, success=tru"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'held_unscreened', 'price': 1365.0, 'hold': true} | {'quote_id': proteanobj(status='stored', st"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {},
+ "outage_status": "held_unscreened",
+ "M5_refs": {
+  "total": 36,
+  "resolved": 36,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [],
+ "assumptions": [],
+ "claims": [
+  {
+   "text": "shipper_id must be present and non-empty in the request",
+   "ref": "A:dt:shipper_id|present@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400",
+   "ref": "A:dt:weight_kg|min@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400",
+   "ref": "A:dt:weight_kg|max@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150",
+   "ref": "A:dt:distance_km|min@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150",
+   "ref": "A:dt:distance_km|max@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000",
+   "ref": "A:dt:declared_value|min@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000",
+   "ref": "A:dt:declared_value|max@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no store, screen, price, or notification",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "Screening accept band is risk_index <= 41 and results in quoted status, priced=yes, notified with quote document",
+   "ref": "A:dt:S-accept|max@v1"
+  },
+  {
+   "text": "On accept row, pricing runs",
+   "ref": "A:dt:S-accept|priced@v1"
+  },
+  {
+   "text": "On accept row, a quote document notification is sent",
+   "ref": "A:dt:S-accept|notified@v1"
+  },
+  {
+   "text": "On accept row, final status is 'quoted'",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "Screening review band is 42 <= risk_index <= 66",
+   "ref": "A:dt:S-review|min@v1"
+  },
+  {
+   "text": "Screening review band is 42 <= risk_index <= 66",
+   "ref": "A:dt:S-review|max@v1"
+  },
+  {
+   "text": "On review row, no pricing is run",
+   "ref": "A:dt:S-review|priced@v1"
+  },
+  {
+   "text": "On review row, no notification is sent",
+   "ref": "A:dt:S-review|notified@v1"
+  },
+  {
+   "text": "On review row, status is 'review_hold'",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "Screening refuse band is risk_index >= 67",
+   "ref": "A:dt:S-refuse|min@v1"
+  },
+  {
+   "text": "On refuse row, no pricing is run",
+   "ref": "A:dt:S-refuse|priced@v1"
+  },
+  {
+   "text": "On refuse row, a refusal notice is sent",
+   "ref": "A:dt:S-refuse|notified@v1"
+  },
+  {
+   "text": "On refuse row, status is 'refused_screening'",
+   "ref": "A:dt:S-refuse|status@v1"
+  },
+  {
+   "text": "On storage failure, return status 'error: store_unavailable' and do not call screening, pricing, or notification",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "Notification is fire-and-forget; failures never change stored quote or response",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  },
+  {
+   "text": "On screening outage, still price, store with status 'held_unscreened', do not notify, response includes price and hold:true",
+   "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "Pricing formula base = 0.87 * weight_kg + 1.13 * distance_km",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "Heavy surcharge: if weight_kg > 1244, add 316.00 flat",
+   "ref": "A:dt:P2|threshold@v1"
+  },
+  {
+   "text": "Heavy surcharge amount is 316.00",
+   "ref": "A:dt:P2|surcharge@v1"
+  },
+  {
+   "text": "Long-haul multiplier: if distance_km >= 4912, multiply running total by 1.19, applied after P2",
+   "ref": "A:dt:P3|threshold@v1"
+  },
+  {
+   "text": "Long-haul multiplier factor is 1.19",
+   "ref": "A:dt:P3|factor@v1"
+  },
+  {
+   "text": "Order of surcharges: apply P2 before P3; price = round(result, 2)",
+   "ref": "A:dt:P3|order@v1"
+  },
+  {
+   "text": "Price is rounded with price = round(result, 2)",
+   "ref": "A:dt:P4|rounding@v1"
+  },
+  {
+   "text": "Overall flow order: validate > store > screen > decide > price > notify > respond",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "Response statuses enum includes quoted, review_hold, refused_screening, held_unscreened, 'rejected: invalid_request', 'error: store_unavailable'",
+   "ref": "A:oas:response|statuses@v1"
+  },
+  {
+   "text": "Response includes price only on priced DT-S rows",
+   "ref": "A:spec:response|price_presence@v1"
+  },
+  {
+   "text": "Response includes hold:true exactly on held_unscreened",
+   "ref": "A:spec:response|hold_presence@v1"
+  },
+  {
+   "text": "Response includes quote_id whenever a draft was stored",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S1/G/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 17394,
+  "completion_tokens": 4149,
+  "seconds": 26.6,
+  "usd_est": 0.0632
+ }
+}

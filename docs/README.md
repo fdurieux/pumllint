@@ -958,6 +958,42 @@ but they are a useful cross-check that no audience was forgotten.
     (ROADMAP, Arc E, *Not covered*).
 
   Nothing queued, no checkbox.
+- [Neo4j as a governed semantic knowledge repository for AI agents, evaluated — with an executed proof of concept](neo4j-governed-knowledge-evaluation.md)
+  — dated evaluation (2026-10-30), seventh in the thread and the first
+  with a graph store executed: the maintainer's research prompt on a
+  governed knowledge layer for agents, with the principle that unknown,
+  ambiguous, contradictory, assumed and unverified knowledge are
+  first-class. Ten deliverables, each claim tagged by evidence class.
+  - **Neo4j is the store, not the governance.** Community edition
+    accepted the uniqueness constraints and refused existence, key and
+    type constraints at execution; no versioning, no history, no
+    statement-level metadata beyond a relationship's properties, and a
+    closed-world pattern negation that reads a missing edge as "no".
+    Every epistemic construct is application-level, here and in every
+    alternative surveyed.
+  - **The store's half works, measured** (`kg_experiment/`, pre-registered
+    as #214 before the run): the CargoQuote kit as assertions with
+    evidence, basis and status; seven Cypher rules deriving
+    corroboration, conflict, vagueness, missing verification and
+    staleness; a changed tariff row invalidating exactly the assertions
+    its fragments support and marking the derived code suspect; the
+    three-valued answer (asserted, documented absent, unknown) as a
+    query; SHACL's boolean conformance confirmed on an Info-only shape.
+  - **The agent's half is the open question**, as the literature
+    predicted: labels in context are obeyed inconsistently across models,
+    so the architecture withholds under BLOCKED rather than advising;
+    the PoC measured what one model does with advice alone, scenario by
+    scenario, against the kit's execution oracle and a documents-only
+    baseline.
+  - **The hypothesis is supported for the mechanism and unproven for
+    the outcome.** No study reaches quality in use or delivery
+    performance from a knowledge-graph intervention; the 100× cost
+    escalation has a 171-project null result against it; what is
+    measured is ambiguity's cost to generated code and the value of
+    authored trace links.
+
+  Nothing on pumllint's product path; N1–N5 untouched; the PoC recorded
+  as a standing fixture of the thread, nothing queued.
 - [Cross-diagram relationships in pumllint, evaluated](cross-diagram-relationships-evaluation.md)
   — dated evaluation (2026-08-28), second in the Linked.Archi thread and
   the first pointing at the product's own cross-diagram layer: does

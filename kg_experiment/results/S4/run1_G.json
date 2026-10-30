@@ -1,0 +1,59 @@
+{
+ "scenario": "S4",
+ "arm": "G",
+ "run": 1,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "conflict"
+  ],
+  "co_hit": true,
+  "text_len": 488
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "How must QuoteAPI behave on a screening outage (key QuoteAPI|on_screening_outage, gaps gap:conflict:QuoteAPI|on_screening_outage:0..3)? Specifically:\n- Should the quote be priced or not when ScreeningService.screen raises ScreeningUnavailableError?\n- What status must be stored and returned: `error: screening_unavailable` or `held_unscreened`?\n- Should a `hold` flag be present in the response, and under which exact conditions?\n- Should any notification be sent in this outage scenario?"
+ ],
+ "assumptions": [],
+ "claims": [
+  "On invalid requests the API must immediately return status `rejected: invalid_request` without storing a draft, calling screening, pricing, or sending notifications. [A:dt:invalid_request|behaviour@v1]",
+  "Requests are validated with these constraints: shipper_id present and non-empty; 3 <= weight_kg <= 19400; 25 <= distance_km <= 7150; 50 <= declared_value <= 83000. [A:dt:shipper_id|present@v1] [A:oas:shipper_id|present@v1] [A:dt:weight_kg|min@v1] [A:oas:weight_kg|min@v1] [A:dt:weight_kg|max@v1] [A:oas:weight_kg|max@v1] [A:dt:distance_km|min@v1] [A:oas:distance_km|min@v1] [A:dt:distance_km|max@v1] [A:oas:distance_km|max@v1] [A:dt:declared_value|min@v1] [A:oas:declared_value|min@v1] [A:dt:declared_value|max@v1] [A:oas:declared_value|max@v1]",
+  "On storage failure (StoreUnavailableError from QuoteStore), nothing else runs: no screening, no pricing, no notification; the response status is `error: store_unavailable`. [A:dt:QuoteAPI|on_store_failure@v1] [A:seq:QuoteAPI|on_store_failure@v1] [A:spec:QuoteAPI|on_store_failure@v1]",
+  "The processing flow order is validate → store → screen → decide → price → notify → respond. [A:spec:flow|order@v1]",
+  "Screening decisions: risk_index <= 41 → quote issued, priced, quote document notified, status `quoted`. [A:dt:S-accept|max@v1] [A:dt:S-accept|priced@v1] [A:dt:S-accept|notified@v1] [A:dt:S-accept|status@v1]",
+  "Screening decisions: 42 <= risk_index <= 66 → held for manual review, not priced, no notification, status `review_hold`. [A:dt:S-review|min@v1] [A:dt:S-review|max@v1] [A:dt:S-review|priced@v1] [A:dt:S-review|notified@v1] [A:dt:S-review|status@v1]",
+  "Screening decisions: risk_index >= 67 → refused, not priced, refusal notice sent, status `refused_screening`. [A:dt:S-refuse|min@v1] [A:dt:S-refuse|priced@v1] [A:dt:S-refuse|notified@v1] [A:dt:S-refuse|status@v1]",
+  "For refusals, pricing never runs on a refused quote, and a refusal is always notified with a refusal notice. [A:dt:S-refuse|notified#1@v1]",
+  "Notification is fire-and-forget: notification delivery failure must not change the stored quote or the API response. [A:dt:QuoteAPI|on_notification_failure@v1]",
+  "Pricing formula DT-P: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add 316.00; if distance_km >= 4912 multiply the running total by 1.19 after adding the surcharge; final price = round(result, 2). [A:dt:P1|formula@v1] [A:dt:P2|threshold@v1] [A:dt:P2|surcharge@v1] [A:dt:P3|threshold@v1] [A:dt:P3|factor@v1] [A:dt:P3|order@v1] [A:dt:P3|order#1@v1] [A:dt:P4|rounding@v1]",
+  "Response schema: status is one of `quoted`, `review_hold`, `refused_screening`, `held_unscreened`, `rejected: invalid_request`, `error: store_unavailable`. [A:oas:response|statuses@v1] [A:spec:response|statuses@v1]",
+  "Response fields presence: `price` present exactly on the priced rows of DT-S; `hold` (true) exactly on `held_unscreened`; `quote_id` present whenever a draft was stored. [A:oas:response|price_presence@v1] [A:spec:response|price_presence@v1] [A:oas:response|hold_presence@v1] [A:spec:response|hold_presence@v1] [A:spec:response|quote_id_presence@v1]"
+ ],
+ "usage": {
+  "tag": "S4/G/1",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 18102,
+  "completion_tokens": 1203,
+  "seconds": 10.4,
+  "usd_est": 0.0347
+ }
+}

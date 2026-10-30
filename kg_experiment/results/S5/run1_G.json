@@ -1,0 +1,83 @@
+{
+ "scenario": "S5",
+ "arm": "G",
+ "run": 1,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": [],
+  "co_hit": true,
+  "text_len": 768
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "QuoteAPI|on_screening_outage (gap:declared:OD-1): What should the system do when ScreeningService.screen fails with a ScreeningUnavailableError or equivalent outage condition (e.g. timeout)? Specifically: what status must be returned, should any notification be sent, and should pricing ever proceed when screening could not be completed?",
+  "response|hold_presence: For non-priced, non-error outcomes (e.g. status `review_hold` or `refused_screening`), which additional response fields besides `status` are required or allowed? Must `hold` or any analogous field be present, and if so with what semantics? Should `quote_id` be returned for all stored-but-unpriced outcomes, and is there any requirement to include or omit `price` explicitly (e.g. as null) in those cases?"
+ ],
+ "assumptions": [],
+ "claims": [
+  "shipper_id must be present and non-empty in the request [A:dt:shipper_id|present@v1]",
+  "shipper_id is required with minLength 1 per the API contract [A:oas:shipper_id|present@v1]",
+  "weight_kg must satisfy 3 <= weight_kg <= 19400 [A:dt:weight_kg|min@v1]",
+  "weight_kg has minimum 3 and maximum 19400 per the API schema [A:oas:weight_kg|min@v1]",
+  "weight_kg has maximum 19400 per the decision table [A:dt:weight_kg|max@v1]",
+  "distance_km must satisfy 25 <= distance_km <= 7150 [A:dt:distance_km|min@v1]",
+  "distance_km has minimum 25 and maximum 7150 per the API schema [A:oas:distance_km|min@v1]",
+  "distance_km has maximum 7150 per the decision table [A:dt:distance_km|max@v1]",
+  "declared_value must satisfy 50 <= declared_value <= 83000 [A:dt:declared_value|min@v1]",
+  "declared_value has minimum 50 and maximum 83000 per the API schema [A:oas:declared_value|min@v1]",
+  "declared_value has maximum 83000 per the decision table [A:dt:declared_value|max@v1]",
+  "An invalid request is rejected immediately with status `rejected: invalid_request`, with no storage, screening, pricing, or notification [A:dt:invalid_request|behaviour@v1]",
+  "For risk_index <= 41, the decision is accept, the quote is priced, a quote document is notified, and status is `quoted` [A:dt:S-accept|max@v1]",
+  "For accept decisions, pricing runs [A:dt:S-accept|priced@v1]",
+  "For accept decisions, a quote document is notified [A:dt:S-accept|notified@v1]",
+  "For accept decisions, the resulting status is `quoted` [A:dt:S-accept|status@v1]",
+  "For 42 <= risk_index <= 66, the decision is review, no pricing runs, no notification is sent, and the status is `review_hold` [A:dt:S-review|min@v1]",
+  "The review band upper bound is risk_index 66 [A:dt:S-review|max@v1]",
+  "For review decisions, pricing does not run [A:dt:S-review|priced@v1]",
+  "For review decisions, no notification is sent [A:dt:S-review|notified@v1]",
+  "For review decisions, the resulting status is `review_hold` [A:dt:S-review|status@v1]",
+  "For risk_index >= 67, the decision is refuse, pricing does not run, a refusal notice is notified, and status is `refused_screening` [A:dt:S-refuse|min@v1]",
+  "For refuse decisions, pricing does not run [A:dt:S-refuse|priced@v1]",
+  "For refuse decisions, a refusal notice is notified [A:dt:S-refuse|notified@v1]",
+  "For refuse decisions, the resulting status is `refused_screening` [A:dt:S-refuse|status@v1]",
+  "On storage failure nothing else runs: no screening call, no pricing, no notification; the returned status is `error: store_unavailable` [A:spec:QuoteAPI|on_store_failure@v1]",
+  "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response [A:dt:QuoteAPI|on_notification_failure@v1]",
+  "The pricing base is computed as base = 0.87 * weight_kg + 1.13 * distance_km [A:dt:P1|formula@v1]",
+  "If weight_kg > 1244, add a flat heavy surcharge of 316.00 [A:dt:P2|threshold@v1]",
+  "The heavy surcharge amount is 316.00 [A:dt:P2|surcharge@v1]",
+  "If distance_km >= 4912, multiply the running total by 1.19 after applying the heavy surcharge (P2) [A:dt:P3|threshold@v1]",
+  "The long-haul multiplier factor is 1.19 [A:dt:P3|factor@v1]",
+  "The long-haul multiplier P3 must be applied after the heavy surcharge P2; applying them in the wrong order gives incorrect prices [A:dt:P3|order@v1]",
+  "The final price is computed as price = round(result, 2) [A:dt:P4|rounding@v1]",
+  "The overall flow order is: validate, then store, then screen, then decide, then price, then notify, then respond [A:spec:flow|order@v1]",
+  "The response `price` field is present exactly on the priced rows of the screening decision table [A:oas:response|price_presence@v1]",
+  "The response `quote_id` field is present whenever a draft was stored [A:spec:response|quote_id_presence@v1]"
+ ],
+ "usage": {
+  "tag": "S5/G/1",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 16222,
+  "completion_tokens": 1315,
+  "seconds": 26.2,
+  "usd_est": 0.0334
+ }
+}

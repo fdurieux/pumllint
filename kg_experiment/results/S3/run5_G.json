@@ -1,0 +1,170 @@
+{
+ "scenario": "S3",
+ "arm": "G",
+ "run": 5,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "forties",
+   "sixties",
+   "threshold",
+   "ambigu"
+  ],
+  "co_hit": null,
+  "text_len": 1592
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 10,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': 'q-1', 'price': 1365.0} | {'status': 'quoted', 'quote_id': 'q-1', 'price': 1365.0} | status=quoted quote_id=q-1 price=1365.0"
+   },
+   "accept_boundary_41": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "{'status': 'review_hold', 'quote_id': 'q-1'} | {'status': 'review_hold', 'quote_id': 'q-1'} | status=review_hold quote_id=q-1"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'review_hold', 'quote_id': 'q-1'} | {'status': 'review_hold', 'quote_id': 'q-1'} | status=review_hold quote_id=q-1"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': 'q-1'} | {'status': 'refused_screening', 'quote_id': 'q-1'} | status=refused_screening quote_id=q-1"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': 'q-1'} | {'status': 'refused_screening', 'quote_id': 'q-1'} | status=refused_screening quote_id=q-1"
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': 'q-1', 'price': 3186.0} | {'status': 'quoted', 'quote_id': 'q-1', 'price': 3186.0} | status=quoted quote_id=q-1 price=3186.0"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': 'q-1', 'price': 8652.49} | {'status': 'quoted', 'quote_id': 'q-1', 'price': 8652.49} | status=quoted quote_id=q-1 price=8652.49"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'held_unscreened', 'quote_id': 'q-1', 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': 'q-1', 'price': 1365.0, 'hold': true} | status=held_unscreened quote_id=q-1 "
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {
+  "accept_boundary_41": false,
+  "review_boundary_42": true,
+  "refuse_boundary_67": true
+ },
+ "outage_status": "held_unscreened",
+ "M5_refs": {
+  "total": 15,
+  "resolved": 15,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What exact numeric boundaries define ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, and REFUSE_MIN for mapping a numeric risk index into accept/review/refuse bands (keys S-accept|max, S-review|min, S-review|max, S-refuse|min)?",
+  "What is the exact type and scale of the ScreeningService.screen result (e.g. integer 0–100 riskIndex), and what happens if it returns a value outside the intended band definitions?"
+ ],
+ "assumptions": [
+  {
+   "text": "ScreeningService.screen(request) returns a numeric risk_index where lower means safer, and decisions use simple threshold comparison against constants ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, REFUSE_MIN that are currently placeholders to be defined by governance. The mapping is: if risk_index <= ACCEPT_MAX → accept; elif REVIEW_MIN <= risk_index <= REVIEW_MAX → review; else (risk_index >= REFUSE_MIN) → refuse. # ASSUMPTION in code uses these symbolic constants without fixed values.",
+   "ref": "A:dt:S-accept|max@v1"
+  },
+  {
+   "text": "The ambiguous prose ranges “risk index clearly low — below the low forties”, “from the low forties up to the mid-sixties”, and “anything higher” are implemented via the same numeric band constants (ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, REFUSE_MIN) and interpreted monotonically (no gaps/overlaps), but their concrete numeric values are left unspecified in this implementation.",
+   "ref": "A:dt:S-review|min@v1"
+  },
+  {
+   "text": "Any risk_index greater than REVIEW_MAX is treated as refused (risk_index >= REFUSE_MIN) for routing to the refuse branch, and any risk_index lower than REVIEW_MIN but higher than ACCEPT_MAX is treated as review by setting REVIEW_MIN to ACCEPT_MAX + smallest_step in the final configuration; current code just encodes the branch structure.",
+   "ref": "A:dt:S-refuse|min@v1"
+  }
+ ],
+ "claims": [
+  {
+   "text": "The request is invalid unless shipper_id is present and non-empty, weight_kg is between 3 and 19400 inclusive, distance_km is between 25 and 7150 inclusive, and declared_value is between 50 and 83000 inclusive.",
+   "ref": "A:dt:weight_kg|min@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'. No draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "The overall flow order is validate → store → screen → decide → price → notify → respond.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "On initial storage failure (StoreUnavailableError from QuoteStore.store_draft), nothing else runs: no screening call, no pricing, no notification; status is 'error: store_unavailable'.",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "On screening outage (ScreeningUnavailableError from ScreeningService.screen), the quote is still priced, stored with status 'held_unscreened', not notified, and the response carries price and hold: true.",
+   "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "In the accept (low-risk) path, pricing runs, the stored quote is updated to status 'quoted', a quote document notification is sent, and the final response status is 'quoted'.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "In the review (medium-risk) path, no pricing runs, the stored quote is updated to status 'review_hold', no notification is sent, and the final response status is 'review_hold'.",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "In the refuse (high-risk) path, no pricing runs, the stored quote is updated to status 'refused_screening', a refusal notice is sent, and the final response status is 'refused_screening'.",
+   "ref": "A:dt:S-refuse|status@v1"
+  },
+  {
+   "text": "Notification (both quote document and refusal notice) is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  },
+  {
+   "text": "The tariff calculation is: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add 316.00; if distance_km >= 4912 then multiply the running total by 1.19, applied after the heavy surcharge; final price is round(result, 2).",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "The response status enum is exactly: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', 'error: store_unavailable'.",
+   "ref": "A:spec:response|statuses@v1"
+  },
+  {
+   "text": "The response includes quote_id whenever a draft was stored; includes price only on priced rows (accept and held_unscreened paths); and includes hold: true exactly on held_unscreened.",
+   "ref": "A:spec:response|price_presence@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S3/G/5",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 14855,
+  "completion_tokens": 4138,
+  "seconds": 28.3,
+  "usd_est": 0.0599
+ }
+}

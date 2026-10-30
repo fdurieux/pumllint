@@ -1,0 +1,164 @@
+{
+ "scenario": "S5",
+ "arm": "B",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": [],
+  "co_hit": true,
+  "text_len": 1195
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 10,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true,"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stor"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": false,
+    "stage": "missing_call",
+    "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {
+  "screening_down_hold": false
+ },
+ "outage_status": "refused_screening",
+ "M5_refs": {
+  "total": 16,
+  "resolved": 15,
+  "share": 0.9375
+ },
+ "M6_noncompliance": false,
+ "questions": [],
+ "assumptions": [
+  {
+   "text": "The open decision OD-1 about screening outage behaviour is resolved as described in notes/analysis_notes.md: on a screening outage the quote is refused with status `refused_screening`, so that no price reaches an unscreened shipper.",
+   "ref": "notes/analysis_notes.md:5"
+  },
+  {
+   "text": "On a screening outage (ScreeningUnavailableError), a refusal notice is still attempted to be sent via NotificationService.send_refusal_notice, and any failure in that notification is ignored as fire-and-forget, same as for refusal decisions with a risk index.",
+   "ref": "notes/analysis_notes.md:5"
+  },
+  {
+   "text": "Failures in QuoteStore.update_quote are treated as generic unexpected errors and are allowed to raise, since no behaviour is specified for them in the documents.",
+   "ref": "contract/spec.md:55"
+  },
+  {
+   "text": "The QuoteStore.store_draft method returns a string quote_id on success and raises StoreUnavailableError on storage failure; no other return shapes are used.",
+   "ref": "behavior/quote_flow.puml:16"
+  },
+  {
+   "text": "The ScreeningService.screen method returns an integer risk_index on success and raises ScreeningUnavailableError on outage; no other error signalling is used.",
+   "ref": "kit/requirements.md:22"
+  },
+  {
+   "text": "NotificationService.send_quote_document and NotificationService.send_refusal_notice may raise exceptions to signal delivery failure; all such exceptions must be swallowed so that response and stored outcome remain unchanged.",
+   "ref": "contract/decision_table.md:54"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Validation DT-V defines the request as valid iff all four field rules hold; otherwise the request is rejected immediately with status `rejected: invalid_request` and no draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+   "ref": "contract/decision_table.md:10"
+  },
+  {
+   "text": "On storage failure nothing else runs: no screening call, no pricing, no notification; status `error: store_unavailable`.",
+   "ref": "contract/decision_table.md:36"
+  },
+  {
+   "text": "Flow order is: validate, store draft with status draft, request risk index, apply screening decision DT-S and update stored quote to resulting status, price DT-P only on priced rows, notify shipper only on notified rows, then return response.",
+   "ref": "contract/spec.md:32"
+  },
+  {
+   "text": "DT-S defines three bands: risk_index <= 41 leads to status `quoted`, priced yes, notified with quote document; 42 <= risk_index <= 66 leads to status `review_hold`, priced no, notified no; risk_index >= 67 leads to status `refused_screening`, priced no, notified with refusal notice.",
+   "ref": "contract/decision_table.md:22"
+  },
+  {
+   "text": "On DT-S review row, no price is computed and no notification is sent.",
+   "ref": "contract/decision_table.md:31"
+  },
+  {
+   "text": "On DT-S refuse row, pricing never runs and refusal is notified; notification is fire-and-forget.",
+   "ref": "contract/decision_table.md:34"
+  },
+  {
+   "text": "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+   "ref": "contract/decision_table.md:54"
+  },
+  {
+   "text": "DT-P pricing rules: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add 316.00; if distance_km >= 4912 multiply running total by 1.19 after P2; final price is round(result, 2).",
+   "ref": "contract/decision_table.md:58"
+  },
+  {
+   "text": "Long-haul multiplier for distance_km >= 4912 is applied after the heavy surcharge step P2; the order is normative.",
+   "ref": "kit/requirements.md:19"
+  },
+  {
+   "text": "API response must contain status and includes quote_id whenever a draft was stored, and price exactly on priced rows (i.e., only when status is quoted).",
+   "ref": "contract/spec.md:72"
+  }
+ ],
+ "usage": {
+  "tag": "S5/B/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 2,
+  "prompt_tokens": 6312,
+  "completion_tokens": 2612,
+  "seconds": 61.6,
+  "usd_est": 0.034
+ }
+}

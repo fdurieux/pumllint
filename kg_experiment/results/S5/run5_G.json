@@ -1,0 +1,55 @@
+{
+ "scenario": "S5",
+ "arm": "G",
+ "run": 5,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "unverified"
+  ],
+  "co_hit": true,
+  "text_len": 410
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "How must QuoteAPI behave on a screening outage? (Gap id: QuoteAPI|on_screening_outage, DECLARED GAP gap:declared:OD-1, proposed but unverified assertion A:llm:QuoteAPI|on_screening_outage@v1 cannot be used.)",
+  "When the status is a non-priced hold (e.g. review_hold), should the response include any explicit hold indicator field or only the status? (Key: response|hold_presence is UNKNOWN and must be specified.)"
+ ],
+ "assumptions": [],
+ "claims": [
+  "Only knowledge with status approved or verified may be treated as fact; declared gaps and inferred/proposed items cannot be used as facts or silent assumptions. [policy]",
+  "On storage failure, no screening, pricing, or notification occurs and the status must be error: store_unavailable. [A:dt:QuoteAPI|on_store_failure@v1]",
+  "Notification is fire-and-forget; failures do not change the stored quote or the response. [A:dt:QuoteAPI|on_notification_failure@v1]",
+  "The end-to-end flow order is validate > store > screen > decide > price > notify > respond. [A:spec:flow|order@v1]",
+  "The response status values are constrained to quoted, review_hold, refused_screening, 'rejected: invalid_request', and 'error: store_unavailable'. [A:oas:response|statuses@v1]",
+  "The price field is present exactly on the priced rows of DT-S. [A:oas:response|price_presence@v1]",
+  "The quote_id field is present whenever a draft was stored. [A:spec:response|quote_id_presence@v1]"
+ ],
+ "usage": {
+  "tag": "S5/G/5",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 16222,
+  "completion_tokens": 375,
+  "seconds": 15.2,
+  "usd_est": 0.024
+ }
+}

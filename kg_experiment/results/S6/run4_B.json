@@ -1,0 +1,34 @@
+{
+ "scenario": "S6",
+ "arm": "B",
+ "run": 4,
+ "api_error": "Error code: 502",
+ "M1_decision": null,
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": []
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {},
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": null,
+ "assumptions": null,
+ "claims": null,
+ "usage": {
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "attempts": 4
+ }
+}

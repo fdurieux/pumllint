@@ -1,0 +1,65 @@
+{
+ "scenario": "S2",
+ "arm": "G",
+ "run": 2,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "outage",
+   "unavailable",
+   "od-1",
+   "not yet specified",
+   "req-06"
+  ],
+  "co_hit": null,
+  "text_len": 579
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "How must QuoteAPI behave on a screening outage? The key QuoteAPI|on_screening_outage is a declared gap (gap:declared:OD-1: REQ-06 is NOT YET SPECIFIED). Please decide the status and side effects (pricing, storage updates, notification, response status) when ScreeningService.screen raises ScreeningUnavailableError.",
+  "What is the required behaviour and response schema regarding any explicit hold-related field(s) in the API response? The key response|hold_presence is absent; please specify whether a hold indicator must exist, its name/type, and on which DT-S rows it is present."
+ ],
+ "assumptions": [],
+ "claims": [
+  "An invalid request is rejected immediately with status `rejected: invalid_request`; no draft is stored, no screening is performed, no price is computed, and no notification is sent. [A:dt:invalid_request|behaviour@v1]",
+  "On storage failure nothing else runs: no screening call, no pricing, no notification; status `error: store_unavailable`. [A:dt:QuoteAPI|on_store_failure@v1]",
+  "Store the draft quote in the Quote Store with status `draft`. If storage fails: return `error: store_unavailable`; do not call screening; do not price; do not notify. [A:spec:QuoteAPI|on_store_failure@v1]",
+  "Flow order is validate → store → screen → decide → price → notify → respond. [A:spec:flow|order@v1]",
+  "For accepted screening (`risk_index <= 41`), a quote is issued: it is priced, a quote document is sent, and the final status is `quoted`. [A:dt:S-accept|max@v1][A:dt:S-accept|priced@v1][A:dt:S-accept|notified@v1][A:dt:S-accept|status@v1]",
+  "For review screening (`42 <= risk_index <= 66`), the quote is held for manual review: it is not priced, no notification is sent, and the final status is `review_hold`. [A:dt:S-review|min@v1][A:dt:S-review|max@v1][A:dt:S-review|priced@v1][A:dt:S-review|notified@v1][A:dt:S-review|status@v1]",
+  "For refused screening (`risk_index >= 67`), the quote is refused: it is not priced, a refusal notice is sent, and the final status is `refused_screening`. [A:dt:S-refuse|min@v1][A:dt:S-refuse|priced@v1][A:dt:S-refuse|notified@v1][A:dt:S-refuse|status@v1]",
+  "A refusal is always notified via a refusal notice, and pricing never runs on a refused quote. [A:dt:S-refuse|notified#1@v1]",
+  "`price` must be present exactly on the priced rows of DT-S. [A:oas:response|price_presence@v1]",
+  "`quote_id` must be present whenever a draft was stored. [A:spec:response|quote_id_presence@v1]",
+  "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response. [A:dt:QuoteAPI|on_notification_failure@v1]",
+  "Validation rules: shipper_id must be present and non-empty; 3 <= weight_kg <= 19400; 25 <= distance_km <= 7150; 50 <= declared_value <= 83000. [A:dt:shipper_id|present@v1][A:oas:shipper_id|present@v1][A:dt:weight_kg|min@v1][A:dt:weight_kg|max@v1][A:dt:distance_km|min@v1][A:dt:distance_km|max@v1][A:dt:declared_value|min@v1][A:dt:declared_value|max@v1]",
+  "Tariff pricing formula: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244, add a flat 316.00; if distance_km >= 4912, multiply the running total (after any surcharge) by 1.19; final price is round(result, 2). [A:dt:P1|formula@v1][A:dt:P2|threshold@v1][A:dt:P2|surcharge@v1][A:dt:P3|threshold@v1][A:dt:P3|factor@v1][A:dt:P3|order@v1][A:dt:P4|rounding@v1]"
+ ],
+ "usage": {
+  "tag": "S2/G/2",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 16123,
+  "completion_tokens": 1029,
+  "seconds": 10.0,
+  "usd_est": 0.0304
+ }
+}

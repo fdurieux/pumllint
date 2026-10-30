@@ -1,0 +1,61 @@
+{
+ "scenario": "S4",
+ "arm": "G",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "conflict"
+  ],
+  "co_hit": true,
+  "text_len": 914
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "The gate verdict is BLOCKED due to a disputed required key: QuoteAPI|on_screening_outage. Governance requires a definitive policy for this key before implementation. Please resolve the conflict gap:conflict:QuoteAPI|on_screening_outage:{0,1,2,3} by deciding which behaviour is normative when ScreeningService.screen raises ScreeningUnavailableError: (a) treat as outage with priced=no; status='error: screening_unavailable'; notified=no, or (b) treat as hold with priced=yes; status='held_unscreened'; notified=no; hold=true (price computed and stored).",
+  "Once QuoteAPI|on_screening_outage is resolved, confirm the exact response schema for the screening outage case: which fields (status, quote_id, price, hold) must be present/absent in the JSON response, consistent with the chosen policy and response|price_presence [A:oas:response|price_presence@v1] and response|hold_presence [A:oas:response|hold_presence@v1]."
+ ],
+ "assumptions": [],
+ "claims": [
+  "shipper_id must be present and non-empty in the request [A:dt:shipper_id|present@v1].",
+  "Valid ranges: 3 <= weight_kg <= 19400 [A:dt:weight_kg|min@v1][A:dt:weight_kg|max@v1], 25 <= distance_km <= 7150 [A:dt:distance_km|min@v1][A:dt:distance_km|max@v1], 50 <= declared_value <= 83000 [A:dt:declared_value|min@v1][A:dt:declared_value|max@v1].",
+  "Invalid requests are immediately rejected with status 'rejected: invalid_request'; no store, screen, price, or notification occurs [A:dt:invalid_request|behaviour@v1].",
+  "Flow order is validate → store → screen → decide → price → notify → respond [A:spec:flow|order@v1].",
+  "On storage failure (StoreUnavailableError) nothing else runs (no screening, no pricing, no notification) and status must be 'error: store_unavailable' [A:spec:QuoteAPI|on_store_failure@v1].",
+  "Screening decision thresholds and outcomes: accept if risk_index <= 41 [A:dt:S-accept|max@v1]; review if 42 <= risk_index <= 66 [A:dt:S-review|min@v1][A:dt:S-review|max@v1]; refuse if risk_index >= 67 [A:dt:S-refuse|min@v1].",
+  "Accept row behaviour: quote is priced [A:dt:S-accept|priced@v1], status 'quoted' [A:dt:S-accept|status@v1], and a quote document is sent [A:dt:S-accept|notified@v1].",
+  "Review row behaviour: no pricing [A:dt:S-review|priced@v1], no notification [A:dt:S-review|notified@v1], status 'review_hold' [A:dt:S-review|status@v1].",
+  "Refuse row behaviour: no pricing [A:dt:S-refuse|priced@v1], refusal notice is sent [A:dt:S-refuse|notified@v1], status 'refused_screening' [A:dt:S-refuse|status@v1].",
+  "Notification is fire-and-forget; a delivery failure never changes the stored quote or the API response [A:dt:QuoteAPI|on_notification_failure@v1].",
+  "Pricing formula: base = 0.87 * weight_kg + 1.13 * distance_km [A:dt:P1|formula@v1]; if weight_kg > 1244 then add 316.00 [A:dt:P2|threshold@v1][A:dt:P2|surcharge@v1]; if distance_km >= 4912 then multiply running total by 1.19 after applying the heavy surcharge [A:dt:P3|threshold@v1][A:dt:P3|factor@v1][A:dt:P3|order@v1]; finally round to 2 decimal places [A:dt:P4|rounding@v1].",
+  "Response statuses enum is: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', 'error: store_unavailable' [A:oas:response|statuses@v1].",
+  "Response field presence: price is present exactly on priced DT-S rows [A:oas:response|price_presence@v1]; hold=true exactly on 'held_unscreened' [A:oas:response|hold_presence@v1]; quote_id is present whenever a draft was stored [A:spec:response|quote_id_presence@v1]."
+ ],
+ "usage": {
+  "tag": "S4/G/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 18102,
+  "completion_tokens": 1048,
+  "seconds": 9.7,
+  "usd_est": 0.0331
+ }
+}

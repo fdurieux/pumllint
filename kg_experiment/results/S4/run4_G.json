@@ -1,0 +1,51 @@
+{
+ "scenario": "S4",
+ "arm": "G",
+ "run": 4,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "conflict"
+  ],
+  "co_hit": true,
+  "text_len": 802
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "The gate verdict is BLOCKED due to disputed behaviour for key QuoteAPI|on_screening_outage (gap ids gap:conflict:QuoteAPI|on_screening_outage:0..3). Please decide and mark as at least approved: what must CargoQuote do when ScreeningService.screen raises ScreeningUnavailableError? Specifically:\n- Should the quote be priced or not? (priced=yes|no)\n- What status must be stored and returned? (one of the approved response statuses, e.g. 'held_unscreened' or 'error: screening_unavailable')\n- Should any notification be sent in this path? (notified=yes|no)\n- Should the response include hold: true (a hold flag) or omit it?\nOnce this policy is resolved and the key QuoteAPI|on_screening_outage is set to a non-disputed, verified/approved value, the handle(request) implementation can be generated safely."
+ ],
+ "assumptions": [],
+ "claims": [
+  "Only verified/approved knowledge may be used as fact; disputed keys like QuoteAPI|on_screening_outage cannot be used at all [A:bpmn:QuoteAPI|on_screening_outage@v1]",
+  "The gate verdict is BLOCKED because QuoteAPI|on_screening_outage is disputed across artefacts (bpmn, decision table, spec, sequence) [A:bpmn:QuoteAPI|on_screening_outage@v1]",
+  "On storage failure, nothing else runs: no screening call, no pricing, no notification; response status is 'error: store_unavailable' [A:spec:QuoteAPI|on_store_failure@v1]",
+  "On screening outage, competing behaviours are recorded and all are in status disputed, so the repository does not currently define a valid behaviour for this key [A:dt:QuoteAPI|on_screening_outage@v1]"
+ ],
+ "usage": {
+  "tag": "S4/G/4",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 18102,
+  "completion_tokens": 409,
+  "seconds": 5.7,
+  "usd_est": 0.0267
+ }
+}

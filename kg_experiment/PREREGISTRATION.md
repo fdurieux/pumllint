@@ -338,3 +338,60 @@ recorded per call in `results/usage.json`.
 ## Results
 
 *Written strictly after the freeze.*
+
+### Run notes (2026-10-30, written before the verdicts)
+
+- **The freeze.** The pre-registration merged as #214 at `cf9d919`
+  (CI green on the full matrix, windows included) before any scored
+  run. The harness (`harness/`) was written between the freeze and the
+  run; it is not part of the frozen text and its defects are listed
+  here.
+- **Calibration, disclosed.** Before the scored run, six generator
+  calls ran on S1 only (three per arm), into the session scratchpad,
+  never into `results/`. The first pair scored 9/11 (B) and 10/11 (G)
+  on the suite for an adapter reason, not a code reason: the runner
+  raises the artefact's own exception class only when its name matches
+  the stub's tokens, and the generated code defined none, so the store
+  and screening stubs returned failure objects the code treated as
+  success. The shared system prompt was amended to name the two
+  exception classes the reference implementation uses
+  (`StoreUnavailableError`, `ScreeningUnavailableError`). The second
+  pair hit a transient HTTP 502 on the G call; a retry loop (four
+  attempts, 5 s × attempt) was added to the call wrapper. The third
+  pair scored 11/11 and 11/11 with every reference resolvable. No
+  degraded scenario was run with a model before the scored run.
+- **Harness defects found on the deterministic dry run, fixed before
+  the run.** (1) The `NONE` sentinel matched the symbol pattern and was
+  flagged as an unresolved symbol. (2) A vague decision-table value and
+  an unresolved diagram symbol on a numeric key were compared as a
+  conflict; `compatible()` now returns *incomparable* for a numeric
+  predicate with a non-numeric side, so R-VAGUE flags it and R-CONFLICT
+  does not. (3) S5's inferred assertion was loaded before the gap it is
+  a candidate for existed; the loader now merges the gap node.
+  (4) A re-ingest created duplicate assertions for unchanged fragments;
+  `load_scenario(reingest=True)` now reuses a fragment whose
+  `(artefact, locator, sha256)` already exists and creates assertions
+  only for changed fragments. (5) An invalidated assertion kept its key
+  blocked after a verified replacement existed; the gate now treats an
+  invalidated assertion as superseded only when a `verified` or
+  `approved` assertion on the same key exists (§4's intent, made
+  explicit).
+- **Two frozen-text errors, found before the run.** (a) §5's S5 row
+  predicts QUALIFIED while §6's lattice puts `declared_gap` among the
+  blocking levels regardless of candidates; §6 is the normative
+  definition and is implemented as written, so S5's gate verdict is
+  BLOCKED and X5's "D6 QUALIFIED" clause is read as a frozen-text
+  error, not as a failed expectation; the rest of X5 is measured as
+  frozen. (b) §5's S6 row lists three invalidated keys; the
+  worked-example paragraph also supports `worked_example|price`, so
+  the invalidated set has four assertions. Nothing above the line is
+  changed.
+- **The run aborted once and was resumed.** The first invocation ran
+  S1, S2 and S3's B arm, then one S3 G call failed with four
+  consecutive HTTP 502 responses; the exception escaped the thread
+  pool and the harness stopped before S4–S7. The harness was changed
+  to record a failed cell as an `api_error` run and to resume past
+  completed cells (`--resume`); the second invocation re-ran S3's
+  deterministic load, filled the one missing S3 G cell, and ran S4–S7.
+  S1–S3's completed cells are the first invocation's, unchanged. The
+  per-call usage of both invocations is in `results/usage.json`.

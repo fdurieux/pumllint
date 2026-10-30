@@ -1,0 +1,257 @@
+{
+ "scenario": "S3",
+ "arm": "G",
+ "run": 2,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "boundary",
+   "threshold"
+  ],
+  "co_hit": null,
+  "text_len": 1613
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "accept_boundary_41": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "review_boundary_42": {
+    "passed": false,
+    "stage": "missing_call",
+    "detail": "missing ['screen', 'check', 'risk', 'index', 'assess', 'verify', 'lookup', 'evaluate', 'get', 'fetch', 'request']; attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "refuse_boundary_67": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "refuse_high_risk": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "price_exact_heavy": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "price_exact_both": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "invalid_weight_low": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "invalid_value_over": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "screening_down_hold": {
+    "passed": false,
+    "stage": "missing_call",
+    "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   },
+   "store_down_error": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "attributeerror: 'quoteapi' object has no attribute '_validate_request'"
+   }
+  }
+ },
+ "M4_targets": {
+  "accept_boundary_41": false,
+  "review_boundary_42": false,
+  "refuse_boundary_67": false
+ },
+ "outage_status": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; at",
+ "M5_refs": {
+  "total": 37,
+  "resolved": 37,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What are the concrete numeric thresholds for ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, and REFUSE_MIN (keys S-accept|max, S-review|min, S-review|max, S-refuse|min), and how should boundary values be treated?",
+  "What is the exact response schema for error and non-priced statuses beyond the required fields (e.g., should price and hold be omitted or explicitly null)?",
+  "What is the shape of the ScreeningService.screen result (e.g., {'risk_index': number}) and are there any non-outage error modes besides ScreeningUnavailableError that must be handled?"
+ ],
+ "assumptions": [
+  {
+   "text": "ScreeningService.screen returns a dict containing a numeric 'risk_index' field, and any other error modes besides raising ScreeningUnavailableError are out of scope and will not occur.",
+   "ref": "A:seq:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "The risk band thresholds ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, and REFUSE_MIN exist as numeric constants and partition the risk index space without gaps or overlap; this module defines placeholder values (ACCEPT_MAX=41.0, REVIEW_MIN=42.0, REVIEW_MAX=66.0, REFUSE_MIN=67.0) solely to make control flow testable.",
+   "ref": "A:seq:S-accept|max@v1"
+  },
+  {
+   "text": "Boundary handling for risk bands follows standard inclusive/exclusive logic: risk_index <= ACCEPT_MAX -> accept; REVIEW_MIN <= risk_index <= REVIEW_MAX -> review; risk_index >= REFUSE_MIN -> refuse.",
+   "ref": "A:seq:S-review|min@v1"
+  },
+  {
+   "text": "QuoteStore.store_draft returns a unique string quote_id on success; QuoteStore.update_quote returns an updated quote representation that this implementation does not need to inspect.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "NotificationService.send_quote_document and send_refusal_notice are fire-and-forget operations whose failures, if any, are not surfaced to QuoteAPI (consistent with the fire-and-forget semantic).",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Request validation requires shipper_id to be present and non-empty.",
+   "ref": "A:dt:shipper_id|present@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400; otherwise the request is invalid.",
+   "ref": "A:dt:weight_kg|min@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400; otherwise the request is invalid.",
+   "ref": "A:dt:weight_kg|max@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150; otherwise the request is invalid.",
+   "ref": "A:dt:distance_km|min@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150; otherwise the request is invalid.",
+   "ref": "A:dt:distance_km|max@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000; otherwise the request is invalid.",
+   "ref": "A:dt:declared_value|min@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000; otherwise the request is invalid.",
+   "ref": "A:dt:declared_value|max@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no storage, screening, pricing, or notification occurs.",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "On storage failure: return status 'error: store_unavailable' and do not call screening, do not price, and do not notify.",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "The flow order is validate > store > screen > decide > price > notify > respond.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "In the accept decision row, a quote is issued, pricing runs, a quote document notification is sent, and the final status is 'quoted'.",
+   "ref": "A:dt:S-accept|priced@v1"
+  },
+  {
+   "text": "In the accept decision row, notification is via a quote document and the status is 'quoted'.",
+   "ref": "A:dt:S-accept|notified@v1"
+  },
+  {
+   "text": "In the accept decision row, the status is 'quoted'.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "In the review decision row, no pricing occurs, no notification occurs, and the status is 'review_hold'.",
+   "ref": "A:dt:S-review|priced@v1"
+  },
+  {
+   "text": "In the review decision row, no notification occurs and the status is 'review_hold'.",
+   "ref": "A:dt:S-review|notified@v1"
+  },
+  {
+   "text": "In the review decision row, the status is 'review_hold'.",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "In the refuse decision row, pricing never runs, a refusal notice is sent, and the status is 'refused_screening'.",
+   "ref": "A:dt:S-refuse|priced@v1"
+  },
+  {
+   "text": "In the refuse decision row, a refusal is notified via a refusal notice and pricing never runs on a refused quote.",
+   "ref": "A:dt:S-refuse|notified#1@v1"
+  },
+  {
+   "text": "In the refuse decision row, the status is 'refused_screening'.",
+   "ref": "A:dt:S-refuse|status@v1"
+  },
+  {
+   "text": "On screening outage, the quote is still priced, stored with status 'held_unscreened', not notified, and the response carries the price with hold: true.",
+   "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "The base price formula is base = 0.87 * weight_kg + 1.13 * distance_km.",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "If weight_kg > 1244, add a flat heavy surcharge of 316.00 to the running total.",
+   "ref": "A:dt:P2|threshold@v1"
+  },
+  {
+   "text": "The heavy surcharge amount is 316.00 when weight_kg > 1244.",
+   "ref": "A:dt:P2|surcharge@v1"
+  },
+  {
+   "text": "If distance_km >= 4912, multiply the running total (after any heavy surcharge) by 1.19.",
+   "ref": "A:dt:P3|threshold@v1"
+  },
+  {
+   "text": "The long-haul multiplier factor is 1.19 and is applied after P2.",
+   "ref": "A:dt:P3|factor@v1"
+  },
+  {
+   "text": "The correct pricing order is: compute base, apply heavy surcharge if any, then apply long-haul multiplier, as demonstrated in the worked example.",
+   "ref": "A:dt:P3|order@v1"
+  },
+  {
+   "text": "The final price is rounded as price = round(result, 2).",
+   "ref": "A:dt:P4|rounding@v1"
+  },
+  {
+   "text": "The response status enum is: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', 'error: store_unavailable'.",
+   "ref": "A:oas:response|statuses@v1"
+  },
+  {
+   "text": "The response includes price exactly on the priced rows of DT-S.",
+   "ref": "A:spec:response|price_presence@v1"
+  },
+  {
+   "text": "The response includes hold: true exactly on 'held_unscreened'.",
+   "ref": "A:spec:response|hold_presence@v1"
+  },
+  {
+   "text": "The response includes quote_id whenever a draft was stored.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S3/G/2",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 14855,
+  "completion_tokens": 4266,
+  "seconds": 28.0,
+  "usd_est": 0.0612
+ }
+}
