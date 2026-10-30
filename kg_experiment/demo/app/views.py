@@ -22,6 +22,7 @@ SUITE_ORDER = ["quoted_low_risk", "accept_boundary_41", "review_boundary_42", "r
                "refuse_high_risk", "price_exact_heavy", "price_exact_both", "invalid_weight_low",
                "invalid_value_over", "screening_down_hold", "store_down_error"]
 RULE_ORDER = ["R-STRUCT", "R-CORROBORATE", "R-CONFLICT", "R-VAGUE", "R-REQ", "R-UNVERIFIED"]
+RECORD_MODEL = "gpt-5.1-2025-11-13"  # harness/arms.py RECORD_MODEL; a run by another model is a deviation
 
 # One line per scenario, from the record's §6 table (docs/neo4j-governed-knowledge-evaluation.md).
 SCENARIOS = {
@@ -111,8 +112,11 @@ def sources_for(scenario: str, runs_dir: Path) -> list[dict]:
     if runs_dir.exists():
         for d in sorted(runs_dir.iterdir(), reverse=True):
             if (d / scenario / "deterministic.json").exists():
-                mode = "arms" if list((d / scenario).glob("run*_G.json")) else "deterministic"
-                out.append({"id": f"demo-runs/{d.name}", "label": f"demo run {d.name} ({mode})", "dir": str(d / scenario)})
+                arm_files = sorted((d / scenario).glob("run*_[GB].json"))
+                mode = "arms" if arm_files else "deterministic"
+                models = sorted({m for m in (_model_of(_read_json(f)) for f in arm_files) if m})
+                tag = mode + (", " + ", ".join(models) if models else "")
+                out.append({"id": f"demo-runs/{d.name}", "label": f"demo run {d.name} ({tag})", "dir": str(d / scenario)})
     return out
 
 
@@ -159,11 +163,17 @@ def _arm_summary(runs: list[dict]) -> dict:
             "refs_min": round(min(refs), 2) if refs else None, "refs_max": round(max(refs), 2) if refs else None,
             "noncompliance": sum(1 for r in runs if r.get("M6_noncompliance")),
             "api_errors": sum(1 for r in runs if r.get("api_error")),
+            "models": sorted({m for m in (_model_of(r) for r in runs) if m}),
             "tokens": sum(r["usage"]["prompt_tokens"] + r["usage"]["completion_tokens"] for r in runs if r.get("usage"))}
 
 
+def _model_of(r: dict) -> str | None:
+    """The model that answered, as the API named it in the stream; None for a failed call."""
+    return (r.get("usage") or {}).get("model") if not r.get("api_error") else None
+
+
 def _run_view(r: dict) -> dict:
-    return {"run": r["run"], "decision": r.get("M1_decision"), "code": bool(r.get("M2_code")),
+    return {"run": r["run"], "decision": r.get("M1_decision"), "code": bool(r.get("M2_code")), "model": _model_of(r),
             "flagged": r["M3_flagged"]["flagged"], "hits": r["M3_flagged"].get("hits", []),
             "suite": f"{r['M4_suite']['passed']}/{r['M4_suite']['total']}" if r["M4_suite"]["ran"] else None,
             "per_scenario": {k: v.get("passed") for k, v in r["M4_suite"].get("per_scenario", {}).items()},
@@ -264,9 +274,13 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
         }
     # model calls that failed: the harness records them as api_error cells (no reply, no code, no grade)
     api_errors = [{"arm": arm, "run": r["run"], "error": r["api_error"]} for arm in ("G", "B") for r in runs[arm] if r.get("api_error")]
+    models_used = sorted({m for arm in ("G", "B") for m in summaries[arm]["models"]})
     view = {
         "scenario": scenario, "meta": meta, "source": source, "source_dir": str(d),
         "api_errors": api_errors,
+        "record_model": RECORD_MODEL, "models_used": models_used,
+        # a model other than the record's answered: the numbers are not comparable with the record's
+        "model_deviation": [m for m in models_used if not m.startswith(RECORD_MODEL)],
         "sources": sources_for(scenario, runs_dir),
         "stages": stages, "arms": arms,
         "gate": _gate_view(gate),

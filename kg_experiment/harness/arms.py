@@ -16,10 +16,14 @@ from pathlib import Path
 from openai import OpenAI
 
 HERE = Path(__file__).resolve().parent
-MODEL = "gpt-5.1-2025-11-13"
+RECORD_MODEL = "gpt-5.1-2025-11-13"  # the model of the scored run; the record's figures are this model's
+# The demo's Arms mode may call another model through KG_ARMS_MODEL (a legacy model's
+# rate limit on a new organisation blocked the governed prompt there); such runs are a
+# deviation the demo page names, and they never write into results/.
+MODEL = os.environ.get("KG_ARMS_MODEL") or RECORD_MODEL
 MAX_CALLS = 90
 CEILING_USD = 25.0
-PRICE_IN, PRICE_OUT = 1.25 / 1e6, 10.0 / 1e6  # USD per token, list price read 2026-10-30
+PRICE_IN, PRICE_OUT = 1.25 / 1e6, 10.0 / 1e6  # USD per token, the record model's list price read 2026-10-30
 
 _lock = threading.Lock()
 _state = {"calls": 0, "usd": 0.0, "usage": []}

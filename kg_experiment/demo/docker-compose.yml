@@ -13,6 +13,8 @@
 #   OPENAI_API_KEY     enables the arms mode; passed through to the app only, never baked in
 #   KG_BROWSER_URL     where the viewer's browser reaches Neo4j Browser (default http://localhost:7474;
 #                      on a server, http://<its address>:7474)
+#   KG_ARMS_MODEL      optional; a model name preselects "another model" in the page's Arms-call toggle
+#                      (a deviation from the record, marked on every run); empty keeps the record's model
 name: pumllint-kg-demo
 
 services:
@@ -46,6 +48,7 @@ services:
       KG_NEO4J_PASSWORD: ${KG_NEO4J_PASSWORD:-kgpoc2026}
       KG_BROWSER_URL: ${KG_BROWSER_URL:-http://localhost:7474}
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      KG_ARMS_MODEL: ${KG_ARMS_MODEL:-}   # optional: preselects "another model" on the page; empty keeps the record's
     ports:
       - "8080:8080"
     volumes:

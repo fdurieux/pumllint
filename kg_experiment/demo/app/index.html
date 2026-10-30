@@ -42,6 +42,10 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .banner{border-radius:12px;padding:12px 16px;margin-bottom:16px;border:1px solid var(--line);background:var(--card)}
 .banner.running{border-color:var(--amber);background:var(--warn)} .banner.done{border-color:var(--green);background:var(--ok)} .banner.failed{border-color:var(--red);background:var(--bad)}
 .alert{border-left:4px solid var(--red);background:var(--bad);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0 12px}
+.alert.warn{border-left-color:var(--amber);background:var(--warn)}
+.toggle{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0 12px;font-size:13px}
+.toggle label{display:block;margin:4px 0;cursor:pointer} .toggle input[type=text]{font:inherit;font-size:12.5px;width:150px;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-family:var(--mono)}
+.toggle .why{color:var(--muted);margin-left:22px}
 .banner .head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap} .banner .head b{font-size:15px}
 .banner .console{margin-top:8px;max-height:160px}
 .small{font-size:13px;color:var(--muted)}
@@ -85,7 +89,12 @@ a{color:var(--teal)}
 </header>
 <main>
   <aside>
-    <div class="card menu" id="menu"><h2>Scenarios</h2><div id="menu-list" class="small">loading…</div>
+    <div class="card menu" id="menu"><h2>Scenarios</h2>
+      <div class="toggle" id="armsmodel"><b>Arms call</b> — which model the two arms call
+        <label><input type="radio" name="am" value="record"> the record's model, <code id="am-record"></code><div class="why">like-for-like with the record; the governed prompt needs about 15,000 tokens per minute on this model</div></label>
+        <label><input type="radio" name="am" value="other"> another model: <input type="text" id="am-other" spellcheck="false"><div class="why">a deviation: the run is marked in red and is not comparable with the record's numbers</div></label>
+      </div>
+      <div id="menu-list" class="small">loading…</div>
       <div class="note">Replay shows the committed results (instant, no store). Deterministic re-executes D1–D6 against the container's Neo4j (offline, ~5 s). Arms re-executes the two model arms with <code>--n 1</code> and needs <code>OPENAI_API_KEY</code>; it writes into a dated folder under <code>results/demo-runs/</code>, never over the record. A run's progress appears in a banner above the report; the clicked button shows running, done or failed, and the report switches to the run's results when it ends.</div>
     </div>
     <div class="card" style="margin-top:16px"><h2>The store</h2>
@@ -101,7 +110,10 @@ a{color:var(--teal)}
 <script>
 const $ = (s, el=document) => el.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let STATE = {scenarios: [], store: null, armsEnabled: false, detEnabled: false, current: null, source: null, view: null, run: null, shown: null, lastRun: {}};
+let STATE = {scenarios: [], store: null, armsEnabled: false, detEnabled: false, current: null, source: null, view: null, run: null, shown: null, lastRun: {}, recordModel: '', otherModel: ''};
+function armsChoice() { try { return JSON.parse(localStorage.getItem('kg-arms-model') || 'null'); } catch (e) { return null; } }
+function saveArmsChoice(c) { try { localStorage.setItem('kg-arms-model', JSON.stringify(c)); } catch (e) {} }
+function armsModel() { const c = armsChoice() || {}; return c.which === 'other' ? (c.other || STATE.otherModel) : STATE.recordModel; }
 // shown: {scenario, mode} of the report on screen; lastRun[scenario+mode]: the most recent run's record for that button
 
 async function api(path, opts) {
@@ -114,6 +126,8 @@ async function api(path, opts) {
 async function loadScenarios() {
   const j = await api('/api/scenarios');
   STATE.scenarios = j.scenarios; STATE.store = j.store; STATE.armsEnabled = j.arms_enabled; STATE.detEnabled = j.deterministic_enabled; STATE.run = j.run;
+  STATE.recordModel = j.record_model; STATE.otherModel = j.default_other_model;
+  renderToggle(j.arms_model_preset);
   renderChips(); renderMenu(); renderStore();
   if (j.run) { STATE.lastRun[j.run.scenario + j.run.mode] = j.run; if (j.run.status === 'running') watchRun(); }
 }
@@ -127,7 +141,17 @@ function renderChips() {
 
 const running = () => STATE.run && STATE.run.status === 'running';
 
-function modeButton(s, mode, label, enabled, why) {
+function renderToggle(preset) {
+  let c = armsChoice();
+  if (!c) { c = {which: preset ? 'other' : 'record', other: STATE.otherModel}; saveArmsChoice(c); }
+  $('#am-record').textContent = STATE.recordModel;
+  $('#am-other').value = c.other || STATE.otherModel;
+  $$('input[name=am]').forEach(r => { r.checked = r.value === c.which; r.addEventListener('change', () => { saveArmsChoice({which: r.value, other: $('#am-other').value.trim()}); renderMenu(); }); });
+  $('#am-other').addEventListener('change', () => { saveArmsChoice({which: 'other', other: $('#am-other').value.trim()}); $$('input[name=am]').forEach(r => r.checked = r.value === 'other'); renderMenu(); });
+}
+const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
+
+function modeButton(s, mode, label, enabled, why, hint) {
   const shown = STATE.shown && STATE.shown.scenario === s.id && STATE.shown.mode === mode;
   const r = STATE.run && STATE.run.scenario === s.id && STATE.run.mode === mode ? STATE.run : STATE.lastRun[s.id + mode];
   let cls = '', text = label, title = '';
@@ -136,7 +160,7 @@ function modeButton(s, mode, label, enabled, why) {
   else if (r && r.status === 'done') { cls = 'done'; text = label + ' ✓ done'; title = `finished ${r.finished}: click to show it again, or run anew`; }
   else if (r && r.status === 'failed') { cls = 'failed'; text = label + ' ✗ failed'; title = 'the run failed: see the banner'; }
   const dis = !enabled || (mode !== 'replay' && running());
-  const t = !enabled ? why : (running() && mode !== 'replay' ? 'one run at a time: the store is one database' : title);
+  const t = !enabled ? why : (running() && mode !== 'replay' ? 'one run at a time: the store is one database' : (title || hint || ''));
   return `<button class="${cls}" data-mode="${mode}" data-id="${s.id}" ${dis ? 'disabled' : ''} title="${esc(t)}">${text}</button>`;
 }
 
@@ -148,7 +172,7 @@ function renderMenu() {
       <div class="modes">
         ${modeButton(s, 'replay', 'Replay', true, '')}
         ${modeButton(s, 'deterministic', 'Deterministic', STATE.detEnabled, 'the store is unreachable')}
-        ${modeButton(s, 'arms', 'Arms', STATE.armsEnabled && STATE.detEnabled, "set OPENAI_API_KEY in the app's environment (and the store must be reachable)")}
+        ${modeButton(s, 'arms', 'Arms', STATE.armsEnabled && STATE.detEnabled, "set OPENAI_API_KEY in the app's environment (and the store must be reachable)", `calls ${armsModel()}${armsModel() === STATE.recordModel ? '' : ' (a deviation from the record)'}`)}
       </div></div>`).join('');
   $('#menu-list').querySelectorAll('button').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); onMode(b.dataset.id, b.dataset.mode); }));
   $('#menu-list').querySelectorAll('.sc').forEach(d => d.addEventListener('click', () => show(d.dataset.id)));
@@ -163,7 +187,7 @@ async function onMode(id, mode) {
   }
   try {
     STATE.current = id;
-    const rec = await api('/api/run', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({scenario: id, mode, n: 1})});
+    const rec = await api('/api/run', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({scenario: id, mode, n: 1, model: mode === 'arms' ? armsModel() : undefined})});
     STATE.run = rec; STATE.lastRun[id + mode] = rec; renderMenu(); renderBanner(rec); watchRun();
   } catch (e) { renderBanner({scenario: id, mode, status: 'failed', log_text: e.message, source: '', cmd: ''}); }
 }
@@ -172,7 +196,7 @@ function renderBanner(r) {
   const box = $('#runbox'); box.style.display = ''; box.className = 'banner ' + r.status;
   const secs = (r.elapsed_s !== undefined && r.elapsed_s !== null) ? r.elapsed_s : null;  // the server's clock, not the browser's
   const label = {running: '<span class="spin"></span>running', done: '✓ finished', failed: '✗ failed'}[r.status] || r.status;
-  $('#run-title').innerHTML = `${esc(r.scenario)} · ${esc(r.mode)} · ${label}${secs !== null ? ` · ${secs} s` : ''}`;
+  $('#run-title').innerHTML = `${esc(r.scenario)} · ${esc(r.mode)}${r.model ? ` · ${esc(r.model)}${r.model_deviation ? ' <span style="color:var(--red)">(not the record\'s model)</span>' : ''}` : ''} · ${label}${secs !== null ? ` · ${secs} s` : ''}`;
   $('#run-meta').innerHTML = (r.status === 'done' ? `showing its results below (source <code>${esc(r.source)}</code>); pick <em>the record</em> in the report's source dropdown to compare` :
                               r.status === 'running' ? `writing <code>${esc(r.source)}</code>; the report switches to it when the run ends` :
                               `exit ${r.exit_code ?? '—'}; the log is below`) + (r.cmd ? ` · <code>${esc(r.cmd)}</code>` : '');
@@ -253,6 +277,7 @@ function renderReport(v) {
       ${v.suite_order.map(s => `<tr><td>${esc(s)}</td>${rs.map(r => { const p = r.per_scenario[s]; const cls = r.code ? (p ? 'p' : 'f') : 'n'; return `<td class="${cls}">${r.code ? (p ? '✓' : '✗') : '—'}</td>`; }).join('')}</tr>`).join('')}
       <tr><th>suite</th>${rs.map(r => `<th>${esc(r.suite || '—')}</th>`).join('')}</tr>
       <tr><th>decision</th>${rs.map(r => `<td>${esc(r.decision || (r.api_error ? 'api error' : '—'))}</td>`).join('')}</tr>
+      <tr><th>model</th>${rs.map(r => `<td${r.model && !r.model.startsWith(v.record_model) ? ' style="color:var(--red)"' : ''}>${esc(r.model || '—')}</td>`).join('')}</tr>
       <tr><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
       <tr><th>refs resolvable (M5)</th>${rs.map(r => `<td>${r.refs && r.refs.share !== null ? r.refs.resolved + '/' + r.refs.total : '—'}</td>`).join('')}</tr>
       </tbody></table>`;
@@ -270,6 +295,7 @@ function renderReport(v) {
       <div class="small" style="margin:6px 0 2px"><b>Planted:</b> ${esc(m.plant)}</div>
       <div class="small"><b>Gate:</b> ${esc(g.why)}${g.conflicts.length ? ' · conflicts: ' + g.conflicts.map(c => esc(c.id)).join(', ') : ''}</div>
       <div class="small"><b>Required keys:</b> ${v.required_keys}, by level ${esc(JSON.stringify(v.levels))}${v.d5 ? ` · <b>D5 three-valued:</b> ${Object.entries(v.d5).map(([k, x]) => `${esc(k)} → ${esc(x.answer)}`).join('; ')}` : ''}</div>
+      ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
       <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle</h3>${strip}${strip2}
       <h3>Systemic model — where the defect enters, and where it was stopped</h3>${cascade}
