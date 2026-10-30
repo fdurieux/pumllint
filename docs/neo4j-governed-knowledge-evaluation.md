@@ -729,10 +729,13 @@ constant with an `# ASSUMPTION` comment, as the policy asks; suite
 thresholds were unsettled, two runs made the collaborators abstract
 (`raise NotImplementedError`) or moved the decision into the screening
 service, one run had a plain attribute bug, and two chose a reading in
-a constant as the baseline did. Two governed runs chose the pristine
-41/42/66/67 with no number in their input; the model's release
-(2025-11-13) predates the kit (authored 2026-08-06), so this is
-interpretation variance, not contamination. *Reading:* the gate
+a constant as the baseline did. Three governed runs (1, 2 and 4) wrote the pristine 41/42/66/67
+into their constants with no number in their input, only run 4's code
+executing; the model's release (2025-11-13) predates the kit (authored
+2026-08-06), so this reads as interpretation variance of "low forties"
+and "mid-sixties", but the kit is public and contamination cannot be
+excluded (§10.3). *[Corrected 2026-10-30, after the merge: the count
+first read "two".]* *Reading:* the gate
 represented the ambiguity and the policy made it visible in the
 output, which a reviewer can act on; it did not make the code better,
 and at this model the instruction to isolate assumptions cost
@@ -1126,8 +1129,9 @@ the run notes).
 | X10 | D4: `sh:conforms` false on every scenario with a result, the Info-only case included | **held** (7 of 7; Info-only 133–145 results, `conforms: false`) |
 
 Eight held, one split, none failed outright; two frozen-text errors
-and two harness defects, each recorded before or beside the verdict
-it touches.
+and three harness defects (the calibration adapter, the S6 bundle, the
+verification loader), each recorded before or beside the verdict it
+touches.
 
 **10.2 The pre-committed interpretation, applied.** X2, X4 and X7 held,
 so at this model and scale the verdict in context was obeyed and the
@@ -1154,16 +1158,19 @@ matrix prescribed.
   kit whose values are adversarial by construction. Nothing here
   speaks to the knowledge-graph settlement's scale trigger (10⁵–10⁶
   elements), to retrieval quality at scale, or to a corpus of
-  hand-authored diagrams, where the degradation test found 25
-  contradicted claims under a green gate.
+  hand-authored diagrams, where the recreation experiment's first round found 25 claims of a
+  Level 5, 100/100 diagram set contradicted by the code under a green
+  gate (its E3; the degradation test is the later, planted measurement).
 - *One model, n = 5, and a proxy that dropped calls.* Nine of the
   seventy cells failed with repeated HTTP 502 responses on the first
   pass and were retried; every number is capability-relative to
-  `gpt-5.1-2025-11-13` on 2026-10-30. One governed S3 run chose the
-  pristine 41/42/66/67 with no number in its input; the other runs
-  chose 39/40, 40 and the like, so this reads as interpretation
-  variance of "low forties" rather than contamination, but the kit is
-  public and contamination cannot be excluded.
+  `gpt-5.1-2025-11-13` on 2026-10-30. Three of the five governed S3 runs wrote the pristine 41/42/66/67
+  into their constants with no number in their input (one chose
+  40/40/66/66, one moved the decision out of the code), so this reads
+  as interpretation variance of "low forties" rather than
+  contamination, but the kit is public and contamination cannot be
+  excluded. *[Corrected 2026-10-30, after the merge: first read "one
+  governed S3 run"; the run files say three.]*
 - *The graph is not what the model sees.* Both arms see text. The
   behavioural arms measure governance metadata in context; the store's
   own contribution is D2, D3, D5, D6 and the traceability of M5. A
