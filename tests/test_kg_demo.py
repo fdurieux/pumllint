@@ -145,3 +145,29 @@ def test_readme_paste_block_is_zsh_safe():
     assert "#" not in block and "!" not in block, "a pasted zsh block must carry no # and no !"
     for tool in ("git", "docker"):
         assert f"command -v {tool}" in block
+
+
+def test_arms_model_defaults_to_the_records_and_is_overridable():
+    """The harness's model comes from KG_ARMS_MODEL with the record's model as the
+    default, the view names the same record model, and the page offers the toggle."""
+    arms = (ROOT / "kg_experiment" / "harness" / "arms.py").read_text(encoding="utf-8")
+    m = re.search(r'^RECORD_MODEL = "([^"]+)"', arms, re.M)
+    assert m and m.group(1) == views.RECORD_MODEL == "gpt-5.1-2025-11-13"
+    assert 'MODEL = os.environ.get("KG_ARMS_MODEL") or RECORD_MODEL' in arms
+    page = (APP / "index.html").read_text(encoding="utf-8")
+    assert 'name="am" value="record"' in page and 'name="am" value="other"' in page
+    assert "Model deviation" in page
+    compose = (DEMO / "docker-compose.yml").read_text(encoding="utf-8")
+    assert "KG_ARMS_MODEL: ${KG_ARMS_MODEL:-}" in compose
+    # a run answered by another model is a deviation; the record's runs are not
+    import tempfile, shutil
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td) / "2026-10-30-1700" / "S1"; d.mkdir(parents=True)
+        shutil.copy(RESULTS / "S1" / "deterministic.json", d / "deterministic.json")
+        rec = json.loads((RESULTS / "S1" / "run1_G.json").read_text(encoding="utf-8"))
+        rec["usage"]["model"] = "gpt-5.5-2026-04-01"
+        (d / "run1_G.json").write_text(json.dumps(rec), encoding="utf-8")
+        v = views.build("S1", "demo-runs/2026-10-30-1700", Path(td))
+        assert v["model_deviation"] == ["gpt-5.5-2026-04-01"] and v["arms"]["G"]["runs"][0]["model"] == "gpt-5.5-2026-04-01"
+        assert any("gpt-5.5-2026-04-01" in s_["label"] for s_ in v["sources"])
+    assert views.build("S1", "record", NO_RUNS)["model_deviation"] == []

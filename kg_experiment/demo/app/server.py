@@ -20,6 +20,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -40,6 +41,11 @@ NEO4J_URI = os.environ.get("KG_NEO4J_URI", "bolt://localhost:7687")
 NEO4J_PASSWORD = os.environ.get("KG_NEO4J_PASSWORD", "kgpoc2026")
 BROWSER_URL = os.environ.get("KG_BROWSER_URL", "http://localhost:7474")
 PORT = int(os.environ.get("KG_DEMO_PORT", "8080"))
+RECORD_MODEL = views.RECORD_MODEL
+# KG_ARMS_MODEL in the app's environment preselects "another model" on the page; the
+# harness itself reads the variable the server passes per run
+DEFAULT_OTHER_MODEL = os.environ.get("KG_ARMS_MODEL") or "gpt-5.5"
+MODEL_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$")
 INDEX = (HERE / "index.html").read_bytes()
 
 # Saved Cypher for the store panel. Each runs in Neo4j Browser against the
@@ -130,13 +136,16 @@ class Runner:
         self.current: dict | None = None
         self.history: list[dict] = []
 
-    def start(self, scenario: str, mode: str, n: int) -> dict:
+    def start(self, scenario: str, mode: str, n: int, model: str | None = None) -> dict:
         if scenario not in views.SCENARIOS:
             raise ValueError(f"unknown scenario {scenario}")
         if mode not in ("deterministic", "arms"):
             raise ValueError(f"unknown mode {mode}")
         if mode == "arms" and not os.environ.get("OPENAI_API_KEY"):
             raise ValueError("arms mode needs OPENAI_API_KEY in the app's environment")
+        model = (model or RECORD_MODEL).strip()
+        if not MODEL_RE.match(model):
+            raise ValueError(f"not a model name: {model!r}")
         with self.lock:
             if self.current and self.current["status"] == "running":
                 raise RuntimeError("a run is already in progress; the store is one database")
@@ -158,10 +167,13 @@ class Runner:
             cmd += ["--deterministic"] if mode == "deterministic" else ["--n", str(n)]
             env = {**os.environ, "KG_NEO4J_URI": NEO4J_URI, "KG_NEO4J_PASSWORD": NEO4J_PASSWORD,
                    "PYTHONUNBUFFERED": "1", "KG_WORKERS": os.environ.get("KG_WORKERS", "2")}
+            if mode == "arms":
+                env["KG_ARMS_MODEL"] = model  # the record's model unless the page chose another
             log = out_dir / f"{scenario}-{mode}.log"
             fh = open(log, "w", encoding="utf-8")  # noqa: SIM115 — closed when the process ends
             proc = subprocess.Popen(cmd, cwd=str(HARNESS), stdout=fh, stderr=subprocess.STDOUT, env=env)
             rec = {"id": out_dir.name, "scenario": scenario, "mode": mode, "n": n, "status": "running",
+                   "model": model if mode == "arms" else None, "model_deviation": (mode == "arms" and model != RECORD_MODEL),
                    "started": _now(), "finished": None, "exit_code": None,
                    "out_dir": str(out_dir), "log": str(log), "source": f"demo-runs/{out_dir.name}", "cmd": " ".join(cmd)}
             self.current = rec
@@ -237,6 +249,8 @@ class Handler(BaseHTTPRequestHandler):
                 st = store_status()
                 return self._json({"scenarios": views.scenario_list(RUNS_DIR), "store": st,
                                    "arms_enabled": bool(os.environ.get("OPENAI_API_KEY")),
+                                   "record_model": RECORD_MODEL, "default_other_model": DEFAULT_OTHER_MODEL,
+                                   "arms_model_preset": bool(os.environ.get("KG_ARMS_MODEL")),
                                    "deterministic_enabled": st["reachable"],
                                    "runs_dir": str(RUNS_DIR), "run": RUNNER.describe()})
             if parts[:2] == ["api", "results"] and len(parts) == 3:
@@ -273,7 +287,8 @@ class Handler(BaseHTTPRequestHandler):
             return self._json({"error": "body must be JSON"}, 400)
         if parts == ["api", "run"]:
             try:
-                rec = RUNNER.start(str(body.get("scenario", "")), str(body.get("mode", "")), int(body.get("n", 1)))
+                rec = RUNNER.start(str(body.get("scenario", "")), str(body.get("mode", "")), int(body.get("n", 1)),
+                                   model=(str(body["model"]) if body.get("model") else None))
                 return self._json(rec, 202)
             except (ValueError, RuntimeError) as e:
                 return self._json({"error": str(e)}, 409 if isinstance(e, RuntimeError) else 400)

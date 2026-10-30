@@ -59,6 +59,32 @@ kind writes into a dated folder, `kg_experiment/results/demo-runs/<date-time>/`,
 and never into `kg_experiment/results/`, which is the published record.
 The report view lets you switch between the record and any demo run.
 
+## Which model the Arms mode calls
+
+The record's two arms were answered by `gpt-5.1-2025-11-13`, and the
+demo calls that model by default, so an Arms run is like-for-like with
+the record. That model is a year old, and on a new OpenAI organisation
+its rate limit can be as low as 10,000 tokens per minute, while the
+governed arm's prompt alone is about 15,000 tokens: the call is then
+refused with a 429 "request too large" before it runs, and the page says
+so in red. Two ways out, and the page lets you switch between them at
+any time:
+
+- **Raise the limit** on the OpenAI side (a higher usage tier, or a
+  limit-increase request on your organisation's Limits page) and keep
+  the record's model. Results stay comparable with the record.
+- **Call another model**, chosen in the *Arms call* toggle at the top of
+  the scenario list (default `gpt-5.5`). The gate, the evidence bundle
+  and the oracle are unchanged, but the arms' answers are another
+  model's: the page marks every such run in red as a deviation, names
+  the model on each run, and the numbers are not comparable with the
+  record's. Setting `KG_ARMS_MODEL` in the environment before
+  `docker compose up` preselects this choice.
+
+The choice is remembered by your browser. Either way a re-run writes
+into `results/demo-runs/`, never into the record, and the cost estimate
+the harness prints uses the record model's list price.
+
 ## Quick start on a Mac, step by step
 
 Six steps. Each block is ready to paste into Terminal (zsh) as a whole;
