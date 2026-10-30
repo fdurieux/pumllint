@@ -180,7 +180,7 @@ function renderMenu() {
   $('#menu-list').innerHTML = STATE.scenarios.map(s => `
     <div class="sc ${STATE.current === s.id ? 'active' : ''}" data-id="${s.id}">
       <div class="t"><span class="id">${s.id}</span> <span>${esc(s.title)}</span>${STATE.current === s.id ? '<span class="shown">● on screen</span>' : ''}<span class="badge ${s.gate}">${s.gate}</span></div>
-      <div class="line">${esc(s.represented)} — ${esc(s.defect)}</div>
+      <div class="line">${esc(s.represented)} ${esc(s.defect)}</div>
       <div class="modes">
         ${modeButton(s, 'replay', 'Replay', true, '')}
         ${modeButton(s, 'deterministic', 'Deterministic', STATE.detEnabled, 'the store is unreachable')}

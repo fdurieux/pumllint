@@ -8481,6 +8481,12 @@ list and license posture live in § Settled questions.
     S6 rerun and a demo run against the limits and the list; the
     glossary file against the view's tables; the page source free of
     forbidden words. Page, view, tests and docs only.
+  - *2026-10-30, later (#236):* the scenario cards and the Planted line
+    join the controlled text: `SCENARIOS[..]` represented, defect and
+    plant reworded in the glossary's terms at 20 words a sentence, no
+    figure changed; the narrative registers the plant sentence as
+    controlled rather than quoting it as data; the test covers every
+    field of every scenario. Page, view, tests and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

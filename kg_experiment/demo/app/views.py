@@ -27,42 +27,44 @@ SUITE_ORDER = ["quoted_low_risk", "accept_boundary_41", "review_boundary_42", "r
 RULE_ORDER = ["R-STRUCT", "R-CORROBORATE", "R-CONFLICT", "R-VAGUE", "R-REQ", "R-UNVERIFIED"]
 RECORD_MODEL = "gpt-5.1-2025-11-13"  # harness/arms.py RECORD_MODEL; a run by another model is a deviation
 
-# One line per scenario, from the record's §6 table (docs/neo4j-governed-knowledge-evaluation.md).
+# One line per scenario, after the record's §6 table (docs/neo4j-governed-knowledge-evaluation.md),
+# reworded to GLOSSARY.md: controlled sentences for the card (represented, defect) and the
+# Planted line (plant), a reading for "plain".
 SCENARIOS = {
     "S1": {"title": "complete, verified",
-           "represented": "145 assertions, 111 approved; 0 gaps on required keys",
-           "gate": "PROCEED", "defect": "none; both arms correct",
-           "plant": "nothing planted: the pristine kit, every assertion verified by the suite or the dated review record and approved",
+           "represented": "145 assertions, 111 approved. No gap on any key the task needs.",
+           "gate": "PROCEED", "defect": "No defect. Both arms wrote correct code.",
+           "plant": "Nothing was planted: the kit is pristine. The oracle or the dated review record verified every assertion, and the owner approved them.",
            "plain": "Nothing was wrong in the documents, and both arms wrote working code. The gate added nothing here, and it cost nothing either."},
     "S2": {"title": "missing, declared",
-           "represented": "Gap{missing, declared} on REQ-06 and on the outage key; hold_presence absent",
-           "gate": "BLOCKED", "defect": "prevented in G; outage scenario fails in every B run",
-           "plant": "the screening-outage rule deleted from every artefact that states it; REQ-06 reads NOT YET SPECIFIED (open decision OD-1)",
+           "represented": "A declared missing gap on REQ-06 and on the outage key. The hold_presence key is absent.",
+           "gate": "BLOCKED", "defect": "Prevented in arm G. The outage scenario fails in every run of arm B.",
+           "plant": "The screening-outage rule was deleted from every document that states it. REQ-06 reads NOT YET SPECIFIED, open decision OD-1.",
            "plain": "The documents said the outage rule was still to be decided. Arm G stopped and asked for that decision, and named the open item. Arm B noticed it too and asked, but wrote code anyway. That code turns an outage into an error, and only the oracle caught it. This is the kind of defect the gate exists to prevent."},
     "S3": {"title": "ambiguous",
-           "represented": "17 ambiguity gaps; 4 keys proposed; DMN declared not authored",
-           "gate": "QUALIFIED", "defect": "41-boundary fails 4/5 G, 5/5 B; the guess is an # ASSUMPTION constant in G, silent in B",
-           "plant": "DT-S rows reworded to vague ranges, the symbolic names undefined, the DMN absent",
+           "represented": "17 ambiguous gaps. 4 keys stay at proposed. The DMN is declared not yet authored.",
+           "gate": "QUALIFIED", "defect": "The 41-boundary scenario fails in 4 of 5 runs of G and 5 of 5 of B. G marks its guess as an assumption in the code. B guesses in silence.",
+           "plant": "The DT-S rows were reworded to vague ranges. The symbolic names were left undefined. The DMN was removed.",
            "plain": "The thresholds were written as vague ranges, so both arms had to guess. Arm B guessed silently. Arm G carried each guess as a labelled assumption that points at the assertion it rests on. A reviewer can find that guess and fix it. The code was not better for it, and in two runs it was worse."},
     "S4": {"title": "contradictory",
-           "represented": "4 CONTRADICTS pairs, 4 disputed, 4 conflict gaps",
-           "gate": "BLOCKED", "defect": "none by the oracle; B resolved by an invented precedence",
-           "plant": "the sequence diagram and the BPMN say the outage fails the quote; the decision table and the spec say it is priced and held",
+           "represented": "4 contradicting pairs, 4 disputed assertions, 4 conflict gaps.",
+           "gate": "BLOCKED", "defect": "None by the oracle. Arm B chose a side by an invented precedence.",
+           "plant": "The sequence diagram and the BPMN say the outage fails the quote. The decision table and the spec say it is priced and held.",
            "plain": "Two documents said one thing and two others said the opposite. Arm G refused to choose and named the contradiction. Arm B chose a side by an invented rule: the newer text wins. It happened to pick the right side, so the oracle passed. Nothing in its output lets a reviewer check that step."},
     "S5": {"title": "inferred, unverified",
-           "represented": "one inferred candidate for the declared gap, proposed",
-           "gate": "BLOCKED", "defect": "prevented in G; B adopted the note as fact in 4/5",
-           "plant": "S2's kit plus an unreviewed machine note: 'on a screening outage the quote is refused' (basis inferred, agent llm)",
+           "represented": "One inferred candidate for the declared gap, at proposed.",
+           "gate": "BLOCKED", "defect": "Prevented in arm G. Arm B took the note as fact in 4 of 5 runs.",
+           "plant": "S2's kit plus an unreviewed machine note: 'on a screening outage the quote is refused'. Its basis is inferred, its agent a model.",
            "plain": "An unreviewed note from another AI proposed an answer to the open decision. In the store it is a candidate, not a decision, and the gate stayed blocked. Arm B read the same note as one more document. It took the note as fact in four runs of five and built the wrong outage behaviour."},
     "S6": {"title": "invalidated by change",
-           "represented": "4 invalidated, 4 verifications ended, Derived suspect; BLOCKED → PROCEED on re-verification",
-           "gate": "PROCEED", "defect": "the stale artefact is identified in G only",
-           "plant": "S1 verified and approved, S1's first governed output registered as Derived; then decision_table.md changes P2's surcharge 316.00 → 341.00 and is re-ingested as v2",
+           "represented": "4 assertions invalidated, 4 verifications ended, the derived output marked suspect. BLOCKED, then PROCEED after re-verification.",
+           "gate": "PROCEED", "defect": "Only arm G names the stale code.",
+           "plant": "S1 verified and approved, with its first governed output registered as derived. Then decision_table.md changes P2's surcharge from 316.00 to 341.00 and is read in again as v2.",
            "plain": "A verified number in the tariff changed. The store traced exactly what the change touched: four assertions, their verifications, and the code built on them earlier. That code is now marked suspect. The gate blocked until the new values were re-verified, then allowed building. Arm G named the stale code to replace. Arm B held only the current documents; it built correct new code but could not say what the change had invalidated."},
     "S7": {"title": "unverified",
-           "represented": "0 verified, 145 unverified gaps, 0 approvals",
-           "gate": "BLOCKED", "defect": "procedural; content correct in both",
-           "plant": "S1's kit, extraction only: no verification record, no approval",
+           "represented": "0 verified, 145 unverified gaps, 0 approvals.",
+           "gate": "BLOCKED", "defect": "Procedural only. The content is correct in both arms.",
+           "plant": "S1's kit, extraction only. No verification record and no approval were loaded.",
            "plain": "The documents were correct, but nothing had verified them. The gate blocked anyway, because status is about verification, not content. Arm B built correct code with the same confidence it had for S1. That is the point: without a record, correct and unverified look exactly alike."},
 }
 ORDER = list(SCENARIOS)
@@ -477,7 +479,7 @@ def narrative(view: dict, det: dict, reg: list) -> list[str]:
                  "Arm B, the baseline arm, got the documents only.",
                  "The oracle graded the code each arm wrote.",
                  "Click any box of the pipeline for that stage's full data."))
-    out.append(C(f"What was planted in {sc} ({meta['title']}), in the record's words:") + " " + D(meta["plant"] + "."))
+    out.append(C(f"What was planted in {sc} ({meta['title']}):", meta["plant"]))
     declared = sum(1 for h in rules["R-REQ"] if h.get("declared"))
     req = _n(rules["R-REQ"])
     store = [C(f"The store read {_plural(load['fragments'], 'fragment')} into {_plural(load['assertions'], 'assertion')}.",
