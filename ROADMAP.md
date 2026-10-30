@@ -8387,6 +8387,13 @@ list and license posture live in § Settled questions.
     optional OpenAI key and where it lives, the unchanged start block,
     how to use the page, stop, restart), on the maintainer's ask. Docs
     only.
+  - *2026-10-30, later (#224):* the maintainer's first start on the Mac
+    found the page mute on a click: Replay green on every card (a
+    button style, not a state), no change on a clicked Deterministic or
+    Arms button, the run console below the fold. The mode buttons now
+    carry shown / running / done / failed, the card on screen is
+    marked, and the run's progress is a banner at the top of the report
+    that the page scrolls to. Page only; no endpoint or harness change.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
