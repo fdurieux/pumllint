@@ -1,0 +1,16 @@
+id = "ORG-0001"
+kind = "business_unit"
+name = "CargoQuote product owner (stand-in)"
+state = "approved"
+owner = "ORG-0001"
+review_due = 2027-04-30
+
+[source]
+system = "kit"
+kit_path = "kit/requirements.md"
+export = "exports/kit/2026-10-30"
+
+[approval]
+by = "fdurieux"
+on = 2026-10-30
+record = "decisions/0002-pilot-slice-cargoquote.md"

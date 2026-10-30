@@ -1,0 +1,28 @@
+[type]
+name = "concerns"
+source_kind = ["journey", "stage", "step", "touchpoint"]
+target_kind = ["product", "variant"]
+direction = "source_to_target"
+inverse_label = "is the subject of"
+owner = "ORG-0001"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 0, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-02001"
+source = "JRN-0001"
+target = "PRD-0002"
+state = "approved"
+rationale = "The journey is the shipper's experience of the instant quote"
+owner = "ORG-0001"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:behavior/quote_flow.puml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }

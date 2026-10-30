@@ -1,0 +1,61 @@
+[type]
+name = "supports"
+source_kind = ["application", "module"]
+target_kind = ["activity", "subprocess", "end_to_end_process"]
+direction = "source_to_target"
+inverse_label = "is supported by"
+owner = "ORG-0002"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 0, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-06001"
+source = "APP-0002"
+target = "PROC-0002"
+state = "approved"
+rationale = "QuoteAPI._validate implements REQ-04 (kit links.toml)"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-06002"
+source = "APP-0004"
+target = "PROC-0003"
+state = "approved"
+rationale = "ScreeningService.screen is the screening call (REQ-06 names its outage)"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-06003"
+source = "APP-0003"
+target = "PROC-0004"
+state = "approved"
+rationale = "TariffEngine.price implements REQ-08 (kit links.toml)"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-06004"
+source = "APP-0002"
+target = "PROC-0001"
+state = "approved"
+rationale = "QuoteAPI.handle orchestrates the process (REQ-01 to REQ-07)"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }

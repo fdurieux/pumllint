@@ -1,0 +1,17 @@
+id = "PROC-0001"
+kind = "end_to_end_process"
+name = "Quote process"
+state = "approved"
+owner = "ORG-0001"
+review_due = 2027-04-30
+
+[source]
+system = "kit"
+kit_path = "kit/quote_process.bpmn"
+export = "exports/kit/2026-10-30"
+diagram = "kit/quote_process.bpmn"
+
+[approval]
+by = "fdurieux"
+on = 2026-10-30
+record = "decisions/0002-pilot-slice-cargoquote.md"

@@ -1,0 +1,59 @@
+[type]
+name = "realizes"
+source_kind = ["activity", "subprocess", "end_to_end_process"]
+target_kind = ["capability", "sub_capability"]
+direction = "source_to_target"
+inverse_label = "is realized by"
+owner = "ORG-0002"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 1, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-04001"
+source = "PROC-0002"
+target = "CAP-0004"
+state = "approved"
+rationale = "Validation is the only operationalisation of DT-V in the kit"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/quote_process.bpmn"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-04002"
+source = "PROC-0003"
+target = "CAP-0003"
+state = "approved"
+rationale = "Screening runs DT-S through the DMN decision"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/screening_decision.dmn"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-04003"
+source = "PROC-0004"
+target = "CAP-0002"
+state = "approved"
+rationale = "Pricing applies DT-P, P1 to P3 in normative order"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:contract/decision_table.md#DT-P"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-04004"
+source = "PROC-0005"
+target = "CAP-0005"
+state = "proposed"
+rationale = "Notification sends the quote document or the refusal notice"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]

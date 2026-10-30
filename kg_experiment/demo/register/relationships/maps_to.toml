@@ -1,0 +1,29 @@
+[type]
+name = "maps_to"
+source_kind = ["business_entity", "logical_entity", "attribute"]
+target_kind = []
+direction = "source_to_target"
+inverse_label = "is realized by (physical)"
+owner = "ORG-0002"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+target_is_external = true   # the physical asset lives in the source of record; no register node
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 0, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-10001"
+source = "ENT-0004"
+target_external = "kit:contract/decision_table.md#DT-P"
+state = "approved"
+rationale = "The tariff's physical form in the kit is the DT-P table"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }

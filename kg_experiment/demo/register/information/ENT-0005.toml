@@ -1,0 +1,11 @@
+id = "ENT-0005"
+kind = "business_entity"
+name = "Screening result"
+parent = "ENT-0001"
+state = "draft"
+owner = "ORG-0001"
+
+[source]
+system = "kit"
+kit_path = "kit/screening_decision.dmn"
+export = "exports/kit/2026-10-30"

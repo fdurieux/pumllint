@@ -349,3 +349,33 @@ def test_every_systemic_node_has_a_panel():
     assert any(sec.get("list") and any(x.startswith("B run 1, question") for x in sec["list"]) for sec in s2["sections"])
     page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
     assert "systemic-detail" in page and "wireSystemic" in page
+
+
+def test_vendored_register_matches_its_source_note_and_checks_clean():
+    """kg_experiment/demo/register/ is a byte-for-byte copy of fdurieux/ieam-register at the
+    commit SOURCE.md names: every file's sha256 is in the note, the note lists no file that is
+    missing, and the register's own checker reads the copy clean at the pinned date."""
+    import datetime as dt
+    import hashlib
+    import importlib.util
+    import re
+    reg = DEMO / "register"
+    note = (reg / "SOURCE.md").read_text(encoding="utf-8")
+    files = sorted(p for p in reg.rglob("*") if p.is_file() and p.name != "SOURCE.md" and "__pycache__" not in p.parts)
+    assert len(files) >= 50
+    for p in files:
+        rel = p.relative_to(reg).as_posix()
+        digest = hashlib.sha256(p.read_bytes()).hexdigest()
+        assert f"| `{rel}` | `{digest}` |" in note, f"{rel} is not in SOURCE.md with its digest"
+    listed = set(re.findall(r"^\| `([^`]+)` \| `[0-9a-f]{64}` \|$", note, re.M))
+    assert listed == {p.relative_to(reg).as_posix() for p in files}, "SOURCE.md lists files the copy does not hold"
+    assert re.search(r"\| commit \| `[0-9a-f]{40}`", note)
+    pinned = re.search(r"pinned date for the checker \| `(\d{4}-\d{2}-\d{2})`", note).group(1)
+    spec = importlib.util.spec_from_file_location("vendored_check_register", reg / "tools" / "check_register.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    findings, summary = mod.run(reg, today=dt.date.fromisoformat(pinned))
+    assert [f for f in findings.items if f["level"] == "error"] == [], findings.items
+    assert summary["nodes"] == 27 and summary["links"] == 28
+    assert summary["C1"]["uncovered"] == [] and summary["C1"]["excepted"] == 1
+    assert summary["C2"]["uncovered"] == [] and summary["C3"]["uncovered"] == []

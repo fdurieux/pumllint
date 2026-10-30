@@ -1,0 +1,27 @@
+# The systems of record. The register points at them and checks `name` against their latest
+# export; it never copies their attributes. `kit` is the synthetic source of this test case:
+# the CargoQuote kit under pumllint's kg_experiment/kit, public content, no bank data.
+
+[system.aris]
+description = "ARIS, the governed authoring repository for processes, journeys, products and operational publication"
+id_field = "aris_guid"
+authoritative_for = ["processes", "journeys", "products"]
+export_route = "report script to JSON (aris2puml's contract); unverified in the target installation"
+
+[system.archi]
+description = "Archi, ArchiMate 3.2; authors capability and application views"
+id_field = "archi_id"
+authoritative_for = ["capabilities", "applications"]
+export_route = "ArchiMate Model Exchange File Format; element ids stable within one model file"
+
+[system.edm]
+description = "the enterprise data model repository"
+id_field = "edm_id"
+authoritative_for = ["information"]
+export_route = "unknown; format and id stability unverified"
+
+[system.kit]
+description = "the CargoQuote kit (pumllint kg_experiment/kit), synthetic content for this test case"
+id_field = "kit_path"
+authoritative_for = ["capabilities", "products", "journeys", "processes", "applications", "information", "organisation"]
+export_route = "a MANIFEST of sha256 digests at a pumllint commit; the files themselves stay in pumllint"

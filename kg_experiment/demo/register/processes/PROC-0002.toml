@@ -1,0 +1,18 @@
+id = "PROC-0002"
+kind = "activity"
+name = "Validate the request"
+parent = "PROC-0001"
+state = "approved"
+owner = "ORG-0001"
+review_due = 2027-04-30
+
+[source]
+system = "kit"
+kit_path = "kit/quote_process.bpmn"
+export = "exports/kit/2026-10-30"
+diagram = "kit/quote_process.bpmn"
+
+[approval]
+by = "fdurieux"
+on = 2026-10-30
+record = "decisions/0002-pilot-slice-cargoquote.md"
