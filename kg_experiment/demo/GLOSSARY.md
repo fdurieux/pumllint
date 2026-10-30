@@ -31,7 +31,7 @@ when a sentence breaks a rule.
 
 | kind | where | limit | checked for synonyms |
 |---|---|---|---|
-| controlled | the plain-English block, the stage panels, the gap kinds | 20 words | yes |
+| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line | 20 words | yes |
 | reading | `SCENARIOS[..]["plain"]`, the "what this shows" paragraph | 25 words | yes |
 | data | the gate's reason, conflict texts, id lists, engine messages | none | no |
 
@@ -91,6 +91,8 @@ field name): it is data and is shown as it is.
 
 The harness, its result files and the record
 (`docs/neo4j-governed-knowledge-evaluation.md`) keep their own vocabulary;
-the rules govern the demo page's generated prose only. The README beside
+the rules govern the demo page's generated prose only. The scenario cards
+and the Planted line paraphrase the record's §6 table in the approved
+terms; the record's own wording is one click away in the record. The README beside
 this file is written in the adopter register and follows the glossary's
 terms, but is prose, not generated text, and is not checked for length.

@@ -231,10 +231,12 @@ def test_generated_prose_keeps_to_the_glossary_and_the_length_limits():
             for item in v["text_registry"]:
                 assert item["text"] in shown, (sc, src, item["text"][:80])
     assert seen["controlled"] > 500 and seen["reading"] >= 7 and seen["data"] > 20, seen
-    # the readings themselves, whether or not a source shows them
+    # the scenario descriptions: the sidebar cards and the Planted line are controlled, the reading is looser
     for sc, meta in views.SCENARIOS.items():
-        for s in _sentences(meta["plain"]):
-            assert len(s.split()) <= 25 and not _forbidden_in(s), (sc, s)
+        for field, lim in (("title", 20), ("represented", 20), ("defect", 20), ("plant", 20), ("plain", 25)):
+            for s in _sentences(meta[field]):
+                assert len(s.split()) <= lim and not _forbidden_in(s), (sc, field, s)
+        assert meta["plant"].endswith(".") and meta["defect"].endswith(".") and meta["represented"].endswith("."), sc
     for texts in (views.RULE_TEXT.values(), views.GAP_KIND_TEXT.values(), views.VERDICT_MEANING.values()):
         for group in texts:
             for s in group:
