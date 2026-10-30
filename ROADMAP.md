@@ -8447,6 +8447,11 @@ list and license posture live in § Settled questions.
     that files alone cannot, and what it does not do (the governance is
     application logic). Written from the harness and the record. Docs
     only.
+  - *2026-10-30, later (#232):* a note under the Load panel's constraint
+    table says why the three refused messages end mid-sentence: the
+    harness kept the engine's first line only, and the second, naming
+    Enterprise Edition, is the record's §12 and X9 quotation rather
+    than the run file's. Page and view only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
