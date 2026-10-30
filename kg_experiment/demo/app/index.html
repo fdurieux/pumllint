@@ -26,6 +26,7 @@ h3{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted
 .menu .sc .t{display:flex;gap:8px;align-items:baseline}
 .menu .sc .id{font-weight:700}
 .menu .sc .line{color:var(--muted);font-size:13px;margin:4px 0 8px}
+.menu .sc.reg{border-style:dashed} .menu .sc.reg .line code{font-size:12px}
 .badge{font-size:11px;font-weight:700;letter-spacing:.5px;border-radius:6px;padding:2px 7px;margin-left:auto}
 .badge.PROCEED{background:var(--ok);color:var(--green)} .badge.QUALIFIED{background:var(--warn);color:var(--amber)} .badge.BLOCKED{background:var(--bad);color:var(--red)}
 .modes{display:flex;gap:6px}
@@ -115,7 +116,6 @@ a{color:var(--teal)}
       <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One store, one scenario: it holds the scenario loaded last.</p>
       <h3>Saved Cypher</h3><div id="cypher"></div>
     </div>
-    <div class="card" style="margin-top:16px"><h2>The register</h2><div id="register" class="small">…</div></div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
   </aside>
   <section><div id="runbox" class="banner" style="display:none"><div class="head"><b id="run-title"></b><span id="run-meta" class="small"></span><button id="run-hide" class="small" style="margin-left:auto">hide</button></div><div class="console" id="run-log"></div></div>
@@ -143,7 +143,7 @@ async function loadScenarios() {
   STATE.recordModel = j.record_model; STATE.otherModel = j.default_other_model;
   renderToggle(j.arms_model_preset);
   renderChips(); renderMenu(); renderStore();
-  renderRegisterCard().catch(e => { $('#register').innerHTML = 'The register did not load: ' + esc(e.message); });
+  renderRegisterCard().catch(e => { STATE.register = { error: e.message }; renderMenu(); });
   if (j.run) { STATE.lastRun[j.run.scenario + j.run.mode] = j.run; if (j.run.status === 'running') watchRun(); }
 }
 
@@ -188,9 +188,9 @@ function renderMenu() {
         ${modeButton(s, 'replay', 'Replay', true, '')}
         ${modeButton(s, 'deterministic', 'Deterministic', STATE.detEnabled, 'the store is unreachable')}
         ${modeButton(s, 'arms', 'Arms', STATE.armsEnabled && STATE.detEnabled, "set OPENAI_API_KEY in the app's environment (and the store must be reachable)", `calls ${armsModel()}${armsModel() === STATE.recordModel ? '' : ' (a deviation from the record)'}`)}
-      </div></div>`).join('');
-  $('#menu-list').querySelectorAll('button').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); onMode(b.dataset.id, b.dataset.mode); }));
-  $('#menu-list').querySelectorAll('.sc').forEach(d => d.addEventListener('click', () => show(d.dataset.id)));
+      </div></div>`).join('') + registerEntry();
+  $('#menu-list').querySelectorAll('button').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); if (b.dataset.id === 'register') return showRegister(); onMode(b.dataset.id, b.dataset.mode); }));
+  $('#menu-list').querySelectorAll('.sc').forEach(d => d.addEventListener('click', () => d.dataset.id === 'register' ? showRegister() : show(d.dataset.id)));
 }
 
 async function onMode(id, mode) {
@@ -243,13 +243,20 @@ async function renderStore() {
 }
 
 async function renderRegisterCard() {
-  const r = await api('/api/register');
-  const src = r.source;
-  $('#register').innerHTML = `<div><a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code>; ${src.digest_ok ? 'digests match SOURCE.md' : 'digests DO NOT MATCH SOURCE.md'}.</div>
-    <div style="margin-top:4px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>
-    <pre class="light">${esc(r.coverage_lines.join('\n'))}</pre>
-    <button id="open-register" class="small">Open the register view</button>`;
-  $('#open-register').addEventListener('click', () => showRegister());
+  // the register's summary for its entry in the Scenarios list; the view itself opens in the main column
+  STATE.register = await api('/api/register');
+  renderMenu();
+}
+
+function registerEntry() {
+  const r = STATE.register;
+  if (!r) return `<div class="sc reg"><div class="t"><span class="id">Register</span> <span>the IEAM register</span></div><div class="line">loading…</div></div>`;
+  if (r.error) return `<div class="sc reg"><div class="t"><span class="id">Register</span> <span>the IEAM register</span></div><div class="line">did not load: ${esc(r.error)}</div></div>`;
+  const on = STATE.current === 'register';
+  return `<div class="sc reg ${on ? 'active' : ''}" data-id="register">
+      <div class="t"><span class="id">Register</span> <span>the IEAM register</span>${on ? '<span class="shown">● on screen</span>' : ''}<span class="badge ${r.summary.errors ? 'BLOCKED' : 'PROCEED'}">${r.summary.errors ? r.summary.errors + ' errors' : 'checks clean'}</span></div>
+      <div class="line">${esc(r.source.repo)} at <code>${esc(r.source.commit_short)}</code>, ${r.source.digest_ok ? 'digests match' : 'digests DO NOT MATCH'}. ${r.summary.nodes} nodes, ${r.summary.links} links. ${esc(r.coverage_lines.map(l => l.split(',')[0]).join('; '))}.</div>
+      <div class="modes"><button class="small on" data-id="register" data-mode="open">${on ? 'Open ✓ shown' : 'Open'}</button></div></div>`;
 }
 
 async function showRegister(today) {

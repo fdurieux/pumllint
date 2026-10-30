@@ -96,7 +96,8 @@ def test_register_impact_walk_reaches_the_product_and_says_when_it_does_not():
 
 def test_register_card_is_wired_on_the_page_and_the_server():
     page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
-    assert "/api/register" in page and 'id="register-detail"' in page and "renderRegisterCard" in page and "showRegister" in page and 'id="open-register"' in page
+    assert "/api/register" in page and 'id="register-detail"' in page and "renderRegisterCard" in page and "showRegister" in page
+    assert "function registerEntry" in page and 'data-id="register"' in page and ' id="register"' not in page, "the register is an entry in the Scenarios list, not a sidebar card"
     server = (DEMO / "app" / "server.py").read_text(encoding="utf-8")
     assert 'parts == ["api", "register"]' in server and "import register_view" in server
     assert '["api", "register", "impact"]' in server and 'id="impact-form"' in page and "/api/register/impact/" in page
