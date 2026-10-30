@@ -74,8 +74,14 @@ gives the counts, the register's own coverage lines, its exception and
 its mapping matrix, and lists the nodes by taxonomy; clicking a node
 opens a panel with its state, owner, approval, source of record and the
 links in and out. A link runs the register's checker at today's date
-instead of the pinned one, so you can see an exception expire. Nothing
-on the card is written back to the register.
+instead of the pinned one, so you can see an exception expire. An
+*Impact* box answers the IEAM's own question: type a node id (the
+QuoteAPI module is the default) and the register's walk shows every link
+it follows to the processes, products and journey steps retiring that
+node would touch, with each link's state, owner and evidence. The walk
+follows links only and does not climb a node's parent, so it says so when
+it reaches no product. Nothing on the card is written back to the
+register.
 
 ## What Neo4j holds, who writes it and who reads it
 
