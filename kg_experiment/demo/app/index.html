@@ -244,6 +244,9 @@ async function show(id, source, mode) {
     const m = mode || (v.source.startsWith('demo-runs/') ? (v.arms.G.summary.n ? 'arms' : 'deterministic') : 'replay');
     STATE.shown = {scenario: id, mode: m, source: v.source};
     renderMenu(); renderReport(v);
+    if (STATE.run && STATE.run.status === 'done' && STATE.run.source !== v.source && $('#runbox').style.display !== 'none') {
+      $('#run-meta').innerHTML = `its results are the demo run <code>${esc(STATE.run.source)}</code> in the list below left; the report now shows <em>${esc(v.sources.find(s => s.id === v.source)?.label || v.source)}</em>`;
+    }
     if (v.api_errors.length && STATE.run && STATE.run.source === v.source && STATE.run.status === 'done') {
       const box = $('#runbox'); box.className = 'banner failed';
       $('#run-title').innerHTML = `${esc(v.scenario)} · ${esc(m)} · ✗ the model calls failed · ${STATE.run.elapsed_s ?? '—'} s`;
@@ -280,7 +283,7 @@ function renderReport(v) {
       <tr><th>model</th>${rs.map(r => `<td${r.model && !r.model.startsWith(v.record_model) ? ' style="color:var(--red)"' : ''}>${esc(r.model || '—')}</td>`).join('')}</tr>
       <tr><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
       <tr><th>refs resolvable (M5)</th>${rs.map(r => `<td>${r.refs && r.refs.share !== null ? r.refs.resolved + '/' + r.refs.total : '—'}</td>`).join('')}</tr>
-      </tbody></table>`;
+      </tbody></table>${rs.every(r => !r.code && !r.api_error) ? `<p class="note">— means no code to grade: every ${arm} run returned <code>${esc(rs[0].decision || 'no decision')}</code>${v.gate.verdict === 'BLOCKED' ? ', which is what the policy asks under a BLOCKED verdict' : ''}, so the suite had nothing to run. Its questions are in the last section.</p>` : ''}`;
   };
   const qa = (arm) => runsOf(arm).map(r => `<details><summary>${arm}${r.run}: ${esc(r.decision || 'api error')} — ${r.questions.length} question(s), ${r.assumptions.length} assumption(s), ${r.claims_n} claim(s)</summary>
       ${r.api_error ? `<p class="small">api error: ${esc(r.api_error)}</p>` : ''}
