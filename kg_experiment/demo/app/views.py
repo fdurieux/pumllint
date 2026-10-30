@@ -514,7 +514,8 @@ def stage_details(view: dict, det: dict, runs: dict) -> dict:
                               {"heading": "Gaps by kind", "table": _table(["kind", "gaps"], sorted(cen["gaps_by_kind"].items()))},
                               {"heading": "Verification records", "text": (f"{det['verifications']['execution']} by execution (the kit's suite, each record naming the scenario and the digest of the code it ran), {det['verifications']['review']} by review (the dated review record and the authored inputs), {det['verifications']['approved']} approvals by the owner."
                                                                            if "execution" in det["verifications"] else "none loaded: this scenario is extraction only.")},
-                              {"heading": "D1: the constraints the community edition accepts", "table": _table(["type", "accepted", "message"], [(c["type"], "yes" if c["accepted"] else "no", (c["message"] or "").split("{message:")[-1].strip(" }")[:110]) for c in det["D1_constraints"]])}]}
+                              {"heading": "D1: the constraints the community edition accepts", "table": _table(["type", "accepted", "message"], [(c["type"], "yes" if c["accepted"] else "no", (c["message"] or "").split("{message:")[-1].strip(" }")[:110]) for c in det["D1_constraints"]])},
+                              {"heading": "Why the refused messages end mid-sentence", "text": "The harness kept only the first line of the engine's answer, which ends at the schema; the second line, not recorded in the run file, says that property existence, node key and property type constraints require Neo4j Enterprise Edition. The record quotes that line in §12 and reads it as its expectation X9. What the panel shows is what the run file holds."}]}
     rules = det["rules"]
     secs = []
     for r in RULE_ORDER:
