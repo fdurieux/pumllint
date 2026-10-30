@@ -1819,6 +1819,15 @@ list and license posture live in § Settled questions.
     lands on aris2puml's shape: a converter emitting `.puml`, outside
     this repository. See the entry of that date and
     docs/graph-store-evaluation.md.]*
+    *[2026-10-30: touched, not fired, a third time, by the governed
+    knowledge-repository question — and the first time with a store
+    executed. The PoC's 597 nodes are three orders under the size
+    trigger; no adopter asks; the entity graph is the kit's, not a
+    pilot's; and the outcome-grade trigger is the one the record names
+    as unfired: it measured a mechanism at one model, n = 5, never
+    retrieval against a maintained index on a governance record. See
+    the entry of that date and
+    docs/neo4j-governed-knowledge-evaluation.md.]*
 
 - **Linked.Archi ecosystem (2026-08-27): adjacent and complementary — no
   build, no dependency; the one fit worth having already ships. Two
