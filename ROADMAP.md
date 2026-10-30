@@ -8426,6 +8426,14 @@ list and license posture live in § Settled questions.
     dashes alone; and the run banner follows the source on screen
     rather than claiming to show a run the dropdown has left. Page and
     view only.
+  - *2026-10-30, later (#229):* on the maintainer's ask for a more
+    verbose, plain-English clarification, the report opens with an *In
+    plain English* block written from the result files: the terms named
+    once, what was planted, what the store found with its counts, what
+    the verdict means, what each assistant did and what that shows (one
+    adopter-register sentence per scenario), S6's change and invalidation
+    in words, and for a re-run whether it matches the record leaf for
+    leaf. Page, view and README only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
