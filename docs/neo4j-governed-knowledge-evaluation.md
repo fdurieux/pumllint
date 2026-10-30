@@ -483,7 +483,14 @@ and what moves with it.
  any status ─── a human act ───▶ deprecated (still true, no longer in force) | rejected (wrong)
 ```
 
-Rules of the lifecycle, each enforced in the PoC:
+Rules of the lifecycle, each enforced in the PoC except the three human
+transitions the diagram draws and no scenario exercises: a Decision
+resolving a dispute or a declared gap, and the `deprecated` and
+`rejected` acts. The rules write `proposed`, `disputed` and
+`invalidated`; the loader writes `proposed`, `verified` and `approved`;
+`deprecated` and `rejected` appear only as exclusions in the loader's
+matches. *[Qualified 2026-10-30, after the merge, on checking the
+rules against the code; §3.1 marks the same items.]*
 
 1. **No rule promotes to `verified` or `approved`.** `validated` is the
    most a rule grants (two independent artefacts agree), and it means
@@ -521,8 +528,9 @@ Rules of the lifecycle, each enforced in the PoC:
    requirement that says "NOT YET SPECIFIED (open decision OD-1)" raises
    `Gap{kind:missing, declared:true}` on the requirement and on the key
    it governs; a model-proposed candidate for the gap is recorded as
-   `CANDIDATE_FOR` and does not lift the block (§6, S5). Only a
-   `Decision` node by a human resolves a declared gap.
+   `CANDIDATE_FOR` and does not lift the block (§6, S5). Only a human
+   decision, recorded as a node, resolves a declared gap (design: S2's
+   gap stays open in the PoC and no `Decision` node is loaded).
 7. **Re-evaluation is a re-ingest plus the rules**, not an edit: the new
    version's unchanged fragments are reused (digest match), only
    changed fragments create new assertions, and the deterministic
