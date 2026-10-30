@@ -115,7 +115,7 @@ a{color:var(--teal)}
       <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One store, one scenario: it holds the scenario loaded last.</p>
       <h3>Saved Cypher</h3><div id="cypher"></div>
     </div>
-    <div class="card" style="margin-top:16px"><h2>The register</h2><div id="register" class="small">…</div><div id="register-detail"></div></div>
+    <div class="card" style="margin-top:16px"><h2>The register</h2><div id="register" class="small">…</div></div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
   </aside>
   <section><div id="runbox" class="banner" style="display:none"><div class="head"><b id="run-title"></b><span id="run-meta" class="small"></span><button id="run-hide" class="small" style="margin-left:auto">hide</button></div><div class="console" id="run-log"></div></div>
@@ -143,7 +143,7 @@ async function loadScenarios() {
   STATE.recordModel = j.record_model; STATE.otherModel = j.default_other_model;
   renderToggle(j.arms_model_preset);
   renderChips(); renderMenu(); renderStore();
-  renderRegister().catch(e => { $('#register').innerHTML = 'The register view did not load: ' + esc(e.message); });
+  renderRegisterCard().catch(e => { $('#register').innerHTML = 'The register did not load: ' + esc(e.message); });
   if (j.run) { STATE.lastRun[j.run.scenario + j.run.mode] = j.run; if (j.run.status === 'running') watchRun(); }
 }
 
@@ -242,40 +242,53 @@ async function renderStore() {
   $('#cypher').querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => { await navigator.clipboard.writeText(b.dataset.t); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); }));
 }
 
-async function renderRegister(today) {
+async function renderRegisterCard() {
+  const r = await api('/api/register');
+  const src = r.source;
+  $('#register').innerHTML = `<div><a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code>; ${src.digest_ok ? 'digests match SOURCE.md' : 'digests DO NOT MATCH SOURCE.md'}.</div>
+    <div style="margin-top:4px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>
+    <pre class="light">${esc(r.coverage_lines.join('\n'))}</pre>
+    <button id="open-register" class="small">Open the register view</button>`;
+  $('#open-register').addEventListener('click', () => showRegister());
+}
+
+async function showRegister(today) {
+  STATE.current = 'register'; STATE.shown = null; renderMenu();
+  $('#report').innerHTML = '<div class="card small">loading the register…</div>';
   const r = await api('/api/register' + (today ? `?today=${encodeURIComponent(today)}` : ''));
   const src = r.source;
-  const taxes = Object.entries(r.nodes_by_taxonomy).map(([t, ns]) => `<details><summary>${esc(t)} · ${ns.length}</summary>${ns.map(n => `<div class="rnode"><a href="#" data-node="${esc(n.id)}"><code>${esc(n.id)}</code></a> <span class="rstate">${esc(n.state)}</span> ${esc(n.name)}</div>`).join('')}</details>`).join('');
-  $('#register').innerHTML = `<p>${esc(r.intro)}</p>
-    <div><a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code>, copied ${esc(src.copied)}; the ${src.files} files ${src.digest_ok ? 'match' : 'DO NOT MATCH'} the digests in SOURCE.md.</div>
-    <div style="margin-top:6px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>
-    <pre class="light">${esc(r.coverage_lines.join('\n'))}</pre>
-    <div>${r.exceptions.map(e => esc(e.sentence)).join(' ')} ${esc(r.matrix.sentence)}</div>
-    <div style="margin-top:4px">${r.pinned ? '<a href="#" id="reg-wall">run the checker at today\'s date instead</a>' : '<a href="#" id="reg-pinned">back to the pinned date</a>'}</div>
-    <h3>Nodes, by taxonomy · click one for its panel</h3>${taxes}
-    <h3>Relationship types</h3><div class="tw"><table><thead><tr><th>type</th><th>links</th><th>approved</th><th>ARIS</th><th>Archi</th></tr></thead><tbody>${r.relationship_types.map(t => `<tr><td>${esc(t.name)}</td><td>${t.links}</td><td>${t.approved}</td><td>${esc(t.aris_status)}</td><td>${esc(t.archi_status)}</td></tr>`).join('')}</tbody></table></div>
-    <h3>Impact · which products and journeys would retiring a node touch</h3>
-    <form id="impact-form" class="impact"><input id="impact-id" type="text" value="APP-0002" spellcheck="false" list="impact-ids"><datalist id="impact-ids">${Object.values(r.nodes_by_taxonomy).flat().map(n => `<option value="${esc(n.id)}">${esc(n.name)}</option>`).join('')}</datalist><button type="submit" class="small">walk</button></form>`;
+  const taxes = Object.entries(r.nodes_by_taxonomy).map(([t, ns], i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(t)} · ${ns.length}</summary>${ns.map(n => `<div class="rnode"><a href="#" data-node="${esc(n.id)}"><code>${esc(n.id)}</code></a> <span class="rstate">${esc(n.state)}</span> ${esc(n.name)}</div>`).join('')}</details>`).join('');
+  $('#report').innerHTML = `
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">The register — <a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code></h2><span class="small" style="margin-left:auto">checker run at ${esc(r.run_date)}${r.pinned ? ', the pinned date' : ''} · ${r.pinned ? '<a href="#" id="reg-wall">run at today\'s date instead</a>' : '<a href="#" id="reg-pinned">back to the pinned date</a>'}</span></div>
+      <p class="small" style="max-width:95ch">${esc(r.intro)}</p>
+      <div class="small">Copied ${esc(src.copied)}; the ${src.files} files ${src.digest_ok ? 'match' : 'DO NOT MATCH'} the digests in SOURCE.md. Nothing on this page is written back to the register.</div>
+      <div style="margin:8px 0 2px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>
+      <pre class="light">${esc(r.coverage_lines.join('\n'))}</pre>
+      <div class="small">${r.exceptions.map(e => esc(e.sentence)).join(' ')} ${esc(r.matrix.sentence)}</div>
+      <div class="two" style="margin-top:14px">
+        <div><h3 style="margin-top:0">Nodes, by taxonomy · click one for its panel</h3>${taxes}</div>
+        <div>
+          <h3 style="margin-top:0">Relationship types</h3><div class="tw"><table><thead><tr><th>type</th><th>links</th><th>approved</th><th>ARIS</th><th>Archi</th></tr></thead><tbody>${r.relationship_types.map(t => `<tr><td>${esc(t.name)}</td><td>${t.links}</td><td>${t.approved}</td><td>${esc(t.aris_status)}</td><td>${esc(t.archi_status)}</td></tr>`).join('')}</tbody></table></div>
+          <h3>Impact · which products and journeys would retiring a node touch</h3>
+          <form id="impact-form" class="impact"><input id="impact-id" type="text" value="APP-0002" spellcheck="false" list="impact-ids"><datalist id="impact-ids">${Object.values(r.nodes_by_taxonomy).flat().map(n => `<option value="${esc(n.id)}">${esc(n.name)}</option>`).join('')}</datalist><button type="submit" class="small">walk</button></form>
+          <div class="small">The walk follows links only and does not climb a node's parent; the panel says what it reached.</div>
+        </div>
+      </div>
+      <div id="register-detail"></div>
+    </div>`;
   const all = {}; Object.values(r.nodes_by_taxonomy).forEach(ns => ns.forEach(n => all[n.id] = n));
   const host = $('#register-detail');
-  $('#register').querySelectorAll('a[data-node]').forEach(a => a.addEventListener('click', ev => {
-    ev.preventDefault();
-    host.innerHTML = renderDetail(all[a.dataset.node].panel);
-    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; });
-    host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }));
+  const openPanel = html => { host.innerHTML = html; host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; }); host.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
+  $('#report').querySelectorAll('a[data-node]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); openPanel(renderDetail(all[a.dataset.node].panel)); }));
   $('#impact-form').addEventListener('submit', async ev => {
     ev.preventDefault();
     const id = $('#impact-id').value.trim();
-    try {
-      const w = await api(`/api/register/impact/${encodeURIComponent(id)}`);
-      host.innerHTML = renderDetail(w.panel);
-      host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; });
-      host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } catch (e) { host.innerHTML = `<div class="detail"><button class="close small">close</button><p>${esc(e.message)}</p></div>`; host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; }); }
+    try { const w = await api(`/api/register/impact/${encodeURIComponent(id)}`); openPanel(renderDetail(w.panel)); }
+    catch (e) { openPanel(`<div class="detail"><button class="close small">close</button><p>${esc(e.message)}</p></div>`); }
   });
-  const wall = $('#reg-wall'); if (wall) wall.addEventListener('click', ev => { ev.preventDefault(); renderRegister('wall'); });
-  const pin = $('#reg-pinned'); if (pin) pin.addEventListener('click', ev => { ev.preventDefault(); renderRegister(); });
+  const wall = $('#reg-wall'); if (wall) wall.addEventListener('click', ev => { ev.preventDefault(); showRegister('wall'); });
+  const pin = $('#reg-pinned'); if (pin) pin.addEventListener('click', ev => { ev.preventDefault(); showRegister(); });
 }
 
 async function renderRuns() {

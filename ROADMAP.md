@@ -8552,6 +8552,15 @@ list and license posture live in § Settled questions.
     `/api/register/impact/<ID>`, 404 on an unknown id; the stack job
     walks `APP-0002`. Tests on four cases and every sentence. Lab, page,
     view, tests and docs only.
+  - *2026-10-30, later (#245):* the register moves to the main column.
+    The maintainer found the sidebar too narrow for its tables and
+    panels; the sidebar card now summarises (commit, digests, counts,
+    the checker's health and coverage lines) and *Open the register
+    view* replaces the scenario report with the register in the wide
+    column: nodes by taxonomy beside the relationship types and the
+    Impact box, node and impact panels at full width, the pinned/today
+    switch in the header; the scenario cards drop their on-screen mark
+    while it is shown. Page and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

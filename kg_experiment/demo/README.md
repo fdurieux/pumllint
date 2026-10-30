@@ -64,24 +64,25 @@ contradiction pairs, the gap census. The free edition of Neo4j serves one
 database, so the store holds the scenario loaded last; the header says
 which.
 
-**The register.** Below the store, a card shows the IEAM register, a
-separate public repository
+**The register.** Below the store, a card summarises the IEAM register,
+a separate public repository
 ([fdurieux/ieam-register](https://github.com/fdurieux/ieam-register))
 that keeps the identities, typed relationships and approvals of the same
-CargoQuote kit the scenarios use. The demo carries a copy of it at one
-commit (`register/SOURCE.md` says which) and reads it only: the card
-gives the counts, the register's own coverage lines, its exception and
-its mapping matrix, and lists the nodes by taxonomy; clicking a node
-opens a panel with its state, owner, approval, source of record and the
-links in and out. A link runs the register's checker at today's date
-instead of the pinned one, so you can see an exception expire. An
-*Impact* box answers the IEAM's own question: type a node id (the
-QuoteAPI module is the default) and the register's walk shows every link
-it follows to the processes, products and journey steps retiring that
-node would touch, with each link's state, owner and evidence. The walk
-follows links only and does not climb a node's parent, so it says so when
-it reaches no product. Nothing on the card is written back to the
-register.
+CargoQuote kit the scenarios use: the commit the demo carries
+(`register/SOURCE.md` says which), the counts and the register's own
+coverage lines. *Open the register view* replaces the scenario report
+with the register in the wide column: its exception and mapping matrix,
+the nodes by taxonomy (clicking one opens a panel with its state, owner,
+approval, source of record and the links in and out), the relationship
+types with their ARIS and Archi status, and an *Impact* box that answers
+the IEAM's own question: type a node id (the QuoteAPI module is the
+default) and the register's walk shows every link it follows to the
+processes, products and journey steps retiring that node would touch,
+with each link's state, owner and evidence. The walk follows links only
+and does not climb a node's parent, so it says so when it reaches no
+product. A link runs the checker at today's date instead of the pinned
+one, so you can see an exception expire. Clicking a scenario brings the
+report back. Nothing on the page is written back to the register.
 
 ## What Neo4j holds, who writes it and who reads it
 
