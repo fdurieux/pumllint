@@ -8561,6 +8561,15 @@ list and license posture live in § Settled questions.
     Impact box, node and impact panels at full width, the pinned/today
     switch in the header; the scenario cards drop their on-screen mark
     while it is shown. Page and docs only.
+  - *2026-10-30, later (#246):* the register is the last entry of the
+    Scenarios list, on the maintainer's choice: a dashed card in the
+    scenario style with a checks badge, the commit and digests, the
+    counts and the three coverage figures, and an Open button that shows
+    the view in the main column and marks the entry while it is on
+    screen; the separate sidebar card is gone. README also gains the
+    update command that works from any directory (`git -C`,
+    `docker compose --project-directory`) and an alias for it. Page and
+    docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

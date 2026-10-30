@@ -353,6 +353,21 @@ export OPENAI_API_KEY=sk-your-real-key-here
 cd "$HOME/pumllint/kg_experiment/demo" && git pull --ff-only && docker compose up -d --build --wait && open http://localhost:8080
 ```
 
+To update from any directory, without changing into the checkout, tell
+git and Docker where it is instead (`-C` for git, `--project-directory`
+for Docker Compose):
+
+```bash
+git -C "$HOME/pumllint" pull --ff-only && docker compose --project-directory "$HOME/pumllint/kg_experiment/demo" up -d --build --wait
+```
+
+If you do this often, put it in your shell profile once as an alias
+(`~/.zshrc` on a Mac) and type `kgdemo` afterwards:
+
+```bash
+alias kgdemo='git -C "$HOME/pumllint" pull --ff-only && docker compose --project-directory "$HOME/pumllint/kg_experiment/demo" up -d --build --wait'
+```
+
 Two cautions. Never commit the key or put it in a `.env` file you might
 push. And if you ever run this on a server (see the EC2 route below),
 restrict the firewall to your own address on ports 8080, 7474 and 7687:
