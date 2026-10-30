@@ -1,0 +1,73 @@
+# Vendored copy of the IEAM register, at a commit
+
+| | |
+|---|---|
+| source repository | `fdurieux/ieam-register` (public test case; synthetic content, the CargoQuote kit) |
+| commit | `ef7fe0e114128ce0d76694fb2f95e0373ab18d2e` — "Merge pull request #2 from fdurieux/claude/canvas-page", 2026-10-30; the register has no tag yet, so a commit is pinned until `v0.1.0` |
+| what is copied | the metamodel, the glossary, the seven taxonomy directories, the relationship files, the exceptions, the mapping matrix, the decision records, the kit export folder, and three tools (`register.py`, `check_register.py`, `impact.py`); nothing else |
+| files | 50 |
+| copied | 2026-10-30, byte for byte, by the session that built `kg_experiment/demo/` |
+| pinned date for the checker | `2026-10-30`, the export's date: `EXC-0001` expires 2027-01-31, so a run at the wall clock would change the coverage view under the viewer |
+
+The demo will read this copy for its register view (pumllint
+`docs/ieam-register-demo-integration.md`, steps 2 to 4); the copy is not
+fetched at build time, the image carries it, and the demo never writes
+to the register. The register's TOML at the commit is the record of
+identities, links, states, approvals and exceptions; this table is the
+record of which bytes the demo carries. To refresh it, copy the same
+paths from the source repository at the commit or tag you want, update
+this table, and run `tests/test_kg_demo.py`, which holds every file to
+its digest and runs the vendored checker at the pinned date.
+
+| file | sha256 |
+|---|---|
+| `applications/APP-0001.toml` | `8dca68912dc13a56c6aa6b887f9d7206a1bf8015f9f2582d0be7a55ec99860cd` |
+| `applications/APP-0002.toml` | `74142d9d44c2e6d4b2d469d56da3fc444e257e164bf3bace7eb5386ac75cf2b9` |
+| `applications/APP-0003.toml` | `150b72639049fece2a43bda42c80c6dd20afb46200379b8f6f09250629f9a94f` |
+| `applications/APP-0004.toml` | `d29244e6f4f8355d018d165b1df82007201a7e936b5f2fe5e451ddf8d08c6e95` |
+| `capabilities/CAP-0001.toml` | `5acab1d521e96cae4235e25ee55d9ba26d6cc498fe77e725083525f7cb998bc5` |
+| `capabilities/CAP-0002.toml` | `b8c9720dc704416fd025214a5b4e1f88a0df1fd2358332974d7c04b22727c539` |
+| `capabilities/CAP-0003.toml` | `372550ae3921cffd0e6a6e475ea0f3fb9b49d4d5feae15941441e4428de3e510` |
+| `capabilities/CAP-0004.toml` | `3496690db79991551260abbd740d7ad90c78bcfc5fd27989cd2e21655e05b155` |
+| `capabilities/CAP-0005.toml` | `f703c5dbfc430eecae575425c82306bf2a58590bca904b9d2a157517f87dd873` |
+| `decisions/0001-register-structure.md` | `dfff0b57899fea8cf6b9c4ebae6348ca7c6e7e2e79ebd52a6da6d5895148c6a9` |
+| `decisions/0002-pilot-slice-cargoquote.md` | `c75a3ffcf8d71d3f12f48f9e90fb587b80cc3572e1764af019e9b807f60b458a` |
+| `exceptions/EXC-0001.toml` | `1d6068b47596abf2b11da91424d7ee9540158a13b43b52b4d6878a24a616d02f` |
+| `exports/kit/2026-10-30/MANIFEST.toml` | `972df1222cebb85c6bb95761213f7c125fa1793ddf70d47bfefae63d83fbf095` |
+| `exports/kit/2026-10-30/RECONCILE.json` | `b43994ac04c9b4f463d502e73911d9fd863f2ccda49d2589cc0f208d3e494aba` |
+| `glossary/glossary.toml` | `9703898ba8ed54cb9326cab5644a34dba4a9b05594da8f9b9510f0b264f09386` |
+| `information/ENT-0001.toml` | `13cf0fd78493d4d99bdfa51a5dff01a77a0c2626ce5955840b3fe754514e92d7` |
+| `information/ENT-0002.toml` | `cfd1be453fa6ad8ec08e2972f36527c4bea312ea074f399ca15a61a61ba728a1` |
+| `information/ENT-0003.toml` | `4d679feaf0b78980d9b877ee7b6f48a0bedb4d0247dcaea3202b4941907f98e3` |
+| `information/ENT-0004.toml` | `be00dbe16b30045fd02bdbcb14c083fd0a03be884ea22b6ee3331b89fdc6e652` |
+| `information/ENT-0005.toml` | `1e8767e8cccc02a7cd373ead2fc982daced0519f2097c8f58c6b09ed62ce61fe` |
+| `journeys/JRN-0001.toml` | `a645336ea0e8326b474c6d5d34a9493d97f1d68bd77e915a97a42fca82c83a73` |
+| `journeys/JRN-0002.toml` | `aa4adc69ffb283cb40645482c68372f7380ff164c88fa766e5ed745b5afbf29a` |
+| `journeys/JRN-0003.toml` | `9e2d53ee6b37eebad75a234ef5a02840336c7a2cdedf99c1a555b10124e43e6f` |
+| `journeys/JRN-0004.toml` | `003575696460127a33ae199b9856b44ad12204ab0a58722aebb137dc641b31c6` |
+| `mapping/matrix.toml` | `6e9fda6c5734154945b61f934a9f6d797e88c0af76b29c2af756f79023cece37` |
+| `metamodel/lifecycle.toml` | `81da39db9c76031325aee9f0f52781abdadf26dacc25e8700efd7e4e22350a0e` |
+| `metamodel/sources.toml` | `98daf0e0c78627b098279c86e4d5f1b1be71d9428c780abeffece6b878efad97` |
+| `metamodel/types.toml` | `ecad623d66cee669317f6c7b52266dcfea1e42d0a6c1cc58cb4c68a3bfc9d687` |
+| `organisation/ORG-0001.toml` | `fb058c575705067adeb536331be04e865536b3df551bd0195c2260a8a01ec529` |
+| `organisation/ORG-0002.toml` | `40a424b1493ef8704f33c1fd1686cb03a84b94f8c99d727c33d1287207b8c0f1` |
+| `processes/PROC-0001.toml` | `cdb23a313addac34dc6bf80e896da4fb337e3c3391d0ff814da7f0cc4698b74b` |
+| `processes/PROC-0002.toml` | `0c81427f5ae2e81780942acc61ea2a077d9ec05ae83f9d2624689e1ab43338f8` |
+| `processes/PROC-0003.toml` | `33d1c0074e7d58e87944c6aa8b0671aa0368f239fe2ef6fdf75b6822fa9fe2bb` |
+| `processes/PROC-0004.toml` | `7555384472262608adf25d96c08bd65a74b4038c97a5951312d1c4959b4e26c5` |
+| `processes/PROC-0005.toml` | `a510adb1345bddc21d8bed2a102497963578e1899472c9117076e1c6b21441a5` |
+| `products/PRD-0001.toml` | `db7dd93897d38f6b0569980a60d55afbe28806f649ec3dd06ebae05759d435a7` |
+| `products/PRD-0002.toml` | `73b2ce9844f178d33dbfd6e342481f93d1934476d3adbc235ae499dfa9f07dfb` |
+| `relationships/concerns.toml` | `134f67e196a02ce8621d433345e228c824fd7e331bc3e4f15d5aaefb2be19dc7` |
+| `relationships/crud.toml` | `09a1df4c1ffea4ac9c2207bda04b3f9ff639f6520c5bc628b29a80a25acbbc43` |
+| `relationships/delivers.toml` | `ca093da2ddff0a3aa1fb166b285b91b19244231d581a72500112bc224ec3d282` |
+| `relationships/is_supported_by.toml` | `cf804fe468050c1515c07d0993d7f4db92c2b35fa385e364649c16e01d096e26` |
+| `relationships/manages.toml` | `4578a22ee807c9ffa5ea98f9ac181fe793568b171205885e19b11fd93ed4802f` |
+| `relationships/maps_to.toml` | `f205f2c613f90519939e38ab622dd0c5fa04f169671c2a9c2ee1c0e420c0a369` |
+| `relationships/owns.toml` | `5d6cf337a8bad664af1ea152cedd14d536387b69cbc4c1b075619b07304d53b2` |
+| `relationships/realizes.toml` | `8417bf102fd6c3bfee898a85e2717d379b399e1a462bac277f58920f83211cfe` |
+| `relationships/requires.toml` | `e1776259a9064d22f3895d8b5ef98ab4acf5830c9717a46a339bf2a789a76aa8` |
+| `relationships/supports.toml` | `3624b86e08ad0327c6d1396a1d0250baae0a9a7bbfd0a07220b7345e095dc9c4` |
+| `tools/check_register.py` | `4d29972be58b67deec02cee98fc8435dc14d146188c77a1304efff5a132a2708` |
+| `tools/impact.py` | `cae50888b76053caeb4c07f17cbd60e3567e68e3afa3d1a49e0b13e805fa6b7a` |
+| `tools/register.py` | `81c33f481451ec9ed56a8111749a92cc85c00e6f8ef77bb1053426cd62f53f5d` |

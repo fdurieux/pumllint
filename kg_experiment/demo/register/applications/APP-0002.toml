@@ -1,0 +1,17 @@
+id = "APP-0002"
+kind = "module"
+name = "QuoteAPI"
+parent = "APP-0001"
+state = "approved"
+owner = "ORG-0002"
+review_due = 2027-04-30
+
+[source]
+system = "kit"
+kit_path = "structure/containers.puml"
+export = "exports/kit/2026-10-30"
+
+[approval]
+by = "fdurieux"
+on = 2026-10-30
+record = "decisions/0002-pilot-slice-cargoquote.md"

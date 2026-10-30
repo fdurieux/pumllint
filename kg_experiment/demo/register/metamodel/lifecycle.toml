@@ -1,0 +1,24 @@
+# Lifecycle states and the transitions a commit may make. The checker diffs the previous
+# commit's state against this table; a skipped transition fails the check.
+
+states = ["draft", "proposed", "approved", "deprecated", "retired", "rejected"]
+
+[transitions]
+draft = ["proposed", "retired"]
+proposed = ["approved", "rejected", "draft"]
+approved = ["deprecated"]
+deprecated = ["retired", "approved"]
+rejected = ["draft"]
+retired = []
+
+[approval]
+four_eyes = true              # the approver may not be the pull request's author
+cross_domain_both_owners = true
+
+[review]
+default_months = 12
+overdue_is_error = false     # a warning in the report unless a kind says otherwise
+
+[review.kinds]
+capability = { months = 12 }
+product = { months = 6 }

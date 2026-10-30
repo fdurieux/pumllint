@@ -1,0 +1,17 @@
+id = "JRN-0001"
+kind = "journey"
+name = "Get a freight quote"
+state = "approved"
+owner = "ORG-0001"
+review_due = 2027-04-30
+
+[source]
+system = "kit"
+kit_path = "behavior/quote_flow.puml"
+export = "exports/kit/2026-10-30"
+diagram = "behavior/quote_flow.puml"
+
+[approval]
+by = "fdurieux"
+on = 2026-10-30
+record = "decisions/0002-pilot-slice-cargoquote.md"

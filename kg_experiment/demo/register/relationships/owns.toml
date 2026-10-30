@@ -1,0 +1,50 @@
+[type]
+name = "owns"
+source_kind = ["business_unit", "team"]
+target_kind = ["capability_domain", "capability", "sub_capability", "portfolio", "family", "product", "variant", "journey", "application", "module", "information_domain", "business_entity", "end_to_end_process"]
+direction = "source_to_target"
+inverse_label = "is owned by"
+owner = "ORG-0002"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 0, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-09001"
+source = "ORG-0001"
+target = "PRD-0002"
+state = "approved"
+rationale = "The product owner stand-in owns the offering"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-09002"
+source = "ORG-0002"
+target = "APP-0001"
+state = "approved"
+rationale = "Architecture stewardship owns the reference implementation"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-09003"
+source = "ORG-0001"
+target = "PROC-0001"
+state = "approved"
+rationale = "The product owner stand-in owns the end-to-end process"
+owner = "ORG-0002"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }

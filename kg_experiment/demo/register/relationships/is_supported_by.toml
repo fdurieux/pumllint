@@ -1,0 +1,48 @@
+[type]
+name = "is_supported_by"
+source_kind = ["step", "touchpoint"]
+target_kind = ["activity", "subprocess", "end_to_end_process"]
+direction = "source_to_target"
+inverse_label = "supports"
+owner = "ORG-0001"
+evidence_class = "authored"
+aris_status = "unverified"
+archi_status = "unverified"
+note = "Not a verified ARIS connection name; status moves only with a tested row in mapping/matrix.toml"
+
+[type.cardinality]
+draft = { min_targets = 0, max_targets = "n" }
+proposed = { min_targets = 0, max_targets = "n" }
+approved = { min_targets = 1, max_targets = "n" }
+deprecated = { min_targets = 0, max_targets = "n" }
+
+[[link]]
+id = "REL-03001"
+source = "JRN-0002"
+target = "PROC-0002"
+state = "approved"
+rationale = "Submitting a request runs validation first (REQ-04)"
+owner = "ORG-0001"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:requirements.md#REQ-04"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-03002"
+source = "JRN-0003"
+target = "PROC-0004"
+state = "approved"
+rationale = "The quote the shipper receives is priced by PROC-0004 (REQ-01, REQ-08)"
+owner = "ORG-0001"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:requirements.md#REQ-01"]
+review_due = 2027-04-30
+approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+
+[[link]]
+id = "REL-03003"
+source = "JRN-0003"
+target = "PROC-0005"
+state = "proposed"
+rationale = "The quote document or refusal notice is sent by PROC-0005 (REQ-01, REQ-03)"
+owner = "ORG-0001"
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml"]

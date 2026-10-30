@@ -1,0 +1,131 @@
+# The tested mapping matrix (IEAM step 1). Every row starts at "unverified": a fifth status beside
+# native_tested, configuration_required, extension_required and unsupported, so an untested row cannot
+# pass as native. A row moves only with a test on the target installation and its evidence.
+
+[[node_kind]]
+taxonomy = "capabilities"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[node_kind]]
+taxonomy = "products"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[node_kind]]
+taxonomy = "journeys"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[node_kind]]
+taxonomy = "processes"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[node_kind]]
+taxonomy = "applications"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[node_kind]]
+taxonomy = "information"
+aris_model_type = ""
+archi_element = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "requires"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "concerns"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "is_supported_by"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "realizes"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "delivers"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "supports"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "crud"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "manages"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "owns"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
+
+[[relationship_type]]
+name = "maps_to"
+aris_connection = ""
+archi_relationship = ""
+status = "unverified"
+tested_on = ""
+evidence = ""
