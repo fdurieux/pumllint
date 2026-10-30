@@ -1351,6 +1351,15 @@ python report.py results/rerun                   # the re-run's counts (§6.6, X
 #   -> 0   (unknown: no assertion, not a documented absence)
 ```
 
+The same stack as two containers: `kg_experiment/demo/` (`docker compose up`)
+starts a Neo4j 5.26 community server and a web app that replays the seven
+scenarios from `results/`, re-runs D1–D6 or the arms against the container's
+store into a dated `results/demo-runs/` folder, and draws each scenario on the
+§2 pipeline and on the Legible v0.3 knowledge view; `demo/README.md` has the
+one-block start for a Mac, a laptop pulling the published image, or an EC2
+instance. `demo/tools/compare_deterministic.py` checks any deterministic run
+against the record field by field.
+
 The five fact sheets behind §1, §3, §7, §8 and §9 are not committed;
 their load-bearing quotes are cited inline with the source URL at the
 primary, and their "could not verify" lists are folded into the bounds

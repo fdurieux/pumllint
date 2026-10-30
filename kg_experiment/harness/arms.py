@@ -8,6 +8,7 @@ quotes measured tokens, the dollars are an estimate).
 from __future__ import annotations
 
 import json
+import os
 import threading
 import time
 from pathlib import Path
@@ -51,7 +52,10 @@ def call(system: str, user: str, *, tag: str) -> dict:
         if _state["usd"] >= CEILING_USD:
             raise BudgetExceeded(f"ceiling ${CEILING_USD}")
         _state["calls"] += 1
-    client = OpenAI(api_key="proxy-injected", max_retries=0)
+    # the scored run went through the session proxy, which injected the key and
+    # ignored the placeholder; outside it (the demo container, a laptop) the key
+    # comes from the environment and is never written to disk
+    client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY") or "proxy-injected", max_retries=0)
     t0 = time.time()
     attempts = 0
     while True:

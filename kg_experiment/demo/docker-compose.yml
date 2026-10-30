@@ -1,0 +1,56 @@
+# The governed-repository demo: a Neo4j 5.26 community server and the app
+# that replays the seven scenarios, re-runs them against the server, and
+# serves the report view on port 8080. This file references the published
+# image; docker-compose.override.yml (picked up automatically by
+# `docker compose up` in this directory) builds it locally instead.
+#
+#   docker compose up                                   # local build (override applied)
+#   docker compose -f docker-compose.yml pull && \
+#   docker compose -f docker-compose.yml up -d          # the registry image, no build
+#
+# Variables, read from the shell or a .env file beside this compose file:
+#   KG_NEO4J_PASSWORD  the store's password (default kgpoc2026, the harness default)
+#   OPENAI_API_KEY     enables the arms mode; passed through to the app only, never baked in
+#   KG_BROWSER_URL     where the viewer's browser reaches Neo4j Browser (default http://localhost:7474;
+#                      on a server, http://<its address>:7474)
+name: pumllint-kg-demo
+
+services:
+  neo4j:
+    image: neo4j:5.26-community
+    environment:
+      NEO4J_AUTH: neo4j/${KG_NEO4J_PASSWORD:-kgpoc2026}
+      NEO4J_server_memory_heap_initial__size: 512m
+      NEO4J_server_memory_heap_max__size: 1g
+      NEO4J_server_memory_pagecache_size: 512m
+    ports:
+      - "7474:7474"   # Neo4j Browser, a live console with no authentication beyond the store's
+      - "7687:7687"   # bolt, for Browser and the harness
+    volumes:
+      - neo4j-data:/data
+    healthcheck:
+      # $$ keeps the shell expansion away from compose's own interpolation
+      test: ["CMD-SHELL", "cypher-shell -a bolt://localhost:7687 -u neo4j -p \"$${NEO4J_AUTH#neo4j/}\" 'RETURN 1' > /dev/null || exit 1"]
+      interval: 5s
+      timeout: 10s
+      retries: 36
+      start_period: 20s
+
+  app:
+    image: ghcr.io/fdurieux/pumllint-kg-demo:latest
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    environment:
+      KG_NEO4J_URI: bolt://neo4j:7687
+      KG_NEO4J_PASSWORD: ${KG_NEO4J_PASSWORD:-kgpoc2026}
+      KG_BROWSER_URL: ${KG_BROWSER_URL:-http://localhost:7474}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    ports:
+      - "8080:8080"
+    volumes:
+      - demo-runs:/repo/kg_experiment/results/demo-runs
+
+volumes:
+  neo4j-data:
+  demo-runs:

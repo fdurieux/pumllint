@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Governed knowledge demo</title>
+<style>
+:root{--ink:#1B2A24;--muted:#6B776F;--line:#DCE2DD;--pale:#F6F7F3;--card:#FFFFFF;--green:#2E7D5B;--amber:#C27A1F;--red:#B3261E;--teal:#087E83;
+ --ok:#DFF0E6;--warn:#FBF1E4;--bad:#F9E3E1;--none:#EEF0EE;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--pale);color:var(--ink);font:15px/1.45 "IBM Plex Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:baseline;padding:16px 24px;border-bottom:1px solid var(--line);background:var(--card)}
+header h1{font:600 20px/1.2 "Source Serif 4",Georgia,serif;margin:0}
+header .sub{color:var(--muted)}
+.chips{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--card)}
+.chip.ok{background:var(--ok);border-color:var(--green)} .chip.bad{background:var(--bad);border-color:var(--red)} .chip.warn{background:var(--warn);border-color:var(--amber)}
+main{display:grid;grid-template-columns:360px 1fr;gap:20px;padding:20px 24px;max-width:1800px}
+@media (max-width:1100px){main{grid-template-columns:1fr}}
+h2{font:600 17px/1.2 "Source Serif 4",Georgia,serif;margin:0 0 10px}
+h3{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.menu .sc{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card);cursor:pointer}
+.menu .sc.active{border-color:var(--teal);box-shadow:0 0 0 2px #DDF1F0}
+.menu .sc .t{display:flex;gap:8px;align-items:baseline}
+.menu .sc .id{font-weight:700}
+.menu .sc .line{color:var(--muted);font-size:13px;margin:4px 0 8px}
+.badge{font-size:11px;font-weight:700;letter-spacing:.5px;border-radius:6px;padding:2px 7px;margin-left:auto}
+.badge.PROCEED{background:var(--ok);color:var(--green)} .badge.QUALIFIED{background:var(--warn);color:var(--amber)} .badge.BLOCKED{background:var(--bad);color:var(--red)}
+.modes{display:flex;gap:6px}
+button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--card);border-radius:7px;padding:4px 10px;cursor:pointer;color:var(--ink)}
+button:hover:not(:disabled){border-color:var(--teal)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.small{font-size:13px;color:var(--muted)}
+.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;align-items:stretch}
+.stage{border-radius:10px;padding:10px 10px 8px;border:1px solid var(--line);min-height:96px;position:relative;font-size:13px}
+.stage .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
+.stage .ln{margin:1px 0;word-break:break-word}
+.stage .ln:first-of-type{font-weight:600}
+.stage.ok{background:var(--ok)} .stage.warn{background:var(--warn)} .stage.bad{background:var(--bad)} .stage.none{background:var(--none)}
+.stage .arm{font-size:11px;font-weight:700;color:var(--muted);margin-top:6px}
+.armstack{display:grid;grid-template-rows:1fr 1fr;gap:6px}
+.armstack .stage{min-height:0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.two{grid-template-columns:1fr}}
+.cascade-wrap svg{width:100%;height:auto;display:block}
+.cap{font-size:13px;margin-top:6px}
+.cap b.G{color:var(--teal)} .cap b.B{color:var(--red)}
+pre{background:#0f1a16;color:#e5ebe7;border-radius:10px;padding:12px;overflow:auto;font:12.5px/1.4 var(--mono);max-height:520px;margin:0}
+pre.light{background:#f1f3f1;color:var(--ink)}
+table{border-collapse:collapse;font-size:13px;width:100%}
+th,td{border-bottom:1px solid var(--line);padding:4px 8px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted)}
+td.p{background:var(--ok);text-align:center} td.f{background:var(--bad);text-align:center} td.n{background:var(--none);text-align:center;color:var(--muted)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+details{margin:6px 0} summary{cursor:pointer;font-weight:600}
+.ref{border-left:4px solid var(--amber);background:var(--warn);padding:8px 12px;border-radius:0 8px 8px 0;font-size:13px}
+.console{font:12.5px/1.4 var(--mono);white-space:pre-wrap;background:#0f1a16;color:#cfe3d8;border-radius:10px;padding:10px;max-height:240px;overflow:auto}
+.copy{float:right}
+.q{margin:4px 0 4px 16px}
+.kv{display:grid;grid-template-columns:max-content 1fr;gap:2px 12px;font-size:13px}
+a{color:var(--teal)}
+.note{font-size:13px;color:var(--muted);margin-top:6px}
+</style>
+</head>
+<body>
+<header>
+  <div><h1>Neo4j as a governed knowledge repository — the proof of concept, replayed</h1>
+  <div class="sub">Seven scenarios, a gate, two generator arms, one oracle. Record: <code>docs/neo4j-governed-knowledge-evaluation.md</code> §6, PRs #214–#218.</div></div>
+  <div class="chips" id="chips"></div>
+</header>
+<main>
+  <aside>
+    <div class="card menu" id="menu"><h2>Scenarios</h2><div id="menu-list" class="small">loading…</div>
+      <div class="note">Replay shows the committed results (instant, no store). Deterministic re-executes D1–D6 against the container's Neo4j (offline, ~5 s). Arms re-executes the two model arms with <code>--n 1</code> and needs <code>OPENAI_API_KEY</code>; it writes into a dated folder under <code>results/demo-runs/</code>, never over the record.</div>
+    </div>
+    <div class="card" id="runbox" style="margin-top:16px;display:none"><h2>Run</h2><div id="run-meta" class="small"></div><div class="console" id="run-log"></div></div>
+    <div class="card" style="margin-top:16px"><h2>The store</h2>
+      <div id="store" class="small">…</div>
+      <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One database: the store holds the scenario loaded last.</p>
+      <h3>Saved Cypher</h3><div id="cypher"></div>
+    </div>
+    <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
+  </aside>
+  <section id="report"><div class="card small">Pick a scenario.</div></section>
+</main>
+<script>
+const $ = (s, el=document) => el.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let STATE = {scenarios: [], store: null, armsEnabled: false, detEnabled: false, current: null, source: null, view: null, run: null};
+
+async function api(path, opts) {
+  const r = await fetch(path, opts);
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || r.statusText);
+  return j;
+}
+
+async function loadScenarios() {
+  const j = await api('/api/scenarios');
+  STATE.scenarios = j.scenarios; STATE.store = j.store; STATE.armsEnabled = j.arms_enabled; STATE.detEnabled = j.deterministic_enabled; STATE.run = j.run;
+  renderChips(); renderMenu(); renderStore();
+  if (j.run && j.run.status === 'running') watchRun();
+}
+
+function renderChips() {
+  const s = STATE.store;
+  $('#chips').innerHTML =
+    `<span class="chip ${s.reachable ? 'ok' : 'bad'}" title="${esc(s.error||'')}">store ${s.reachable ? 'reachable' : 'unreachable'} · ${esc(s.uri)}${s.loaded ? ' · loaded: ' + esc(s.loaded) : ''}</span>` +
+    `<span class="chip ${STATE.armsEnabled ? 'ok' : 'warn'}">arms ${STATE.armsEnabled ? 'enabled (OPENAI_API_KEY set)' : 'disabled: set OPENAI_API_KEY'}</span>`;
+}
+
+function renderMenu() {
+  $('#menu-list').innerHTML = STATE.scenarios.map(s => `
+    <div class="sc ${STATE.current === s.id ? 'active' : ''}" data-id="${s.id}">
+      <div class="t"><span class="id">${s.id}</span> <span>${esc(s.title)}</span><span class="badge ${s.gate}">${s.gate}</span></div>
+      <div class="line">${esc(s.represented)} — ${esc(s.defect)}</div>
+      <div class="modes">
+        <button class="primary" data-mode="replay" data-id="${s.id}">Replay</button>
+        <button data-mode="deterministic" data-id="${s.id}" ${STATE.detEnabled ? '' : 'disabled title="the store is unreachable"'}>Deterministic</button>
+        <button data-mode="arms" data-id="${s.id}" ${STATE.armsEnabled && STATE.detEnabled ? '' : 'disabled title="set OPENAI_API_KEY in the app\'s environment (and the store must be reachable)"'}>Arms</button>
+      </div></div>`).join('');
+  $('#menu-list').querySelectorAll('button').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); onMode(b.dataset.id, b.dataset.mode); }));
+  $('#menu-list').querySelectorAll('.sc').forEach(d => d.addEventListener('click', () => show(d.dataset.id)));
+}
+
+async function onMode(id, mode) {
+  if (mode === 'replay') return show(id);
+  try {
+    const rec = await api('/api/run', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({scenario: id, mode, n: 1})});
+    STATE.run = rec; STATE.current = id; renderMenu(); watchRun();
+  } catch (e) { alert(e.message); }
+}
+
+function watchRun() {
+  const box = $('#runbox'); box.style.display = '';
+  const tick = async () => {
+    const r = await api('/api/run'); STATE.run = r;
+    $('#run-meta').innerHTML = `<b>${esc(r.scenario)}</b> ${esc(r.mode)} → <code>${esc(r.source)}</code> · ${esc(r.status)}${r.exit_code !== null && r.exit_code !== undefined ? ' (exit ' + r.exit_code + ')' : ''}<br><code class="small">${esc(r.cmd)}</code>`;
+    const log = $('#run-log'); log.textContent = r.log_text || '(starting…)'; log.scrollTop = log.scrollHeight;
+    if (r.status === 'running') setTimeout(tick, 1000);
+    else { await loadScenarios(); renderRuns(); if (r.status === 'done') show(r.scenario, r.source); }
+  };
+  tick();
+}
+
+async function renderStore() {
+  const s = STATE.store;
+  $('#browser-link').href = s.browser + '/browser/?connectURL=bolt://neo4j@' + (new URL(s.browser).hostname) + ':7687';
+  $('#store').innerHTML = s.reachable
+    ? `Loaded: <b>${esc(s.loaded || 'nothing yet')}</b> — ${s.census.nodes} nodes, ${s.census.relationships} relationships; assertions by status: ${esc(JSON.stringify(s.census.assertions_by_status))}`
+    : `Unreachable: ${esc(s.error || '')}`;
+  const cy = await api('/api/cypher');
+  $('#cypher').innerHTML = cy.map(q => `<details><summary>${esc(q.title)}</summary><button class="copy" data-t="${esc(q.text)}">copy</button><pre class="light">${esc(q.text)}</pre></details>`).join('');
+  $('#cypher').querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => { await navigator.clipboard.writeText(b.dataset.t); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); }));
+}
+
+async function renderRuns() {
+  const j = await api('/api/runs');
+  $('#runs').innerHTML = j.runs.length ? j.runs.map(r => `<div><code>${esc(r.id)}</code> — ${r.scenarios.map(s => `<a href="#" data-sc="${s}" data-src="demo-runs/${esc(r.id)}">${s}</a>`).join(', ')} (${esc(r.modes.join(', '))})</div>`).join('')
+    : 'none yet — a deterministic or arms run writes a dated folder here';
+  $('#runs').querySelectorAll('a').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); show(a.dataset.sc, a.dataset.src); }));
+}
+
+async function show(id, source) {
+  STATE.current = id; renderMenu();
+  $('#report').innerHTML = '<div class="card small">loading…</div>';
+  try {
+    const v = await api(`/api/results/${id}` + (source ? `?source=${encodeURIComponent(source)}` : ''));
+    STATE.view = v; STATE.source = v.source; renderReport(v);
+  } catch (e) { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
+}
+
+function stageBox(st) { return `<div class="stage ${st.colour}"><div class="lbl">${esc(st.label)}</div>${st.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+function armBox(label, arm, part) { return `<div class="stage ${part.colour}"><div class="lbl">${label} · <span class="arm">${arm === 'G' ? 'G governed' : 'B baseline'}</span></div>${part.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+
+function renderReport(v) {
+  const m = v.meta; const g = v.gate;
+  const srcSel = `<select id="src">${v.sources.map(s => `<option value="${esc(s.id)}" ${s.id === v.source ? 'selected' : ''}>${esc(s.label)}</option>`).join('')}</select>`;
+  const strip = `<div class="strip">${v.stages.map(stageBox).join('')}
+    <div class="armstack">${armBox('generate', 'G', v.arms.G.generate)}${armBox('generate', 'B', v.arms.B.generate)}</div>
+    <div class="armstack">${armBox('oracle', 'G', v.arms.G.oracle)}${armBox('oracle', 'B', v.arms.B.oracle)}</div></div>`;
+  const strip2 = v.stage2 ? `<h3>S6 stage 2 — the source change, and what it invalidates</h3><div class="strip">${v.stage2.stages.map(stageBox).join('')}</div>
+    <div class="small" style="margin-top:6px">Suspect <code>Derived</code> artefact: ${v.stage2.suspect_derived.length ? v.stage2.suspect_derived.map(d => `<code>${esc(d.id)}</code> suspect=${d.suspect}`).join(', ') : 'none registered in this source (deterministic mode creates no Derived node; the record\'s S6 and the re-run do)'}.
+    Invalidated: ${v.stage2.invalidated.map(x => `<code>${esc(x.id)}</code>${x.derived && x.derived.length ? ' → used by ' + x.derived.map(esc).join(', ') : ''}`).join('; ')}.</div>` : '';
+  const sys = v.systemic;
+  const cascade = `<div class="two">
+     <div class="cascade-wrap">${v.cascade.G}<div class="cap"><b class="G">G, governed:</b> ${esc(sys.G.note)}</div></div>
+     <div class="cascade-wrap">${v.cascade.B}<div class="cap"><b class="B">B, baseline:</b> ${esc(sys.B.note)}</div></div></div>
+     <div class="note">Entry: ${esc(sys.family)}. Placement is the demo's reading of the record's §6 onto the model's reduced knowledge view (Legible v0.3, five knowledge nodes, nine edges, four levers); the record itself does not map scenarios onto the model. Solid lines: measured, bounded; dashed: hypothesis; amber: the arrow reduces its target.</div>
+     <div class="ref" style="margin-top:10px"><b>${esc(v.reference.title)}.</b> ${esc(v.reference.text)}</div>`;
+  const runsOf = arm => v.arms[arm].runs;
+  const oracle = (arm) => {
+    const rs = runsOf(arm); if (!rs.length) return `<p class="small">no ${arm} run in this source</p>`;
+    return `<table><thead><tr><th>suite scenario</th>${rs.map(r => `<th>${arm}${r.run}</th>`).join('')}</tr></thead><tbody>
+      ${v.suite_order.map(s => `<tr><td>${esc(s)}</td>${rs.map(r => { const p = r.per_scenario[s]; const cls = r.code ? (p ? 'p' : 'f') : 'n'; return `<td class="${cls}">${r.code ? (p ? '✓' : '✗') : '—'}</td>`; }).join('')}</tr>`).join('')}
+      <tr><th>suite</th>${rs.map(r => `<th>${esc(r.suite || '—')}</th>`).join('')}</tr>
+      <tr><th>decision</th>${rs.map(r => `<td>${esc(r.decision || (r.api_error ? 'api error' : '—'))}</td>`).join('')}</tr>
+      <tr><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
+      <tr><th>refs resolvable (M5)</th>${rs.map(r => `<td>${r.refs && r.refs.share !== null ? r.refs.resolved + '/' + r.refs.total : '—'}</td>`).join('')}</tr>
+      </tbody></table>`;
+  };
+  const qa = (arm) => runsOf(arm).map(r => `<details><summary>${arm}${r.run}: ${esc(r.decision || 'api error')} — ${r.questions.length} question(s), ${r.assumptions.length} assumption(s), ${r.claims_n} claim(s)</summary>
+      ${r.api_error ? `<p class="small">api error: ${esc(r.api_error)}</p>` : ''}
+      ${r.questions.length ? '<div class="small">Questions</div>' + r.questions.map(q => `<div class="q">• ${esc(q)}</div>`).join('') : ''}
+      ${r.assumptions.length ? '<div class="small">Assumptions</div>' + r.assumptions.map(a => `<div class="q">• ${esc(a.text || a)} <code>${esc(a.ref || '')}</code></div>`).join('') : ''}
+    </details>`).join('') || `<p class="small">no ${arm} run in this source</p>`;
+  const codeTabs = ['G', 'B'].flatMap(arm => runsOf(arm).filter(r => r.code_text).map(r => ({k: arm + r.run, t: r.code_text})));
+  const code = codeTabs.length ? `<div class="tabs">${codeTabs.map((c, i) => `<button data-k="${c.k}" class="${i === 0 ? 'on' : ''}">${c.k}</button>`).join('')}</div><pre id="code"></pre>` : '<p class="small">no generated code in this source (abstentions produce none)</p>';
+  $('#report').innerHTML = `
+    <div class="card">
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">${v.scenario} — ${esc(m.title)}</h2><span class="badge ${g.verdict}">${g.verdict}</span><span class="small" style="margin-left:auto">source: ${srcSel}</span></div>
+      <div class="small" style="margin:6px 0 2px"><b>Planted:</b> ${esc(m.plant)}</div>
+      <div class="small"><b>Gate:</b> ${esc(g.why)}${g.conflicts.length ? ' · conflicts: ' + g.conflicts.map(c => esc(c.id)).join(', ') : ''}</div>
+      <div class="small"><b>Required keys:</b> ${v.required_keys}, by level ${esc(JSON.stringify(v.levels))}${v.d5 ? ` · <b>D5 three-valued:</b> ${Object.entries(v.d5).map(([k, x]) => `${esc(k)} → ${esc(x.answer)}`).join('; ')}` : ''}</div>
+      <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle</h3>${strip}${strip2}
+      <h3>Systemic model — where the defect enters, and where it was stopped</h3>${cascade}
+    </div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The gate's evidence bundle (what arm G received; ${v.bundle ? v.bundle.length.toLocaleString() : 0} characters${v.prompt_lengths.B ? `; arm B's documents ${v.prompt_lengths.B.toLocaleString()}` : ''})</h3>
+      ${v.bundle ? `<details><summary>show bundle_G.txt</summary><pre>${esc(v.bundle)}</pre></details>` : '<p class="small">no bundle in this source</p>'}</div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The oracle's verdict, per suite scenario and run</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${oracle('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${oracle('B')}</div></div>
+      <p class="note">Targets the scenario plants for: ${esc(JSON.stringify(v.arms.G.summary.targets))} (G), ${esc(JSON.stringify(v.arms.B.summary.targets))} (B). Outage status returned: ${esc(JSON.stringify(v.arms.B.summary.outage))} (B).</p></div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">Generated code, per run</h3>${code}</div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">What the arms asked and assumed</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${qa('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${qa('B')}</div></div></div>`;
+  $('#src').addEventListener('change', e => show(v.scenario, e.target.value));
+  if (codeTabs.length) {
+    const showCode = k => { $('#code').textContent = codeTabs.find(c => c.k === k).t; $('#report').querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.k === k)); };
+    $('#report').querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showCode(b.dataset.k)));
+    showCode(codeTabs[0].k);
+  }
+}
+
+loadScenarios().then(() => { renderRuns(); show('S1'); }).catch(e => { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; });
+</script>
+</body>
+</html>

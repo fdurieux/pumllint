@@ -1,0 +1,13 @@
+# Development override, applied automatically by `docker compose up` run in
+# this directory: build the app image from this checkout instead of pulling
+# it, and write demo runs into the checkout's results/demo-runs/ (ignored by
+# git) so they survive `docker compose down -v`. Pass `-f docker-compose.yml`
+# alone to skip it and use the registry image.
+services:
+  app:
+    build:
+      context: ../..
+      dockerfile: kg_experiment/demo/Dockerfile
+    image: pumllint-kg-demo:local
+    volumes:
+      - ../results/demo-runs:/repo/kg_experiment/results/demo-runs
