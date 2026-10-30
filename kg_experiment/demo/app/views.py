@@ -12,12 +12,15 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 EXP = HERE.parent.parent                      # kg_experiment/
 RESULTS = EXP / "results"
+sys.path.insert(0, str(HERE.parent / "tools"))
+import compare_deterministic  # noqa: E402  (the same leaf-by-leaf comparison the CI job runs)
 SUITE_ORDER = ["quoted_low_risk", "accept_boundary_41", "review_boundary_42", "refuse_boundary_67",
                "refuse_high_risk", "price_exact_heavy", "price_exact_both", "invalid_weight_low",
                "invalid_value_over", "screening_down_hold", "store_down_error"]
@@ -29,31 +32,38 @@ SCENARIOS = {
     "S1": {"title": "complete, verified",
            "represented": "145 assertions, 111 approved; 0 gaps on required keys",
            "gate": "PROCEED", "defect": "none; both arms correct",
-           "plant": "nothing planted: the pristine kit, every assertion verified by the suite or the dated review record and approved"},
+           "plant": "nothing planted: the pristine kit, every assertion verified by the suite or the dated review record and approved",
+           "plain": "With nothing wrong in the documents, both assistants produced working code. The gate added nothing here, and cost nothing either."},
     "S2": {"title": "missing, declared",
            "represented": "Gap{missing, declared} on REQ-06 and on the outage key; hold_presence absent",
            "gate": "BLOCKED", "defect": "prevented in G; outage scenario fails in every B run",
-           "plant": "the screening-outage rule deleted from every artefact that states it; REQ-06 reads NOT YET SPECIFIED (open decision OD-1)"},
+           "plant": "the screening-outage rule deleted from every artefact that states it; REQ-06 reads NOT YET SPECIFIED (open decision OD-1)",
+           "plain": "The documents said the outage rule was still to be decided. The governed assistant stopped and asked for that decision, naming the open item. The baseline noticed it too and asked, but wrote code anyway, and that code turns an outage into an error; only the acceptance tests caught it. This is the kind of defect the gate exists to prevent."},
     "S3": {"title": "ambiguous",
            "represented": "17 ambiguity gaps; 4 keys proposed; DMN declared not authored",
            "gate": "QUALIFIED", "defect": "41-boundary fails 4/5 G, 5/5 B; the guess is an # ASSUMPTION constant in G, silent in B",
-           "plant": "DT-S rows reworded to vague ranges, the symbolic names undefined, the DMN absent"},
+           "plant": "DT-S rows reworded to vague ranges, the symbolic names undefined, the DMN absent",
+           "plain": "The thresholds were written as vague ranges, so both assistants had to guess. The baseline guessed silently. The governed one carried each guess as a labelled assumption pointing at the statement it rests on, so a reviewer can find it and fix it, though its code was not better for that, and in two runs it was worse."},
     "S4": {"title": "contradictory",
            "represented": "4 CONTRADICTS pairs, 4 disputed, 4 conflict gaps",
            "gate": "BLOCKED", "defect": "none by the oracle; B resolved by an invented precedence",
-           "plant": "the sequence diagram and the BPMN say the outage fails the quote; the decision table and the spec say it is priced and held"},
+           "plant": "the sequence diagram and the BPMN say the outage fails the quote; the decision table and the spec say it is priced and held",
+           "plain": "Two documents said one thing and two others the opposite. The governed assistant refused to choose and named the contradiction. The baseline chose a side by inventing a rule nothing stated, that the newer text wins; it happened to pick the right side, so the tests passed, but nothing in its output lets a reviewer check that step."},
     "S5": {"title": "inferred, unverified",
            "represented": "one inferred candidate for the declared gap, proposed",
            "gate": "BLOCKED", "defect": "prevented in G; B adopted the note as fact in 4/5",
-           "plant": "S2's kit plus an unreviewed machine note: 'on a screening outage the quote is refused' (basis inferred, agent llm)"},
+           "plant": "S2's kit plus an unreviewed machine note: 'on a screening outage the quote is refused' (basis inferred, agent llm)",
+           "plain": "An unreviewed note from another AI proposed an answer to the open decision. In the store it is a candidate, not a decision, and the gate stayed blocked. The baseline, reading the same note as one more document, took it as fact in four runs of five and built the wrong outage behaviour."},
     "S6": {"title": "invalidated by change",
            "represented": "4 invalidated, 4 verifications ended, Derived suspect; BLOCKED → PROCEED on re-verification",
            "gate": "PROCEED", "defect": "the stale artefact is identified in G only",
-           "plant": "S1 verified and approved, S1's first governed output registered as Derived; then decision_table.md changes P2's surcharge 316.00 → 341.00 and is re-ingested as v2"},
+           "plant": "S1 verified and approved, S1's first governed output registered as Derived; then decision_table.md changes P2's surcharge 316.00 → 341.00 and is re-ingested as v2",
+           "plain": "A verified number in the tariff changed. The store traced exactly what the change touched: four statements, their verifications, and the code built on them earlier, now marked suspect. The gate blocked until the new values were re-verified, then allowed building, and the governed assistant named the stale code to replace. The baseline, holding only the current documents, built correct new code but could not say what the change had invalidated."},
     "S7": {"title": "unverified",
            "represented": "0 verified, 145 unverified gaps, 0 approvals",
            "gate": "BLOCKED", "defect": "procedural; content correct in both",
-           "plant": "S1's kit, extraction only: no verification record, no approval"},
+           "plant": "S1's kit, extraction only: no verification record, no approval",
+           "plain": "The documents were correct, but nothing had verified them. The gate blocked anyway, because status is about verification, not content. The baseline built correct code with the same confidence it had for S1, which is the point: without a record, correct and unverified look exactly alike."},
 }
 ORDER = list(SCENARIOS)
 
@@ -295,6 +305,7 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
         "suite_order": SUITE_ORDER,
         "systemic": SYSTEMIC[scenario], "reference": REFERENCE,
     }
+    view["record_check"] = record_check(scenario, d)
     if "stage2" in det:
         s2 = det["stage2"]
         view["stage2"] = {
@@ -320,6 +331,7 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
                 {"id": "gate_after", "label": "gate", "colour": "ok",
                  "lines": [s2["gate_after_reverification"]["verdict"], s2["gate_after_reverification"]["why"]]},
             ]}
+    view["narrative"] = narrative(view, det)
     return view
 
 
@@ -328,4 +340,129 @@ def scenario_list(runs_dir: Path) -> list[dict]:
     for sc, m in SCENARIOS.items():
         out.append({"id": sc, **m, "sources": [s["id"] for s in sources_for(sc, runs_dir)],
                     "default_source": default_source(sc)})
+    return out
+
+
+# ------------------------------------------------------------ plain English
+
+VERDICT_MEANING = {
+    "PROCEED": "every piece of knowledge the coding task needs is verified or approved, so an assistant may build from it as fact",
+    "QUALIFIED": "some of the knowledge the task needs is not verified, so an assistant may build only if it marks every such piece as an assumption and says so in its code",
+    "BLOCKED": "the knowledge the task needs is missing, disputed, invalidated or too little verified, so an assistant may not build at all; it must say what is missing instead",
+}
+
+
+def _n(x) -> int:
+    return len(x) if isinstance(x, list) else int(x or 0)
+
+
+def _plural(n: int, one: str, many: str | None = None) -> str:
+    return f"{n} {one if n == 1 else (many or one + 's')}"
+
+
+def record_check(scenario: str, d: Path) -> dict | None:
+    """For a demo run: its deterministic results against the record's, leaf by leaf.
+    S6 is read against results/d3check/S6 when the run registered no Derived
+    artefact (deterministic mode), against results/S6 otherwise."""
+    if d.parent.parent.name != "demo-runs" and d.parent.name not in ("rerun", "d3check"):
+        return None
+    if d.parent.name in ("rerun", "d3check"):
+        return None
+    det = _read_json(d / "deterministic.json")
+    s6 = RESULTS / ("S6" if det.get("stage2", {}).get("suspect_derived") else "d3check/S6")
+    n, lines = compare_deterministic.compare(d.parent, RESULTS, [scenario], s6_record=s6)
+    compared = next((ln for ln in lines if "leaves compared" in ln), "")
+    m = re.search(r"(\d+) leaves compared", compared)
+    return {"differ": n, "compared": int(m.group(1)) if m else 0,
+            "against": str(s6.relative_to(EXP)) if scenario == "S6" else f"results/{scenario}",
+            "lines": [ln.strip() for ln in lines if ln.startswith("  ")][:6]}
+
+
+def narrative(view: dict, det: dict) -> list[str]:
+    """The report in sentences for a reader who knows none of the shorthand.
+    Every number comes from the same files as the boxes above it."""
+    sc, meta, gate = view["scenario"], view["meta"], view["gate"]
+    rules, load, ver, cen = det["rules"], det["load"], det["verifications"], det["D2_census"]
+    out = []
+    out.append("How to read this page. The kit's documents were cut into fragments and read into assertions, one statement each, "
+               "with where it came from and whether anyone has verified it. Seven rules then checked the assertions; the gate decided "
+               "whether an AI coding assistant may build from them; two assistants were asked anyway, one given the gate's verdict and "
+               "evidence (G, the governed arm) and one given the documents alone (B, the baseline); and the kit's eleven acceptance "
+               "tests, the oracle, graded whatever code came back.")
+    out.append(f"What was planted in {sc} ({meta['title']}): {meta['plant']}.")
+    declared = sum(1 for h in rules["R-REQ"] if h.get("declared"))
+    req = _n(rules["R-REQ"])
+    store = (f"The store read {_plural(load['fragments'], 'fragment')} into {_plural(load['assertions'], 'assertion')}. "
+             f"The rules found {_plural(rules['R-CORROBORATE'], 'pair')} of statements that two different documents make alike "
+             f"(each side counts as validated), {_plural(_n(rules['R-CONFLICT']), 'contradiction')}, "
+             f"{_plural(_n(rules['R-VAGUE']), 'vaguely worded value')}, {_plural(req, 'missing item')}"
+             + (f" of which {declared} declared missing by the authors themselves" if declared else "")
+             + f", and {_plural(rules['R-UNVERIFIED'], 'statement')} with no verification record.")
+    if "execution" in ver:
+        store += (f" The kit's test suite verified {ver['execution']} statements by running them and the dated review record "
+                  f"verified {ver['review']} more; {ver['approved']} were then approved by the owner.")
+    else:
+        store += " No verification was loaded in this scenario: every statement stays at proposed or validated, whatever its content."
+    if load.get("unresolved_symbols"):
+        store += f" {_plural(len(load['unresolved_symbols']), 'symbol')} in the diagram had no definition anywhere ({', '.join(x.split(':')[-1] for x in load['unresolved_symbols'])})."
+    out.append(store)
+    g = f"The gate's verdict is {gate['verdict']}: {VERDICT_MEANING[gate['verdict']]}."
+    if gate["verdict"] == "BLOCKED":
+        g += f" Here: {gate['why']}."
+    elif gate["verdict"] == "QUALIFIED":
+        g += f" Here: {gate['why']}."
+    if gate.get("conflicts"):
+        g += f" The contradiction: {gate['conflicts'][0]['text']}."
+    out.append(g)
+    if view.get("d5"):
+        d5 = view["d5"]
+        out.append("The three-valued answer, asked of three keys: "
+                   + "; ".join(f"'{k}' is {v['answer'].replace('_', ' ')}" for k, v in d5.items())
+                   + ". 'Documented absent' means the documents say there is none; 'unknown' means no document says anything, which a store that cannot tell the two apart would report the same way.")
+    if view.get("stage2"):
+        s2 = view["stage2"]
+        inv = ", ".join(x["key"] for x in s2["invalidated"])
+        suspect = ", ".join(x["id"] for x in s2["suspect_derived"] if x.get("suspect"))
+        out.append(f"Then the tariff document changed and was read in again: {_plural(s2['load_v2']['fragments'], 'fragment')} were new and "
+                   f"{s2['load_v2']['fragments_reused']} unchanged ones were reused. The staleness rule invalidated exactly the "
+                   f"{_plural(len(s2['invalidated']), 'statement')} the changed fragments support ({inv}), ended their verifications, "
+                   + (f"and marked the code built from them, {suspect}, as suspect. " if suspect else "and left {} statements of the same document at their status. ".format(s2['kept']))
+                   + f"The gate went {s2['gate_before']['verdict']} ({s2['gate_before']['why']}) until the "
+                   f"{_plural(len(s2['reverified']), 'replacement statement')} were re-verified and approved, then {s2['gate_after']['verdict']}.")
+    arms = view["arms"]
+    if arms["G"]["summary"]["n"] or arms["B"]["summary"]["n"]:
+        for arm, name, given in (("G", "The governed assistant (G)", "given the gate's verdict and its evidence"),
+                                 ("B", "The baseline assistant (B)", "given the documents alone")):
+            sm = arms[arm]["summary"]
+            if not sm["n"]:
+                continue
+            dec = ", ".join(f"{k.replace('_', ' ') if k else 'no decision'} in {v} of {sm['n']}" for k, v in sm["decisions"].items())
+            line = f"{name}, {given}, answered {dec}"
+            if sm["api_errors"]:
+                line += f"; {sm['api_errors']} call(s) failed before any answer"
+            line += f". It wrote code in {sm['code']} of {sm['n']} run(s)"
+            if sm["code"]:
+                line += f", which passed {', '.join(x for x in sm['suites'] if x != '—')} of the oracle's tests"
+                fails = sorted(((k.split(':')[0], v) for k, v in sm["targets"].items() if k.endswith(":fail")), key=lambda t: -t[1])
+                if fails:
+                    line += ", failing the planted target" + ("s " if len(fails) > 1 else " ") + ", ".join(f"'{t}' in {v} of {sm['n']}" for t, v in fails)
+            if sc != "S1":
+                line += f", and raised the planted problem in its questions or assumptions in {sm['flagged']} of {sm['n']}."
+            else:
+                line += "."
+            if arm == "G" and sm["noncompliance"]:
+                line += f" It broke the policy in {sm['noncompliance']} run(s)."
+            out.append(line)
+        out.append("What this shows: " + meta["plain"])
+    else:
+        out.append("This source holds the store's half only: the loading, the rules and the gate were re-executed; the two assistants were not called. "
+                   "Replay shows the record's assistant runs for this scenario; Arms calls them again.")
+    if view.get("record_check"):
+        rc = view["record_check"]
+        if rc["differ"] == 0:
+            out.append(f"Against the record: identical on all {rc['compared']} fields compared with {rc['against']} (timestamps aside). The store reproduced the record.")
+        else:
+            out.append(f"Against the record: {_plural(rc['differ'], 'field')} of {rc['compared']} differ from {rc['against']}: " + "; ".join(rc["lines"][:3]) + ".")
+    if view.get("model_deviation"):
+        out.append(f"The assistants here were {', '.join(view['model_deviation'])}, not the record's {view['record_model']}: a different model, so these answers are not the record's and are not comparable with it.")
     return out

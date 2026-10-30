@@ -19,7 +19,11 @@ repository; the demo works offline from the first start.
 contradictory, inferred, invalidated by a change, unverified), each with
 three buttons.
 
-**A report view** of the selected scenario, in two pictures:
+**A report view** of the selected scenario. It opens with *In plain English*,
+a few sentences written from the same result files that say what was
+planted, what the store found, what the gate's verdict means, what each
+assistant did and what that shows, and, for a re-run, whether its numbers
+match the record. Then two pictures:
 
 - the *pipeline*, from reading the files to grading the generated code,
   each stage coloured by its outcome and carrying its numbers: how many

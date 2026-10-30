@@ -43,6 +43,8 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .banner.running{border-color:var(--amber);background:var(--warn)} .banner.done{border-color:var(--green);background:var(--ok)} .banner.failed{border-color:var(--red);background:var(--bad)}
 .alert{border-left:4px solid var(--red);background:var(--bad);padding:10px 14px;border-radius:0 8px 8px 0;font-size:13px;margin:8px 0 12px}
 .alert.warn{border-left-color:var(--amber);background:var(--warn)}
+.plain{background:var(--pale);border:1px solid var(--line);border-radius:10px;padding:8px 14px;margin:10px 0 4px}
+.plain summary{font-weight:600;cursor:pointer} .plain p{margin:7px 0;font-size:14px;line-height:1.55;max-width:90ch} .plain p.guide{color:var(--muted);font-size:13px}
 .toggle{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0 12px;font-size:13px}
 .toggle label{display:block;margin:4px 0;cursor:pointer} .toggle input[type=text]{font:inherit;font-size:12.5px;width:150px;border:1px solid var(--line);border-radius:6px;padding:2px 6px;font-family:var(--mono)}
 .toggle .why{color:var(--muted);margin-left:22px}
@@ -298,6 +300,7 @@ function renderReport(v) {
       <div class="small" style="margin:6px 0 2px"><b>Planted:</b> ${esc(m.plant)}</div>
       <div class="small"><b>Gate:</b> ${esc(g.why)}${g.conflicts.length ? ' · conflicts: ' + g.conflicts.map(c => esc(c.id)).join(', ') : ''}</div>
       <div class="small"><b>Required keys:</b> ${v.required_keys}, by level ${esc(JSON.stringify(v.levels))}${v.d5 ? ` · <b>D5 three-valued:</b> ${Object.entries(v.d5).map(([k, x]) => `${esc(k)} → ${esc(x.answer)}`).join('; ')}` : ''}</div>
+      <details class="plain" open><summary>In plain English</summary>${v.narrative.map((t, i) => `<p class="${i === 0 ? 'guide' : ''}">${esc(t)}</p>`).join('')}</details>
       ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
       <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle</h3>${strip}${strip2}

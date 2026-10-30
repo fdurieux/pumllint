@@ -171,3 +171,21 @@ def test_arms_model_defaults_to_the_records_and_is_overridable():
         assert v["model_deviation"] == ["gpt-5.5-2026-04-01"] and v["arms"]["G"]["runs"][0]["model"] == "gpt-5.5-2026-04-01"
         assert any("gpt-5.5-2026-04-01" in s_["label"] for s_ in v["sources"])
     assert views.build("S1", "record", NO_RUNS)["model_deviation"] == []
+
+
+def test_plain_english_narrative_is_built_from_the_files():
+    for sc in views.ORDER:
+        v = views.build(sc, views.default_source(sc), NO_RUNS)
+        text = " ".join(v["narrative"])
+        assert views.SCENARIOS[sc]["plain"] in text, sc
+        assert "None" not in text and "{" not in text, (sc, text[:200])
+        assert f"The gate's verdict is {v['gate']['verdict']}" in text, sc
+    assert "invalidated exactly the 4 statements" in " ".join(views.build("S6", "rerun", NO_RUNS)["narrative"])
+    # a deterministic demo run is checked against the record, in words
+    import tempfile, shutil
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td) / "demo-runs" / "2026-10-30-1800" / "S4"; d.mkdir(parents=True)
+        shutil.copy(RESULTS / "S4" / "deterministic.json", d / "deterministic.json")
+        v = views.build("S4", "demo-runs/2026-10-30-1800", Path(td) / "demo-runs")
+        assert v["record_check"]["differ"] == 0 and v["record_check"]["compared"] > 100
+        assert "identical on all" in " ".join(v["narrative"]) and "assistants were not called" in " ".join(v["narrative"])
