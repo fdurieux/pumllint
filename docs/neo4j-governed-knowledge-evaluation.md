@@ -68,9 +68,14 @@ each; load-bearing facts are cited at the source below, and a claim that
 rests on a secondary rendering says so. Evidence classes are tagged
 throughout: [capability] a documented product capability;
 [standard] normative or spec text; [measured] a published measurement;
-[measured here] this PoC; [proposal] an architectural design of this
-note; [hypothesis] a claim needing validation; [unknown] not
-established. Schema validity, ontology conformity, traceability and
+[measured here] this PoC; [measured, this repository] a measurement by
+one of this repository's earlier experiments; [industry data] a
+practitioner survey or vendor dataset, not peer-reviewed;
+[tool-documented] a tool's own documentation of itself; [proposal] an
+architectural design of this note; [proposal, executed] such a design
+that the PoC built and ran; [standing settlement] a decision recorded
+in this repository's ROADMAP; [hypothesis] a claim needing validation;
+[unknown] not established. Schema validity, ontology conformity, traceability and
 human approval are never equated with factual correctness; where the
 note says "verified" it names the independent evidence.*
 
