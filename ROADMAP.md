@@ -8599,6 +8599,22 @@ list and license posture live in § Settled questions.
     the IEAM's direct ARIS-to-Neo4j projection to read a register tag;
     report coverage with its denominator and exceptions, never gate the
     pilot on a percentage (`docs/ea-stack-in-the-sdlc.md`).
+  - *2026-10-30, later: the repository exists.* The maintainer created
+    `github.com/fdurieux/ieam-register`, public, and the session pushed
+    the scaffold as its first commit (`9fa43df`, 62 files): the seven
+    taxonomy directories with the CargoQuote pilot slice (27 nodes, 28
+    links, one expiring exception), `metamodel/`, `glossary/`,
+    `mapping/matrix.toml` with every row at `unverified`, two decision
+    records, the kit's export manifest (ten documents, sha256 at a
+    pumllint commit), stdlib `tools/` (checker, reconcile, impact,
+    inventory), eleven tests and the `register` workflow, green on its
+    first run; the checker reads the slice clean with three advisory
+    warnings, the impact walk from the QuoteAPI module reaches the
+    product and the journey step, the inventory lists three approved
+    capabilities. A `CLAUDE.md` with the house rules followed as its
+    second commit. The GitHub App had to be installed on the new
+    repository before the push; the session cannot change a
+    repository's visibility or settings.
   - *Re-litigate on:* the register's pilot answering its three questions
     with a tested ARIS export route, which would make the inventory
     hand-off (`caps.txt`, `trace -f json`) a measured convention; or an

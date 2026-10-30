@@ -5,7 +5,11 @@
 > approach of 30 October 2026 (an enterprise document, not reproduced here). The companion
 > opportunity canvas and SWOT is a private page of the maintainer's account
 > (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9); this file is the record, the page a view.
-> The repository it proposes, `ieam-register`, does not exist yet; nothing in pumllint changes.
+> The repository it proposes exists since later the same day:
+> https://github.com/fdurieux/ieam-register, public, first commit `9fa43df` (62 files: the
+> structure, the metamodel, the checker, eleven tests, the CI job and the CargoQuote pilot slice,
+> 27 nodes and 28 links; the `register` workflow green on its first run) and a `CLAUDE.md` with
+> its house rules in the second. Nothing in pumllint changes.
 >
 > **Two instances, one structure (maintainer's clarification, 2026-10-30).** The GitHub
 > `ieam-register` is a public test case: the structure, the metamodel, the checker and the CI,
