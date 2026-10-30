@@ -1,0 +1,18 @@
+# Build context is the repository root; keep out what the demo never reads.
+.git
+.github
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.venv
+venv
+corpus
+build
+dist
+*.egg-info
+experiment_results
+c4_experiment_results
+pilot_results
+execution_results
+talks
+kg_experiment/results/demo-runs

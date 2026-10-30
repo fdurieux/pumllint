@@ -8309,3 +8309,79 @@ list and license posture live in § Settled questions.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab and docs only: no product code, golden, schema or score moved.*
+
+- **The governed-repository demo container (2026-10-30): the 2026-10-30
+  proof of concept as a two-container `docker compose` stack, replaying
+  the record offline and re-running it against a live Neo4j 5.26; lab,
+  tooling and docs only, nothing on the product path, N1–N5 untouched,
+  nothing queued, no checkbox.** Asked by the maintainer: a self-contained
+  demo of the Neo4j PoC (PRs #214–#218) with a menu of the seven
+  scenarios, three modes each, a report view on the pipeline and on the
+  systemic model, and the store reachable in Neo4j Browser with saved
+  queries. Built under `kg_experiment/demo/`:
+  [kg_experiment/demo/README.md](kg_experiment/demo/README.md).
+  - *Scope, as settled with the maintainer.* The seven PoC scenarios
+    S1–S7 only; the rebuild experiments under `recreate_experiment/`
+    have no graph representation and are not on the menu, the one
+    exception being the degradation test's figures (6 of 15 planted
+    defects reached the code, all 6 concealed by the arm's own suite),
+    quoted as the no-governance reference on the systemic view. Three
+    modes: *replay* (the committed results, no store), *deterministic*
+    (`harness/run.py --deterministic --scenarios <S>` against the
+    container's store, offline, ~5 s), *arms* (`--n 1`, disabled until
+    `OPENAI_API_KEY` is set); a re-run writes
+    `kg_experiment/results/demo-runs/<date-time>/` (git-ignored), never
+    `results/`. Community edition serves one database: load on
+    selection, wiping first, as the harness does.
+  - *The systemic view reuses the deck's drawing.* The Legible impact
+    model v0.3 is vendored byte for byte (`demo/model/model.json`,
+    `SOURCE.md` names repository, path, version, commit `099a737` and
+    digest; never fetched at build time); the deck tool
+    `recreate_experiment/knowledge-transfer/deck/tools/gen_cascade_slide.py`
+    was refactored into an importable `render()` with its layout tables
+    at module level, its committed slide regenerating byte-identically,
+    and `demo/app/cascade.py` imports those tables rather than drawing a
+    second view. Each scenario's placement (entry node, path, stop) is
+    the demo's reading of the record's §6 onto the model and is labelled
+    as such on the page; the record does not map scenarios to the model.
+  - *Harness unchanged in substance, proven.* The bolt URL was already
+    environment-driven (`KG_NEO4J_URI`); the one edit is `arms.py`
+    reading `OPENAI_API_KEY` from the environment (the scored run's
+    placeholder key only worked behind the session proxy). A full
+    `--deterministic` run against a local Neo4j 5.26.0 community server
+    compared with the record by `demo/tools/compare_deterministic.py`:
+    S1–S5 and S7 identical on every leaf (timestamps, SHACL text samples
+    and the store-order number on conflict-gap ids excepted); S6
+    identical against `results/d3check/S6`, the record's own
+    deterministic-mode run — `results/S6` was written by the scored run,
+    whose stage 2 registers S1's first governed output as a `Derived`
+    node (one node, 88 `USED_ASSERTION` edges, the suspect flag) that
+    `--deterministic` does not create. Nothing under `results/` changed.
+  - *CI, one job gated on paths* (`.github/workflows/kg-demo.yml`): on a
+    PR touching `kg_experiment/demo/**`, the harness or the kit, build
+    the image, start the stack, check the report endpoint, load S1
+    deterministically through the app and compare it with the record,
+    tear down; on push to `main`, publish
+    `ghcr.io/fdurieux/pumllint-kg-demo:<short-sha>` and `:latest`
+    (`packages: write`), which the compose file references so a laptop
+    or an EC2 instance pulls instead of building
+    (`docker-compose.override.yml` carries the local build). A package
+    first published by the workflow may start private; making it public
+    is the owner's click in the package settings.
+  - *Dependency footprint kept.* The app is `http.server` plus one page;
+    the image installs the record's §12 versions (neo4j 6.4.1, rdflib
+    7.6.0, pyshacl 0.40.2, openai 3.41.0, PyYAML) and `pip install -e .`
+    of this repository. `tests/test_kg_demo.py` (stdlib) replays every
+    scenario, renders every cascade, pins the vendored model to its
+    `SOURCE.md`, regenerates the deck slide, and keeps the Dockerfile's
+    pins equal to §12's.
+  - *Not done here, and why.* The stack was not started on this
+    session's machine (a cloud container with the docker client and no
+    daemon): the server was exercised directly on the host against a
+    local Neo4j 5.26.0 (replay, deterministic re-run through the API,
+    arms refused without a key, Playwright screenshots), and the CI job
+    is the first `docker compose up`. The maintainer's Mac is the
+    first-start check the brief named.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
+
+  *Lab, tooling and docs only: no product code, golden, schema or score moved.*

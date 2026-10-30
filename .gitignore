@@ -73,3 +73,6 @@ c4_experiment_results/adv_wave/*
 !c4_experiment_results/adv_wave/gen_*.py
 !c4_experiment_results/adv_wave/sealed/
 !c4_experiment_results/adv_wave/sealed/**
+
+# kg_experiment demo: re-runs land in dated folders here, never over the record
+kg_experiment/results/demo-runs/
