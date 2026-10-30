@@ -8410,6 +8410,15 @@ list and license posture live in § Settled questions.
     record's reading beside a demo run. The arms path itself was
     re-proven through the session proxy (S1, both arms 11/11). Page and
     view only.
+  - *2026-10-30, later (#227):* with credits in place the governed arm
+    was refused for size — the record's year-old model gets 10,000
+    tokens per minute on a new organisation, the governed prompt is
+    about 15,000 — so the page gained an *Arms call* toggle: the
+    record's model (like-for-like) or another (default `gpt-5.5`), the
+    choice reaching the harness as `KG_ARMS_MODEL` with the record's
+    model as default. Every run names the model that answered; a run
+    by another model is marked a deviation in red and its numbers are
+    not comparable with the record's. The record itself is untouched.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
