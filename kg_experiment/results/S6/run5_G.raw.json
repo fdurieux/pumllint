@@ -1,0 +1,150 @@
+{
+  "decision": "generate",
+  "questions": [
+    "Earlier implementation S1:G:run1 used invalidated assertions A:dt:P2|threshold@v1, A:dt:P2|surcharge@v1 and A:dt:P3|order@v1 and is explicitly marked suspect; it must not be reused as-is. Please confirm that any deployment still running that module will be replaced by an implementation regenerated against the current bundle (this one), rather than attempting to validate S1:G:run1 for continued use."
+  ],
+  "assumptions": [],
+  "claims": [
+    {
+      "text": "shipper_id must be present and non-empty in the request.",
+      "ref": "A:dt:shipper_id|present@v1"
+    },
+    {
+      "text": "weight_kg must satisfy 3 <= weight_kg <= 19400.",
+      "ref": "A:dt:weight_kg|min@v1"
+    },
+    {
+      "text": "weight_kg must satisfy 3 <= weight_kg <= 19400.",
+      "ref": "A:dt:weight_kg|max@v1"
+    },
+    {
+      "text": "distance_km must satisfy 25 <= distance_km <= 7150.",
+      "ref": "A:dt:distance_km|min@v1"
+    },
+    {
+      "text": "distance_km must satisfy 25 <= distance_km <= 7150.",
+      "ref": "A:dt:distance_km|max@v1"
+    },
+    {
+      "text": "declared_value must satisfy 50 <= declared_value <= 83000.",
+      "ref": "A:dt:declared_value|min@v1"
+    },
+    {
+      "text": "declared_value must satisfy 50 <= declared_value <= 83000.",
+      "ref": "A:dt:declared_value|max@v1"
+    },
+    {
+      "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+      "ref": "A:dt:invalid_request|behaviour@v1"
+    },
+    {
+      "text": "On storage failure nothing else runs: no screening call, no pricing, no notification; status is 'error: store_unavailable'.",
+      "ref": "A:dt:QuoteAPI|on_store_failure@v1"
+    },
+    {
+      "text": "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+      "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+    },
+    {
+      "text": "On screening outage the quote is still priced, stored with status 'held_unscreened', and not notified; the response carries the price and hold: true.",
+      "ref": "A:dt:QuoteAPI|on_screening_outage@v1"
+    },
+    {
+      "text": "Screening flow: risk_index <= 41 leads to accept row: quote issued, priced, quote document notified, status 'quoted'.",
+      "ref": "A:dt:S-accept|status@v1"
+    },
+    {
+      "text": "In accept row, pricing runs (priced = yes).",
+      "ref": "A:dt:S-accept|priced@v1"
+    },
+    {
+      "text": "In accept row, a quote document is notified.",
+      "ref": "A:dt:S-accept|notified@v1"
+    },
+    {
+      "text": "Screening flow: 42 <= risk_index <= 66 leads to review row: held for manual review, not priced, not notified, status 'review_hold'.",
+      "ref": "A:dt:S-review|status@v1"
+    },
+    {
+      "text": "In review row, pricing does not run (priced = no).",
+      "ref": "A:dt:S-review|priced@v1"
+    },
+    {
+      "text": "In review row, no notification is sent.",
+      "ref": "A:dt:S-review|notified@v1"
+    },
+    {
+      "text": "Screening flow: risk_index >= 67 leads to refuse row: refused, not priced, refusal notice notified, status 'refused_screening'.",
+      "ref": "A:dt:S-refuse|status@v1"
+    },
+    {
+      "text": "In refuse row, pricing does not run (priced = no).",
+      "ref": "A:dt:S-refuse|priced@v1"
+    },
+    {
+      "text": "In refuse row, a refusal notice is notified, and pricing never runs on a refused quote.",
+      "ref": "A:dt:S-refuse|notified#1@v1"
+    },
+    {
+      "text": "Overall flow order is validate > store > screen > decide > price > notify > respond.",
+      "ref": "A:spec:flow|order@v1"
+    },
+    {
+      "text": "On screening outage, flow is: ScreeningService fails, then TariffEngine.price is called, then QuoteStore.update_quote sets status held_unscreened, with no notification.",
+      "ref": "A:seq:QuoteAPI|on_screening_outage@v1"
+    },
+    {
+      "text": "Tariff base formula is base = 0.87 * weight_kg + 1.13 * distance_km.",
+      "ref": "A:dt:P1|formula@v1"
+    },
+    {
+      "text": "Heavy surcharge rule: if weight_kg > 1244, add 341.00 (flat).",
+      "ref": "A:dt:P2|threshold@v2"
+    },
+    {
+      "text": "Heavy surcharge amount is 341.00 when the surcharge applies.",
+      "ref": "A:dt:P2|surcharge@v2"
+    },
+    {
+      "text": "Long-haul multiplier rule: if distance_km >= 4912, multiply the running total by 1.19, applied after P2.",
+      "ref": "A:dt:P3|threshold@v1"
+    },
+    {
+      "text": "Long-haul multiplier factor is 1.19.",
+      "ref": "A:dt:P3|factor@v1"
+    },
+    {
+      "text": "Order of surcharges is normative: P3 is applied after P2; the worked example confirms this order.",
+      "ref": "A:dt:P3|order@v2"
+    },
+    {
+      "text": "Final price is price = round(result, 2).",
+      "ref": "A:dt:P4|rounding@v1"
+    },
+    {
+      "text": "Response status enum is: quoted, review_hold, refused_screening, held_unscreened, 'rejected: invalid_request', 'error: store_unavailable'.",
+      "ref": "A:oas:response|statuses@v1"
+    },
+    {
+      "text": "Field presence rules: price is present exactly on the priced rows of DT-S; hold: true exactly on held_unscreened; quote_id is present whenever a draft was stored.",
+      "ref": "A:spec:response|price_presence@v1"
+    },
+    {
+      "text": "Field presence rule: hold is true exactly on held_unscreened.",
+      "ref": "A:oas:response|hold_presence@v1"
+    },
+    {
+      "text": "QuoteAPI must store the draft in QuoteStore with status draft before calling screening.",
+      "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+    },
+    {
+      "text": "On storage failure, QuoteStore.store_draft signals store unavailable (StoreUnavailableError) and QuoteAPI must return error: store_unavailable without calling ScreeningService, TariffEngine, or NotificationService.",
+      "ref": "A:seq:QuoteAPI|on_store_failure@v1"
+    },
+    {
+      "text": "On screening outage, ScreeningService.screen signals outage (ScreeningUnavailableError), after which TariffEngine.price runs, QuoteStore.update_quote sets status held_unscreened, no notification is sent, and response has hold: true.",
+      "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+    }
+  ],
+  "code": "from dataclasses import dataclass\nfrom typing import Any, Dict, Optional\n\n\nclass StoreUnavailableError(Exception):\n    \"\"\"Raised when the QuoteStore is unavailable for storage operations.\"\"\"\n    pass\n\n\nclass ScreeningUnavailableError(Exception):\n    \"\"\"Raised when the ScreeningService is unavailable.\"\"\"\n    pass\n\n\nclass QuoteStore:\n    \"\"\"Persistence collaborator for quotes.\n\n    In tests, methods are expected to be stubbed by name.\n    \"\"\"\n\n    def store_draft(self, request: Dict[str, Any]) -> str:\n        \"\"\"Store a new draft quote and return its quote_id.\n\n        May raise StoreUnavailableError on failure.\n        \"\"\"\n        raise NotImplementedError\n\n    def update_quote(self, quote_id: str, **fields: Any) -> None:\n        \"\"\"Update an existing quote with given fields (e.g. status, price).\n\n        May raise StoreUnavailableError on failure.\n        \"\"\"\n        raise NotImplementedError\n\n\nclass TariffEngine:\n    \"\"\"Pricing collaborator.\n\n    It encapsulates the DT-P pricing logic.\n    \"\"\"\n\n    def price(self, weight_kg: float, distance_km: float) -> float:\n        \"\"\"Compute the price according to DT-P.\n\n        Implemented here per the approved tariff rules.\n        \"\"\"\n        # P1: base = 0.87 * weight_kg + 1.13 * distance_km (A:dt:P1|formula@v1)\n        base = 0.87 * weight_kg + 1.13 * distance_km\n\n        # P2: heavy surcharge if weight_kg > 1244, add 341.00 flat (A:dt:P2|threshold@v2, A:dt:P2|surcharge@v2)\n        if weight_kg > 1244:\n            base += 341.00\n\n        # P3: long-haul multiplier if distance_km >= 4912, multiply running total by 1.19 after P2\n        # (A:dt:P3|threshold@v1, A:dt:P3|factor@v1, A:dt:P3|order@v2)\n        if distance_km >= 4912:\n            base *= 1.19\n\n        # P4: price = round(result, 2) (A:dt:P4|rounding@v1)\n        price = round(base, 2)\n        return price\n\n\nclass ScreeningService:\n    \"\"\"External screening collaborator to obtain a shipper risk index.\"\"\"\n\n    def screen(self, shipper_id: str, declared_value: float) -> int:\n        \"\"\"Return the risk index for the given shipper.\n\n        May raise ScreeningUnavailableError on outage.\n        \"\"\"\n        raise NotImplementedError\n\n\nclass NotificationService:\n    \"\"\"Fire-and-forget notification collaborator.\"\"\"\n\n    def send_quote_document(self, quote_id: str) -> None:\n        \"\"\"Send a quote document. Failures are fire-and-forget and do not affect response.\"\"\"\n        raise NotImplementedError\n\n    def send_refusal_notice(self, quote_id: str) -> None:\n        \"\"\"Send a refusal notice. Failures are fire-and-forget and do not affect response.\"\"\"\n        raise NotImplementedError\n\n\n@dataclass\nclass QuoteAPI:\n    quote_store: QuoteStore\n    tariff_engine: TariffEngine\n    screening_service: ScreeningService\n    notification_service: NotificationService\n\n    # Constants derived from specification / decision tables\n    WEIGHT_MIN: float = 3.0\n    WEIGHT_MAX: float = 19400.0\n    DISTANCE_MIN: float = 25.0\n    DISTANCE_MAX: float = 7150.0\n    DECLARED_MIN: float = 50.0\n    DECLARED_MAX: float = 83000.0\n\n    ACCEPT_MAX: int = 41  # risk_index <= 41 => accept (quoted)\n    REVIEW_MIN: int = 42  # 42 <= risk_index <= 66 => review_hold\n    REVIEW_MAX: int = 66\n    REFUSE_MIN: int = 67  # risk_index >= 67 => refused_screening\n\n    STATUS_QUOTED: str = \"quoted\"\n    STATUS_REVIEW_HOLD: str = \"review_hold\"\n    STATUS_REFUSED_SCREENING: str = \"refused_screening\"\n    STATUS_HELD_UNSCREENED: str = \"held_unscreened\"\n    STATUS_REJECTED_INVALID: str = \"rejected: invalid_request\"\n    STATUS_ERROR_STORE_UNAVAILABLE: str = \"error: store_unavailable\"\n\n    def handle(self, request: Dict[str, Any]) -> Dict[str, Any]:\n        \"\"\"Handle a quote request according to the governed specification.\n\n        request keys: shipper_id, weight_kg, distance_km, declared_value.\n        Returns a response dict with at least a \"status\" key, and optionally\n        quote_id, price, and hold, respecting the DT-S and API spec rules.\n        \"\"\"\n        # 1. validate (A:spec:flow|order@v1, A:dt:invalid_request|behaviour@v1)\n        shipper_id = request.get(\"shipper_id\")\n        weight_kg = request.get(\"weight_kg\")\n        distance_km = request.get(\"distance_km\")\n        declared_value = request.get(\"declared_value\")\n\n        if not isinstance(shipper_id, str) or not shipper_id:\n            return {\"status\": self.STATUS_REJECTED_INVALID}\n\n        # Basic type/convert handling: specification is numeric; we treat non-numeric\n        # as invalid request as well.\n        try:\n            w = float(weight_kg)\n            d = float(distance_km)\n            v = float(declared_value)\n        except (TypeError, ValueError):\n            return {\"status\": self.STATUS_REJECTED_INVALID}\n\n        if not (self.WEIGHT_MIN <= w <= self.WEIGHT_MAX):\n            return {\"status\": self.STATUS_REJECTED_INVALID}\n        if not (self.DISTANCE_MIN <= d <= self.DISTANCE_MAX):\n            return {\"status\": self.STATUS_REJECTED_INVALID}\n        if not (self.DECLARED_MIN <= v <= self.DECLARED_MAX):\n            return {\"status\": self.STATUS_REJECTED_INVALID}\n\n        # 2. store draft (A:spec:QuoteAPI|on_store_failure@v1)\n        try:\n            quote_id = self.quote_store.store_draft(\n                {\n                    \"shipper_id\": shipper_id,\n                    \"weight_kg\": w,\n                    \"distance_km\": d,\n                    \"declared_value\": v,\n                    \"status\": \"draft\",\n                }\n            )\n        except StoreUnavailableError:\n            # On storage failure nothing else runs (A:dt:QuoteAPI|on_store_failure@v1)\n            return {\"status\": self.STATUS_ERROR_STORE_UNAVAILABLE}\n\n        # 3. screen (A:spec:QuoteAPI|on_screening_outage@v1)\n        try:\n            risk_index = self.screening_service.screen(shipper_id, v)\n        except ScreeningUnavailableError:\n            # Screening outage path (DT-S note 5): price, held_unscreened, not notified, hold: true\n            price = self.tariff_engine.price(w, d)\n            try:\n                self.quote_store.update_quote(\n                    quote_id,\n                    status=self.STATUS_HELD_UNSCREENED,\n                    price=price,\n                )\n            except StoreUnavailableError:\n                # Store failure here is not explicitly specified after draft success.\n                # We propagate as store_unavailable error while a quote_id exists,\n                # but we must not attempt further processing.\n                return {\"status\": self.STATUS_ERROR_STORE_UNAVAILABLE, \"quote_id\": quote_id}\n\n            response: Dict[str, Any] = {\n                \"status\": self.STATUS_HELD_UNSCREENED,\n                \"quote_id\": quote_id,\n                \"price\": price,\n                \"hold\": True,\n            }\n            return response\n\n        # 4. decide based on risk_index (DT-S)\n        # Ensure risk_index is an int-like value\n        try:\n            ri = int(risk_index)\n        except (TypeError, ValueError):\n            # Specification does not define behaviour for nonsensical risk_index.\n            # Conservatively refuse screening with notification but no price.\n            ri = self.REFUSE_MIN\n\n        if ri <= self.ACCEPT_MAX:\n            outcome = self.STATUS_QUOTED\n        elif self.REVIEW_MIN <= ri <= self.REVIEW_MAX:\n            outcome = self.STATUS_REVIEW_HOLD\n        else:  # ri >= REFUSE_MIN\n            outcome = self.STATUS_REFUSED_SCREENING\n\n        # 5. price (only for priced rows, per DT-S and response|price_presence)\n        price: Optional[float] = None\n        if outcome == self.STATUS_QUOTED:\n            price = self.tariff_engine.price(w, d)\n\n        # 6. update stored quote and notify according to outcome\n        if outcome == self.STATUS_QUOTED:\n            # Accept row: quote issued, priced, notified with quote document\n            try:\n                self.quote_store.update_quote(\n                    quote_id,\n                    status=self.STATUS_QUOTED,\n                    price=price,\n                    risk_index=ri,\n                )\n            except StoreUnavailableError:\n                return {\"status\": self.STATUS_ERROR_STORE_UNAVAILABLE, \"quote_id\": quote_id}\n\n            try:\n                self.notification_service.send_quote_document(quote_id)\n            except Exception:\n                # Fire-and-forget: response and stored quote remain unchanged\n                # (A:dt:QuoteAPI|on_notification_failure@v1)\n                pass\n\n            response = {\n                \"status\": self.STATUS_QUOTED,\n                \"quote_id\": quote_id,\n            }\n            if price is not None:\n                response[\"price\"] = price\n            return response\n\n        if outcome == self.STATUS_REVIEW_HOLD:\n            # Review row: held for manual review, not priced, not notified\n            try:\n                self.quote_store.update_quote(\n                    quote_id,\n                    status=self.STATUS_REVIEW_HOLD,\n                    risk_index=ri,\n                )\n            except StoreUnavailableError:\n                return {\"status\": self.STATUS_ERROR_STORE_UNAVAILABLE, \"quote_id\": quote_id}\n\n            return {\n                \"status\": self.STATUS_REVIEW_HOLD,\n                \"quote_id\": quote_id,\n            }\n\n        # outcome == refused_screening\n        try:\n            self.quote_store.update_quote(\n                quote_id,\n                status=self.STATUS_REFUSED_SCREENING,\n                risk_index=ri,\n            )\n        except StoreUnavailableError:\n            return {\"status\": self.STATUS_ERROR_STORE_UNAVAILABLE, \"quote_id\": quote_id}\n\n        try:\n            self.notification_service.send_refusal_notice(quote_id)\n        except Exception:\n            # Fire-and-forget semantics\n            pass\n\n        return {\n            \"status\": self.STATUS_REFUSED_SCREENING,\n            \"quote_id\": quote_id,\n        }\n\n\n# Module-level handle(request) required by harness\n\n# Instantiate default collaborators; in tests these can be replaced or their\n# class methods stubbed.\n_default_quote_api = QuoteAPI(\n    quote_store=QuoteStore(),\n    tariff_engine=TariffEngine(),\n    screening_service=ScreeningService(),\n    notification_service=NotificationService(),\n)\n\n\ndef handle(request: Dict[str, Any]) -> Dict[str, Any]:\n    \"\"\"Module-level entrypoint delegating to QuoteAPI.handle.\"\"\"\n    return _default_quote_api.handle(request)\n"
+}

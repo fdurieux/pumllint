@@ -68,8 +68,22 @@ def resolve(s, task: str) -> dict:
     else:
         verdict, why = "PROCEED", f"all {n} required keys verified or approved, none flagged"
     conflicts = [dict(r) for r in s.run("MATCH (g:Gap {kind:'conflict'}) RETURN g.id AS id, g.text AS text")]
+    # staleness: invalidated assertions on required keys (superseded or not), the verifications
+    # their invalidation ended, and the derived outputs that used them (S6; added after the first
+    # scored run, whose S6 bundle carried none of this - see the pre-registration's run notes)
+    stale = [dict(r) for r in s.run("""
+        MATCH (x:Assertion {status:'invalidated'}) WHERE x.key IN $keys
+        OPTIONAL MATCH (v:Verification)-[:VERIFIES]->(x)
+        OPTIONAL MATCH (succ:Assertion {key:x.key, artefact:x.artefact}) WHERE succ.status IN ['proposed','validated','verified','approved']
+        RETURN x.id AS id, x.key AS key, x.value AS value, x.invalidated_by AS invalidated_by,
+               collect(DISTINCT {id:v.id, valid_until:v.valid_until}) AS verifications,
+               collect(DISTINCT {id:succ.id, value:succ.value, status:succ.status}) AS successors""", keys=spec["keys"])]
+    suspect = [dict(r) for r in s.run("""
+        MATCH (d:Derived {suspect:true})-[:USED_ASSERTION]->(x:Assertion {status:'invalidated'})
+        RETURN d.id AS id, d.kind AS kind, d.sha256 AS sha256, collect(x.id) AS used_invalidated""")]
     return {"task": task, "verdict": verdict, "why": why, "keys": keys, "conflicts": conflicts,
-            "blocked_keys": blocked_keys, "below_verified": below, "flagged": flagged}
+            "blocked_keys": blocked_keys, "below_verified": below, "flagged": flagged,
+            "stale": stale, "suspect_derived": suspect}
 
 
 def render_bundle(res: dict, policy: str) -> str:
@@ -96,4 +110,14 @@ def render_bundle(res: dict, policy: str) -> str:
         out.append("\nCONFLICTS:")
         for c in res["conflicts"]:
             out.append(f"  {c['id']}: {c['text']}")
+    if res.get("stale"):
+        out.append("\nINVALIDATED BY A SOURCE CHANGE (their verifications ended; a successor, if any, is listed with its own status):")
+        for x in res["stale"]:
+            succ = ", ".join(f"{t['id']} value={t['value']!r} status={t['status']}" for t in x["successors"] if t["id"]) or "none"
+            vers = ", ".join(f"{v['id']} valid_until={v['valid_until']}" for v in x["verifications"] if v["id"]) or "none"
+            out.append(f"  [{x['id']}] key={x['key']} old value={x['value']!r} invalidated_by={x['invalidated_by']}; verifications: {vers}; successor: {succ}")
+    if res.get("suspect_derived"):
+        out.append("\nDERIVED OUTPUTS MARKED SUSPECT (they used assertions that are now invalidated; they may not be reused as they are):")
+        for d in res["suspect_derived"]:
+            out.append(f"  {d['id']} ({d['kind']}, sha256 {d['sha256'][:12]}...) used: {', '.join(d['used_invalidated'])}")
     return "\n".join(out)

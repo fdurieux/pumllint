@@ -1,0 +1,156 @@
+{
+ "scenario": "S1",
+ "arm": "B",
+ "run": 1,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": false,
+  "hits": [],
+  "co_hit": null,
+  "text_len": 2273
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 11,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'review_hold', 'quote_id': proteanobj(status='stored', stored=true,"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1')} | {'status': 'refused_screening', 'quote_id': proteanobj(status='stored', "
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 3186.0} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', store"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'quoted', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 8652.49} | {'status': 'quoted', 'quote_id': proteanobj(status='stored', stor"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': p"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {},
+ "outage_status": "held_unscreened",
+ "M5_refs": {
+  "total": 13,
+  "resolved": 13,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What type should QuoteStore.store_draft return for quote_id (e.g. string vs int), or should the implementation just pass through whatever the store provides?",
+  "Should TariffEngine.price or QuoteAPI itself be responsible for rounding to 2 decimals according to DT-P, or is it acceptable that TariffEngine fully implements DT-P and returns the final rounded price?",
+  "What should happen if QuoteStore.update_quote fails (raises StoreUnavailableError) after the draft has already been stored — should this propagate as an unhandled error, be mapped to a specific status, or be ignored?",
+  "Similarly, what should happen if NotificationService methods raise unexpected exceptions (other than the documented “delivery failure”, which should not change the response) — swallow them, propagate, or map to some status?",
+  "If the request dict contains additional unexpected keys, should they be ignored (as in typical JSON handling) or treated as a validation error (openapi.yaml uses additionalProperties: false)?"
+ ],
+ "assumptions": [
+  {
+   "text": "QuoteStore.store_draft returns a quote_id value that is already a string or at least string-convertible, and the API will return it as-is without casting or validation.",
+   "ref": "behavior/quote_flow.puml:13"
+  },
+  {
+   "text": "TariffEngine.price is responsible for implementing all DT-P pricing rules (P1–P4), including rounding to 2 decimal places, so QuoteAPI will treat the returned value as the final price without reapplying DT-P.",
+   "ref": "kit/links.toml:33"
+  },
+  {
+   "text": "If QuoteStore.update_quote raises StoreUnavailableError after a draft was already stored, this is treated as an unexpected infrastructure error and will be allowed to propagate (i.e., no special handling is implemented beyond what the documents specify for initial storage failure).",
+   "ref": "contract/spec.md:44"
+  },
+  {
+   "text": "If NotificationService.send_quote_document or NotificationService.send_refusal_notice raises any exception, this is interpreted as a notification delivery failure and will be swallowed so that the response and stored outcome remain unchanged, in line with the fire-and-forget requirement.",
+   "ref": "contract/decision_table.md:50"
+  },
+  {
+   "text": "Request validation in QuoteAPI._validate will only check presence, basic type (number vs non-number) and DT-V bounds for the four known fields, and will ignore any additional properties present in the input dict rather than treating them as invalid, since the runtime may not enforce the OpenAPI additionalProperties: false rule.",
+   "ref": "contract/openapi.yaml:29"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Validation DT-V defines request validity solely by the four fields shipper_id, weight_kg, distance_km, declared_value, with the specified numeric bounds; invalid requests are rejected immediately with status 'rejected: invalid_request' and no other side effects.",
+   "ref": "contract/decision_table.md:10"
+  },
+  {
+   "text": "On storage failure when initially storing the draft, the system must return status 'error: store_unavailable' and must not call screening, pricing, or notification.",
+   "ref": "contract/decision_table.md:33"
+  },
+  {
+   "text": "On screening outage (Screening Service unavailable), the quote is still priced according to DT-P, stored with status 'held_unscreened', not notified, and the response carries the price and hold: true.",
+   "ref": "contract/decision_table.md:55"
+  },
+  {
+   "text": "Screening decision DT-S rows define that accept-band (risk_index <= 41) leads to status 'quoted' with pricing and quote document notification; review-band (42–66) leads to status 'review_hold' with no pricing and no notification; refuse-band (>=67) leads to status 'refused_screening' with no pricing and a refusal notice.",
+   "ref": "contract/decision_table.md:19"
+  },
+  {
+   "text": "Notification must be fire-and-forget: any notification delivery failure never changes the stored quote or the response.",
+   "ref": "contract/decision_table.md:47"
+  },
+  {
+   "text": "Pricing DT-P must apply P1 base formula, P2 heavy surcharge if weight_kg > 1244, P3 long-haul multiplier if distance_km >= 4912 after P2, then P4 rounding to 2 decimals, in that strict order.",
+   "ref": "contract/decision_table.md:61"
+  },
+  {
+   "text": "The API response vocabulary is fixed: status is one of quoted, review_hold, refused_screening, held_unscreened, rejected: invalid_request, error: store_unavailable; quote_id is present whenever a draft was stored; price is present exactly on priced rows; hold: true exactly on held_unscreened.",
+   "ref": "contract/spec.md:72"
+  },
+  {
+   "text": "The overall flow order is: validate (DT-V); store draft with status draft (error short-circuits); screen for risk_index (outage path special-cased); apply DT-S; price only when DT-S says priced or on outage hold; notify only when DT-S says notified; return the response.",
+   "ref": "contract/spec.md:40"
+  }
+ ],
+ "usage": {
+  "tag": "S1/B/1",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 6832,
+  "completion_tokens": 3387,
+  "seconds": 25.4,
+  "usd_est": 0.0424
+ }
+}

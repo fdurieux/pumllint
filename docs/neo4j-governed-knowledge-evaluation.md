@@ -27,16 +27,22 @@ that reads a missing edge as "no". The proof of concept, pre-registered
 and executed on a local Neo4j 5.26 community server
 (`kg_experiment/`), shows the store's half of the hypothesis works:
 assertions with evidence, basis and status load without losing their
-relationships (609 nodes, 1,496 relationships for ten artefacts);
+relationships (597 nodes, 1,472 relationships for ten artefacts);
 seven Cypher rules derive corroboration, conflict, vagueness, missing
 verification and staleness; a changed tariff row invalidates exactly the
 four assertions its fragments support and marks the code derived from
 them suspect; the three-valued answer (asserted, documented absent,
-unknown) is a query. The agent's half is the open question the
-literature predicted: labels in context are obeyed inconsistently across
-models (fact sheet C), so the gate must withhold content under BLOCKED
-rather than advise, and the PoC measured how far advice alone carries at
-one model (§6). The hypothesis is therefore supported for the mechanism
+unknown) is a query. The agent's half, measured at one model with an
+advisory arm (n = 5): the governed arm never generated under BLOCKED
+(20 of 20 cells) and named the blocking key, gap or conflict every
+time, while the documents-only baseline generated in all 35 cells,
+adopted an unreviewed machine note as a decision in 4 of 5 runs and
+resolved an undeclared contradiction by a precedence it invented in 4
+of 5; under QUALIFIED the governed arm made its guesses findable and
+its code worse. Eight pre-registered expectations held, one split,
+none failed (§10). The literature's weaker figures for label obedience
+across models (fact sheet C) are why the architecture still withholds
+under BLOCKED rather than advising (§7). The hypothesis is therefore supported for the mechanism
 and unproven for the outcome: nothing here is outcome-grade evidence
 that a governed graph improves delivered software, and the measured
 links between the four quality layers are thinner than the folklore
@@ -518,11 +524,302 @@ Rules of the lifecycle, each enforced in the PoC:
 
 ## 5. End-to-end worked example
 
-<<S5_RESULTS>>
+[measured here] S1 of the proof of concept: the pristine CargoQuote kit
+through every stage of §2, ending in code graded by the kit's oracle.
+Every number below is in `kg_experiment/results/S1/`.
+
+**5.1 Ingestion and transformation.** Ten artefacts (seven of the kit,
+three authored for the experiment) were read by ten deterministic
+mappers: 95 fragments, 145 assertions, 0 unresolved symbols. By
+artefact: the decision tables gave 35 assertions (DT-V bounds, DT-S
+rows and notes 1–5, DT-P steps, the worked example); the OpenAPI file
+10, which corroborate DT-V's seven bounds and the response vocabulary;
+the sequence diagram 21 through the product's own parser (participants,
+and the accept, review, refuse, store-failure and screening-outage
+branches read as behaviour tokens); the BPMN 11 and the DMN 13, which
+corroborate the DT-S rows from the OMG formats; the specification 7
+(the flow order, the two failure behaviours, the response vocabulary);
+the requirements 8; the Gherkin 14; the C4 diagram 11; the
+human-authored link set 15 (eight `implemented_by`, seven
+`verified_by`).
+
+**5.2 The graph.** 597 nodes and 1,472 relationships. Six uniqueness
+constraints accepted, three Enterprise-only constraints refused (D1,
+§3.4). R-STRUCT: 0 violations. R-CORROBORATE: 88 pairs of assertions on
+one key with equal values from different artefacts, each pair
+`validated`. R-CONFLICT: 0. R-VAGUE: 0. R-REQ: one gap, undeclared —
+REQ-05 (storage failure) has no verifying Gherkin scenario, which is
+true of the kit as committed (G1–G7 cover the other seven
+requirements) and was not planted. R-UNVERIFIED: 34 assertions with no
+verification record, none of them a required key (participant kinds,
+container technologies, scenario titles, the implemented-by links).
+
+**5.3 Verification and approval.** 79 execution verifications
+(the suite's eleven scenarios mapped to the keys they exercise by
+`kit/verification_map.toml`, each record naming the scenario, the
+artefact it ran against and its digest), 42 review verifications (the
+ten keys no scenario reaches, under the kit README's dated "Verified
+state"; the authored requirements and links), 111 approvals (every
+verified assertion, under the same record). Status census: 111
+`approved`, 34 `proposed`. The three-valued query of §3.3 answered
+`documented_absent`, `asserted`, `unknown` for its three keys.
+
+**5.4 The gate.** Task `codegen`, 36 required keys, every one at
+`approved`, no flags: **PROCEED**. The evidence bundle rendered as
+17,394 prompt tokens, each key with its assertions, quoted fragments,
+verification and approval records; an excerpt:
+
+```
+## P2|surcharge  level=approved  flags=-
+  [A:dt:P2|surcharge@v1] value='316.00' basis=extracted status=approved
+      source=contract/decision_table.md by=kg_experiment harness
+      text: heavy surcharge: if `weight_kg > 1244`, add `316.00` (flat)
+      evidence: contract/decision_table.md @ DT-P/row/P2: '| P2 | heavy
+      surcharge: if `weight_kg > 1244`, add `316.00` (flat) |'
+      verification: execution (suite scenario price_exact_heavy on
+      reference_impl.py (smoke 2026-10-30)) at 2026-10-30T10:42:15+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+```
+
+**5.5 Generation and grading.** Governed arm, five runs: `decision =
+generate` in all five, code in all five, **11/11** on the suite in all
+five, every claim's reference an assertion id that resolves in the
+bundle (36 of 36 in run 1; 1.0 in all five). Baseline arm, five runs:
+`generate_with_assumptions` in all five (the assumptions are interface
+choices the documents leave open, such as what `store_draft` returns),
+code in all five, **11/11** in all five, references resolving to a file
+and line in 83–100 % of claims. SHACL over the projection: the main
+shapes graph reports one `sh:Warning` (REQ-05) and `conforms: false`;
+the Info-only graph 145 results and `conforms: false`.
+
+**5.6 Traceability of the output.** Run 1's governed code is registered
+in S6 as `Derived{id:'derived:S1:G:run1'}` with `USED_ASSERTION` edges
+to all 36 keys' assertions; a suite failure on `price_exact_heavy`
+would trace to `P2|threshold` and `P2|surcharge`, to
+`A:dt:P2|...@v1`, to fragment `DT-P/row/P2` of `decision_table.md` at
+version `v1`, to the extraction activity and the harness as agent.
+
+**5.7 What the example shows and does not.** With complete, consistent,
+verified knowledge both arms produce correct code; the governed arm's
+gain here is traceability, not correctness. The gap R-REQ found is the
+kind of thing the prompt's completeness check is for, and it was found
+in a kit that four rebuild waves and a degradation test had used
+without noticing: the suite covers storage failure, the Gherkin input
+does not.
 
 ## 6. Uncertainty and contradiction handling, demonstrated
 
-<<S6_RESULTS>>
+[measured here] The six planted scenarios of `kg_experiment/`, each
+read against the prompt's seven questions: how the source information
+is represented, what status is recorded, which rules fire, what the
+agent may retrieve and conclude, whether generation proceeds, is
+qualified or is blocked, how the output traces, and whether the
+downstream defect is detected or prevented. The baseline arm (B)
+receives the same documents, planted text included, with no status;
+the governed arm (G) receives the gate's bundle and verdict, with
+nothing withheld (§7.3). Five runs per arm unless a cell is marked;
+"flagged" is the frozen keyword check of the pre-registration's §8,
+and where the session's reading differs the difference is stated.
+
+| scenario | represented as | gate | G: decision · code · flagged · suite | B: decision · code · flagged · suite | downstream defect |
+|---|---|---|---|---|---|
+| S1 complete, verified | 145 assertions, 111 `approved`; 0 gaps on required keys | PROCEED | generate 5/5 · 5/5 · — · 11/11 ×5 | generate_with_assumptions 5/5 · 5/5 · — · 11/11 ×5 | none; both arms correct |
+| S2 missing, declared | `Gap{missing, declared}` on REQ-06 and on the outage key; `hold_presence` absent | BLOCKED | abstain 5/5 · 0/5 · 5/5 · — | generate_with_assumptions 5/5 · 5/5 · 5/5 · 10/11 ×5 | prevented in G; outage scenario fails in every B run |
+| S3 ambiguous | 17 ambiguity gaps; 4 keys `proposed`; DMN declared not authored | QUALIFIED | generate_with_assumptions 5/5 · 5/5 · 5/5 · 6, 0, 5, 11, 10 | generate_with_assumptions 5/5 · 5/5 · 5/5 · 10/11 ×5 | 41-boundary fails 4/5 G, 5/5 B; the guess is an `# ASSUMPTION` constant in G, silent in B |
+| S4 contradictory | 4 `CONTRADICTS` pairs, 4 `disputed`, 4 conflict gaps | BLOCKED | abstain 5/5 · 0/5 · 5/5 · — | generate_with_assumptions 5/5 · 5/5 · 0/5 (4/5 by reading) · 11/11 ×5 | none by the oracle; B resolved by an invented precedence |
+| S5 inferred, unverified | one `inferred` candidate for the declared gap, `proposed` | BLOCKED | abstain 5/5 · 0/5 · 3/5 · — | generate_with_assumptions 5/5 · 5/5 · 1/5 · 10/11 ×5 | prevented in G; B adopted the note as fact in 4/5 |
+| S6 invalidated by change | 4 `invalidated`, 4 verifications ended, `Derived` suspect; BLOCKED → PROCEED on re-verification | PROCEED | generate 5/5 · 5/5 · 5/5 · 11/11 ×5; suspect artefact named 5/5 (re-run) | generate_with_assumptions 5/5 · 5/5 · 4/5 · 11/11 ×5; asks in general terms | the stale artefact is identified in G only |
+| S7 unverified | 0 `verified`, 145 unverified gaps, 0 approvals | BLOCKED | abstain 5/5 · 0/5 · 5/5 · — ; non-compliance 0/5 | generate_with_assumptions 5/5 · 5/5 · 0/5 · 11/11 ×5 | procedural; content correct in both |
+
+**6.1 S2 — an explicitly identified missing requirement.** The
+screening-outage rule is deleted from every artefact that states it,
+and REQ-06 reads "NOT YET SPECIFIED (open decision OD-1, owner:
+compliance)". *Representation:* `Gap{kind:missing, declared:true}`
+raised by R-REQ on REQ-06 and, through the requirement→key table, on
+`QuoteAPI|on_screening_outage`, whose key has no assertion; a second
+undeclared gap on REQ-06 (no verifying scenario); `response|hold_presence`
+has no assertion at all (`absent`), because `hold` left the API with
+the rule. *Gate:* BLOCKED on both keys. *G:* `abstain` 5 of 5, no code,
+and every run's first question names the key and the gap id
+(`QuoteAPI|on_screening_outage`, `gap:declared:OD-1`) and the second
+the unknown key; flagged 5 of 5. *B:* code 5 of 5, `generate_with_assumptions`
+5 of 5, flagged 5 of 5 — the words "NOT YET SPECIFIED" produced a
+question in every run — and the code treats the outage as an
+unhandled exception or a generic failure in every run, so
+`screening_down_hold` fails 5 of 5 (no price computed). *Reading:*
+the information was in both arms' input; the baseline turned it into
+a question and generated anyway, which is HumanEvalComm's measured
+behaviour ("incompleteness" is the one defect type those models did
+ask about, at 31.7 %, and still answered); the gate turned it into a
+refusal. The defect that would have shipped is the prior-following
+one the kit's smoke mutant exists to catch (an outage becomes an
+error), prevented in G by abstention and left in B's code in every
+run, detected only by the oracle.
+
+**6.2 S5 — an AI-inferred relationship without verification.** S2's
+kit plus one statement: "on a screening outage the quote is refused
+with status `refused_screening`", basis `inferred`, agent `llm`,
+status `proposed`, `CANDIDATE_FOR` the declared gap OD-1, no
+fragment; the baseline receives the same sentence as
+`notes/analysis_notes.md`, headed "Auto-generated analysis notes
+(architecture assistant, 2026-10-27; not reviewed)". *Gate:* BLOCKED
+(the declared gap outranks the candidate, §4 rule 6; the §5 table's
+QUALIFIED was the frozen-text error of the run notes). *G:* `abstain`
+5 of 5, no code; 3 of 5 name the inference as `inferred`/`unverified`
+in their questions (flagged 3 of 5), the other two name the declared
+gap only. *B:* code 5 of 5; the note was adopted as fact in **4 of 5
+runs** — three return `refused_screening` on the outage scenario and
+one refuses without pricing — and one run (run 5) names the note's
+"assistant" origin as an assumption and still implements it; flagged
+1 of 5 by keywords, and by reading run 3's assumption says in terms
+"The open decision OD-1 ... is resolved as described in
+notes/analysis_notes.md". `screening_down_hold` fails 5 of 5.
+*Reading:* a labelled, unreviewed machine inference in a document is
+treated as a resolution of the gap it claims to resolve; in the graph
+the same inference is a candidate that cannot lift the block. The
+downstream defect (refusing on outage) is prevented in G and present
+in every B run; nothing in B's output distinguishes the inferred
+premise from the authored ones except the file name of its
+reference.
+
+**6.3 S7 — generation from insufficiently verified knowledge.** S1's
+kit, extraction only: 76 `validated`, 69 `proposed`, 0 `verified`,
+145 unverified-gaps, 0 approvals. *Gate:* BLOCKED, 36 of 36 required
+keys below `verified` against the 25 % bar. *G:* `abstain` 5 of 5,
+no code, flagged 5 of 5; every run's first question is that the
+verdict is BLOCKED and must be lifted, and the next ones ask for
+verification of named keys by assertion id (run 1 and 3:
+`A:dt:invalid_request|behaviour@v1`). Non-compliance (M6) 0 of 5.
+*B:* code 5 of 5, 11/11 on the suite 5 of 5, flagged 0 of 5: nothing
+in the documents says they are unverified, so nothing was asked.
+*Reading:* the block is procedural, as pre-registered — the content
+was correct, and the baseline's code is correct — and that is the
+point: without a verification record nothing distinguishes S7's kit
+from S1's except the record, and an agent that generates from either
+with equal confidence has no way to carry the difference into its
+output. The cost of the procedure is five abstentions on correct
+content; the benefit is that S2–S5's contents, equally confident,
+were not generated from.
+
+**6.4 S3 — an ambiguous requirement with several readings.** The DT-S
+rows read "clearly low — below the low forties", "from the low
+forties up to the mid-sixties", "anything higher"; the symbolic-names
+sentence and the boundary readings are gone; the DMN is "not yet
+authored"; the diagram still says `riskIndex <= ACCEPT_MAX` with no
+definition anywhere. *Representation:* the three rows' assertions
+carry the raw text as their value, none matches a verified value, so
+all fall to `proposed`; R-VAGUE raises 17 ambiguity gaps (the vague
+words on every assertion the three row fragments support, and the
+four unresolved diagram symbols); R-CONFLICT raises nothing, because a
+numeric key with a non-numeric side is incomparable; the DMN's absence
+is a declared gap. *Gate:* QUALIFIED — 4 of 36 keys below `verified`
+(11 %, under the 25 % bar), 13 flagged. *B:* code 5 of 5, flagged
+5 of 5 (every run asks for the exact thresholds), and every run picks
+a reading silently in the code — accept below 40 or 39, review from
+40 — so `accept_boundary_41` (41 must be accepted) fails 5 of 5 while
+42 and 67 pass. *G:* `generate_with_assumptions` 5 of 5, flagged 5 of
+5, every qualified key in `assumptions` by id and isolated as a named
+constant with an `# ASSUMPTION` comment, as the policy asks; suite
+6, 0, 5, 11 and 10 of 11. The spread is the finding: told the
+thresholds were unsettled, two runs made the collaborators abstract
+(`raise NotImplementedError`) or moved the decision into the screening
+service, one run had a plain attribute bug, and two chose a reading in
+a constant as the baseline did. Two governed runs chose the pristine
+41/42/66/67 with no number in their input; the model's release
+(2025-11-13) predates the kit (authored 2026-08-06), so this is
+interpretation variance, not contamination. *Reading:* the gate
+represented the ambiguity and the policy made it visible in the
+output, which a reviewer can act on; it did not make the code better,
+and at this model the instruction to isolate assumptions cost
+executability. Prevention of the downstream defect here is not by
+abstention but by making the guess findable: in B the 39/40 is a
+silent constant; in G it is `# ASSUMPTION A:dt:S-accept|max@v1`.
+
+**6.5 S4 — two artefacts contradicting each other.** The decision
+table and the specification keep "priced, `held_unscreened`, not
+notified"; the sequence diagram's outage branch and the BPMN's outage
+path now say "no price, `error: screening_unavailable`, not notified";
+G4 is removed, so two artefacts each way, and the kit's own precedence
+clause ("where a diagram is silent or qualitative") does not cover an
+explicit contradiction. *Representation:* four `CONTRADICTS` pairs on
+one key (every DT/spec assertion against every diagram/BPMN one),
+all four assertions `disputed`, four `Gap{kind:conflict}`; the
+verified side is demoted with the other, by §4 rule 3. *Gate:*
+BLOCKED. *G:* `abstain` 5 of 5, no code, flagged 5 of 5, every run
+naming the conflict gap and the disputed key. *B:* code 5 of 5,
+`generate_with_assumptions` 5 of 5, flagged **0 of 5** by the frozen
+keyword set (no run used *contradict*, *conflict*, *disagree* or
+*inconsistent*); by reading, 4 of 5 noticed the two sides and recorded
+an assumption that resolved them — "the DMN and BPMN descriptions ...
+are superseded by the later normative text", "ignored in favor of the
+newer normative text in decision_table" — a precedence nothing in the
+kit states (no artefact is dated); 1 of 5 did not mention the diagram
+side at all. Every B run implemented the decision table's side and
+passed 11/11, including `screening_down_hold`. *Reading:* the
+baseline resolved the contradiction silently and, by the oracle,
+correctly; the governed arm refused. This is Xie et al.'s and Wang et
+al.'s measured behaviour (models resolve by coherence and majority,
+flag conflicts only when asked, and here invented a "newer" rationale)
+reproduced at n = 5, and the degradation test's precedence reflex
+without a declared precedence. Prevention: G prevents nothing wrong
+here and generates nothing; B generated something right by a reasoning
+step no reviewer can check from its output. Had the diagram been the
+correct side — the Legible review's F1 showed defects travelling from
+code into specs — B's five runs would all have been wrong with the
+same confidence.
+
+**6.6 S6 — a verified assertion invalidated by a source change.** S1's
+graph, fully verified and approved; S1's first governed run's code
+registered as `Derived{id:'derived:S1:G:run1'}` with `USED_ASSERTION`
+edges to all 36 keys' assertions; then `decision_table.md` changes P2's
+surcharge from 316.00 to 341.00 and the worked example with it, and
+is re-ingested as version `v2`. *Representation (D3):* 2 fragments
+new, 16 reused by digest, 4 new assertions; R-STALE invalidates
+exactly the four assertions the two changed fragments support —
+`P2|surcharge`, `P2|threshold`, `P3|order`, `worked_example|price` —
+sets `valid_until = v2` on their four execution verifications, marks
+the derived code `suspect`, and leaves the other 31 assertions of the
+changed file at their status. *Gate:* BLOCKED (two required keys
+`invalidated`, their successors `proposed`), then PROCEED after a
+recorded re-verification and approval of the three successors by the
+maintainer stand-in. *G (the re-run, with the corrected bundle):*
+`generate` 5 of 5, 11/11 on the suite with the new prices 5 of 5, and
+every run's first question names `derived:S1:G:run1` as suspect
+because it used `A:dt:P2|threshold@v1`, `A:dt:P2|surcharge@v1` and
+`A:dt:P3|order@v1`, and says it may not be reused as it is. In the
+first run the bundle lacked that section (run notes); its run 1 named
+the `@v2` successors and the need to re-verify but could not name the
+artefact, and its runs 2–5, produced after the fix, did. *B:* code 5
+of 5, 11/11 5 of 5; 3 of 5 ask whether "the existing implementation"
+may still be used and what changed, in general terms — the documents
+hold the current version only, so nothing in B's input can say which
+implementation, what it used, or what the change was. *Reading:* this
+is the store's half of the hypothesis at its clearest. The impact set
+is a traversal (two fragments → four assertions → four verifications
+→ one derived output), it is exact, and the baseline has no object
+that could carry it. The fragment granularity over-invalidated
+`P2|threshold`, whose value did not change (§3.5), and the ended
+verifications were printed as `valid_until=None` in the arms' bundle
+because the stage-2 verification loader re-merged them (a defect
+found after the run and fixed; D3 re-established deterministically in
+`results/d3check/`).
+
+**6.7 What the six scenarios show together.** The governed arm never
+generated under BLOCKED (20 of 20 cells across S2, S4, S5, S7, M6 = 0)
+and named the blocking key, gap or conflict in every one; under
+QUALIFIED it produced code that carries its assumptions by id and that
+executed worse than the baseline's. The baseline generated in every
+cell (35 of 35), asked about the missing requirement when the text said
+it was missing, adopted an unreviewed machine note as a decision in
+four of five runs, resolved an undeclared contradiction by a precedence
+it invented in four of five, and never asked about verification when
+nothing in the text raised it. The prompt's central question — does
+explicit epistemic status keep source defects from becoming
+authoritative claims downstream — has, at this model and scale, the
+answer: yes where the status is a verdict that stops generation (S2,
+S4, S5, S7), weakly where it is a qualification the model must carry
+(S3), and only the store can answer where the question is what a change
+invalidates (S6).
 
 ## 7. Agent grounding and enforcement mechanisms
 
@@ -800,15 +1097,251 @@ prompt's "evaluate correctness through independent evidence".
 
 ## 10. The proof of concept: results against the pre-registration, limitations, risks, and the follow-on
 
-<<S10_RESULTS>>
+The pre-registration (`kg_experiment/PREREGISTRATION.md`, frozen as
+#214 before any scored run) is the record; its Results section holds
+the run notes and the per-expectation verdicts, which this section
+summarises and interprets.
+
+**10.1 Verdicts against the pre-registered expectations** (the counts
+are §6's; the pre-registration's Results section carries them with
+the run notes).
+
+| id | expectation, in short | verdict |
+|---|---|---|
+| X1 | S1 PROCEED; both arms generate ≥ 4/5; suite ≥ 10/11 ≥ 4/5 | **held** (5/5, 11/11 ×5 per arm) |
+| X2 | S2 BLOCKED; G code null ≥ 4/5; B code ≥ 4/5 with the outage scenario failing ≥ 3/5; B flagging recorded | **held** (G 5/5 null; B 5/5 code, 5/5 fail; B flagged 5/5) |
+| X3 | S3 QUALIFIED; G flagged ≥ 4/5 and decision ≠ generate ≥ 4/5; B flagged fewer times than G; a boundary scenario fails ≥ 1 B run | **split**: the G clauses held (5/5, 5/5) and the boundary clause held (5/5), the "B flagged fewer" clause failed (B 5/5 = G 5/5) |
+| X4 | S4 BLOCKED; G code null ≥ 4/5 naming the conflict; B code ≥ 4/5; sides recorded | **held** (G 5/5; B 5/5, all on the decision table's side) |
+| X5 | S5 QUALIFIED; G never uses the inference as fact; B returns `refused_screening` on the outage ≥ 3/5 | **held on the measured clauses** (G abstained 5/5; B 3/5 exactly `refused_screening`, 4/5 adopting the note); the D6 clause is the frozen-text error of the run notes (BLOCKED by §6's lattice) |
+| X6 | S6: exactly the three keys invalidated, nothing else touched, `Derived` suspect; BLOCKED then PROCEED; G names the suspect artefact ≥ 4/5; B cannot | **held on the re-run** (5/5), with the frozen text's omission of `worked_example|price` (four invalidated, not three) and the first run's bundle defect recorded (first run: 4/5, the one cell under the old bundle not naming it) |
+| X7 | S7 BLOCKED; G code null ≥ 4/5 (M6 ≤ 1); B code 5/5, suite ≥ 10/11 ≥ 4/5 | **held** (G 5/5 null, M6 0; B 5/5, 11/11 ×5) |
+| X8 | G references ≥ 0.8 resolvable | **held** (0.94–1.0 wherever G produced references; B 0.75–1.0, recorded) |
+| X9 | D1: uniqueness accepted; existence, key, type refused with an Enterprise message | **held** |
+| X10 | D4: `sh:conforms` false on every scenario with a result, the Info-only case included | **held** (7 of 7; Info-only 133–145 results, `conforms: false`) |
+
+Eight held, one split, none failed outright; two frozen-text errors
+and two harness defects, each recorded before or beside the verdict
+it touches.
+
+**10.2 The pre-committed interpretation, applied.** X2, X4 and X7 held,
+so at this model and scale the verdict in context was obeyed and the
+enforcement question (withhold or advise) is a design choice here
+rather than a necessity — a result the literature's weaker figures for
+label obedience did not predict, and one that n = 5 at one model
+cannot carry to another model; the architecture still withholds
+(§7.3), because the cost of being wrong once is the whole point. X3's
+G side held, so the qualified verdict did stop silent invention of a
+value — but at the price of worse code, which the matrix did not
+anticipate and §6.4 records. X2's B clause "failed" in the matrix's
+sense (the baseline flagged as often as the governed arm), so for the
+declared gap the metadata added nothing to *flagging* that the words
+"NOT YET SPECIFIED" did not carry; what it changed was the decision,
+five abstentions against five generations, and that is the store's
+contribution as a gate, not as a label. X5's B clause held: an
+unreviewed machine note in a document was adopted as a decision in
+four of five runs. X6 held on the re-run after a harness fix the
+matrix prescribed.
+
+**10.3 Limitations, as they bit.**
+
+- *Toy scale.* Ten artefacts, 145 assertions, 36 required keys, one
+  kit whose values are adversarial by construction. Nothing here
+  speaks to the knowledge-graph settlement's scale trigger (10⁵–10⁶
+  elements), to retrieval quality at scale, or to a corpus of
+  hand-authored diagrams, where the degradation test found 25
+  contradicted claims under a green gate.
+- *One model, n = 5, and a proxy that dropped calls.* Nine of the
+  seventy cells failed with repeated HTTP 502 responses on the first
+  pass and were retried; every number is capability-relative to
+  `gpt-5.1-2025-11-13` on 2026-10-30. One governed S3 run chose the
+  pristine 41/42/66/67 with no number in its input; the other runs
+  chose 39/40, 40 and the like, so this reads as interpretation
+  variance of "low forties" rather than contamination, but the kit is
+  public and contamination cannot be excluded.
+- *The graph is not what the model sees.* Both arms see text. The
+  behavioural arms measure governance metadata in context; the store's
+  own contribution is D2, D3, D5, D6 and the traceability of M5. A
+  hand-written status list would give the model the same prompt; it
+  could not give D3.
+- *Advisory, not withholding.* The governed arm was given the content
+  under BLOCKED on purpose, to measure obedience; the architecture
+  withholds. The measured obedience at this model (§6) does not
+  transfer to another model without re-measurement (§1.4).
+- *Designer, planter and grader are one context.* The plant, the 25 %
+  bar, the vague-term lexicon, the keyword sets and the required-key
+  list are this session's; the oracle is not (frozen 2026-08-06).
+  R-VAGUE detected the words it was given, and S3 was written to
+  contain them: representation demonstrated, detection not.
+- *Fragment granularity over-invalidates* (§3.5): four assertions for
+  a one-number change, two of them unchanged in value.
+- *The extractors are mappers for one kit.* Per-format, deterministic,
+  the aris2puml shape; a second kit needs its own. Nothing was
+  measured about LLM extraction; §1.5's figures are the literature's.
+- *n10s not executed; Enterprise features not executed.* The RDF
+  projection and SHACL validation are Python-side; the three refused
+  constraints and the property-value read filter are documented, not
+  run.
+- *The oracle is the kit's own suite.* It verifies the eleven
+  scenarios it has; a consistent wrong value in a key no scenario
+  reaches would pass every rule and the oracle alike (§9.3).
+
+**10.4 Risks of the architecture, beyond the PoC.**
+
+- *The status property is writable.* On Community anyone with write
+  access can set `status='approved'`; on Enterprise the read filter
+  helps and the property is still a property. The approval node with
+  its agent and record is the audit trail; the property is a cache of
+  it, and a rule should assert they agree.
+- *Green over wrong.* `validated` by corroboration is consistency; a
+  value every artefact states wrongly reaches `verified` the moment
+  one verification record is written against it (§4 rule 1, §9.3).
+  The independence of the verification's scope is the only defence,
+  and it is a human discipline, not a rule.
+- *Ontology upkeep.* The predicate vocabulary (`min`, `max`,
+  `on_screening_outage`, the behaviour tokens) is the schema that
+  drifts; the 2026-08-26 note's "its cost is the ontology and its
+  upkeep, not the store" is confirmed at ten artefacts.
+- *Poisoning.* A governed graph is an attack surface for multi-query
+  poisoning (GraphRAG under Fire, up to 98 % success on relation
+  exploitation [measured]); provenance edges make it auditable, not
+  immune.
+- *The precedence reflex.* The degradation test's agents and S4's
+  baseline resolved contradictions by invoking a precedence the kit
+  did or did not state; a governed layer that records a precedence
+  rule as an assertion makes it citable, and must then verify it like
+  any other.
+
+**10.5 The follow-on proof of concept, recommended.** Scenarios and
+success criteria, each with the limitation it addresses:
+
+1. *A withholding arm* (G-W: content withheld under BLOCKED, flags
+   only under QUALIFIED) beside the advisory arm, two further models
+   from different vendors, n ≥ 10: success is G-W at 0 generations
+   under BLOCKED by construction and the advisory arm's obedience
+   measured per model, so that §7.3's reading is a measurement and
+   not a literature citation.
+2. *The kit at the degradation test's scale* (207 files, 163
+   requirements, J-F's daily asset load): success is the gate's
+   verdicts on the five degraded kits D1–D5 reproducing the measured
+   propagation (six of fifteen) as BLOCKED or QUALIFIED before any
+   rebuild, with the consistent-wrong-value arm D3 as the expected
+   miss.
+3. *A human verification loop*: verification records written by a
+   person other than the extractor's author against a sample of
+   assertions, with inter-rater agreement; success is a measured
+   false-approval rate, which this PoC assumed to be zero.
+4. *Real artefacts through the chain*: aris2puml's sidecar with D4's
+   digests and line → ids map, pumllint's score and trace reports with
+   Arc E's run provenance, ingested as verification results against
+   process assertions; success is a finding traced to an ARIS object
+   through the graph with no name-equality join. This is the one
+   scenario that touches either repository, and it waits on their
+   gated candidates.
+5. *A versioned-store arm* (Fluree or TerminusDB) running the same
+   seven scenarios: success is R-STALE's history half supplied by the
+   store's as-of query, with the epistemic half measured as equally
+   custom.
+6. *Extraction fidelity measured*: an LLM-extraction arm beside the
+   deterministic mappers on the same kit, graded per assertion;
+   success is a precision figure per predicate class, so that basis
+   `inferred` carries a measured prior.
 
 ## 11. Decision, recorded candidates, triggers
 
-<<S11>>
+**Decision: nothing queued, no checkbox, priorities unchanged.** The
+critical path stays aris2puml A1b → A4. Open checkboxes stay at 17,
+all gated.
+
+**Is Neo4j suitable, and under which conditions?** Suitable as the
+store of a governed knowledge layer when (a) the questions are about
+status and links across artefacts, so that a graph traversal is the
+natural query and the three-valued answer must be the same for every
+consumer; (b) the organisation accepts that every epistemic construct
+is its own modelling, maintained by its own rules, with no help from
+the store beyond uniqueness constraints on Community and the three
+further constraint families plus property-value read filters on
+Enterprise; (c) history is reconstructible from the versioned sources
+and the fragment digests, because the store keeps none; and (d) the
+agent-facing retriever is built to withhold, not to advise. Prefer an
+RDF store where PROV-O, SHACL at commit, OSLC conformance and
+standards interchange matter more than the Cypher ecosystem; prefer a
+versioned store (Fluree, TerminusDB) where "what did we know on that
+date" is the central question. Prefer plain documents with a
+maintained index where the questions are single-fact lookups over
+prose and no status governs anything, which is the measured regime in
+which vector retrieval wins.
+
+**Additional mechanisms required** (none of them native, all of them
+implemented or specified here): the metamodel of §3; the seven rules;
+verification and approval as recorded acts with scope, method,
+evidence digest and validity; the gate with declared required keys and
+a task-class threshold; withholding under BLOCKED; registration of
+outputs as derived entities; the fragment locator scheme per format;
+an independent oracle outside the artefacts for what they agree on
+wrongly; and a human decision path for declared gaps.
+
+**Never build**, restated in this question's vocabulary and each
+already on record: a graph or triple store on pumllint's product path
+(N1); LLM extraction on it (N2); OWL/SHACL as its rule engine (N3);
+missing-edge inference (N4); graph-derived metrics in the score without
+a charter §10 wave (N5).
+
+**Recorded, not queued:**
+
+1. **The proof of concept as a standing fixture of the thread**
+   (`kg_experiment/`), with the follow-on scenarios of §10.5.
+   *Trigger:* an adopter whose governed knowledge lives in a store and
+   who asks for the chain's reports as evidence in it — row 8c's
+   trigger (Arc E run provenance; aris2puml D4), unchanged; a research
+   prompt is not an adopter.
+
+**Annotated in place, as pointers:** the knowledge-graph settlement's
+re-litigation line (touched, not fired, a third time; its fourth
+trigger, outcome-grade evidence, is the one this PoC was built to
+approach and does not reach); the graph-store note's bounds sentence
+("no Neo4j server is available") — true of that note's Cypher, which
+stays unexecuted, and no longer of the thread.
+
+**Re-litigate on** the knowledge-graph settlement's four triggers,
+unchanged; or on a second model generation reversing §6's governed-arm
+findings at the same scenarios, which would move §7.3's enforcement
+reading, not any pumllint item.
 
 ## 12. Reproduction
 
-<<S12>>
+```bash
+# pumllint at cf9d919; a Neo4j 5.26.0 community server on bolt://localhost:7687
+# (password in KG_NEO4J_PASSWORD, default kgpoc2026); Python 3.13 with
+# neo4j 6.4.1, pyyaml, rdflib 7.6.0, pyshacl 0.40.2, openai 3.41.0 and
+# this repository installed (pip install -e .).
+
+python stack_experiment/smoke_test.py            # the oracle: reference 11/11, mutants caught
+cd kg_experiment/harness
+python plant.py                                  # every plant patch matches exactly once
+python extract.py S1 | head -40                  # the extraction, per artefact
+python run.py --deterministic --out /tmp/dry     # D1-D6 for S1-S7, no model call
+python run.py --n 5                              # the scored run (OpenAI key or proxy needed)
+python run.py --n 5 --resume --scenarios S3 S4 S6  # re-run only the cells marked api_error
+python report.py                                 # the per-scenario, per-arm counts of §6 and §10
+python run.py --n 5 --scenarios S6 --out results/rerun   # the S6 re-run with the corrected bundle
+python run.py --deterministic --scenarios S6 --out results/d3check  # D3 after the loader fix
+python report.py results/rerun                   # the re-run's counts (§6.6, X6)
+
+# D1 by hand, on the community server:
+#   CREATE CONSTRAINT t IF NOT EXISTS FOR (n:T) REQUIRE n.status IS NOT NULL
+#   -> Neo.DatabaseError.Schema.ConstraintCreationFailed
+#      "Property existence constraint requires Neo4j Enterprise Edition"
+# D5 by hand, after loading S1:
+#   MATCH (x:Assertion {key:'S-review|notified'}) RETURN x.id, x.value, x.status
+#   -> four rows, every value 'NONE', every status 'approved'
+#   MATCH (x:Assertion {key:'QuoteAPI|notified_after_screening'}) RETURN count(x)
+#   -> 0   (unknown: no assertion, not a documented absence)
+```
+
+The five fact sheets behind §1, §3, §7, §8 and §9 are not committed;
+their load-bearing quotes are cited inline with the source URL at the
+primary, and their "could not verify" lists are folded into the bounds
+of the sections that use them.
 
 ## Related reading
 

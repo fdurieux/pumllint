@@ -982,9 +982,12 @@ but they are a useful cross-check that no audience was forgotten.
   - **The agent's half is the open question**, as the literature
     predicted: labels in context are obeyed inconsistently across models,
     so the architecture withholds under BLOCKED rather than advising;
-    the PoC measured what one model does with advice alone, scenario by
-    scenario, against the kit's execution oracle and a documents-only
-    baseline.
+    the PoC measured what one model does with advice alone (n = 5):
+    the governed arm never generated under BLOCKED (20 of 20 cells) and
+    named the cause; the documents-only baseline generated every time,
+    adopting an unreviewed machine note as a decision in 4 of 5 and
+    resolving an undeclared contradiction by an invented precedence in
+    4 of 5. Eight expectations held, one split, none failed.
   - **The hypothesis is supported for the mechanism and unproven for
     the outcome.** No study reaches quality in use or delivery
     performance from a knowledge-graph intervention; the 100× cost

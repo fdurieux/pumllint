@@ -225,7 +225,7 @@ def load_verifications(session, scenario: str, pristine: dict[str, set[str]]) ->
     for suite_scenario, keys in vmap["execution"].items():
         for key in keys:
             n = session.run("""
-                MATCH (x:Assertion {key:$key}) WHERE x.value IN $vals AND x.basis IN ['extracted','authored']
+                MATCH (x:Assertion {key:$key}) WHERE x.value IN $vals AND x.basis IN ['extracted','authored'] AND NOT x.status IN ['invalidated','rejected','deprecated']
                 MATCH (h:Agent {id:'agent:harness'})
                 MERGE (v:Verification {id:'ver:exec:' + $sc + ':' + x.id})
                   SET v.method='execution', v.outcome='pass', v.scope=$scope, v.at=$ts,
@@ -239,7 +239,7 @@ def load_verifications(session, scenario: str, pristine: dict[str, set[str]]) ->
             counts["execution"] += n
     for key in vmap["review"]["keys"]:
         n = session.run("""
-            MATCH (x:Assertion {key:$key}) WHERE x.value IN $vals AND x.basis IN ['extracted','authored']
+            MATCH (x:Assertion {key:$key}) WHERE x.value IN $vals AND x.basis IN ['extracted','authored'] AND NOT x.status IN ['invalidated','rejected','deprecated']
             MATCH (h:Agent {id:'agent:maintainer'})
             MERGE (v:Verification {id:'ver:review:' + x.id})
               SET v.method='review', v.outcome='pass', v.at='2026-08-06', v.valid_until=null,

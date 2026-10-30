@@ -76,6 +76,13 @@
     "key": "QuoteAPI|on_screening_outage",
     "a": "A:bpmn:QuoteAPI|on_screening_outage@v1",
     "va": "priced=no;status=error: screening_unavailable;notified=no",
+    "b": "A:dt:QuoteAPI|on_screening_outage@v1",
+    "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "key": "QuoteAPI|on_screening_outage",
+    "a": "A:bpmn:QuoteAPI|on_screening_outage@v1",
+    "va": "priced=no;status=error: screening_unavailable;notified=no",
     "b": "A:spec:QuoteAPI|on_screening_outage@v1",
     "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
    },
@@ -92,13 +99,6 @@
     "va": "priced=yes;status=held_unscreened;notified=no;hold=true",
     "b": "A:seq:QuoteAPI|on_screening_outage@v1",
     "vb": "priced=no;status=error: screening_unavailable;notified=no"
-   },
-   {
-    "key": "QuoteAPI|on_screening_outage",
-    "a": "A:bpmn:QuoteAPI|on_screening_outage@v1",
-    "va": "priced=no;status=error: screening_unavailable;notified=no",
-    "b": "A:dt:QuoteAPI|on_screening_outage@v1",
-    "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
    }
   ],
   "R-VAGUE": [],
@@ -121,8 +121,8 @@
  "D2_census": {
   "assertions_by_status": {
    "approved": 106,
-   "disputed": 4,
-   "proposed": 32
+   "proposed": 32,
+   "disputed": 4
   },
   "gaps_by_kind": {
    "conflict": 4,
@@ -185,19 +185,19 @@
   "conflicts": [
    {
     "id": "gap:conflict:QuoteAPI|on_screening_outage:0",
-    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true"
    },
    {
     "id": "gap:conflict:QuoteAPI|on_screening_outage:1",
-    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
    },
    {
     "id": "gap:conflict:QuoteAPI|on_screening_outage:2",
-    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true; behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no"
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
    },
    {
     "id": "gap:conflict:QuoteAPI|on_screening_outage:3",
-    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true; behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no"
    }
   ],
   "blocked_keys": [
@@ -206,7 +206,9 @@
   "below_verified": [
    "QuoteAPI|on_screening_outage"
   ],
-  "flagged": []
+  "flagged": [],
+  "stale": [],
+  "suspect_derived": []
  },
  "gate_keys": {
   "shipper_id|present": {

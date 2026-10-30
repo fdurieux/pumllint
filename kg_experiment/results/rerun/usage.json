@@ -1,0 +1,107 @@
+{
+ "calls": 10,
+ "usd_est": 0.5567,
+ "retries": [],
+ "per_call": [
+  {
+   "tag": "S6/B/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 3645,
+   "seconds": 36.6,
+   "usd_est": 0.045
+  },
+  {
+   "tag": "S6/B/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 4050,
+   "seconds": 41.5,
+   "usd_est": 0.0491
+  },
+  {
+   "tag": "S6/B/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 3762,
+   "seconds": 36.7,
+   "usd_est": 0.0462
+  },
+  {
+   "tag": "S6/B/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 4286,
+   "seconds": 42.6,
+   "usd_est": 0.0515
+  },
+  {
+   "tag": "S6/B/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 4125,
+   "seconds": 40.4,
+   "usd_est": 0.0498
+  },
+  {
+   "tag": "S6/G/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 4008,
+   "seconds": 35.6,
+   "usd_est": 0.0625
+  },
+  {
+   "tag": "S6/G/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 4600,
+   "seconds": 44.6,
+   "usd_est": 0.0684
+  },
+  {
+   "tag": "S6/G/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 3977,
+   "seconds": 40.5,
+   "usd_est": 0.0622
+  },
+  {
+   "tag": "S6/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 3752,
+   "seconds": 34.4,
+   "usd_est": 0.0599
+  },
+  {
+   "tag": "S6/G/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 3973,
+   "seconds": 48.9,
+   "usd_est": 0.0621
+  }
+ ]
+}

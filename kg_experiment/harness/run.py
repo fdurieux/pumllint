@@ -159,7 +159,7 @@ def arm_runs(sc: str, arm: str, n: int, kit: dict, gate: dict, task_name: str, o
         if code:
             (out_dir / f"run{i}_{arm}.py").write_text(code, encoding="utf-8")
         return rec
-    with ThreadPoolExecutor(max_workers=5) as ex:
+    with ThreadPoolExecutor(max_workers=int(__import__("os").environ.get("KG_WORKERS", "5"))) as ex:
         return list(ex.map(one, range(1, n + 1)))
 
 

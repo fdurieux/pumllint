@@ -19,8 +19,8 @@ the product, and the product path stays deterministic. The
 |---|---|
 | `PREREGISTRATION.md` | question, subject, metamodel, rules, the seven scenarios and their plant, the gate, arms, measures D1–D6 and M1–M7, expectations X1–X10, interpretation matrix, budget, bounds; Results below the line |
 | `kit/` | the three authored inputs (`requirements.md`, `quote_process.bpmn`, `screening_decision.dmn`), the human-authored link set (`links.toml`) and the suite→assertion verification map (`verification_map.toml`) |
-| `harness/` | the loaders, rules, gate, projection and arms (added by the run commit) |
-| `results/` | per scenario and arm, the outputs, suite verdicts and usage (added by the run commit) |
+| `harness/` | `kitio.py` and `plant.py` (the kit in memory, the plant), `extract.py` (ten deterministic mappers), `load.py` (Neo4j writes, provenance, verifications), `rules.py` (the seven rules), `tasks.py` and `gate.py` (required keys, verdict, bundle), `shacl.py` (the RDF projection and pyshacl), `arms.py` and `prompts/` and `policy.md` (the two arms), `measures.py` (M3–M5 and the suite runner), `run.py` (orchestration; `--deterministic`, `--resume`, `KG_WORKERS`), `report.py` (the counts) |
+| `results/` | per scenario: `deterministic.json` (D1–D6), the prompts and the governed bundle, `run<i>_<arm>.json` with the raw response and the code; `summary.json`, `usage.json`, `SHA256SUMS`; `rerun/S6/` the S6 re-run with the corrected bundle; `d3check/S6/` the deterministic re-establishment of D3 after the loader fix |
 
 Requirements to reproduce: a Neo4j 5.26 community server on
 `bolt://localhost:7687`, Python 3.13 with `neo4j`, `pyyaml`, `rdflib`,

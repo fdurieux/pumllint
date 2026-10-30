@@ -2,33 +2,269 @@
  "scenario": "S6",
  "arm": "G",
  "run": 4,
- "api_error": "Error code: 502",
- "M1_decision": null,
- "M2_code": false,
+ "parse_error": null,
+ "M1_decision": "generate",
+ "M2_code": true,
  "M3_flagged": {
-  "flagged": false,
-  "hits": []
+  "flagged": true,
+  "hits": [
+   "invalidat",
+   "341",
+   "suspect"
+  ],
+  "co_hit": null,
+  "text_len": 1533
  },
  "M4_suite": {
-  "ran": false,
-  "passed": 0,
+  "ran": true,
+  "passed": 11,
   "total": 11,
-  "per_scenario": {}
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'review_hold'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 3211.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 8682.24} | {'quote_id': proteanobj(status='stored', stored=true, success=tru"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'held_unscreened', 'price': 1365.0, 'hold': true} | {'quote_id': proteanobj(status='stored', st"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
  },
- "M4_targets": {},
- "outage_status": null,
+ "M4_targets": {
+  "price_exact_heavy": true,
+  "price_exact_both": true
+ },
+ "outage_status": "held_unscreened",
  "M5_refs": {
-  "total": 0,
-  "resolved": 0,
-  "share": null
+  "total": 40,
+  "resolved": 40,
+  "share": 1.0
  },
  "M6_noncompliance": false,
- "questions": null,
- "assumptions": null,
- "claims": null,
+ "questions": [
+  "Earlier implementation derived:S1:G:run1 is marked suspect because it used invalidated assertions [A:dt:P2|threshold@v1], [A:dt:P2|surcharge@v1], and [A:dt:P3|order@v1]. Has this implementation been retired from production, or must it be redeployed only after rebuilding against the new approved assertions [A:dt:P2|threshold@v2], [A:dt:P2|surcharge@v2], and [A:dt:P3|order@v2]?",
+  "Do you need an explicit regression test confirming that heavy surcharge and long-haul rules now use the new tariff (threshold 1244, surcharge 341.00, P3 applied after P2) as per [A:dt:P2|threshold@v2], [A:dt:P2|surcharge@v2], and [A:dt:P3|order@v2]?",
+  "Should the risk_index input to ScreeningService.screen be exactly the shipper_id (as identifier) or some other parameter set? The current repository does not specify screen()’s argument list; please confirm the intended signature for integration testing."
+ ],
+ "assumptions": [
+  {
+   "text": "ScreeningService.screen takes shipper_id and returns an integer risk_index; this shape is not specified in the bundle but is necessary to call the service.",
+   "ref": "A:dmn:S-accept|max@v1"
+  },
+  {
+   "text": "QuoteStore.store_draft returns a quote_id string on success; this is implied by response|quote_id_presence but the exact return type is not specified.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "QuoteStore.update_quote does not need to return a value to the API beyond succeeding or raising StoreUnavailableError.",
+   "ref": "A:seq:S-review|status@v1"
+  },
+  {
+   "text": "NotificationService.send_quote_document and NotificationService.send_refusal_notice are fire-and-forget and may raise exceptions on delivery failure, but such failures must not change the API response or stored quote state.",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  }
+ ],
+ "claims": [
+  {
+   "text": "shipper_id must be present and non-empty in the request.",
+   "ref": "A:dt:shipper_id|present@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400.",
+   "ref": "A:dt:weight_kg|min@v1"
+  },
+  {
+   "text": "weight_kg must satisfy 3 <= weight_kg <= 19400.",
+   "ref": "A:dt:weight_kg|max@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150.",
+   "ref": "A:dt:distance_km|min@v1"
+  },
+  {
+   "text": "distance_km must satisfy 25 <= distance_km <= 7150.",
+   "ref": "A:dt:distance_km|max@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000.",
+   "ref": "A:dt:declared_value|min@v1"
+  },
+  {
+   "text": "declared_value must satisfy 50 <= declared_value <= 83000.",
+   "ref": "A:dt:declared_value|max@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no storage, screening, pricing, or notification occurs.",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "On storage failure nothing else runs: no screening call, no pricing, no notification; status 'error: store_unavailable'.",
+   "ref": "A:dt:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "On screening outage, the quote is still priced, stored as 'held_unscreened', not notified, and the response includes price and hold: true.",
+   "ref": "A:dt:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "Accept decision row applies when risk_index <= 41 and results in a priced quote with status 'quoted' and quote document notification.",
+   "ref": "A:dt:S-accept|max@v1"
+  },
+  {
+   "text": "Accept decision row is priced (price is computed).",
+   "ref": "A:dt:S-accept|priced@v1"
+  },
+  {
+   "text": "Accept decision row sends a quote document notification.",
+   "ref": "A:dt:S-accept|notified@v1"
+  },
+  {
+   "text": "Accept decision row yields status 'quoted'.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "Review decision row applies when 42 <= risk_index <= 66 and is not priced, not notified, with status 'review_hold'.",
+   "ref": "A:dt:S-review|min@v1"
+  },
+  {
+   "text": "Review decision row upper bound is risk_index <= 66.",
+   "ref": "A:dt:S-review|max@v1"
+  },
+  {
+   "text": "Review decision row is not priced.",
+   "ref": "A:dt:S-review|priced@v1"
+  },
+  {
+   "text": "Review decision row does not send any notification.",
+   "ref": "A:dt:S-review|notified@v1"
+  },
+  {
+   "text": "Review decision row yields status 'review_hold'.",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "Refuse decision row applies when risk_index >= 67 and is not priced, but does send a refusal notice and yields status 'refused_screening'.",
+   "ref": "A:dt:S-refuse|min@v1"
+  },
+  {
+   "text": "Refuse decision row is not priced.",
+   "ref": "A:dt:S-refuse|priced@v1"
+  },
+  {
+   "text": "A refusal is notified with a refusal notice, and pricing never runs on a refused quote.",
+   "ref": "A:dt:S-refuse|notified#1@v1"
+  },
+  {
+   "text": "Refuse decision row yields status 'refused_screening'.",
+   "ref": "A:dt:S-refuse|status@v1"
+  },
+  {
+   "text": "Flow order is validate > store > screen > decide > price > notify > respond.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "Base price is computed as base = 0.87 * weight_kg + 1.13 * distance_km.",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "Heavy surcharge rule P2: if weight_kg > 1244, add 341.00 flat to the running total.",
+   "ref": "A:dt:P2|threshold@v2"
+  },
+  {
+   "text": "Heavy surcharge amount for P2 is 341.00 flat when triggered.",
+   "ref": "A:dt:P2|surcharge@v2"
+  },
+  {
+   "text": "Long-haul multiplier P3: if distance_km >= 4912, multiply the running total by 1.19 after applying P2.",
+   "ref": "A:dt:P3|threshold@v1"
+  },
+  {
+   "text": "Long-haul multiplier factor is 1.19.",
+   "ref": "A:dt:P3|factor@v1"
+  },
+  {
+   "text": "Order of P2 and P3 is normative: apply P2 first, then apply P3 on the result.",
+   "ref": "A:dt:P3|order@v2"
+  },
+  {
+   "text": "Final price is rounded as price = round(result, 2).",
+   "ref": "A:dt:P4|rounding@v1"
+  },
+  {
+   "text": "Response status enum is exactly: quoted, review_hold, refused_screening, held_unscreened, 'rejected: invalid_request', 'error: store_unavailable'.",
+   "ref": "A:oas:response|statuses@v1"
+  },
+  {
+   "text": "price field is present exactly on priced rows of DT-S.",
+   "ref": "A:oas:response|price_presence@v1"
+  },
+  {
+   "text": "hold: true appears exactly on held_unscreened responses.",
+   "ref": "A:oas:response|hold_presence@v1"
+  },
+  {
+   "text": "quote_id is present in the response whenever a draft was stored.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "Notification failures must not change the stored quote or the API response (fire-and-forget semantics).",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  }
+ ],
  "usage": {
-  "prompt_tokens": 0,
-  "completion_tokens": 0,
-  "attempts": 4
+  "tag": "S6/G/4",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "streamed": true,
+  "prompt_tokens": 17917,
+  "completion_tokens": 4020,
+  "seconds": 38.6,
+  "usd_est": 0.0626
  }
 }

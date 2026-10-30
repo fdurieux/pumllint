@@ -1,6 +1,6 @@
 {
- "calls": 41,
- "usd_est": 1.1701,
+ "calls": 50,
+ "usd_est": 1.6876,
  "retries": [
   {
    "tag": "S3/G/4",
@@ -511,6 +511,97 @@
    "completion_tokens": 2118,
    "seconds": 24.0,
    "usd_est": 0.0379
+  },
+  {
+   "tag": "S3/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 14855,
+   "completion_tokens": 5377,
+   "seconds": 40.2,
+   "usd_est": 0.0723
+  },
+  {
+   "tag": "S4/B/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6637,
+   "completion_tokens": 3418,
+   "seconds": 32.6,
+   "usd_est": 0.0425
+  },
+  {
+   "tag": "S6/B/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 3555,
+   "seconds": 30.9,
+   "usd_est": 0.0441
+  },
+  {
+   "tag": "S6/B/1",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 4493,
+   "seconds": 38.9,
+   "usd_est": 0.0535
+  },
+  {
+   "tag": "S6/B/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 6874,
+   "completion_tokens": 4000,
+   "seconds": 31.7,
+   "usd_est": 0.0486
+  },
+  {
+   "tag": "S6/G/2",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 3923,
+   "seconds": 36.3,
+   "usd_est": 0.0616
+  },
+  {
+   "tag": "S6/G/3",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 4217,
+   "seconds": 39.2,
+   "usd_est": 0.0646
+  },
+  {
+   "tag": "S6/G/4",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 4020,
+   "seconds": 38.6,
+   "usd_est": 0.0626
+  },
+  {
+   "tag": "S6/G/5",
+   "model": "gpt-5.1-2025-11-13",
+   "attempts": 1,
+   "streamed": true,
+   "prompt_tokens": 17917,
+   "completion_tokens": 4523,
+   "seconds": 41.3,
+   "usd_est": 0.0676
   }
- ]
+ ],
+ "segments": 2
 }

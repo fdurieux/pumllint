@@ -145,7 +145,9 @@
   "conflicts": [],
   "blocked_keys": [],
   "below_verified": [],
-  "flagged": []
+  "flagged": [],
+  "stale": [],
+  "suspect_derived": []
  },
  "gate_keys": {
   "shipper_id|present": {
@@ -368,73 +370,8 @@
    ],
    "kept": [
     {
-     "id": "A:dt:P4|rounding@v1",
-     "key": "P4|rounding",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:P3|order#1@v1",
-     "key": "P3|order",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:P3|factor@v1",
-     "key": "P3|factor",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:P3|threshold@v1",
-     "key": "P3|threshold",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:P1|formula@v1",
-     "key": "P1|formula",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:QuoteAPI|on_screening_outage@v1",
-     "key": "QuoteAPI|on_screening_outage",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:QuoteAPI|on_notification_failure@v1",
-     "key": "QuoteAPI|on_notification_failure",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:QuoteAPI|on_store_failure@v1",
-     "key": "QuoteAPI|on_store_failure",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:S-refuse|notified#1@v1",
-     "key": "S-refuse|notified",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:S-review|final@v1",
-     "key": "S-review|final",
-     "status": "proposed"
-    },
-    {
-     "id": "A:dt:invalid_request|behaviour@v1",
-     "key": "invalid_request|behaviour",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:S-refuse|status@v1",
-     "key": "S-refuse|status",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:S-refuse|notified@v1",
-     "key": "S-refuse|notified",
-     "status": "approved"
-    },
-    {
-     "id": "A:dt:S-refuse|priced@v1",
-     "key": "S-refuse|priced",
+     "id": "A:dt:S-review|status@v1",
+     "key": "S-review|status",
      "status": "approved"
     },
     {
@@ -443,73 +380,78 @@
      "status": "approved"
     },
     {
-     "id": "A:dt:S-review|status@v1",
-     "key": "S-review|status",
+     "id": "A:dt:S-refuse|priced@v1",
+     "key": "S-refuse|priced",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-review|notified@v1",
-     "key": "S-review|notified",
+     "id": "A:dt:S-refuse|notified@v1",
+     "key": "S-refuse|notified",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-review|priced@v1",
-     "key": "S-review|priced",
+     "id": "A:dt:S-refuse|status@v1",
+     "key": "S-refuse|status",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-review|max@v1",
-     "key": "S-review|max",
+     "id": "A:dt:invalid_request|behaviour@v1",
+     "key": "invalid_request|behaviour",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-review|min@v1",
-     "key": "S-review|min",
+     "id": "A:dt:S-review|final@v1",
+     "key": "S-review|final",
+     "status": "proposed"
+    },
+    {
+     "id": "A:dt:S-refuse|notified#1@v1",
+     "key": "S-refuse|notified",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-accept|status@v1",
-     "key": "S-accept|status",
+     "id": "A:dt:QuoteAPI|on_store_failure@v1",
+     "key": "QuoteAPI|on_store_failure",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-accept|notified@v1",
-     "key": "S-accept|notified",
+     "id": "A:dt:QuoteAPI|on_notification_failure@v1",
+     "key": "QuoteAPI|on_notification_failure",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-accept|priced@v1",
-     "key": "S-accept|priced",
+     "id": "A:dt:QuoteAPI|on_screening_outage@v1",
+     "key": "QuoteAPI|on_screening_outage",
      "status": "approved"
     },
     {
-     "id": "A:dt:S-accept|max@v1",
-     "key": "S-accept|max",
+     "id": "A:dt:P1|formula@v1",
+     "key": "P1|formula",
      "status": "approved"
     },
     {
-     "id": "A:dt:declared_value|max@v1",
-     "key": "declared_value|max",
+     "id": "A:dt:P3|threshold@v1",
+     "key": "P3|threshold",
      "status": "approved"
     },
     {
-     "id": "A:dt:declared_value|min@v1",
-     "key": "declared_value|min",
+     "id": "A:dt:P3|factor@v1",
+     "key": "P3|factor",
      "status": "approved"
     },
     {
-     "id": "A:dt:distance_km|max@v1",
-     "key": "distance_km|max",
+     "id": "A:dt:P3|order#1@v1",
+     "key": "P3|order",
      "status": "approved"
     },
     {
-     "id": "A:dt:distance_km|min@v1",
-     "key": "distance_km|min",
+     "id": "A:dt:P4|rounding@v1",
+     "key": "P4|rounding",
      "status": "approved"
     },
     {
-     "id": "A:dt:weight_kg|max@v1",
-     "key": "weight_kg|max",
+     "id": "A:dt:shipper_id|present@v1",
+     "key": "shipper_id|present",
      "status": "approved"
     },
     {
@@ -518,8 +460,68 @@
      "status": "approved"
     },
     {
-     "id": "A:dt:shipper_id|present@v1",
-     "key": "shipper_id|present",
+     "id": "A:dt:weight_kg|max@v1",
+     "key": "weight_kg|max",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:distance_km|min@v1",
+     "key": "distance_km|min",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:distance_km|max@v1",
+     "key": "distance_km|max",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:declared_value|min@v1",
+     "key": "declared_value|min",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:declared_value|max@v1",
+     "key": "declared_value|max",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-accept|max@v1",
+     "key": "S-accept|max",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-accept|priced@v1",
+     "key": "S-accept|priced",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-accept|notified@v1",
+     "key": "S-accept|notified",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-accept|status@v1",
+     "key": "S-accept|status",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-review|min@v1",
+     "key": "S-review|min",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-review|max@v1",
+     "key": "S-review|max",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-review|priced@v1",
+     "key": "S-review|priced",
+     "status": "approved"
+    },
+    {
+     "id": "A:dt:S-review|notified@v1",
+     "key": "S-review|notified",
      "status": "approved"
     }
    ]
@@ -539,7 +541,83 @@
     "P2|surcharge",
     "P3|order"
    ],
-   "flagged": []
+   "flagged": [],
+   "stale": [
+    {
+     "id": "A:dt:P3|order@v1",
+     "key": "P3|order",
+     "value": "after P2",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_both:A:dt:P3|order@v1",
+       "valid_until": "v2"
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P3|order#1@v1",
+       "status": "approved",
+       "value": "after P2"
+      },
+      {
+       "id": "A:dt:P3|order@v2",
+       "status": "proposed",
+       "value": "after P2"
+      }
+     ]
+    },
+    {
+     "id": "A:dt:P2|threshold@v1",
+     "key": "P2|threshold",
+     "value": "1244",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_heavy:A:dt:P2|threshold@v1",
+       "valid_until": "v2"
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P2|threshold@v2",
+       "status": "proposed",
+       "value": "1244"
+      }
+     ]
+    },
+    {
+     "id": "A:dt:P2|surcharge@v1",
+     "key": "P2|surcharge",
+     "value": "316.00",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_heavy:A:dt:P2|surcharge@v1",
+       "valid_until": "v2"
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P2|surcharge@v2",
+       "status": "proposed",
+       "value": "341.00"
+      }
+     ]
+    }
+   ],
+   "suspect_derived": [
+    {
+     "id": "derived:S1:G:run1",
+     "kind": "python module",
+     "sha256": "f123cdbca3de43309ef64715a10b1e05caa3deec0a2af0e7b58f92ca2dbbe9e8",
+     "used_invalidated": [
+      "A:dt:P2|threshold@v1",
+      "A:dt:P2|surcharge@v1",
+      "A:dt:P3|order@v1"
+     ]
+    }
+   ]
   },
   "reverified": [
    "A:dt:P3|order@v2",
@@ -553,7 +631,83 @@
    "conflicts": [],
    "blocked_keys": [],
    "below_verified": [],
-   "flagged": []
+   "flagged": [],
+   "stale": [
+    {
+     "id": "A:dt:P3|order@v1",
+     "key": "P3|order",
+     "value": "after P2",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_both:A:dt:P3|order@v1",
+       "valid_until": null
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P3|order#1@v1",
+       "status": "approved",
+       "value": "after P2"
+      },
+      {
+       "id": "A:dt:P3|order@v2",
+       "status": "approved",
+       "value": "after P2"
+      }
+     ]
+    },
+    {
+     "id": "A:dt:P2|threshold@v1",
+     "key": "P2|threshold",
+     "value": "1244",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_heavy:A:dt:P2|threshold@v1",
+       "valid_until": null
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P2|threshold@v2",
+       "status": "approved",
+       "value": "1244"
+      }
+     ]
+    },
+    {
+     "id": "A:dt:P2|surcharge@v1",
+     "key": "P2|surcharge",
+     "value": "316.00",
+     "invalidated_by": "v2",
+     "verifications": [
+      {
+       "id": "ver:exec:price_exact_heavy:A:dt:P2|surcharge@v1",
+       "valid_until": null
+      }
+     ],
+     "successors": [
+      {
+       "id": "A:dt:P2|surcharge@v2",
+       "status": "approved",
+       "value": "341.00"
+      }
+     ]
+    }
+   ],
+   "suspect_derived": [
+    {
+     "id": "derived:S1:G:run1",
+     "kind": "python module",
+     "sha256": "f123cdbca3de43309ef64715a10b1e05caa3deec0a2af0e7b58f92ca2dbbe9e8",
+     "used_invalidated": [
+      "A:dt:P2|threshold@v1",
+      "A:dt:P2|surcharge@v1",
+      "A:dt:P3|order@v1"
+     ]
+    }
+   ]
   },
   "census_after": {
    "assertions_by_status": {

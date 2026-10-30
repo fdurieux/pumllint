@@ -57,10 +57,24 @@ def call(system: str, user: str, *, tag: str) -> dict:
     while True:
         attempts += 1
         try:
-            resp = client.chat.completions.create(
+            # streamed, because the session proxy cuts a non-streaming call that stays
+            # silent too long (the OpenWiki record's finding, 2026-10-28); the chunks are
+            # concatenated and usage is taken from the final chunk
+            stream = client.chat.completions.create(
                 model=MODEL, response_format={"type": "json_object"},
                 messages=[{"role": "system", "content": system}, {"role": "user", "content": user}],
+                stream=True, stream_options={"include_usage": True},
             )
+            parts, usage_obj, model_name = [], None, MODEL
+            for chunk in stream:
+                if chunk.usage:
+                    usage_obj = chunk.usage
+                if getattr(chunk, "model", None):
+                    model_name = chunk.model
+                if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
+                    parts.append(chunk.choices[0].delta.content)
+            if usage_obj is None:
+                raise RuntimeError("stream ended without a usage chunk")
             break
         except Exception as e:  # noqa: BLE001 — transient 5xx/429 from the proxy; retried, counted
             if attempts >= 4:
@@ -69,14 +83,14 @@ def call(system: str, user: str, *, tag: str) -> dict:
                 _state.setdefault("retries", []).append({"tag": tag, "attempt": attempts, "error": str(e)[:200]})
             time.sleep(5 * attempts)
     dt = time.time() - t0
-    u = resp.usage
+    u = usage_obj
     usd = u.prompt_tokens * PRICE_IN + u.completion_tokens * PRICE_OUT
-    rec = {"tag": tag, "model": resp.model, "attempts": attempts, "prompt_tokens": u.prompt_tokens,
+    rec = {"tag": tag, "model": model_name, "attempts": attempts, "streamed": True, "prompt_tokens": u.prompt_tokens,
            "completion_tokens": u.completion_tokens, "seconds": round(dt, 1), "usd_est": round(usd, 4)}
     with _lock:
         _state["usd"] += usd
         _state["usage"].append(rec)
-    raw = resp.choices[0].message.content or ""
+    raw = "".join(parts)
     try:
         parsed = json.loads(raw)
         parse_error = None
