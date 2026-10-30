@@ -65,6 +65,9 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .detail p{font-size:13px;margin:4px 0;max-width:95ch} .detail ul{margin:4px 0;padding-left:18px;font-size:13px}
 .detail .tw{overflow:auto;max-height:340px} .detail table{font-size:12.5px} .detail th{position:sticky;top:0;background:var(--card)}
 .detail .close{float:right}
+.gfilter{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px} .gfilter button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.gsrc{font-size:12.5px;color:var(--muted);margin:4px 0 8px} .gsrc b{color:var(--ink);font-weight:600}
+.gkeys{display:flex;flex-wrap:wrap;gap:4px} .gkeys code{font-size:11.5px;padding:1px 6px;border:1px solid var(--line);border-radius:6px} .gkeys code.req{border-color:var(--amber);background:var(--warn)}
 .armstack{display:grid;grid-template-rows:1fr 1fr;gap:6px}
 .armstack .stage{min-height:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -271,14 +274,76 @@ function renderDetail(d) {
   const sec = x => `<h5>${esc(x.heading)}</h5>${x.text ? `<p>${esc(x.text)}</p>` : ''}${x.list ? `<ul>${x.list.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : ''}${x.table ? `<div class="tw"><table><thead><tr>${x.table.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}`;
   return `<div class="detail"><button class="close small">close</button><h4>${esc(d.title)}</h4><p class="intro">${esc(d.intro)}</p>${d.sections.map(sec).join('')}</div>`;
 }
+const GAP_ORDER = ['declared missing', 'undeclared missing', 'ambiguous', 'conflict', 'unverified'];
+
+function renderGaps(v, store, filter) {
+  const g = v.gaps, req = new Set(g.required_keys);
+  const byId = {}; (store && store.gaps || []).forEach(x => byId[x.id] = x);
+  const srcLine = !store ? `<div class="gsrc">Source: <b>${esc(g.source)}</b>; asking the store…</div>`
+    : store.match ? `<div class="gsrc">Sources: <b>${esc(g.source)}</b>, and <b>the running Neo4j</b> (${esc(v.scenario)} is loaded): each gap's own text and everything it concerns, ${store.gaps.length} gap nodes.</div>`
+    : `<div class="gsrc">Source: <b>${esc(g.source)}</b>. The store holds <b>${esc(store.loaded || 'nothing')}</b>, not ${esc(v.scenario)}${store.error ? ` (${esc(store.error)})` : ''}, so the gaps' own text and the full set of what they concern are not shown; run Deterministic for ${esc(v.scenario)} and open this panel again, or paste the saved query <em>The gaps, with what they concern</em> into Neo4j Browser after loading it.</div>`;
+  const counts = GAP_ORDER.map(k => `<button class="${filter === k ? 'on' : ''}" data-k="${k}">${k} · ${g.counts[k]}</button>`).join('');
+  const assertionCell = (a, sid) => {
+    const st = sid && byId[sid] ? null : null;
+    return a ? `${esc(a.key || '')}${a.value !== null && a.value !== undefined ? ` = <code>${esc(a.value)}</code>` : ''}${a.basis ? ` · ${esc(a.basis)}` : ''}${a.status ? ` · ${esc(a.status)}` : ''}` : '—';
+  };
+  const enrich = row => {
+    const sg = byId[row.id]; if (!sg) return row;
+    const r = Object.assign({}, row, { text: sg.text, declared: sg.declared, fromStore: true });
+    const asserts = sg.concerns.filter(c => (c.labels || []).includes('Assertion'));
+    const keys = sg.concerns.filter(c => c.relkey).map(c => c.relkey);
+    const others = sg.concerns.filter(c => !(c.labels || []).includes('Assertion') && !c.relkey).map(c => c.id);
+    r.concerns = [...asserts.map(a => ({ id: a.id, what: 'assertion' })), ...others.map(o => ({ id: o, what: 'entity' })), ...keys.map(k => ({ id: k, what: 'key' }))];
+    if (asserts.length) r.assertion = { key: asserts[0].key, value: asserts[0].value, basis: asserts[0].basis, status: asserts[0].status };
+    if (asserts.length > 1) r.assertions = asserts;
+    return r;
+  };
+  const group = k => {
+    if (filter && filter !== k) return '';
+    const rows = (g.groups[k] || []).map(enrich);
+    let body;
+    if (!rows.length) body = '<p>none in this scenario</p>';
+    else if (k === 'conflict') body = `<div class="tw"><table><thead><tr><th>gap</th><th>key</th><th>one side</th><th>says</th><th>other side</th><th>says</th><th>statements concerned</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.sides ? r.sides.key : '')}</td><td>${esc(r.sides ? r.sides.a : '')}</td><td><code>${esc(r.sides ? r.sides.va : '')}</code></td><td>${esc(r.sides ? r.sides.b : '')}</td><td><code>${esc(r.sides ? r.sides.vb : '')}</code></td><td>${r.assertions ? r.assertions.map(a => `${esc(a.id)} (${esc(a.status)})`).join('<br>') : (r.concerns.length ? r.concerns.map(c => esc(c.id)).join('<br>') : 'store needed')}</td></tr>`).join('')}</tbody></table></div>`;
+    else body = `<div class="tw"><table><thead><tr><th>gap</th><th>what it says</th><th>declared by the authors</th><th>concerns</th><th>the statement concerned: key = value · basis · status</th></tr></thead><tbody>${rows.map(r => `<tr><td>${esc(r.id)}</td><td>${esc(r.text)}</td><td>${r.declared ? 'yes' : 'no'}</td><td>${r.concerns.map(c => `${esc(c.what)} ${esc(c.id)}`).join('<br>')}</td><td>${assertionCell(r.assertion)}</td></tr>`).join('')}</tbody></table></div>`;
+    return `<h5>${esc(k)} · ${g.counts[k]}</h5><p>${esc(g.explain[k])}</p>${body}`;
+  };
+  let unv = '';
+  if (!filter || filter === 'unverified') {
+    const u = g.unverified;
+    const storeKeys = store && store.match ? [...new Set(store.gaps.filter(x => x.kind === 'unverified').flatMap(x => x.concerns.filter(c => c.key).map(c => c.key)))].sort() : null;
+    const keys = storeKeys || u.required_below_verified;
+    unv = `<h5>unverified · ${u.count}</h5><p>${esc(g.explain['unverified'])}</p>
+      <p>${u.count} statements with no verification record. ${storeKeys ? `They concern ${keys.length} distinct keys, listed below; the ${keys.filter(k => req.has(k)).length} the coding task requires are marked.` : `Of the 36 keys the coding task requires, ${u.required_below_verified.length} are below verified (marked); the full list of keys concerned needs the store.`}</p>
+      <div class="gkeys">${keys.map(k => `<code class="${req.has(k) ? 'req' : ''}" title="${req.has(k) ? 'a key the coding task requires' : ''}">${esc(k)}</code>`).join('') || '<span class="small">none below verified among the required keys</span>'}</div>`;
+  }
+  return `<div class="detail"><button class="close small">close</button><h4>Gaps: everything the rules found wanting · ${Object.values(g.census).reduce((a, b) => a + b, 0)} in the census</h4>${srcLine}
+    <div class="gfilter"><button class="${!filter ? 'on' : ''}" data-k="">all</button>${counts}</div>
+    ${GAP_ORDER.filter(k => k !== 'unverified').map(group).join('')}${unv}</div>`;
+}
+
+function openGaps(v, host, b) {
+  let store = null, filter = '';
+  const draw = () => {
+    host.innerHTML = renderGaps(v, store, filter);
+    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; b.classList.remove('sel'); });
+    host.querySelectorAll('.gfilter button').forEach(x => x.addEventListener('click', () => { filter = x.dataset.k; draw(); }));
+  };
+  draw();
+  fetch(`/api/gaps/${v.scenario}`).then(r => r.json()).then(j => { store = j; if (b.classList.contains('sel')) draw(); }).catch(e => { store = { match: false, loaded: null, error: String(e), gaps: [] }; if (b.classList.contains('sel')) draw(); });
+}
+
 function wireDetails(v) {
   const host = $('#stage-detail'); if (!host) return;
   $('#report').querySelectorAll('.stage[data-detail]').forEach(b => b.addEventListener('click', () => {
     const id = b.dataset.detail, open = b.classList.contains('sel');
     $('#report').querySelectorAll('.stage.sel').forEach(x => x.classList.remove('sel'));
     if (open || !v.details[id]) { host.innerHTML = ''; return; }
-    b.classList.add('sel'); host.innerHTML = renderDetail(v.details[id]);
-    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; b.classList.remove('sel'); });
+    b.classList.add('sel');
+    if (id === 'gaps') { openGaps(v, host, b); }
+    else {
+      host.innerHTML = renderDetail(v.details[id]);
+      host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; b.classList.remove('sel'); });
+    }
     host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }));
 }
