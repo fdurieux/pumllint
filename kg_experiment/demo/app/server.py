@@ -116,6 +116,11 @@ def store_status() -> dict:
 
 # ------------------------------------------------------------------ runs
 
+def _now() -> str:
+    """UTC with its offset, so a browser in any zone parses it as the instant it is."""
+    return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+
+
 class Runner:
     """One harness subprocess at a time: the community edition serves one
     database, so two loads would race."""
@@ -157,7 +162,7 @@ class Runner:
             fh = open(log, "w", encoding="utf-8")  # noqa: SIM115 — closed when the process ends
             proc = subprocess.Popen(cmd, cwd=str(HARNESS), stdout=fh, stderr=subprocess.STDOUT, env=env)
             rec = {"id": out_dir.name, "scenario": scenario, "mode": mode, "n": n, "status": "running",
-                   "started": dt.datetime.now().isoformat(timespec="seconds"), "finished": None, "exit_code": None,
+                   "started": _now(), "finished": None, "exit_code": None,
                    "out_dir": str(out_dir), "log": str(log), "source": f"demo-runs/{out_dir.name}", "cmd": " ".join(cmd)}
             self.current = rec
             threading.Thread(target=self._wait, args=(proc, fh, rec), daemon=True).start()
@@ -166,8 +171,7 @@ class Runner:
     def _wait(self, proc, fh, rec) -> None:
         code = proc.wait()
         fh.close()
-        rec.update(status="done" if code == 0 else "failed", exit_code=code,
-                   finished=dt.datetime.now().isoformat(timespec="seconds"))
+        rec.update(status="done" if code == 0 else "failed", exit_code=code, finished=_now())
         self.history.append(rec)
 
     def describe(self, rec: dict | None = None) -> dict | None:
@@ -175,6 +179,9 @@ class Runner:
         if not rec:
             return None
         out = dict(rec)
+        # elapsed is computed here, not in the browser: the browser's clock and zone are not ours
+        end = dt.datetime.fromisoformat(rec["finished"]) if rec.get("finished") else dt.datetime.now(dt.timezone.utc)
+        out["elapsed_s"] = int((end - dt.datetime.fromisoformat(rec["started"])).total_seconds())
         try:
             text = Path(rec["log"]).read_text(encoding="utf-8")
         except OSError:
