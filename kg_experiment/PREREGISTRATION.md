@@ -437,9 +437,17 @@ recorded per call in `results/usage.json`.
   this: the bundle's INVALIDATED section already named the assertions
   and the suspect artefact, which is what X6 reads.
 
-### Verdicts (2026-10-30; 76 generator calls completed, 44 retried
-### attempts, estimated $2.4 against the $25 ceiling; the calibration's
-### six calls included)
+### Verdicts (2026-10-30)
+
+Budget, from the per-run usage records: 80 generator calls completed
+into `results/` (70 scored cells and the 10 of the S6 re-run), 44
+retried attempts, estimated $3.58 against the $25 ceiling ($3.02 and
+$0.56); the six calibration calls ran into the scratchpad and are not
+counted. `results/usage.json`'s aggregate (50 calls, $1.69) is partial:
+the first invocation's per-call records were lost at the abort, and
+only the run files carry every cell's usage. *Corrected 2026-10-30,
+after the merge: the heading first read "76 generator calls …
+estimated $2.4", figures no record supports.*
 
 Deterministic:
 
