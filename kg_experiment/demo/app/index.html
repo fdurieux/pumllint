@@ -65,6 +65,7 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .detail p{font-size:13px;margin:4px 0;max-width:95ch} .detail ul{margin:4px 0;padding-left:18px;font-size:13px}
 .detail .tw{overflow:auto;max-height:340px} .detail table{font-size:12.5px} .detail th{position:sticky;top:0;background:var(--card)}
 .detail .close{float:right}
+.rnode{margin:3px 0} .rstate{font-family:var(--mono);font-size:11px;color:var(--muted)} #register details{margin:4px 0} #register summary{cursor:pointer;font-weight:600} #register-detail .detail{margin-top:10px}
 .gfilter{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px} .gfilter button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .gsrc{font-size:12.5px;color:var(--muted);margin:4px 0 8px} .gsrc b{color:var(--ink);font-weight:600}
 .gkeys{display:flex;flex-wrap:wrap;gap:4px} .gkeys code{font-size:11.5px;padding:1px 6px;border:1px solid var(--line);border-radius:6px} .gkeys code.req{border-color:var(--amber);background:var(--warn)}
@@ -114,6 +115,7 @@ a{color:var(--teal)}
       <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One store, one scenario: it holds the scenario loaded last.</p>
       <h3>Saved Cypher</h3><div id="cypher"></div>
     </div>
+    <div class="card" style="margin-top:16px"><h2>The register</h2><div id="register" class="small">…</div><div id="register-detail"></div></div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
   </aside>
   <section><div id="runbox" class="banner" style="display:none"><div class="head"><b id="run-title"></b><span id="run-meta" class="small"></span><button id="run-hide" class="small" style="margin-left:auto">hide</button></div><div class="console" id="run-log"></div></div>
@@ -141,6 +143,7 @@ async function loadScenarios() {
   STATE.recordModel = j.record_model; STATE.otherModel = j.default_other_model;
   renderToggle(j.arms_model_preset);
   renderChips(); renderMenu(); renderStore();
+  renderRegister().catch(e => { $('#register').innerHTML = 'The register view did not load: ' + esc(e.message); });
   if (j.run) { STATE.lastRun[j.run.scenario + j.run.mode] = j.run; if (j.run.status === 'running') watchRun(); }
 }
 
@@ -237,6 +240,30 @@ async function renderStore() {
   const cy = await api('/api/cypher');
   $('#cypher').innerHTML = cy.map(q => `<details><summary>${esc(q.title)}</summary><button class="copy" data-t="${esc(q.text)}">copy</button><pre class="light">${esc(q.text)}</pre></details>`).join('');
   $('#cypher').querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => { await navigator.clipboard.writeText(b.dataset.t); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); }));
+}
+
+async function renderRegister(today) {
+  const r = await api('/api/register' + (today ? `?today=${encodeURIComponent(today)}` : ''));
+  const src = r.source;
+  const taxes = Object.entries(r.nodes_by_taxonomy).map(([t, ns]) => `<details><summary>${esc(t)} · ${ns.length}</summary>${ns.map(n => `<div class="rnode"><a href="#" data-node="${esc(n.id)}"><code>${esc(n.id)}</code></a> <span class="rstate">${esc(n.state)}</span> ${esc(n.name)}</div>`).join('')}</details>`).join('');
+  $('#register').innerHTML = `<p>${esc(r.intro)}</p>
+    <div><a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code>, copied ${esc(src.copied)}; the ${src.files} files ${src.digest_ok ? 'match' : 'DO NOT MATCH'} the digests in SOURCE.md.</div>
+    <div style="margin-top:6px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>
+    <pre class="light">${esc(r.coverage_lines.join('\n'))}</pre>
+    <div>${r.exceptions.map(e => esc(e.sentence)).join(' ')} ${esc(r.matrix.sentence)}</div>
+    <div style="margin-top:4px">${r.pinned ? '<a href="#" id="reg-wall">run the checker at today\'s date instead</a>' : '<a href="#" id="reg-pinned">back to the pinned date</a>'}</div>
+    <h3>Nodes, by taxonomy · click one for its panel</h3>${taxes}
+    <h3>Relationship types</h3><div class="tw"><table><thead><tr><th>type</th><th>links</th><th>approved</th><th>ARIS</th><th>Archi</th></tr></thead><tbody>${r.relationship_types.map(t => `<tr><td>${esc(t.name)}</td><td>${t.links}</td><td>${t.approved}</td><td>${esc(t.aris_status)}</td><td>${esc(t.archi_status)}</td></tr>`).join('')}</tbody></table></div>`;
+  const all = {}; Object.values(r.nodes_by_taxonomy).forEach(ns => ns.forEach(n => all[n.id] = n));
+  const host = $('#register-detail');
+  $('#register').querySelectorAll('a[data-node]').forEach(a => a.addEventListener('click', ev => {
+    ev.preventDefault();
+    host.innerHTML = renderDetail(all[a.dataset.node].panel);
+    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; });
+    host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }));
+  const wall = $('#reg-wall'); if (wall) wall.addEventListener('click', ev => { ev.preventDefault(); renderRegister('wall'); });
+  const pin = $('#reg-pinned'); if (pin) pin.addEventListener('click', ev => { ev.preventDefault(); renderRegister(); });
 }
 
 async function renderRuns() {

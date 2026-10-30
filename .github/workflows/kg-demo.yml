@@ -50,6 +50,7 @@ jobs:
           print("menu:", len(j["scenarios"]), "scenarios; store", j["store"]["uri"], "reachable")
           PY
           curl -fsS "localhost:8080/api/results/S6" | python3 -c 'import json,sys; v=json.load(sys.stdin); assert v["gate"]["verdict"]=="PROCEED" and len(v["stage2"]["invalidated"])==4 and v["cascade"]["G"].startswith("<svg"); print("replay S6 ok:", v["source"])'
+          curl -fsS "localhost:8080/api/register" | python3 -c 'import json,sys; r=json.load(sys.stdin); assert r["summary"]["nodes"]==27 and r["summary"]["links"]==28 and r["coverage"]["C1"]["excepted"]==1 and r["source"]["digest_ok"] and r["pinned"], r["summary"]; print("register:", r["summary"], "at", r["run_date"])'
 
       - name: Load one scenario deterministically through the app
         run: |

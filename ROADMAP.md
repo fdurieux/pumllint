@@ -8521,6 +8521,25 @@ list and license posture live in § Settled questions.
     the vendored checker clean at the pinned date (27 nodes, 28 links).
     The image carries it; nothing fetched at build time; the demo does
     not read it yet. Lab and docs only.
+  - *2026-10-30, later (#243):* the register card, step 2 and the first
+    visible one. Under *The store*, the vendored register read only: the
+    repository and commit, the digests checked against `SOURCE.md`, 27
+    nodes and 28 links, the checker's health line and its three coverage
+    lines as data, the exception with its expiry, the matrix with every
+    row at `unverified`, the nodes by taxonomy, the ten relationship
+    types with their ARIS and Archi status; a node opens a stage-style
+    panel (state, owner, name, parent, approval, source of record, links
+    in and out); a switch runs the checker at today's date, labelled.
+    `/api/register` (`?today=wall|date`); `register_view.py`, stdlib,
+    every sentence registered. The register's terms join the demo
+    glossary with their forbidden synonyms, reconciled in `GLOSSARY.md`
+    (only "an extract"/"the extract" forbidden, the stage stays extract;
+    item, object, ok keep their demo senses; record, approval, status
+    versus state, entity, decision distinguished). The stack job asserts
+    the endpoint. Tests: the view at the pinned date and at 2027-03-01
+    (the exception expired, `JRN-0004` uncovered), every sentence against
+    the merged glossary, the wiring. Lab, page, view, tests and docs
+    only; harness, record and product code untouched.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

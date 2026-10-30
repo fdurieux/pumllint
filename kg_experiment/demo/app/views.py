@@ -411,6 +411,16 @@ GLOSSARY = {
     "demo run": "A re-run written to a dated folder under results/demo-runs/.",
     "store": "The Neo4j database the harness loads; it holds one scenario at a time.",
     "model": "The language model that answers an arm's call.",
+    # shared with the IEAM register (kg_experiment/demo/register/glossary/glossary.toml), reconciled in GLOSSARY.md
+    "node": "One record of one register taxonomy: a capability, product, journey element, process element, application element, information node or organisation unit.",
+    "link": "One typed, directed relationship between two register nodes, with its own id, state, owner and approval.",
+    "relationship type": "One of the register's ten typed relationships, such as requires, realizes, supports or manages.",
+    "source of record": "The system that authors a node's content: ARIS, Archi, the EDM repository, or the kit in the test case.",
+    "export": "A dated, append-only mirror of a source of record, with a manifest of digests and a reconciliation report.",
+    "approval": "A recorded acceptance: of a verified assertion in the store, or of a node or link in the register, with who, when and which record.",
+    "exception": "An approved, expiring deviation from a coverage rule, with its scope and rationale.",
+    "coverage rule": "A register check that an approved node of one kind has a link of one type, or an unexpired exception.",
+    "state": "Where a register node or link stands: draft, proposed, approved, deprecated, retired or rejected. An assertion has a status, never a state.",
 }
 # synonyms the controlled texts must not use, and the approved term each stands for
 FORBIDDEN = {
@@ -420,6 +430,16 @@ FORBIDDEN = {
     "artefact": "document", "artefacts": "document",
     "acceptance test": "oracle", "acceptance tests": "oracle", "test suite": "oracle", "the suite": "oracle",
     "database": "store", "snippet": "fragment", "chunk": "fragment",
+    # the register's forbidden synonyms, as reconciled in GLOSSARY.md: bare "item", "object", "ok" and the
+    # pipeline stage "extract" keep their demo senses, so only the register-qualified phrases are forbidden
+    "register item": "node", "register object": "node", "element record": "node",
+    "connection": "link", "connections": "link", "mapping row": "link", "edge record": "link",
+    "link type": "relationship type", "connection type": "relationship type",
+    "master": "source of record", "golden source": "source of record", "system of truth": "source of record",
+    "an extract": "export", "the extract": "export", "dump": "export", "snapshot": "export",
+    "sign-off": "approval", "signoff": "approval",
+    "waiver": "exception", "exemption": "exception",
+    "completeness rule": "coverage rule", "mandatory mapping": "coverage rule",
 }
 VERDICT_MEANING = {
     "PROCEED": ["Every key the task needs is verified or approved.", "An arm may build from them as facts."],

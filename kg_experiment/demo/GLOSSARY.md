@@ -31,7 +31,7 @@ when a sentence breaks a rule.
 
 | kind | where | limit | checked for synonyms |
 |---|---|---|---|
-| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines, the systemic-model panels and captions | 20 words | yes |
+| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines, the systemic-model panels and captions, the register card and its node panels | 20 words | yes |
 | reading | `SCENARIOS[..]["plain"]`, the "what this shows" paragraph | 25 words | yes |
 | data | the gate's reason, conflict texts, id and key lists, engine and API messages, the model's own labels and definitions | none | no |
 
@@ -66,6 +66,15 @@ and the test checks this file names every term of it.
 | demo run | A re-run written to a dated folder under results/demo-runs/. |
 | store | The Neo4j database the harness loads; it holds one scenario at a time. |
 | model | The language model that answers an arm's call. |
+| node | One record of one register taxonomy: a capability, product, journey element, process element, application element, information node or organisation unit. |
+| link | One typed, directed relationship between two register nodes, with its own id, state, owner and approval. |
+| relationship type | One of the register's ten typed relationships, such as requires, realizes, supports or manages. |
+| source of record | The system that authors a node's content: ARIS, Archi, the EDM repository, or the kit in the test case. |
+| export | A dated, append-only mirror of a source of record, with a manifest of digests and a reconciliation report. |
+| approval | A recorded acceptance: of a verified assertion in the store, or of a node or link in the register, with who, when and which record. |
+| exception | An approved, expiring deviation from a coverage rule, with its scope and rationale. |
+| coverage rule | A register check that an approved node of one kind has a link of one type, or an unexpired exception. |
+| state | Where a register node or link stands: draft, proposed, approved, deprecated, retired or rejected. An assertion has a status, never a state. |
 
 The definitions may use a forbidden word once, to name what the term
 replaces ("assertion" is defined as a fact, "arm" as an AI assistant):
@@ -82,10 +91,47 @@ the table defines, the sentences obey.
 | acceptance test, acceptance tests, test suite, the suite | oracle |
 | database | store |
 | snippet, chunk | fragment |
+| register item, register object, element record | node |
+| connection, connections, mapping row, edge record | link |
+| link type, connection type | relationship type |
+| master, golden source, system of truth | source of record |
+| an extract, the extract, dump, snapshot | export |
+| sign-off, signoff | approval |
+| waiver, exemption | exception |
+| completeness rule, mandatory mapping | coverage rule |
 
 `FORBIDDEN` in `views.py` holds the same list. Data quoted from the
 harness may contain these words (`D3_stale`, "artefact" in a rule hit's
 field name): it is data and is shown as it is.
+
+## Terms shared with the IEAM register
+
+The demo shows the vendored IEAM register (`kg_experiment/demo/register/`), whose own
+glossary (`register/glossary/glossary.toml`) defines node, link, relationship type, source of
+record, export, approval, exception and coverage rule. Those terms are in the table above with
+the register's meanings, and their forbidden synonyms in the list, with six reconciliations:
+
+- **extract.** The register forbids it as a synonym of *export*; the demo's pipeline stage is
+  *extract* and a basis is *extracted by a parser*. Only the noun phrases "an extract" and
+  "the extract" are forbidden here; the stage keeps its name.
+- **item, object.** The register forbids them as synonyms of *node*; the demo says "missing
+  item" in the gaps sense, and the page's script uses `Object`. Only "register item",
+  "register object" and "element record" are forbidden here.
+- **ok.** The register forbids it as a synonym of *approval*; the page's script and the CI job
+  use `ok` as a field. Not forbidden here; the register's own checker still refuses it in a
+  name, a rationale or a decision record.
+- **record.** The demo's *record* is the committed results; the register's are always written
+  in full as *decision record* and *source of record*.
+- **approval.** One term with two objects: an assertion in the store, a node or link in the
+  register. A register panel says *node approval* or *link approval* where both are in view.
+- **status and state.** An assertion has a *status* (proposed to invalidated); a register node
+  or link has a *state* (draft to retired). They never swap.
+- **entity and decision.** The demo's *entity* is a thing the documents talk about; the
+  register's `ENT` nodes are *information nodes*. The arm's *decision* is its choice; the
+  register's is a *decision record*.
+
+The register's names, rationales and finding messages are data on the page, shown as the
+register has them.
 
 ## What is outside these rules
 
