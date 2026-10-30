@@ -189,3 +189,21 @@ def test_plain_english_narrative_is_built_from_the_files():
         v = views.build("S4", "demo-runs/2026-10-30-1800", Path(td) / "demo-runs")
         assert v["record_check"]["differ"] == 0 and v["record_check"]["compared"] > 100
         assert "identical on all" in " ".join(v["narrative"]) and "assistants were not called" in " ".join(v["narrative"])
+
+
+def test_every_pipeline_box_has_a_detail_panel():
+    for sc in views.ORDER:
+        v = views.build(sc, views.default_source(sc), NO_RUNS)
+        ids = [st["id"] for st in v["stages"]] + [f"{part}_{arm}" for part in ("generate", "oracle") for arm in ("G", "B")]
+        if sc == "S6":
+            ids += [st["id"] for st in v["stage2"]["stages"]]
+        for i in ids:
+            d = v["details"][i]
+            assert d["title"] and d["intro"] and isinstance(d["sections"], list), (sc, i)
+            for sec in d["sections"]:
+                assert sec["heading"], (sc, i)
+                if "table" in sec:
+                    assert all(len(r) == len(sec["table"]["cols"]) for r in sec["table"]["rows"]), (sc, i, sec["heading"])
+        assert len(v["details"]["gate"]["sections"][1]["table"]["rows"]) == 36, sc
+    s4 = views.build("S4", "record", NO_RUNS)["details"]["rules"]
+    assert any(sec.get("table") and len(sec["table"]["rows"]) == 4 for sec in s4["sections"] if sec["heading"].startswith("R-CONFLICT"))

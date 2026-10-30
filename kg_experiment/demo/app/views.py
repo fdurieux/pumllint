@@ -332,6 +332,7 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
                  "lines": [s2["gate_after_reverification"]["verdict"], s2["gate_after_reverification"]["why"]]},
             ]}
     view["narrative"] = narrative(view, det)
+    view["details"] = stage_details(view, det, runs)
     return view
 
 
@@ -388,7 +389,7 @@ def narrative(view: dict, det: dict) -> list[str]:
                "with where it came from and whether anyone has verified it. Seven rules then checked the assertions; the gate decided "
                "whether an AI coding assistant may build from them; two assistants were asked anyway, one given the gate's verdict and "
                "evidence (G, the governed arm) and one given the documents alone (B, the baseline); and the kit's eleven acceptance "
-               "tests, the oracle, graded whatever code came back.")
+               "tests, the oracle, graded whatever code came back. Click any box of the pipeline for that stage's full data.")
     out.append(f"What was planted in {sc} ({meta['title']}): {meta['plant']}.")
     declared = sum(1 for h in rules["R-REQ"] if h.get("declared"))
     req = _n(rules["R-REQ"])
@@ -466,3 +467,103 @@ def narrative(view: dict, det: dict) -> list[str]:
     if view.get("model_deviation"):
         out.append(f"The assistants here were {', '.join(view['model_deviation'])}, not the record's {view['record_model']}: a different model, so these answers are not the record's and are not comparable with it.")
     return out
+
+
+# ------------------------------------------------------------ stage details
+
+RULE_TEXT = {
+    "R-STRUCT": "Structure: an extracted or authored assertion must rest on at least one fragment; an inferred one must point at the gap it claims to fill; no fragment may float without a version. Violations are listed; the record had none in any scenario.",
+    "R-CORROBORATE": "Corroboration: two assertions about the same key with equal values, from two different documents, corroborate each other and both move from proposed to validated. Validated means consistent, not true: two documents can agree on a wrong value.",
+    "R-CONFLICT": "Conflict: two assertions about the same key with unequal values, from different documents, are both marked disputed and a conflict gap is raised. A numeric key with a vague side is incomparable, not a conflict.",
+    "R-VAGUE": "Vagueness: a decision-table row with vague wording, or a diagram symbol with no definition anywhere, raises an ambiguity gap on every assertion that row or symbol supports.",
+    "R-REQ": "Requirements: a requirement that says NOT YET SPECIFIED raises a gap declared by the authors, on the requirement and on the key it governs; a document declared not yet authored does too; and every requirement needs a Gherkin scenario that verifies it.",
+    "R-UNVERIFIED": "Verification: a proposed or validated assertion with no verification record gets an unverified gap. The count is how many statements nobody has checked.",
+}
+FAMILIES = [("kit/requirements.md", "requirements", "markdown"), ("contract/decision_table.md", "decision tables", "markdown"),
+            ("contract/spec.md", "specification", "markdown"), ("contract/openapi.yaml", "API contract", "OpenAPI 3.0"),
+            ("behavior/quote_flow.puml", "behaviour", "PlantUML sequence diagram"), ("structure/containers.puml", "structure", "C4 PlantUML"),
+            ("kit/quote_process.bpmn", "process", "BPMN 2.0"), ("kit/screening_decision.dmn", "decision", "DMN 1.3"),
+            ("tests_input/acceptance.feature", "tests", "Gherkin"), ("kit/links.toml", "links", "TOML")]
+
+
+def _table(cols, rows):
+    return {"cols": cols, "rows": [[("" if c is None else str(c)) for c in r] for r in rows]}
+
+
+def stage_details(view: dict, det: dict, runs: dict) -> dict:
+    """What opens when a box of the pipeline strip is clicked: the stage's full
+    data from deterministic.json and the run files, in tables and sentences."""
+    sc = view["scenario"]
+    gate = det["D6_gate"]
+    arts = [f for f in FAMILIES if not (sc == "S3" and f[0].endswith(".dmn"))]
+    d = {}
+    d["ingest"] = {"title": "Ingest: the documents, read file by file",
+                   "intro": f"{len(arts)} documents were read" + (", one of them planted as absent (the DMN, declared not yet authored)" if sc == "S3" else "")
+                            + (", plus one machine-written note the baseline arm received as a document (not loaded into the store: its one statement entered as an inferred assertion instead)" if sc == "S5" else "")
+                            + f". Each file and each fragment is stored with its sha256 digest, so a later version can be told apart byte for byte. {det['load']['fragments']} fragments came out.",
+                   "sections": [{"heading": "Documents", "table": _table(["path", "family", "format"], arts)}]}
+    levels = Counter(v["level"] for v in det["gate_keys"].values())
+    d["extract"] = {"title": "Extract: fragments into assertions",
+                    "intro": f"{det['load']['assertions']} assertions, one statement each, by ten deterministic mappers (one per format; no model). Each assertion carries a basis (extracted, authored, inferred), the fragment it rests on, and a status that starts at proposed.",
+                    "sections": ([{"heading": "Symbols with no definition in any document", "list": det["load"]["unresolved_symbols"]}] if det["load"]["unresolved_symbols"] else [])
+                                + [{"heading": "The 36 keys the coding task needs, by the level the gate resolved", "table": _table(["level", "keys"], sorted(levels.items(), key=lambda kv: -kv[1]))}]}
+    cen = det["D2_census"]
+    d["load"] = {"title": "Load: the graph in Neo4j",
+                 "intro": f"{cen['nodes']} nodes and {cen['relationships']} relationships. Verification and approval are nodes with their own records, never a flag flipped on the statement.",
+                 "sections": [{"heading": "Assertions by status", "table": _table(["status", "assertions"], sorted(cen["assertions_by_status"].items()))},
+                              {"heading": "Gaps by kind", "table": _table(["kind", "gaps"], sorted(cen["gaps_by_kind"].items()))},
+                              {"heading": "Verification records", "text": (f"{det['verifications']['execution']} by execution (the kit's suite, each record naming the scenario and the digest of the code it ran), {det['verifications']['review']} by review (the dated review record and the authored inputs), {det['verifications']['approved']} approvals by the owner."
+                                                                           if "execution" in det["verifications"] else "none loaded: this scenario is extraction only.")},
+                              {"heading": "D1: the constraints the community edition accepts", "table": _table(["type", "accepted", "message"], [(c["type"], "yes" if c["accepted"] else "no", (c["message"] or "").split("{message:")[-1].strip(" }")[:110]) for c in det["D1_constraints"]])}]}
+    rules = det["rules"]
+    secs = []
+    for r in RULE_ORDER:
+        hits = rules[r]
+        sec = {"heading": f"{r}: {hits if not isinstance(hits, list) else len(hits)} " + ("pairs" if r == "R-CORROBORATE" else "statements" if r == "R-UNVERIFIED" else "hit(s)"), "text": RULE_TEXT[r]}
+        if r == "R-CONFLICT" and hits:
+            sec["table"] = _table(["key", "one side", "says", "other side", "says"], [(h["key"], h["a"], h["va"], h["b"], h["vb"]) for h in hits])
+        if r == "R-VAGUE" and hits:
+            sec["table"] = _table(["assertion", "key", "vague words"], [(h["id"], h["key"], ", ".join(h["words"])) for h in hits])
+        if r == "R-REQ" and hits:
+            sec["table"] = _table(["kind", "declared by the authors", "about", "why"], [(h["kind"], "yes" if h.get("declared") else "no", h.get("req") or h.get("artefact") or h.get("entity") or "", h.get("why") or (h.get("key") and f"governs {h['key']}") or "") for h in hits])
+        if r == "R-STRUCT" and hits:
+            sec["table"] = _table(["assertion", "why"], [(h["id"], h["why"]) for h in hits])
+        secs.append(sec)
+    sh = det["D4_shacl"]
+    secs.append({"heading": f"SHACL over an RDF projection: {sh['triples']} triples", "text": f"The main shapes mirror R-STRUCT and R-REQ: conforms={sh['main']['conforms']}, {sh['main']['results']} result(s) {sh['main']['by_severity']}. An information-only shape every assertion violates: conforms={sh['info_only']['conforms']}, {sh['info_only']['results']} results, which shows at execution that sh:conforms is false on information-level results alone.", "list": sh["main"]["sample"][2:8]})
+    d["rules"] = {"title": "Rules: seven Cypher checks after every load", "intro": "Each rule is one or more Cypher statements; status is set only here, by the loaders, and by recorded human acts. No rule promotes to verified or approved.", "sections": secs}
+    keys_rows = [(k, v["level"], ", ".join(v["flags"]) or "", v["n"]) for k, v in det["gate_keys"].items()]
+    gsecs = [{"heading": "How the verdict is formed", "text": "BLOCKED if any required key is absent, a declared gap, disputed or invalidated, or if more than 25 % of the keys are below verified; QUALIFIED if any key is below verified or carries a flag; PROCEED otherwise. The worst status among a key's live assertions is its level."},
+             {"heading": f"The {len(keys_rows)} required keys", "table": _table(["key", "level", "flags", "assertions"], keys_rows)}]
+    if gate.get("conflicts"):
+        gsecs.append({"heading": "Conflicts the bundle carries", "list": [c["text"] for c in gate["conflicts"]]})
+    d["gate"] = {"title": f"Gate: {gate['verdict']}", "intro": gate["why"] + ".", "sections": gsecs}
+    for arm, name in (("G", "the governed arm, given the gate's verdict and evidence bundle"), ("B", "the baseline arm, given the documents alone")):
+        rs = runs[arm]
+        rows = [(r["run"], _model_of(r) or "", r.get("M1_decision") or ("api error" if r.get("api_error") else ""), "yes" if r.get("M2_code") else "no",
+                 "yes" if r["M3_flagged"]["flagged"] else "no", ", ".join(r["M3_flagged"].get("hits", [])), len(r.get("questions") or []), len(r.get("assumptions") or []), len(r.get("claims") or []),
+                 (r.get("usage") or {}).get("prompt_tokens", ""), (r.get("usage") or {}).get("completion_tokens", "")) for r in rs]
+        d[f"generate_{arm}"] = {"title": f"Generate, {arm}: {name}",
+                                "intro": (f"{len(rs)} run(s). Decision is the arm's own word (generate, generate with assumptions, abstain); flagged means the frozen keyword check of the pre-registration found the planted problem named in its questions or assumptions."
+                                          if rs else "No run in this source."),
+                                "sections": ([{"heading": "Per run", "table": _table(["run", "model", "decision", "code", "flagged", "keywords hit", "questions", "assumptions", "claims", "prompt tokens", "reply tokens"], rows)}] if rs else [])}
+        orows = [(r["run"], f"{r['M4_suite']['passed']}/{r['M4_suite']['total']}" if r["M4_suite"]["ran"] else "no code",
+                  ", ".join(f"{t}: {'pass' if v else ('fail' if v is False else 'no code')}" for t, v in (r.get("M4_targets") or {}).items()) or "",
+                  r.get("outage_status") or "", f"{r['M5_refs']['resolved']}/{r['M5_refs']['total']}" if r["M5_refs"]["share"] is not None else "") for r in rs]
+        d[f"oracle_{arm}"] = {"title": f"Oracle, {arm}: the kit's eleven acceptance scenarios on the generated code",
+                              "intro": ("Each reply's code ran in a sandbox against the kit's suite with the scenario's overlays (S6 asks for the new prices). The planted target is the scenario the plant aims at; the outage status is what the code returned when screening was down; resolvable references are the claims and assumptions whose ref points at something that exists (an assertion id for G, a document line for B)."
+                                        if rs else "No run in this source."),
+                              "sections": ([{"heading": "Per run", "table": _table(["run", "suite", "planted targets", "outage status returned", "references resolvable"], orows)}] if rs else [])}
+    if "stage2" in det:
+        s2 = det["stage2"]
+        d["ingest2"] = {"title": "Re-ingest: the changed tariff document as version v2", "intro": f"{s2['load_v2']['fragments']} fragments new, {s2['load_v2']['fragments_reused']} reused because their digest was unchanged, {s2['load_v2']['assertions']} new assertions. Unchanged fragments keep their assertions; only changed ones create new statements.", "sections": []}
+        d["stale"] = {"title": "R-STALE: what the change invalidates", "intro": "An assertion whose supporting fragment's digest changed or vanished is invalidated; its verifications end (valid_until = v2); every derived output that used it becomes suspect; everything else of the same document keeps its status.",
+                      "sections": [{"heading": "Invalidated", "table": _table(["assertion", "key", "derived outputs that used it"], [(x["id"], x["key"], ", ".join(x["derived"]) or "") for x in s2["D3_stale"]["invalidated"]])},
+                                   {"heading": f"Kept at their status: {len(s2['D3_stale']['kept'])}", "list": [f"{x['id']} ({x['status']})" for x in s2["D3_stale"]["kept"][:12]] + (["…"] if len(s2["D3_stale"]["kept"]) > 12 else [])},
+                                   {"heading": "Derived outputs", "list": [f"{x['id']}: suspect={x['suspect']}" for x in s2["suspect_derived"]] or ["none registered in this source"]}]}
+        gb = s2["gate_before_reverification"]
+        d["gate_before"] = {"title": f"Gate before re-verification: {gb['verdict']}", "intro": gb["why"] + ".", "sections": [{"heading": "Invalidated statements on required keys, with their successors", "table": _table(["assertion", "key", "old value", "successor", "successor status"], [(x["id"], x["key"], x["value"], ", ".join(t["id"] for t in x["successors"] if t["id"]), ", ".join(t["status"] for t in x["successors"] if t["id"])) for x in gb["stale"]])}]}
+        d["reverify"] = {"title": "Re-verification by the owner stand-in", "intro": "A verification record (method review, dated) and an approval for each successor statement; the record is a node, not a property flip.", "sections": [{"heading": "Re-verified and approved", "list": s2["reverified"]}]}
+        ga = s2["gate_after_reverification"]
+        d["gate_after"] = {"title": f"Gate after re-verification: {ga['verdict']}", "intro": ga["why"] + ".", "sections": [{"heading": "Census after", "text": f"{s2['census_after']['nodes']} nodes, {s2['census_after']['relationships']} relationships; {s2['census_after']['assertions_by_status']}."}]}
+    return d

@@ -23,7 +23,10 @@ three buttons.
 a few sentences written from the same result files that say what was
 planted, what the store found, what the gate's verdict means, what each
 assistant did and what that shows, and, for a re-run, whether its numbers
-match the record. Then two pictures:
+match the record. Then two pictures, the first of them clickable, every
+box of the pipeline opening a panel with that stage's full data (the
+documents read, the constraint attempts, each rule's hits, the 36 keys
+with their levels, each run's decision and grade):
 
 - the *pipeline*, from reading the files to grading the generated code,
   each stage coloured by its outcome and carrying its numbers: how many
