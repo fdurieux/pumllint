@@ -58,6 +58,13 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .stage .ln:first-of-type{font-weight:600}
 .stage.ok{background:var(--ok)} .stage.warn{background:var(--warn)} .stage.bad{background:var(--bad)} .stage.none{background:var(--none)}
 .stage .arm{font-size:11px;font-weight:700;color:var(--muted);margin-top:6px}
+.stage[data-detail]{cursor:pointer} .stage[data-detail]:hover{box-shadow:0 0 0 2px var(--line)} .stage.sel{box-shadow:0 0 0 2px var(--ink)}
+.detail{border:1px solid var(--ink);border-radius:10px;padding:12px 16px;margin:10px 0 4px;background:var(--card)}
+.detail h4{margin:0 0 4px;font-size:15px} .detail .intro{font-size:13.5px;margin:0 0 8px;max-width:95ch}
+.detail h5{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px}
+.detail p{font-size:13px;margin:4px 0;max-width:95ch} .detail ul{margin:4px 0;padding-left:18px;font-size:13px}
+.detail .tw{overflow:auto;max-height:340px} .detail table{font-size:12.5px} .detail th{position:sticky;top:0;background:var(--card)}
+.detail .close{float:right}
 .armstack{display:grid;grid-template-rows:1fr 1fr;gap:6px}
 .armstack .stage{min-height:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -257,8 +264,24 @@ async function show(id, source, mode) {
   } catch (e) { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; renderMenu(); }
 }
 
-function stageBox(st) { return `<div class="stage ${st.colour}"><div class="lbl">${esc(st.label)}</div>${st.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
-function armBox(label, arm, part) { return `<div class="stage ${part.colour}"><div class="lbl">${label} · <span class="arm">${arm === 'G' ? 'G governed' : 'B baseline'}</span></div>${part.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+function stageBox(st) { return `<div class="stage ${st.colour}" data-detail="${esc(st.id)}" title="click for this stage's details"><div class="lbl">${esc(st.label)}</div>${st.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+function armBox(label, arm, part) { return `<div class="stage ${part.colour}" data-detail="${label}_${arm}" title="click for this stage's details"><div class="lbl">${label} · <span class="arm">${arm === 'G' ? 'G governed' : 'B baseline'}</span></div>${part.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+function renderDetail(d) {
+  if (!d) return '';
+  const sec = x => `<h5>${esc(x.heading)}</h5>${x.text ? `<p>${esc(x.text)}</p>` : ''}${x.list ? `<ul>${x.list.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : ''}${x.table ? `<div class="tw"><table><thead><tr>${x.table.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}`;
+  return `<div class="detail"><button class="close small">close</button><h4>${esc(d.title)}</h4><p class="intro">${esc(d.intro)}</p>${d.sections.map(sec).join('')}</div>`;
+}
+function wireDetails(v) {
+  const host = $('#stage-detail'); if (!host) return;
+  $('#report').querySelectorAll('.stage[data-detail]').forEach(b => b.addEventListener('click', () => {
+    const id = b.dataset.detail, open = b.classList.contains('sel');
+    $('#report').querySelectorAll('.stage.sel').forEach(x => x.classList.remove('sel'));
+    if (open || !v.details[id]) { host.innerHTML = ''; return; }
+    b.classList.add('sel'); host.innerHTML = renderDetail(v.details[id]);
+    host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; b.classList.remove('sel'); });
+    host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }));
+}
 
 function renderReport(v) {
   const m = v.meta; const g = v.gate;
@@ -303,7 +326,7 @@ function renderReport(v) {
       <details class="plain" open><summary>In plain English</summary>${v.narrative.map((t, i) => `<p class="${i === 0 ? 'guide' : ''}">${esc(t)}</p>`).join('')}</details>
       ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
-      <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle</h3>${strip}${strip2}
+      <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${strip}${strip2}<div id="stage-detail"></div>
       <h3>Systemic model — where the defect enters, and where it was stopped</h3>${cascade}
     </div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The gate's evidence bundle (what arm G received; ${v.bundle ? v.bundle.length.toLocaleString() : 0} characters${v.prompt_lengths.B ? `; arm B's documents ${v.prompt_lengths.B.toLocaleString()}` : ''})</h3>
@@ -313,6 +336,7 @@ function renderReport(v) {
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">Generated code, per run</h3>${code}</div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">What the arms asked and assumed</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${qa('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${qa('B')}</div></div></div>`;
   $('#src').addEventListener('change', e => show(v.scenario, e.target.value));
+  wireDetails(v);
   if (codeTabs.length) {
     const showCode = k => { $('#code').textContent = codeTabs.find(c => c.k === k).t; $('#report').querySelectorAll('.tabs button').forEach(b => b.classList.toggle('on', b.dataset.k === k)); };
     $('#report').querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => showCode(b.dataset.k)));
