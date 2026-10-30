@@ -53,6 +53,138 @@ contradiction pairs, the gap census. The free edition of Neo4j serves one
 database, so the store holds the scenario loaded last; the header says
 which.
 
+## What Neo4j holds, who writes it and who reads it
+
+The store is a graph: things as nodes, relationships between them as
+edges. Written from the harness code and the record, for a reader who
+knows software but none of this project's shorthand.
+
+### What Neo4j holds
+
+For one loaded scenario the store holds these kinds of things.
+
+- **Documents and their versions.** Each input file of the CargoQuote kit
+  (requirements, decision tables, BPMN process, DMN table, diagrams,
+  Gherkin scenarios, OpenAPI file, link set) is a document node named by
+  its path, with one version node per ingestion carrying the whole file's
+  digest (a fingerprint of its bytes) and a pointer to the current version.
+- **Fragments.** A version is cut into pieces (a table row, a note, a
+  process step, a scenario), each stored with where it sits in the file,
+  its own digest, and a copy of its text so evidence can be quoted later.
+- **Entities.** The things the kit talks about (a decision-table row, a
+  pricing step, a requirement, the API), each with a declared identifier.
+- **Assertions.** One statement each: an entity, a property, a value (for
+  example, the surcharge of pricing step P2 is 316.00). Each carries a
+  *basis* (how it came to exist: authored by a human, extracted by a
+  deterministic parser, or inferred by a model) and a *status* (where it
+  is in its lifecycle: proposed, validated, verified, approved, disputed,
+  invalidated), and points at the fragment that supports it.
+- **Provenance.** The activity that produced each assertion (an extraction
+  run, with a timestamp) and the agent behind it: the harness as a tool,
+  the maintainer as a human, or the architecture assistant as a model.
+- **Verification records.** Each says that one assertion was checked, by
+  which method (running the kit's test suite, with the digest of the code
+  it ran against, or a dated human review), with a scope and, once a later
+  change ends it, a valid-until marker.
+- **Approvals.** The maintainer's recorded acceptance of a verified
+  assertion, naming the written record it rests on.
+- **Gaps.** Things found wanting: knowledge declared missing in the
+  documents, vague wording, a contradiction, or an assertion nobody
+  verified.
+- **Conflict edges** joining two assertions that give different values for
+  the same property.
+- **Derived outputs.** The identity and digest of a piece of generated
+  code, with edges to every assertion it used, and a flag that turns on if
+  any of those is later invalidated.
+
+What is not there: the documents' content stays in git, and the model's
+prompts, replies and generated code land in result files on disk. The
+store keeps fragment copies for quoting and the digests that prove which
+bytes they were; it is authoritative for status, provenance and links,
+never for content.
+
+### Who writes, and when
+
+Only the harness writes, and always in the same order for each scenario.
+It first deletes everything in the store. It then applies constraints
+(uniqueness of identifiers; six are accepted, and three the free edition
+cannot enforce are refused, which is itself a recorded measurement). It
+loads the kit: documents, versions, fragments, entities, and every
+assertion at status *proposed*, each tied to its extraction activity and
+agent. It loads verifications and approvals, matching the kit's test
+scenarios to the statements they exercise and the maintainer's dated
+review to the rest, which moves matched assertions to *verified* and then
+*approved*. Scenario S5 also adds one model-proposed assertion, attributed
+to the model and linked to the open decision it claims to fill. Then the
+seven rules run: one checks the graph's structure and only reports; the
+others promote agreeing statements from different documents to
+*validated*, mark contradicting pairs *disputed* and add conflict gaps,
+and raise gaps for vague wording, for declared or undetectable missing
+knowledge, and for unverified statements.
+
+S6 has a second stage. The generated code from S1 is registered as a
+derived output pointing at its assertions. The changed decision table is
+re-ingested as version two; unchanged fragments are recognised by digest
+and reused, so only the changed rows produce new assertions. The
+staleness rule then invalidates every older assertion whose supporting
+fragment changed, ends its verifications and flags the derived code
+suspect. Finally a re-verification and re-approval are recorded for the
+three new statements, and the other new assertions are re-verified
+against the known-good values.
+
+The model arms never write to the store; their output goes to files.
+
+### Who reads, and what comes out
+
+The gate reads for the coding task. For each of its 36 required pieces of
+knowledge (such as the weight bounds, each screening row's behaviour, the
+pricing steps, the response vocabulary) it fetches the live assertions
+with their quoted fragment text, verifications, approvals, gaps and
+originating agent, plus any declared gap on that key. It computes a level
+per key (the weakest status among its assertions, or *absent* if there is
+none, or *declared gap*), flags for ambiguity or model-inferred basis, and
+a verdict: BLOCKED if any key is absent, a declared gap, disputed or
+invalidated, or if more than a quarter are below verified; QUALIFIED if
+some are below verified or flagged; otherwise PROCEED. It also reads the
+conflict gaps, the invalidated assertions with their ended verifications
+and successors, and suspect derived outputs. All of it is rendered as a
+text bundle: verdict, policy, then key by key. The governed arm receives
+that bundle; the baseline arm receives the documents themselves and never
+sees the store.
+
+The demo reads a small census: which scenario is loaded, assertions by
+status, node and edge counts. Its saved queries, pasted into Neo4j
+Browser, answer: which scenario is loaded; the three-valued answer; the
+gate's view of one key; the chain from a changed fragment to invalidated
+assertions, ended verifications, successors and the derived code; the
+contradiction pairs; the gap census; the status census.
+
+The three-valued answer is the thing a document search cannot give:
+*asserted* (a value is stated), *documented absent* (every statement says
+there is none), or *unknown* (no statement exists at all). A search
+returning nothing cannot tell the last two apart.
+
+### What the store adds that files alone cannot
+
+Status and provenance become data you can query, not something a reader
+infers from prose. A change to one fragment can be followed as a
+traversal: fragment to the statements it supports, to their
+verifications, to the code built on them, giving a deterministic list of
+what must be re-checked. Two documents stating different values become an
+explicit disputed pair rather than a discrepancy someone might notice.
+The free Community edition serves one database, so the store holds one
+scenario at a time, the demo runs one load at a time, and the header says
+which scenario is loaded.
+
+### What the store does not do
+
+The governance is application logic: the seven rules and the gate are
+Python issuing graph queries, and nothing in Neo4j would promote, block or
+invalidate on its own. The store supplies storage, uniqueness of
+identifiers and traversal; it cannot even require that every assertion
+carries a status on this edition, so that check too falls to the
+application.
+
 ## The three modes, and what each costs
 
 | mode | what happens | needs | time | cost |
