@@ -180,7 +180,7 @@ def test_plain_english_narrative_is_built_from_the_files():
         assert views.SCENARIOS[sc]["plain"] in text, sc
         assert "None" not in text and "{" not in text, (sc, text[:200])
         assert f"The gate's verdict is {v['gate']['verdict']}" in text, sc
-    assert "invalidated exactly the 4 statements" in " ".join(views.build("S6", "rerun", NO_RUNS)["narrative"])
+    assert "invalidated the 4 assertions" in " ".join(views.build("S6", "rerun", NO_RUNS)["narrative"])
     # a deterministic demo run is checked against the record, in words
     import tempfile, shutil
     with tempfile.TemporaryDirectory() as td:
@@ -188,7 +188,74 @@ def test_plain_english_narrative_is_built_from_the_files():
         shutil.copy(RESULTS / "S4" / "deterministic.json", d / "deterministic.json")
         v = views.build("S4", "demo-runs/2026-10-30-1800", Path(td) / "demo-runs")
         assert v["record_check"]["differ"] == 0 and v["record_check"]["compared"] > 100
-        assert "identical on all" in " ".join(v["narrative"]) and "assistants were not called" in " ".join(v["narrative"])
+        assert "identical on all" in " ".join(v["narrative"]) and "arms were not called" in " ".join(v["narrative"])
+
+
+def _sentences(text):
+    import re
+    return [s for s in re.split(r"(?<=[.!?])\s+(?=[A-Z0-9\"'(])", text.strip()) if s]
+
+
+def _forbidden_in(sentence):
+    import re
+    low = sentence.lower()
+    return [f for f in views.FORBIDDEN if re.search(r"\b" + re.escape(f) + r"\b", low)]
+
+
+def test_generated_prose_keeps_to_the_glossary_and_the_length_limits():
+    """Controlled sentences: 20 words, no forbidden synonym. Readings: 25 words,
+    no forbidden synonym. Data is exempt. Checked on the text actually produced
+    for every scenario, the S6 rerun and a deterministic-only demo run."""
+    import tempfile, shutil
+    limits = {"controlled": 20, "reading": 25}
+    seen = {"controlled": 0, "reading": 0, "data": 0}
+    builds = [(sc, views.default_source(sc), NO_RUNS) for sc in views.ORDER] + [("S6", "rerun", NO_RUNS)]
+    with tempfile.TemporaryDirectory() as td:
+        d = Path(td) / "demo-runs" / "2026-10-30-1900" / "S2"; d.mkdir(parents=True)
+        shutil.copy(RESULTS / "S2" / "deterministic.json", d / "deterministic.json")
+        builds.append(("S2", "demo-runs/2026-10-30-1900", Path(td) / "demo-runs"))
+        for sc, src, runs in builds:
+            v = views.build(sc, src, runs)
+            for item in v["text_registry"]:
+                seen[item["kind"]] += 1
+                if item["kind"] == "data":
+                    continue
+                for s in _sentences(item["text"]):
+                    n = len(s.split())
+                    assert n <= limits[item["kind"]], (sc, src, item["kind"], n, s)
+                    assert not _forbidden_in(s), (sc, src, _forbidden_in(s), s)
+            # the registry covers what the page shows: narrative, panels, gap kinds
+            shown = " ".join(v["narrative"]) + " " + " ".join(v["gaps"]["explain"].values())
+            for det in v["details"].values():
+                shown += " " + det["title"] + " " + det["intro"] + " " + " ".join(sec["heading"] + " " + sec.get("text", "") for sec in det["sections"])
+            for item in v["text_registry"]:
+                assert item["text"] in shown, (sc, src, item["text"][:80])
+    assert seen["controlled"] > 500 and seen["reading"] >= 7 and seen["data"] > 20, seen
+    # the readings themselves, whether or not a source shows them
+    for sc, meta in views.SCENARIOS.items():
+        for s in _sentences(meta["plain"]):
+            assert len(s.split()) <= 25 and not _forbidden_in(s), (sc, s)
+    for texts in (views.RULE_TEXT.values(), views.GAP_KIND_TEXT.values(), views.VERDICT_MEANING.values()):
+        for group in texts:
+            for s in group:
+                assert len(s.split()) <= 20 and not _forbidden_in(s), s
+
+
+def test_glossary_document_matches_the_view_tables():
+    md = (DEMO / "GLOSSARY.md").read_text(encoding="utf-8")
+    for term, meaning in views.GLOSSARY.items():
+        assert f"| {term} |" in md, term
+        assert meaning in md, term
+    for syn in views.FORBIDDEN:
+        assert syn in md, syn
+    assert "ASD-STE100" in md and "20" in md and "25" in md
+    page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
+    assert "v.glossary" in page and "GLOSSARY.md" in page
+    # the page's own strings obey the glossary too (data from the files is not in the page source)
+    import re
+    for syn in views.FORBIDDEN:
+        assert not re.search(r"\b" + re.escape(syn) + r"\b", page, re.I), syn
+    assert "GLOSSARY.md" in (DEMO / "README.md").read_text(encoding="utf-8")
 
 
 def test_every_pipeline_box_has_a_detail_panel():

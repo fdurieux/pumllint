@@ -22,8 +22,11 @@ three buttons.
 **A report view** of the selected scenario. It opens with *In plain English*,
 a few sentences written from the same result files that say what was
 planted, what the store found, what the gate's verdict means, what each
-assistant did and what that shows, and, for a re-run, whether its numbers
-match the record. Then two pictures, the first of them clickable, every
+arm did and what that shows, and, for a re-run, whether its numbers
+match the record. Those sentences, the stage panels and the gap kinds use
+one word per concept and keep to 20 words a sentence; the words are
+defined in a *Glossary* card under the block and in
+[`GLOSSARY.md`](GLOSSARY.md), and a test holds the page to both. Then two pictures, the first of them clickable, every
 box of the pipeline opening a panel with that stage's full data (the
 documents read, the constraint attempts, each rule's hits, the 36 keys
 with their levels, each run's decision and grade). A *gaps* box beside the
