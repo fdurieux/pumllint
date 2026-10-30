@@ -216,6 +216,28 @@ def _stage_colour(kind: str, det: dict, gate: dict) -> str:
     return "ok"
 
 
+def _gaps_colour(det: dict) -> str:
+    c = det["D2_census"]["gaps_by_kind"]
+    declared = any(h.get("declared") for h in det["rules"]["R-REQ"])
+    if c.get("conflict") or declared:
+        return "bad"
+    if c.get("ambiguous") or any(v["level"] in ("proposed", "validated") for v in det["gate_keys"].values()):
+        return "warn"
+    return "ok"
+
+
+def _gaps_lines(det: dict) -> list[str]:
+    c = det["D2_census"]["gaps_by_kind"]
+    declared = sum(1 for h in det["rules"]["R-REQ"] if h.get("declared"))
+    lines = [f"{sum(c.values())} gaps"]
+    if c.get("missing"):
+        lines.append(f"missing: {c['missing']}" + (f" ({declared} declared by the authors)" if declared else ""))
+    for k in ("ambiguous", "conflict", "unverified"):
+        if c.get(k):
+            lines.append(f"{k}: {c[k]}")
+    return lines + ["click for every gap"]
+
+
 def _arm_colour(arm: str, gate_verdict: str, summary: dict) -> tuple[str, str]:
     """(generate colour, oracle colour) for one arm."""
     if summary["n"] == 0:
@@ -264,6 +286,8 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
         {"id": "rules", "label": "rules", "colour": _stage_colour("rules", det, gate),
          "lines": [f"{r}: {len(det['rules'][r]) if isinstance(det['rules'][r], list) else det['rules'][r]}" for r in RULE_ORDER]
                   + [f"SHACL: main {det['D4_shacl']['main']['results']} result(s), info-only {det['D4_shacl']['info_only']['results']}, conforms={det['D4_shacl']['main']['conforms']}"]},
+        {"id": "gaps", "label": "gaps (found by the rules)", "colour": _gaps_colour(det),
+         "lines": _gaps_lines(det)},
         {"id": "gate", "label": "gate", "colour": _stage_colour("gate", det, gate),
          "lines": [gate["verdict"], gate["why"]] + ([f"blocking: {', '.join(gate['blocked_keys'])}"] if gate.get("blocked_keys") else [])},
     ]
@@ -333,6 +357,8 @@ def build(scenario: str, source: str, runs_dir: Path) -> dict:
             ]}
     view["narrative"] = narrative(view, det)
     view["details"] = stage_details(view, det, runs)
+    view["gaps"] = gaps_view(det)
+    view["details"]["gaps"] = {"title": "Gaps: everything the rules found wanting", "intro": "Grouped by kind; the counts are the store's census after the rules ran.", "sections": []}
     return view
 
 
@@ -568,3 +594,54 @@ def stage_details(view: dict, det: dict, runs: dict) -> dict:
         ga = s2["gate_after_reverification"]
         d["gate_after"] = {"title": f"Gate after re-verification: {ga['verdict']}", "intro": ga["why"] + ".", "sections": [{"heading": "Census after", "text": f"{s2['census_after']['nodes']} nodes, {s2['census_after']['relationships']} relationships; {s2['census_after']['assertions_by_status']}."}]}
     return d
+
+
+# ------------------------------------------------------------ the gaps view
+
+GAP_KIND_TEXT = {
+    "declared missing": "Knowledge the documents themselves say is not there yet: a requirement marked NOT YET SPECIFIED, or a document declared not yet authored. The authors know it is missing; the gate treats the key it governs as blocked until a decision is recorded.",
+    "undeclared missing": "Something the rules expected and did not find, which nobody had declared: here, a requirement with no acceptance scenario that verifies it (REQ-05 in the pristine kit, REQ-06 where its rule was removed).",
+    "ambiguous": "A statement whose wording leaves several readings: a decision-table row written in vague words, or a diagram symbol with no definition anywhere. Each statement the row or symbol supports gets its own gap, and the gate flags the key.",
+    "conflict": "Two documents give different values for the same key. Both statements are marked disputed and the gate blocks the key; the gap's text names both sides.",
+    "unverified": "A statement nobody has checked: proposed or validated, with no verification record. Most are harmless (participant kinds, container technologies, scenario titles); the ones on the keys the coding task needs are what the gate counts against its 25 % bar.",
+}
+CONFLICT_TEXT_RE = re.compile(r"for (?P<key>[^:]+): (?P<a>[^ ]+) says (?P<va>.+?); (?P<b>[^ ]+) says (?P<vb>.+)$")
+
+
+def gaps_view(det: dict) -> dict:
+    """Every gap the result files can account for, grouped by kind, with the
+    census as the header. The store's own text and the full CONCERNS set come
+    from /api/gaps when the loaded scenario matches; the page merges them."""
+    rules, census = det["rules"], det["D2_census"]["gaps_by_kind"]
+    groups = {k: [] for k in GAP_KIND_TEXT}
+    for h in rules["R-REQ"]:
+        if h.get("declared"):
+            if h.get("req"):
+                groups["declared missing"].append({"id": "gap:declared:OD-1", "declared": True,
+                    "text": f"{h['req']} is NOT YET SPECIFIED (open decision OD-1, owner: compliance)",
+                    "concerns": [{"id": h["req"], "what": "requirement"}] + ([{"id": h["key"], "what": "key"}] if h.get("key") else []), "assertion": None})
+            elif h.get("artefact"):
+                groups["declared missing"].append({"id": f"gap:declared:{h['artefact']}", "declared": True,
+                    "text": f"{h['artefact']} is not yet authored",
+                    "concerns": [{"id": f"A:req:{h['artefact']}|authored@v1", "what": "assertion"}], "assertion": {"key": f"{h['artefact']}|authored", "value": "NONE", "basis": "authored", "status": None}})
+        elif h.get("req"):
+            groups["undeclared missing"].append({"id": f"gap:unverified-req:{h['req']}", "declared": False,
+                "text": f"{h['req']} has no verifying scenario", "concerns": [{"id": h["req"], "what": "requirement"}], "assertion": None})
+    for h in rules["R-VAGUE"]:
+        words = h["words"]
+        sym = next((w.split(" ", 1)[1] for w in words if w.startswith("unresolved ")), None)
+        text = f"symbol {sym} has no definition in any artefact" if sym else f"vague wording ({', '.join(words)}) in the row that supports it"
+        groups["ambiguous"].append({"id": f"gap:ambiguous:{h['id']}", "declared": False, "text": text,
+                                    "concerns": [{"id": h["id"], "what": "assertion"}], "assertion": {"key": h["key"], "value": None, "basis": None, "status": None}})
+    for c in det["D6_gate"].get("conflicts", []):
+        m = CONFLICT_TEXT_RE.search(c["text"])
+        sides = ({"key": m.group("key"), "a": m.group("a"), "va": m.group("va"), "b": m.group("b"), "vb": m.group("vb")} if m else None)
+        groups["conflict"].append({"id": c["id"], "declared": False, "text": c["text"], "concerns": [], "sides": sides, "assertion": None})
+    required_below = [k for k, v in det["gate_keys"].items() if v["level"] in ("proposed", "validated")]
+    unverified = {"count": rules["R-UNVERIFIED"], "required_below_verified": required_below, "keys": None}
+    counts = {"declared missing": len(groups["declared missing"]), "undeclared missing": len(groups["undeclared missing"]),
+              "ambiguous": census.get("ambiguous", 0), "conflict": census.get("conflict", 0), "unverified": census.get("unverified", 0)}
+    return {"census": census, "counts": counts, "explain": GAP_KIND_TEXT,
+            "groups": {k: groups[k] for k in ("declared missing", "undeclared missing", "ambiguous", "conflict")},
+            "unverified": unverified, "required_keys": list(det["gate_keys"]),
+            "source": "the committed result files (deterministic.json): the rule hits, the gate's conflicts and per-key levels"}

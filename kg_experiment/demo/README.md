@@ -26,7 +26,10 @@ assistant did and what that shows, and, for a re-run, whether its numbers
 match the record. Then two pictures, the first of them clickable, every
 box of the pipeline opening a panel with that stage's full data (the
 documents read, the constraint attempts, each rule's hits, the 36 keys
-with their levels, each run's decision and grade):
+with their levels, each run's decision and grade). A *gaps* box beside the
+rules opens every gap of the scenario grouped by kind, with a filter and a
+plain-English sentence per kind; it reads the result files, and the
+running Neo4j as well when the scenario on screen is the one loaded there:
 
 - the *pipeline*, from reading the files to grading the generated code,
   each stage coloured by its outcome and carrying its numbers: how many

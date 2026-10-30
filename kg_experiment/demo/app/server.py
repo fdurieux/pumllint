@@ -89,6 +89,12 @@ CYPHER = [
               "OPTIONAL MATCH (g)-[:CONCERNS]->(t)\n"
               "RETURN g.kind AS kind, g.declared AS declared, count(DISTINCT g) AS gaps,\n"
               "       count(DISTINCT t) AS things_concerned ORDER BY kind")},
+    {"id": "gaps-concerns", "title": "The gaps, with what they concern",
+     "text": ("MATCH (g:Gap)\n"
+              "OPTIONAL MATCH (g)-[r:CONCERNS|CONCERNS_KEY]->(t)\n"
+              "RETURN g.kind AS kind, g.declared AS declared, g.text AS text,\n"
+              "       collect(DISTINCT coalesce(r.key, t.id)) AS concerns\n"
+              "ORDER BY kind, g.id")},
     {"id": "census", "title": "The status census",
      "text": "MATCH (x:Assertion) RETURN x.status AS status, x.basis AS basis, count(*) AS n ORDER BY status, basis"},
 ]
@@ -116,6 +122,36 @@ def store_status() -> dict:
         out.update(reachable=True, census={"nodes": n, "relationships": r, "assertions_by_status": st},
                    loaded=(acts[0].split(":")[2] if acts else None), activities=acts)
     except Exception as e:  # noqa: BLE001 — the message is the status
+        out["error"] = str(e).splitlines()[0][:200]
+    return out
+
+
+def store_gaps(scenario: str) -> dict:
+    """Every Gap node with what it concerns, from the running store, only when
+    the scenario loaded there is the one on screen (one database, one scenario)."""
+    out = {"scenario": scenario, "loaded": None, "match": False, "gaps": [], "error": None}
+    try:
+        from neo4j import GraphDatabase, NotificationMinimumSeverity
+    except ImportError:
+        out["error"] = "neo4j driver not installed"
+        return out
+    try:
+        with GraphDatabase.driver(NEO4J_URI, auth=("neo4j", NEO4J_PASSWORD),
+                                  notifications_min_severity=NotificationMinimumSeverity.OFF, connection_timeout=3) as d:
+            with d.session() as s:
+                acts = [r["id"] for r in s.run("MATCH (a:Activity) WHERE a.id STARTS WITH 'act:extract:' RETURN a.id AS id ORDER BY a.at")]
+                out["loaded"] = acts[0].split(":")[2] if acts else None
+                if out["loaded"] != scenario:
+                    return out
+                rows = s.run("""MATCH (g:Gap) OPTIONAL MATCH (g)-[r:CONCERNS|CONCERNS_KEY]->(t)
+                    RETURN g.id AS id, g.kind AS kind, g.declared AS declared, g.text AS text,
+                           collect({id:t.id, labels:labels(t), key:t.key, value:t.value, basis:t.basis, status:t.status, rel:type(r), relkey:r.key}) AS concerns
+                    ORDER BY g.kind, g.id""")
+                for r in rows:
+                    out["gaps"].append({"id": r["id"], "kind": r["kind"], "declared": bool(r["declared"]), "text": r["text"],
+                                        "concerns": [c for c in r["concerns"] if c["id"] or c["relkey"]]})
+                out["match"] = True
+    except Exception as e:  # noqa: BLE001
         out["error"] = str(e).splitlines()[0][:200]
     return out
 
@@ -261,6 +297,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(view)
             if parts == ["api", "store"]:
                 return self._json(store_status())
+            if parts[:2] == ["api", "gaps"] and len(parts) == 3 and parts[2] in views.SCENARIOS:
+                return self._json(store_gaps(parts[2]))
             if parts == ["api", "cypher"]:
                 return self._json(CYPHER)
             if parts == ["api", "runs"]:

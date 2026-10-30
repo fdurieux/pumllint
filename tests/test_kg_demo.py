@@ -30,7 +30,7 @@ import compare_deterministic  # noqa: E402
 def test_every_scenario_replays_from_the_record():
     for sc in views.ORDER:
         v = views.build(sc, views.default_source(sc), NO_RUNS)
-        assert [s["id"] for s in v["stages"]] == ["ingest", "extract", "load", "rules", "gate"], sc
+        assert [s["id"] for s in v["stages"]] == ["ingest", "extract", "load", "rules", "gaps", "gate"], sc
         assert v["gate"]["verdict"] == views.SCENARIOS[sc]["gate"], (sc, v["gate"])
         assert v["required_keys"] == 36, sc
         for arm in ("G", "B"):
@@ -207,3 +207,24 @@ def test_every_pipeline_box_has_a_detail_panel():
         assert len(v["details"]["gate"]["sections"][1]["table"]["rows"]) == 36, sc
     s4 = views.build("S4", "record", NO_RUNS)["details"]["rules"]
     assert any(sec.get("table") and len(sec["table"]["rows"]) == 4 for sec in s4["sections"] if sec["heading"].startswith("R-CONFLICT"))
+
+
+def test_gaps_view_matches_the_census_by_kind():
+    for sc in views.ORDER:
+        v = views.build(sc, views.default_source(sc), NO_RUNS)
+        g = v["gaps"]
+        from_groups = {"missing": g["counts"]["declared missing"] + g["counts"]["undeclared missing"],
+                       "ambiguous": g["counts"]["ambiguous"], "conflict": g["counts"]["conflict"], "unverified": g["counts"]["unverified"]}
+        assert {k: n for k, n in from_groups.items() if n} == g["census"], (sc, from_groups, g["census"])
+        assert len(g["groups"]["ambiguous"]) == g["census"].get("ambiguous", 0), sc
+        assert len(g["groups"]["conflict"]) == g["census"].get("conflict", 0), sc
+        assert len(g["groups"]["declared missing"]) + len(g["groups"]["undeclared missing"]) == g["census"].get("missing", 0), sc
+        for k, rows in g["groups"].items():
+            assert k in g["explain"]
+            for r in rows:
+                assert r["id"].startswith("gap:") and r["text"], (sc, k, r)
+        assert len(g["required_keys"]) == 36
+    s4 = views.build("S4", "record", NO_RUNS)["gaps"]["groups"]["conflict"]
+    assert all(r["sides"] and r["sides"]["key"] == "QuoteAPI|on_screening_outage" for r in s4)
+    s7 = views.build("S7", "record", NO_RUNS)["gaps"]["unverified"]
+    assert s7["count"] == 145 and len(s7["required_below_verified"]) == 36
