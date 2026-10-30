@@ -8512,3 +8512,87 @@ list and license posture live in § Settled questions.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
+
+- **The IEAM register (2026-10-30): a git structure for the six IEAM
+  taxonomies, proposed; one new repository, `ieam-register`, that
+  pumllint and aris2puml consume and feed but neither hosts; Loop C;
+  nothing on the product path, nothing queued, no checkbox.** Asked, on
+  the maintainer's IEAM proposed approach of 30 October 2026 (six
+  independently governed taxonomies, eight typed cross-domain
+  relationships, ARIS as the governed authoring repository, Archi for
+  capability and application views, an optional one-way Neo4j
+  projection): define a git structure for storing and versioning the
+  artefacts per taxonomy layer, aligned with it. Evaluated and proposed
+  by a sub-agent of the demo session; record:
+  [docs/ieam-register-proposal.md](docs/ieam-register-proposal.md).
+  Opportunity canvas and SWOT: a private page of the maintainer's
+  account (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9), a view.
+  - *Reading of the request.* "Per taxonomy layer" is one directory per
+    taxonomy with the hierarchy as a `parent` field in data, never
+    nested folders per level: the IEAM calls its levels illustrative,
+    and the 2026-08-27 ArchiMate note already refuses hierarchy
+    inferred from paths. "Store and version the artefacts" must not
+    mean copying ARIS, Archi or EDM content into git: four artefact
+    classes, and git is authoritative for one — the hand-authored
+    records (identities, relationship types and instances, approvals,
+    glossary, mapping matrix, decision records, exceptions, metamodel).
+    Tool exports are dated, append-only mirrors with a manifest
+    (export time, source version, tool version, sha256 per file) and a
+    reconciliation report; derived outputs land in dated `reports/` at
+    a tag; a projection is rebuilt from a tag and never committed.
+  - *Layout.* TOML, one file per node with a `[source]` pointer to the
+    external id and a checked `name`, no copied attributes;
+    `relationships/` with one file per type carrying kinds, direction,
+    inverse, cardinality per lifecycle state, owner, evidence class and
+    the ARIS/Archi support status (native, configured, extension,
+    unsupported, and `unverified` as the starting state), then
+    `[[link]]` instances with rationale, owner, review date and a
+    recorded approval; `metamodel/`, `glossary/`, `mapping/matrix.toml`,
+    `decisions/`, `exceptions/`, `exports/<system>/<date>/`,
+    `reports/<date>/`, stdlib `tools/`, one CI job.
+  - *Versioning.* Approval is a file-state change with approver, date
+    and record, both owners on cross-domain links; lifecycle
+    transitions and review dates are diffed against the previous
+    commit; deprecating a node fails CI on every approved link that
+    references it, with no auto-fix; tags are baselines of the
+    register, exports carry their own dates.
+  - *Checks.* A stdlib checker for types, directions, required
+    metadata, cycles, duplicates, cardinalities, dangling links,
+    lifecycle and coverage rules with expiring exceptions.
+    Occurrence/definition, group placement and flow checks stay ARIS's;
+    relationship legality stays Archi's. `pumllint trace
+    --fail-on-uncovered` over the aris2puml corpus, fed by an inventory
+    generated from the register, remains the diagram-side coverage
+    check; footer-versus-capability-map agreement is Loop C and is the
+    register's check, reading `trace -f json`. pumllint builds nothing.
+  - *Boundary.* Not a directory in pumllint (the 2026-08-26 settlement
+    keeps a store off the product path; 2026-10-16 and 2026-10-30 place
+    an enterprise graph from exports in Loop C; private content in a
+    GPL tool) and not in aris2puml (a converter with a Never list, five
+    domains it never touches). Both tools consume and feed the
+    register; neither hosts it.
+  - *Pilot and questions.* One product and one journey whose processes
+    are in the aris2puml pilot corpus (2026-09-14); three decision
+    questions mapped to files and checks: module retirement impact
+    (`impact.py` over supports, delivers, is_supported_by); critical
+    journey steps without a process (coverage rule C1 with exceptions);
+    required capabilities without a realising process or a diagram of
+    record (`requires` → C3, then the inventory and `trace`).
+  - *Caveats and pushback.* No ARIS export format, GUID stability or
+    connection name is verified for any of the six domains; journeys may
+    not survive export or exist in ArchiMate 3.2 at all, so they may be
+    the one taxonomy the register authors directly; EDM identifiers are
+    unknown; hand-written TOML suits dozens of nodes, so reconciliation
+    must propose drafts, never approvals. Pushback: do not copy tool
+    content into git; populate one slice, not six taxonomies; redirect
+    the IEAM's direct ARIS-to-Neo4j projection to read a register tag;
+    report coverage with its denominator and exceptions, never gate the
+    pilot on a percentage (`docs/ea-stack-in-the-sdlc.md`).
+  - *Re-litigate on:* the register's pilot answering its three questions
+    with a tested ARIS export route, which would make the inventory
+    hand-off (`caps.txt`, `trace -f json`) a measured convention; or an
+    adopter asking pumllint to read the register directly, which stays
+    refused under 2026-08-26.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
+
+  *Docs only: no product code, golden, schema or score moved.*
