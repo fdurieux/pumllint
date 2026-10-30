@@ -8514,9 +8514,11 @@ list and license posture live in § Settled questions.
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
 
 - **The IEAM register (2026-10-30): a git structure for the six IEAM
-  taxonomies, proposed; one new repository, `ieam-register`, that
-  pumllint and aris2puml consume and feed but neither hosts; Loop C;
-  nothing on the product path, nothing queued, no checkbox.** Asked, on
+  taxonomies, proposed; one new repository, `ieam-register`, a public
+  test case with synthetic content, the bank's instance created from it
+  inside the bank's private repositories; pumllint and aris2puml
+  consume and feed it, neither hosts it; Loop C; nothing on the product
+  path, nothing queued, no checkbox.** Asked, on
   the maintainer's IEAM proposed approach of 30 October 2026 (six
   independently governed taxonomies, eight typed cross-domain
   relationships, ARIS as the governed authoring repository, Archi for
@@ -8566,6 +8568,14 @@ list and license posture live in § Settled questions.
     generated from the register, remains the diagram-side coverage
     check; footer-versus-capability-map agreement is Loop C and is the
     register's check, reading `trace -f json`. pumllint builds nothing.
+  - *Two instances.* The maintainer may store no bank-related data
+    outside the bank's private repositories, so the GitHub
+    `ieam-register` holds the structure, the metamodel, the checker and
+    the CI with synthetic content only (the CargoQuote kit under
+    `kg_experiment/` is the natural pilot slice: requirements, decision
+    table, specification, API contract, BPMN, DMN, Gherkin and
+    `links.toml` exist for it); the bank's instance is created from it
+    inside the bank's repositories and never pushed outside.
   - *Boundary.* Not a directory in pumllint (the 2026-08-26 settlement
     keeps a store off the product path; 2026-10-16 and 2026-10-30 place
     an enterprise graph from exports in Loop C; private content in a

@@ -6,6 +6,15 @@
 > opportunity canvas and SWOT is a private page of the maintainer's account
 > (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9); this file is the record, the page a view.
 > The repository it proposes, `ieam-register`, does not exist yet; nothing in pumllint changes.
+>
+> **Two instances, one structure (maintainer's clarification, 2026-10-30).** The GitHub
+> `ieam-register` is a public test case: the structure, the metamodel, the checker and the CI,
+> populated only with synthetic content (the CargoQuote kit under `kg_experiment/` is the
+> natural pilot slice: requirements, a decision table, a specification, an API contract,
+> BPMN, DMN, Gherkin and `links.toml` already exist for it). No bank-related data may be stored
+> outside the bank's private repositories, so the bank's instance is created from the test case
+> inside those repositories and is never pushed outside them. Where this document says "the
+> bank's" of a node, an export or an owner, read it of that private instance.
 
 *Evaluation and proposal, 2026-10-30. Written against pumllint at the current checkout (README,
 CLAUDE.md, docs/business-processes.md, kg_experiment/, recreate_experiment/, ROADMAP entries of
