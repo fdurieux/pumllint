@@ -169,8 +169,7 @@ async function onMode(id, mode) {
 
 function renderBanner(r) {
   const box = $('#runbox'); box.style.display = ''; box.className = 'banner ' + r.status;
-  const started = r.started ? new Date(r.started) : null;
-  const secs = started ? Math.max(0, Math.round(((r.finished ? new Date(r.finished) : new Date()) - started) / 1000)) : null;
+  const secs = (r.elapsed_s !== undefined && r.elapsed_s !== null) ? r.elapsed_s : null;  // the server's clock, not the browser's
   const label = {running: '<span class="spin"></span>running', done: '✓ finished', failed: '✗ failed'}[r.status] || r.status;
   $('#run-title').innerHTML = `${esc(r.scenario)} · ${esc(r.mode)} · ${label}${secs !== null ? ` · ${secs} s` : ''}`;
   $('#run-meta').innerHTML = (r.status === 'done' ? `showing its results below (source <code>${esc(r.source)}</code>); pick <em>the record</em> in the report's source dropdown to compare` :

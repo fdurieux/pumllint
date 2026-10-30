@@ -113,7 +113,11 @@ def main() -> int:
     s6 = args.s6_record or (args.record_dir / "d3check" / "S6")
     n, lines = compare(args.run_dir, args.record_dir, args.scenarios, s6_record=s6)
     print("\n".join(lines))
-    print(f"\n{'OK' if n == 0 else 'DIFF'}: {n} differing leaf/leaves against {args.record_dir}")
+    compared = [ln for ln in lines if "leaves compared" in ln]
+    if not compared:
+        print(f"\nNOTHING COMPARED: no <scenario>/deterministic.json under {args.run_dir} for {' '.join(args.scenarios)}")
+        return 1
+    print(f"\n{'OK' if n == 0 else 'DIFF'}: {n} differing leaf/leaves over {len(compared)} scenario(s) against {args.record_dir}")
     return 0 if n == 0 else 1
 
 

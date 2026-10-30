@@ -122,6 +122,7 @@ def arm_runs(sc: str, arm: str, n: int, kit: dict, gate: dict, task_name: str, o
         bundle_ids = {a["id"] for v in gate["keys"].values() for a in v["assertions"]}
         (out_dir / f"bundle_{arm}.txt").write_text(bundle, encoding="utf-8")
     (out_dir / f"prompt_{arm}.txt").write_text(user, encoding="utf-8")
+    print(f"    {arm}: {n} call(s) to {arms.MODEL}, {len(user):,} characters of prompt each; the suite runs on each reply", flush=True)
 
     def one(i: int) -> dict:
         done = out_dir / f"run{i}_{arm}.json"
