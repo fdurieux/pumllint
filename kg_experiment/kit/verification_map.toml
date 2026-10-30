@@ -1,0 +1,25 @@
+# Which (entity, predicate) keys each scenario of
+# tools/acceptance/cargo_quote_suite.py exercises. A green run of a
+# scenario on the reference implementation is recorded as a
+# Verification{method: execution} of every live assertion about these
+# keys. Keys no scenario reaches are verified by review only
+# (stack_experiment/README.md, "Verified state (2026-08-06)"), and the
+# record says which.
+
+[execution]
+quoted_low_risk     = ["S-accept|priced", "S-accept|notified", "S-accept|status", "flow|order", "P1|formula"]
+accept_boundary_41  = ["S-accept|max"]
+review_boundary_42  = ["S-review|min", "S-review|priced", "S-review|notified", "S-review|status"]
+refuse_boundary_67  = ["S-refuse|min", "S-refuse|notified", "S-refuse|priced", "S-refuse|status"]
+refuse_high_risk    = ["S-refuse|status", "S-refuse|priced"]
+price_exact_heavy   = ["P1|formula", "P2|threshold", "P2|surcharge", "P4|rounding"]
+price_exact_both    = ["P3|threshold", "P3|factor", "P3|order"]
+invalid_weight_low  = ["weight_kg|min", "invalid_request|behaviour"]
+invalid_value_over  = ["declared_value|max", "invalid_request|behaviour"]
+screening_down_hold = ["QuoteAPI|on_screening_outage", "response|hold_presence"]
+store_down_error    = ["QuoteAPI|on_store_failure"]
+
+[review]
+keys = ["shipper_id|present", "weight_kg|max", "distance_km|min", "distance_km|max",
+        "declared_value|min", "S-review|max", "QuoteAPI|on_notification_failure",
+        "response|statuses", "response|price_presence", "response|quote_id_presence"]

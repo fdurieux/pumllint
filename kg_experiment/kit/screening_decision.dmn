@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+    id="cargo_quote_dmn" name="CargoQuote screening decision"
+    namespace="http://example.org/cargoquote">
+  <decision id="screening_decision" name="Screening decision (DT-S)">
+    <decisionTable id="dt_s" hitPolicy="UNIQUE">
+      <input id="in_risk" label="risk_index"><inputExpression typeRef="number"><text>risk_index</text></inputExpression></input>
+      <output id="out_decision" label="decision" typeRef="string"/>
+      <output id="out_priced" label="priced" typeRef="boolean"/>
+      <output id="out_notified" label="notified" typeRef="string"/>
+      <output id="out_status" label="status" typeRef="string"/>
+      <rule id="r_accept">
+        <inputEntry><text>&lt;= 41</text></inputEntry>
+        <outputEntry><text>"quote issued"</text></outputEntry>
+        <outputEntry><text>true</text></outputEntry>
+        <outputEntry><text>"quote document"</text></outputEntry>
+        <outputEntry><text>"quoted"</text></outputEntry>
+      </rule>
+      <rule id="r_review">
+        <inputEntry><text>[42..66]</text></inputEntry>
+        <outputEntry><text>"held for manual review"</text></outputEntry>
+        <outputEntry><text>false</text></outputEntry>
+        <outputEntry><text>"none"</text></outputEntry>
+        <outputEntry><text>"review_hold"</text></outputEntry>
+      </rule>
+      <rule id="r_refuse">
+        <inputEntry><text>&gt;= 67</text></inputEntry>
+        <outputEntry><text>"refused"</text></outputEntry>
+        <outputEntry><text>false</text></outputEntry>
+        <outputEntry><text>"refusal notice"</text></outputEntry>
+        <outputEntry><text>"refused_screening"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
