@@ -33,6 +33,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cascade  # noqa: E402
 import views  # noqa: E402
+import register_view  # noqa: E402  (the vendored IEAM register, read only)
 
 EXP = HERE.parent.parent
 HARNESS = EXP / "harness"
@@ -297,6 +298,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._json(view)
             if parts == ["api", "store"]:
                 return self._json(store_status())
+            if parts == ["api", "register"]:
+                today = q.get("today", [None])[0]
+                if today not in (None, "wall") and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", today):
+                    return self._json({"error": "today must be 'wall' or YYYY-MM-DD"}, 400)
+                return self._json(register_view.build(today))
             if parts[:2] == ["api", "gaps"] and len(parts) == 3 and parts[2] in views.SCENARIOS:
                 return self._json(store_gaps(parts[2]))
             if parts == ["api", "cypher"]:

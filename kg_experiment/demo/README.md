@@ -64,6 +64,19 @@ contradiction pairs, the gap census. The free edition of Neo4j serves one
 database, so the store holds the scenario loaded last; the header says
 which.
 
+**The register.** Below the store, a card shows the IEAM register, a
+separate public repository
+([fdurieux/ieam-register](https://github.com/fdurieux/ieam-register))
+that keeps the identities, typed relationships and approvals of the same
+CargoQuote kit the scenarios use. The demo carries a copy of it at one
+commit (`register/SOURCE.md` says which) and reads it only: the card
+gives the counts, the register's own coverage lines, its exception and
+its mapping matrix, and lists the nodes by taxonomy; clicking a node
+opens a panel with its state, owner, approval, source of record and the
+links in and out. A link runs the register's checker at today's date
+instead of the pinned one, so you can see an exception expire. Nothing
+on the card is written back to the register.
+
 ## What Neo4j holds, who writes it and who reads it
 
 The store is a graph: things as nodes, relationships between them as
