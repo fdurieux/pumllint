@@ -21,7 +21,8 @@ h2{font:600 17px/1.2 "Source Serif 4",Georgia,serif;margin:0 0 10px}
 h3{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 0 8px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .menu .sc{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px;background:var(--card);cursor:pointer}
-.menu .sc.active{border-color:var(--teal);box-shadow:0 0 0 2px #DDF1F0}
+.menu .sc.active{border-color:var(--teal);box-shadow:0 0 0 2px #DDF1F0;background:#F3FAF9}
+.menu .sc .shown{font-size:11px;color:var(--teal);font-weight:600;margin-left:6px}
 .menu .sc .t{display:flex;gap:8px;align-items:baseline}
 .menu .sc .id{font-weight:700}
 .menu .sc .line{color:var(--muted);font-size:13px;margin:4px 0 8px}
@@ -32,6 +33,16 @@ button{font:inherit;font-size:13px;border:1px solid var(--line);background:var(-
 button:hover:not(:disabled){border-color:var(--teal)}
 button:disabled{opacity:.45;cursor:not-allowed}
 button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
+.modes button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.modes button.running{background:var(--warn);border-color:var(--amber);color:var(--amber);opacity:1}
+.modes button.done{background:var(--ok);border-color:var(--green);color:var(--green)}
+.modes button.failed{background:var(--bad);border-color:var(--red);color:var(--red)}
+.spin{display:inline-block;width:10px;height:10px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:spin .8s linear infinite;vertical-align:-1px;margin-right:5px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.banner{border-radius:12px;padding:12px 16px;margin-bottom:16px;border:1px solid var(--line);background:var(--card)}
+.banner.running{border-color:var(--amber);background:var(--warn)} .banner.done{border-color:var(--green);background:var(--ok)} .banner.failed{border-color:var(--red);background:var(--bad)}
+.banner .head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap} .banner .head b{font-size:15px}
+.banner .console{margin-top:8px;max-height:160px}
 .small{font-size:13px;color:var(--muted)}
 .strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;align-items:stretch}
 .stage{border-radius:10px;padding:10px 10px 8px;border:1px solid var(--line);min-height:96px;position:relative;font-size:13px}
@@ -74,9 +85,8 @@ a{color:var(--teal)}
 <main>
   <aside>
     <div class="card menu" id="menu"><h2>Scenarios</h2><div id="menu-list" class="small">loading…</div>
-      <div class="note">Replay shows the committed results (instant, no store). Deterministic re-executes D1–D6 against the container's Neo4j (offline, ~5 s). Arms re-executes the two model arms with <code>--n 1</code> and needs <code>OPENAI_API_KEY</code>; it writes into a dated folder under <code>results/demo-runs/</code>, never over the record.</div>
+      <div class="note">Replay shows the committed results (instant, no store). Deterministic re-executes D1–D6 against the container's Neo4j (offline, ~5 s). Arms re-executes the two model arms with <code>--n 1</code> and needs <code>OPENAI_API_KEY</code>; it writes into a dated folder under <code>results/demo-runs/</code>, never over the record. A run's progress appears in a banner above the report; the clicked button shows running, done or failed, and the report switches to the run's results when it ends.</div>
     </div>
-    <div class="card" id="runbox" style="margin-top:16px;display:none"><h2>Run</h2><div id="run-meta" class="small"></div><div class="console" id="run-log"></div></div>
     <div class="card" style="margin-top:16px"><h2>The store</h2>
       <div id="store" class="small">…</div>
       <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One database: the store holds the scenario loaded last.</p>
@@ -84,12 +94,14 @@ a{color:var(--teal)}
     </div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
   </aside>
-  <section id="report"><div class="card small">Pick a scenario.</div></section>
+  <section><div id="runbox" class="banner" style="display:none"><div class="head"><b id="run-title"></b><span id="run-meta" class="small"></span><button id="run-hide" class="small" style="margin-left:auto">hide</button></div><div class="console" id="run-log"></div></div>
+  <div id="report"><div class="card small">Pick a scenario.</div></div></section>
 </main>
 <script>
 const $ = (s, el=document) => el.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let STATE = {scenarios: [], store: null, armsEnabled: false, detEnabled: false, current: null, source: null, view: null, run: null};
+let STATE = {scenarios: [], store: null, armsEnabled: false, detEnabled: false, current: null, source: null, view: null, run: null, shown: null, lastRun: {}};
+// shown: {scenario, mode} of the report on screen; lastRun[scenario+mode]: the most recent run's record for that button
 
 async function api(path, opts) {
   const r = await fetch(path, opts);
@@ -102,7 +114,7 @@ async function loadScenarios() {
   const j = await api('/api/scenarios');
   STATE.scenarios = j.scenarios; STATE.store = j.store; STATE.armsEnabled = j.arms_enabled; STATE.detEnabled = j.deterministic_enabled; STATE.run = j.run;
   renderChips(); renderMenu(); renderStore();
-  if (j.run && j.run.status === 'running') watchRun();
+  if (j.run) { STATE.lastRun[j.run.scenario + j.run.mode] = j.run; if (j.run.status === 'running') watchRun(); }
 }
 
 function renderChips() {
@@ -112,39 +124,73 @@ function renderChips() {
     `<span class="chip ${STATE.armsEnabled ? 'ok' : 'warn'}">arms ${STATE.armsEnabled ? 'enabled (OPENAI_API_KEY set)' : 'disabled: set OPENAI_API_KEY'}</span>`;
 }
 
+const running = () => STATE.run && STATE.run.status === 'running';
+
+function modeButton(s, mode, label, enabled, why) {
+  const shown = STATE.shown && STATE.shown.scenario === s.id && STATE.shown.mode === mode;
+  const r = STATE.run && STATE.run.scenario === s.id && STATE.run.mode === mode ? STATE.run : STATE.lastRun[s.id + mode];
+  let cls = '', text = label, title = '';
+  if (r && r.status === 'running') { cls = 'running'; text = `<span class="spin"></span>${label}: running…`; title = 'started ' + r.started; }
+  else if (shown) { cls = 'on'; text = label + ' ✓ shown'; title = 'this is the report on screen'; }
+  else if (r && r.status === 'done') { cls = 'done'; text = label + ' ✓ done'; title = `finished ${r.finished}: click to show it again, or run anew`; }
+  else if (r && r.status === 'failed') { cls = 'failed'; text = label + ' ✗ failed'; title = 'the run failed: see the banner'; }
+  const dis = !enabled || (mode !== 'replay' && running());
+  const t = !enabled ? why : (running() && mode !== 'replay' ? 'one run at a time: the store is one database' : title);
+  return `<button class="${cls}" data-mode="${mode}" data-id="${s.id}" ${dis ? 'disabled' : ''} title="${esc(t)}">${text}</button>`;
+}
+
 function renderMenu() {
   $('#menu-list').innerHTML = STATE.scenarios.map(s => `
     <div class="sc ${STATE.current === s.id ? 'active' : ''}" data-id="${s.id}">
-      <div class="t"><span class="id">${s.id}</span> <span>${esc(s.title)}</span><span class="badge ${s.gate}">${s.gate}</span></div>
+      <div class="t"><span class="id">${s.id}</span> <span>${esc(s.title)}</span>${STATE.current === s.id ? '<span class="shown">● on screen</span>' : ''}<span class="badge ${s.gate}">${s.gate}</span></div>
       <div class="line">${esc(s.represented)} — ${esc(s.defect)}</div>
       <div class="modes">
-        <button class="primary" data-mode="replay" data-id="${s.id}">Replay</button>
-        <button data-mode="deterministic" data-id="${s.id}" ${STATE.detEnabled ? '' : 'disabled title="the store is unreachable"'}>Deterministic</button>
-        <button data-mode="arms" data-id="${s.id}" ${STATE.armsEnabled && STATE.detEnabled ? '' : 'disabled title="set OPENAI_API_KEY in the app\'s environment (and the store must be reachable)"'}>Arms</button>
+        ${modeButton(s, 'replay', 'Replay', true, '')}
+        ${modeButton(s, 'deterministic', 'Deterministic', STATE.detEnabled, 'the store is unreachable')}
+        ${modeButton(s, 'arms', 'Arms', STATE.armsEnabled && STATE.detEnabled, "set OPENAI_API_KEY in the app's environment (and the store must be reachable)")}
       </div></div>`).join('');
   $('#menu-list').querySelectorAll('button').forEach(b => b.addEventListener('click', ev => { ev.stopPropagation(); onMode(b.dataset.id, b.dataset.mode); }));
   $('#menu-list').querySelectorAll('.sc').forEach(d => d.addEventListener('click', () => show(d.dataset.id)));
 }
 
 async function onMode(id, mode) {
-  if (mode === 'replay') return show(id);
+  if (mode === 'replay') return show(id, null, 'replay');
+  const last = STATE.lastRun[id + mode];
+  if (last && last.status === 'done' && !(STATE.shown && STATE.shown.scenario === id && STATE.shown.mode === mode)) {
+    // a finished run: first click shows it; the button then offers to run anew
+    return show(id, last.source, mode);
+  }
   try {
+    STATE.current = id;
     const rec = await api('/api/run', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({scenario: id, mode, n: 1})});
-    STATE.run = rec; STATE.current = id; renderMenu(); watchRun();
-  } catch (e) { alert(e.message); }
+    STATE.run = rec; STATE.lastRun[id + mode] = rec; renderMenu(); renderBanner(rec); watchRun();
+  } catch (e) { renderBanner({scenario: id, mode, status: 'failed', log_text: e.message, source: '', cmd: ''}); }
+}
+
+function renderBanner(r) {
+  const box = $('#runbox'); box.style.display = ''; box.className = 'banner ' + r.status;
+  const started = r.started ? new Date(r.started) : null;
+  const secs = started ? Math.max(0, Math.round(((r.finished ? new Date(r.finished) : new Date()) - started) / 1000)) : null;
+  const label = {running: '<span class="spin"></span>running', done: '✓ finished', failed: '✗ failed'}[r.status] || r.status;
+  $('#run-title').innerHTML = `${esc(r.scenario)} · ${esc(r.mode)} · ${label}${secs !== null ? ` · ${secs} s` : ''}`;
+  $('#run-meta').innerHTML = (r.status === 'done' ? `showing its results below (source <code>${esc(r.source)}</code>); pick <em>the record</em> in the report's source dropdown to compare` :
+                              r.status === 'running' ? `writing <code>${esc(r.source)}</code>; the report switches to it when the run ends` :
+                              `exit ${r.exit_code ?? '—'}; the log is below`) + (r.cmd ? ` · <code>${esc(r.cmd)}</code>` : '');
+  const log = $('#run-log'); log.textContent = r.log_text || '(starting the harness…)'; log.scrollTop = log.scrollHeight;
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function watchRun() {
-  const box = $('#runbox'); box.style.display = '';
   const tick = async () => {
-    const r = await api('/api/run'); STATE.run = r;
-    $('#run-meta').innerHTML = `<b>${esc(r.scenario)}</b> ${esc(r.mode)} → <code>${esc(r.source)}</code> · ${esc(r.status)}${r.exit_code !== null && r.exit_code !== undefined ? ' (exit ' + r.exit_code + ')' : ''}<br><code class="small">${esc(r.cmd)}</code>`;
-    const log = $('#run-log'); log.textContent = r.log_text || '(starting…)'; log.scrollTop = log.scrollHeight;
-    if (r.status === 'running') setTimeout(tick, 1000);
-    else { await loadScenarios(); renderRuns(); if (r.status === 'done') show(r.scenario, r.source); }
+    const r = await api('/api/run'); STATE.run = r; STATE.lastRun[r.scenario + r.mode] = r;
+    renderBanner(r);
+    if (r.status === 'running') { renderMenu(); setTimeout(tick, 1000); return; }
+    await loadScenarios(); renderRuns();
+    if (r.status === 'done') show(r.scenario, r.source, r.mode); else renderMenu();
   };
   tick();
 }
+$('#run-hide').addEventListener('click', () => { $('#runbox').style.display = 'none'; });
 
 async function renderStore() {
   const s = STATE.store;
@@ -164,13 +210,17 @@ async function renderRuns() {
   $('#runs').querySelectorAll('a').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); show(a.dataset.sc, a.dataset.src); }));
 }
 
-async function show(id, source) {
-  STATE.current = id; renderMenu();
+async function show(id, source, mode) {
+  STATE.current = id;
   $('#report').innerHTML = '<div class="card small">loading…</div>';
   try {
     const v = await api(`/api/results/${id}` + (source ? `?source=${encodeURIComponent(source)}` : ''));
-    STATE.view = v; STATE.source = v.source; renderReport(v);
-  } catch (e) { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
+    STATE.view = v; STATE.source = v.source;
+    // which mode button this report belongs to: a demo run's mode, else replay
+    const m = mode || (v.source.startsWith('demo-runs/') ? (v.arms.G.summary.n ? 'arms' : 'deterministic') : 'replay');
+    STATE.shown = {scenario: id, mode: m, source: v.source};
+    renderMenu(); renderReport(v);
+  } catch (e) { $('#report').innerHTML = `<div class="card">${esc(e.message)}</div>`; renderMenu(); }
 }
 
 function stageBox(st) { return `<div class="stage ${st.colour}"><div class="lbl">${esc(st.label)}</div>${st.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
