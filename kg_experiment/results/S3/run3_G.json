@@ -1,0 +1,163 @@
+{
+ "scenario": "S3",
+ "arm": "G",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "threshold"
+  ],
+  "co_hit": null,
+  "text_len": 1020
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 5,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "accept_boundary_41": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "review_boundary_42": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "overlay-require: {'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "refuse_boundary_67": {
+    "passed": false,
+    "stage": "missing_call",
+    "detail": "missing ['send', 'notify', 'dispatch', 'deliver', 'email', 'message']; {'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "price_exact_heavy": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "price_exact_both": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'held_unscreened', 'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'price': 1365.0, 'hold': true} | {'status': 'held_unscreened', 'quote_id': p"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {
+  "accept_boundary_41": false,
+  "review_boundary_42": false,
+  "refuse_boundary_67": false
+ },
+ "outage_status": "held_unscreened",
+ "M5_refs": {
+  "total": 14,
+  "resolved": 14,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What exact numeric thresholds and inequalities define the risk index bands for ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, and REFUSE_MIN (keys S-accept|max, S-review|min, S-review|max, S-refuse|min)?",
+  "What is the screening service request/response contract for computing the shipper risk index (input fields and risk index scale)?"
+ ],
+ "assumptions": [
+  {
+   "text": "Risk band thresholds (ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, REFUSE_MIN) exist and are configured inside ScreeningService; QuoteAPI only branches on the qualitative outcome returned by ScreeningService (\"accept\", \"review\", \"refuse\"), not on numeric risk index values. # ASSUMPTION S-accept|max / S-review|min / S-review|max / S-refuse|min",
+   "ref": "A:seq:S-accept|max@v1"
+  },
+  {
+   "text": "ScreeningService.screen returns one of three outcomes: {\"decision\": \"accept\"}, {\"decision\": \"review\"}, or {\"decision\": \"refuse\"} on success, abstracting over the unverified numeric risk index bands; this matches DT-S rows accept/review/refuse without needing numeric thresholds in QuoteAPI. # ASSUMPTION S-accept|max / S-review|min / S-review|max / S-refuse|min",
+   "ref": "A:dt:S-review|min@v1"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Request fields must satisfy: shipper_id present and non-empty; 3 <= weight_kg <= 19400; 25 <= distance_km <= 7150; 50 <= declared_value <= 83000.",
+   "ref": "A:dt:declared_value|max@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no draft is stored; no screening, pricing, or notification occurs.",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "Overall flow order is: validate → store → screen → decide → price → notify → respond.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "On storage failure (StoreUnavailableError), nothing else runs: no screening, no pricing, no notification; response status is 'error: store_unavailable'.",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "On screening outage (ScreeningUnavailableError), the quote is still priced, stored with status 'held_unscreened', not notified, and the response includes price and hold: true.",
+   "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  },
+  {
+   "text": "Accept row (low risk): quote is priced, quote document is sent, and final status is 'quoted'.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "Review row (medium risk): no price is computed, no notification is sent, and final status is 'review_hold'.",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "Refuse row (high risk): no price is computed, a refusal notice is sent, and final status is 'refused_screening'.",
+   "ref": "A:dt:S-refuse|notified#1@v1"
+  },
+  {
+   "text": "Pricing formula: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add 316.00; if distance_km >= 4912 multiply running total by 1.19 after P2; final price = round(result, 2).",
+   "ref": "A:dt:P4|rounding@v1"
+  },
+  {
+   "text": "Response status enum: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', 'error: store_unavailable'.",
+   "ref": "A:oas:response|statuses@v1"
+  },
+  {
+   "text": "Response fields presence: quote_id whenever a draft was stored; price only on priced rows (accept and held_unscreened paths); hold: true only on 'held_unscreened'.",
+   "ref": "A:spec:response|price_presence@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S3/G/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 2,
+  "prompt_tokens": 14855,
+  "completion_tokens": 3873,
+  "seconds": 63.8,
+  "usd_est": 0.0573
+ }
+}

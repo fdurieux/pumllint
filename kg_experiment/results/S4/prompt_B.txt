@@ -1,0 +1,563 @@
+TASK: implement CargoQuote's `handle(request)` — the instant freight quotation flow — from the project documents below. Implement exactly what the documents specify. Where they do not settle something, say so in "questions" and "assumptions" rather than guessing silently.
+
+"ref" format for claims and assumptions: `path:line` into the documents below (the path as given in the `=== path ===` header, and the 1-based line number within that document).
+
+DOCUMENTS:
+=== kit/requirements.md ===
+# CargoQuote requirements (authored 2026-10-30 for kg_experiment)
+
+Each requirement quotes one acceptance criterion or normative rule of
+`../../stack_experiment/cargo_quote/contract/spec.md` and
+`contract/decision_table.md` verbatim and gives it an id. The ids are
+this experiment's; the kit itself carries none. Numbers live only in
+the decision tables, as the kit's design rule says.
+
+| id | requirement (verbatim source in brackets) |
+|---|---|
+| REQ-01 | valid request, accept-band risk index → `quoted`, priced per DT-P, stored, quote document sent [spec.md criterion 1] |
+| REQ-02 | valid request, review-band risk index → `review_hold`, stored, **no** price, **no** notification [spec.md criterion 2] |
+| REQ-03 | valid request, refuse-band risk index → `refused_screening`, stored, **no** price, refusal notice sent [spec.md criterion 3] |
+| REQ-04 | any DT-V violation → `rejected: invalid_request`, nothing else runs [spec.md criterion 4] |
+| REQ-05 | storage failure → `error: store_unavailable`, nothing else runs [spec.md criterion 5] |
+| REQ-06 | screening outage → `held_unscreened` with price and `hold: true`, **no** notification [spec.md criterion 6] |
+| REQ-07 | notification delivery failure → outcome and response unchanged [spec.md criterion 7] |
+| REQ-08 | long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2 [decision_table.md DT-P P3; "the order is normative"] |
+
+`screening_decision.dmn` mirrors DT-S as a DMN 1.3 decision table;
+`decision_table.md` remains the normative text. `quote_process.bpmn`
+draws the flow order of spec.md as a BPMN 2.0 process.
+
+
+=== contract/decision_table.md ===
+# CargoQuote decision tables
+
+The normative decision semantics of CargoQuote. Where any diagram is
+silent or qualitative, these tables are the authority. All boundaries
+are inclusive exactly as written. The values are deliberately
+**non-canonical** (see stack_experiment/README.md): no industry
+convention or model prior produces them — an implementation can only
+get them from this document.
+
+## DT-V — request validation (checked before anything else)
+
+A request is **valid** iff every row holds:
+
+| # | Field | Rule |
+|---|---|---|
+| V1 | `shipper_id` | present and non-empty |
+| V2 | `weight_kg` | number, `3 <= weight_kg <= 19400` |
+| V3 | `distance_km` | number, `25 <= distance_km <= 7150` |
+| V4 | `declared_value` | number, `50 <= declared_value <= 83000` |
+
+An invalid request is rejected immediately with status
+`rejected: invalid_request`. No draft is stored, no screening is
+performed, no price is computed, and no notification is sent.
+
+## DT-S — screening decision (risk banding)
+
+`risk_index` is the integer returned by the Screening Service; higher
+is worse. Symbolic names used by the diagrams: `ACCEPT_MAX = 41`,
+`REVIEW_MIN = 42`, `REVIEW_MAX = 66`, `REFUSE_MIN = 67`.
+
+| Row | Condition | Decision | Priced? | Notified? | Status |
+|---|---|---|---|---|---|
+| accept | `risk_index <= 41` | quote issued | yes | yes (quote document) | `quoted` |
+| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |
+| refuse | `risk_index >= 67` | refused | **no** | **yes** (refusal notice) | `refused_screening` |
+
+Boundary readings, spelled out: 41 is accepted; 42 is review; 66 is
+review; 67 is refused.
+
+Notes (normative):
+
+1. A review hold is not a final outcome: no price is computed and no
+   notification is sent on the review path.
+2. A refusal **is** notified (refusal notice), and pricing never runs
+   on a refused quote.
+3. On storage failure nothing else runs: no screening call, no
+   pricing, no notification; status `error: store_unavailable`.
+4. Notification is fire-and-forget: a delivery failure never changes
+   the stored quote or the response.
+5. A screening outage does **not** fail the quote: the quote is still
+   priced, stored with status `held_unscreened`, and **not** notified
+   until screening completes (out of scope here). The response carries
+   the price and `hold: true`.
+
+## DT-P — pricing (only on DT-S rows accept and screening-outage hold)
+
+| Step | Rule |
+|---|---|
+| P1 | `base = 0.87 * weight_kg + 1.13 * distance_km` |
+| P2 | heavy surcharge: if `weight_kg > 1244`, add `316.00` (flat) |
+| P3 | long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2 |
+| P4 | `price = round(result, 2)` |
+
+Worked example (both surcharges): `weight_kg = 1500`,
+`distance_km = 5000` → base `1305.00 + 5650.00 = 6955.00` → +316 →
+`7271.00` → ×1.19 → **`8652.49`**. (Applying P3 before P2 gives the
+wrong `8592.45` — the order is normative.)
+
+
+=== contract/spec.md ===
+# CargoQuote — companion specification (instant freight quotation)
+
+Supplementary structured specification accompanying the CargoQuote
+diagrams. The diagrams define structure and flow shape; this document
+plus [decision_table.md](decision_table.md) pin the decision
+semantics, validation rules, error policy, and API contract. Where a
+diagram is silent or qualitative, these documents are the authority.
+All numeric rules live in the decision tables (DT-V, DT-S, DT-P) —
+this document never restates a number, so the two cannot drift.
+
+## Glossary
+
+- **Quote request**: one request for a freight price — `shipper_id`,
+  `weight_kg` (chargeable weight, kg), `distance_km` (routed road
+  distance), `declared_value` (EUR, for liability).
+- **Risk index**: integer returned by the Screening Service for a
+  shipper; **higher is worse**.
+- **Quote outcome**: exactly one of `quoted`, `review_hold`,
+  `refused_screening`, `held_unscreened` (screening outage), plus the
+  rejection/error statuses in the API contract below.
+- **Quote document / refusal notice**: messages delivered to the
+  shipper via the Notification Service, only on the DT-S rows that
+  say so.
+
+## Flow order and error policy
+
+1. Validate the request (DT-V). Invalid → reject, stop.
+2. Store the draft quote in the Quote Store with status `draft`.
+   If storage fails: return `error: store_unavailable`; do not call
+   screening; do not price; do not notify (DT-S note 3).
+3. Request the shipper's risk index from the Screening Service.
+   If screening is unavailable: price anyway (DT-P), update the
+   stored quote to `held_unscreened`, do **not** notify, and return
+   the price with `hold: true` (DT-S note 5).
+4. Apply the screening decision (DT-S) to the risk index. Update the
+   stored quote to the resulting status.
+5. Price the quote (DT-P) — only on the rows DT-S marks priced.
+6. Notify the shipper — only on the rows DT-S marks notified;
+   fire-and-forget (DT-S note 4).
+7. Return the response.
+
+## API contract
+
+Request (JSON object): `shipper_id` (string, required), `weight_kg`
+(number, required), `distance_km` (number, required),
+`declared_value` (number, required). Bounds: DT-V.
+
+Response (JSON object): `status` is exactly one of
+
+- `"quoted"` | `"review_hold"` | `"refused_screening"` |
+  `"held_unscreened"`
+- `"rejected: invalid_request"`
+- `"error: store_unavailable"`
+
+plus `quote_id` (string) whenever a draft was stored, `price`
+(number) exactly on the priced rows (DT-S), and `hold: true` exactly
+on `held_unscreened`.
+
+Machine-readable request/response shapes: [openapi.yaml](openapi.yaml).
+
+## Acceptance criteria (qualitative — see tests_input/ for scenarios)
+
+| # | Given | Then |
+|---|---|---|
+| 1 | valid request, accept-band risk index | `quoted`, priced per DT-P, stored, quote document sent |
+| 2 | valid request, review-band risk index | `review_hold`, stored, **no** price, **no** notification |
+| 3 | valid request, refuse-band risk index | `refused_screening`, stored, **no** price, refusal notice sent |
+| 4 | any DT-V violation | `rejected: invalid_request`, nothing else runs |
+| 5 | storage failure | `error: store_unavailable`, nothing else runs |
+| 6 | screening outage | `held_unscreened` with price and `hold: true`, **no** notification |
+| 7 | notification delivery failure | outcome and response unchanged |
+
+
+=== contract/openapi.yaml ===
+openapi: "3.0.3"
+info:
+  title: CargoQuote API
+  version: "1.0.0"
+  description: >
+    Instant freight quotation for palletized road cargo. Request/response
+    shapes only; decision semantics are normative in decision_table.md
+    (DT-V validation bounds are mirrored here as schema constraints).
+paths:
+  /quotes:
+    post:
+      operationId: requestQuote
+      summary: Request a freight quote
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuoteRequest"
+      responses:
+        "200":
+          description: >
+            Quotation outcome. All outcomes use 200 with a status
+            discriminator; rejection and error statuses are part of the
+            response vocabulary, not HTTP errors.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuoteResponse"
+components:
+  schemas:
+    QuoteRequest:
+      type: object
+      required: [shipper_id, weight_kg, distance_km, declared_value]
+      additionalProperties: false
+      properties:
+        shipper_id:
+          type: string
+          minLength: 1
+        weight_kg:
+          type: number
+          minimum: 3
+          maximum: 19400
+        distance_km:
+          type: number
+          minimum: 25
+          maximum: 7150
+        declared_value:
+          type: number
+          minimum: 50
+          maximum: 83000
+    QuoteResponse:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum:
+            - "quoted"
+            - "review_hold"
+            - "refused_screening"
+            - "held_unscreened"
+            - "rejected: invalid_request"
+            - "error: store_unavailable"
+        quote_id:
+          type: string
+          description: Present whenever a draft was stored.
+        price:
+          type: number
+          description: Present exactly on the priced rows of DT-S.
+        hold:
+          type: boolean
+          description: "true exactly on held_unscreened."
+
+
+=== behavior/quote_flow.puml ===
+@startuml cargo-quote-flow
+title Cargo quote — screening and pricing flow
+
+actor Shipper
+participant QuoteAPI <<service>>
+participant TariffEngine <<engine>>
+participant ScreeningService <<external>>
+participant NotificationService <<external>>
+database QuoteStore
+
+Shipper -> QuoteAPI : requestQuote(shipperId, weightKg, distanceKm, declaredValue)
+activate QuoteAPI
+
+alt request valid (bounds: decision table DT-V)
+  QuoteAPI -> QuoteStore : storeDraft(shipperId, weightKg, distanceKm, declaredValue)
+  activate QuoteStore
+  QuoteStore --> QuoteAPI : quoteId
+  deactivate QuoteStore
+else request invalid (validation error, bounds: decision table DT-V)
+  QuoteAPI --> Shipper : rejectedInvalidRequest
+end
+
+alt draft stored
+  QuoteAPI -> ScreeningService : screen(shipperId)
+  activate ScreeningService
+  ScreeningService --> QuoteAPI : riskIndex
+  deactivate ScreeningService
+else storeDraft failure (storage unavailable)
+  QuoteStore --> QuoteAPI : storeUnavailableError
+  QuoteAPI --> Shipper : storeUnavailableError
+  note right of QuoteAPI
+    On storage failure nothing else runs:
+    no screening call, no pricing, no notification (DT-S note 3).
+  end note
+end
+
+alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)
+  activate TariffEngine
+  TariffEngine --> QuoteAPI : priceAmount
+  deactivate TariffEngine
+  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusQuoted, priceAmount)
+  activate QuoteStore
+  QuoteStore --> QuoteAPI : updatedQuote
+  deactivate QuoteStore
+  QuoteAPI ->> NotificationService : sendQuoteDocument(shipperId, quoteId, priceAmount)
+  QuoteAPI --> Shipper : quotedResponse
+  note right of QuoteAPI
+    Notification is fire-and-forget: a delivery failure is the
+    provider's retry problem and never changes the response (DT-S note 4).
+  end note
+else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)
+  activate QuoteStore
+  QuoteStore --> QuoteAPI : updatedQuote
+  deactivate QuoteStore
+  QuoteAPI --> Shipper : reviewHoldResponse
+  note right of QuoteAPI
+    Review hold is not final: no pricing and
+    no notification on this path (DT-S note 1).
+  end note
+else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusRefusedScreening)
+  activate QuoteStore
+  QuoteStore --> QuoteAPI : updatedQuote
+  deactivate QuoteStore
+  QuoteAPI ->> NotificationService : sendRefusalNotice(shipperId, quoteId)
+  QuoteAPI --> Shipper : refusedScreeningResponse
+  note right of QuoteAPI
+    Refusal IS notified; pricing never runs
+    on a refused quote (DT-S note 2).
+  end note
+else screening failure (service unavailable)
+  ScreeningService --> QuoteAPI : screeningUnavailableError
+  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusErrorScreening)
+  activate QuoteStore
+  QuoteStore --> QuoteAPI : updatedQuote
+  deactivate QuoteStore
+  QuoteAPI --> Shipper : screeningUnavailableResponse
+  note right of QuoteAPI
+    A screening outage fails the quote: no price is computed,
+    the quote is stored as error: screening_unavailable, and
+    nothing is notified.
+  end note
+end
+
+deactivate QuoteAPI
+@enduml
+
+
+=== structure/containers.puml ===
+@startuml cargo_quote_containers
+!include <C4/C4_Container>
+
+title Container diagram for CargoQuote - Instant Freight Quotation System (quotation scope)
+
+Person(shipper, "Shipper", "A logistics customer requesting a price quote for palletized road cargo")
+
+System_Boundary(cq, "CargoQuote Freight Quotation System") {
+    Container(quote_api, "Quote API", "Python 3.12, FastAPI", "Receives quote requests, validates them, orchestrates screening and pricing, and returns the quotation outcome")
+    Container(tariff_engine, "Tariff Engine", "Python 3.12, rules library", "Computes the freight price for a validated request from weight and distance per the published tariff rules")
+    ContainerDb(quote_store, "Quote Store", "PostgreSQL 16", "Stores quote requests and their lifecycle status")
+}
+
+System_Ext(screening_service, "Screening Service", "External denied-party screening provider returning a shipper risk index")
+System_Ext(notification_service, "Notification Service", "External messaging provider delivering quote documents and refusal notices")
+
+Rel(shipper, quote_api, "Requests freight quotes from", "JSON/HTTPS")
+Rel(quote_api, quote_store, "Stores and updates quote records in", "SQL/TCP")
+Rel(quote_api, screening_service, "Requests shipper risk index from", "REST/HTTPS")
+Rel(quote_api, tariff_engine, "Requests price computation from", "JSON/HTTPS")
+Rel(quote_api, notification_service, "Sends quote documents and refusal notices via", "REST/HTTPS")
+
+SHOW_LEGEND()
+@enduml
+
+
+=== kit/quote_process.bpmn ===
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    id="cargo_quote_defs" targetNamespace="http://example.org/cargoquote">
+  <bpmn:process id="quote_process" name="CargoQuote quotation" isExecutable="false">
+    <bpmn:startEvent id="start" name="Quote request received"/>
+    <bpmn:task id="t_validate" name="Validate request (DT-V)"/>
+    <bpmn:exclusiveGateway id="g_valid" name="request valid?"/>
+    <bpmn:endEvent id="end_rejected" name="rejected: invalid_request"/>
+    <bpmn:task id="t_store" name="Store draft quote (status draft)"/>
+    <bpmn:exclusiveGateway id="g_stored" name="draft stored?"/>
+    <bpmn:endEvent id="end_store_error" name="error: store_unavailable"/>
+    <bpmn:task id="t_screen" name="Request risk index from Screening Service"/>
+    <bpmn:exclusiveGateway id="g_screen" name="screening outcome (DT-S)"/>
+    <bpmn:task id="t_price_accept" name="Price (DT-P)"/>
+    <bpmn:task id="t_update_quoted" name="Update stored quote to quoted"/>
+    <bpmn:task id="t_notify_quote" name="Send quote document (fire-and-forget)"/>
+    <bpmn:endEvent id="end_quoted" name="quoted"/>
+    <bpmn:task id="t_update_review" name="Update stored quote to review_hold"/>
+    <bpmn:endEvent id="end_review" name="review_hold"/>
+    <bpmn:task id="t_update_refused" name="Update stored quote to refused_screening"/>
+    <bpmn:task id="t_notify_refusal" name="Send refusal notice (fire-and-forget)"/>
+    <bpmn:endEvent id="end_refused" name="refused_screening"/>
+    <bpmn:task id="t_update_err" name="Update stored quote to error: screening_unavailable"/>
+    <bpmn:endEvent id="end_err" name="error: screening_unavailable (no price, not notified)"/>
+    <bpmn:sequenceFlow id="f1" sourceRef="start" targetRef="t_validate"/>
+    <bpmn:sequenceFlow id="f2" sourceRef="t_validate" targetRef="g_valid"/>
+    <bpmn:sequenceFlow id="f3" name="invalid" sourceRef="g_valid" targetRef="end_rejected"/>
+    <bpmn:sequenceFlow id="f4" name="valid" sourceRef="g_valid" targetRef="t_store"/>
+    <bpmn:sequenceFlow id="f5" sourceRef="t_store" targetRef="g_stored"/>
+    <bpmn:sequenceFlow id="f6" name="storage failed" sourceRef="g_stored" targetRef="end_store_error"/>
+    <bpmn:sequenceFlow id="f7" name="stored" sourceRef="g_stored" targetRef="t_screen"/>
+    <bpmn:sequenceFlow id="f8" sourceRef="t_screen" targetRef="g_screen"/>
+    <bpmn:sequenceFlow id="f9" name="accept row" sourceRef="g_screen" targetRef="t_price_accept"/>
+    <bpmn:sequenceFlow id="f10" sourceRef="t_price_accept" targetRef="t_update_quoted"/>
+    <bpmn:sequenceFlow id="f11" sourceRef="t_update_quoted" targetRef="t_notify_quote"/>
+    <bpmn:sequenceFlow id="f12" sourceRef="t_notify_quote" targetRef="end_quoted"/>
+    <bpmn:sequenceFlow id="f13" name="review row" sourceRef="g_screen" targetRef="t_update_review"/>
+    <bpmn:sequenceFlow id="f14" sourceRef="t_update_review" targetRef="end_review"/>
+    <bpmn:sequenceFlow id="f15" name="refuse row" sourceRef="g_screen" targetRef="t_update_refused"/>
+    <bpmn:sequenceFlow id="f16" sourceRef="t_update_refused" targetRef="t_notify_refusal"/>
+    <bpmn:sequenceFlow id="f17" sourceRef="t_notify_refusal" targetRef="end_refused"/>
+    <bpmn:sequenceFlow id="f18" name="screening outage" sourceRef="g_screen" targetRef="t_update_err"/>
+    <bpmn:sequenceFlow id="f20" sourceRef="t_update_err" targetRef="end_err"/>
+  </bpmn:process>
+</bpmn:definitions>
+
+
+=== kit/screening_decision.dmn ===
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/"
+    id="cargo_quote_dmn" name="CargoQuote screening decision"
+    namespace="http://example.org/cargoquote">
+  <decision id="screening_decision" name="Screening decision (DT-S)">
+    <decisionTable id="dt_s" hitPolicy="UNIQUE">
+      <input id="in_risk" label="risk_index"><inputExpression typeRef="number"><text>risk_index</text></inputExpression></input>
+      <output id="out_decision" label="decision" typeRef="string"/>
+      <output id="out_priced" label="priced" typeRef="boolean"/>
+      <output id="out_notified" label="notified" typeRef="string"/>
+      <output id="out_status" label="status" typeRef="string"/>
+      <rule id="r_accept">
+        <inputEntry><text>&lt;= 41</text></inputEntry>
+        <outputEntry><text>"quote issued"</text></outputEntry>
+        <outputEntry><text>true</text></outputEntry>
+        <outputEntry><text>"quote document"</text></outputEntry>
+        <outputEntry><text>"quoted"</text></outputEntry>
+      </rule>
+      <rule id="r_review">
+        <inputEntry><text>[42..66]</text></inputEntry>
+        <outputEntry><text>"held for manual review"</text></outputEntry>
+        <outputEntry><text>false</text></outputEntry>
+        <outputEntry><text>"none"</text></outputEntry>
+        <outputEntry><text>"review_hold"</text></outputEntry>
+      </rule>
+      <rule id="r_refuse">
+        <inputEntry><text>&gt;= 67</text></inputEntry>
+        <outputEntry><text>"refused"</text></outputEntry>
+        <outputEntry><text>false</text></outputEntry>
+        <outputEntry><text>"refusal notice"</text></outputEntry>
+        <outputEntry><text>"refused_screening"</text></outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>
+
+
+=== tests_input/acceptance.feature ===
+Feature: CargoQuote instant freight quotation
+  Acceptance examples for the quotation flow. Declarative style: each
+  scenario states observable outcomes, not implementation steps. This
+  file is a GENERATION-INPUT artifact (the W1 tests-as-input rung) —
+  it is not executed by any harness. Its declared relationship to the
+  frozen grading suite is in oracle_overlap.md and is part of the W1
+  pre-registration.
+
+  Background:
+    Given the tariff and screening rules of decision_table.md are in force
+
+  Scenario: G1 - clean shipment is quoted and the document is sent
+    Given a valid quote request with shipper "ACME-77", weight 620 kg, distance 1400 km, declared value 20000
+    And the screening service returns risk index 12
+    When the quote request is submitted
+    Then the response status is "quoted"
+    And the response price is 2121.40
+    And a quote document is delivered to the shipper
+
+  Scenario: G2 - underweight request is rejected before anything runs
+    Given a quote request with weight 2 kg and otherwise valid fields
+    When the quote request is submitted
+    Then the response status is "rejected: invalid_request"
+    And the shipper is never screened
+    And no notification of any kind is sent
+
+  Scenario: G3 - high-risk shipper is refused and told so
+    Given a valid quote request
+    And the screening service returns risk index 90
+    When the quote request is submitted
+    Then the response status is "refused_screening"
+    And no price is computed
+    And a refusal notice is delivered to the shipper
+
+  Scenario: G5 - price follows the tariff exactly
+    Given a valid quote request with weight 600 kg, distance 1200 km, declared value 5000
+    And the screening service returns risk index 5
+    When the quote request is submitted
+    Then the response status is "quoted"
+    And the response price is 1878.00
+
+  Scenario: G6 - review-band shipper is held without a price
+    Given a valid quote request
+    And the screening service returns risk index 50
+    When the quote request is submitted
+    Then the response status is "review_hold"
+    And no price is computed
+    And no notification of any kind is sent
+
+  Scenario: G7 - notification failure never changes the outcome
+    Given a valid quote request
+    And the screening service returns risk index 12
+    And the notification provider fails to deliver
+    When the quote request is submitted
+    Then the response status is "quoted"
+    And the response carries the computed price
+
+
+=== kit/links.toml ===
+# Human-authored assertions (2026-10-30): which code unit of
+# reference_impl.py implements which requirement, and which Gherkin
+# scenario verifies which requirement. The feature file and the code
+# carry no ids, so these links are a person's statements, not extractions.
+
+[[implements]]
+requirement = "REQ-01"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-02"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-03"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-04"
+code_unit = "QuoteAPI._validate"
+[[implements]]
+requirement = "REQ-05"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-06"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-07"
+code_unit = "QuoteAPI.handle"
+[[implements]]
+requirement = "REQ-08"
+code_unit = "TariffEngine.price"
+
+[[verifies]]
+scenario = "G1"
+requirement = "REQ-01"
+[[verifies]]
+scenario = "G2"
+requirement = "REQ-04"
+[[verifies]]
+scenario = "G3"
+requirement = "REQ-03"
+[[verifies]]
+scenario = "G5"
+requirement = "REQ-08"
+[[verifies]]
+scenario = "G6"
+requirement = "REQ-02"
+[[verifies]]
+scenario = "G7"
+requirement = "REQ-07"
+

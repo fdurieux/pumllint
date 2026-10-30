@@ -1,0 +1,395 @@
+{
+ "scenario": "S4",
+ "D1_constraints": [
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT assertion_id IF NOT EXISTS FOR (n:Assertion) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT fragment_id IF NOT EXISTS FOR (n:Fragment) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT entity_id IF NOT EXISTS FOR (n:Entity) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT version_id IF NOT EXISTS FOR (n:Version) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT artefact_id IF NOT EXISTS FOR (n:Artefact) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "uniqueness",
+   "cypher": "CREATE CONSTRAINT gap_id IF NOT EXISTS FOR (n:Gap) REQUIRE n.id IS UNIQUE",
+   "accepted": true,
+   "message": ""
+  },
+  {
+   "type": "existence",
+   "cypher": "CREATE CONSTRAINT assertion_status IF NOT EXISTS FOR (n:Assertion) REQUIRE n.status IS NOT NULL",
+   "accepted": false,
+   "message": "{neo4j_code: Neo.DatabaseError.Schema.ConstraintCreationFailed} {message: Unable to create Constraint( type='NODE PROPERTY EXISTENCE', schema=(:Assertion {status}) ):"
+  },
+  {
+   "type": "node key",
+   "cypher": "CREATE CONSTRAINT fragment_key IF NOT EXISTS FOR (n:Fragment) REQUIRE (n.locator, n.sha256) IS NODE KEY",
+   "accepted": false,
+   "message": "{neo4j_code: Neo.DatabaseError.Schema.ConstraintCreationFailed} {message: Unable to create Constraint( type='NODE KEY', schema=(:Fragment {locator, sha256}) ):"
+  },
+  {
+   "type": "property type",
+   "cypher": "CREATE CONSTRAINT version_sha IF NOT EXISTS FOR (n:Version) REQUIRE n.sha256 IS :: STRING",
+   "accepted": false,
+   "message": "{neo4j_code: Neo.DatabaseError.Schema.ConstraintCreationFailed} {message: Unable to create Constraint( name='version_sha', type='NODE PROPERTY TYPE', schema=(:Version {sha256}), propertyType=STRING ):"
+  }
+ ],
+ "load": {
+  "fragments": 93,
+  "fragments_reused": 0,
+  "assertions": 142,
+  "unresolved_symbols": [],
+  "activity": "act:extract:S4:v1"
+ },
+ "verifications": {
+  "execution": 77,
+  "review": 41,
+  "approved": 108
+ },
+ "rules": {
+  "R-STRUCT": [],
+  "R-CORROBORATE": 84,
+  "R-CONFLICT": [
+   {
+    "key": "QuoteAPI|on_screening_outage",
+    "a": "A:bpmn:QuoteAPI|on_screening_outage@v1",
+    "va": "priced=no;status=error: screening_unavailable;notified=no",
+    "b": "A:dt:QuoteAPI|on_screening_outage@v1",
+    "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "key": "QuoteAPI|on_screening_outage",
+    "a": "A:bpmn:QuoteAPI|on_screening_outage@v1",
+    "va": "priced=no;status=error: screening_unavailable;notified=no",
+    "b": "A:spec:QuoteAPI|on_screening_outage@v1",
+    "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "key": "QuoteAPI|on_screening_outage",
+    "a": "A:seq:QuoteAPI|on_screening_outage@v1",
+    "va": "priced=no;status=error: screening_unavailable;notified=no",
+    "b": "A:spec:QuoteAPI|on_screening_outage@v1",
+    "vb": "priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "key": "QuoteAPI|on_screening_outage",
+    "a": "A:dt:QuoteAPI|on_screening_outage@v1",
+    "va": "priced=yes;status=held_unscreened;notified=no;hold=true",
+    "b": "A:seq:QuoteAPI|on_screening_outage@v1",
+    "vb": "priced=no;status=error: screening_unavailable;notified=no"
+   }
+  ],
+  "R-VAGUE": [],
+  "R-REQ": [
+   {
+    "kind": "missing",
+    "declared": false,
+    "req": "REQ-05",
+    "why": "no verifying scenario"
+   },
+   {
+    "kind": "missing",
+    "declared": false,
+    "req": "REQ-06",
+    "why": "no verifying scenario"
+   }
+  ],
+  "R-UNVERIFIED": 32
+ },
+ "D2_census": {
+  "assertions_by_status": {
+   "approved": 106,
+   "proposed": 32,
+   "disputed": 4
+  },
+  "gaps_by_kind": {
+   "conflict": 4,
+   "missing": 2,
+   "unverified": 32
+  },
+  "contradicts": 4,
+  "nodes": 587,
+  "relationships": 1455
+ },
+ "D4_shacl": {
+  "triples": 626,
+  "main": {
+   "conforms": false,
+   "results": 2,
+   "by_severity": {
+    "Warning": 2
+   },
+   "sample": [
+    "Validation Report",
+    "Conforms: False",
+    "Results (2):",
+    "Validation Result in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):",
+    "\tSeverity: sh:Warning",
+    "\tSource Shape: [ sh:message Literal(\"a requirement needs a verifying scenario\") ; sh:minCount Literal(\"1\", datatype=xsd:integer) ; sh:path kg:verifiedBy ; sh:severity sh:Warning ]",
+    "\tFocus Node: kg:REQ-05",
+    "\tResult Path: kg:verifiedBy",
+    "\tMessage: a requirement needs a verifying scenario",
+    "Validation Result in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):",
+    "\tSeverity: sh:Warning",
+    "\tSource Shape: [ sh:message Literal(\"a requirement needs a verifying scenario\") ; sh:minCount Literal(\"1\", datatype=xsd:integer) ; sh:path kg:verifiedBy ; sh:severity sh:Warning ]"
+   ]
+  },
+  "info_only": {
+   "conforms": false,
+   "results": 142,
+   "by_severity": {
+    "Info": 142
+   },
+   "sample": [
+    "Validation Report",
+    "Conforms: False",
+    "Results (142):",
+    "Validation Result in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):",
+    "\tSeverity: sh:Info",
+    "\tSource Shape: [ sh:message Literal(\"no reviewer comment recorded (informational)\") ; sh:minCount Literal(\"1\", datatype=xsd:integer) ; sh:path kg:reviewerComment ; sh:severity sh:Info ]",
+    "\tFocus Node: <urn:kg:A:bpmn:QuoteAPI_on_screening_outage@v1>",
+    "\tResult Path: kg:reviewerComment",
+    "\tMessage: no reviewer comment recorded (informational)",
+    "Validation Result in MinCountConstraintComponent (http://www.w3.org/ns/shacl#MinCountConstraintComponent):",
+    "\tSeverity: sh:Info",
+    "\tSource Shape: [ sh:message Literal(\"no reviewer comment recorded (informational)\") ; sh:minCount Literal(\"1\", datatype=xsd:integer) ; sh:path kg:reviewerComment ; sh:severity sh:Info ]"
+   ]
+  }
+ },
+ "D6_gate": {
+  "task": "codegen",
+  "verdict": "BLOCKED",
+  "why": "1 required key(s) at a blocking level: QuoteAPI|on_screening_outage (disputed)",
+  "conflicts": [
+   {
+    "id": "gap:conflict:QuoteAPI|on_screening_outage:0",
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "id": "gap:conflict:QuoteAPI|on_screening_outage:1",
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: kit/quote_process.bpmn says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "id": "gap:conflict:QuoteAPI|on_screening_outage:2",
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no; contract/spec.md says priced=yes;status=held_unscreened;notified=no;hold=true"
+   },
+   {
+    "id": "gap:conflict:QuoteAPI|on_screening_outage:3",
+    "text": "two artefacts state different values for QuoteAPI|on_screening_outage: contract/decision_table.md says priced=yes;status=held_unscreened;notified=no;hold=true; behavior/quote_flow.puml says priced=no;status=error: screening_unavailable;notified=no"
+   }
+  ],
+  "blocked_keys": [
+   "QuoteAPI|on_screening_outage"
+  ],
+  "below_verified": [
+   "QuoteAPI|on_screening_outage"
+  ],
+  "flagged": [],
+  "stale": [],
+  "suspect_derived": []
+ },
+ "gate_keys": {
+  "shipper_id|present": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "weight_kg|min": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "weight_kg|max": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "distance_km|min": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "distance_km|max": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "declared_value|min": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "declared_value|max": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "invalid_request|behaviour": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "S-accept|max": {
+   "level": "approved",
+   "flags": [],
+   "n": 3
+  },
+  "S-accept|priced": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-accept|notified": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-accept|status": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-review|min": {
+   "level": "approved",
+   "flags": [],
+   "n": 3
+  },
+  "S-review|max": {
+   "level": "approved",
+   "flags": [],
+   "n": 3
+  },
+  "S-review|priced": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-review|notified": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-review|status": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-refuse|min": {
+   "level": "approved",
+   "flags": [],
+   "n": 3
+  },
+  "S-refuse|priced": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "S-refuse|notified": {
+   "level": "approved",
+   "flags": [],
+   "n": 5
+  },
+  "S-refuse|status": {
+   "level": "approved",
+   "flags": [],
+   "n": 4
+  },
+  "QuoteAPI|on_store_failure": {
+   "level": "approved",
+   "flags": [],
+   "n": 3
+  },
+  "QuoteAPI|on_notification_failure": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "QuoteAPI|on_screening_outage": {
+   "level": "disputed",
+   "flags": [],
+   "n": 4
+  },
+  "P1|formula": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "P2|threshold": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "P2|surcharge": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "P3|threshold": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "P3|factor": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "P3|order": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "P4|rounding": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "flow|order": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  },
+  "response|statuses": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "response|price_presence": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "response|hold_presence": {
+   "level": "approved",
+   "flags": [],
+   "n": 2
+  },
+  "response|quote_id_presence": {
+   "level": "approved",
+   "flags": [],
+   "n": 1
+  }
+ }
+}

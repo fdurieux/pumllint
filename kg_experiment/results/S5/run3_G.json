@@ -1,0 +1,48 @@
+{
+ "scenario": "S5",
+ "arm": "G",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "inferred",
+   "unverified"
+  ],
+  "co_hit": true,
+  "text_len": 511
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 0,
+  "resolved": 0,
+  "share": null
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "How must QuoteAPI behave on a screening outage? The key QuoteAPI|on_screening_outage is a declared gap (gap:declared:OD-1, REQ-06 not yet specified), and the only candidate assertion is unverified/inferred [A:llm:QuoteAPI|on_screening_outage@v1].",
+  "What should the response include for held-for-review quotes (status review_hold) beyond status and (if applicable) quote_id? The key response|hold_presence is ABSENT/UNKNOWN, so the contract does not specify whether any additional hold-related fields are required."
+ ],
+ "assumptions": [],
+ "claims": [],
+ "usage": {
+  "tag": "S5/G/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 16222,
+  "completion_tokens": 154,
+  "seconds": 3.7,
+  "usd_est": 0.0218
+ }
+}

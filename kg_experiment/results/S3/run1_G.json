@@ -1,0 +1,214 @@
+{
+ "scenario": "S3",
+ "arm": "G",
+ "run": 1,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "threshold"
+  ],
+  "co_hit": null,
+  "text_len": 2635
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 6,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "notimplementederror: "
+   },
+   "accept_boundary_41": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "notimplementederror: "
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'review_hold', 'quote_id': 'q-1'} | {'status': 'review_hold', 'quote_id': 'q-1'} | status=review_hold quote_id=q-1"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': 'q-1'} | {'status': 'refused_screening', 'quote_id': 'q-1'} | status=refused_screening quote_id=q-1"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'refused_screening', 'quote_id': 'q-1'} | {'status': 'refused_screening', 'quote_id': 'q-1'} | status=refused_screening quote_id=q-1"
+   },
+   "price_exact_heavy": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "notimplementederror: "
+   },
+   "price_exact_both": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "notimplementederror: "
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": false,
+    "stage": "wrong_outcome",
+    "detail": "overlay-require: notimplementederror: "
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {
+  "accept_boundary_41": false,
+  "review_boundary_42": true,
+  "refuse_boundary_67": true
+ },
+ "outage_status": "overlay-require: notimplementederror: ",
+ "M5_refs": {
+  "total": 26,
+  "resolved": 26,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What exact numeric thresholds define ACCEPT_MAX, REVIEW_MIN, REVIEW_MAX, and REFUSE_MIN for mapping a numeric risk index into the accept/review/refuse buckets (keys S-accept|max, S-review|min, S-review|max, S-refuse|min)?",
+  "What is the precise structure and field naming of the objects returned by QuoteStore.store_draft and QuoteStore.update_quote, and what field should be used as quote_id in the API response?",
+  "What are the exact input and output schemas of ScreeningService.screen (e.g. parameter name for shipper id, field name for risk index in the response, and its numeric range)?",
+  "Should pricing (TariffEngine.price) and notification semantics be strictly synchronous in this API, or may they be invoked asynchronously as long as observable behaviour (who is notified, stored statuses, and response fields) matches the specification?",
+  "If TariffEngine.price raises any errors, how should QuoteAPI.handle respond, given that pricing error behaviour is not specified in the provided knowledge?"
+ ],
+ "assumptions": [
+  {
+   "text": "There exists an ACCEPT_MAX numeric constant such that riskIndex <= ACCEPT_MAX corresponds to the DT-S accept row (low risk) used to issue a quote.",
+   "ref": "A:dt:S-accept|max@v1"
+  },
+  {
+   "text": "There exist REVIEW_MIN and REVIEW_MAX numeric constants such that REVIEW_MIN <= riskIndex <= REVIEW_MAX corresponds to the DT-S review row (medium risk) used to hold the quote for manual review.",
+   "ref": "A:dt:S-review|min@v1"
+  },
+  {
+   "text": "There exists a REFUSE_MIN numeric constant such that riskIndex >= REFUSE_MIN corresponds to the DT-S refuse row (high risk) used to refuse the quote after screening.",
+   "ref": "A:dt:S-refuse|min@v1"
+  },
+  {
+   "text": "QuoteStore.store_draft returns an object containing at least a unique identifier field 'quote_id' which is used as the quote_id in API responses whenever a draft is successfully stored.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "QuoteStore.update_quote returns an updated quote object but its exact structure beyond carrying the quote_id is not constrained by the current specification and can be treated opaquely by QuoteAPI.handle.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "ScreeningService.screen takes a shipper_id and returns an object containing a numeric 'risk_index' field used by QuoteAPI to select between accept, review, and refuse flows.",
+   "ref": "A:seq:S-accept|priced@v1"
+  },
+  {
+   "text": "TariffEngine.price implements the DT-P pricing rules (P1–P4) and returns a numeric price already rounded to two decimal places according to the contract; QuoteAPI does not reapply pricing logic.",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "NotificationService.send_quote_document is used to deliver quote documents for accepted quotes and its failures are ignored (fire-and-forget), not altering stored state or API responses.",
+   "ref": "A:dt:S-accept|notified@v1"
+  },
+  {
+   "text": "NotificationService.send_refusal_notice is used to deliver refusal notices for refused quotes and its failures are ignored (fire-and-forget), not altering stored state or API responses.",
+   "ref": "A:dt:S-refuse|notified#1@v1"
+  }
+ ],
+ "claims": [
+  {
+   "text": "The request is valid only if shipper_id is present and non-empty, weight_kg is between 3 and 19400 inclusive, distance_km is between 25 and 7150 inclusive, and declared_value is between 50 and 83000 inclusive.",
+   "ref": "A:dt:declared_value|max@v1"
+  },
+  {
+   "text": "An invalid request is rejected immediately with status 'rejected: invalid_request'; no draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+   "ref": "A:dt:invalid_request|behaviour@v1"
+  },
+  {
+   "text": "On storage failure when storing the draft quote, nothing else runs: no screening call, no pricing, no notification; the API returns status 'error: store_unavailable'.",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "In the normal flow order, after validation the system stores a draft quote, then calls screening, then decides based on risk, then prices (if applicable), then notifies (if applicable), then responds.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "For the DT-S accept outcome, the quote is priced and a quote document is sent, and the final quote status is 'quoted'.",
+   "ref": "A:dt:S-accept|priced@v1"
+  },
+  {
+   "text": "For the DT-S accept outcome, notification is a quote document sent via NotificationService, but any notification delivery failure does not change stored quotes or the API response (fire-and-forget).",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  },
+  {
+   "text": "For the DT-S accept outcome, the stored quote status is 'quoted'.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "For the DT-S review outcome, no price is computed, no notification is sent, and the stored quote status is 'review_hold'.",
+   "ref": "A:dt:S-review|status@v1"
+  },
+  {
+   "text": "For the DT-S refuse outcome, no price is computed, a refusal notice is sent, and the stored quote status is 'refused_screening'.",
+   "ref": "A:dt:S-refuse|priced@v1"
+  },
+  {
+   "text": "For the DT-S refuse outcome, a refusal is notified via a refusal notice, and pricing never runs on a refused quote.",
+   "ref": "A:dt:S-refuse|notified#1@v1"
+  },
+  {
+   "text": "In case of a screening outage, the quote is still priced, stored with status 'held_unscreened', and not notified; the response carries the price and hold: true.",
+   "ref": "A:spec:QuoteAPI|on_screening_outage@v1"
+  },
+  {
+   "text": "The pricing rules DT-P are: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add a flat 316.00; if distance_km >= 4912 multiply the running total by 1.19 after applying the weight surcharge; then round the result to 2 decimal places.",
+   "ref": "A:dt:P3|order@v1"
+  },
+  {
+   "text": "The allowed response statuses are exactly: 'quoted', 'review_hold', 'refused_screening', 'held_unscreened', 'rejected: invalid_request', and 'error: store_unavailable'.",
+   "ref": "A:oas:response|statuses@v1"
+  },
+  {
+   "text": "The response includes a price field only on the priced rows of DT-S, and includes hold: true exactly when the status is 'held_unscreened'.",
+   "ref": "A:spec:response|hold_presence@v1"
+  },
+  {
+   "text": "The response includes quote_id whenever a draft quote was successfully stored.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "StoreUnavailableError is used to signal that the QuoteStore is unavailable for either storing a draft or updating a quote, and must be mapped to the 'error: store_unavailable' behaviour when it occurs on initial draft storage.",
+   "ref": "A:seq:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "ScreeningUnavailableError is used to signal that the ScreeningService is unavailable, and must be handled by proceeding with pricing, updating the stored quote to 'held_unscreened', not notifying, and returning hold: true with the price.",
+   "ref": "A:seq:QuoteAPI|on_screening_outage@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S3/G/1",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 14855,
+  "completion_tokens": 4337,
+  "seconds": 29.9,
+  "usd_est": 0.0619
+ }
+}

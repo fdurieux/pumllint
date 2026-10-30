@@ -1,0 +1,785 @@
+{
+ "S3": {
+  "gate": "QUALIFIED",
+  "runs": {
+   "B": [
+    {
+     "run": 1,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "sixties"
+      ],
+      "co_hit": null,
+      "text_len": 2869
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 15,
+      "resolved": 15,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "sixties",
+       "boundary",
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 3850
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 23,
+      "resolved": 23,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "sixties",
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 3576
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 22,
+      "resolved": 22,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 2802
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 21,
+      "resolved": 21,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 3331
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 22,
+      "resolved": 21,
+      "share": 0.9545454545454546
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    }
+   ],
+   "G": [
+    {
+     "run": 1,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 2635
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "overlay-require: notimplementederror: ",
+     "M5_refs": {
+      "total": 26,
+      "resolved": 26,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "6/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "boundary",
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 1613
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": false,
+      "refuse_boundary_67": false
+     },
+     "outage_status": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; at",
+     "M5_refs": {
+      "total": 37,
+      "resolved": 37,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 1020
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": false,
+      "refuse_boundary_67": false
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 14,
+      "resolved": 14,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "5/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "sixties",
+       "threshold"
+      ],
+      "co_hit": null,
+      "text_len": 4107
+     },
+     "M4_targets": {
+      "accept_boundary_41": true,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 29,
+      "resolved": 29,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "forties",
+       "sixties",
+       "threshold",
+       "ambigu"
+      ],
+      "co_hit": null,
+      "text_len": 1592
+     },
+     "M4_targets": {
+      "accept_boundary_41": false,
+      "review_boundary_42": true,
+      "refuse_boundary_67": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 15,
+      "resolved": 15,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "10/11"
+    }
+   ]
+  }
+ },
+ "S4": {
+  "gate": "BLOCKED",
+  "runs": {
+   "B": [
+    {
+     "run": 1,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": true,
+      "text_len": 3739
+     },
+     "M4_targets": {
+      "screening_down_hold": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 22,
+      "resolved": 21,
+      "share": 0.9545454545454546
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": true,
+      "text_len": 3259
+     },
+     "M4_targets": {
+      "screening_down_hold": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 20,
+      "resolved": 20,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": true,
+      "text_len": 2361
+     },
+     "M4_targets": {
+      "screening_down_hold": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 20,
+      "resolved": 15,
+      "share": 0.75
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": true,
+      "text_len": 2872
+     },
+     "M4_targets": {
+      "screening_down_hold": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 18,
+      "resolved": 16,
+      "share": 0.8888888888888888
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": true,
+      "text_len": 3264
+     },
+     "M4_targets": {
+      "screening_down_hold": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 19,
+      "resolved": 19,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    }
+   ],
+   "G": [
+    {
+     "run": 1,
+     "M1_decision": "abstain",
+     "M2_code": false,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "conflict"
+      ],
+      "co_hit": true,
+      "text_len": 488
+     },
+     "M4_targets": {
+      "screening_down_hold": null
+     },
+     "outage_status": null,
+     "M5_refs": {
+      "total": 0,
+      "resolved": 0,
+      "share": null
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "abstain",
+     "M2_code": false,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "conflict"
+      ],
+      "co_hit": true,
+      "text_len": 657
+     },
+     "M4_targets": {
+      "screening_down_hold": null
+     },
+     "outage_status": null,
+     "M5_refs": {
+      "total": 8,
+      "resolved": 8,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "abstain",
+     "M2_code": false,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "conflict"
+      ],
+      "co_hit": true,
+      "text_len": 914
+     },
+     "M4_targets": {
+      "screening_down_hold": null
+     },
+     "outage_status": null,
+     "M5_refs": {
+      "total": 0,
+      "resolved": 0,
+      "share": null
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "abstain",
+     "M2_code": false,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "conflict"
+      ],
+      "co_hit": true,
+      "text_len": 802
+     },
+     "M4_targets": {
+      "screening_down_hold": null
+     },
+     "outage_status": null,
+     "M5_refs": {
+      "total": 0,
+      "resolved": 0,
+      "share": null
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "abstain",
+     "M2_code": false,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "conflict"
+      ],
+      "co_hit": true,
+      "text_len": 1357
+     },
+     "M4_targets": {
+      "screening_down_hold": null
+     },
+     "outage_status": null,
+     "M5_refs": {
+      "total": 0,
+      "resolved": 0,
+      "share": null
+     },
+     "M6_noncompliance": false,
+     "suite": "0/11"
+    }
+   ]
+  }
+ },
+ "S6": {
+  "gate": "PROCEED",
+  "runs": {
+   "B": [
+    {
+     "run": 1,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif"
+      ],
+      "co_hit": null,
+      "text_len": 5589
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 20,
+      "resolved": 15,
+      "share": 0.75
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif"
+      ],
+      "co_hit": null,
+      "text_len": 2744
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 15,
+      "resolved": 15,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": null,
+      "text_len": 3672
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 19,
+      "resolved": 19,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif"
+      ],
+      "co_hit": null,
+      "text_len": 4755
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 18,
+      "resolved": 18,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": null,
+      "text_len": 3722
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 16,
+      "resolved": 16,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    }
+   ],
+   "G": [
+    {
+     "run": 1,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif",
+       "341"
+      ],
+      "co_hit": null,
+      "text_len": 1089
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 37,
+      "resolved": 37,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "341",
+       "316",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 865
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 36,
+      "resolved": 36,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat"
+      ],
+      "co_hit": null,
+      "text_len": 627
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 36,
+      "resolved": 36,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "341",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 1533
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 40,
+      "resolved": 40,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 401
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 35,
+      "resolved": 35,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    }
+   ]
+  }
+ }
+}

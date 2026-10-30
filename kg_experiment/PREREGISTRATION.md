@@ -338,3 +338,147 @@ recorded per call in `results/usage.json`.
 ## Results
 
 *Written strictly after the freeze.*
+
+### Run notes (2026-10-30, written before the verdicts)
+
+- **The freeze.** The pre-registration merged as #214 at `cf9d919`
+  (CI green on the full matrix, windows included) before any scored
+  run. The harness (`harness/`) was written between the freeze and the
+  run; it is not part of the frozen text and its defects are listed
+  here.
+- **Calibration, disclosed.** Before the scored run, six generator
+  calls ran on S1 only (three per arm), into the session scratchpad,
+  never into `results/`. The first pair scored 9/11 (B) and 10/11 (G)
+  on the suite for an adapter reason, not a code reason: the runner
+  raises the artefact's own exception class only when its name matches
+  the stub's tokens, and the generated code defined none, so the store
+  and screening stubs returned failure objects the code treated as
+  success. The shared system prompt was amended to name the two
+  exception classes the reference implementation uses
+  (`StoreUnavailableError`, `ScreeningUnavailableError`). The second
+  pair hit a transient HTTP 502 on the G call; a retry loop (four
+  attempts, 5 s × attempt) was added to the call wrapper. The third
+  pair scored 11/11 and 11/11 with every reference resolvable. No
+  degraded scenario was run with a model before the scored run.
+- **Harness defects found on the deterministic dry run, fixed before
+  the run.** (1) The `NONE` sentinel matched the symbol pattern and was
+  flagged as an unresolved symbol. (2) A vague decision-table value and
+  an unresolved diagram symbol on a numeric key were compared as a
+  conflict; `compatible()` now returns *incomparable* for a numeric
+  predicate with a non-numeric side, so R-VAGUE flags it and R-CONFLICT
+  does not. (3) S5's inferred assertion was loaded before the gap it is
+  a candidate for existed; the loader now merges the gap node.
+  (4) A re-ingest created duplicate assertions for unchanged fragments;
+  `load_scenario(reingest=True)` now reuses a fragment whose
+  `(artefact, locator, sha256)` already exists and creates assertions
+  only for changed fragments. (5) An invalidated assertion kept its key
+  blocked after a verified replacement existed; the gate now treats an
+  invalidated assertion as superseded only when a `verified` or
+  `approved` assertion on the same key exists (§4's intent, made
+  explicit).
+- **Two frozen-text errors, found before the run.** (a) §5's S5 row
+  predicts QUALIFIED while §6's lattice puts `declared_gap` among the
+  blocking levels regardless of candidates; §6 is the normative
+  definition and is implemented as written, so S5's gate verdict is
+  BLOCKED and X5's "D6 QUALIFIED" clause is read as a frozen-text
+  error, not as a failed expectation; the rest of X5 is measured as
+  frozen. (b) §5's S6 row lists three invalidated keys; the
+  worked-example paragraph also supports `worked_example|price`, so
+  the invalidated set has four assertions. Nothing above the line is
+  changed.
+- **The run aborted once and was resumed.** The first invocation ran
+  S1, S2 and S3's B arm, then one S3 G call failed with four
+  consecutive HTTP 502 responses; the exception escaped the thread
+  pool and the harness stopped before S4–S7. The harness was changed
+  to record a failed cell as an `api_error` run and to resume past
+  completed cells (`--resume`); the second invocation re-ran S3's
+  deterministic load, filled the one missing S3 G cell, and ran S4–S7.
+  S1–S3's completed cells are the first invocation's, unchanged. The
+  per-call usage of both invocations is in `results/usage.json`.
+- **The retry passes, and a deviation.** A first retry pass (two
+  workers) found the Neo4j server down (connection refused; it had
+  stopped between the runs, cause not recorded) and ran nothing; the
+  server was restarted and the pass repeated. One cell (S3, G, run 4)
+  failed with four consecutive 502s on every pass while its neighbours
+  succeeded, which matches the proxy behaviour the OpenWiki record
+  measured on 2026-10-28: a call that stays silent too long is cut.
+  The call wrapper was switched to streaming with usage taken from the
+  final chunk (`arms.call`, `stream=True`, `stream_options.include_usage`)
+  — the same deviation the maintainer approved for OpenWiki — for the
+  remaining retries and the S6 re-run below. Provider, model, prompts
+  and output contract are unchanged; a streamed call's `usage` record
+  carries `streamed: true`.
+- **A harness defect in S6's bundle, found after the run, and the
+  re-run the interpretation matrix prescribes.** The governed bundle
+  is rendered from the gate's resolution *after* the recorded
+  re-verification, and the gate hides a superseded (invalidated)
+  assertion once a verified successor exists, so S6's bundle carried
+  neither the four invalidated assertions, nor their ended
+  verifications, nor the `Derived` artefact marked suspect — the
+  very items X6's G clause asks the agent to name. D3 (store-level)
+  is unaffected. Per the interpretation matrix ("X6 fails → the
+  staleness rule or the derivation links are wrong; fixed in the
+  harness and re-run, with the first run's result kept"), the bundle
+  now carries an *INVALIDATED BY A SOURCE CHANGE* section (each
+  invalidated assertion, its ended verifications, its successor and
+  the successor's status) and a *DERIVED OUTPUTS MARKED SUSPECT*
+  section; S6's two arms were re-run into `results/rerun/S6/` with
+  that bundle, and `results/S6/` keeps the first run as it was. X6's
+  G clause is read on the re-run and the first run is reported beside
+  it.
+- **A third harness defect, found in the re-run's bundle.** R-STALE
+  sets `valid_until = v2` on the four ended verifications, and the
+  stage-2 verification loader then re-merged those same records (its
+  match did not exclude invalidated assertions) and reset the field to
+  null, so the arms' bundles printed `valid_until=None`. The loader now
+  excludes invalidated, rejected and deprecated assertions; D3 was
+  re-established deterministically in `results/d3check/S6/` (the four
+  ended verifications carry `valid_until = v2`). No arm was re-run for
+  this: the bundle's INVALIDATED section already named the assertions
+  and the suspect artefact, which is what X6 reads.
+
+### Verdicts (2026-10-30; 76 generator calls completed, 44 retried
+### attempts, estimated $2.4 against the $25 ceiling; the calibration's
+### six calls included)
+
+Deterministic:
+
+| id | expectation | verdict |
+|---|---|---|
+| X9 | uniqueness accepted; existence, node key, property type refused with an Enterprise-edition message | held — six accepted; three refused, `Neo.DatabaseError.Schema.ConstraintCreationFailed … requires Neo4j Enterprise Edition` |
+| X10 | `sh:conforms` false on every scenario with ≥ 1 result, the Info-only case included | held — main shapes 1–2 results (REQ-05's missing scenario; S2/S4/S5 a second), Info-only 133–145 results, `conforms: false` on all 7 |
+| D6 | the gate verdict per scenario against §5 column 5 | S1 PROCEED, S2 BLOCKED, S3 QUALIFIED, S4 BLOCKED, S5 **BLOCKED** (§5 said QUALIFIED: the frozen-text error above), S6 BLOCKED → PROCEED, S7 BLOCKED |
+| D3 | S6's invalidation set | `P2|surcharge`, `P2|threshold`, `P3|order` and `worked_example|price` (§5 named three: the omission above); 16 fragments reused, 2 new, 4 new assertions, 31 kept; `derived:S1:G:run1` suspect |
+| D5 | the three-valued answer in S1 | `documented_absent` (four `NONE` assertions, approved), `asserted` (refusal notice), `unknown` (no assertion) |
+
+Behavioural (n = 5 per cell; `results/<scenario>/`; S6 also
+`results/rerun/S6/`):
+
+| id | verdict | counts |
+|---|---|---|
+| X1 | held | D6 PROCEED; G `generate` 5/5, B `generate_with_assumptions` 5/5; suite 11/11 in all ten runs |
+| X2 | held | D6 BLOCKED; G code null 5/5, `abstain` 5/5; B code 5/5, `screening_down_hold` fails 5/5 (no price computed); FLAGGED G 5/5, B 5/5 |
+| X3 | split | D6 QUALIFIED; G FLAGGED 5/5 and `generate_with_assumptions` 5/5 (≠ `generate`), held; B FLAGGED 5/5, not fewer than G, failed; `accept_boundary_41` fails in 5/5 B runs (and 4/5 G), held; G suite 6, 0, 5, 11, 10 |
+| X4 | held | D6 BLOCKED; G code null 5/5, conflict named 5/5; B code 5/5, all five on the decision table's side (`held_unscreened`, 11/11); B FLAGGED 0/5 by keyword, 4/5 by reading (a "newer"/"superseded" precedence recorded as an assumption) |
+| X5 | held on the measured clauses; D6 clause void (frozen-text error) | G `abstain` 5/5, the inference never used (no code), named as inferred/unverified in 3/5; B `refused_screening` on `screening_down_hold` in 3/5, a refusal without pricing in 1 more, the note named as an assumption in 1/5 |
+| X6 | held on the re-run | D3 as above; BLOCKED before the re-verification record, PROCEED after; re-run G names `derived:S1:G:run1` and the three invalidated ids 5/5; first run 4/5 (run 1 under the defective bundle named the `@v2` successors only); B 0/5 by construction, asking in general terms in 3/5 |
+| X7 | held | D6 BLOCKED; G code null 5/5, M6 0/5; B code 5/5, 11/11 ×5, FLAGGED 0/5 |
+| X8 | held | G references resolvable 0.94–1.0 in every run that produced any; B 0.75–1.0 |
+
+Eight held, one split (X3's "B flagged fewer" clause), none failed
+outright. Interpretation per §10, applied in
+`docs/neo4j-governed-knowledge-evaluation.md` §10.2.
+
+**Reading disagreements with the keyword check (M3), listed:** S4 B
+0/5 by keyword against 4/5 by reading (the precedence assumptions);
+S5 B 1/5 against 4/5 adopting the note as a decision (which is
+adoption, not flagging — the keyword count stands); S6 B 3/5 and 4/5
+(first run and re-run) by keyword, 3/5 by reading on the re-run
+("existing implementation" questions in general terms). No G cell
+disagreed.
+
+**Bounds, as they bit.** n = 5 and one model; nine cells lost to the
+proxy and recovered by streaming; one context designed, planted,
+graded and read; the S3 governed cells' executability (6, 0, 5, 11,
+10) is a finding the frozen text did not anticipate and is reported
+without a bar.

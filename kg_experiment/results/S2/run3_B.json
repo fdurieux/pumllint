@@ -1,0 +1,172 @@
+{
+ "scenario": "S2",
+ "arm": "B",
+ "run": 3,
+ "parse_error": null,
+ "M1_decision": "generate_with_assumptions",
+ "M2_code": true,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "outage",
+   "unavailable",
+   "od-1",
+   "not yet specified",
+   "req-06"
+  ],
+  "co_hit": null,
+  "text_len": 2645
+ },
+ "M4_suite": {
+  "ran": true,
+  "passed": 10,
+  "total": 11,
+  "per_scenario": {
+   "quoted_low_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "accept_boundary_41": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 1365.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "review_boundary_42": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'review_hold'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='"
+   },
+   "refuse_boundary_67": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "refuse_high_risk": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'refused_screening'} | {'quote_id': proteanobj(status='stored', stored=true, success=true, quot"
+   },
+   "price_exact_heavy": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 3186.0} | {'quote_id': proteanobj(status='stored', stored=true, success=true"
+   },
+   "price_exact_both": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'quote_id': proteanobj(status='stored', stored=true, success=true, quote_id='q-1', id='q-1'), 'status': 'quoted', 'price': 8652.49} | {'quote_id': proteanobj(status='stored', stored=true, success=tru"
+   },
+   "invalid_weight_low": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "invalid_value_over": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'rejected: invalid_request'} | {'status': 'rejected: invalid_request'} | status=rejected: invalid_request"
+   },
+   "screening_down_hold": {
+    "passed": false,
+    "stage": "missing_call",
+    "detail": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; screeningunavailableerror: screeningunavailableerror: screening service timeout"
+   },
+   "store_down_error": {
+    "passed": true,
+    "stage": "pass",
+    "detail": "{'status': 'error: store_unavailable'} | {'status': 'error: store_unavailable'} | status=error: store_unavailable"
+   }
+  }
+ },
+ "M4_targets": {
+  "screening_down_hold": false
+ },
+ "outage_status": "missing ['price', 'compute', 'calculate', 'quote', 'rate', 'cost', 'tariff']; sc",
+ "M5_refs": {
+  "total": 15,
+  "resolved": 15,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "What should the observable behaviour be when the Screening Service is unavailable (ScreeningUnavailableError) — which status, and should the draft still be updated and/or notified? (REQ-06 / OD-1 is explicitly open)",
+  "If Screening Service screening succeeds but QuoteStore.update_quote fails (for any of the three DT-S branches), what status and response should be returned, and should this be treated similarly to store_draft failure or differently?",
+  "If TariffEngine.price raises an unexpected error on the accept path, should this be surfaced as some specific error status, retried, or mapped to a generic failure?",
+  "If NotificationService methods raise errors other than a delivery failure that the provider owns (e.g., immediate HTTP 500 / network error), should QuoteAPI still ignore them completely as ‘fire-and-forget’, or should some classes of failure be treated differently?",
+  "Should the handler treat non-numeric JSON types (e.g. strings for weight_kg) as invalid_request based solely on DT-V’s ‘number’ requirement, even though openapi.yaml adds schema types, or is there any separate error vocabulary for type errors?"
+ ],
+ "assumptions": [
+  {
+   "text": "ScreeningUnavailableError represents the unspecified ‘screening outage’ of REQ-06 / OD-1; since behaviour is not yet specified, the implementation will currently let this error propagate (crash/exception) rather than inventing a status. This makes the missing policy visible to integrators instead of silently guessing.",
+   "ref": "kit/requirements.md:18"
+  },
+  {
+   "text": "If QuoteStore.update_quote fails on any branch (accept / review / refuse), this is treated as an internal error and allowed to propagate as an exception, because only the initial storeDraft/storage failure behaviour is normatively defined; no additional error status is invented.",
+   "ref": "contract/decision_table.md:38"
+  },
+  {
+   "text": "If TariffEngine.price raises an exception, this is treated as an internal error and allowed to propagate, since no error policy for tariff failures is defined in the documents and no additional error statuses exist in the API contract.",
+   "ref": "contract/spec.md:57"
+  },
+  {
+   "text": "NotificationService.send_quote_document and NotificationService.send_refusal_notice are both invoked in a fire-and-forget manner regardless of the specific exception type; any exception raised from these calls is caught and ignored so that response and stored outcome remain unchanged, matching the normative ‘delivery failure never changes the response’ rule.",
+   "ref": "contract/decision_table.md:44"
+  },
+  {
+   "text": "Type validation of request fields is done in Python in line with DT-V and openapi.yaml: if any required field is missing, not of a numeric type where a number is required, or shipper_id is not a non-empty string, the request is considered invalid and results in status \"rejected: invalid_request\" with no further processing.",
+   "ref": "contract/decision_table.md:12"
+  }
+ ],
+ "claims": [
+  {
+   "text": "Request validation DT-V defines that an invalid request is rejected immediately with status \"rejected: invalid_request\" and that no draft is stored, no screening is performed, no price is computed, and no notification is sent.",
+   "ref": "contract/decision_table.md:18"
+  },
+  {
+   "text": "Flow step 2 requires storing the draft quote with status draft and defines that on storage failure the system must return status \"error: store_unavailable\" and must not call screening, price, or notify.",
+   "ref": "contract/spec.md:40"
+  },
+  {
+   "text": "DT-S defines three screening outcome bands based on risk_index: accept (risk_index <= 41 → quoted, priced, notified with quote document), review (42–66 → review_hold, not priced, not notified), and refuse (risk_index >= 67 → refused_screening, not priced, notified with refusal notice).",
+   "ref": "contract/decision_table.md:23"
+  },
+  {
+   "text": "DT-S note 1 specifies that review_hold is not a final outcome: no price is computed and no notification is sent on the review path.",
+   "ref": "contract/decision_table.md:32"
+  },
+  {
+   "text": "DT-S note 2 specifies that refusal is notified with a refusal notice and that pricing never runs on a refused quote.",
+   "ref": "contract/decision_table.md:35"
+  },
+  {
+   "text": "DT-S note 4 specifies that notification is fire-and-forget and that a delivery failure never changes the stored quote or the response.",
+   "ref": "contract/decision_table.md:43"
+  },
+  {
+   "text": "DT-P defines the pricing steps: base = 0.87 * weight_kg + 1.13 * distance_km; if weight_kg > 1244 add 316.00; if distance_km >= 4912 then multiply the running total by 1.19 after the surcharge; then price = round(result, 2).",
+   "ref": "contract/decision_table.md:49"
+  },
+  {
+   "text": "The API contract defines that the response object must always contain a status from the fixed vocabulary and must include quote_id whenever a draft was stored and price exactly on priced rows (accept outcomes).",
+   "ref": "contract/spec.md:62"
+  },
+  {
+   "text": "The BPMN and sequence diagrams confirm the flow order: validate → store draft → on success screen → branch by DT-S; price and notify only on the rows marked priced/notified; on storage failure, end immediately with error: store_unavailable.",
+   "ref": "kit/quote_process.bpmn:9"
+  },
+  {
+   "text": "REQ-07 restates that notification delivery failure must never change the outcome or response, aligning with DT-S note 4.",
+   "ref": "kit/requirements.md:17"
+  }
+ ],
+ "usage": {
+  "tag": "S2/B/3",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 6213,
+  "completion_tokens": 3398,
+  "seconds": 28.8,
+  "usd_est": 0.0417
+ }
+}

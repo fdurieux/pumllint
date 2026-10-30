@@ -1,0 +1,553 @@
+GATE VERDICT: PROCEED — all 36 required keys verified or approved, none flagged
+
+POLICY:
+You are implementing from a governed knowledge repository. The rules:
+
+1. Only knowledge at status `verified` or `approved` may be used as fact. `validated` and `proposed` knowledge may be used only as a labelled assumption. `disputed`, `invalidated` and `declared gap` knowledge may not be used at all.
+2. basis=`inferred` means a model proposed the statement and nobody checked it. It is a hypothesis: never a fact, never an assumption you silently adopt. If you rely on it, say so by its id and mark it as unverified.
+3. A key marked UNKNOWN has no statement in the repository. Do not invent a value or behaviour for it.
+4. If the GATE VERDICT is BLOCKED: do not produce code (`code` must be null); set `decision` to `abstain`; list, in `questions`, what must be decided or verified, naming the keys and gap ids.
+5. If the GATE VERDICT is QUALIFIED: you may produce code with `decision` = `generate_with_assumptions`; every qualified key you rely on appears in `assumptions` with its assertion id as `ref`, and is isolated in the code as a named constant or a clearly marked branch with a `# ASSUMPTION <ref>` comment. Open readings go in `questions`.
+6. If the GATE VERDICT is PROCEED: `decision` = `generate`.
+7. Every entry in `claims` and `assumptions` carries a `ref` that is an assertion id from the bundle (the text in square brackets, e.g. `A:dt:P2|surcharge@v1`).
+
+
+REQUIRED KNOWLEDGE, key by key (status is the knowledge repository's, not yours to upgrade):
+
+## shipper_id|present  level=approved  flags=-
+  [A:dt:shipper_id|present@v1] value='yes' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: present and non-empty
+      evidence: contract/decision_table.md @ DT-V/row/V1: '| V1 | `shipper_id` | present and non-empty |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:shipper_id|present@v1] value='yes' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: required, minLength 1
+      evidence: contract/openapi.yaml @ QuoteRequest/shipper_id: 'shipper_id:\n  minLength: 1\n  type: string'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## weight_kg|min  level=approved  flags=-
+  [A:dt:weight_kg|min@v1] value='3' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `3 <= weight_kg <= 19400`
+      evidence: contract/decision_table.md @ DT-V/row/V2: '| V2 | `weight_kg` | number, `3 <= weight_kg <= 19400` |'
+      verification: execution (suite scenario invalid_weight_low on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:weight_kg|min@v1] value='3' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: minimum: 3
+      evidence: contract/openapi.yaml @ QuoteRequest/weight_kg: 'weight_kg:\n  maximum: 19400\n  minimum: 3\n  type: number'
+      verification: execution (suite scenario invalid_weight_low on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## weight_kg|max  level=approved  flags=-
+  [A:dt:weight_kg|max@v1] value='19400' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `3 <= weight_kg <= 19400`
+      evidence: contract/decision_table.md @ DT-V/row/V2: '| V2 | `weight_kg` | number, `3 <= weight_kg <= 19400` |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:weight_kg|max@v1] value='19400' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: maximum: 19400
+      evidence: contract/openapi.yaml @ QuoteRequest/weight_kg: 'weight_kg:\n  maximum: 19400\n  minimum: 3\n  type: number'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## distance_km|min  level=approved  flags=-
+  [A:dt:distance_km|min@v1] value='25' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `25 <= distance_km <= 7150`
+      evidence: contract/decision_table.md @ DT-V/row/V3: '| V3 | `distance_km` | number, `25 <= distance_km <= 7150` |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:distance_km|min@v1] value='25' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: minimum: 25
+      evidence: contract/openapi.yaml @ QuoteRequest/distance_km: 'distance_km:\n  maximum: 7150\n  minimum: 25\n  type: number'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## distance_km|max  level=approved  flags=-
+  [A:dt:distance_km|max@v1] value='7150' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `25 <= distance_km <= 7150`
+      evidence: contract/decision_table.md @ DT-V/row/V3: '| V3 | `distance_km` | number, `25 <= distance_km <= 7150` |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:distance_km|max@v1] value='7150' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: maximum: 7150
+      evidence: contract/openapi.yaml @ QuoteRequest/distance_km: 'distance_km:\n  maximum: 7150\n  minimum: 25\n  type: number'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## declared_value|min  level=approved  flags=-
+  [A:dt:declared_value|min@v1] value='50' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `50 <= declared_value <= 83000`
+      evidence: contract/decision_table.md @ DT-V/row/V4: '| V4 | `declared_value` | number, `50 <= declared_value <= 83000` |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:declared_value|min@v1] value='50' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: minimum: 50
+      evidence: contract/openapi.yaml @ QuoteRequest/declared_value: 'declared_value:\n  maximum: 83000\n  minimum: 50\n  type: number'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## declared_value|max  level=approved  flags=-
+  [A:dt:declared_value|max@v1] value='83000' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: number, `50 <= declared_value <= 83000`
+      evidence: contract/decision_table.md @ DT-V/row/V4: '| V4 | `declared_value` | number, `50 <= declared_value <= 83000` |'
+      verification: execution (suite scenario invalid_value_over on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:oas:declared_value|max@v1] value='83000' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: maximum: 83000
+      evidence: contract/openapi.yaml @ QuoteRequest/declared_value: 'declared_value:\n  maximum: 83000\n  minimum: 50\n  type: number'
+      verification: execution (suite scenario invalid_value_over on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## invalid_request|behaviour  level=approved  flags=-
+  [A:dt:invalid_request|behaviour@v1] value='priced=no;status=rejected: invalid_request;notified=no;screen=no;store=no' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: An invalid request is rejected immediately with status `rejected: invalid_request`. No draft is stored, no screening is performed, no price is computed, and no notification is sent.
+      evidence: contract/decision_table.md @ DT-V/para/invalid: 'An invalid request is rejected immediately with status\n`rejected: invalid_request`. No draft is stored, no screening is\nperformed, no price is computed, and no notification is sent.'
+      verification: execution (suite scenario invalid_value_over on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario invalid_weight_low on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-accept|max  level=approved  flags=-
+  [A:dmn:S-accept|max@v1] value='41' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: <= 41
+      evidence: kit/screening_decision.dmn @ rule/r_accept: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_accept">\n        <ns0:inputEntry><ns0:text>&lt;= 41</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"quote issue'
+      verification: execution (suite scenario accept_boundary_41 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-accept|max@v1] value='41' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `risk_index <= 41`
+      evidence: contract/decision_table.md @ DT-S/row/accept: '| accept | `risk_index <= 41` | quote issued | yes | yes (quote document) | `quoted` |'
+      verification: execution (suite scenario accept_boundary_41 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-accept|max@v1] value='41' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+      evidence: behavior/quote_flow.puml @ alt/37-52: 'alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)\n  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)\n  activate TariffEngine\n  TariffEngine --> QuoteAPI : priceAmount\n  deactivate Ta'
+      verification: execution (suite scenario accept_boundary_41 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-accept|priced  level=approved  flags=-
+  [A:bpmn:S-accept|priced@v1] value='yes' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: accept row
+      evidence: kit/quote_process.bpmn @ path/f9: 'Price (DT-P) -> Update stored quote to quoted -> Send quote document (fire-and-forget) -> quoted'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-accept|priced@v1] value='yes' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: true
+      evidence: kit/screening_decision.dmn @ rule/r_accept: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_accept">\n        <ns0:inputEntry><ns0:text>&lt;= 41</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"quote issue'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-accept|priced@v1] value='yes' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: yes
+      evidence: contract/decision_table.md @ DT-S/row/accept: '| accept | `risk_index <= 41` | quote issued | yes | yes (quote document) | `quoted` |'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-accept|priced@v1] value='yes' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+      evidence: behavior/quote_flow.puml @ alt/37-52: 'alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)\n  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)\n  activate TariffEngine\n  TariffEngine --> QuoteAPI : priceAmount\n  deactivate Ta'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-accept|notified  level=approved  flags=-
+  [A:bpmn:S-accept|notified@v1] value='quote document' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: accept row
+      evidence: kit/quote_process.bpmn @ path/f9: 'Price (DT-P) -> Update stored quote to quoted -> Send quote document (fire-and-forget) -> quoted'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-accept|notified@v1] value='quote document' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: quote document
+      evidence: kit/screening_decision.dmn @ rule/r_accept: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_accept">\n        <ns0:inputEntry><ns0:text>&lt;= 41</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"quote issue'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-accept|notified@v1] value='quote document' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: yes (quote document)
+      evidence: contract/decision_table.md @ DT-S/row/accept: '| accept | `risk_index <= 41` | quote issued | yes | yes (quote document) | `quoted` |'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-accept|notified@v1] value='quote document' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+      evidence: behavior/quote_flow.puml @ alt/37-52: 'alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)\n  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)\n  activate TariffEngine\n  TariffEngine --> QuoteAPI : priceAmount\n  deactivate Ta'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-accept|status  level=approved  flags=-
+  [A:bpmn:S-accept|status@v1] value='quoted' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: accept row
+      evidence: kit/quote_process.bpmn @ path/f9: 'Price (DT-P) -> Update stored quote to quoted -> Send quote document (fire-and-forget) -> quoted'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-accept|status@v1] value='quoted' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: quoted
+      evidence: kit/screening_decision.dmn @ rule/r_accept: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_accept">\n        <ns0:inputEntry><ns0:text>&lt;= 41</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"quote issue'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-accept|status@v1] value='quoted' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: quoted
+      evidence: contract/decision_table.md @ DT-S/row/accept: '| accept | `risk_index <= 41` | quote issued | yes | yes (quote document) | `quoted` |'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-accept|status@v1] value='quoted' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)
+      evidence: behavior/quote_flow.puml @ alt/37-52: 'alt riskIndex <= ACCEPT_MAX (decision table DT-S, row accept)\n  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)\n  activate TariffEngine\n  TariffEngine --> QuoteAPI : priceAmount\n  deactivate Ta'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-review|min  level=approved  flags=-
+  [A:dmn:S-review|min@v1] value='42' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: [42..66]
+      evidence: kit/screening_decision.dmn @ rule/r_review: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_review">\n        <ns0:inputEntry><ns0:text>[42..66]</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"held for ma'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-review|min@v1] value='42' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `42 <= risk_index <= 66`
+      evidence: contract/decision_table.md @ DT-S/row/review: '| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-review|min@v1] value='42' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+      evidence: behavior/quote_flow.puml @ alt/52-62: 'else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updated'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-review|max  level=approved  flags=-
+  [A:dmn:S-review|max@v1] value='66' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: [42..66]
+      evidence: kit/screening_decision.dmn @ rule/r_review: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_review">\n        <ns0:inputEntry><ns0:text>[42..66]</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"held for ma'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-review|max@v1] value='66' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `42 <= risk_index <= 66`
+      evidence: contract/decision_table.md @ DT-S/row/review: '| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-review|max@v1] value='66' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+      evidence: behavior/quote_flow.puml @ alt/52-62: 'else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updated'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-review|priced  level=approved  flags=-
+  [A:bpmn:S-review|priced@v1] value='NONE' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: review row
+      evidence: kit/quote_process.bpmn @ path/f13: 'Update stored quote to review_hold -> review_hold'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-review|priced@v1] value='NONE' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: false
+      evidence: kit/screening_decision.dmn @ rule/r_review: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_review">\n        <ns0:inputEntry><ns0:text>[42..66]</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"held for ma'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-review|priced@v1] value='NONE' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: **no**
+      evidence: contract/decision_table.md @ DT-S/row/review: '| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-review|priced@v1] value='NONE' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+      evidence: behavior/quote_flow.puml @ alt/52-62: 'else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updated'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-review|notified  level=approved  flags=-
+  [A:bpmn:S-review|notified@v1] value='NONE' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: review row
+      evidence: kit/quote_process.bpmn @ path/f13: 'Update stored quote to review_hold -> review_hold'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-review|notified@v1] value='NONE' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: none
+      evidence: kit/screening_decision.dmn @ rule/r_review: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_review">\n        <ns0:inputEntry><ns0:text>[42..66]</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"held for ma'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-review|notified@v1] value='NONE' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: **no**
+      evidence: contract/decision_table.md @ DT-S/row/review: '| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-review|notified@v1] value='NONE' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+      evidence: behavior/quote_flow.puml @ alt/52-62: 'else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updated'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-review|status  level=approved  flags=-
+  [A:bpmn:S-review|status@v1] value='review_hold' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: review row
+      evidence: kit/quote_process.bpmn @ path/f13: 'Update stored quote to review_hold -> review_hold'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-review|status@v1] value='review_hold' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: review_hold
+      evidence: kit/screening_decision.dmn @ rule/r_review: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_review">\n        <ns0:inputEntry><ns0:text>[42..66]</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"held for ma'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-review|status@v1] value='review_hold' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: review_hold
+      evidence: contract/decision_table.md @ DT-S/row/review: '| review | `42 <= risk_index <= 66` | held for manual review | **no** | **no** | `review_hold` |'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-review|status@v1] value='review_hold' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)
+      evidence: behavior/quote_flow.puml @ alt/52-62: 'else REVIEW_MIN <= riskIndex <= REVIEW_MAX (decision table DT-S, row review)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusReviewHold)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updated'
+      verification: execution (suite scenario review_boundary_42 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-refuse|min  level=approved  flags=-
+  [A:dmn:S-refuse|min@v1] value='67' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: >= 67
+      evidence: kit/screening_decision.dmn @ rule/r_refuse: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_refuse">\n        <ns0:inputEntry><ns0:text>&gt;= 67</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"refused"</n'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-refuse|min@v1] value='67' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `risk_index >= 67`
+      evidence: contract/decision_table.md @ DT-S/row/refuse: '| refuse | `risk_index >= 67` | refused | **no** | **yes** (refusal notice) | `refused_screening` |'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-refuse|min@v1] value='67' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+      evidence: behavior/quote_flow.puml @ alt/62-73: 'else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusRefusedScreening)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updatedQuote\n  '
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-refuse|priced  level=approved  flags=-
+  [A:bpmn:S-refuse|priced@v1] value='NONE' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: refuse row
+      evidence: kit/quote_process.bpmn @ path/f15: 'Update stored quote to refused_screening -> Send refusal notice (fire-and-forget) -> refused_screening'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-refuse|priced@v1] value='NONE' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: false
+      evidence: kit/screening_decision.dmn @ rule/r_refuse: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_refuse">\n        <ns0:inputEntry><ns0:text>&gt;= 67</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"refused"</n'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-refuse|priced@v1] value='NONE' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: **no**
+      evidence: contract/decision_table.md @ DT-S/row/refuse: '| refuse | `risk_index >= 67` | refused | **no** | **yes** (refusal notice) | `refused_screening` |'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-refuse|priced@v1] value='NONE' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+      evidence: behavior/quote_flow.puml @ alt/62-73: 'else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusRefusedScreening)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updatedQuote\n  '
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-refuse|notified  level=approved  flags=-
+  [A:bpmn:S-refuse|notified@v1] value='refusal notice' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: refuse row
+      evidence: kit/quote_process.bpmn @ path/f15: 'Update stored quote to refused_screening -> Send refusal notice (fire-and-forget) -> refused_screening'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-refuse|notified@v1] value='refusal notice' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: refusal notice
+      evidence: kit/screening_decision.dmn @ rule/r_refuse: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_refuse">\n        <ns0:inputEntry><ns0:text>&gt;= 67</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"refused"</n'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-refuse|notified#1@v1] value='refusal notice' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: A refusal **is** notified (refusal notice), and pricing never runs on a refused quote.
+      evidence: contract/decision_table.md @ DT-S/note/2: 'A refusal **is** notified (refusal notice), and pricing never runs on a refused quote.'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-refuse|notified@v1] value='refusal notice' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: **yes** (refusal notice)
+      evidence: contract/decision_table.md @ DT-S/row/refuse: '| refuse | `risk_index >= 67` | refused | **no** | **yes** (refusal notice) | `refused_screening` |'
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-refuse|notified@v1] value='refusal notice' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+      evidence: behavior/quote_flow.puml @ alt/62-73: 'else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusRefusedScreening)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updatedQuote\n  '
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## S-refuse|status  level=approved  flags=-
+  [A:bpmn:S-refuse|status@v1] value='refused_screening' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: refuse row
+      evidence: kit/quote_process.bpmn @ path/f15: 'Update stored quote to refused_screening -> Send refusal notice (fire-and-forget) -> refused_screening'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dmn:S-refuse|status@v1] value='refused_screening' basis=extracted status=approved source=kit/screening_decision.dmn by=kg_experiment harness
+      text: refused_screening
+      evidence: kit/screening_decision.dmn @ rule/r_refuse: '<ns0:rule xmlns:ns0="https://www.omg.org/spec/DMN/20191111/MODEL/" id="r_refuse">\n        <ns0:inputEntry><ns0:text>&gt;= 67</ns0:text></ns0:inputEntry>\n        <ns0:outputEntry><ns0:text>"refused"</n'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:S-refuse|status@v1] value='refused_screening' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: refused_screening
+      evidence: contract/decision_table.md @ DT-S/row/refuse: '| refuse | `risk_index >= 67` | refused | **no** | **yes** (refusal notice) | `refused_screening` |'
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:S-refuse|status@v1] value='refused_screening' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)
+      evidence: behavior/quote_flow.puml @ alt/62-73: 'else riskIndex >= REFUSE_MIN (decision table DT-S, row refuse)\n  QuoteAPI -> QuoteStore : updateQuote(quoteId, statusRefusedScreening)\n  activate QuoteStore\n  QuoteStore --> QuoteAPI : updatedQuote\n  '
+      verification: execution (suite scenario refuse_high_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario refuse_boundary_67 on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## QuoteAPI|on_store_failure  level=approved  flags=-
+  [A:dt:QuoteAPI|on_store_failure@v1] value='priced=no;status=error: store_unavailable;notified=no;screen=no' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: On storage failure nothing else runs: no screening call, no pricing, no notification; status `error: store_unavailable`.
+      evidence: contract/decision_table.md @ DT-S/note/3: 'On storage failure nothing else runs: no screening call, no pricing, no notification; status `error: store_unavailable`.'
+      verification: execution (suite scenario store_down_error on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:QuoteAPI|on_store_failure@v1] value='priced=no;status=error: store_unavailable;notified=no;screen=no' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: storeDraft failure (storage unavailable)
+      evidence: behavior/quote_flow.puml @ alt/28-35: 'else storeDraft failure (storage unavailable)\n  QuoteStore --> QuoteAPI : storeUnavailableError\n  QuoteAPI --> Shipper : storeUnavailableError\n  note right of QuoteAPI\n    On storage failure nothing e'
+      verification: execution (suite scenario store_down_error on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:spec:QuoteAPI|on_store_failure@v1] value='priced=no;status=error: store_unavailable;notified=no;screen=no' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: Store the draft quote in the Quote Store with status `draft`. If storage fails: return `error: store_unavailable`; do not call screening; do not price; do not notify (DT-S note 3).
+      evidence: contract/spec.md @ flow/step/2: 'Store the draft quote in the Quote Store with status `draft`. If storage fails: return `error: store_unavailable`; do not call screening; do not price; do not notify (DT-S note 3).'
+      verification: execution (suite scenario store_down_error on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## QuoteAPI|on_notification_failure  level=approved  flags=-
+  [A:dt:QuoteAPI|on_notification_failure@v1] value='response=unchanged;stored=unchanged' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.
+      evidence: contract/decision_table.md @ DT-S/note/4: 'Notification is fire-and-forget: a delivery failure never changes the stored quote or the response.'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## QuoteAPI|on_screening_outage  level=approved  flags=-
+  [A:bpmn:QuoteAPI|on_screening_outage@v1] value='priced=yes;status=held_unscreened;notified=no' basis=extracted status=approved source=kit/quote_process.bpmn by=kg_experiment harness
+      text: screening outage: F:bpmn:path/f18
+      evidence: kit/quote_process.bpmn @ path/f18: 'Price (DT-P) -> Update stored quote to held_unscreened -> held_unscreened (hold: true, not notified)'
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:QuoteAPI|on_screening_outage@v1] value='priced=yes;status=held_unscreened;notified=no;hold=true' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: A screening outage does **not** fail the quote: the quote is still priced, stored with status `held_unscreened`, and **not** notified until screening completes (out of scope here). The response carries the price and `hold: true`.
+      evidence: contract/decision_table.md @ DT-S/note/5: 'A screening outage does **not** fail the quote: the quote is still priced, stored with status `held_unscreened`, and **not** notified until screening completes (out of scope here). The response carrie'
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:seq:QuoteAPI|on_screening_outage@v1] value='priced=yes;status=held_unscreened;notified=no' basis=extracted status=approved source=behavior/quote_flow.puml by=kg_experiment harness
+      text: screening failure (service unavailable)
+      evidence: behavior/quote_flow.puml @ alt/73-88: 'else screening failure (service unavailable)\n  ScreeningService --> QuoteAPI : screeningUnavailableError\n  QuoteAPI -> TariffEngine : price(weightKg, distanceKm)\n  activate TariffEngine\n  TariffEngine'
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:spec:QuoteAPI|on_screening_outage@v1] value='priced=yes;status=held_unscreened;notified=no;hold=true' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: Request the shipper's risk index from the Screening Service. If screening is unavailable: price anyway (DT-P), update the stored quote to `held_unscreened`, do **not** notify, and return the price with `hold: true` (DT-S note 5).
+      evidence: contract/spec.md @ flow/step/3: "Request the shipper's risk index from the Screening Service. If screening is unavailable: price anyway (DT-P), update the stored quote to `held_unscreened`, do **not** notify, and return the price wit"
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## P1|formula  level=approved  flags=-
+  [A:dt:P1|formula@v1] value='0.87 * weight_kg + 1.13 * distance_km' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `base = 0.87 * weight_kg + 1.13 * distance_km`
+      evidence: contract/decision_table.md @ DT-P/row/P1: '| P1 | `base = 0.87 * weight_kg + 1.13 * distance_km` |'
+      verification: execution (suite scenario price_exact_heavy on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## P2|threshold  level=approved  flags=-
+  [A:dt:P2|threshold@v2] value='1244' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: heavy surcharge: if `weight_kg > 1244`, add `341.00` (flat)
+      evidence: contract/decision_table.md @ DT-P/row/P2: '| P2 | heavy surcharge: if `weight_kg > 1244`, add `341.00` (flat) |'
+      verification: execution (suite scenario price_exact_heavy on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: review (re-verification after the 2026-10-30 tariff change (owner stand-in)) at 2026-10-30
+      approval: re-approval after re-verification at 2026-10-30
+      GAP unverified: A:dt:P2|threshold@v2 has no verification record
+
+## P2|surcharge  level=approved  flags=-
+  [A:dt:P2|surcharge@v2] value='341.00' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: heavy surcharge: if `weight_kg > 1244`, add `341.00` (flat)
+      evidence: contract/decision_table.md @ DT-P/row/P2: '| P2 | heavy surcharge: if `weight_kg > 1244`, add `341.00` (flat) |'
+      verification: review (re-verification after the 2026-10-30 tariff change (owner stand-in)) at 2026-10-30
+      approval: re-approval after re-verification at 2026-10-30
+      GAP unverified: A:dt:P2|surcharge@v2 has no verification record
+
+## P3|threshold  level=approved  flags=-
+  [A:dt:P3|threshold@v1] value='4912' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2
+      evidence: contract/decision_table.md @ DT-P/row/P3: '| P3 | long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2 |'
+      verification: execution (suite scenario price_exact_both on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## P3|factor  level=approved  flags=-
+  [A:dt:P3|factor@v1] value='1.19' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2
+      evidence: contract/decision_table.md @ DT-P/row/P3: '| P3 | long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2 |'
+      verification: execution (suite scenario price_exact_both on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## P3|order  level=approved  flags=-
+  [A:dt:P3|order#1@v1] value='after P2' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2
+      evidence: contract/decision_table.md @ DT-P/row/P3: '| P3 | long-haul multiplier: if `distance_km >= 4912`, multiply the running total by `1.19` — applied **after** P2 |'
+      verification: execution (suite scenario price_exact_both on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:dt:P3|order@v2] value='after P2' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: Worked example (both surcharges): `weight_kg = 1500`, `distance_km = 5000` → base `1305.00 + 5650.00 = 6955.00` → +341 → `7296.00` → ×1.19 → **`8682.24`**. (Applying P3 before P2 gives the wrong `8622.20` — the order is normative.)
+      evidence: contract/decision_table.md @ DT-P/para/worked-example: 'Worked example (both surcharges): `weight_kg = 1500`,\n`distance_km = 5000` → base `1305.00 + 5650.00 = 6955.00` → +341 →\n`7296.00` → ×1.19 → **`8682.24`**. (Applying P3 before P2 gives the\nwrong `8622'
+      verification: execution (suite scenario price_exact_both on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      verification: review (re-verification after the 2026-10-30 tariff change (owner stand-in)) at 2026-10-30
+      approval: re-approval after re-verification at 2026-10-30
+      GAP unverified: A:dt:P3|order@v2 has no verification record
+
+## P4|rounding  level=approved  flags=-
+  [A:dt:P4|rounding@v1] value='2' basis=extracted status=approved source=contract/decision_table.md by=kg_experiment harness
+      text: `price = round(result, 2)`
+      evidence: contract/decision_table.md @ DT-P/row/P4: '| P4 | `price = round(result, 2)` |'
+      verification: execution (suite scenario price_exact_heavy on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## flow|order  level=approved  flags=-
+  [A:spec:flow|order@v1] value='validate>store>screen>decide>price>notify>respond' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: flow order steps 1-7
+      evidence: contract/spec.md @ flow/order: '1. validate\n2. store\n3. screen\n4. decide\n5. price\n6. notify\n7. respond'
+      verification: execution (suite scenario quoted_low_risk on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## response|statuses  level=approved  flags=-
+  [A:oas:response|statuses@v1] value='error: store_unavailable|held_unscreened|quoted|refused_screening|rejected: invalid_request|review_hold' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: status enum
+      evidence: contract/openapi.yaml @ QuoteResponse/status: "status:\n  enum:\n  - quoted\n  - review_hold\n  - refused_screening\n  - held_unscreened\n  - 'rejected: invalid_request'\n  - 'error: store_unavailable'\n  type: string"
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:spec:response|statuses@v1] value='error: store_unavailable|held_unscreened|quoted|refused_screening|rejected: invalid_request|review_hold' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: - `"quoted"` | `"review_hold"` | `"refused_screening"` |
+  `"held_unscreened"`
+- `"rejected: invalid_request"`
+- `"error: store_unavailable"`
+      evidence: contract/spec.md @ api/response/statuses: '- `"quoted"` | `"review_hold"` | `"refused_screening"` |\n  `"held_unscreened"`\n- `"rejected: invalid_request"`\n- `"error: store_unavailable"`'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## response|price_presence  level=approved  flags=-
+  [A:oas:response|price_presence@v1] value='priced rows only' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: Present exactly on the priced rows of DT-S.
+      evidence: contract/openapi.yaml @ QuoteResponse/price: 'price:\n  description: Present exactly on the priced rows of DT-S.\n  type: number'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:spec:response|price_presence@v1] value='priced rows only' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: `quote_id` (string) whenever a draft was stored, `price` (number) exactly on the priced rows (DT-S), and `hold: true` exactly on `held_unscreened`.
+      evidence: contract/spec.md @ api/response/fields: '`quote_id` (string) whenever a draft was stored, `price`\n(number) exactly on the priced rows (DT-S), and `hold: true` exactly\non `held_unscreened`.'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## response|hold_presence  level=approved  flags=-
+  [A:oas:response|hold_presence@v1] value='held_unscreened only' basis=extracted status=approved source=contract/openapi.yaml by=kg_experiment harness
+      text: true exactly on held_unscreened.
+      evidence: contract/openapi.yaml @ QuoteResponse/hold: 'hold:\n  description: true exactly on held_unscreened.\n  type: boolean'
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+  [A:spec:response|hold_presence@v1] value='held_unscreened only' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: `quote_id` (string) whenever a draft was stored, `price` (number) exactly on the priced rows (DT-S), and `hold: true` exactly on `held_unscreened`.
+      evidence: contract/spec.md @ api/response/fields: '`quote_id` (string) whenever a draft was stored, `price`\n(number) exactly on the priced rows (DT-S), and `hold: true` exactly\non `held_unscreened`.'
+      verification: execution (suite scenario screening_down_hold on reference_impl.py (smoke 2026-10-30)) at 2026-10-30T11:42:14+00:00
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+## response|quote_id_presence  level=approved  flags=-
+  [A:spec:response|quote_id_presence@v1] value='whenever a draft was stored' basis=extracted status=approved source=contract/spec.md by=kg_experiment harness
+      text: `quote_id` (string) whenever a draft was stored, `price` (number) exactly on the priced rows (DT-S), and `hold: true` exactly on `held_unscreened`.
+      evidence: contract/spec.md @ api/response/fields: '`quote_id` (string) whenever a draft was stored, `price`\n(number) exactly on the priced rows (DT-S), and `hold: true` exactly\non `held_unscreened`.'
+      verification: review (stack_experiment/README.md, Verified state (2026-08-06)) at 2026-08-06
+      approval: stack_experiment/README.md Verified state at 2026-08-06
+
+INVALIDATED BY A SOURCE CHANGE (their verifications ended; a successor, if any, is listed with its own status):
+  [A:dt:P3|order@v1] key=P3|order old value='after P2' invalidated_by=v2; verifications: ver:exec:price_exact_both:A:dt:P3|order@v1 valid_until=None; successor: A:dt:P3|order#1@v1 value='after P2' status=approved, A:dt:P3|order@v2 value='after P2' status=approved
+  [A:dt:P2|threshold@v1] key=P2|threshold old value='1244' invalidated_by=v2; verifications: ver:exec:price_exact_heavy:A:dt:P2|threshold@v1 valid_until=None; successor: A:dt:P2|threshold@v2 value='1244' status=approved
+  [A:dt:P2|surcharge@v1] key=P2|surcharge old value='316.00' invalidated_by=v2; verifications: ver:exec:price_exact_heavy:A:dt:P2|surcharge@v1 valid_until=None; successor: A:dt:P2|surcharge@v2 value='341.00' status=approved
+
+DERIVED OUTPUTS MARKED SUSPECT (they used assertions that are now invalidated; they may not be reused as they are):
+  derived:S1:G:run1 (python module, sha256 f123cdbca3de...) used: A:dt:P2|threshold@v1, A:dt:P2|surcharge@v1, A:dt:P3|order@v1

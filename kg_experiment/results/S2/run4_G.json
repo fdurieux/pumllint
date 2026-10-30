@@ -1,0 +1,82 @@
+{
+ "scenario": "S2",
+ "arm": "G",
+ "run": 4,
+ "parse_error": null,
+ "M1_decision": "abstain",
+ "M2_code": false,
+ "M3_flagged": {
+  "flagged": true,
+  "hits": [
+   "outage",
+   "unavailable",
+   "od-1"
+  ],
+  "co_hit": null,
+  "text_len": 471
+ },
+ "M4_suite": {
+  "ran": false,
+  "passed": 0,
+  "total": 11,
+  "per_scenario": {}
+ },
+ "M4_targets": {
+  "screening_down_hold": null
+ },
+ "outage_status": null,
+ "M5_refs": {
+  "total": 8,
+  "resolved": 8,
+  "share": 1.0
+ },
+ "M6_noncompliance": false,
+ "questions": [
+  "QuoteAPI|on_screening_outage (gap:declared:OD-1): What must QuoteAPI do when ScreeningService.screen fails with ScreeningUnavailableError (e.g. response status, storage/notification behaviour, retry or hold semantics)?",
+  "response|hold_presence (UNKNOWN): For non-priced held states like review_hold and refused_screening, which response fields must be present or absent (e.g. must price be omitted/null, must quote_id always be present, any additional hold-related fields)?"
+ ],
+ "assumptions": [],
+ "claims": [
+  {
+   "text": "Request validation rules for shipper_id, weight_kg, distance_km, declared_value, and behaviour on invalid requests are fully specified and verified.",
+   "ref": "A:dt:shipper_id|present@v1"
+  },
+  {
+   "text": "Weight, distance, and declared value numeric bounds are as stated and govern validity.",
+   "ref": "A:dt:weight_kg|min@v1"
+  },
+  {
+   "text": "On storage failure, nothing else runs (no screening, pricing, or notification) and status must be error: store_unavailable.",
+   "ref": "A:spec:QuoteAPI|on_store_failure@v1"
+  },
+  {
+   "text": "Screening decision table DT-S (accept/review/refuse) and associated statuses, notification behaviour, and pricing flags are normative for successful screening outcomes.",
+   "ref": "A:dt:S-accept|status@v1"
+  },
+  {
+   "text": "Pricing decision table DT-P (P1–P4) defines the price computation formula, surcharges, ordering, and rounding.",
+   "ref": "A:dt:P1|formula@v1"
+  },
+  {
+   "text": "The overall flow order is validate > store > screen > decide > price > notify > respond.",
+   "ref": "A:spec:flow|order@v1"
+  },
+  {
+   "text": "Response field presence for quote_id and price is governed by: quote_id whenever a draft was stored; price only on priced rows of DT-S.",
+   "ref": "A:spec:response|quote_id_presence@v1"
+  },
+  {
+   "text": "Notification failures are fire-and-forget and never alter the stored quote or the response.",
+   "ref": "A:dt:QuoteAPI|on_notification_failure@v1"
+  }
+ ],
+ "usage": {
+  "tag": "S2/G/4",
+  "model": "gpt-5.1-2025-11-13",
+  "attempts": 1,
+  "prompt_tokens": 16123,
+  "completion_tokens": 459,
+  "seconds": 6.3,
+  "usd_est": 0.0247
+ }
+}

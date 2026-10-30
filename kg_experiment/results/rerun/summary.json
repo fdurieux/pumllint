@@ -1,0 +1,266 @@
+{
+ "S6": {
+  "gate": "PROCEED",
+  "runs": {
+   "B": [
+    {
+     "run": 1,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat"
+      ],
+      "co_hit": null,
+      "text_len": 5247
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 20,
+      "resolved": 20,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": false,
+      "hits": [],
+      "co_hit": null,
+      "text_len": 4093
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 15,
+      "resolved": 15,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif"
+      ],
+      "co_hit": null,
+      "text_len": 6080
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 22,
+      "resolved": 22,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat"
+      ],
+      "co_hit": null,
+      "text_len": 4029
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 18,
+      "resolved": 18,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate_with_assumptions",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "re-verif"
+      ],
+      "co_hit": null,
+      "text_len": 6429
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 21,
+      "resolved": 18,
+      "share": 0.8571428571428571
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    }
+   ],
+   "G": [
+    {
+     "run": 1,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 1531
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 40,
+      "resolved": 39,
+      "share": 0.975
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 2,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "re-verif",
+       "341"
+      ],
+      "co_hit": null,
+      "text_len": 897
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 37,
+      "resolved": 37,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 3,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "341",
+       "316"
+      ],
+      "co_hit": null,
+      "text_len": 1562
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 37,
+      "resolved": 37,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 4,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 412
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 36,
+      "resolved": 36,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    },
+    {
+     "run": 5,
+     "M1_decision": "generate",
+     "M2_code": true,
+     "M3_flagged": {
+      "flagged": true,
+      "hits": [
+       "invalidat",
+       "suspect"
+      ],
+      "co_hit": null,
+      "text_len": 609
+     },
+     "M4_targets": {
+      "price_exact_heavy": true,
+      "price_exact_both": true
+     },
+     "outage_status": "held_unscreened",
+     "M5_refs": {
+      "total": 36,
+      "resolved": 36,
+      "share": 1.0
+     },
+     "M6_noncompliance": false,
+     "suite": "11/11"
+    }
+   ]
+  }
+ }
+}

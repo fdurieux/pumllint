@@ -8170,3 +8170,133 @@ list and license posture live in § Settled questions.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Docs only: no product code, golden, schema or score moved.*
+
+- **Neo4j as a governed semantic knowledge repository for AI agents
+  (2026-10-30): suitable as the store under conditions, and supplying
+  almost none of the governance itself; the thread's first executed
+  graph store; nothing on the product path, N1–N5 untouched, nothing
+  queued, no checkbox.** Asked, as a research prompt: can Neo4j hold
+  semantically transformed knowledge from BPMN, DMN, UML, requirements,
+  architecture, code and documentation with explicit authorship,
+  provenance, validation, verification and approval, and ground AI
+  agents on it, with unknown, ambiguous, contradictory, assumed and
+  unverified knowledge as first-class elements; which capabilities are
+  native and which need tooling or custom work; ten deliverables and a
+  seven-scenario proof of concept, the hypothesis to be tested rather
+  than assumed. Full record:
+  [docs/neo4j-governed-knowledge-evaluation.md](docs/neo4j-governed-knowledge-evaluation.md);
+  repository claims executed at `cf9d919`; the proof of concept
+  pre-registered as #214 (`kg_experiment/PREREGISTRATION.md`, frozen
+  before any scored run) and executed on a local Neo4j 5.26.0 community
+  server, its results below the freeze line and under
+  `kg_experiment/results/`; five primary-source fact sheets behind the
+  record's §1, §3, §7, §8 and §9, each with a could-not-verify list.
+  - *Not this repository's question, and answered on its own terms.*
+    The prompt is the corporate governed layer the 2026-10-16 note
+    called Loop C and left outside the seam. The record evaluates that
+    layer, builds the PoC the prompt asks for, and finds nothing that
+    moves a pumllint item: the 2026-08-26 settlement's never-build list
+    binds the product path, `kg_experiment/` is lab territory under the
+    packaging settlement, and the consumer such a layer would be is
+    exactly the 2026-10-12 candidates' shape (Arc E run provenance;
+    aris2puml D4), whose triggers it does not fire — a PoC is not an
+    adopter.
+  - *The store supplies storage and traversal, not governance.*
+    Measured at execution on 5.26.0 community: six uniqueness
+    constraints accepted; property existence, node key and property
+    type refused with `ConstraintCreationFailed` (Enterprise-only, as
+    the docs say). No versioning, no queryable history (CDC is an
+    Enterprise stream in the transaction logs), no statement-level
+    metadata beyond a relationship's property map, no provenance
+    vocabulary, and a closed-world pattern negation that reads a
+    missing edge as "no" while a missing property is three-valued
+    `null`. Every epistemic construct of the prompt — assertion, basis,
+    status, gap, conflict, verification, approval, invalidation — is
+    application modelling, here and in every alternative surveyed: no
+    store, RDF or property graph or versioned, models assertion-level
+    status or documented absence natively.
+  - *The store's half of the hypothesis works, measured.* The CargoQuote
+    kit plus three authored inputs (requirements with ids, BPMN 2.0,
+    DMN 1.3) loaded as 597 nodes and 1,472 relationships: 145 assertions
+    with evidence, basis and status, 88 corroborated pairs across
+    independent artefacts; seven Cypher rules derived corroboration,
+    conflict, vagueness, missing verification and staleness with zero
+    structural violations in every scenario; the S6 tariff change
+    invalidated exactly the four assertions its two changed fragments
+    support (16 fragments reused, 31 assertions kept) and marked the
+    code derived from them suspect, BLOCKED until a recorded
+    re-verification, PROCEED after; the three-valued answer (asserted,
+    documented absent, unknown) is one query; pyshacl over the
+    projection confirmed `sh:conforms` false on an Info-only shape (145
+    results). R-REQ found a real gap in the pristine kit: no Gherkin
+    scenario verifies REQ-05 (storage failure).
+  - *The agent's half, measured at one model, n = 5, advisory arm.*
+    Against the kit's execution oracle and a documents-only baseline
+    that received the same planted text: the governed arm never
+    generated under BLOCKED (20 of 20 cells across the declared gap,
+    the contradiction, the unverified inference and the unverified
+    kit; M6 = 0) and named the blocking key, gap or conflict every
+    time; the baseline generated in all 35 cells — asking about the
+    missing requirement when the text said it was missing (5 of 5)
+    and still writing the prior-following outage handling that fails
+    the oracle (5 of 5); adopting an unreviewed, labelled machine note
+    as the decision in 4 of 5; resolving an undeclared contradiction by
+    a "newer normative text" precedence nothing states in 4 of 5
+    (correctly, by the oracle, and uncheckably); never asking about
+    verification when nothing in the text raised it (S7: 11/11 on
+    unverified content, 5 of 5). Under QUALIFIED (the ambiguous
+    thresholds) the governed arm carried every assumption by assertion
+    id and executed worse than the baseline (6, 0, 5, 11, 10 of 11
+    against 10/11 five times): the gate made the guess findable, not
+    the code better. On the source change the governed arm named the
+    suspect derived artefact and the three invalidated assertion ids
+    in 5 of 5 (re-run); the baseline, holding only the current
+    documents, asked in general terms. Pre-registered expectations:
+    eight held, one split (the baseline flagged the ambiguity as often
+    as the governed arm), none failed; two frozen-text errors and
+    three harness defects recorded beside the verdicts they touch.
+  - *Two frozen-text errors, recorded before the run:* §5 predicted
+    QUALIFIED for S5 where §6's lattice blocks on a declared gap; §5
+    listed three invalidated keys for S6 where the worked-example
+    fragment carries a fourth. The run aborted once on
+    repeated HTTP 502s, nine cells were lost to the same fault and
+    recovered by switching the call to streaming (the OpenWiki
+    deviation); the S6 governed bundle lacked its invalidation section
+    on the first run and the scenario was re-run with it, the first
+    run kept; all in the run notes.
+  - *What the evidence says about the prompt's causal chain.* Measured
+    links exist only on the artefact → product leg: ambiguity lowers
+    generated-code pass@1 by 7.22 pp on average and up to 32 pp
+    (Orchid), repair recovers about a third relative (SpecFix, ASE
+    2025); authored trace links make maintainers 24 % faster and 50 %
+    more often right (Mäder & Egyed 2015); requirements faults were a
+    third of failures in the NASA data. The 100× cost-escalation claim
+    has a 171-project null result against it (Menzies et al. 2017) and
+    a traced provenance in a 1981 IBM course. No study reaches quality
+    in use or delivery performance from a knowledge-graph intervention;
+    none measures a controlled hallucination-rate reduction from graph
+    grounding; the GraphRAG win rates are LLM-judge preferences an
+    audit found inflated by position and length bias. Labels in context
+    are obeyed inconsistently across models (−4.9 to +16.7 EM), so the
+    architecture withholds under BLOCKED rather than advising.
+  - *Never build, restated for this question:* the store or any
+    triple store on the product path; LLM extraction on it; OWL/SHACL
+    as the rule engine; missing-edge inference (N1–N4). The PoC's
+    extractors are per-format mappers for one kit and its vague-term
+    rule detects the words it was given; neither is a product.
+  - *Recorded, not queued:* the PoC as a standing fixture of the
+    thread, with the follow-on scenarios the record's §10 names (a
+    withholding arm; two further models; the kit at the degradation
+    test's scale; a human verification loop; real artefacts through
+    aris2puml's sidecar once D4 ships). *Trigger:* an adopter whose
+    governed knowledge lives in a store and who asks for the chain's
+    reports as evidence in it — row 8c's trigger, unchanged.
+  - *Annotated in place, as pointers:* the knowledge-graph settlement's
+    re-litigation line (touched, not fired, a third time; the
+    outcome-grade trigger named and still unfired); the graph-store
+    note's "no Neo4j server was available" bounds sentence (now
+    superseded by an executed server for the thread's own PoC, the
+    note's own Cypher still unexecuted).
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
+
+  *Lab and docs only: no product code, golden, schema or score moved.*
