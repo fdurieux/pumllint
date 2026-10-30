@@ -8528,8 +8528,10 @@ list and license posture live in § Settled questions.
   by a sub-agent of the demo session (#239, the PR carrying this
   entry); record:
   [docs/ieam-register-proposal.md](docs/ieam-register-proposal.md).
-  Opportunity canvas and SWOT: a private page of the maintainer's
-  account (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9), a view.
+  Opportunity canvas and SWOT: committed in the register as
+  `docs/ieam-register-opportunity-canvas.html` (ieam-register #2), also
+  a private page of the maintainer's account
+  (https://claude.ai/artifact/UKEJaGcJcGq7mD2yXwynh9), a view.
   - *Reading of the request.* "Per taxonomy layer" is one directory per
     taxonomy with the hierarchy as a `parent` field in data, never
     nested folders per level: the IEAM calls its levels illustrative,
@@ -8615,6 +8617,48 @@ list and license posture live in § Settled questions.
     second commit. The GitHub App had to be installed on the new
     repository before the push; the session cannot change a
     repository's visibility or settings.
+  - *2026-10-30, later: integrating the demo page with the register,
+    investigated.* Asked how to integrate "the dashboard" with the
+    register, with an opportunity canvas and a SWOT; a sub-agent read
+    both checkouts and recorded (#241, the PR
+    carrying this bullet)
+    [docs/ieam-register-demo-integration.md](docs/ieam-register-demo-integration.md).
+    The dashboard is the kg demo page; a hosted report page has nothing
+    to read until the register has a tag (its workflow writes
+    `check.json` only at a `v*` tag, as a CI artifact). Four
+    integrations: a register view in the stage-panel style (nodes,
+    links, approvals, C1 to C3 with denominators and exceptions, an
+    impact walk, the matrix at `unverified`), a per-scenario register
+    footprint joining the gate's 36 keys and the rule hits to register
+    ids through the links' evidence anchors, a one-way Neo4j projection
+    at a tag with provenance stamps and derived edges marked (a disjoint
+    label namespace, since the harness already uses `Approval` and
+    `Entity`; a load after the harness wipes the store), and the report
+    page. The view and the footprint are cheap on the demo's existing
+    panels, sentence registry, saved Cypher and API dispatch; the
+    projection waits for the register's first tag, as the proposal
+    says a projection reads a tag. Entry route: vendor the register at a
+    tag under the demo with a SOURCE.md, as the Legible model is; no
+    submodule, no build-time or live fetch (the offline promise and the
+    byte-for-byte deterministic proof); run the checker with the date
+    pinned to the tag date, since EXC-0001 expires 2027-01-31. Never:
+    write back, present view or projection as the record, copy or
+    reword register text, infer hierarchy from anything but `parent`.
+    Glossary collisions to settle first: the register forbids "extract"
+    as a synonym of export while the demo's stage is extract; record,
+    approval, status versus state, entity and decision differ in sense.
+    One statement the join could make: the register's approved links
+    cite REQ-01, REQ-04 and REQ-05 and none cites REQ-06, the open
+    decision S2 and S5 plant; S6's changed table touches the four links
+    citing DT-P plus the maps_to link. Verified by running the
+    register's tools read-only: checker clean at the tag date; the
+    impact walk from APP-0002 reaches the product and a journey step,
+    from APP-0003 a journey step and no product, because `impact.py`
+    does not climb `parent`, a register-side limit to show honestly or
+    not at all. Six PRs in order (vendor; view and glossary; impact;
+    footprint; projection; re-vendor at the tag), each a later bullet
+    on the demo entry; the first, second and fourth worth doing now.
+    Nothing moves on the product path; no checkbox.
   - *Re-litigate on:* the register's pilot answering its three questions
     with a tested ARIS export route, which would make the inventory
     hand-off (`caps.txt`, `trace -f json`) a measured convention; or an
