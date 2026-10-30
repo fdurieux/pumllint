@@ -8509,6 +8509,18 @@ list and license posture live in § Settled questions.
     every scenario has a panel, with S3, S4, S6 and S2 checked on their
     counts and clickable in both drawings. Page, view, tests and docs
     only; harness and record untouched.
+  - *2026-10-30, later (#242):* the IEAM register vendored under
+    `kg_experiment/demo/register/`, step 1 of
+    `docs/ieam-register-demo-integration.md` §3.8: a byte-for-byte copy
+    of `fdurieux/ieam-register` at `ef7fe0e` (no tag yet; a commit is
+    pinned until `v0.1.0`), 50 files, the TOML trees, the kit export
+    folder and three stdlib tools, with a `SOURCE.md` after
+    `model/SOURCE.md` carrying the commit, the pinned checker date
+    (2026-10-30; `EXC-0001` expires 2027-01-31) and sha256 per file.
+    Test: every digest in the note, nothing listed that the copy lacks,
+    the vendored checker clean at the pinned date (27 nodes, 28 links).
+    The image carries it; nothing fetched at build time; the demo does
+    not read it yet. Lab and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
