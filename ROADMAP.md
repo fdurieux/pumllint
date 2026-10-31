@@ -8596,7 +8596,7 @@ list and license posture live in § Settled questions.
     in `tests/test_kg_register_view.py`; the stack job asserts the S2
     footprint (REQ-06 uncited, the outage key below approved, red).
     Nothing is written back to the register.
-  - *2026-10-31, later (#PUMLL_PR):* the pipeline strip stays one row.
+  - *2026-10-31, later (#248):* the pipeline strip stays one row.
     With the footprint box the strip no longer fitted a narrower window
     and wrapped the Oracle column under Ingest (seen on the maintainer's
     S4). On the maintainer's choice the strip now scrolls sideways
