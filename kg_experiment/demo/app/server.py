@@ -309,6 +309,16 @@ class Handler(BaseHTTPRequestHandler):
                 sc = parts[3]
                 source = q.get("source", [views.default_source(sc)])[0]
                 return self._json(register_view.footprint(views.build(sc, source, RUNS_DIR)))
+            if parts[:3] == ["api", "register", "ref"] and len(parts) == 5:
+                kind, ident = parts[3], urllib.parse.unquote(parts[4])
+                sc = q.get("scenario", [None])[0]
+                if kind not in register_view.REF_KINDS or (sc is not None and sc not in views.SCENARIOS):
+                    return self._json({"error": "unknown reference kind or scenario"}, 400)
+                view = views.build(sc, q.get("source", [views.default_source(sc)])[0], RUNS_DIR) if sc else None
+                r = register_view.ref(kind, ident, view)
+                if r is None:
+                    return self._json({"error": f"no {kind} {ident} in the register"}, 404)
+                return self._json(r)
             if parts[:3] == ["api", "register", "impact"] and len(parts) == 4:
                 out = register_view.impact(parts[3])
                 return self._json(out) if out is not None else self._json({"error": f"no such node: {parts[3]}"}, 404)
