@@ -8656,7 +8656,7 @@ list and license posture live in § Settled questions.
     register's own workflow ran on the tag and wrote its first
     `reports/<date>/` artifact. Lab, page and docs only; nothing under
     the record. Step 5, the projection, follows on the tag.
-  - *2026-10-31, later (#PUMLL_PR):* integration step 5, the projection.
+  - *2026-10-31, later (#253):* integration step 5, the projection.
     `app/register_project.py` loads the vendored register at `v0.1.0`
     into the demo's Neo4j in a namespace of its own, as the integration
     note designed it: every node `Register` plus one of `RegNode` (27),
