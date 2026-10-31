@@ -144,6 +144,8 @@ def test_register_card_is_wired_on_the_page_and_the_server():
     assert "v.footprint ? stageBox(v.footprint.box)" in page and '["api", "register", "footprint"]' in server
     # the strip stays one row and scrolls sideways; it never wraps the Oracle column under Ingest
     assert ".strip{display:grid;grid-auto-flow:column;" in page and "overflow-x:auto" in page.split(".strip{")[1].split("}")[0]
+    # the oracle tables scroll inside their column instead of pushing past the card
+    assert ".two>*{min-width:0}" in page and '<div class="tw ot"><table>' in page and ".tw{overflow-x:auto" in page
     readme = (DEMO / "README.md").read_text(encoding="utf-8")
     assert "**The register.**" in readme
     glossary = (DEMO / "GLOSSARY.md").read_text(encoding="utf-8")

@@ -73,7 +73,8 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .gkeys{display:flex;flex-wrap:wrap;gap:4px} .gkeys code{font-size:11.5px;padding:1px 6px;border:1px solid var(--line);border-radius:6px} .gkeys code.req{border-color:var(--amber);background:var(--warn)}
 .armstack{display:grid;grid-template-rows:1fr 1fr;gap:6px}
 .armstack .stage{min-height:0}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px} .two>*{min-width:0}
+.tw{overflow-x:auto;padding-bottom:4px} .tw.ot th,.tw.ot td{white-space:nowrap} .tw.ot tr.wrap td{white-space:normal;min-width:11em}
 @media (max-width:900px){.two{grid-template-columns:1fr}}
 .cascade-wrap svg{width:100%;height:auto;display:block} .cascade g.node{cursor:pointer} .cascade g.node:hover rect{filter:brightness(.96)} .cascade g.node.sel rect{stroke:var(--ink);stroke-width:6}
 .cap{font-size:13px;margin-top:6px}
@@ -440,14 +441,14 @@ function renderReport(v) {
   const runsOf = arm => v.arms[arm].runs;
   const oracle = (arm) => {
     const rs = runsOf(arm); if (!rs.length) return `<p class="small">no ${arm} run in this source</p>`;
-    return `<table><thead><tr><th>suite scenario</th>${rs.map(r => `<th>${arm}${r.run}</th>`).join('')}</tr></thead><tbody>
+    return `<div class="tw ot"><table><thead><tr><th>suite scenario</th>${rs.map(r => `<th>${arm}${r.run}</th>`).join('')}</tr></thead><tbody>
       ${v.suite_order.map(s => `<tr><td>${esc(s)}</td>${rs.map(r => { const p = r.per_scenario[s]; const cls = r.code ? (p ? 'p' : 'f') : 'n'; return `<td class="${cls}">${r.code ? (p ? '✓' : '✗') : '—'}</td>`; }).join('')}</tr>`).join('')}
       <tr><th>suite</th>${rs.map(r => `<th>${esc(r.suite || '—')}</th>`).join('')}</tr>
       <tr><th>decision</th>${rs.map(r => `<td>${esc(r.decision || (r.api_error ? 'api error' : '—'))}</td>`).join('')}</tr>
       <tr><th>model</th>${rs.map(r => `<td${r.model && !r.model.startsWith(v.record_model) ? ' style="color:var(--red)"' : ''}>${esc(r.model || '—')}</td>`).join('')}</tr>
-      <tr><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
+      <tr class="wrap"><th>flagged (M3)</th>${rs.map(r => `<td>${r.flagged ? 'yes: ' + esc(r.hits.join(', ')) : 'no'}</td>`).join('')}</tr>
       <tr><th>refs resolvable (M5)</th>${rs.map(r => `<td>${r.refs && r.refs.share !== null ? r.refs.resolved + '/' + r.refs.total : '—'}</td>`).join('')}</tr>
-      </tbody></table>${rs.every(r => !r.code && !r.api_error) ? `<p class="note">— means no code to grade: every ${arm} run returned <code>${esc(rs[0].decision || 'no decision')}</code>${v.gate.verdict === 'BLOCKED' ? ', which is what the policy asks under a BLOCKED verdict' : ''}, so the oracle had nothing to run. Its questions are in the last section.</p>` : ''}`;
+      </tbody></table></div>${rs.every(r => !r.code && !r.api_error) ? `<p class="note">— means no code to grade: every ${arm} run returned <code>${esc(rs[0].decision || 'no decision')}</code>${v.gate.verdict === 'BLOCKED' ? ', which is what the policy asks under a BLOCKED verdict' : ''}, so the oracle had nothing to run. Its questions are in the last section.</p>` : ''}`;
   };
   const qa = (arm) => runsOf(arm).map(r => `<details><summary>${arm}${r.run}: ${esc(r.decision || 'api error')} — ${r.questions.length} question(s), ${r.assumptions.length} assumption(s), ${r.claims_n} claim(s)</summary>
       ${r.api_error ? `<p class="small">api error: ${esc(r.api_error)}</p>` : ''}
@@ -471,7 +472,7 @@ function renderReport(v) {
     </div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The gate's evidence bundle (what arm G received; ${v.bundle ? v.bundle.length.toLocaleString() : 0} characters${v.prompt_lengths.B ? `; arm B's documents ${v.prompt_lengths.B.toLocaleString()}` : ''})</h3>
       ${v.bundle ? `<details><summary>show bundle_G.txt</summary><pre>${esc(v.bundle)}</pre></details>` : '<p class="small">no bundle in this source</p>'}</div>
-    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The oracle's verdict, per suite scenario and run</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${oracle('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${oracle('B')}</div></div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The oracle's verdict, per suite scenario and run <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· each table scrolls sideways when the window is narrow</span></h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${oracle('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${oracle('B')}</div></div>
       <p class="note">Targets the scenario plants for: ${esc(JSON.stringify(v.arms.G.summary.targets))} (G), ${esc(JSON.stringify(v.arms.B.summary.targets))} (B). Outage status returned: ${esc(JSON.stringify(v.arms.B.summary.outage))} (B).</p></div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">Generated code, per run</h3>${code}</div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">What the arms asked and assumed</h3><div class="two"><div><div class="cap"><b class="G">G, governed</b></div>${qa('G')}</div><div><div class="cap"><b class="B">B, baseline</b></div>${qa('B')}</div></div></div>`;
