@@ -56,13 +56,15 @@ def source_info() -> dict:
         m = re.search(r"^\| " + re.escape(label) + r" \| (.+?) \|$", note, re.M)
         return m.group(1) if m else ""
     commit = re.search(r"\| commit \| `([0-9a-f]{40})`", note)
+    tag = re.search(r"^\| tag \| `(v[0-9][^`]*)`", note, re.M)
     pinned = re.search(r"pinned date for the checker \| `(\d{4}-\d{2}-\d{2})`", note)
     listed = dict(re.findall(r"^\| `([^`]+)` \| `([0-9a-f]{64})` \|$", note, re.M))
     files = [p for p in REGISTER.rglob("*") if p.is_file() and p.name != "SOURCE.md" and "__pycache__" not in p.parts]
     actual = {p.relative_to(REGISTER).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
     mismatched = sorted(k for k in set(listed) | set(actual) if listed.get(k) != actual.get(k))
     return {"repo": "fdurieux/ieam-register", "commit": commit.group(1) if commit else "",
-            "commit_short": commit.group(1)[:7] if commit else "", "copied": cell("copied").split(",")[0],
+            "commit_short": commit.group(1)[:7] if commit else "", "tag": tag.group(1) if tag else "",
+            "copied": cell("copied").split(",")[0],
             "pinned_date": pinned.group(1) if pinned else "", "files": len(actual),
             "digest_ok": not mismatched, "mismatched": mismatched}
 

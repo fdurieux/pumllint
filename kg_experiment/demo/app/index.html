@@ -261,7 +261,7 @@ function registerEntry() {
   const on = STATE.current === 'register';
   return `<div class="sc reg ${on ? 'active' : ''}" data-id="register">
       <div class="t"><span class="id">Register</span> <span>the IEAM register</span>${on ? '<span class="shown">● on screen</span>' : ''}<span class="badge ${r.summary.errors ? 'BLOCKED' : 'PROCEED'}">${r.summary.errors ? r.summary.errors + ' errors' : 'checks clean'}</span></div>
-      <div class="line">${esc(r.source.repo)} at <code>${esc(r.source.commit_short)}</code>, ${r.source.digest_ok ? 'digests match' : 'digests DO NOT MATCH'}. ${r.summary.nodes} nodes, ${r.summary.links} links. ${esc(r.coverage_lines.map(l => l.split(',')[0]).join('; '))}.</div>
+      <div class="line">${esc(r.source.repo)} at <code>${esc(r.source.tag || r.source.commit_short)}</code>${r.source.tag ? ` (<code>${esc(r.source.commit_short)}</code>)` : ''}, ${r.source.digest_ok ? 'digests match' : 'digests DO NOT MATCH'}. ${r.summary.nodes} nodes, ${r.summary.links} links. ${esc(r.coverage_lines.map(l => l.split(',')[0]).join('; '))}.</div>
       <div class="modes"><button class="small on" data-id="register" data-mode="open">${on ? 'Open ✓ shown' : 'Open'}</button></div></div>`;
 }
 
@@ -273,7 +273,7 @@ async function showRegister(today) {
   const taxes = Object.entries(r.nodes_by_taxonomy).map(([t, ns], i) => `<details ${i === 0 ? 'open' : ''}><summary>${esc(t)} · ${ns.length}</summary>${ns.map(n => `<div class="rnode"><a href="#" data-node="${esc(n.id)}"><code>${esc(n.id)}</code></a> <span class="rstate">${esc(n.state)}</span> ${esc(n.name)}</div>`).join('')}</details>`).join('');
   $('#report').innerHTML = `
     <div class="card">
-      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">The register — <a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.commit_short)}</code></h2><span class="small" style="margin-left:auto">checker run at ${esc(r.run_date)}${r.pinned ? ', the pinned date' : ''} · ${r.pinned ? '<a href="#" id="reg-wall">run at today\'s date instead</a>' : '<a href="#" id="reg-pinned">back to the pinned date</a>'}</span></div>
+      <div style="display:flex;gap:12px;align-items:baseline;flex-wrap:wrap"><h2 style="margin:0">The register — <a href="https://github.com/${esc(src.repo)}" target="_blank" rel="noopener">${esc(src.repo)}</a> at <code>${esc(src.tag || src.commit_short)}</code>${src.tag ? ` <span class="small">(<code>${esc(src.commit_short)}</code>)</span>` : ''}</h2><span class="small" style="margin-left:auto">checker run at ${esc(r.run_date)}${r.pinned ? ', the pinned date' : ''} · ${r.pinned ? '<a href="#" id="reg-wall">run at today\'s date instead</a>' : '<a href="#" id="reg-pinned">back to the pinned date</a>'}</span></div>
       <p class="small" style="max-width:95ch">${esc(r.intro)}</p>
       <div class="small">Copied ${esc(src.copied)}; the ${src.files} files ${src.digest_ok ? 'match' : 'DO NOT MATCH'} the digests in SOURCE.md. Nothing on this page is written back to the register.</div>
       <div style="margin:8px 0 2px"><b>${r.summary.nodes} nodes, ${r.summary.links} links.</b> ${esc(r.health)}</div>

@@ -3,7 +3,8 @@
 | | |
 |---|---|
 | source repository | `fdurieux/ieam-register` (public test case; synthetic content, the CargoQuote kit) |
-| commit | `ef7fe0e114128ce0d76694fb2f95e0373ab18d2e` — "Merge pull request #2 from fdurieux/claude/canvas-page", 2026-10-30; the register has no tag yet, so a commit is pinned until `v0.1.0` |
+| commit | `ef7fe0e114128ce0d76694fb2f95e0373ab18d2e` — "Merge pull request #2 from fdurieux/claude/canvas-page", 2026-10-30 |
+| tag | `v0.1.0` — published by the maintainer on 2026-10-31 as a GitHub Release on that same commit; the demo reads the tag, the commit is what it resolves to |
 | what is copied | the metamodel, the glossary, the seven taxonomy directories, the relationship files, the exceptions, the mapping matrix, the decision records, the kit export folder, and three tools (`register.py`, `check_register.py`, `impact.py`); nothing else |
 | files | 50 |
 | copied | 2026-10-30, byte for byte, by the session that built `kg_experiment/demo/` |

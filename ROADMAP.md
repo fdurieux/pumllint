@@ -8646,6 +8646,16 @@ list and license posture live in § Settled questions.
     the stack job asserts the REQ-06 and REL-08002 panels and a 404.
     Not done, by the evaluation's fence: blocked stays plain, no panel
     nests past one level, nothing is written back to the register.
+  - *2026-10-31, later (#PUMLL_PR):* integration step 6, the register
+    at its tag. The maintainer published `v0.1.0` of
+    `fdurieux/ieam-register` as a GitHub Release on 2026-10-31; the tag
+    resolves to `ef7fe0e`, the very commit the demo vendored, so the
+    bytes are unchanged and the digest test already holds them.
+    `SOURCE.md` gains the tag row, `source_info()` exposes `tag`, the
+    register entry and the view header read "at v0.1.0 (ef7fe0e)". The
+    register's own workflow ran on the tag and wrote its first
+    `reports/<date>/` artifact. Lab, page and docs only; nothing under
+    the record. Step 5, the projection, follows on the tag.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
