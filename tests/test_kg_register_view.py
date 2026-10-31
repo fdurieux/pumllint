@@ -25,6 +25,7 @@ def _forbidden_in(sentence):
 def test_register_view_builds_from_the_vendored_copy_at_the_pinned_date():
     v = register_view.build()
     assert v["source"]["repo"] == "fdurieux/ieam-register" and len(v["source"]["commit"]) == 40 and v["source"]["digest_ok"]
+    assert v["source"]["tag"] == "v0.1.0" and v["source"]["commit"].startswith("ef7fe0e")  # the tag sits on the vendored commit
     assert v["pinned"] and v["run_date"] == v["source"]["pinned_date"]
     assert v["summary"] == {"nodes": 27, "links": 28, "errors": 0, "warnings": 3}
     assert v["coverage_lines"][0] == "C1: 2/3 covered, 1 excepted, 0 uncovered"
