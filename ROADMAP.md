@@ -8619,7 +8619,7 @@ list and license posture live in § Settled questions.
     flagged cells capped at 16em so they still wrap. Page only; the
     wiring test asserts the shared container and the absence of the
     per-table one.
-  - *2026-10-31, later (#PUMLL_PR):* clickable footprint cells, on the
+  - *2026-10-31, later (#251):* clickable footprint cells, on the
     maintainer's ask and after the column-by-column evaluation (private
     page *Clickable footprint cells*). A panel table cell may now be a
     *reference* (`{ref, text}`, rendered underlined) or a *tip*
