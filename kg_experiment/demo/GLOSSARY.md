@@ -77,6 +77,7 @@ and the test checks this file names every term of it.
 | state | Where a register node or link stands: draft, proposed, approved, deprecated, retired or rejected. An assertion has a status, never a state. |
 | footprint | The register nodes and links a scenario touches: through its keys below approved, its requirement gaps and its changed documents, by the demo's approved map. |
 | reference | An underlined cell of a panel's table that opens its subject's own panel under the table: a node, a link, a requirement, a key or a document. |
+| projection | The register's nodes and links loaded into the store in their own namespace at the vendored tag: derived, loaded on demand, wiped by a run, never the record. |
 
 The definitions may use a forbidden word once, to name what the term
 replaces ("assertion" is defined as a fact, "arm" as an AI assistant):

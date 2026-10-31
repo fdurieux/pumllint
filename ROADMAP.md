@@ -8656,6 +8656,36 @@ list and license posture live in § Settled questions.
     register's own workflow ran on the tag and wrote its first
     `reports/<date>/` artifact. Lab, page and docs only; nothing under
     the record. Step 5, the projection, follows on the tag.
+  - *2026-10-31, later (#253):* integration step 5, the projection.
+    `app/register_project.py` loads the vendored register at `v0.1.0`
+    into the demo's Neo4j in a namespace of its own, as the integration
+    note designed it: every node `Register` plus one of `RegNode` (27),
+    `RegLink` (28), `RegType` (10), `RegException` (1), `RegDocument`
+    (the export's 10 files, with their manifest digests) and
+    `RegExternal` (1, the maps_to target); relationships `REG_<TYPE>`
+    between nodes with the link's state, owner, mode and approval,
+    `REG_MAPS_TO` to the external node, `REG_LINK_OF` from each link
+    node to its ends, `REG_OF_TYPE`, `REG_CITES` from a link to each
+    kit document its evidence names, `REG_PARENT`, `REG_OWNS` and
+    `REG_EXCEPTS`; every node and relationship stamped with tag, commit,
+    export date, the TOML file's digest and the load time; nothing
+    derived (`derived = false`, `rule = ""` on every typed edge). The
+    load deletes only the `Register` namespace; the harness's graph is
+    never read or written, and a deterministic run wipes the projection
+    with everything else. `POST /api/register/project` loads it (409
+    while a run is in progress, 503 without a store), `store_status`
+    carries a `register` census, the store card gains the button and
+    the header a chip. Four saved Cypher queries: which tag is
+    projected; the impact walk from APP-0002; C1 in Cypher with the
+    exception joined; the links citing a kit document joined to the
+    harness's `Artefact` by path, the one query across both namespaces.
+    The loader lives in the demo, not in the register's `tools/`: the
+    register is standard-library only and a driver dependency would
+    need a decision record there. Tests on the rows and statements
+    (counts, flat properties, the namespace discipline) and the wiring;
+    the stack job projects after the deterministic run and asserts the
+    census beside the loaded scenario. "projection" joins the glossary;
+    README.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

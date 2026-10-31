@@ -73,6 +73,21 @@ contradiction pairs, the gap census. The free edition of Neo4j serves one
 database, so the store holds the scenario loaded last; the header says
 which.
 
+**The projection.** The store card has a *Project the register* button:
+it loads the register's nodes, links, types, exception and export
+documents into the running Neo4j, in a namespace of their own (every
+node labelled `Register` plus one of `RegNode`, `RegLink`, `RegType`,
+`RegException`, `RegDocument`, `RegExternal`; every relationship
+`REG_<NAME>`), stamped with the tag, the commit, the export date and
+the digest of the TOML file each came from. It is derived, never the
+record: a deterministic or arms run wipes the whole store, so the
+projection vanishes with it and the chip says *register not projected*
+until you load it again. Four saved Cypher queries read it: which tag
+is projected, the impact walk from APP-0002, coverage rule C1 with the
+exception joined, and the links that cite a kit document joined to the
+harness's own `Artefact` by path, the one query that crosses the two
+namespaces and the reason to share one database.
+
 **The register.** The last entry of the Scenarios list is the IEAM
 register, a separate public repository
 ([fdurieux/ieam-register](https://github.com/fdurieux/ieam-register))

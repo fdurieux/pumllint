@@ -69,6 +69,11 @@ jobs:
           done
           curl -fsS localhost:8080/api/run | python3 -c 'import json,sys; r=json.load(sys.stdin); print(r["log_text"]); assert r["status"]=="done", r["status"]; open("run_id","w").write(r["id"])'
 
+      - name: Project the register into the store beside the run, and read the census
+        run: |
+          curl -fsS -X POST localhost:8080/api/register/project -H 'Content-Type: application/json' -d '{}' | python3 -c 'import json,sys; c=json.load(sys.stdin); assert c["nodes"]==27 and c["links"]==28 and c["tag"]=="v0.1.0" and c["relationships"]==c["counts"]["relationships"] and c["relationships"]>=150, c; print("projection:", c["by_label"], c["relationships"], "relationships at", c["tag"])'
+          curl -fsS localhost:8080/api/scenarios | python3 -c 'import json,sys; j=json.load(sys.stdin); s=j["store"]; assert s["register"] and s["register"]["tag"]=="v0.1.0" and s["loaded"]=="S1", s; print("store:", s["loaded"], "and the register at", s["register"]["tag"])'
+
       - name: Its numbers match the record
         run: |
           docker compose exec -T app python kg_experiment/demo/tools/compare_deterministic.py "kg_experiment/results/demo-runs/$(cat run_id)"

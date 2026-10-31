@@ -33,6 +33,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import cascade  # noqa: E402
 import views  # noqa: E402
+import register_project  # noqa: E402  (the register projected into the store, its own namespace)
 import register_view  # noqa: E402  (the vendored IEAM register, read only)
 
 EXP = HERE.parent.parent
@@ -98,6 +99,25 @@ CYPHER = [
               "ORDER BY kind, g.id")},
     {"id": "census", "title": "The status census",
      "text": "MATCH (x:Assertion) RETURN x.status AS status, x.basis AS basis, count(*) AS n ORDER BY status, basis"},
+    # the register's projection: its own namespace (Register, Reg*, REG_*), loaded on demand, wiped by a run
+    {"id": "register-tag", "title": "Which register tag is projected, and what it holds",
+     "text": ("MATCH (n:RegNode) WITH n.tag AS tag, n.commit AS commit, n.loaded_at AS loaded_at LIMIT 1\n"
+              "MATCH (m:Register) UNWIND labels(m) AS l WITH tag, commit, loaded_at, l WHERE l <> 'Register'\n"
+              "RETURN tag, commit, loaded_at, l AS label, count(*) AS n ORDER BY label")},
+    {"id": "register-impact", "title": "The impact walk from APP-0002 in the projection (supports → is_supported_by → delivers, no parent climb)",
+     "text": ("MATCH p = (a:RegNode {reg_id:'APP-0002'})-[:REG_SUPPORTS|REG_IS_SUPPORTED_BY|REG_DELIVERS*1..4]->(x:RegNode)\n"
+              "RETURN x.reg_id AS reached, x.taxonomy AS taxonomy, x.state AS state, length(p) AS hops,\n"
+              "       [r IN relationships(p) | r.reg_id] AS via ORDER BY hops, reached")},
+    {"id": "register-c1", "title": "C1 in Cypher: approved steps and touchpoints with no is_supported_by link, the exception joined",
+     "text": ("MATCH (s:RegNode {taxonomy:'journeys', state:'approved'}) WHERE s.kind IN ['step', 'touchpoint']\n"
+              "  AND NOT (s)-[:REG_IS_SUPPORTED_BY]->(:RegNode)\n"
+              "OPTIONAL MATCH (e:RegException {rule:'C1'})-[x:REG_EXCEPTS]->(s)\n"
+              "RETURN s.reg_id AS uncovered, s.name AS name, e.reg_id AS exception, x.expires AS expires")},
+    {"id": "register-cites", "title": "The links that cite a kit document, joined to the harness's Artefact by path: the one query across both namespaces",
+     "text": ("MATCH (l:RegLink)-[c:REG_CITES]->(d:RegDocument)\n"
+              "OPTIONAL MATCH (a:Artefact {id:d.path})-[:HAS_VERSION]->(v:Version)\n"
+              "RETURN d.path AS document, d.digest AS digest_at_tag, collect(DISTINCT l.reg_id) AS links,\n"
+              "       collect(DISTINCT c.anchor) AS anchors, collect(DISTINCT v.tag) AS versions_in_store ORDER BY document")},
 ]
 
 
@@ -105,7 +125,7 @@ CYPHER = [
 
 def store_status() -> dict:
     """What the store holds, through the driver when it is installed."""
-    out = {"uri": NEO4J_URI, "browser": BROWSER_URL, "reachable": False, "loaded": None, "census": None, "error": None}
+    out = {"uri": NEO4J_URI, "browser": BROWSER_URL, "reachable": False, "loaded": None, "census": None, "register": None, "error": None}
     try:
         from neo4j import GraphDatabase, NotificationMinimumSeverity  # the harness's dependency, in the image
     except ImportError:
@@ -120,8 +140,9 @@ def store_status() -> dict:
                 st = {r["status"]: r["n"] for r in s.run("MATCH (x:Assertion) RETURN x.status AS status, count(*) AS n")}
                 n = s.run("MATCH (n) RETURN count(n) AS n").single()["n"]
                 r = s.run("MATCH ()-[r]->() RETURN count(r) AS n").single()["n"]
+                reg = register_project.census(s)
         out.update(reachable=True, census={"nodes": n, "relationships": r, "assertions_by_status": st},
-                   loaded=(acts[0].split(":")[2] if acts else None), activities=acts)
+                   loaded=(acts[0].split(":")[2] if acts else None), activities=acts, register=reg)
     except Exception as e:  # noqa: BLE001 — the message is the status
         out["error"] = str(e).splitlines()[0][:200]
     return out
@@ -348,6 +369,16 @@ class Handler(BaseHTTPRequestHandler):
             body = json.loads(self.rfile.read(length) or b"{}")
         except json.JSONDecodeError:
             return self._json({"error": "body must be JSON"}, 400)
+        if parts == ["api", "register", "project"]:
+            # the projection: derived, in its own namespace, never the record; a run wipes it
+            if RUNNER.current and RUNNER.current["status"] == "running":
+                return self._json({"error": "a run is in progress; it wipes the store, so project after it ends"}, 409)
+            try:
+                return self._json(register_project.project(NEO4J_URI, NEO4J_PASSWORD))
+            except ImportError:
+                return self._json({"error": "neo4j driver not installed"}, 503)
+            except Exception as e:  # noqa: BLE001 — the message is the status
+                return self._json({"error": str(e).splitlines()[0][:200]}, 503)
         if parts == ["api", "run"]:
             try:
                 rec = RUNNER.start(str(body.get("scenario", "")), str(body.get("mode", "")), int(body.get("n", 1)),
