@@ -8604,7 +8604,7 @@ list and license posture live in § Settled questions.
     `main > * {min-width: 0}` so the column shrinks below its content),
     with a hint in the heading because macOS hides overlay scrollbars.
     Page only; the wiring test asserts the strip's CSS.
-  - *2026-10-31, later (#PUMLL_PR):* the oracle's verdict tables stay in
+  - *2026-10-31, later (#249):* the oracle's verdict tables stay in
     their card. The B table (five `generate_with_assumptions` columns)
     ran past the card's right edge because the two-column grid could not
     shrink below its content (seen on the maintainer's S6). Each verdict
