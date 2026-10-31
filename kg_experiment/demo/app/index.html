@@ -157,7 +157,8 @@ function renderChips() {
   const s = STATE.store;
   $('#chips').innerHTML =
     `<span class="chip ${s.reachable ? 'ok' : 'bad'}" title="${esc(s.error||'')}">store ${s.reachable ? 'reachable' : 'unreachable'} · ${esc(s.uri)}${s.loaded ? ' · loaded: ' + esc(s.loaded) : ''}</span>` +
-    `<span class="chip ${STATE.armsEnabled ? 'ok' : 'warn'}">arms ${STATE.armsEnabled ? 'enabled (OPENAI_API_KEY set)' : 'disabled: set OPENAI_API_KEY'}</span>`;
+    `<span class="chip ${STATE.armsEnabled ? 'ok' : 'warn'}">arms ${STATE.armsEnabled ? 'enabled (OPENAI_API_KEY set)' : 'disabled: set OPENAI_API_KEY'}</span>` +
+    `<span class="chip ${s.register ? 'ok' : 'warn'}" title="the register's projection in the store: derived, its own namespace, wiped by a run">register ${s.register ? 'projected at ' + esc(s.register.tag || s.register.commit.slice(0, 7)) : 'not projected'}</span>`;
 }
 
 const running = () => STATE.run && STATE.run.status === 'running';
@@ -243,6 +244,17 @@ async function renderStore() {
   $('#store').innerHTML = s.reachable
     ? `Loaded: <b>${esc(s.loaded || 'nothing yet')}</b> — ${s.census.nodes} nodes, ${s.census.relationships} relationships; assertions by status: ${esc(JSON.stringify(s.census.assertions_by_status))}`
     : `Unreachable: ${esc(s.error || '')}`;
+  const rg = s.register;
+  $('#store').innerHTML += `<div style="margin-top:6px">Register: ${rg
+    ? `<b>projected at ${esc(rg.tag || rg.commit.slice(0, 7))}</b> — ${rg.nodes} nodes, ${rg.links} links, ${rg.relationships} relationships, loaded ${esc(rg.loaded_at)}`
+    : '<b>not projected</b>'} <button id="project-btn" class="small" ${running() || !s.reachable ? 'disabled' : ''}>${rg ? 'Project again' : 'Project the register'}</button>
+    <span class="small">derived, in its own namespace (Register, Reg*, REG_*), never the record; a run wipes it</span></div>`;
+  $('#project-btn').addEventListener('click', async () => {
+    const b = $('#project-btn'); b.disabled = true; b.textContent = 'projecting…';
+    try { await api('/api/register/project', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'}); }
+    catch (e) { $('#store').innerHTML += `<div class="small" style="color:var(--red)">${esc(e.message)}</div>`; return; }
+    await loadScenarios();
+  });
   const cy = await api('/api/cypher');
   $('#cypher').innerHTML = cy.map(q => `<details><summary>${esc(q.title)}</summary><button class="copy" data-t="${esc(q.text)}">copy</button><pre class="light">${esc(q.text)}</pre></details>`).join('');
   $('#cypher').querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => { await navigator.clipboard.writeText(b.dataset.t); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); }));

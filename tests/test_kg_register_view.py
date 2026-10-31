@@ -200,6 +200,49 @@ def test_reference_panels():
     assert register_view.ref("key", "QuoteAPI|on_screening_outage", s2)["scenario"] == "S2"
 
 
+def test_projection_rows_and_statements():
+    import register_project as rp
+    r = rp.rows(loaded_at="2026-10-31T00:00:00+00:00")
+    c = r["counts"]
+    assert c["nodes"] == 27 and c["links"] == 28 and c["types"] == 10 and c["documents"] == 10 and c["externals"] == 1 and c["exceptions"] == 1
+    assert r["stamp"]["tag"] == "v0.1.0" and r["stamp"]["commit"].startswith("ef7fe0e") and r["stamp"]["export_date"] == "2026-10-30"
+    assert len(r["parents"]) == sum(1 for n in r["nodes"] if n["parent"]) and len(r["owners"]) == 27
+    assert sum(len(v) for v in r["typed"].values()) == 27 and len(r["maps_to"]) == 1 and len(r["link_of"]) == 55 and len(r["of_type"]) == 28
+    assert {"reg_id": "REL-08002", "path": "kit/requirements.md", "anchor": "kit:requirements.md#REQ-05"} in r["cites"]
+    assert r["excepts"] == [{"reg_id": "EXC-0001", "node": "JRN-0004", "rule": "C1", "expires": "2027-01-31"}]
+    assert c["relationships"] == 27 + 1 + 55 + 28 + len(r["cites"]) + len(r["parents"]) + 27 + 1
+    # every property is what Neo4j can hold: a string, number, boolean or list of strings; every row is stamped
+    ok = (str, int, float, bool)
+    for key in ("nodes", "types", "links", "documents", "externals", "exceptions"):
+        for row in r[key]:
+            assert row["tag"] == "v0.1.0" and row["commit"] and row["loaded_at"] and len(row["digest"]) == 64, (key, row["reg_id"])
+            for k, v in row.items():
+                assert isinstance(v, ok) or (isinstance(v, list) and all(isinstance(x, str) for x in v)), (key, row["reg_id"], k, v)
+    st = rp.statements(r)
+    assert st[0] == ("MATCH (n:Register) DETACH DELETE n", {})
+    harness = ("Artefact", "Version", "Fragment", "Assertion", "Activity", "Agent", "Verification", "Approval", "Gap", "Derived", "Entity")
+    for cypher, _ in st:  # the loader never names a harness label: the namespace is the whole discipline
+        assert not any(f":{lbl}" in cypher for lbl in harness), cypher
+        assert "Reg" in cypher, cypher
+    rel_types = {cy.split("-[e:")[1].split("]")[0] for cy, _ in st if "-[e:" in cy}
+    assert "REG_IS_SUPPORTED_BY" in rel_types and "REG_CRUD" in rel_types and "REG_MAPS_TO" in rel_types
+
+
+def test_projection_is_wired_and_named():
+    import re as _re
+    page = (ROOT / "kg_experiment" / "demo" / "app" / "index.html").read_text(encoding="utf-8")
+    server = (ROOT / "kg_experiment" / "demo" / "app" / "server.py").read_text(encoding="utf-8")
+    ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
+    assert '["api", "register", "project"]' in server and "register_project.census(s)" in server and '"register": None' in server
+    assert 'id="project-btn"' in page and "/api/register/project" in page and "register ${s.register ? 'projected at '" in page
+    assert "POST localhost:8080/api/register/project" in ci and '"tag"]=="v0.1.0"' in ci
+    assert "projection" in views.GLOSSARY and "**The projection.**" in (ROOT / "kg_experiment" / "demo" / "README.md").read_text(encoding="utf-8")
+    ids = [m.group(1) for m in _re.finditer(r'\{"id": "([a-z0-9-]+)", "title"', server)]
+    assert ids[-4:] == ["register-tag", "register-impact", "register-c1", "register-cites"], ids
+    for cy in ("REG_IS_SUPPORTED_BY|REG_DELIVERS", "REG_EXCEPTS", "Artefact {id:d.path}"):
+        assert cy in server
+
+
 def json_keys():
     import json
     return list(json.loads((ROOT / "kg_experiment" / "results" / "S1" / "deterministic.json").read_text(encoding="utf-8"))["gate_keys"])
