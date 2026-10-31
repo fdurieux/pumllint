@@ -8612,7 +8612,7 @@ list and license posture live in § Settled questions.
     the grid's children get `min-width: 0`, the token cells stay on one
     line and the flagged row still wraps, with a heading hint as on the
     strip. Page only; the wiring test asserts the CSS and the wrapper.
-  - *2026-10-31, later (#PUMLL_PR):* the two verdict tables scroll
+  - *2026-10-31, later (#250):* the two verdict tables scroll
     together. After #249 only the B table scrolled; on the maintainer's
     choice one scroll container now holds both tables side by side at
     their natural width (`.twin`, two `max-content` columns), the
