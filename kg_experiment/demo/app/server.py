@@ -295,6 +295,8 @@ class Handler(BaseHTTPRequestHandler):
                 source = q.get("source", [views.default_source(sc)])[0]
                 view = views.build(sc, source, RUNS_DIR)
                 view["cascade"] = {arm: cascade.render(view["systemic"], arm, title=f"{sc}, arm {arm}") for arm in ("G", "B")}
+                view["footprint"] = register_view.footprint(view)
+                view["details"]["footprint"] = view["footprint"]["panel"]
                 return self._json(view)
             if parts == ["api", "store"]:
                 return self._json(store_status())
@@ -303,6 +305,10 @@ class Handler(BaseHTTPRequestHandler):
                 if today not in (None, "wall") and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", today):
                     return self._json({"error": "today must be 'wall' or YYYY-MM-DD"}, 400)
                 return self._json(register_view.build(today))
+            if parts[:3] == ["api", "register", "footprint"] and len(parts) == 4 and parts[3] in views.SCENARIOS:
+                sc = parts[3]
+                source = q.get("source", [views.default_source(sc)])[0]
+                return self._json(register_view.footprint(views.build(sc, source, RUNS_DIR)))
             if parts[:3] == ["api", "register", "impact"] and len(parts) == 4:
                 out = register_view.impact(parts[3])
                 return self._json(out) if out is not None else self._json({"error": f"no such node: {parts[3]}"}, 404)

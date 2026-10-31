@@ -31,7 +31,7 @@ when a sentence breaks a rule.
 
 | kind | where | limit | checked for synonyms |
 |---|---|---|---|
-| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines, the systemic-model panels and captions, the register card and its node panels | 20 words | yes |
+| controlled | the plain-English block, the stage panels, the gap kinds, the scenario cards and the Planted line, the pipeline boxes' labels and lines, the systemic-model panels and captions, the register view and its panels, the footprint box and panel | 20 words | yes |
 | reading | `SCENARIOS[..]["plain"]`, the "what this shows" paragraph | 25 words | yes |
 | data | the gate's reason, conflict texts, id and key lists, engine and API messages, the model's own labels and definitions | none | no |
 
@@ -75,6 +75,7 @@ and the test checks this file names every term of it.
 | exception | An approved, expiring deviation from a coverage rule, with its scope and rationale. |
 | coverage rule | A register check that an approved node of one kind has a link of one type, or an unexpired exception. |
 | state | Where a register node or link stands: draft, proposed, approved, deprecated, retired or rejected. An assertion has a status, never a state. |
+| footprint | The register nodes and links a scenario touches: through its keys below approved, its requirement gaps and its changed documents, by the demo's approved map. |
 
 The definitions may use a forbidden word once, to name what the term
 replaces ("assertion" is defined as a fact, "arm" as an AI assistant):

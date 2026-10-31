@@ -424,7 +424,7 @@ function wireDetails(v) {
 function renderReport(v) {
   const m = v.meta; const g = v.gate;
   const srcSel = `<select id="src">${v.sources.map(s => `<option value="${esc(s.id)}" ${s.id === v.source ? 'selected' : ''}>${esc(s.label)}</option>`).join('')}</select>`;
-  const strip = `<div class="strip">${v.stages.map(stageBox).join('')}
+  const strip = `<div class="strip">${v.stages.map(stageBox).join('')}${v.footprint ? stageBox(v.footprint.box) : ''}
     <div class="armstack">${armBox('generate', 'G', v.arms.G.generate)}${armBox('generate', 'B', v.arms.B.generate)}</div>
     <div class="armstack">${armBox('oracle', 'G', v.arms.G.oracle)}${armBox('oracle', 'B', v.arms.B.oracle)}</div></div>`;
   const strip2 = v.stage2 ? `<h3>S6 stage 2 — the source change, and what it invalidates</h3><div class="strip">${v.stage2.stages.map(stageBox).join('')}</div>

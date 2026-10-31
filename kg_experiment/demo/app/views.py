@@ -421,6 +421,7 @@ GLOSSARY = {
     "exception": "An approved, expiring deviation from a coverage rule, with its scope and rationale.",
     "coverage rule": "A register check that an approved node of one kind has a link of one type, or an unexpired exception.",
     "state": "Where a register node or link stands: draft, proposed, approved, deprecated, retired or rejected. An assertion has a status, never a state.",
+    "footprint": "The register nodes and links a scenario touches: through its keys below approved, its requirement gaps and its changed documents, by the demo's approved map.",
 }
 # synonyms the controlled texts must not use, and the approved term each stands for
 FORBIDDEN = {

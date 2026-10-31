@@ -1,0 +1,248 @@
+# The demo's reading of the gate's 36 keys onto the IEAM register: which register nodes each
+# key concerns. Hand-authored, like views.SYSTEMIC is the demo's reading of the record's §6; the
+# register itself carries no such map, and the kit files are the evidence each row rests on.
+# A row names the register nodes a change to the key would touch, the kit anchor (the same
+# path#section the register's own source pointers and link evidence use), and a short note.
+# Nothing here is written back to the register; the box the page draws from it says "the
+# demo's reading" and its approval below is the maintainer's, not the register's.
+
+[map]
+basis = "authored"
+author = "the demo session, drafted 2026-10-30"
+status = "approved"         # the maintainer read the rows as drafted and approved them; the page says so
+approved_by = "fdurieux"
+approved_on = 2026-10-31
+register_commit = "ef7fe0e114128ce0d76694fb2f95e0373ab18d2e"
+keys_expected = 36
+
+# ---- DT-V: request validation. The validation capability, its activity, the QuoteAPI module
+# (QuoteAPI._validate in kit/links.toml) and the request entity.
+
+[[row]]
+key = "shipper_id|present"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V1: the request's shipper id must be present"
+
+[[row]]
+key = "weight_kg|min"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V2, lower bound"
+
+[[row]]
+key = "weight_kg|max"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V2, upper bound"
+
+[[row]]
+key = "distance_km|min"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V3, lower bound"
+
+[[row]]
+key = "distance_km|max"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V3, upper bound"
+
+[[row]]
+key = "declared_value|min"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V4, lower bound"
+
+[[row]]
+key = "declared_value|max"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "ENT-0002"]
+anchor = "contract/decision_table.md#DT-V"
+note = "V4, upper bound"
+
+[[row]]
+key = "invalid_request|behaviour"
+nodes = ["CAP-0004", "PROC-0002", "APP-0002", "JRN-0002"]
+anchor = "kit/requirements.md#REQ-04"
+note = "a DT-V violation rejects the request and nothing else runs; the shipper's submit step sees the rejection"
+
+# ---- DT-S: screening bands and what each band does. The screening capability, its activity,
+# the ScreeningService module and the screening result; the band's consequences reach pricing,
+# notification and the quote's status.
+
+[[row]]
+key = "S-accept|max"
+nodes = ["CAP-0003", "PROC-0003", "APP-0004", "ENT-0005"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the accept band's upper bound (41)"
+
+[[row]]
+key = "S-review|min"
+nodes = ["CAP-0003", "PROC-0003", "APP-0004", "ENT-0005"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the review band's lower bound (42)"
+
+[[row]]
+key = "S-review|max"
+nodes = ["CAP-0003", "PROC-0003", "APP-0004", "ENT-0005"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the review band's upper bound (66)"
+
+[[row]]
+key = "S-refuse|min"
+nodes = ["CAP-0003", "PROC-0003", "APP-0004", "ENT-0005"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the refuse band's lower bound (67)"
+
+[[row]]
+key = "S-accept|priced"
+nodes = ["CAP-0003", "CAP-0002", "PROC-0003", "PROC-0004", "ENT-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "an accepted quote is priced"
+
+[[row]]
+key = "S-review|priced"
+nodes = ["CAP-0003", "CAP-0002", "PROC-0003", "PROC-0004", "ENT-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "a held quote is not priced"
+
+[[row]]
+key = "S-refuse|priced"
+nodes = ["CAP-0003", "CAP-0002", "PROC-0003", "PROC-0004", "ENT-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "a refused quote is not priced"
+
+[[row]]
+key = "S-accept|notified"
+nodes = ["CAP-0003", "CAP-0005", "PROC-0003", "PROC-0005", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the quote document is sent"
+
+[[row]]
+key = "S-review|notified"
+nodes = ["CAP-0003", "CAP-0005", "PROC-0003", "PROC-0005", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "no notification on a hold"
+
+[[row]]
+key = "S-refuse|notified"
+nodes = ["CAP-0003", "CAP-0005", "PROC-0003", "PROC-0005", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "the refusal notice is sent"
+
+[[row]]
+key = "S-accept|status"
+nodes = ["CAP-0003", "PROC-0003", "APP-0002", "ENT-0003", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "status quoted"
+
+[[row]]
+key = "S-review|status"
+nodes = ["CAP-0003", "PROC-0003", "APP-0002", "ENT-0003", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "status review_hold"
+
+[[row]]
+key = "S-refuse|status"
+nodes = ["CAP-0003", "PROC-0003", "APP-0002", "ENT-0003", "JRN-0003"]
+anchor = "contract/decision_table.md#DT-S"
+note = "status refused_screening"
+
+# ---- The API's behaviour under failure. The QuoteAPI module orchestrates (kit/links.toml);
+# the end-to-end process is where the failure paths sit.
+
+[[row]]
+key = "QuoteAPI|on_store_failure"
+nodes = ["APP-0002", "PROC-0001", "ENT-0003"]
+anchor = "kit/requirements.md#REQ-05"
+note = "storage failure: error store_unavailable, nothing else runs"
+
+[[row]]
+key = "QuoteAPI|on_notification_failure"
+nodes = ["APP-0002", "PROC-0005", "CAP-0005"]
+anchor = "kit/requirements.md#REQ-07"
+note = "a failed notification leaves outcome and response unchanged"
+
+[[row]]
+key = "QuoteAPI|on_screening_outage"
+nodes = ["APP-0002", "APP-0004", "PROC-0003", "PROC-0001", "JRN-0003"]
+anchor = "kit/requirements.md#REQ-06"
+note = "the open decision S2 and S5 plant: held_unscreened with price and hold; cited by no register link"
+
+# ---- DT-P: pricing. The pricing capability, its activity, the TariffEngine module and the
+# tariff entity; S6 changes P2's surcharge in this table.
+
+[[row]]
+key = "P1|formula"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "base price"
+
+[[row]]
+key = "P2|threshold"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "heavy surcharge threshold (1244 kg)"
+
+[[row]]
+key = "P2|surcharge"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "the surcharge S6 changes from 316.00 to 341.00"
+
+[[row]]
+key = "P3|threshold"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "long-haul threshold (4912 km)"
+
+[[row]]
+key = "P3|factor"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "long-haul multiplier (1.19)"
+
+[[row]]
+key = "P3|order"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "kit/requirements.md#REQ-08"
+note = "P3 applied after P2; the order is normative"
+
+[[row]]
+key = "P4|rounding"
+nodes = ["CAP-0002", "PROC-0004", "APP-0003", "ENT-0004"]
+anchor = "contract/decision_table.md#DT-P"
+note = "round to two decimals"
+
+# ---- The flow and the response shape. The end-to-end process and the journey; the API
+# contract, the Quote API touchpoint and the step where the shipper receives the answer.
+
+[[row]]
+key = "flow|order"
+nodes = ["PROC-0001", "JRN-0001", "APP-0002"]
+anchor = "behavior/quote_flow.puml"
+note = "validate, store, screen, price, notify, in that order (also kit/quote_process.bpmn)"
+
+[[row]]
+key = "response|statuses"
+nodes = ["APP-0002", "JRN-0004", "JRN-0003", "ENT-0003"]
+anchor = "contract/openapi.yaml"
+note = "the status values the API may return"
+
+[[row]]
+key = "response|price_presence"
+nodes = ["APP-0002", "JRN-0004", "JRN-0003", "ENT-0003"]
+anchor = "contract/openapi.yaml"
+note = "when the response carries a price"
+
+[[row]]
+key = "response|hold_presence"
+nodes = ["APP-0002", "JRN-0004", "JRN-0003", "ENT-0003"]
+anchor = "contract/openapi.yaml"
+note = "when the response carries a hold flag; absent in S2's kit"
+
+[[row]]
+key = "response|quote_id_presence"
+nodes = ["APP-0002", "JRN-0004", "JRN-0003", "ENT-0003"]
+anchor = "contract/openapi.yaml"
+note = "every stored quote returns its id"
