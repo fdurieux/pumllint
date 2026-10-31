@@ -8612,6 +8612,13 @@ list and license posture live in § Settled questions.
     the grid's children get `min-width: 0`, the token cells stay on one
     line and the flagged row still wraps, with a heading hint as on the
     strip. Page only; the wiring test asserts the CSS and the wrapper.
+  - *2026-10-31, later (#250):* the two verdict tables scroll
+    together. After #249 only the B table scrolled; on the maintainer's
+    choice one scroll container now holds both tables side by side at
+    their natural width (`.twin`, two `max-content` columns), the
+    flagged cells capped at 16em so they still wrap. Page only; the
+    wiring test asserts the shared container and the absence of the
+    per-table one.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
