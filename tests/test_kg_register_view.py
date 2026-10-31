@@ -94,6 +94,44 @@ def test_register_impact_walk_reaches_the_product_and_says_when_it_does_not():
                 assert len(s.split()) <= 20 and not _forbidden_in(s), s
 
 
+def test_register_footprint_per_scenario():
+    from pathlib import Path as _P
+    NO_RUNS = ROOT / "nonexistent-demo-runs"
+    fps = {sc: register_view.footprint(views.build(sc, views.default_source(sc), NO_RUNS)) for sc in views.ORDER}
+    m = register_view.load_map()
+    assert m["map"]["status"] == "approved" and m["map"]["approved_by"] and len(m["row"]) == 36
+    assert {r["key"] for r in m["row"]} == set(json_keys())
+    assert fps["S1"]["keys_below"] == {} and fps["S1"]["uncited"] == 0 and fps["S1"]["box"]["colour"] == "ok"
+    s2 = fps["S2"]
+    assert "QuoteAPI|on_screening_outage" in s2["keys_below"] and "response|hold_presence" in s2["keys_below"]
+    assert any(r["subject"] == "REQ-06" and r["cited_by"] == "none" for r in s2["requirements"]) and s2["uncited"] >= 1
+    assert any(r["subject"] == "REQ-05" and "REL-" in r["cited_by"] for r in s2["requirements"])
+    assert s2["box"]["colour"] == "bad" and "APP-0002" in s2["touched"]
+    s3 = fps["S3"]
+    assert "ENT-0005" in s3["not_approved"] and s3["box"]["colour"] == "bad"
+    s6 = fps["S6"]
+    assert len(s6["table_links"]) >= 4 and "REL-10001" in s6["table_links"] and s6["keys_below"] == {}
+    assert any("changed decision table" in sec["heading"] for sec in s6["panel"]["sections"])
+    assert len(fps["S7"]["keys_below"]) == 36 and len(fps["S7"]["touched"]) == 20
+    for fp in fps.values():
+        assert fp["box"]["id"] == "footprint" and fp["panel"]["title"].startswith("Register footprint of")
+        for sec in fp["panel"]["sections"]:
+            if "table" in sec:
+                assert all(len(r) == len(sec["table"]["cols"]) for r in sec["table"]["rows"]), (fp["scenario"], sec["heading"])
+        for item in fp["text_registry"]:
+            if item["kind"] == "data":
+                continue
+            for s in _sentences(item["text"]):
+                assert len(s.split()) <= 20 and not _forbidden_in(s), s
+        for ln in fp["box"]["lines"]:
+            assert len(ln.split()) <= 20 and not _forbidden_in(ln), ln
+
+
+def json_keys():
+    import json
+    return list(json.loads((ROOT / "kg_experiment" / "results" / "S1" / "deterministic.json").read_text(encoding="utf-8"))["gate_keys"])
+
+
 def test_register_card_is_wired_on_the_page_and_the_server():
     page = (DEMO / "app" / "index.html").read_text(encoding="utf-8")
     assert "/api/register" in page and 'id="register-detail"' in page and "renderRegisterCard" in page and "showRegister" in page
@@ -102,7 +140,8 @@ def test_register_card_is_wired_on_the_page_and_the_server():
     assert 'parts == ["api", "register"]' in server and "import register_view" in server
     assert '["api", "register", "impact"]' in server and 'id="impact-form"' in page and "/api/register/impact/" in page
     ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
-    assert "/api/register" in ci and '"digest_ok"' in ci and "/api/register/impact/APP-0002" in ci
+    assert "/api/register" in ci and '"digest_ok"' in ci and "/api/register/impact/APP-0002" in ci and "/api/register/footprint/S2" in ci
+    assert "v.footprint ? stageBox(v.footprint.box)" in page and '["api", "register", "footprint"]' in server
     readme = (DEMO / "README.md").read_text(encoding="utf-8")
     assert "**The register.**" in readme
     glossary = (DEMO / "GLOSSARY.md").read_text(encoding="utf-8")

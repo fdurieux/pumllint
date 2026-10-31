@@ -9,9 +9,9 @@
 [map]
 basis = "authored"
 author = "the demo session, drafted 2026-10-30"
-status = "draft"            # "approved" once the maintainer has read it; the page shows the status
-approved_by = ""
-approved_on = ""
+status = "approved"         # the maintainer read the rows as drafted and approved them; the page says so
+approved_by = "fdurieux"
+approved_on = 2026-10-31
 register_commit = "ef7fe0e114128ce0d76694fb2f95e0373ab18d2e"
 keys_expected = 36
 

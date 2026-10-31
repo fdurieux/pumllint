@@ -32,7 +32,12 @@ documents read, the constraint attempts, each rule's hits, the 36 keys
 with their levels, each run's decision and grade). A *gaps* box beside the
 rules opens every gap of the scenario grouped by kind, with a filter and a
 plain-English sentence per kind; it reads the result files, and the
-running Neo4j as well when the scenario on screen is the one loaded there:
+running Neo4j as well when the scenario on screen is the one loaded there.
+A *register footprint* box ends the strip: which nodes and links of the
+IEAM register (see below) this scenario touches, through its keys below
+approved, its requirement gaps and, for S6, the changed decision table,
+by a map the maintainer approved; red when a touched node is not
+approved or a gap is cited by no link:
 
 - the *pipeline*, from reading the files to grading the generated code,
   each stage coloured by its outcome and carrying its numbers: how many

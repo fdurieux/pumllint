@@ -53,6 +53,7 @@ jobs:
           curl -fsS "localhost:8080/api/register" | python3 -c 'import json,sys; r=json.load(sys.stdin); assert r["summary"]["nodes"]==27 and r["summary"]["links"]==28 and r["coverage"]["C1"]["excepted"]==1 and r["source"]["digest_ok"] and r["pinned"], r["summary"]; print("register:", r["summary"], "at", r["run_date"])'
           curl -fsS "localhost:8080/api/register/impact/APP-0002" | python3 -c 'import json,sys; w=json.load(sys.stdin); assert "PRD-0002" in w["reached"]["products"] and "JRN-0002" in w["reached"]["journeys"], w["reached"]; print("impact APP-0002:", len(w["edges"]), "edges")'
           test "$(curl -s -o /dev/null -w '%{http_code}' localhost:8080/api/register/impact/APP-9999)" = "404"
+          curl -fsS "localhost:8080/api/register/footprint/S2" | python3 -c 'import json,sys; f=json.load(sys.stdin); assert f["uncited"]>=1 and "QuoteAPI|on_screening_outage" in f["keys_below"] and f["box"]["colour"]=="bad", f["box"]; print("footprint S2:", f["box"]["lines"])'
 
       - name: Load one scenario deterministically through the app
         run: |

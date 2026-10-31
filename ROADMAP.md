@@ -8570,6 +8570,32 @@ list and license posture live in § Settled questions.
     update command that works from any directory (`git -C`,
     `docker compose --project-directory`) and an alias for it. Page and
     docs only.
+  - *2026-10-31, later (#PUMLL_PR):* integration step 4, the register
+    footprint. The key-to-node map (`app/register_map.toml`, 36 rows,
+    drafted 2026-10-30) is approved by the maintainer as drawn
+    (`status = "approved"`, `approved_by`, `approved_on` in its header;
+    seven nodes untouched by any key: APP-0001, CAP-0001, ENT-0001,
+    ORG-0001, ORG-0002, PRD-0001, PRD-0002). `register_view.footprint()`
+    reads a scenario's `deterministic.json`, the map and the vendored
+    register and returns three groups: the keys below approved and the
+    nodes their rows name (state per node, blocked keys marked); the
+    R-REQ hits joined to the links whose evidence cites
+    `kit:requirements.md#REQ-nn` (S2 and S5: REQ-06 cited by no link,
+    REQ-05 by REL-08002); for S6 the eight links whose evidence or
+    external target cites `contract/decision_table.md`, with the
+    manifest digest of the table at the register's commit (the result
+    file records the second load and no document digest, said as
+    data). The box ends the pipeline strip: red when a touched node is
+    not approved (S3: ENT-0005 draft; S7: CAP-0005, ENT-0005,
+    PROC-0005) or a requirement gap is cited by no link, amber when a
+    key is below approved or a link cites the changed table, green
+    otherwise (S1). Its panel opens like a stage's. Served with
+    `/api/results/<S>` (`footprint`, `details.footprint`) and alone at
+    `/api/register/footprint/<S>`; the sentences are registered as
+    controlled text, "footprint" joins the glossary. Tests per scenario
+    in `tests/test_kg_register_view.py`; the stack job asserts the S2
+    footprint (REQ-06 uncited, the outage key below approved, red).
+    Nothing is written back to the register.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

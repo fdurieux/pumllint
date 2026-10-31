@@ -16,8 +16,10 @@ from __future__ import annotations
 import datetime as dt
 import hashlib
 import importlib.util
+import json
 import re
 import sys
+import tomllib
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -136,6 +138,98 @@ def impact(start: str) -> dict | None:
                       "sections": [{"heading": C("Edges walked"), "text": summary,
                                     "table": {"cols": ["from", "relationship", "to", "name", "node state", "link state", "owner", "evidence"], "rows": rows}},
                                    {"heading": C("Reached"), "list": [f"{x}: {names.get(x, '')}" for x in reached] or ["nothing"]}]},
+            "text_registry": reg_sentences}
+
+
+MAP = HERE / "register_map.toml"
+REQ_ANCHOR = "kit:requirements.md#"
+TABLE_PATH = "contract/decision_table.md"
+
+
+def load_map() -> dict:
+    with MAP.open("rb") as f:
+        return tomllib.load(f)
+
+
+def footprint(view: dict) -> dict:
+    """The register footprint of one scenario: the map rows its keys below approved hit and the
+    nodes they touch, the requirement gaps joined to the links whose evidence cites them, and
+    for S6 the links whose evidence cites the changed decision table. Read from the scenario's
+    deterministic.json (view["source_dir"]), the approved map and the vendored register."""
+    T = _load_tools()
+    reg = T["register"].load_register(REGISTER)
+    m = load_map()
+    det = json.loads((Path(view["source_dir"]) / "deterministic.json").read_text(encoding="utf-8"))
+    rows = {r["key"]: r for r in m["row"]}
+    names = {nid: n.get("name", "") for nid, n in reg["nodes"].items()}
+    states = {nid: n.get("state", "") for nid, n in reg["nodes"].items()}
+    links = [dict(ln, type=rname) for rname, rel in reg["relationships"].items() for ln in rel["links"]]
+    reg_sentences: list[dict] = []
+    C = lambda *s: views._reg(reg_sentences, "controlled", *s)  # noqa: E731
+    D = lambda *s: views._reg(reg_sentences, "data", *s)  # noqa: E731
+    # keys below approved, and the nodes their rows name
+    below = {k: v["level"] for k, v in det["gate_keys"].items() if v["level"] != "approved"}
+    blocked = set(det["D6_gate"].get("blocked_keys") or [])
+    key_rows = [(k, lvl, rows[k]) for k, lvl in below.items() if k in rows]
+    touched: dict[str, list[str]] = {}
+    for k, _lvl, r in key_rows:
+        for nid in r["nodes"]:
+            touched.setdefault(nid, []).append(k)
+    not_approved = sorted(nid for nid in touched if states.get(nid) != "approved")
+    # requirement gaps joined to the links that cite them
+    req_rows = []
+    uncited = 0
+    for h in det["rules"]["R-REQ"]:
+        subject = h.get("req") or h.get("artefact") or h.get("entity") or ""
+        anchor = REQ_ANCHOR + subject if h.get("req") else "kit:" + subject
+        citing = [ln for ln in links if any(ev == anchor or ev.startswith(anchor + "#") for ev in ln.get("evidence", []))] if h.get("req") else []
+        if not citing:
+            uncited += 1
+        req_rows.append((subject, h.get("kind", ""), "yes" if h.get("declared") else "no", ", ".join(f"{ln['id']} ({ln['type']}, {ln.get('state')})" for ln in citing) or "none"))
+    # S6: the changed decision table and the links that cite it
+    table_links = []
+    if "stage2" in det:
+        for ln in links:
+            evs = [ev for ev in ln.get("evidence", []) if TABLE_PATH in ev] + ([ln["target_external"]] if TABLE_PATH in (ln.get("target_external") or "") else [])
+            if evs:
+                table_links.append((ln["id"], ln["type"], ln["source"], ln.get("target") or ln.get("target_external", ""), ln.get("state", ""), ", ".join(evs)))
+    manifest = T["register"].load_toml(REGISTER / "exports" / "kit" / "2026-10-30" / "MANIFEST.toml")
+    table_digest = manifest.get("files", {}).get(TABLE_PATH, "")
+    colour = "bad" if not_approved or uncited else "warn" if key_rows or table_links else "ok"
+    lines = [f"{views._plural(len(key_rows), 'key')} below approved {'touches' if len(key_rows) == 1 else 'touch'} {views._plural(len(touched), 'node')}" if key_rows else "no key below approved",
+             f"{views._plural(len(req_rows), 'requirement gap')}, {uncited} cited by no link"]
+    if table_links:
+        lines.append(f"{views._plural(len(table_links), 'link cites', 'links cite')} the changed table")
+    if not_approved:
+        lines.append(f"{views._plural(len(not_approved), 'touched node')} not approved: {', '.join(not_approved)}")
+    approved_on = str(m["map"].get("approved_on", ""))
+    intro = C(f"The footprint is the demo's reading of the gate's keys onto the register, approved by the maintainer on {approved_on}.",
+              "A key below approved touches the nodes its map row names.",
+              "A requirement gap is joined to the links whose evidence cites it.",
+              "Nothing here is written back to the register.")
+    secs = []
+    if key_rows:
+        secs.append({"heading": C(f"Keys below approved: {len(key_rows)}"),
+                     "text": C(f"They touch {views._plural(len(touched), 'node')}, {len(not_approved)} of them not approved.") + (" " + C("A blocked key is marked.") if blocked else ""),
+                     "table": {"cols": ["key", "level", "blocked", "nodes", "anchor"], "rows": [[k, lvl, "yes" if k in blocked else "", ", ".join(r["nodes"]), r["anchor"]] for k, lvl, r in key_rows]}})
+        secs.append({"heading": C("Nodes touched"), "text": C("Each node with its state and the keys that touch it."),
+                     "table": {"cols": ["node", "name", "state", "keys"], "rows": [[nid, names.get(nid, ""), states.get(nid, ""), ", ".join(ks)] for nid, ks in sorted(touched.items())]}})
+    else:
+        secs.append({"heading": C("Keys below approved: none"), "text": C("Every key the task needs is approved, so no map row is hit.")})
+    secs.append({"heading": C(f"Requirement gaps and the links that cite them: {len(req_rows)}"),
+                 "text": C(f"{len(req_rows) - uncited} {'is' if len(req_rows) - uncited == 1 else 'are'} cited by a link, {uncited} by none.") + (" " + C("A gap no link cites is one the register does not yet carry.") if uncited else ""),
+                 "table": {"cols": ["requirement or document", "kind", "declared", "links citing it"], "rows": [list(r) for r in req_rows]}})
+    if "stage2" in det:
+        secs.append({"heading": C(f"Links citing the changed decision table: {len(table_links)}"),
+                     "text": C("The table changed in the second stage, so every link that cites it is a link to review.") + " "
+                             + D(f"The manifest digest of {TABLE_PATH} at the register's commit is {table_digest[:12]}; the result file records the second load ({det['stage2']['load_v2']['fragments']} new fragments, {det['stage2']['load_v2']['fragments_reused']} reused) and no document digest."),
+                     "table": {"cols": ["link", "type", "source", "target", "state", "evidence"], "rows": [list(r) for r in table_links]}})
+    return {"scenario": view["scenario"], "map": {"status": m["map"].get("status"), "approved_by": m["map"].get("approved_by"), "approved_on": approved_on, "rows": len(m["row"])},
+            "keys_below": {k: lvl for k, lvl, _ in key_rows}, "touched": touched, "not_approved": not_approved,
+            "requirements": [{"subject": r[0], "kind": r[1], "declared": r[2], "cited_by": r[3]} for r in req_rows], "uncited": uncited,
+            "table_links": [r[0] for r in table_links],
+            "box": {"id": "footprint", "label": "register footprint", "colour": colour, "lines": lines + ["click for the nodes and links"]},
+            "panel": {"title": C(f"Register footprint of {view['scenario']}"), "intro": intro, "sections": secs},
             "text_registry": reg_sentences}
 
 
