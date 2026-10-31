@@ -8596,6 +8596,14 @@ list and license posture live in § Settled questions.
     in `tests/test_kg_register_view.py`; the stack job asserts the S2
     footprint (REQ-06 uncited, the outage key below approved, red).
     Nothing is written back to the register.
+  - *2026-10-31, later (#PUMLL_PR):* the pipeline strip stays one row.
+    With the footprint box the strip no longer fitted a narrower window
+    and wrapped the Oracle column under Ingest (seen on the maintainer's
+    S4). On the maintainer's choice the strip now scrolls sideways
+    instead of wrapping (`grid-auto-flow: column`, `overflow-x: auto`;
+    `main > * {min-width: 0}` so the column shrinks below its content),
+    with a hint in the heading because macOS hides overlay scrollbars.
+    Page only; the wiring test asserts the strip's CSS.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

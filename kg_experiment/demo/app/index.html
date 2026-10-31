@@ -16,6 +16,7 @@ header .sub{color:var(--muted)}
 .chip{border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:13px;background:var(--card)}
 .chip.ok{background:var(--ok);border-color:var(--green)} .chip.bad{background:var(--bad);border-color:var(--red)} .chip.warn{background:var(--warn);border-color:var(--amber)}
 main{display:grid;grid-template-columns:360px 1fr;gap:20px;padding:20px 24px;max-width:1800px}
+main>*{min-width:0}
 @media (max-width:1100px){main{grid-template-columns:1fr}}
 h2{font:600 17px/1.2 "Source Serif 4",Georgia,serif;margin:0 0 10px}
 h3{font-size:14px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin:18px 0 8px}
@@ -52,7 +53,7 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .banner .head{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap} .banner .head b{font-size:15px}
 .banner .console{margin-top:8px;max-height:160px}
 .small{font-size:13px;color:var(--muted)}
-.strip{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;align-items:stretch}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(170px,1fr);gap:8px;align-items:stretch;overflow-x:auto;padding-bottom:6px}
 .stage{border-radius:10px;padding:10px 10px 8px;border:1px solid var(--line);min-height:96px;position:relative;font-size:13px}
 .stage .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:4px}
 .stage .ln{margin:1px 0;word-break:break-word}
@@ -465,7 +466,7 @@ function renderReport(v) {
       <details class="plain gloss"><summary>Glossary — the words this page uses, one per concept</summary><dl>${Object.entries(v.glossary).map(([k, d]) => `<dt>${esc(k)}</dt><dd>${esc(d)}</dd>`).join('')}</dl><p class="guide">The page's sentences keep to these terms and to 20 words each (25 for a reading); see kg_experiment/demo/GLOSSARY.md.</p></details>
       ${v.model_deviation.length ? `<div class="alert warn"><b>Model deviation.</b> These runs were answered by <code>${esc(v.model_deviation.join(', '))}</code>; the record's runs by <code>${esc(v.record_model)}</code>. The gate, the bundle and the oracle are the same, but the arms' decisions, flags and suite scores are another model's and are not comparable with the record's numbers (§6, §10).</div>` : ''}
       ${v.api_errors.length ? `<div class="alert"><b>The model calls failed</b> (${v.api_errors.length} of ${v.arms.G.summary.n + v.arms.B.summary.n} cells): ${esc(v.api_errors[0].error)}${v.api_errors.length > 1 && v.api_errors.some(e => e.error !== v.api_errors[0].error) ? ' · ' + esc([...new Set(v.api_errors.slice(1).map(e => e.error))].join(' · ')) : ''} No reply came back, so there is no code and no grade; the harness recorded each cell as <code>api_error</code>. Fix the cause (credits, key, network) and click Arms again.</div>` : ''}
-      <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${strip}${strip2}<div id="stage-detail"></div>
+      <h3>Pipeline — ingest → extract → load → rules → gate → generate → oracle <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details · the row scrolls sideways when the window is narrow</span></h3>${strip}${strip2}<div id="stage-detail"></div>
       <h3>Systemic model — where the defect enters, and where it was stopped <span class="small" style="font-weight:400;text-transform:none;letter-spacing:0">· click a box for its details</span></h3>${cascade}<div id="systemic-detail"></div>
     </div>
     <div class="card" style="margin-top:16px"><h3 style="margin-top:0">The gate's evidence bundle (what arm G received; ${v.bundle ? v.bundle.length.toLocaleString() : 0} characters${v.prompt_lengths.B ? `; arm B's documents ${v.prompt_lengths.B.toLocaleString()}` : ''})</h3>

@@ -142,6 +142,8 @@ def test_register_card_is_wired_on_the_page_and_the_server():
     ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
     assert "/api/register" in ci and '"digest_ok"' in ci and "/api/register/impact/APP-0002" in ci and "/api/register/footprint/S2" in ci
     assert "v.footprint ? stageBox(v.footprint.box)" in page and '["api", "register", "footprint"]' in server
+    # the strip stays one row and scrolls sideways; it never wraps the Oracle column under Ingest
+    assert ".strip{display:grid;grid-auto-flow:column;" in page and "overflow-x:auto" in page.split(".strip{")[1].split("}")[0]
     readme = (DEMO / "README.md").read_text(encoding="utf-8")
     assert "**The register.**" in readme
     glossary = (DEMO / "GLOSSARY.md").read_text(encoding="utf-8")
