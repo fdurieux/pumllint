@@ -8570,7 +8570,7 @@ list and license posture live in § Settled questions.
     update command that works from any directory (`git -C`,
     `docker compose --project-directory`) and an alias for it. Page and
     docs only.
-  - *2026-10-31, later (#PUMLL_PR):* integration step 4, the register
+  - *2026-10-31, later (#247):* integration step 4, the register
     footprint. The key-to-node map (`app/register_map.toml`, 36 rows,
     drafted 2026-10-30) is approved by the maintainer as drawn
     (`status = "approved"`, `approved_by`, `approved_on` in its header;
