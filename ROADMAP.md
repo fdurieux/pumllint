@@ -8619,6 +8619,33 @@ list and license posture live in § Settled questions.
     flagged cells capped at 16em so they still wrap. Page only; the
     wiring test asserts the shared container and the absence of the
     per-table one.
+  - *2026-10-31, later (#PUMLL_PR):* clickable footprint cells, on the
+    maintainer's ask and after the column-by-column evaluation (private
+    page *Clickable footprint cells*). A panel table cell may now be a
+    *reference* (`{ref, text}`, rendered underlined) or a *tip*
+    (`{text, tip}`, dotted, explains itself on hover). A reference
+    opens its subject's panel under the table, one level deep: a
+    reference inside the sub-panel replaces it, with a breadcrumb from
+    the box's title. Four panels in `register_view.ref(kind, id, view)`:
+    node (the register view's, reused), link (ends, relationship type,
+    evidence, approval), requirement (the kit's own line quoted as data,
+    the rule hits in the scenario, the links citing it, the map rows
+    anchored on it) and key (the gate's record, the gaps on the key,
+    the map row, the nodes named), plus a document card (manifest
+    digest, links citing it, map rows, and for S6 the stage-2 note).
+    Served at `/api/register/ref/<kind>/<id>?scenario=S&source=…`
+    (400 unknown kind or scenario, 404 unknown subject). Tips for kind,
+    declared, level, state and relationship type come from the gap-kind
+    sentences, the vendored lifecycle and the type table. One
+    normaliser (`_norm`) reconciles the three spellings of a kit anchor
+    (`kit:requirements.md#REQ-05`, `kit/requirements.md#REQ-05`,
+    `contract/decision_table.md#DT-V`). The register view's node panels
+    gain a link column and open link panels the same way. "reference"
+    joins the glossary; README; tests per panel incl. the 404 cases
+    (`test_reference_panels`, `test_footprint_cells_are_references_and_tips`);
+    the stack job asserts the REQ-06 and REL-08002 panels and a 404.
+    Not done, by the evaluation's fence: blocked stays plain, no panel
+    nests past one level, nothing is written back to the register.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

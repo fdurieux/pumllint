@@ -37,7 +37,11 @@ A *register footprint* box ends the strip: which nodes and links of the
 IEAM register (see below) this scenario touches, through its keys below
 approved, its requirement gaps and, for S6, the changed decision table,
 by a map the maintainer approved; red when a touched node is not
-approved or a gap is cited by no link:
+approved or a gap is cited by no link. In its panel every id is a
+*reference*: click a requirement, a link, a node, a key or a document
+and its own panel opens under the table, one level deep, and the
+enumerations (kind, declared, level, state, type) explain themselves on
+hover:
 
 - the *pipeline*, from reading the files to grading the generated code,
   each stage coloured by its outcome and carrying its numbers: how many

@@ -65,6 +65,9 @@ button.primary{background:var(--teal);color:#fff;border-color:var(--teal)}
 .detail h4{margin:0 0 4px;font-size:15px} .detail .intro{font-size:13.5px;margin:0 0 8px;max-width:95ch}
 .detail h5{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:12px 0 4px}
 .detail p{font-size:13px;margin:4px 0;max-width:95ch} .detail ul{margin:4px 0;padding-left:18px;font-size:13px}
+.detail a.xref{color:var(--ink);text-decoration:underline;text-decoration-color:var(--muted);text-underline-offset:2px} .detail a.xref:hover{text-decoration-color:var(--ink)}
+.detail .tip{border-bottom:1px dotted var(--muted);cursor:help}
+.detail .sub:empty{display:none} .detail .sub{margin-top:12px;border-top:2px solid var(--line);padding-top:8px} .detail .sub .crumb{font-size:12px;color:var(--muted);margin-bottom:4px} .detail .sub .detail{margin:0;padding:0;border:0}
 .detail .tw{overflow:auto;max-height:340px} .detail table{font-size:12.5px} .detail th{position:sticky;top:0;background:var(--card)}
 .detail .close{float:right}
 .rnode{margin:3px 0} .rstate{font-family:var(--mono);font-size:11px;color:var(--muted)} #register details{margin:4px 0} #register summary{cursor:pointer;font-weight:600} #register-detail .detail{margin-top:10px} .impact{display:flex;gap:6px;margin:4px 0} .impact input{flex:1;min-width:0;font-family:var(--mono);font-size:12px;padding:3px 6px;border:1px solid var(--line);border-radius:6px}
@@ -289,7 +292,7 @@ async function showRegister(today) {
     </div>`;
   const all = {}; Object.values(r.nodes_by_taxonomy).forEach(ns => ns.forEach(n => all[n.id] = n));
   const host = $('#register-detail');
-  const openPanel = html => { host.innerHTML = html; host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; }); host.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
+  const openPanel = html => { host.innerHTML = html; host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; }); wireRefs(host); host.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); };
   $('#report').querySelectorAll('a[data-node]').forEach(a => a.addEventListener('click', ev => { ev.preventDefault(); openPanel(renderDetail(all[a.dataset.node].panel)); }));
   $('#impact-form').addEventListener('submit', async ev => {
     ev.preventDefault();
@@ -331,10 +334,37 @@ async function show(id, source, mode) {
 
 function stageBox(st) { return `<div class="stage ${st.colour}" data-detail="${esc(st.id)}" title="click for this stage's details"><div class="lbl">${esc(st.label)}</div>${st.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
 function armBox(label, arm, part) { return `<div class="stage ${part.colour}" data-detail="${label}_${arm}" title="click for this stage's details"><div class="lbl">${label} · <span class="arm">${arm === 'G' ? 'G governed' : 'B baseline'}</span></div>${part.lines.map(l => `<div class="ln">${esc(l)}</div>`).join('')}</div>`; }
+// A table cell is a string, a reference {ref, text} that opens its subject's panel under the table,
+// a tip {text, tip} that explains itself on hover, or a list of those.
+function cell(c) {
+  if (Array.isArray(c)) return c.map(cell).join('');
+  if (c && typeof c === 'object') return c.ref ? `<a href="#" class="xref" data-ref="${esc(c.ref)}">${esc(c.text)}</a>` : `<span class="tip" title="${esc(c.tip)}">${esc(c.text)}</span>`;
+  return esc(c);
+}
 function renderDetail(d) {
   if (!d) return '';
-  const sec = x => `<h5>${esc(x.heading)}</h5>${x.text ? `<p>${esc(x.text)}</p>` : ''}${x.list ? `<ul>${x.list.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : ''}${x.table ? `<div class="tw"><table><thead><tr>${x.table.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}`;
-  return `<div class="detail"><button class="close small">close</button><h4>${esc(d.title)}</h4><p class="intro">${esc(d.intro)}</p>${d.sections.map(sec).join('')}</div>`;
+  const sec = x => `<h5>${esc(x.heading)}</h5>${x.text ? `<p>${esc(x.text)}</p>` : ''}${x.list ? `<ul>${x.list.map(i => `<li>${esc(i)}</li>`).join('')}</ul>` : ''}${x.table ? `<div class="tw"><table><thead><tr>${x.table.cols.map(c => `<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${x.table.rows.map(r => `<tr>${r.map(c => `<td>${cell(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>` : ''}`;
+  return `<div class="detail"><button class="close small">close</button><h4>${esc(d.title)}</h4><p class="intro">${esc(d.intro)}</p>${d.sections.map(sec).join('')}<div class="sub"></div></div>`;
+}
+// A reference opens its panel in the host panel's .sub, one level deep: a reference inside the
+// sub-panel replaces it. req and key panels read the scenario on screen.
+function wireRefs(root, sub, crumb) {
+  const top = root.querySelector('.detail'); if (!top) return;
+  sub = sub || top.querySelector(':scope > .sub');
+  crumb = crumb || (top.querySelector('h4') || {}).textContent || '';
+  root.querySelectorAll('a.xref').forEach(a => a.addEventListener('click', async ev => {
+    ev.preventDefault();
+    const i = a.dataset.ref.indexOf(':'); const kind = a.dataset.ref.slice(0, i), id = a.dataset.ref.slice(i + 1);
+    const sc = STATE.current && STATE.current !== 'register' ? STATE.current : null;
+    const qs = sc ? `?scenario=${encodeURIComponent(sc)}${STATE.source ? '&source=' + encodeURIComponent(STATE.source) : ''}` : '';
+    try {
+      const p = await api(`/api/register/ref/${encodeURIComponent(kind)}/${encodeURIComponent(id)}${qs}`);
+      sub.innerHTML = `<div class="crumb">${esc(crumb)} › ${esc(id)}</div>${renderDetail(p.panel)}`;
+    } catch (e) { sub.innerHTML = `<div class="crumb">${esc(crumb)} › ${esc(id)}</div><div class="detail"><button class="close small">close</button><p>${esc(e.message)}</p></div>`; }
+    sub.querySelector('.close').addEventListener('click', () => { sub.innerHTML = ''; });
+    wireRefs(sub, sub, crumb);
+    sub.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }));
 }
 const GAP_ORDER = ['declared missing', 'undeclared missing', 'ambiguous', 'conflict', 'unverified'];
 
@@ -419,6 +449,7 @@ function wireDetails(v) {
     else {
       host.innerHTML = renderDetail(v.details[id]);
       host.querySelector('.close').addEventListener('click', () => { host.innerHTML = ''; b.classList.remove('sel'); });
+      wireRefs(host);
     }
     host.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }));

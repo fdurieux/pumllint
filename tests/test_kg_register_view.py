@@ -127,6 +127,78 @@ def test_register_footprint_per_scenario():
             assert len(ln.split()) <= 20 and not _forbidden_in(ln), ln
 
 
+def _cells(panel):
+    for sec in panel["sections"]:
+        for row in sec.get("table", {}).get("rows", []):
+            for c in row:
+                yield from (c if isinstance(c, list) else [c])
+
+
+def _refs(panel):
+    return [c["ref"] for c in _cells(panel) if isinstance(c, dict) and "ref" in c]
+
+
+def _check_sentences(items):
+    for item in items:
+        if item["kind"] == "data":
+            continue
+        for s in _sentences(item["text"]):
+            assert len(s.split()) <= 20 and not _forbidden_in(s), s
+
+
+def test_footprint_cells_are_references_and_tips():
+    NO_RUNS = ROOT / "nonexistent-demo-runs"
+    fp = register_view.footprint(views.build("S2", views.default_source("S2"), NO_RUNS))
+    refs = _refs(fp["panel"])
+    assert "req:REQ-06" in refs and "req:REQ-05" in refs and "link:REL-08002" in refs
+    assert "key:QuoteAPI|on_screening_outage" in refs and "node:APP-0002" in refs and "doc:contract/openapi.yaml" in refs
+    tips = [c for c in _cells(fp["panel"]) if isinstance(c, dict) and "tip" in c]
+    assert any(c["text"] == "declared_gap" for c in tips) and any(c["text"] == "approved" for c in tips) and any(c["text"] in ("yes", "no") for c in tips)
+    assert all(c["tip"] for c in tips)
+    s6 = register_view.footprint(views.build("S6", views.default_source("S6"), NO_RUNS))
+    assert "doc:contract/decision_table.md" in _refs(s6["panel"]) and "link:REL-10001" in _refs(s6["panel"])
+    # the data part stays plain for the API's readers
+    assert all(isinstance(r["cited_by"], str) for r in fp["requirements"])
+
+
+def test_reference_panels():
+    NO_RUNS = ROOT / "nonexistent-demo-runs"
+    s2 = views.build("S2", views.default_source("S2"), NO_RUNS)
+    link = register_view.ref("link", "REL-08002")
+    assert link["panel"]["title"].startswith("REL-08002, a manages link") and "node:APP-0002" in _refs(link["panel"]) and "node:ENT-0003" in _refs(link["panel"]) and "req:REQ-05" in _refs(link["panel"])
+    assert any(sec["heading"] == "Approval" for sec in link["panel"]["sections"])
+    ext = register_view.ref("link", "REL-10001")
+    assert "doc:contract/decision_table.md" in _refs(ext["panel"])
+    req = register_view.ref("req", "REQ-06", s2)
+    heads = [sec["heading"] for sec in req["panel"]["sections"]]
+    assert "Rule hits in S2: 2" in heads and "Links citing it: 0" in heads and "Map rows anchored on it: 1" in heads
+    assert "REQ-06: screening outage" in req["panel"]["intro"] and "key:QuoteAPI|on_screening_outage" in _refs(req["panel"])
+    req5 = register_view.ref("req", "REQ-05", s2)
+    assert "link:REL-08002" in _refs(req5["panel"])
+    req_no_sc = register_view.ref("req", "REQ-05")
+    assert not any(h.startswith("Rule hits") for h in [sec["heading"] for sec in req_no_sc["panel"]["sections"]])
+    key = register_view.ref("key", "QuoteAPI|on_screening_outage", s2)
+    assert "level declared_gap" in key["panel"]["intro"] and "blocks the verdict" in key["panel"]["intro"]
+    assert any(sec["heading"] == "Gaps on this key: 1" for sec in key["panel"]["sections"]) and "req:REQ-06" in _refs(key["panel"])
+    s3 = views.build("S3", views.default_source("S3"), NO_RUNS)
+    k3 = register_view.ref("key", "S-review|max", s3)
+    assert "level proposed" in k3["panel"]["intro"] and "node:ENT-0005" in _refs(k3["panel"])
+    s6 = views.build("S6", views.default_source("S6"), NO_RUNS)
+    doc = register_view.ref("doc", "contract/decision_table.md", s6)
+    heads = [sec["heading"] for sec in doc["panel"]["sections"]]
+    assert "Changed in the second stage" in heads and "Links citing it: 8" in heads and "27e9fe7ece26" in doc["panel"]["intro"]
+    node = register_view.ref("node", "APP-0002")
+    assert node["panel"]["title"].startswith("APP-0002") and any(r.startswith("link:REL-") for r in _refs(node["panel"]))
+    for bad in (("node", "APP-9999"), ("link", "REL-99999"), ("req", "REQ-99"), ("key", "nope|nope"), ("doc", "nope.md"), ("nope", "x")):
+        assert register_view.ref(*bad) is None, bad
+    for r in (link, ext, req, req5, key, k3, doc, node):
+        _check_sentences(r["text_registry"])
+        for sec in r["panel"]["sections"]:
+            if "table" in sec:
+                assert all(len(row) == len(sec["table"]["cols"]) for row in sec["table"]["rows"]), sec["heading"]
+    assert register_view.ref("key", "QuoteAPI|on_screening_outage", s2)["scenario"] == "S2"
+
+
 def json_keys():
     import json
     return list(json.loads((ROOT / "kg_experiment" / "results" / "S1" / "deterministic.json").read_text(encoding="utf-8"))["gate_keys"])
@@ -142,6 +214,8 @@ def test_register_card_is_wired_on_the_page_and_the_server():
     ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
     assert "/api/register" in ci and '"digest_ok"' in ci and "/api/register/impact/APP-0002" in ci and "/api/register/footprint/S2" in ci
     assert "v.footprint ? stageBox(v.footprint.box)" in page and '["api", "register", "footprint"]' in server
+    assert "function wireRefs" in page and "function cell" in page and 'class="xref" data-ref=' in page and '["api", "register", "ref"]' in server
+    assert "/api/register/ref/req/REQ-06?scenario=S2" in ci and "reference" in views.GLOSSARY
     # the strip stays one row and scrolls sideways; it never wraps the Oracle column under Ingest
     assert ".strip{display:grid;grid-auto-flow:column;" in page and "overflow-x:auto" in page.split(".strip{")[1].split("}")[0]
     # the oracle tables scroll inside their column instead of pushing past the card

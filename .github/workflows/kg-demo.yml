@@ -54,6 +54,9 @@ jobs:
           curl -fsS "localhost:8080/api/register/impact/APP-0002" | python3 -c 'import json,sys; w=json.load(sys.stdin); assert "PRD-0002" in w["reached"]["products"] and "JRN-0002" in w["reached"]["journeys"], w["reached"]; print("impact APP-0002:", len(w["edges"]), "edges")'
           test "$(curl -s -o /dev/null -w '%{http_code}' localhost:8080/api/register/impact/APP-9999)" = "404"
           curl -fsS "localhost:8080/api/register/footprint/S2" | python3 -c 'import json,sys; f=json.load(sys.stdin); assert f["uncited"]>=1 and "QuoteAPI|on_screening_outage" in f["keys_below"] and f["box"]["colour"]=="bad", f["box"]; print("footprint S2:", f["box"]["lines"])'
+          curl -fsS "localhost:8080/api/register/ref/req/REQ-06?scenario=S2" | python3 -c 'import json,sys; r=json.load(sys.stdin); h=[s["heading"] for s in r["panel"]["sections"]]; assert "Links citing it: 0" in h and "Rule hits in S2: 2" in h, h; print("ref REQ-06:", h)'
+          curl -fsS "localhost:8080/api/register/ref/link/REL-08002" | python3 -c 'import json,sys; r=json.load(sys.stdin); assert r["panel"]["title"].startswith("REL-08002"), r["panel"]["title"]; print("ref link:", r["panel"]["title"])'
+          test "$(curl -s -o /dev/null -w '%{http_code}' "localhost:8080/api/register/ref/link/REL-99999")" = "404"
 
       - name: Load one scenario deterministically through the app
         run: |
