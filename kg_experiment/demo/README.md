@@ -86,7 +86,12 @@ until you load it again. Four saved Cypher queries read it: which tag
 is projected, the impact walk from APP-0002, coverage rule C1 with the
 exception joined, and the links that cite a kit document joined to the
 harness's own `Artefact` by path, the one query that crosses the two
-namespaces and the reason to share one database.
+namespaces and the reason to share one database. Every saved query
+carries a marker, *runs now* or *needs S6 loaded deterministically*,
+*needs S4 loaded*, *needs the register projected*: the store holds one
+scenario at a time, so a query run against the wrong state gets Neo4j's
+"label not in the database" warnings and no rows, which is correct and
+not a fault.
 
 **The register.** The last entry of the Scenarios list is the IEAM
 register, a separate public repository
