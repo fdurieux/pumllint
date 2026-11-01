@@ -8732,6 +8732,15 @@ list and license posture live in § Settled questions.
     modes, so a deterministic S6 has the same object to invalidate as
     the record and the stage-2 box lists `derived:S1:G:run1` suspect.
     Test pins the condition; README sentence. Lab only.
+  - *2026-11-01, later (#258):* the demo README gains "The three modes,
+    step by step", on the maintainer's ask for a plain-English
+    explanation of Replay, Deterministic and Arms: what each button runs
+    again (nothing, the data half, all of it), the harness's steps in
+    order for each (`run.py --deterministic`: wipe, D1, load, verify,
+    rules, D2/D4/D5/D6, S6's stage 2; `--n 1`: the same, then one call
+    per arm and the oracle's grading), what "arm" and "deterministic"
+    mean, and a closing table. Docs only; the glossary's terms used
+    where they apply.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
