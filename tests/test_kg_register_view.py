@@ -242,7 +242,7 @@ def test_projection_is_wired_and_named():
     assert "projection" in views.GLOSSARY and "**The projection.**" in (ROOT / "kg_experiment" / "demo" / "README.md").read_text(encoding="utf-8")
     ids = [m.group(1) for m in _re.finditer(r'\{"id": "([a-z0-9-]+)", "title"', server)]
     assert ids[-4:] == ["register-tag", "register-impact", "register-c1", "register-cites"], ids
-    for cy in ("REG_IS_SUPPORTED_BY|REG_DELIVERS", "REG_EXCEPTS", "Artefact {id:d.path}"):
+    for cy in ("REG_IS_SUPPORTED_BY|REG_DELIVERS", "REG_EXCEPTS", "Artefact {id:d.path}", "v.sha256 = d.digest THEN 'same as tag'"):
         assert cy in server
 
 
