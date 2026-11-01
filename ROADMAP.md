@@ -8701,7 +8701,7 @@ list and license posture live in § Settled questions.
     map row's note for the outage key records the change; the rows are
     as approved. Tests and the stack job follow (REQ-06 cited by
     REL-06002, S2 amber). Lab, page, tests and docs only.
-  - *2026-11-01, later (#PUMLL_PR):* the cross-namespace query compares
+  - *2026-11-01, later (#255):* the cross-namespace query compares
     digests. The maintainer ran the saved query in Neo4j Browser with S2
     loaded and `v0.1.1` projected: eight rows, every cited kit document
     present in the store as `v1`, the join by path holding. On the
