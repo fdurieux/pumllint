@@ -22,7 +22,12 @@ To re-vendor the IEAM register under the kg demo, check `fdurieux/ieam-register`
 out at the tag and run `python tools/vendor_register.py <checkout>`: it copies
 the fixed path set and rewrites `kg_experiment/demo/register/SOURCE.md` from
 git's answers (tag, commit, digests, earlier copies). Never edit that note by
-hand; `tests/test_vendor_register.py` holds it to the tool's output.
+hand; `tests/test_vendor_register.py` holds it to the tool's output. The Legible
+model has the same tool: `python tools/vendor_legible_model.py <checkout of
+fdurieux/fdurieux.github.io>` copies `model/model.json` and rewrites
+`kg_experiment/demo/model/SOURCE.md` (version from the file, commit, digest);
+`tests/test_vendor_legible_model.py` holds that note the same way. The demo
+README's "Keeping the demo current" section is the adopter-facing walkthrough.
 
 After a deliberate scoring or reporter change, regenerate the published pilot
 artefacts — `tests/test_pilot_example.py` compares them byte for byte:
