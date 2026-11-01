@@ -3,11 +3,11 @@
 | | |
 |---|---|
 | source repository | `fdurieux/ieam-register` (public test case; synthetic content, the CargoQuote kit) |
-| commit | `ef7fe0e114128ce0d76694fb2f95e0373ab18d2e` — "Merge pull request #2 from fdurieux/claude/canvas-page", 2026-10-30 |
-| tag | `v0.1.0` — published by the maintainer on 2026-10-31 as a GitHub Release on that same commit; the demo reads the tag, the commit is what it resolves to |
+| commit | `c54f86c3aa470f0a81ec25c00801da35f81398bd` — "Merge pull request #3 from fdurieux/claude/cite-req-06", 2026-11-01 |
+| tag | `v0.1.1` — published by the maintainer on 2026-11-01 as a GitHub Release on that same commit; the demo reads the tag, the commit is what it resolves to. Earlier: `v0.1.0` at `ef7fe0e` (2026-10-31), the pilot slice before REL-06002 cited REQ-06 |
 | what is copied | the metamodel, the glossary, the seven taxonomy directories, the relationship files, the exceptions, the mapping matrix, the decision records, the kit export folder, and three tools (`register.py`, `check_register.py`, `impact.py`); nothing else |
-| files | 50 |
-| copied | 2026-10-30, byte for byte, by the session that built `kg_experiment/demo/` |
+| files | 51 |
+| copied | 2026-11-01, byte for byte, by the session that re-vendored at `v0.1.1`; first copied 2026-10-30 at `ef7fe0e` |
 | pinned date for the checker | `2026-10-30`, the export's date: `EXC-0001` expires 2027-01-31, so a run at the wall clock would change the coverage view under the viewer |
 
 The demo will read this copy for its register view (pumllint
@@ -33,6 +33,7 @@ its digest and runs the vendored checker at the pinned date.
 | `capabilities/CAP-0005.toml` | `f703c5dbfc430eecae575425c82306bf2a58590bca904b9d2a157517f87dd873` |
 | `decisions/0001-register-structure.md` | `dfff0b57899fea8cf6b9c4ebae6348ca7c6e7e2e79ebd52a6da6d5895148c6a9` |
 | `decisions/0002-pilot-slice-cargoquote.md` | `c75a3ffcf8d71d3f12f48f9e90fb587b80cc3572e1764af019e9b807f60b458a` |
+| `decisions/0003-cite-req-06-on-the-screening-link.md` | `ddd02a92a8b9d7c452f3752d0e38f0bd3c687bb532e0a47032e71baa3695a2d7` |
 | `exceptions/EXC-0001.toml` | `1d6068b47596abf2b11da91424d7ee9540158a13b43b52b4d6878a24a616d02f` |
 | `exports/kit/2026-10-30/MANIFEST.toml` | `972df1222cebb85c6bb95761213f7c125fa1793ddf70d47bfefae63d83fbf095` |
 | `exports/kit/2026-10-30/RECONCILE.json` | `b43994ac04c9b4f463d502e73911d9fd863f2ccda49d2589cc0f208d3e494aba` |
@@ -68,7 +69,7 @@ its digest and runs the vendored checker at the pinned date.
 | `relationships/owns.toml` | `5d6cf337a8bad664af1ea152cedd14d536387b69cbc4c1b075619b07304d53b2` |
 | `relationships/realizes.toml` | `8417bf102fd6c3bfee898a85e2717d379b399e1a462bac277f58920f83211cfe` |
 | `relationships/requires.toml` | `e1776259a9064d22f3895d8b5ef98ab4acf5830c9717a46a339bf2a789a76aa8` |
-| `relationships/supports.toml` | `3624b86e08ad0327c6d1396a1d0250baae0a9a7bbfd0a07220b7345e095dc9c4` |
+| `relationships/supports.toml` | `e3079e2174b7f5ee35d343e2e83f2470b79b5fa3e5ec9440e2d55d53be00feee` |
 | `tools/check_register.py` | `4d29972be58b67deec02cee98fc8435dc14d146188c77a1304efff5a132a2708` |
 | `tools/impact.py` | `cae50888b76053caeb4c07f17cbd60e3567e68e3afa3d1a49e0b13e805fa6b7a` |
 | `tools/register.py` | `81c33f481451ec9ed56a8111749a92cc85c00e6f8ef77bb1053426cd62f53f5d` |
