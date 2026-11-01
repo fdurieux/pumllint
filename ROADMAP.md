@@ -8741,7 +8741,7 @@ list and license posture live in § Settled questions.
     per arm and the oracle's grading), what "arm" and "deterministic"
     mean, and a closing table. Docs only; the glossary's terms used
     where they apply.
-  - *2026-11-01, later (#PUMLL_PR):* #257 was necessary, not sufficient.
+  - *2026-11-01, later (#259):* #257 was necessary, not sufficient.
     The maintainer re-ran S6 deterministically on the new build and the
     traversal's `derived` column stayed empty: the harness's own
     deterministic branch passed no derived code to stage 2
