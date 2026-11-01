@@ -1,8 +1,9 @@
 import json, html, sys
 # usage: gen_cascade_slide.py <model.json> <cascade.html>
 # The layout tables below (lanes, nodes, edges, anchor geometry, colours) are
-# also imported by kg_experiment/demo/app/cascade.py, which draws the same
-# reduced view with a scenario's path laid over it; keep them at module level.
+# copied in knowgov's demo/model/cascade_layout.py (since 2026-11-01; before
+# that kg_experiment/demo/app/cascade.py imported them), which draws the same
+# reduced view with a scenario's path laid over it; a change here is one there.
 W, H = 1664, 620
 BW, BH = 384, 72
 INK, MUTED, GREEN, AMBER, LINE, PALE, AMBERPALE = '#1B2A24', '#6B776F', '#2E7D5B', '#C27A1F', '#DCE2DD', '#E6ECE7', '#FBF1E4'

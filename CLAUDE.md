@@ -18,16 +18,13 @@ After changing a rule's `options` in `pumllint/rules/catalog.toml` (a
 `name = "type"` table), regenerate the config schema or CI fails:
 `python tools/generate_config_schema.py`.
 
-To re-vendor the IEAM register under the kg demo, check `fdurieux/ieam-register`
-out at the tag and run `python tools/vendor_register.py <checkout>`: it copies
-the fixed path set and rewrites `kg_experiment/demo/register/SOURCE.md` from
-git's answers (tag, commit, digests, earlier copies). Never edit that note by
-hand; `tests/test_vendor_register.py` holds it to the tool's output. The Legible
-model has the same tool: `python tools/vendor_legible_model.py <checkout of
-fdurieux/fdurieux.github.io>` copies `model/model.json` and rewrites
-`kg_experiment/demo/model/SOURCE.md` (version from the file, commit, digest);
-`tests/test_vendor_legible_model.py` holds that note the same way. The demo
-README's "Keeping the demo current" section is the adopter-facing walkthrough.
+The governed-repository demo, its harness and the vendoring tools moved to
+`fdurieux/knowgov` on 2026-11-01 (ROADMAP, that date). What stays under
+`kg_experiment/` — `kit/`, `results/`, `PREREGISTRATION.md` — is the frozen
+record of the proof of concept and is never edited; knowgov vendors it at a
+pumllint commit (`python tools/vendor_subject.py <checkout>`, there) and holds
+every file to its digest, so a change here is a re-vendor there, never a drift.
+pumllint imports nothing from knowgov; knowgov installs pumllint from PyPI.
 
 After a deliberate scoring or reporter change, regenerate the published pilot
 artefacts — `tests/test_pilot_example.py` compares them byte for byte:

@@ -22,6 +22,10 @@
 > outside the bank's private repositories, so the bank's instance is created from the test case
 > inside those repositories and is never pushed outside them. Where this document says "the
 > bank's" of a node, an export or an owner, read it of that private instance.
+>
+> *2026-11-01:* the demo this proposal cites (`kg_experiment/demo/`, its README, its glossary,
+> `results/demo-runs/`) moved to `fdurieux/knowgov` (ROADMAP, that date; #263); those paths read
+> as knowgov's `demo/` and `runs/` now.
 
 *Evaluation and proposal, 2026-10-30. Written against pumllint at the current checkout (README,
 CLAUDE.md, docs/business-processes.md, kg_experiment/, recreate_experiment/, ROADMAP entries of
