@@ -8766,7 +8766,7 @@ list and license posture live in § Settled questions.
     repository and one holding the shipped note to the tool's output;
     CLAUDE.md names the command. Integration step 6 is a command now.
     Tooling and docs only.
-  - *2026-11-01, later (#PUMLL_PR):* the Legible model vendored the same
+  - *2026-11-01, later (#261):* the Legible model vendored the same
     way, and the chores written down. `tools/vendor_legible_model.py
     <checkout>` copies `model/model.json` from a clean checkout of
     `fdurieux/fdurieux.github.io` at any commit (the version is the file's
