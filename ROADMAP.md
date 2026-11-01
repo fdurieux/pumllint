@@ -8686,6 +8686,21 @@ list and license posture live in § Settled questions.
     the stack job projects after the deterministic run and asserts the
     census beside the loaded scenario. "projection" joins the glossary;
     README.
+  - *2026-11-01, later (#254):* the register re-vendored at
+    `v0.1.1`. The footprint's finding (REQ-06 cited by no link) became
+    the register's first content change: ieam-register #3, decision
+    0003, REL-06002 (ScreeningService supports Screen the shipper) now
+    cites `kit:requirements.md#REQ-06`, its approval renewed by the
+    maintainer; tagged `v0.1.1` at `c54f86c` on 2026-11-01. The demo
+    copies the two changed files (the link file, the new decision),
+    `SOURCE.md` carries the new commit, tag and 51 digests, and the
+    projection stamps `v0.1.1`. Effect on the page: S2, S4 and S5's
+    footprint turns from red to amber (no gap uncited, keys still below
+    approved); S3 stays red for ENT-0005 and its missing DMN document,
+    which no link can cite; S7 red for the three unapproved nodes. The
+    map row's note for the outage key records the change; the rows are
+    as approved. Tests and the stack job follow (REQ-06 cited by
+    REL-06002, S2 amber). Lab, page, tests and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

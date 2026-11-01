@@ -167,7 +167,7 @@ note = "a failed notification leaves outcome and response unchanged"
 key = "QuoteAPI|on_screening_outage"
 nodes = ["APP-0002", "APP-0004", "PROC-0003", "PROC-0001", "JRN-0003"]
 anchor = "kit/requirements.md#REQ-06"
-note = "the open decision S2 and S5 plant: held_unscreened with price and hold; cited by no register link"
+note = "the open decision S2 and S5 plant: held_unscreened with price and hold; cited by REL-06002 since the register's v0.1.1 (decision 0003); cited by no link at v0.1.0"
 
 # ---- DT-P: pricing. The pricing capability, its activity, the TariffEngine module and the
 # tariff entity; S6 changes P2's surcharge in this table.

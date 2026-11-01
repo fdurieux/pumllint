@@ -32,11 +32,11 @@ id = "REL-06002"
 source = "APP-0004"
 target = "PROC-0003"
 state = "approved"
-rationale = "ScreeningService.screen is the screening call (REQ-06 names its outage)"
+rationale = "ScreeningService.screen is the screening call; REQ-06 names its outage and the held_unscreened outcome"
 owner = "ORG-0002"
-evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml"]
+evidence = ["exports/kit/2026-10-30/MANIFEST.toml", "kit:kit/links.toml", "kit:requirements.md#REQ-06"]
 review_due = 2027-04-30
-approval = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
+approval = { by = "fdurieux", on = 2026-10-31, record = "decisions/0003-cite-req-06-on-the-screening-link.md" }
 
 [[link]]
 id = "REL-06003"

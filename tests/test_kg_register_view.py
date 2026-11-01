@@ -25,7 +25,7 @@ def _forbidden_in(sentence):
 def test_register_view_builds_from_the_vendored_copy_at_the_pinned_date():
     v = register_view.build()
     assert v["source"]["repo"] == "fdurieux/ieam-register" and len(v["source"]["commit"]) == 40 and v["source"]["digest_ok"]
-    assert v["source"]["tag"] == "v0.1.0" and v["source"]["commit"].startswith("ef7fe0e")  # the tag sits on the vendored commit
+    assert v["source"]["tag"] == "v0.1.1" and v["source"]["commit"].startswith("c54f86c")  # the tag sits on the vendored commit
     assert v["pinned"] and v["run_date"] == v["source"]["pinned_date"]
     assert v["summary"] == {"nodes": 27, "links": 28, "errors": 0, "warnings": 3}
     assert v["coverage_lines"][0] == "C1: 2/3 covered, 1 excepted, 0 uncovered"
@@ -105,9 +105,11 @@ def test_register_footprint_per_scenario():
     assert fps["S1"]["keys_below"] == {} and fps["S1"]["uncited"] == 0 and fps["S1"]["box"]["colour"] == "ok"
     s2 = fps["S2"]
     assert "QuoteAPI|on_screening_outage" in s2["keys_below"] and "response|hold_presence" in s2["keys_below"]
-    assert any(r["subject"] == "REQ-06" and r["cited_by"] == "none" for r in s2["requirements"]) and s2["uncited"] >= 1
-    assert any(r["subject"] == "REQ-05" and "REL-" in r["cited_by"] for r in s2["requirements"])
-    assert s2["box"]["colour"] == "bad" and "APP-0002" in s2["touched"]
+    # since the register's v0.1.1 (decision 0003) REL-06002 cites REQ-06, so S2 has no uncited gap and is amber, not red
+    assert any(r["subject"] == "REQ-06" and "REL-06002" in r["cited_by"] for r in s2["requirements"]) and s2["uncited"] == 0
+    assert any(r["subject"] == "REQ-05" and "REL-08002" in r["cited_by"] for r in s2["requirements"])
+    assert s2["box"]["colour"] == "warn" and "APP-0002" in s2["touched"]
+    assert fps["S4"]["box"]["colour"] == "warn" and fps["S5"]["box"]["colour"] == "warn"
     s3 = fps["S3"]
     assert "ENT-0005" in s3["not_approved"] and s3["box"]["colour"] == "bad"
     s6 = fps["S6"]
@@ -172,7 +174,8 @@ def test_reference_panels():
     assert "doc:contract/decision_table.md" in _refs(ext["panel"])
     req = register_view.ref("req", "REQ-06", s2)
     heads = [sec["heading"] for sec in req["panel"]["sections"]]
-    assert "Rule hits in S2: 2" in heads and "Links citing it: 0" in heads and "Map rows anchored on it: 1" in heads
+    assert "Rule hits in S2: 2" in heads and "Links citing it: 1" in heads and "Map rows anchored on it: 1" in heads
+    assert "link:REL-06002" in _refs(req["panel"])
     assert "REQ-06: screening outage" in req["panel"]["intro"] and "key:QuoteAPI|on_screening_outage" in _refs(req["panel"])
     req5 = register_view.ref("req", "REQ-05", s2)
     assert "link:REL-08002" in _refs(req5["panel"])
@@ -205,7 +208,7 @@ def test_projection_rows_and_statements():
     r = rp.rows(loaded_at="2026-10-31T00:00:00+00:00")
     c = r["counts"]
     assert c["nodes"] == 27 and c["links"] == 28 and c["types"] == 10 and c["documents"] == 10 and c["externals"] == 1 and c["exceptions"] == 1
-    assert r["stamp"]["tag"] == "v0.1.0" and r["stamp"]["commit"].startswith("ef7fe0e") and r["stamp"]["export_date"] == "2026-10-30"
+    assert r["stamp"]["tag"] == "v0.1.1" and r["stamp"]["commit"].startswith("c54f86c") and r["stamp"]["export_date"] == "2026-10-30"
     assert len(r["parents"]) == sum(1 for n in r["nodes"] if n["parent"]) and len(r["owners"]) == 27
     assert sum(len(v) for v in r["typed"].values()) == 27 and len(r["maps_to"]) == 1 and len(r["link_of"]) == 55 and len(r["of_type"]) == 28
     assert {"reg_id": "REL-08002", "path": "kit/requirements.md", "anchor": "kit:requirements.md#REQ-05"} in r["cites"]
@@ -215,7 +218,7 @@ def test_projection_rows_and_statements():
     ok = (str, int, float, bool)
     for key in ("nodes", "types", "links", "documents", "externals", "exceptions"):
         for row in r[key]:
-            assert row["tag"] == "v0.1.0" and row["commit"] and row["loaded_at"] and len(row["digest"]) == 64, (key, row["reg_id"])
+            assert row["tag"] == "v0.1.1" and row["commit"] and row["loaded_at"] and len(row["digest"]) == 64, (key, row["reg_id"])
             for k, v in row.items():
                 assert isinstance(v, ok) or (isinstance(v, list) and all(isinstance(x, str) for x in v)), (key, row["reg_id"], k, v)
     st = rp.statements(r)
@@ -235,7 +238,7 @@ def test_projection_is_wired_and_named():
     ci = (ROOT / ".github" / "workflows" / "kg-demo.yml").read_text(encoding="utf-8")
     assert '["api", "register", "project"]' in server and "register_project.census(s)" in server and '"register": None' in server
     assert 'id="project-btn"' in page and "/api/register/project" in page and "register ${s.register ? 'projected at '" in page
-    assert "POST localhost:8080/api/register/project" in ci and '"tag"]=="v0.1.0"' in ci
+    assert "POST localhost:8080/api/register/project" in ci and '"tag"]=="v0.1.1"' in ci
     assert "projection" in views.GLOSSARY and "**The projection.**" in (ROOT / "kg_experiment" / "demo" / "README.md").read_text(encoding="utf-8")
     ids = [m.group(1) for m in _re.finditer(r'\{"id": "([a-z0-9-]+)", "title"', server)]
     assert ids[-4:] == ["register-tag", "register-impact", "register-c1", "register-cites"], ids
