@@ -1,6 +1,0 @@
-id = "EXC-0001"
-rule = "C1"
-scope = ["JRN-0004"]
-rationale = "The Quote API touchpoint is supported through its parent step JRN-0002; a touchpoint-level process link would duplicate it."
-approved = { by = "fdurieux", on = 2026-10-30, record = "decisions/0002-pilot-slice-cargoquote.md" }
-expires = 2027-01-31

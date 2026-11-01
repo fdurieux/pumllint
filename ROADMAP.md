@@ -8803,6 +8803,10 @@ list and license posture live in § Settled questions.
     subject data (`scored_record_volatile` in S6's manifest) and the
     finding in task-0018; a deterministic S6 through the page there read
     identical on all 170 fields. Lab only.
+  - *2026-11-01, later (#263):* retired from this tree. The demo, its
+    harness and the vendoring tools moved to `fdurieux/knowgov`, parity
+    shown first; the kit, the record and the pre-registration stay. The
+    entry of 2026-11-01 below has the account.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
@@ -8961,3 +8965,59 @@ list and license posture live in § Settled questions.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Docs only: no product code, golden, schema or score moved.*
+
+- **The governed-knowledge platform moves out (2026-11-01): the demo,
+  its harness and the vendoring tools retired from this tree, their
+  successor `fdurieux/knowgov` (GPL-3.0-or-later, its decision-0001); the
+  kit, the record and the pre-registration stay here as the experiment's
+  frozen record, which knowgov vendors at a pumllint commit; lab only,
+  nothing on the product path, N1–N5 untouched, nothing queued, no
+  checkbox.** Asked by the maintainer: turn the Neo4j governed-repository
+  demo into a reusable platform, one instance per client organisation,
+  the CargoQuote demo as its first subject. Settled in the session
+  (canvas and SWOT revised in knowgov's doc-0001): a separate public
+  repository, not a folder here, because the platform consumes pumllint
+  as a released library (`pumllint==0.33.0` from PyPI, the parser its
+  sequence mapper imports) and pumllint never imports it, the 2026-08-26
+  boundary kept one-way; GPL-3.0-or-later on the maintainer's call; the
+  hosted model as instance configuration, one OpenAI-compatible endpoint
+  named by base URL, key variable and model name, the arms off until the
+  named variable holds a key. Built there as milestones m-0 and m-1
+  (knowgov's PRs #1–#12): the harness with every CargoQuote name as
+  subject data under `subjects/<id>/` (its task-0002), a store port with
+  the Neo4j adapter holding all Cypher and an rdflib adapter for a run
+  without any database (task-0003, 0004), the page unchanged in
+  interface, the register and Legible vendoring of #260 and #261 ported,
+  the record check of #262 with the volatile leaf as subject data.
+  Parity, the maintainer's condition for this retirement, shown on
+  2026-11-01 before it (knowgov#11): the two stacks side by side, 27
+  endpoints compared leaf by leaf with only absolute paths and additive
+  fields differing, the rendered report text identical on all seven
+  scenarios and the register view, no console error, a deterministic
+  run identical to the record. Removed here (#263, the PR carrying this
+  entry): `kg_experiment/harness/`, `kg_experiment/demo/`,
+  `.github/workflows/kg-demo.yml`, `tools/vendor_register.py`,
+  `tools/vendor_legible_model.py`, their four tests, the `demo-runs`
+  ignore line. Kept: `kg_experiment/kit/`, `kg_experiment/results/`
+  (its `SHA256SUMS` names the harness files at the commit that produced
+  them, which is what a record does), `PREREGISTRATION.md` (frozen), the
+  evaluation (§12 says where the harness reads now), the register
+  proposal and the integration reading, each with a dated note. The
+  harness as it produced the record is in this repository's history,
+  `cf9d919` for the record's commit and `3cd7fc2` for the last tree
+  carrying it; knowgov's `subjects/cargo_quote/vendor/SOURCE.md` names
+  the pumllint commit its bytes come from (`fd8bef4`, untagged, to be
+  re-vendored at the next tag that carries the kit). The image
+  `ghcr.io/fdurieux/pumllint-kg-demo` is no longer published;
+  `ghcr.io/fdurieux/knowgov` replaces it. One defect met on the first
+  local start of the new stack and fixed there, not here: the saved
+  query "the gaps, with what they concern" ordered by a column its
+  aggregation hid and had never run in either copy (knowgov#13, with a
+  CI step that now runs every saved query).
+  - *Re-litigate on:* a pumllint feature that needs the harness in-tree
+    (none foreseen: the boundary runs one way); or knowgov asking
+    pumllint for something it does not expose as a library, which is a
+    pumllint change recorded here on its own merits.
+  - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
+
+  *Lab, tooling and docs only: no product code, golden, schema or score moved.*

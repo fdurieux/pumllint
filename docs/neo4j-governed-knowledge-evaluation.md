@@ -275,7 +275,7 @@ are each enforced by construction in the PoC's loader and rules.
 
 [proposal] Five stages, each with what is native, what is tooling and
 what is custom. The PoC implements every box in `kg_experiment/harness/`
-except the withholding retriever's access control and the human
+(at `cf9d919`; §12 says where the harness reads since 2026-11-01) except the withholding retriever's access control and the human
 verification interface, which are described.
 
 ```
@@ -1333,6 +1333,17 @@ reading, not any pumllint item.
 
 ## 12. Reproduction
 
+*2026-11-01:* the harness this section runs left the tree when the
+platform moved to `fdurieux/knowgov` (ROADMAP, that date; #263). Every
+`kg_experiment/harness/` path in this document reads at this repository's
+commit `cf9d919`, the commit the record's `SHA256SUMS` describes:
+`git show cf9d919:kg_experiment/harness/run.py` for one file,
+`git checkout cf9d919 -- kg_experiment/harness` for the whole. The kit, the
+record and the pre-registration stay in the tree. knowgov's harness is the
+same pipeline made subject-generic, with a store port (Neo4j, or rdflib with
+no database); its own tool compares a re-run against this record, which it
+vendors.
+
 ```bash
 # pumllint at cf9d919; a Neo4j 5.26.0 community server on bolt://localhost:7687
 # (password in KG_NEO4J_PASSWORD, default kgpoc2026); Python 3.13 with
@@ -1362,14 +1373,15 @@ python report.py results/rerun                   # the re-run's counts (§6.6, X
 #   -> 0   (unknown: no assertion, not a documented absence)
 ```
 
-The same stack as two containers: `kg_experiment/demo/` (`docker compose up`)
-starts a Neo4j 5.26 community server and a web app that replays the seven
-scenarios from `results/`, re-runs D1–D6 or the arms against the container's
-store into a dated `results/demo-runs/` folder, and draws each scenario on the
-§2 pipeline and on the Legible v0.3 knowledge view; `demo/README.md` has the
-one-block start for a Mac, a laptop pulling the published image, or an EC2
-instance. `demo/tools/compare_deterministic.py` checks any deterministic run
-against the record field by field.
+The same stack as two containers is knowgov's `demo/` (`docker compose up`
+there; until 2026-11-01 `kg_experiment/demo/` here): a Neo4j 5.26 community
+server and a web app that replays the seven scenarios from the vendored
+record, re-runs D1–D6 or the arms against the container's store into a dated
+`runs/` folder, and draws each scenario on the §2 pipeline and on the Legible
+v0.3 knowledge view; its `demo/README.md` has the one-block start for a Mac, a
+laptop pulling the published image, or an EC2 instance, and its
+`demo/tools/compare_deterministic.py` checks any deterministic run against
+the record field by field.
 
 The five fact sheets behind §1, §3, §7, §8 and §9 are not committed;
 their load-bearing quotes are cited inline with the source URL at the

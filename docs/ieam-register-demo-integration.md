@@ -6,6 +6,11 @@
 > what order; no code moved. The register's content is synthetic; a bank's instance never reaches
 > the public demo. Session-local paths in the text refer to the two checkouts as the sub-agent
 > saw them.
+>
+> *2026-11-01:* the demo moved to `fdurieux/knowgov` (ROADMAP, that date; #263). The
+> `kg_experiment/demo/` paths and `kg-demo.yml` below are pumllint's at the time of writing and
+> read as knowgov's `demo/` and its `demo.yml` now; the integrations built since are recorded on
+> the demo's ROADMAP entry.
 
 *2026-10-30. Maintainer register. Read against pumllint at the current checkout and
 `fdurieux/ieam-register` at `abb251c` (two commits, no tag). Nothing built, nothing changed.*
