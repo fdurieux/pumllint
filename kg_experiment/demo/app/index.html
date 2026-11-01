@@ -120,7 +120,7 @@ a{color:var(--teal)}
     <div class="card" style="margin-top:16px"><h2>The store</h2>
       <div id="store" class="small">…</div>
       <p class="small"><a id="browser-link" href="#" target="_blank" rel="noopener">Open Neo4j Browser</a> (user <code>neo4j</code>, password <code>KG_NEO4J_PASSWORD</code>). One store, one scenario: it holds the scenario loaded last.</p>
-      <h3>Saved Cypher</h3><div id="cypher"></div>
+      <h3>Saved Cypher</h3><p class="small">Each query says what it needs in the store: one scenario is loaded at a time, the register only when projected. Against the wrong state Neo4j warns and returns no rows.</p><div id="cypher"></div>
     </div>
     <div class="card" style="margin-top:16px"><h2>Demo runs</h2><div id="runs" class="small">…</div></div>
   </aside>
@@ -256,7 +256,9 @@ async function renderStore() {
     await loadScenarios();
   });
   const cy = await api('/api/cypher');
-  $('#cypher').innerHTML = cy.map(q => `<details><summary>${esc(q.title)}</summary><button class="copy" data-t="${esc(q.text)}">copy</button><pre class="light">${esc(q.text)}</pre></details>`).join('');
+  // what each query needs, against the store as it stands: one scenario at a time, the register only when projected
+  const can = n => n === 'scenario' ? !!s.loaded : n === 'register' ? !!s.register : n === 'register+scenario' ? !!(s.register && s.loaded) : s.loaded === n;
+  $('#cypher').innerHTML = cy.map(q => `<details><summary>${esc(q.title)} <span class="chip ${can(q.needs) ? 'ok' : 'warn'}" title="needs ${esc(q.needs_text)}">${can(q.needs) ? 'runs now' : 'needs ' + esc(q.needs_text)}</span></summary><button class="copy" data-t="${esc(q.text)}">copy</button><pre class="light">${esc(q.text)}</pre></details>`).join('');
   $('#cypher').querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => { await navigator.clipboard.writeText(b.dataset.t); b.textContent = 'copied'; setTimeout(() => b.textContent = 'copy', 1200); }));
 }
 

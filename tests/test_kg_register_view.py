@@ -240,10 +240,24 @@ def test_projection_is_wired_and_named():
     assert 'id="project-btn"' in page and "/api/register/project" in page and "register ${s.register ? 'projected at '" in page
     assert "POST localhost:8080/api/register/project" in ci and '"tag"]=="v0.1.1"' in ci
     assert "projection" in views.GLOSSARY and "**The projection.**" in (ROOT / "kg_experiment" / "demo" / "README.md").read_text(encoding="utf-8")
-    ids = [m.group(1) for m in _re.finditer(r'\{"id": "([a-z0-9-]+)", "title"', server)]
+    ids = [m.group(1) for m in _re.finditer(r'\{"id": "([a-z0-9-]+)", "needs": "[^"]+", "title"', server)]
     assert ids[-4:] == ["register-tag", "register-impact", "register-c1", "register-cites"], ids
     for cy in ("REG_IS_SUPPORTED_BY|REG_DELIVERS", "REG_EXCEPTS", "Artefact {id:d.path}", "v.sha256 = d.digest THEN 'same as tag'"):
         assert cy in server
+
+
+def test_saved_queries_say_what_they_need():
+    import importlib.util, re as _re
+    server = (ROOT / "kg_experiment" / "demo" / "app" / "server.py").read_text(encoding="utf-8")
+    needs = dict(_re.findall(r'\{"id": "([a-z0-9-]+)", "needs": "([^"]+)", "title"', server))
+    assert len(needs) == 12 and set(needs.values()) <= {"scenario", "S6", "S4", "register", "register+scenario"}
+    assert needs["invalidation"] == "S6" and needs["contradiction"] == "S4" and needs["register-cites"] == "register+scenario"
+    assert all(needs[k] == "register" for k in ("register-tag", "register-impact", "register-c1"))
+    assert all(needs[k] == "scenario" for k in ("loaded", "three-valued", "gate", "gaps", "gaps-concerns", "census"))
+    for need in set(needs.values()):
+        assert f'"{need}": "' in server.split("NEEDS_TEXT = ")[1].split("}")[0]
+    page = (ROOT / "kg_experiment" / "demo" / "app" / "index.html").read_text(encoding="utf-8")
+    assert "const can = n =>" in page and "'runs now' : 'needs ' + esc(q.needs_text)" in page and "cypher_list()" in server
 
 
 def json_keys():

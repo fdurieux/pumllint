@@ -53,23 +53,23 @@ INDEX = (HERE / "index.html").read_bytes()
 # Saved Cypher for the store panel. Each runs in Neo4j Browser against the
 # scenario currently loaded; the comment on each says which scenario shows it.
 CYPHER = [
-    {"id": "loaded", "title": "Which scenario is loaded",
+    {"id": "loaded", "needs": "scenario", "title": "Which scenario is loaded",
      "text": "MATCH (a:Activity) WHERE a.id STARTS WITH 'act:extract:'\nRETURN a.id AS activity, a.at AS at, a.note AS note ORDER BY a.at"},
-    {"id": "three-valued", "title": "The three-valued answer (D5; S1): asserted, documented absent, unknown",
+    {"id": "three-valued", "needs": "scenario", "title": "The three-valued answer (D5; S1): asserted, documented absent, unknown",
      "text": ("// documented absence: every live assertion on the key says NONE\n"
               "MATCH (x:Assertion {key:'S-review|notified'}) RETURN x.id, x.value, x.status;\n"
               "// asserted: a value\n"
               "MATCH (x:Assertion {key:'S-refuse|notified'}) RETURN x.id, x.value, x.status;\n"
               "// unknown: no assertion at all (not a documented absence)\n"
               "MATCH (x:Assertion {key:'QuoteAPI|notified_after_screening'}) RETURN count(x) AS n")},
-    {"id": "gate", "title": "The gate's view of one required key",
+    {"id": "gate", "needs": "scenario", "title": "The gate's view of one required key",
      "text": ("MATCH (x:Assertion {key:'P2|surcharge'})\n"
               "OPTIONAL MATCH (x)-[:SUPPORTED_BY]->(f:Fragment)\n"
               "OPTIONAL MATCH (v:Verification)-[:VERIFIES]->(x)\n"
               "OPTIONAL MATCH (ap:Approval)-[:APPROVES]->(x)\n"
               "RETURN x.id, x.value, x.basis, x.status, collect(DISTINCT f.locator) AS evidence,\n"
               "       collect(DISTINCT v.method) AS verified_by, count(DISTINCT ap) AS approvals")},
-    {"id": "invalidation", "title": "The invalidation traversal (S6): changed fragments → assertions → verifications → Derived",
+    {"id": "invalidation", "needs": "S6", "title": "The invalidation traversal (S6): changed fragments → assertions → verifications → Derived",
      "text": ("MATCH (a:Artefact)-[:CURRENT]->(cur:Version {tag:'v2'})\n"
               "MATCH (a)-[:HAS_VERSION]->(old:Version {tag:'v1'})-[:HAS_FRAGMENT]->(f:Fragment)\n"
               "WHERE NOT (cur)-[:HAS_FRAGMENT]->(f)\n"
@@ -81,39 +81,39 @@ CYPHER = [
               "       collect(DISTINCT v.id + ' valid_until=' + coalesce(v.valid_until,'∅')) AS verifications_ended,\n"
               "       collect(DISTINCT d.id + ' suspect=' + toString(d.suspect)) AS derived,\n"
               "       collect(DISTINCT succ.id + ' ' + succ.value + ' ' + succ.status) AS successor")},
-    {"id": "contradiction", "title": "The contradiction pairs (S4)",
+    {"id": "contradiction", "needs": "S4", "title": "The contradiction pairs (S4)",
      "text": ("MATCH (a:Assertion)-[:CONTRADICTS]->(b:Assertion) WHERE a.id < b.id\n"
               "OPTIONAL MATCH (g:Gap {kind:'conflict'})-[:CONCERNS]->(a)\n"
               "RETURN a.key AS key, a.artefact AS side_a, a.value AS value_a, b.artefact AS side_b, b.value AS value_b,\n"
               "       a.status AS status, collect(DISTINCT g.id) AS conflict_gaps")},
-    {"id": "gaps", "title": "The gap census",
+    {"id": "gaps", "needs": "scenario", "title": "The gap census",
      "text": ("MATCH (g:Gap)\n"
               "OPTIONAL MATCH (g)-[:CONCERNS]->(t)\n"
               "RETURN g.kind AS kind, g.declared AS declared, count(DISTINCT g) AS gaps,\n"
               "       count(DISTINCT t) AS things_concerned ORDER BY kind")},
-    {"id": "gaps-concerns", "title": "The gaps, with what they concern",
+    {"id": "gaps-concerns", "needs": "scenario", "title": "The gaps, with what they concern",
      "text": ("MATCH (g:Gap)\n"
               "OPTIONAL MATCH (g)-[r:CONCERNS|CONCERNS_KEY]->(t)\n"
               "RETURN g.kind AS kind, g.declared AS declared, g.text AS text,\n"
               "       collect(DISTINCT coalesce(r.key, t.id)) AS concerns\n"
               "ORDER BY kind, g.id")},
-    {"id": "census", "title": "The status census",
+    {"id": "census", "needs": "scenario", "title": "The status census",
      "text": "MATCH (x:Assertion) RETURN x.status AS status, x.basis AS basis, count(*) AS n ORDER BY status, basis"},
     # the register's projection: its own namespace (Register, Reg*, REG_*), loaded on demand, wiped by a run
-    {"id": "register-tag", "title": "Which register tag is projected, and what it holds",
+    {"id": "register-tag", "needs": "register", "title": "Which register tag is projected, and what it holds",
      "text": ("MATCH (n:RegNode) WITH n.tag AS tag, n.commit AS commit, n.loaded_at AS loaded_at LIMIT 1\n"
               "MATCH (m:Register) UNWIND labels(m) AS l WITH tag, commit, loaded_at, l WHERE l <> 'Register'\n"
               "RETURN tag, commit, loaded_at, l AS label, count(*) AS n ORDER BY label")},
-    {"id": "register-impact", "title": "The impact walk from APP-0002 in the projection (supports → is_supported_by → delivers, no parent climb)",
+    {"id": "register-impact", "needs": "register", "title": "The impact walk from APP-0002 in the projection (supports → is_supported_by → delivers, no parent climb)",
      "text": ("MATCH p = (a:RegNode {reg_id:'APP-0002'})-[:REG_SUPPORTS|REG_IS_SUPPORTED_BY|REG_DELIVERS*1..4]->(x:RegNode)\n"
               "RETURN x.reg_id AS reached, x.taxonomy AS taxonomy, x.state AS state, length(p) AS hops,\n"
               "       [r IN relationships(p) | r.reg_id] AS via ORDER BY hops, reached")},
-    {"id": "register-c1", "title": "C1 in Cypher: approved steps and touchpoints with no is_supported_by link, the exception joined",
+    {"id": "register-c1", "needs": "register", "title": "C1 in Cypher: approved steps and touchpoints with no is_supported_by link, the exception joined",
      "text": ("MATCH (s:RegNode {taxonomy:'journeys', state:'approved'}) WHERE s.kind IN ['step', 'touchpoint']\n"
               "  AND NOT (s)-[:REG_IS_SUPPORTED_BY]->(:RegNode)\n"
               "OPTIONAL MATCH (e:RegException {rule:'C1'})-[x:REG_EXCEPTS]->(s)\n"
               "RETURN s.reg_id AS uncovered, s.name AS name, e.reg_id AS exception, x.expires AS expires")},
-    {"id": "register-cites", "title": "The links that cite a kit document, joined to the harness's Artefact by path: the one query across both namespaces",
+    {"id": "register-cites", "needs": "register+scenario", "title": "The links that cite a kit document, joined to the harness's Artefact by path: the one query across both namespaces",
      "text": ("// the register's digest at the tag beside the store's digest per version: 'same as tag' or 'differs'\n"
               "MATCH (l:RegLink)-[c:REG_CITES]->(d:RegDocument)\n"
               "OPTIONAL MATCH (a:Artefact {id:d.path})-[:HAS_VERSION]->(v:Version)\n"
@@ -122,6 +122,17 @@ CYPHER = [
               "       collect(DISTINCT v.tag + ': ' + CASE WHEN v.sha256 = d.digest THEN 'same as tag' ELSE 'differs, ' + left(v.sha256, 12) END) AS versions_in_store\n"
               "ORDER BY document")},
 ]
+
+
+# What each saved query needs in the store before it returns rows: the store holds one scenario
+# at a time and the register only when projected, so a query run against the wrong state gets
+# Neo4j's "label not in the database" warnings and no records. The page marks each entry live.
+NEEDS_TEXT = {"scenario": "any loaded scenario", "S6": "S6 loaded deterministically", "S4": "S4 loaded",
+              "register": "the register projected", "register+scenario": "the register projected and a loaded scenario"}
+
+
+def cypher_list() -> list[dict]:
+    return [dict(q, needs_text=NEEDS_TEXT[q["needs"]]) for q in CYPHER]
 
 
 # ------------------------------------------------------------------ the store
@@ -349,7 +360,7 @@ class Handler(BaseHTTPRequestHandler):
             if parts[:2] == ["api", "gaps"] and len(parts) == 3 and parts[2] in views.SCENARIOS:
                 return self._json(store_gaps(parts[2]))
             if parts == ["api", "cypher"]:
-                return self._json(CYPHER)
+                return self._json(cypher_list())
             if parts == ["api", "runs"]:
                 return self._json({"runs": list_runs(), "current": RUNNER.describe()})
             if parts == ["api", "run"]:

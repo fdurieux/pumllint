@@ -8710,6 +8710,17 @@ list and license posture live in § Settled questions.
     tag" or "v2: differs, <12 hex>" in the versions column, so S6's
     changed decision table reads as a difference in one row. Saved
     Cypher text and its wiring test only.
+  - *2026-11-01, later (#PUMLL_PR):* every saved query says what it
+    needs. The maintainer ran the S6 invalidation traversal against a
+    store holding S7 and got Neo4j's "label not in the database"
+    warnings and no rows, which is correct for the wrong store state
+    but was not visible from the list. Each `CYPHER` entry now carries
+    `needs` (`scenario`, `S6`, `S4`, `register`, `register+scenario`)
+    with its text, `/api/cypher` returns both, and the page marks each
+    entry live against the store status: "runs now" or "needs S6 loaded
+    deterministically", "needs the register projected". A note above
+    the list and in the README says why. Page, server list and a test;
+    no query text changes.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
