@@ -258,6 +258,89 @@ kind writes into a dated folder, `kg_experiment/results/demo-runs/<date-time>/`,
 and never into `kg_experiment/results/`, which is the published record.
 The report view lets you switch between the record and any demo run.
 
+### The three modes, step by step
+
+The three buttons on a scenario card differ in **how much of the pipeline
+runs again**: nothing, the data half, or all of it. An *arm* is the
+experiment's word for one side of a comparison, as in a clinical trial:
+the governed arm (G) is the assistant that received the gate's bundle,
+the baseline arm (B) the one that received the documents only.
+
+**Replay runs nothing and shows the record.**
+
+1. You click a scenario card.
+2. The web server opens the committed result files of that scenario
+   under `kg_experiment/results/`.
+3. It renders them as the report view: the plain-English block, the
+   pipeline picture, the systemic model, the bundle, the generated code
+   and the oracle's grades.
+
+Nothing is computed, the store is not touched, no network is used. It is
+instant and free, which is why the demo works offline from the first
+start. Replay is the "what happened" view.
+
+**Deterministic re-runs the data half, with no model.**
+
+The server starts the harness (`harness/run.py --deterministic`) for
+that one scenario. The harness then does, in order:
+
+1. Wipes the demo's store completely; the free edition holds one
+   scenario at a time.
+2. Applies the uniqueness constraints and records which ones the free
+   edition refuses (measure D1).
+3. Loads the kit into the store: documents, versions, fragments,
+   entities, and every assertion at status *proposed*.
+4. Loads the verifications and approvals, which move the matched
+   assertions to *verified* and then *approved*.
+5. Runs the seven rules: agreeing assertions are promoted, contradicting
+   pairs are marked *disputed*, and gaps are raised for vague, missing
+   or unverified knowledge.
+6. Takes the census of the store (D2), runs the shape checks (D4),
+   computes the three-valued answer for three keys (D5), and runs the
+   gate for its verdict (D6). For S6 it also runs the second stage: the
+   changed decision table is re-ingested and the stale assertions are
+   invalidated (D3).
+7. Writes the fresh numbers into a dated folder under
+   `results/demo-runs/`, never into the record, and the page shows them
+   beside the record's.
+
+*Deterministic* means the same inputs always give the same output,
+because every step is plain code and store queries; no model is called.
+It needs the database container, takes about five seconds and costs
+nothing. Deterministic is the "prove the store and the gate still behave
+as recorded" view.
+
+**Arms re-runs everything, the two assistants included.**
+
+The server starts the harness with `--n 1` instead of `--deterministic`.
+The harness then:
+
+1. Does every step of the Deterministic mode first, so the store is
+   freshly loaded and the verdict is fresh.
+2. Builds arm B's prompt: the task plus the kit's documents themselves.
+3. Builds arm G's prompt: the task plus the gate's bundle, that is the
+   verdict, the policy and the 36 keys one by one with their evidence.
+4. Calls the model once per arm. The record used five calls per arm;
+   the demo uses one to keep the cost down.
+5. Grades each reply with the oracle: the kit's eleven acceptance
+   scenarios run against the code the arm wrote. It also records the
+   arm's decision (generate, generate with assumptions, or abstain) and
+   whether the arm flagged the planted problem.
+6. Writes the run into a dated folder under `results/demo-runs/`, with
+   the model that answered named on every run.
+
+This mode needs the OpenAI key in the environment; the button stays
+greyed out without it. It takes one to two minutes and costs a few
+cents. A run answered by a model other than the record's is marked in
+red as a deviation, because its numbers are no longer comparable with
+the record's (see the next section).
+
+| mode | what runs again | needs | time |
+|---|---|---|---|
+| Replay | nothing; the committed files are read | nothing | instant |
+| Deterministic | load, rules, gate | the Neo4j container | about five seconds |
+| Arms | all of the above, then one call per arm and the oracle's grading | the OpenAI key | one to two minutes |
+
 ## Which model the Arms mode calls
 
 The record's two arms were answered by `gpt-5.1-2025-11-13`, and the
