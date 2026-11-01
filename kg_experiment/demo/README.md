@@ -98,7 +98,8 @@ register, a separate public repository
 ([fdurieux/ieam-register](https://github.com/fdurieux/ieam-register))
 that keeps the identities, typed relationships and approvals of the same
 CargoQuote kit the scenarios use. Its card gives the commit the demo
-carries (`register/SOURCE.md` says which), the counts and the register's
+carries (`register/SOURCE.md` says which, written by
+`tools/vendor_register.py` from a checkout at the tag), the counts and the register's
 own coverage figures; *Open* replaces the scenario report with the
 register in the wide column: its exception and mapping matrix,
 the nodes by taxonomy (clicking one opens a panel with its state, owner,
