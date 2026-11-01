@@ -188,7 +188,11 @@ derived output pointing at its assertions (the demo's runner copies the
 record's S1 output into the run folder for S6 in both modes, and the
 harness reads it in both modes, so a deterministic S6 has the same
 object to invalidate as the record's full run; the record's own
-deterministic-only run, `d3check/S6`, predates that and has none). The changed decision table is
+deterministic-only run, `d3check/S6`, predates that and has none; the page
+reads a run that registered the derived output against the scored record,
+`results/S6`, with `valid_until` set aside as the timestamps are, since that
+record holds the null a since-fixed loader defect wrote there, see the
+pre-registration's run notes and `record_check` in `app/views.py`). The changed decision table is
 re-ingested as version two; unchanged fragments are recognised by digest
 and reused, so only the changed rows produce new assertions. The
 staleness rule then invalidates every older assertion whose supporting
@@ -608,7 +612,12 @@ way. For S6, pass `--s6-record kg_experiment/results/S6`: since the runner
 and the harness read S1's generated code in both modes, a demo run's S6
 carries the suspect Derived output the scored record has, which the
 record's older deterministic-only run (`results/d3check/S6`, the default)
-predates.
+predates. Expect three leaves to differ there, all `valid_until` on the
+three ended verifications: the scored run's loader reset that field to
+null after the staleness rule had set it (the pre-registration's "third
+harness defect"), and the record keeps the first run as it was. The page's
+own check sets that one leaf aside against `results/S6` and says so; the
+command line reads every leaf.
 
 **The published image.** Nothing to do by hand. Every merge to `main`
 that touches the demo rebuilds `ghcr.io/fdurieux/pumllint-kg-demo` and

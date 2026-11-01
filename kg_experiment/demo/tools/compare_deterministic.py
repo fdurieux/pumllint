@@ -28,6 +28,13 @@ record's older deterministic-only run, which predates the change.
 
 Standard library only, so the CI job and a laptop can run it with no
 install. The record is ``kg_experiment/results`` by default.
+
+``compare()`` takes ``ignore_keys``, leaf names set aside for that one
+comparison as the volatile keys are. The command line passes none: the
+page passes ``valid_until`` when it reads a derived-registering run
+against ``results/S6``, whose scored run wrote that leaf with a loader
+defect fixed afterwards (the pre-registration's run notes, "a third
+harness defect"); ``d3check/S6`` has the corrected value but no Derived.
 """
 
 from __future__ import annotations
@@ -44,23 +51,23 @@ SCENARIOS = ["S1", "S2", "S3", "S4", "S5", "S6", "S7"]
 VOLATILE_KEYS = {"at", "ingested_at", "invalidated_at", "sample"}
 
 
-def _leaves(obj, prefix: str = "") -> dict[str, object]:
+def _leaves(obj, prefix: str = "", ignore: frozenset = frozenset(VOLATILE_KEYS)) -> dict[str, object]:
     out: dict[str, object] = {}
     if isinstance(obj, dict):
         for k, v in obj.items():
-            if k in VOLATILE_KEYS:
+            if k in ignore:
                 continue
-            out.update(_leaves(v, f"{prefix}.{k}" if prefix else str(k)))
+            out.update(_leaves(v, f"{prefix}.{k}" if prefix else str(k), ignore))
     elif isinstance(obj, list):
         # lists of dicts are compared as sets of their canonical forms when
         # order is not meaningful (rule hits come back in store order)
         if obj and all(isinstance(x, dict) for x in obj):
-            canon = sorted(json.dumps(_strip(x), sort_keys=True) for x in obj)
+            canon = sorted(json.dumps(_strip(x, ignore), sort_keys=True) for x in obj)
             for i, c in enumerate(canon):
                 out[f"{prefix}[{i}]"] = c
         else:
             for i, x in enumerate(obj):
-                out.update(_leaves(x, f"{prefix}[{i}]"))
+                out.update(_leaves(x, f"{prefix}[{i}]", ignore))
     else:
         out[prefix] = obj
     return out
@@ -69,20 +76,24 @@ def _leaves(obj, prefix: str = "") -> dict[str, object]:
 CONFLICT_ID = re.compile(r"^(gap:conflict:.+):\d+$")
 
 
-def _strip(obj):
+def _strip(obj, ignore: frozenset = frozenset(VOLATILE_KEYS)):
     if isinstance(obj, dict):
-        out = {k: _strip(v) for k, v in obj.items() if k not in VOLATILE_KEYS}
+        out = {k: _strip(v, ignore) for k, v in obj.items() if k not in ignore}
         if isinstance(out.get("id"), str):
             out["id"] = CONFLICT_ID.sub(r"\1:n", out["id"])
         return out
     if isinstance(obj, list):
         if obj and all(isinstance(x, dict) for x in obj):
-            return sorted((_strip(x) for x in obj), key=lambda d: json.dumps(d, sort_keys=True))
-        return [_strip(x) for x in obj]
+            return sorted((_strip(x, ignore) for x in obj), key=lambda d: json.dumps(d, sort_keys=True))
+        return [_strip(x, ignore) for x in obj]
     return obj
 
 
-def compare(run_dir: Path, record_dir: Path, scenarios: list[str], s6_record: Path | None = None) -> tuple[int, list[str]]:
+def compare(run_dir: Path, record_dir: Path, scenarios: list[str], s6_record: Path | None = None,
+            ignore_keys=()) -> tuple[int, list[str]]:
+    """``ignore_keys`` are leaf names set aside for this comparison as ``VOLATILE_KEYS`` are
+    (the command line passes none)."""
+    ignore = frozenset(VOLATILE_KEYS) | frozenset(ignore_keys)
     lines: list[str] = []
     n_diff = 0
     for sc in scenarios:
@@ -94,8 +105,8 @@ def compare(run_dir: Path, record_dir: Path, scenarios: list[str], s6_record: Pa
             lines.append(f"{sc}: no record at {b}")
             n_diff += 1
             continue
-        la = _leaves(json.loads(a.read_text(encoding="utf-8")))
-        lb = _leaves(json.loads(b.read_text(encoding="utf-8")))
+        la = _leaves(json.loads(a.read_text(encoding="utf-8")), ignore=ignore)
+        lb = _leaves(json.loads(b.read_text(encoding="utf-8")), ignore=ignore)
         diffs = []
         for k in sorted(set(la) | set(lb)):
             if la.get(k, "<missing>") != lb.get(k, "<missing>"):
