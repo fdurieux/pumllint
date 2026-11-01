@@ -493,7 +493,7 @@ def record_check(scenario: str, d: Path) -> dict | None:
     compared = next((ln for ln in lines if "leaves compared" in ln), "")
     m = re.search(r"(\d+) leaves compared", compared)
     return {"differ": n, "compared": int(m.group(1)) if m else 0,
-            "against": str(s6.relative_to(EXP)) if scenario == "S6" else f"results/{scenario}", "aside": aside,
+            "against": s6.relative_to(EXP).as_posix() if scenario == "S6" else f"results/{scenario}", "aside": aside,
             "lines": [ln.strip() for ln in lines if ln.startswith("  ")][:6]}
 
 
