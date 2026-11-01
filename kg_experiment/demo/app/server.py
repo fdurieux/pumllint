@@ -114,10 +114,13 @@ CYPHER = [
               "OPTIONAL MATCH (e:RegException {rule:'C1'})-[x:REG_EXCEPTS]->(s)\n"
               "RETURN s.reg_id AS uncovered, s.name AS name, e.reg_id AS exception, x.expires AS expires")},
     {"id": "register-cites", "title": "The links that cite a kit document, joined to the harness's Artefact by path: the one query across both namespaces",
-     "text": ("MATCH (l:RegLink)-[c:REG_CITES]->(d:RegDocument)\n"
+     "text": ("// the register's digest at the tag beside the store's digest per version: 'same as tag' or 'differs'\n"
+              "MATCH (l:RegLink)-[c:REG_CITES]->(d:RegDocument)\n"
               "OPTIONAL MATCH (a:Artefact {id:d.path})-[:HAS_VERSION]->(v:Version)\n"
-              "RETURN d.path AS document, d.digest AS digest_at_tag, collect(DISTINCT l.reg_id) AS links,\n"
-              "       collect(DISTINCT c.anchor) AS anchors, collect(DISTINCT v.tag) AS versions_in_store ORDER BY document")},
+              "RETURN d.path AS document, left(d.digest, 12) AS digest_at_tag, collect(DISTINCT l.reg_id) AS links,\n"
+              "       collect(DISTINCT c.anchor) AS anchors,\n"
+              "       collect(DISTINCT v.tag + ': ' + CASE WHEN v.sha256 = d.digest THEN 'same as tag' ELSE 'differs, ' + left(v.sha256, 12) END) AS versions_in_store\n"
+              "ORDER BY document")},
 ]
 
 

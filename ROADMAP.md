@@ -8701,6 +8701,15 @@ list and license posture live in § Settled questions.
     map row's note for the outage key records the change; the rows are
     as approved. Tests and the stack job follow (REQ-06 cited by
     REL-06002, S2 amber). Lab, page, tests and docs only.
+  - *2026-11-01, later (#255):* the cross-namespace query compares
+    digests. The maintainer ran the saved query in Neo4j Browser with S2
+    loaded and `v0.1.1` projected: eight rows, every cited kit document
+    present in the store as `v1`, the join by path holding. On the
+    maintainer's choice the query now puts the store's digest per
+    version beside the register's digest at the tag, as "v1: same as
+    tag" or "v2: differs, <12 hex>" in the versions column, so S6's
+    changed decision table reads as a difference in one row. Saved
+    Cypher text and its wiring test only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
