@@ -18,8 +18,13 @@ record's deterministic-mode run (``run.py --deterministic``, after the
 loader fix the pre-registration's run notes describe). ``results/S6``
 was written by the scored run, whose stage 2 also registers S1's first
 governed output as a ``Derived`` node — a node, 88 ``USED_ASSERTION``
-edges and a suspect flag that ``--deterministic`` does not create.
-Pass ``--s6-record results/S6`` to see exactly that difference.
+edges and a suspect flag that ``--deterministic`` did not create.
+Pass ``--s6-record results/S6`` to see exactly that difference. Since
+2026-11-01 (pumllint #257 and #259) the demo's runner copies S1's
+generated code into the run folder and the harness reads it in both
+modes, so a demo run's S6 carries that Derived node too: compare such a
+run with ``--s6-record results/S6``; the ``d3check`` default is the
+record's older deterministic-only run, which predates the change.
 
 Standard library only, so the CI job and a laptop can run it with no
 install. The record is ``kg_experiment/results`` by default.

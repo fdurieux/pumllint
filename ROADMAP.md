@@ -8766,6 +8766,21 @@ list and license posture live in § Settled questions.
     repository and one holding the shipped note to the tool's output;
     CLAUDE.md names the command. Integration step 6 is a command now.
     Tooling and docs only.
+  - *2026-11-01, later (#261):* the Legible model vendored the same
+    way, and the chores written down. `tools/vendor_legible_model.py
+    <checkout>` copies `model/model.json` from a clean checkout of
+    `fdurieux/fdurieux.github.io` at any commit (the version is the file's
+    own field; the site carries no tag, so one is recorded when present
+    and not required) and writes `model/SOURCE.md` from git's answers,
+    sharing the register tool's git helper. Run at `099a737` it found the
+    copy unchanged and rewrote only the note. Three tests on a throwaway
+    repository and one holding the shipped note to the tool's output. The
+    demo README gains "Keeping the demo current": the two copies, the
+    harness check against the record, the image, one command each, with
+    the S6 note that a demo run now carries the Derived node and so
+    compares against `results/S6`, not `d3check`; the compare tool's
+    docstring says the same. CLAUDE.md names both tools. Tooling and
+    docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

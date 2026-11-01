@@ -43,8 +43,10 @@ def _sha(p: Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
 
-def describe(checkout: Path, allow_untagged: bool) -> dict:
-    """What git says about the checkout: refuses a dirty tree and, unless allowed, an untagged HEAD."""
+def describe(checkout: Path, allow_untagged: bool, paths: tuple[str, ...] = PATHS) -> dict:
+    """What git says about the checkout: refuses a dirty tree and, unless allowed, an untagged HEAD.
+    ``paths`` is the fixed set to copy; the register's by default, the Legible model's from
+    ``tools/vendor_legible_model.py``, which shares this function."""
     if not (checkout / ".git").exists():
         raise SystemExit(f"{checkout} is not a git checkout")
     if _git(checkout, "status", "--porcelain", "--untracked-files=no"):
@@ -63,8 +65,8 @@ def describe(checkout: Path, allow_untagged: bool) -> dict:
         url = ""
     m = re.search(r"github\.com[:/]([^/]+/[^/]+?)(?:\.git)?$", url)
     repo = m.group(1) if m else ""
-    files = sorted(f for f in _git(checkout, "ls-files", "-z", "--", *PATHS).split("\0") if f)
-    missing = [p for p in PATHS if not (checkout / p).exists()]
+    files = sorted(f for f in _git(checkout, "ls-files", "-z", "--", *paths).split("\0") if f)
+    missing = [p for p in paths if not (checkout / p).exists()]
     if missing:
         raise SystemExit(f"the checkout lacks {', '.join(missing)}")
     return {"commit": commit, "subject": subject, "date": date, "tag": tag, "repo": repo, "files": files}
