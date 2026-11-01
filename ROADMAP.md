@@ -8753,7 +8753,7 @@ list and license posture live in § Settled questions.
     file is an input of the deterministic stage 2, not an arm call); a
     small additive change to the harness, the record untouched. Test
     pins both the runner and the harness; README corrected. Lab only.
-  - *2026-11-01, later (#PUMLL_PR):* the vendoring lifted to `git describe`.
+  - *2026-11-01, later (#260):* the vendoring lifted to `git describe`.
     `tools/vendor_register.py <checkout>` copies the register's fixed path
     set from a clean checkout at a tag (`git describe --tags --exact-match`;
     an untagged commit only with `--allow-untagged`, a dirty tree never)
