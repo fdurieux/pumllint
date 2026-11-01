@@ -8721,7 +8721,7 @@ list and license posture live in § Settled questions.
     deterministically", "needs the register projected". A note above
     the list and in the README says why. Page, server list and a test;
     no query text changes.
-  - *2026-11-01, later (#257):* the demo README gains "The three modes,
+  - *2026-11-01, later (#258):* the demo README gains "The three modes,
     step by step", on the maintainer's ask for a plain-English
     explanation of Replay, Deterministic and Arms: what each button runs
     again (nothing, the data half, all of it), the harness's steps in
