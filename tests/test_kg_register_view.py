@@ -260,6 +260,14 @@ def test_saved_queries_say_what_they_need():
     assert "const can = n =>" in page and "'runs now' : 'needs ' + esc(q.needs_text)" in page and "cypher_list()" in server
 
 
+def test_runner_gives_s6_the_derived_output_in_both_modes():
+    # a deterministic S6 without S1/run1_G.py in its folder has no Derived node to mark suspect,
+    # which the maintainer's invalidation traversal showed as an empty derived column (2026-11-01)
+    server = (ROOT / "kg_experiment" / "demo" / "app" / "server.py").read_text(encoding="utf-8")
+    assert 'if scenario == "S6":' in server and 'if scenario == "S6" and mode == "arms":' not in server
+    assert (ROOT / "kg_experiment" / "results" / "S1" / "run1_G.py").exists()
+
+
 def json_keys():
     import json
     return list(json.loads((ROOT / "kg_experiment" / "results" / "S1" / "deterministic.json").read_text(encoding="utf-8"))["gate_keys"])

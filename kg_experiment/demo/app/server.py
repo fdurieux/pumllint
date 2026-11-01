@@ -228,9 +228,12 @@ class Runner:
                 out_dir = RUNS_DIR / f"{stamp}-{k}"
                 k += 1
             out_dir.mkdir(parents=True)
-            if scenario == "S6" and mode == "arms":
+            if scenario == "S6":
                 # the record's stage 2 registers S1's first governed output as the
-                # Derived artefact; give the re-run the same object to invalidate
+                # Derived artefact; give the re-run the same object to invalidate, in
+                # both modes: the harness reads <out>/S1/run1_G.py whether or not the
+                # arms are called, and without it a deterministic S6 has no Derived
+                # node to mark suspect (found by the maintainer's traversal, 2026-11-01)
                 src = EXP / "results" / "S1" / "run1_G.py"
                 if src.exists():
                     (out_dir / "S1").mkdir()

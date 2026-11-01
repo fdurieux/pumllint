@@ -8721,6 +8721,17 @@ list and license posture live in § Settled questions.
     deterministically", "needs the register projected". A note above
     the list and in the README says why. Page, server list and a test;
     no query text changes.
+  - *2026-11-01, later (#257):* a deterministic S6 in the demo gets
+    its Derived output. The maintainer loaded S6 deterministically and
+    ran the invalidation traversal: four rows as in the record, but an
+    empty `derived` column and Neo4j's warning that `Derived` and
+    `USED_ASSERTION` do not exist. Cause in the demo's runner, not the
+    harness: the harness registers S1's governed output from
+    `<out>/S1/run1_G.py` if present, and the runner copied the record's
+    file there for S6 in arms mode only. It now copies it in both
+    modes, so a deterministic S6 has the same object to invalidate as
+    the record and the stage-2 box lists `derived:S1:G:run1` suspect.
+    Test pins the condition; README sentence. Lab only.
   - *2026-11-01, later (#258):* the demo README gains "The three modes,
     step by step", on the maintainer's ask for a plain-English
     explanation of Replay, Deterministic and Arms: what each button runs
