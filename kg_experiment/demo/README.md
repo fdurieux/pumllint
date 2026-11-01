@@ -183,7 +183,9 @@ and raise gaps for vague wording, for declared or undetectable missing
 knowledge, and for unverified statements.
 
 S6 has a second stage. The generated code from S1 is registered as a
-derived output pointing at its assertions. The changed decision table is
+derived output pointing at its assertions (the demo's runner copies the
+record's S1 output into the run folder for S6 in both modes, so a
+deterministic S6 has the same object to invalidate as the record). The changed decision table is
 re-ingested as version two; unchanged fragments are recognised by digest
 and reused, so only the changed rows produce new assertions. The
 staleness rule then invalidates every older assertion whose supporting
