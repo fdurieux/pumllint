@@ -8686,7 +8686,7 @@ list and license posture live in § Settled questions.
     the stack job projects after the deterministic run and asserts the
     census beside the loaded scenario. "projection" joins the glossary;
     README.
-  - *2026-11-01, later (#PUMLL_PR):* the register re-vendored at
+  - *2026-11-01, later (#254):* the register re-vendored at
     `v0.1.1`. The footprint's finding (REQ-06 cited by no link) became
     the register's first content change: ieam-register #3, decision
     0003, REL-06002 (ScreeningService supports Screen the shipper) now
