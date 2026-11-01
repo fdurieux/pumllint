@@ -8741,6 +8741,18 @@ list and license posture live in § Settled questions.
     per arm and the oracle's grading), what "arm" and "deterministic"
     mean, and a closing table. Docs only; the glossary's terms used
     where they apply.
+  - *2026-11-01, later (#259):* #257 was necessary, not sufficient.
+    The maintainer re-ran S6 deterministically on the new build and the
+    traversal's `derived` column stayed empty: the harness's own
+    deterministic branch passed no derived code to stage 2
+    (`s6_stage2(d, None, [])`) whatever file the folder held; only the
+    arms branch read `S1/run1_G.py`. The record's full S6 run took the
+    arms branch and has the Derived; the record's deterministic-only
+    `d3check/S6` took the other and has none, which `views.py` already
+    allowed for. `harness/run.py` now reads the file in both modes (the
+    file is an input of the deterministic stage 2, not an arm call); a
+    small additive change to the harness, the record untouched. Test
+    pins both the runner and the harness; README corrected. Lab only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

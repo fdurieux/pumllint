@@ -266,6 +266,9 @@ def test_runner_gives_s6_the_derived_output_in_both_modes():
     server = (ROOT / "kg_experiment" / "demo" / "app" / "server.py").read_text(encoding="utf-8")
     assert 'if scenario == "S6":' in server and 'if scenario == "S6" and mode == "arms":' not in server
     assert (ROOT / "kg_experiment" / "results" / "S1" / "run1_G.py").exists()
+    # and the harness reads that file in both modes: the deterministic branch used to pass none
+    run_py = (ROOT / "kg_experiment" / "harness" / "run.py").read_text(encoding="utf-8")
+    assert "s6_stage2(d, None, [])" not in run_py and 'derived_ids = [a["id"] for v in gate["keys"].values() for a in v["assertions"]] if derived_code else []' in run_py
 
 
 def json_keys():

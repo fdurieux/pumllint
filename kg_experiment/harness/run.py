@@ -183,16 +183,15 @@ def main() -> None:
         runs = {}
         if sc == "S6":
             task = "task_s6"
-            if not args.deterministic:
-                # stage 1 = S1's graph; the derived artefact is S1/G/run1's code if it exists
-                s1_code_path = out_root / "S1" / "run1_G.py"
-                derived_code = s1_code_path.read_text(encoding="utf-8") if s1_code_path.exists() else None
-                derived_ids = [a["id"] for v in gate["keys"].values() for a in v["assertions"]]
-                stage2, gate, kit = s6_stage2(d, derived_code, derived_ids)
-                det["stage2"] = stage2
-            else:
-                stage2, gate, kit = s6_stage2(d, None, [])
-                det["stage2"] = stage2
+            # stage 1 = S1's graph; the derived artefact is S1/G/run1's code if it exists, in
+            # both modes: the file is an input of the deterministic stage 2, not an arm call
+            # (until 2026-11-01 the deterministic branch passed none, so a deterministic-only
+            # S6 had no Derived node to mark suspect; the record's d3check/S6 shows that state)
+            s1_code_path = out_root / "S1" / "run1_G.py"
+            derived_code = s1_code_path.read_text(encoding="utf-8") if s1_code_path.exists() else None
+            derived_ids = [a["id"] for v in gate["keys"].values() for a in v["assertions"]] if derived_code else []
+            stage2, gate, kit = s6_stage2(d, derived_code, derived_ids)
+            det["stage2"] = stage2
         else:
             task = "task_codegen"
         dump(out_dir / "deterministic.json", det)
