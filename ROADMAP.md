@@ -8710,7 +8710,7 @@ list and license posture live in § Settled questions.
     tag" or "v2: differs, <12 hex>" in the versions column, so S6's
     changed decision table reads as a difference in one row. Saved
     Cypher text and its wiring test only.
-  - *2026-11-01, later (#PUMLL_PR):* every saved query says what it
+  - *2026-11-01, later (#256):* every saved query says what it
     needs. The maintainer ran the S6 invalidation traversal against a
     store holding S7 and got Neo4j's "label not in the database"
     warnings and no rows, which is correct for the wrong store state
