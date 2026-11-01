@@ -8753,6 +8753,19 @@ list and license posture live in § Settled questions.
     file is an input of the deterministic stage 2, not an arm call); a
     small additive change to the harness, the record untouched. Test
     pins both the runner and the harness; README corrected. Lab only.
+  - *2026-11-01, later (#260):* the vendoring lifted to `git describe`.
+    `tools/vendor_register.py <checkout>` copies the register's fixed path
+    set from a clean checkout at a tag (`git describe --tags --exact-match`;
+    an untagged commit only with `--allow-untagged`, a dirty tree never)
+    and writes `register/SOURCE.md` from git's answers: tag, commit with
+    subject and date, sha256 per file, the pinned date as the newest kit
+    export's, the superseded copies as an *Earlier copies* table. Run at
+    `v0.1.1` it reproduced the hand-made copy file for file (51, none
+    changed) and rewrote only the note; `v0.1.0` at `ef7fe0e` carried
+    forward from the old note's phrase. Four tests on a throwaway git
+    repository and one holding the shipped note to the tool's output;
+    CLAUDE.md names the command. Integration step 6 is a command now.
+    Tooling and docs only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*

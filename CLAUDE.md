@@ -18,6 +18,12 @@ After changing a rule's `options` in `pumllint/rules/catalog.toml` (a
 `name = "type"` table), regenerate the config schema or CI fails:
 `python tools/generate_config_schema.py`.
 
+To re-vendor the IEAM register under the kg demo, check `fdurieux/ieam-register`
+out at the tag and run `python tools/vendor_register.py <checkout>`: it copies
+the fixed path set and rewrites `kg_experiment/demo/register/SOURCE.md` from
+git's answers (tag, commit, digests, earlier copies). Never edit that note by
+hand; `tests/test_vendor_register.py` holds it to the tool's output.
+
 After a deliberate scoring or reporter change, regenerate the published pilot
 artefacts — `tests/test_pilot_example.py` compares them byte for byte:
 
