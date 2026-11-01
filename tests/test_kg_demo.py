@@ -109,9 +109,77 @@ def test_compare_tool_finds_the_record_identical_to_itself():
     n, lines = compare_deterministic.compare(RESULTS, RESULTS, compare_deterministic.SCENARIOS,
                                              s6_record=RESULTS / "S6")
     assert n == 0, lines
-    # and the deterministic-mode S6 record differs from the scored one only by the Derived node
+    # and the deterministic-mode S6 record differs from the scored one by the Derived node and by
+    # valid_until on the three ended verifications (the scored run's loader reset it, d3check/S6 is
+    # the re-establishment after the fix: PREREGISTRATION.md, run notes, "a third harness defect");
+    # by default the comparator reports that leaf, as it does every non-volatile one
     n, lines = compare_deterministic.compare(RESULTS / "d3check", RESULTS, ["S6"], s6_record=RESULTS / "S6")
     assert n > 0 and all("derived" in ln.lower() or "census_after" in ln or "valid_until" in ln or "S6" in ln for ln in lines), lines
+    stale = [ln for ln in lines if ".stale[" in ln]
+    assert len(stale) == 3 and all('"valid_until": null' in ln.split("record=")[1] for ln in stale), stale
+    # set aside on request, only the Derived node remains between the two
+    n2, lines2 = compare_deterministic.compare(RESULTS / "d3check", RESULTS, ["S6"], s6_record=RESULTS / "S6", ignore_keys=["valid_until"])
+    assert 0 < n2 == n - 3 and not [ln for ln in lines2 if ".stale[" in ln], lines2
+    assert "valid_until" not in compare_deterministic.VOLATILE_KEYS, "the default comparison keeps reading it"
+
+
+def _derived_registering_s6(td: Path, name: str) -> Path:
+    """What a deterministic S6 writes since #257/#259 copy S1's code into the run folder: the scored
+    record's deterministic.json with the ended verifications carrying the new tag, which is what
+    r_stale sets and what the scored run's loader reset to null."""
+    det = json.loads((RESULTS / "S6" / "deterministic.json").read_text(encoding="utf-8"))
+    assert det["stage2"]["suspect_derived"], "the scored record registered the Derived"
+    for x in det["stage2"]["gate_after_reverification"]["stale"]:
+        for v in x["verifications"]:
+            assert v["valid_until"] is None, "the record holds the defect's null"
+            v["valid_until"] = "v2"
+    d = td / "demo-runs" / name / "S6"
+    d.mkdir(parents=True)
+    (d / "deterministic.json").write_text(json.dumps(det), encoding="utf-8")
+    return d
+
+
+def test_record_check_sets_the_scored_records_valid_until_aside_for_a_derived_registering_run():
+    import tempfile
+    with tempfile.TemporaryDirectory() as td:
+        d = _derived_registering_s6(Path(td), "2026-11-01-1200")
+        # the comparator by itself still sees the three leaves: the command line is unchanged
+        n, lines = compare_deterministic.compare(d.parent, RESULTS, ["S6"], s6_record=RESULTS / "S6")
+        assert n == 3 and all(".stale[" in ln for ln in lines if ln.startswith("  ")), lines
+        # the page reads the run against the scored record with that leaf set aside, and says so
+        rc = views.record_check("S6", d)
+        assert rc["differ"] == 0 and rc["compared"] > 100 and rc["against"] == "results/S6" and rc["aside"] == ["valid_until"], rc
+        text = " ".join(views.build("S6", "demo-runs/2026-11-01-1200", Path(td) / "demo-runs")["narrative"])
+        assert "identical on all" in text and "timestamps and valid_until aside" in text, text
+        # any other leaf still counts: the run's stage-2 verdict is not set aside
+        det = json.loads((d / "deterministic.json").read_text(encoding="utf-8"))
+        det["stage2"]["gate_after_reverification"]["verdict"] = "BLOCKED"
+        (d / "deterministic.json").write_text(json.dumps(det), encoding="utf-8")
+        rc = views.record_check("S6", d)
+        assert rc["differ"] == 1 and "gate_after_reverification.verdict" in rc["lines"][0], rc
+        # a run that registered no Derived goes to d3check/S6 with nothing aside
+        d2 = Path(td) / "demo-runs" / "2026-11-01-1300" / "S6"; d2.mkdir(parents=True)
+        d2.joinpath("deterministic.json").write_bytes((RESULTS / "d3check" / "S6" / "deterministic.json").read_bytes())
+        rc = views.record_check("S6", d2)
+        assert rc["differ"] == 0 and rc["against"] == "results/d3check/S6" and rc["aside"] == [], rc
+        assert "timestamps aside" in " ".join(views.build("S6", "demo-runs/2026-11-01-1300", Path(td) / "demo-runs")["narrative"])
+
+
+def test_compare_tool_command_line_reads_every_leaf():
+    """The CLI has no way to set a leaf aside: a derived-registering run against results/S6 exits 1
+    with the three valid_until leaves, as before (the page is the one reader that sets them aside)."""
+    import contextlib, io, tempfile
+    with tempfile.TemporaryDirectory() as td:
+        d = _derived_registering_s6(Path(td), "2026-11-01-1400")
+        argv, out = sys.argv, io.StringIO()
+        try:
+            sys.argv = ["compare_deterministic.py", str(d.parent), "--scenarios", "S6", "--s6-record", str(RESULTS / "S6")]
+            with contextlib.redirect_stdout(out):
+                code = compare_deterministic.main()
+        finally:
+            sys.argv = argv
+        text = out.getvalue()
+        assert code == 1 and "DIFF: 3 differing" in text and text.count("valid_until") >= 3, text
 
 
 def test_image_pins_the_versions_the_record_names():

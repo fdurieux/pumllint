@@ -478,12 +478,22 @@ def record_check(scenario: str, d: Path) -> dict | None:
     if d.parent.name in ("rerun", "d3check"):
         return None
     det = _read_json(d / "deterministic.json")
-    s6 = RESULTS / ("S6" if det.get("stage2", {}).get("suspect_derived") else "d3check/S6")
-    n, lines = compare_deterministic.compare(d.parent, RESULTS, [scenario], s6_record=s6)
+    scored = bool(det.get("stage2", {}).get("suspect_derived"))
+    s6 = RESULTS / ("S6" if scored else "d3check/S6")
+    # Against the scored S6 record only, ``valid_until`` is set aside as the comparator sets the
+    # timestamps aside: that run's stage-2 verification loader re-merged the three ended
+    # verifications and reset the field to null after R-STALE had set it to "v2" (the
+    # pre-registration's run notes, "a third harness defect"); the loader was fixed and D3
+    # re-established in d3check/S6, which has the "v2" a re-run writes but no Derived node, and
+    # results/S6 was kept as the first run was. A derived-registering run therefore has no record
+    # right on every leaf; the record is not rewritten, the page says what it set aside. The
+    # comparator's command line passes none, so the record stays comparable with itself.
+    aside = ["valid_until"] if scenario == "S6" and scored else []
+    n, lines = compare_deterministic.compare(d.parent, RESULTS, [scenario], s6_record=s6, ignore_keys=aside)
     compared = next((ln for ln in lines if "leaves compared" in ln), "")
     m = re.search(r"(\d+) leaves compared", compared)
     return {"differ": n, "compared": int(m.group(1)) if m else 0,
-            "against": str(s6.relative_to(EXP)) if scenario == "S6" else f"results/{scenario}",
+            "against": s6.relative_to(EXP).as_posix() if scenario == "S6" else f"results/{scenario}", "aside": aside,
             "lines": [ln.strip() for ln in lines if ln.startswith("  ")][:6]}
 
 
@@ -582,11 +592,12 @@ def narrative(view: dict, det: dict, reg: list) -> list[str]:
                      "The two arms were not called.", "Replay shows the record's runs for this scenario.", "Arms calls them again."))
     if view.get("record_check"):
         rc = view["record_check"]
+        aside = " and ".join(["timestamps"] + rc.get("aside", [])) + " aside"
         if rc["differ"] == 0:
-            out.append(C(f"Against the record: identical on all {rc['compared']} fields compared with {rc['against']}, timestamps aside.",
+            out.append(C(f"Against the record: identical on all {rc['compared']} fields compared with {rc['against']}, {aside}.",
                          "The store reproduced the record."))
         else:
-            out.append(C(f"Against the record: {_plural(rc['differ'], 'field')} of {rc['compared']} differ from {rc['against']}.") + " " + D("; ".join(rc["lines"][:3]) + "."))
+            out.append(C(f"Against the record: {_plural(rc['differ'], 'field')} of {rc['compared']} differ from {rc['against']}, {aside}.") + " " + D("; ".join(rc["lines"][:3]) + "."))
     if view.get("model_deviation"):
         out.append(C(f"The arms here were answered by {', '.join(view['model_deviation'])}, not the record's {view['record_model']}.",
                      "A different model answered, so these results are not comparable with the record's."))

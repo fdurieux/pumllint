@@ -8781,6 +8781,28 @@ list and license posture live in § Settled questions.
     compares against `results/S6`, not `d3check`; the compare tool's
     docstring says the same. CLAUDE.md names both tools. Tooling and
     docs only.
+  - *2026-11-01, later (#262, with knowgov#9):* the page's record check
+    read a deterministic S6 that registered the derived output against
+    `results/S6` and showed three leaves differing, all
+    `gate_after_reverification.stale[*].verifications[*].valid_until`:
+    null in the record, `v2` in a re-run (what `r_stale` sets). Asked
+    which side is right. The record, by its own account, is wrong there:
+    the pre-registration's run notes ("a third harness defect") say the
+    scored run's stage-2 loader re-merged the ended verifications and
+    reset the field after R-STALE had set it; the loader was fixed, D3
+    re-established in `d3check/S6` (`v2`, but no Derived node), and
+    `results/S6` kept as the first run was, `rerun/S6` with it. A
+    derived-registering run therefore has no record right on every leaf.
+    Regenerating the scored record was rejected: it would rewrite a
+    frozen artefact (`SHA256SUMS`, knowgov's vendoring digest) against
+    the record's own procedure. Instead `compare()` takes `ignore_keys`
+    (the command line passes none and still reports the three), and the
+    page sets `valid_until` aside against `results/S6` only, says
+    "timestamps and valid_until aside", and still counts any other leaf;
+    three tests pin it. In knowgov the same change, with the leaf as
+    subject data (`scored_record_volatile` in S6's manifest) and the
+    finding in task-0018; a deterministic S6 through the page there read
+    identical on all 170 fields. Lab only.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
