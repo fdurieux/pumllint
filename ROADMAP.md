@@ -8721,7 +8721,7 @@ list and license posture live in § Settled questions.
     deterministically", "needs the register projected". A note above
     the list and in the README says why. Page, server list and a test;
     no query text changes.
-  - *2026-11-01, later (#PUMLL_PR):* a deterministic S6 in the demo gets
+  - *2026-11-01, later (#257):* a deterministic S6 in the demo gets
     its Derived output. The maintainer loaded S6 deterministically and
     ran the invalidation traversal: four rows as in the record, but an
     empty `derived` column and Neo4j's warning that `Derived` and
