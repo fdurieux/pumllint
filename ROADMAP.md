@@ -9014,6 +9014,16 @@ list and license posture live in § Settled questions.
   query "the gaps, with what they concern" ordered by a column its
   aggregation hid and had never run in either copy (knowgov#13, with a
   CI step that now runs every saved query).
+  *[Released as 0.35.0, 2026-11-02, so that knowgov's two subjects can be
+  re-vendored at a tag: no product change since 0.34.0 beyond the test
+  extra's `pytest<9.2` cap and the `testpaths` setting (#198), the kit, the
+  record and the pre-registration unchanged since the move-out. Ritual: 13
+  version sites bumped, pilot regenerated (report footer only; badge
+  byte-identical), golden scores unchanged. Both suites green: 742/742 on
+  the zero-dependency runner, 880 under pytest. The owner publishes the
+  Release in the GitHub UI, typing `v0.35.0` as a new tag on `main`;
+  publishing creates the tag and runs `publish.yml`; knowgov then re-vendors
+  both subjects at it (its task-0001 and task-0021 name the step).]*
   - *Re-litigate on:* a pumllint feature that needs the harness in-tree
     (none foreseen: the boundary runs one way); or knowgov asking
     pumllint for something it does not expose as a library, which is a
