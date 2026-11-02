@@ -63,6 +63,10 @@ findings left. Run `git checkout -- diagrams` afterwards to restore the demo.
 - **Requirements.** CRD-105, "the customer is informed", is drawn nowhere, and
   CRD-106 is cited but does not exist. That is a stale diagram, or a missing
   requirement.
+- **Optional: the same checks in a terminal.** To show the room the tool
+  rather than the page, run the commands in the README's *Run the checks
+  yourself* in a second terminal. The same findings appear, followed by
+  `echo $?` printing `1`, which is what fails a build pipeline.
 
 > *Close:* "Each of these took pumllint a fraction of a second to find. In a
 > review they take a careful reader; downstream, they become a guess."

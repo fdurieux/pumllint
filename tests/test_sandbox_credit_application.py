@@ -176,3 +176,39 @@ def test_scoring_wheel_reads_every_check_and_weight_from_pumllint():
     assert {d["id"]: d["weight"] for d in data["dimensions"]} == {k.value: w for k, w in DEFAULT_DIMENSION_WEIGHTS.items()}
     assert abs(sum(d["weight"] for d in data["dimensions"]) - 1.0) < 1e-9
     assert all(d["label"] for d in data["dimensions"])
+
+
+def _readme_exec_commands() -> list[list[str]]:
+    """The README's `docker compose exec demo python -m pumllint …` lines, as argv."""
+    readme = (_SANDBOX / "README.md").read_text(encoding="utf-8").replace("\\\n", " ")
+    prefix = "docker compose exec demo python -m pumllint "
+    return [line[len(prefix):].split() for line in readme.splitlines() if line.startswith(prefix)]
+
+
+def test_readme_container_commands_give_the_slides_verdicts():
+    """The README's "Run the checks yourself" commands run in the demo container,
+    whose working directory is the sandbox folder (/demo, diagrams/ mounted).
+    Run here from that folder, they must exit as the README says: lint and trace
+    fail the non-compliant set and pass the compliant one, and lint counts the
+    slide's findings."""
+    import os
+
+    commands = _readme_exec_commands()
+    assert [c[0] for c in commands] == ["diagrams/non-compliant", "trace", "score"]
+    here = os.getcwd()
+    os.chdir(_SANDBOX)
+    try:
+        for argv in commands:
+            for word in argv:
+                if word.startswith("diagrams/"):
+                    assert Path(word).exists(), f"README names {word}, which is missing"
+            rc, out = _D._run(argv)
+            if argv[0] != "score":
+                assert rc == 1, f"{argv} should fail the non-compliant set"
+            if argv[0] == "diagrams/non-compliant":
+                assert "10 issue(s): 1 critical, 2 major, 7 minor" in out
+            clean = [w.replace("non-compliant", "compliant") for w in argv]
+            rc, _ = _D._run(clean)
+            assert rc == 0, f"{clean} should pass the compliant set"
+    finally:
+        os.chdir(here)
