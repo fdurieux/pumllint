@@ -1,0 +1,16 @@
+@startuml credit-scoring
+' NON-COMPLIANT on purpose. Deliberate defect:
+'   - RiskEngine is a <<gateway>> here and a <<service>> in credit-decision.puml:
+'     one system, two descriptions (XD002, reported on both files)
+title Credit scoring
+footer owner: Retail Credit · CRD-103
+
+participant CreditOfficer
+participant RiskEngine <<gateway>>
+participant CreditBureau
+
+CreditOfficer -> RiskEngine : scoreApplicant()
+RiskEngine -> CreditBureau : fetchCreditReport()
+CreditBureau --> RiskEngine : creditReport
+RiskEngine --> CreditOfficer : score
+@enduml

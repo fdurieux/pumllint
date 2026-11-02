@@ -340,6 +340,47 @@ them.
   edit to the talk. The published PPTX and PDFs go stale until
   republished. They are not byte-reproducible, so nothing guards them;
   the landing page states the version and date they were built for.
+- [x] **Legible-for-analysts talk and a demo sandbox** *(2026-11-02, docs and
+  demo only)*. The round table, re-cut for functional analysts at 45 minutes:
+  - it opens on Legible;
+  - two new slides map problems to solve and tooling across the four SAFe
+    aspects, quoted from the Legible site, `docs/case-for-pumllint.md` and
+    `docs/positioning-quadrant.md` §6, with their evidence tags kept;
+  - it closes on a live demo.
+
+  Source in `talks/legible-for-analysts/`. Fifteen of its 22 slides are
+  the round table's scripts, used in place; there are seven new ones. Published under
+  `docs/talks/legible-for-analysts/` by the same guarded `--publish`.
+
+  The demo is `sandbox/credit-application/`: one case drawn as four linked
+  diagrams (process, decision, scoring, status) plus a CRD requirements
+  inventory, each in a compliant and a non-compliant version.
+  - **Compliant:** exit 0, Level 4, 5/5 traced.
+  - **Non-compliant:** exit 1 with 10 findings (1 critical, 2 major,
+    7 minor), 1 requirement uncovered and 1 unknown reference. Every diagram
+    still scores Level 4, which is the point the deck makes about level
+    versus gate.
+
+  `docker compose up` runs two containers, pinned multi-arch images that
+  work on Apple silicon:
+  - `plantuml/plantuml-server` draws the diagrams;
+  - a `python:3.12-slim` image with pumllint *copied* from source (no pip,
+    so the build needs no package index) serves a stdlib page. The page
+    shows each diagram beside its findings, rebuilds on every reload, and
+    reads `diagrams/` from a bind mount, so a live edit shows up on
+    refresh.
+
+  Drift guard `tests/test_sandbox_credit_application.py`:
+  - both sets' findings, levels and trace gaps equal
+    `talks/legible-for-analysts/demo-findings.json`, which the demo slides
+    read;
+  - the README's counts and rule list match the live run;
+  - the page builds without Docker;
+  - the PlantUML URL encoding round-trips;
+  - the landing page's links resolve.
+
+  Docker itself is not in CI. It was verified by hand at merge time: both
+  containers up, all 8 diagrams rendered, an edit reflected on reload.
 
 ## Arc C — Coverage growth (base catalog done; further growth demand-driven)
 

@@ -1,0 +1,19 @@
+@startuml credit-decision
+' The sequence diagram derived from the process: the same people and systems,
+' now as participants exchanging messages.
+title Credit decision
+footer owner: Retail Credit · CRD-101 CRD-104 CRD-105
+
+actor Customer
+participant CreditOfficer
+participant RiskEngine <<service>>
+
+Customer -> CreditOfficer : submitApplication()
+CreditOfficer -> RiskEngine : scoreApplicant()
+RiskEngine --> CreditOfficer : score
+alt score sufficient
+  CreditOfficer -> Customer : approveCredit()
+else score insufficient
+  CreditOfficer -> Customer : rejectApplication()
+end
+@enduml

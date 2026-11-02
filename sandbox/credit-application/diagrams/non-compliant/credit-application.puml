@@ -1,0 +1,30 @@
+@startuml credit-application
+' NON-COMPLIANT on purpose. Deliberate defects:
+'   - the score decision does not say which branch approves (ACT003, twice)
+'   - the process never reaches an end (ACT002, major: the build fails)
+'   - CRD-105, "the customer is informed", is cited by no diagram (trace)
+title Credit application
+footer owner: Retail Credit · CRD-101 CRD-102 CRD-103 CRD-104
+
+|Customer|
+start
+:Submit credit application;
+|Credit officer|
+:Check completeness;
+if (Application complete?) then (yes)
+  |Risk engine|
+  :Score applicant;
+  if (Score sufficient?) then
+    |Credit officer|
+    :Approve credit;
+  else
+    |Credit officer|
+    :Reject application;
+  endif
+else (no)
+  |Credit officer|
+  :Request missing documents;
+endif
+|Credit officer|
+:Inform customer;
+@enduml

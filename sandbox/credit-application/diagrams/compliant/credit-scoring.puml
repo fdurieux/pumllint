@@ -1,0 +1,15 @@
+@startuml credit-scoring
+' Detail of one step: how the risk engine produces the score. It shares the
+' RiskEngine participant with the decision diagram.
+title Credit scoring
+footer owner: Retail Credit · CRD-103
+
+participant CreditOfficer
+participant RiskEngine <<service>>
+participant CreditBureau
+
+CreditOfficer -> RiskEngine : scoreApplicant()
+RiskEngine -> CreditBureau : fetchCreditReport()
+CreditBureau --> RiskEngine : creditReport
+RiskEngine --> CreditOfficer : score
+@enduml

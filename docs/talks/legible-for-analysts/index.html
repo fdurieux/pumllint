@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Legible for analysts: semantic linting of PlantUML diagrams</title>
+<meta name="description" content="A 45-minute session for functional analysts: what goes wrong before code, which tools gate it, and a live demo of pumllint on a credit application.">
+<style>
+:root { --bg: #F7F8F5; --ink: #1E2B22; --muted: #4A5A4E; --title: #3E6B48; --card: #FFFFFF; --line: #C3CDBD; --accent: #9BD12E; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151B17; --ink: #E4EAE3; --muted: #A9B5AA; --title: #9BCB8E; --card: #1E2621; --line: #34423A; --accent: #9BD12E; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Calibri, sans-serif; }
+main { max-width: 860px; margin: 0 auto; padding: 32px 16px 48px; }
+.kicker { font-weight: 700; color: var(--muted); margin: 0; }
+h1 { color: var(--title); font-size: 2.1rem; line-height: 1.2; margin: 4px 0 12px; }
+h2 { color: var(--title); font-size: 1.3rem; margin: 36px 0 8px; }
+p { margin: 8px 0; }
+a { color: var(--title); }
+.preview { display: block; margin: 20px 0 8px; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.preview img { display: block; width: 100%; height: auto; }
+.caption { color: var(--muted); font-size: 0.9rem; }
+.files { list-style: none; padding: 0; margin: 12px 0; display: grid; gap: 10px; }
+.files li { background: var(--card); border: 1px solid var(--line); border-left: 5px solid var(--accent); border-radius: 6px; padding: 12px 14px; }
+.files a { font-weight: 700; }
+.files span { display: block; color: var(--muted); font-size: 0.95rem; }
+ol.parts { padding-left: 1.3em; }
+ol.parts li { margin: 6px 0; }
+dt { font-weight: 700; margin-top: 10px; }
+dd { margin: 2px 0 0 0; color: var(--muted); }
+footer { margin-top: 40px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.9rem; }
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">pumllint · a session for functional analysts</p>
+<h1>Checked before it is handed on</h1>
+<p>A 45-minute session for functional analysts and process engineers. It places pumllint in
+<a href="https://fdurieux.github.io/">Legible</a>, a programme that puts quality checks on everything written before code,
+maps <b>what goes wrong</b> and <b>which tools exist</b> across the delivery pipeline, and ends with a <b>live demo</b>:
+one credit application, drawn right and drawn wrong, checked in a few seconds.</p>
+
+<a class="preview" href="deck.pdf"><img src="overview.jpg" alt="All twenty-two slides of the deck, shown as thumbnails" width="2730" height="1560"></a>
+<p class="caption">All 22 slides. Slides 19 to 22 are hand-outs and are not shown during the session.</p>
+
+<h2>Download</h2>
+<ul class="files">
+  <li><a href="deck.pdf">The slides (PDF)</a><span>Opens in your browser.</span></li>
+  <li><a href="deck.pptx">The slides (PowerPoint)</a><span>To present or adapt, with a speaker note on every slide.</span></li>
+  <li><a href="speaker-notes.pdf">Speaker notes and run sheet (PDF)</a><span>A timed 45-minute plan, then one page per slide.</span></li>
+  <li><a href="team-handout.pdf">Team hand-out (PDF)</a><span>A go / no-go form for a proof of concept, plus three pages on getting started.</span></li>
+  <li><a href="https://github.com/fdurieux/pumllint/tree/main/sandbox/credit-application">The demo sandbox</a><span>The credit application's eight diagrams and the one command that shows them, with pumllint's findings, in your browser.</span></li>
+</ul>
+
+<h2>A few words first</h2>
+<dl>
+  <dt>Legible</dt><dd>A programme that makes the information upstream of code (requirements, processes, models, decisions) readable by people and machines, and checks it before anyone builds on it.</dd>
+  <dt>PlantUML</dt><dd>A way of drawing diagrams by writing short text files. The text is turned into a picture, and the files can be stored and reviewed like code.</dd>
+  <dt>pumllint</dt><dd>A linter for PlantUML: it reads a diagram and points out what the next reader would have to guess, such as a decision that does not say which way is "yes". Each finding has a severity, and each diagram gets a maturity level from 1 to 5.</dd>
+</dl>
+
+<h2>What the session covers</h2>
+<ol class="parts">
+  <li><b>Legible.</b> Why the information code is built from deserves the same checks code has had for twenty years.</li>
+  <li><b>The problem.</b> What goes wrong before code, stage by stage across the delivery pipeline, and two examples of diagrams that render but do not make sense.</li>
+  <li><b>The contribution.</b> Which tools check which artefacts today, where pumllint sits, and the one result that was measured.</li>
+  <li><b>In practice.</b> A credit application as four linked diagrams, compliant and not, why each passes or fails, and the same set live on a laptop.</li>
+  <li><b>The decision.</b> Run a proof of concept or not.</li>
+</ol>
+
+<h2>Presenting it yourself</h2>
+<p>Start the demo before the session (<code>docker compose up</code> in <code>sandbox/credit-application</code>) and follow its walkthrough.
+To rebuild the deck with your name on the hand-out, see the <a href="https://github.com/fdurieux/pumllint/tree/main/talks/legible-for-analysts">source folder</a>.</p>
+
+<footer>Built from <a href="https://github.com/fdurieux/pumllint/tree/main/talks/legible-for-analysts">talks/legible-for-analysts</a> for pumllint 0.35.0 on 2026-11-02.
+Part of the <a href="https://github.com/fdurieux/pumllint">pumllint</a> repository and shared under the same licence (GPL-3.0-or-later).</footer>
+</main>
+</body>
+</html>

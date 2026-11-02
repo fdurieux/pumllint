@@ -1,0 +1,4 @@
+node_modules
+out/
+# a slide script run on its own writes a one-slide preview next to it
+*.pptx

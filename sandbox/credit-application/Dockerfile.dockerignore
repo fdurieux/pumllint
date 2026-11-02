@@ -1,0 +1,5 @@
+# Build context is the repository root; send only what the image needs.
+*
+!pumllint/**
+!sandbox/credit-application/demo_site.py
+**/__pycache__
