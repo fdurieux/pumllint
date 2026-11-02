@@ -34,7 +34,7 @@ const runSheet = `
 <section class="page">
   <header><span class="num">Run sheet</span><span class="time">45 minutes</span></header>
   <h2>Legible for analysts · semantic linting of PlantUML diagrams</h2>
-  <p class="lead">${talk} min presenting, ${disc} min room discussion, ${buf} min buffer (${clock(used)}–0:45). If time runs short, take slides ${S(9)}–${S(11)} at a minute each; keep the live demo (slide ${S(15)}) whole, and the discussion on slides ${S(3)} and ${S(8)}.${OFFSET ? ` Slide numbers count ${OFFSET} slide(s) in front of this deck, which are not timed here.` : ''}</p>
+  <p class="lead">${talk} min presenting, ${disc} min room discussion, ${buf} min buffer (${clock(used)}–0:45). If time runs short, take slides ${S(9)}–${S(12)} at a minute each; keep the live demo (slide ${S(16)}) whole, and the discussion on slides ${S(3)} and ${S(8)}.${OFFSET ? ` Slide numbers count ${OFFSET} slide(s) in front of this deck, which are not timed here.` : ''}</p>
   <table class="run"><thead><tr><th>Part</th><th>Clock</th><th>#</th><th>Slide</th><th>Min</th><th>Of which discussion</th><th>Room</th></tr></thead>
   <tbody>${rows}<tr class="first"><td class="p">Buffer</td><td class="c">${clock(used)}–0:45</td><td></td><td>Overrun, questions, close</td><td class="c">${buf}</td><td></td><td></td></tr></tbody></table>
   <footer>Legible for analysts · semantic linting of PlantUML diagrams · speaker notes</footer>

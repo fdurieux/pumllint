@@ -55,7 +55,14 @@ const notes = [
       `pumllint first turns each diagram into a model (who talks to whom, which flows, which states) and reasons over it, inside one diagram and across the whole set. Slide ${S(6)}’s finding only exists across files.`,
       'Detect, findings with a severity, is what any linter does. pumllint goes two steps further: measure (a maturity level per diagram and per set) and govern (a gate the team sets).',
       'Hence "static model analysis" rather than just a linter.'],
-    next: 'What do those findings look like?' }),
+    next: 'And what does the score weigh?' }),
+  { part: '\u2461 The contribution', title: 'What the score is made of', min: 1, discuss: 0,
+    say: [
+      'The six dimensions of the score as a wheel, the way the delivery pipeline is usually drawn. The size of each segment is its weight.',
+      'Completeness and ambiguity count most: those are the gaps a reader fills with a guess. Traceability and readability count a little.',
+      'The outer ring has one wedge per check. Syntax sits in the middle as a gate: a diagram that does not render scores Level 1.',
+      `Every check is listed in the appendix, slides ${S(24)} to ${S(27)}, read from pumllint itself when the deck was built.`],
+    next: 'What do those findings look like?' },
   rt('Code smells, model smells', { part: '② The contribution', min: 1, discuss: 0,
     next: 'What does each severity do?' }),
   rt('Detect, measure, govern', { part: '② The contribution', min: 2, discuss: 0,
@@ -79,14 +86,14 @@ const notes = [
       'The rule column is what pumllint reports; the test suite checks it against a live run, so this slide cannot drift from the tool.',
       'The bottom line answers the first question analysts ask: the level summarises, the gate judges severity.'],
     next: 'Now the same set, live.' },
-  { part: '③ In practice', title: 'Live demo: localhost:8000', min: 9, discuss: 3,
+  { part: '③ In practice', title: 'Live demo: localhost:8000', min: 8, discuss: 3,
     room: 'Who would have found these, and when?',
     say: [
       'Switch to the browser. Follow WALKTHROUGH.md in the sandbox folder: every diagram renders; the compliant set; the non-compliant set; fix one live; levels, gates and requirements.',
       'Let the room spot defects in the pictures before you scroll to the findings.',
       'The live fix is the moment that lands: label the two branches, add "stop", save, reload, and three findings disappear.'],
     ask: 'Who downstream would have found these, and when?',
-    tip: 'Start docker compose up before the session. If anything fails, slides 13 and 14 carry the same results.',
+    tip: `Start docker compose up before the session. If anything fails, slides ${S(14)} and ${S(15)} carry the same results.`,
     next: 'Where would this run in our work?' },
   rt('Diagram quality, built into the workflow', { part: '③ In practice', min: 2, discuss: 0,
     next: 'Time to decide.' }),
@@ -96,10 +103,13 @@ const notes = [
     say: [
       'Leave this slide up while people leave: the QR code opens the repository; Legible and the demo sandbox are in the first column.'] },
   rt('Appendix · A PoC on semantic linting: go or no-go?', { part: 'Hand-out',
-    tip: `Send slides ${S(19)} to ${S(22)} as one PDF (team-handout.pdf), or print them.` }),
+    tip: `Send slides ${S(20)} to ${S(23)} as one PDF (team-handout.pdf), or print them.` }),
   rt('Appendix · Get started in ten minutes', { part: 'Appendix' }),
   rt('Appendix · Fit it to your team', { part: 'Appendix' }),
   rt('Appendix · A four-week PoC, and what to measure', { part: 'Appendix' }),
+  ...[1, 2, 3, 4].map(n => ({ part: 'Appendix', appendix: true, min: 0, discuss: 0,
+    title: `Appendix · every check behind the score (${n} of 4)`,
+    say: ['Not presented: the reference behind the scoring wheel, one row per check, generated from pumllint\'s rule catalogue when the deck is built.'] })),
 ];
 
 let clock = 0;

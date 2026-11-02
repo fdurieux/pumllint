@@ -17,13 +17,14 @@ hand-out) is at
 |--------|------|----------------|
 | 1–2 | Opening | Legible: everything before code, checked before it is handed on; the session's three questions |
 | 3–7 | ① The problem | **Problems to solve across the delivery pipeline**; what "makes sense" means; the credit-flow and OrderService examples; why every reader downstream fills the gaps |
-| 8–12 | ② The contribution | **Tooling across the delivery pipeline**, with pumllint's place and the open gaps; from linter to model analysis; model smells; detect, measure, govern; the measured effect on AI-generated code |
-| 13–16 | ③ In practice | **The demo set**; **why each diagram passes or fails**; **the live demo**; how the checks fit the workflow |
-| 17–18 | Closing | The PoC vote; where to read more, with QR codes |
-| 19–22 | Hand-outs (hidden) | The go / no-go form and the three getting-started slides |
+| 8–13 | ② The contribution | **Tooling across the delivery pipeline**, with pumllint's place and the open gaps; from linter to model analysis; **the scoring wheel**: the six dimensions sized by their weight in the score, one wedge per check; model smells; detect, measure, govern; the measured effect on AI-generated code |
+| 14–17 | ③ In practice | **The demo set**; **why each diagram passes or fails**; **the live demo**; how the checks fit the workflow |
+| 18–19 | Closing | The PoC vote; where to read more, with QR codes |
+| 20–23 | Hand-outs (hidden) | The go / no-go form and the three getting-started slides |
+| 24–27 | Appendix (hidden) | **Every check behind the wheel**, by dimension: what it looks for, its severity, the diagram types it reads, and whether it needs the code-generation profile or a team convention |
 
 The speaker notes open with a run sheet: 44 minutes, 9 of them discussion,
-and a minute of buffer. The live demo (slide 15) takes 9 minutes. The
+and a minute of buffer. The live demo (slide 16) takes 8 minutes. The
 sandbox's `WALKTHROUGH.md` is its script.
 
 ## Where the content comes from
@@ -37,6 +38,11 @@ The new slides quote what is already written rather than inventing it:
 - **Tooling × pipeline:** the gates per artefact come from the "fellow gates"
   table in [`docs/positioning-quadrant.md`](../../docs/positioning-quadrant.md)
   §6 and the open gaps from Legible's artefact table.
+- **The scoring wheel and the check lists:** `export_checks.py` reads them from
+  pumllint itself at build time: the rules from `pumllint/rules/catalog.toml`,
+  the weights from `pumllint/scoring.py`, the dimension names from
+  `docs/rule-map.md`. A new rule or a reweighting reaches the slides on the
+  next build without editing them.
 - **Demo and "why" slides:** these read
   [`demo-findings.json`](demo-findings.json).
   `tests/test_sandbox_credit_application.py` checks that file against a live
@@ -47,7 +53,7 @@ The new slides quote what is already written rather than inventing it:
 
 The same tools as the round table: Node.js and Python 3, plus LibreOffice,
 poppler-utils, a Chromium-based browser and ImageMagick for the PDFs. Fifteen
-of the 22 slides are the round table's own scripts, used in place, so only
+of the 27 slides are the round table's own scripts, used in place, so only
 this folder needs `npm install`:
 
 ```bash
@@ -58,9 +64,9 @@ sh build.sh --publish   # also refreshes docs/talks/legible-for-analysts/ (GitHu
 ```
 
 In plain English: `npm install` fetches PptxGenJS, the library that writes
-PowerPoint files. `sh build.sh` assembles the 22 slides, adds the speaker
-notes, makes the findings on slides 5 and 6 appear on a click, and hides the
-four hand-out slides. With LibreOffice installed it also exports the PDFs.
+PowerPoint files. `sh build.sh` reads the checks and weights from pumllint,
+assembles the 27 slides, adds the speaker notes, makes the findings on slides
+5 and 6 appear on a click, and hides the eight hand-out and appendix slides. With LibreOffice installed it also exports the PDFs.
 `--publish` copies the neutral build to the folder GitHub Pages serves. It
 refuses to run while any of the personal settings below is set.
 
@@ -78,6 +84,7 @@ and the sandbox. Regenerate them only if those addresses change.
 | `slides/*.js` | This talk's own slides; `style.js` holds their shared look |
 | `notes.js` | The speaker notes and timings; reused slides reuse the round table's notes |
 | `merge-deck.js` | Assembles the deck from this talk's slides and the round table's |
-| `demo-findings.json` | What pumllint reports on the sandbox's diagrams, read by slides 13 and 14 |
+| `demo-findings.json` | What pumllint reports on the sandbox's diagrams, read by slides 14 and 15 |
+| `export_checks.py` | Writes `out/checks.json`, the checks and weights the wheel (slide 10) and the appendix (24–27) are drawn from |
 | `make-handout.js`, `post/*.py`, `config.js` | As in the round table |
 | `site/index.html` | The landing page of the published copy |
