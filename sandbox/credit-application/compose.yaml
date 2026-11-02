@@ -1,16 +1,23 @@
 # pumllint demo: `docker compose up`, then open http://localhost:8000
+#
+# Both ports can be moved when another program already uses them, without
+# editing this file:  DEMO_PORT=8001 PLANTUML_PORT=8081 docker compose up
 name: pumllint-demo
 services:
   plantuml:  # draws the diagrams; the page asks it for each picture
     image: plantuml/plantuml-server:jetty-v1.2026.9
     ports:
-      - "8080:8080"
+      - "${PLANTUML_PORT:-8080}:8080"
   demo:      # pumllint plus the page that shows its findings next to each picture
     build:
       context: ../..
       dockerfile: sandbox/credit-application/Dockerfile
     ports:
-      - "8000:8000"
+      - "${DEMO_PORT:-8000}:8000"
+    environment:
+      # the browser fetches each picture itself, so this is the host's port
+      DEMO_PLANTUML_URL: "http://localhost:${PLANTUML_PORT:-8080}"
+      DEMO_HOST_PORT: "${DEMO_PORT:-8000}"
     volumes:
       - ./diagrams:/demo/diagrams
     depends_on:

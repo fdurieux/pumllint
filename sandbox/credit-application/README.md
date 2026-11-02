@@ -71,6 +71,30 @@ After a `git pull` that changed the demo, start it with
 `docker compose up --build`, so the demo image is rebuilt with the new
 pumllint and page.
 
+### If a port is already in use
+
+The demo uses two ports on your computer: 8000 for the page and 8080 for
+the PlantUML server. If another program already uses one of them, for
+example another Docker stack, the start fails with
+`Bind for 0.0.0.0:8080 failed: port is already allocated`. Choose free ports
+when you start it instead:
+
+```bash
+docker compose down
+PLANTUML_PORT=8081 docker compose up
+```
+
+`docker compose down` clears the containers the failed start left behind.
+`PLANTUML_PORT=8081` moves the PlantUML server to port 8081 for this start,
+and the page is told to fetch the pictures from there. The page stays at
+<http://localhost:8000>. To move the page as well, add `DEMO_PORT`, for
+example `DEMO_PORT=8001 PLANTUML_PORT=8081 docker compose up`, and open
+<http://localhost:8001>. Nothing is saved: the next plain
+`docker compose up` uses 8000 and 8080 again.
+
+To see which program holds a port: `lsof -nP -iTCP:8080 -sTCP:LISTEN`, or
+`docker ps` for containers.
+
 ## What the page shows
 
 | Diagram | What it is | What is wrong in the non-compliant version |

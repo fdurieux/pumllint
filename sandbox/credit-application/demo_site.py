@@ -253,7 +253,9 @@ def serve(out: Path, plantuml: str, port: int) -> None:
     build(out, plantuml)
     server = ThreadingHTTPServer(("0.0.0.0", port), partial(_Handler, directory=str(out)))
     server.out, server.plantuml = out, plantuml
-    print(f"pumllint demo on http://localhost:{port} (diagrams from {plantuml}); Ctrl+C stops it")
+    # in a container the page is reached on the host's port, which compose passes in
+    shown = os.environ.get("DEMO_HOST_PORT", str(port))
+    print(f"pumllint demo on http://localhost:{shown} (diagrams from {plantuml}); Ctrl+C stops it")
     server.serve_forever()
 
 
