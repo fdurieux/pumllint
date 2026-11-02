@@ -394,6 +394,17 @@ them.
   goes from 9 to 8 minutes to pay for the slide. #269 and #270
   added the sandbox's clone/pull step and configurable ports.
 
+  *2026-11-02, later still:* the sandbox README gains "Run the checks
+  yourself". It gives the `docker compose exec demo python -m pumllint`
+  lint, trace (`--fail-on-uncovered --fail-on-unknown-ref`) and score
+  lines behind the "Valid or not, and why" slide. It also says the
+  PlantUML port (8080/8081) only renders, and that the checks run in the
+  demo container. Asked after the demo ran with `PLANTUML_PORT=8081`.
+  The guard runs those argv in process from the sandbox folder, the
+  container's `/demo`. Lint and trace must exit 1 on non-compliant and 0
+  on compliant, and lint must report the slide's 10 findings. Verified in
+  Docker at merge time with `PLANTUML_PORT=8081`.
+
 ## Arc C — Coverage growth (base catalog done; further growth demand-driven)
 
 - [x] **CLS pack + class-diagram parser** *(0.9.0)* — `parser/class_.py`

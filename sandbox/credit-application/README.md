@@ -136,6 +136,57 @@ scripted 15-minute version of the demo.
 
 To put everything back, run `git checkout -- diagrams` from this folder.
 
+## Run the checks yourself
+
+The page shows pumllint's results, but you can also run pumllint yourself
+and see exactly what the deck's "Valid or not, and why" slide lists. The
+checks run in the **demo** container, the one behind
+<http://localhost:8000>. The PlantUML server (port 8080, or 8081 if you
+moved it) only draws the pictures. It has no pumllint in it, so it cannot
+run a check.
+
+Leave the demo running, open a second terminal in this folder, and run:
+
+```bash
+docker compose exec demo python -m pumllint diagrams/non-compliant -c diagrams/lint.toml
+```
+
+`docker compose exec demo` runs a command inside the running demo container.
+`python -m pumllint` is the linter, `diagrams/non-compliant` is the folder it
+checks, and `-c diagrams/lint.toml` gives it the demo's settings. It prints
+one line per finding, with the file, the line number, the rule and the
+severity, and ends with the count: ten findings (one critical, two major,
+seven minor).
+
+```bash
+docker compose exec demo python -m pumllint trace diagrams/non-compliant -c diagrams/lint.toml \
+  --requirements diagrams/non-compliant/requirements.txt --fail-on-uncovered --fail-on-unknown-ref
+```
+
+This checks the requirements instead. It lists each requirement in
+`requirements.txt` with the diagrams that cite it, then the gaps: CRD-105 is
+drawn nowhere, and CRD-106 is cited but does not exist. The two `--fail-on`
+options make those gaps fail the check.
+
+```bash
+docker compose exec demo python -m pumllint score diagrams/non-compliant -c diagrams/lint.toml
+```
+
+This gives each diagram's maturity level (Level 4 for all four) and what it
+would take to reach the next level.
+
+Replace `non-compliant` with `compliant` in any of the three commands to
+check the compliant set: no findings and all five requirements covered.
+
+Each check also returns an *exit code*, which a build pipeline reads to
+decide whether to stop. Run `echo $?` straight after a command to see it:
+`1` means the check failed and `0` means it passed. The lint and trace
+commands return `1` on the non-compliant set and `0` on the compliant set.
+
+These commands work whichever ports you started the demo on, because they
+talk to the container directly, not through a port. A file you edit in
+`diagrams/` is checked straight away, just as on the page.
+
 ## Without Docker
 
 From the repository root, with Python 3.11 or later:
