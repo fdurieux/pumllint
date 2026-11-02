@@ -16,11 +16,37 @@ by side.
 
 ## What you need
 
-[Docker Desktop](https://www.docker.com/products/docker-desktop/) on a Mac
-(Apple silicon or Intel), Windows or Linux. Nothing else: Python and pumllint
-run inside the container.
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) on a Mac
+  (Apple silicon or Intel), Windows or Linux, installed and running.
+- [Git](https://git-scm.com/), to get a copy of this repository. On a Mac, the
+  first `git` command offers to install Apple's command-line tools if git is
+  missing.
+
+Nothing else: Python and pumllint run inside the container.
+
+## Get the repository
+
+The demo lives in the pumllint repository, so you first need a copy of it on
+your computer. The first time, *clone* it: this downloads the whole repository
+into a new `pumllint` folder.
+
+```bash
+git clone https://github.com/fdurieux/pumllint.git
+cd pumllint
+```
+
+If you already have a copy, *pull* instead. This brings your copy up to date
+with the published version, so the demo matches this README.
+
+```bash
+cd path/to/pumllint
+git checkout main
+git pull
+```
 
 ## The two commands, in plain English
+
+From the repository folder:
 
 ```bash
 cd sandbox/credit-application
@@ -40,6 +66,10 @@ After that it works without a network connection, which is useful for a
 conference room.
 
 To stop it, press `Ctrl+C` in the terminal, or run `docker compose down`.
+
+After a `git pull` that changed the demo, start it with
+`docker compose up --build`, so the demo image is rebuilt with the new
+pumllint and page.
 
 ## What the page shows
 

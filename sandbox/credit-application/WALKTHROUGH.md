@@ -1,8 +1,10 @@
 # A 15-minute live demo
 
-A script for presenting the sandbox to functional analysts. Start it before
-the session (`docker compose up`), open <http://localhost:8000>, and keep a
-text editor open on `diagrams/non-compliant/`.
+A script for presenting the sandbox to functional analysts. Before the
+session, update your copy of the repository (`git pull`, see the README's
+*Get the repository*), start the demo (`docker compose up --build` after a
+pull), open <http://localhost:8000>, and keep a text editor open on
+`diagrams/non-compliant/`.
 
 ## 1. Every diagram renders (2 minutes)
 
