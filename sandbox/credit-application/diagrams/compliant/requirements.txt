@@ -1,0 +1,6 @@
+# Credit application: the requirements the diagrams must cover (one ID per line)
+CRD-101  # a customer submits a credit application
+CRD-102  # an incomplete application is returned for missing documents
+CRD-103  # the risk engine scores every complete application
+CRD-104  # the credit officer approves or rejects on the score
+CRD-105  # the customer is informed of every outcome

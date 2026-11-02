@@ -135,6 +135,12 @@ Introducing pumllint to a team? A ready-made 45-minute
 (slides, speaker notes with a run sheet, and a go / no-go hand-out for a
 proof of concept) is published from
 [talks/semantic-linting-round-table/](talks/semantic-linting-round-table/README.md).
+Showing it to functional analysts? The
+[Legible version](https://fdurieux.github.io/pumllint/talks/legible-for-analysts/)
+maps the problems and the tooling across the delivery pipeline and ends
+with a live demo: [sandbox/credit-application/](sandbox/credit-application/README.md)
+is one credit application drawn as four linked diagrams, compliant and not,
+shown with pumllint's findings in your browser after one `docker compose up`.
 
 ## Maturity scoring
 

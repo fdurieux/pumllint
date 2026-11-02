@@ -1,0 +1,20 @@
+@startuml credit-decision
+' NON-COMPLIANT on purpose. Deliberate defects:
+'   - "alt" with no condition: the designer guessed which branch approves (SEQ007)
+'   - a typo, "Custmer", creates a second customer nobody declared (SEQ001, critical)
+title Credit decision
+footer owner: Retail Credit · CRD-101 CRD-104
+
+actor Customer
+participant CreditOfficer
+participant RiskEngine <<service>>
+
+Customer -> CreditOfficer : submitApplication()
+CreditOfficer -> RiskEngine : scoreApplicant()
+RiskEngine --> CreditOfficer : score
+alt
+  CreditOfficer -> Customer : approveCredit()
+else
+  CreditOfficer -> Custmer : rejectApplication()
+end
+@enduml

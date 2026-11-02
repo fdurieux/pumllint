@@ -1,0 +1,20 @@
+@startuml application-status
+' NON-COMPLIANT on purpose. Deliberate defects:
+'   - nothing says what moves an application to Approved (STA003)
+'   - "Withdrawn" has no way in: no transition reaches it (STA002, major)
+'   - the footer names no owner (GEN006)
+'   - it cites CRD-106, which is not in requirements.txt (trace: unknown reference)
+title Application status
+footer CRD-102 CRD-104 CRD-106
+
+[*] --> Submitted
+Submitted --> Incomplete : documentsMissing
+Incomplete --> Submitted : documentsReceived
+Submitted --> Scored : scoreComputed
+Scored --> Approved
+Scored --> Rejected : reject [score insufficient]
+Withdrawn --> Closed : withdrawalConfirmed
+Approved --> Closed : customerInformed
+Rejected --> Closed : customerInformed
+Closed --> [*]
+@enduml

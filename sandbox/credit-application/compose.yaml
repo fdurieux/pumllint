@@ -1,0 +1,17 @@
+# pumllint demo: `docker compose up`, then open http://localhost:8000
+name: pumllint-demo
+services:
+  plantuml:  # draws the diagrams; the page asks it for each picture
+    image: plantuml/plantuml-server:jetty-v1.2026.9
+    ports:
+      - "8080:8080"
+  demo:      # pumllint plus the page that shows its findings next to each picture
+    build:
+      context: ../..
+      dockerfile: sandbox/credit-application/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./diagrams:/demo/diagrams
+    depends_on:
+      - plantuml

@@ -1,0 +1,11 @@
+{
+  "name": "semantic-linting-round-table",
+  "private": true,
+  "description": "Builds the round-table deck on semantic linting of PlantUML diagrams (see README.md)",
+  "scripts": {
+    "build": "sh build.sh"
+  },
+  "dependencies": {
+    "pptxgenjs": "4.0.1"
+  }
+}

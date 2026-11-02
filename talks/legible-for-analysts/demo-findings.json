@@ -1,0 +1,22 @@
+{
+  "_comment": "What pumllint reports on sandbox/credit-application/diagrams. The demo slides read this file; tests/test_sandbox_credit_application.py checks it against a live run.",
+  "compliant": {
+    "exit": 0,
+    "counts": {},
+    "findings": {},
+    "levels": {"credit-application.puml": 4, "credit-decision.puml": 4, "credit-scoring.puml": 4, "application-status.puml": 4},
+    "covered": 5, "requirements": 5, "uncovered": [], "unknown": []
+  },
+  "non-compliant": {
+    "exit": 1,
+    "counts": {"critical": 1, "major": 2, "minor": 7},
+    "findings": {
+      "credit-application.puml": [["ACT003", "minor", 2], ["ACT002", "major", 1]],
+      "credit-decision.puml": [["SEQ007", "minor", 1], ["SEQ001", "critical", 1], ["XD002", "minor", 1]],
+      "credit-scoring.puml": [["XD002", "minor", 1]],
+      "application-status.puml": [["STA003", "minor", 1], ["STA002", "major", 1], ["GEN006", "minor", 1]]
+    },
+    "levels": {"credit-application.puml": 4, "credit-decision.puml": 4, "credit-scoring.puml": 4, "application-status.puml": 4},
+    "covered": 4, "requirements": 5, "uncovered": ["CRD-105"], "unknown": ["CRD-106"]
+  }
+}

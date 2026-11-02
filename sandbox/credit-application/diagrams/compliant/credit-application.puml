@@ -1,0 +1,29 @@
+@startuml credit-application
+' The business process, as a process engineer draws it: who does what, in
+' which order, and which way each decision goes.
+title Credit application
+footer owner: Retail Credit · CRD-101 CRD-102 CRD-103 CRD-104 CRD-105
+
+|Customer|
+start
+:Submit credit application;
+|Credit officer|
+:Check completeness;
+if (Application complete?) then (yes)
+  |Risk engine|
+  :Score applicant;
+  if (Score sufficient?) then (yes)
+    |Credit officer|
+    :Approve credit;
+  else (no)
+    |Credit officer|
+    :Reject application;
+  endif
+else (no)
+  |Credit officer|
+  :Request missing documents;
+endif
+|Credit officer|
+:Inform customer;
+stop
+@enduml

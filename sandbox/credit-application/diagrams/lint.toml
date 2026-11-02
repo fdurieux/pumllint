@@ -1,0 +1,6 @@
+# The demo's conventions: pumllint's defaults, plus the two governance tags a
+# team usually adds first. Every diagram names its owner, and every diagram cites
+# the requirement IDs it realises (the IDs `pumllint trace` joins on).
+[rules]
+owner-tag        = { pattern = '(?i)owner\s*:' }
+requirement-link = { pattern = 'CRD-\d{3}' }

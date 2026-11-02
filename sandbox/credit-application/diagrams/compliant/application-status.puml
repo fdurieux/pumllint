@@ -1,0 +1,16 @@
+@startuml application-status
+' The status of one application over its life: every status is reachable
+' and every change says what causes it.
+title Application status
+footer owner: Retail Credit · CRD-102 CRD-104 CRD-105
+
+[*] --> Submitted
+Submitted --> Incomplete : documentsMissing
+Incomplete --> Submitted : documentsReceived
+Submitted --> Scored : scoreComputed
+Scored --> Approved : approve [score sufficient]
+Scored --> Rejected : reject [score insufficient]
+Approved --> Closed : customerInformed
+Rejected --> Closed : customerInformed
+Closed --> [*]
+@enduml
