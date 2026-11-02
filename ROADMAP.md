@@ -244,7 +244,10 @@ them.
   13 version sites bumped. The pilot report moved in its footer only, and
   the badge is byte-identical. Golden scores have not moved since 0.33.0.
   aris2puml's floor stays `pumllint>=0.33`, because nothing in its suite
-  needs a newer rule.]*
+  needs a newer rule. Merged 2026-10-22; its Release and tag published
+  2026-10-28, but that `publish.yml` run was cancelled and 0.34.0 never
+  reached PyPI, which is why PyPI goes from 0.33.0 to 0.35.0. Superseded
+  by 0.35.0 on 2026-11-02, which carries the same product.]*
   *Residual, recorded:* 15 words still disagree, because an earlier
   branch claims the line before the message branch:
   - the block keywords `alt opt loop par break critical group else box`;
