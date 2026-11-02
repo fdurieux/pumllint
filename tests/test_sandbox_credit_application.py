@@ -141,3 +141,16 @@ def test_published_landing_page_links_resolve():
     for name in local:
         assert (_SITE / name).is_file(), f"docs/talks/legible-for-analysts/index.html links {name}, which is missing"
     assert "{{" not in page
+
+
+def test_ports_are_configurable_and_the_page_follows_plantuml():
+    """Another stack on 8080 or 8000 must not block the demo: both host ports
+    come from the environment, and the page is told the same PlantUML port the
+    server is published on (the browser fetches each picture itself)."""
+    compose = (_SANDBOX / "compose.yaml").read_text(encoding="utf-8")
+    assert '"${PLANTUML_PORT:-8080}:8080"' in compose
+    assert '"${DEMO_PORT:-8000}:8000"' in compose
+    assert 'DEMO_PLANTUML_URL: "http://localhost:${PLANTUML_PORT:-8080}"' in compose
+    assert 'DEMO_HOST_PORT: "${DEMO_PORT:-8000}"' in compose
+    readme = (_SANDBOX / "README.md").read_text(encoding="utf-8")
+    assert "PLANTUML_PORT=8081 docker compose up" in readme and "DEMO_PORT=" in readme
