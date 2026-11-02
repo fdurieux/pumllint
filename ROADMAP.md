@@ -382,6 +382,18 @@ them.
   Docker itself is not in CI. It was verified by hand at merge time: both
   containers up, all 8 diagrams rendered, an edit reflected on reload.
 
+  *2026-11-02, later:* a scoring wheel on slide 10 and four hidden
+  appendix pages (24–27) listing every check. The six dimensions are
+  segments sized by `DEFAULT_DIMENSION_WEIGHTS`, with one wedge per
+  catalog rule and syntax as the hub gate. The appendix gives each rule's
+  description, severity, diagram types and profile or dormancy.
+  `export_checks.py` reads all of it from `catalog.toml`, `scoring.py` and
+  `docs/rule-map.md`'s headings at build time, so a rule or weight change
+  reaches the deck without editing a slide. The guard checks that the
+  export covers every rule once with the scorer's weights. The live demo
+  goes from 9 to 8 minutes to pay for the slide. #269 and #270
+  added the sandbox's clone/pull step and configurable ports.
+
 ## Arc C — Coverage growth (base catalog done; further growth demand-driven)
 
 - [x] **CLS pack + class-diagram parser** *(0.9.0)* — `parser/class_.py`

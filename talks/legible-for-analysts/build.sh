@@ -12,7 +12,7 @@
 # Also with ImageMagick (montage):               out/overview.jpg
 #
 # Personalise through the environment (config.js): INTRO_SLIDES, PRESENTER_NAME,
-# PRESENTER_EMAIL, REPLY_BY. Slide positions below are this deck's own (1-22).
+# PRESENTER_EMAIL, REPLY_BY. Slide positions below are this deck's own (1-27).
 #
 #   sh build.sh --publish   also copies the neutral build to the GitHub Pages
 #                           folder docs/talks/legible-for-analysts/;
@@ -33,6 +33,8 @@ if [ "${1:-}" = "--publish" ] && [ -n "${INTRO_SLIDES:-}${PRESENTER_NAME:-}${PRE
 fi
 
 rm -rf "$OUT"
+mkdir -p "$OUT"
+PYTHONPATH=../.. $PY export_checks.py "$OUT/checks.json"   # the wheel and the check lists, from pumllint itself
 node merge-deck.js
 $PY post/split-notes.py "$DECK"
 $PY post/add-appear.py "$DECK" 5 6     # findings strips reveal on a click
@@ -41,8 +43,8 @@ if have "$SOFFICE" && have pdftoppm; then
   # LibreOffice leaves hidden slides out of a PDF, so export before hiding them
   "$SOFFICE" --headless --convert-to pdf --outdir "$OUT" "$DECK" >/dev/null
   PDF=$OUT/legible-for-analysts.pdf
-  pdfseparate -f 19 -l 22 "$PDF" "$OUT/part-%d.pdf"
-  pdfunite "$OUT/part-19.pdf" "$OUT/part-20.pdf" "$OUT/part-21.pdf" "$OUT/part-22.pdf" "$OUT/team-handout.pdf"
+  pdfseparate -f 20 -l 23 "$PDF" "$OUT/part-%d.pdf"
+  pdfunite "$OUT/part-20.pdf" "$OUT/part-21.pdf" "$OUT/part-22.pdf" "$OUT/part-23.pdf" "$OUT/team-handout.pdf"
   rm -f "$OUT"/part-*.pdf
   mkdir -p "$OUT/handout"
   pdftoppm -jpeg -r 110 "$PDF" "$OUT/handout/s"
@@ -55,14 +57,14 @@ if have "$SOFFICE" && have pdftoppm; then
   fi
   if have montage; then
     pdftoppm -jpeg -r 40 "$PDF" "$OUT/ov"
-    montage "$OUT"/ov-*.jpg -tile 5x5 -geometry +6+6 -background '#dddddd' "$OUT/overview.jpg"
+    montage "$OUT"/ov-*.jpg -tile 6x5 -geometry +6+6 -background '#dddddd' "$OUT/overview.jpg"
     rm -f "$OUT"/ov-*.jpg
   fi
 else
   echo "LibreOffice or poppler-utils missing: built the .pptx only"
 fi
 
-$PY post/hide-slides.py "$DECK" 19 20 21 22   # the team hand-out and the appendix
+$PY post/hide-slides.py "$DECK" 20 21 22 23 24 25 26 27   # the team hand-out and the appendices
 echo "done: $OUT/"
 
 if [ "${1:-}" = "--publish" ]; then

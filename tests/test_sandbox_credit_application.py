@@ -154,3 +154,25 @@ def test_ports_are_configurable_and_the_page_follows_plantuml():
     assert 'DEMO_HOST_PORT: "${DEMO_PORT:-8000}"' in compose
     readme = (_SANDBOX / "README.md").read_text(encoding="utf-8")
     assert "PLANTUML_PORT=8081 docker compose up" in readme and "DEMO_PORT=" in readme
+
+
+def test_scoring_wheel_reads_every_check_and_weight_from_pumllint():
+    """The Legible deck's wheel (slide 10) and its four appendix pages are drawn
+    from talks/legible-for-analysts/export_checks.py, which must cover every
+    catalog rule exactly once, carry the scorer's weights and find a name for
+    each dimension in docs/rule-map.md."""
+    import tomllib
+
+    from pumllint.scoring import DEFAULT_DIMENSION_WEIGHTS
+
+    spec = importlib.util.spec_from_file_location("export_checks", _TALK / "export_checks.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    data = mod.export()
+    catalog = tomllib.loads((_ROOT / "pumllint" / "rules" / "catalog.toml").read_text(encoding="utf-8"))
+    rule_ids = {k for k, v in catalog.items() if isinstance(v, dict) and "dimension" in v}
+    listed = [r["id"] for d in data["dimensions"] for r in d["rules"]]
+    assert sorted(listed) == sorted(rule_ids) and data["total"] == len(rule_ids)
+    assert {d["id"]: d["weight"] for d in data["dimensions"]} == {k.value: w for k, w in DEFAULT_DIMENSION_WEIGHTS.items()}
+    assert abs(sum(d["weight"] for d in data["dimensions"]) - 1.0) < 1e-9
+    assert all(d["label"] for d in data["dimensions"])
