@@ -85,6 +85,17 @@ afterwards. The proxy accepts a new branch at any commit, which is
 aris2puml's v0.1.0 route. Verify a tag with `git ls-remote origin
 'refs/tags/*'`.
 
+The session that prepares a release PR also hands the owner, in its reply, the Release's title and
+Markdown description, ready to paste, as part of the release. The title is one line, `pumllint X.Y.Z — <what moved>`.
+The description is in the adopter register (the README's reader, not this file's). It covers:
+- what the release does, in one paragraph;
+- a highlights list;
+- what changed in a contract (exit codes, report shapes, rule IDs, config keys);
+- the `pip install pumllint==X.Y.Z` line;
+- the known limits or deprecations;
+- a link to the tag's ROADMAP entry and release notes.
+The description restates the release PR's record and never adds a claim it lacks.
+
 `main`'s history was restarted on 2026-08-29 (two roots,
 `a92c24f` and `1089a99`): a branch from the old line (root `71f70a6`)
 shares no ancestor with `main`, reads as hundreds of commits "ahead", and
