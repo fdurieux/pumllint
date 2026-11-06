@@ -55,6 +55,13 @@ in the reconciliation's Record section. The ROADMAP entry lands first and
 the pages quote it: they are views, never the record. A session that cannot
 reach the pages says so in its reply and leaves the ROADMAP as the record.
 
+**Every decision carries four parts** (maintainer, 2026-11-06), whether it is
+put to the owner or recorded in the ROADMAP:
+- an opportunity canvas;
+- a fit/gap against what it must satisfy;
+- a SWOT;
+- advice: the recommendation and its reasons.
+
 Merged branches are deleted automatically: the owner turned on
 "Automatically delete head branches" on 2026-10-05, and
 `delete_branch_on_merge` reads `true` from the public repository API. A
