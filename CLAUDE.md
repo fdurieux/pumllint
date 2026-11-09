@@ -41,6 +41,13 @@ then merge it — no need to ask.** Wait for the whole matrix, including the
 `windows` job, which is the only one that exercises PowerShell's argument
 handling and the Windows console codec. Do not merge on a red or pending run.
 
+**Sub-sessions: model and effort fitted to the work** (maintainer, 2026-11-09). A coordinating session picks each sub-session's model and reasoning effort for what it will do, and names the choice in the brief and in its reply to the maintainer:
+- the most capable model at high effort for a build that crosses modules or moves a contract, and for every probe, re-probe and re-check;
+- the same model at medium effort for a narrow, well-specified contract build;
+- a faster, lower-cost model at medium effort for a fix-only task behind an unchanged contract, and for docs and wording.
+
+A cloud sub-session takes its model at launch, and its effort is stated in the brief. A subagent takes both directly. The model identifiers themselves stay out of the repository.
+
 **Two artifact pages are the maintainer's running view of both
 repositories, and a merged PR refreshes them in the same turn.** The
 reconciliation, *Two loops against two roadmaps*
