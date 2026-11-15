@@ -474,6 +474,21 @@ them.
   Implementation recipe: the new-parser pattern and registry discipline in
   RULES.md's implementation notes (type markers no other form uses; never
   re-type; blocked rules stay unregistered until their parser exists).
+- [ ] **STA002 reachability from `[*]`** *(candidate, recorded 2026-11-15;
+  trigger: the maintainer's go, built with the next release)* — STA002
+  (`unreachable-state`) checks in-degree only: a state with no incoming
+  transition fires; a cycle disconnected from `[*]` (`Stale ⇄ Archived`)
+  is silent by design, written down in the rule's docstring and in
+  RULES.md, and measured so in the model-checker note's three cases (the
+  island and the sink both exit 0). #49 aligned the message and left "a
+  real reachability pass from `[*]` … later, if wanted". The build: a
+  traversal from every `[*]` source, so an island is reported as
+  unreachable; a sink (entered, never left, never `[*]`) stays out of
+  scope, a different property. It keeps the rule's ID, name and meaning
+  (an unreachable state), so no rename. It moves scores, so it ships as
+  the pack bar above asks: a RULES.md scenario for the island, the
+  catalog description updated, a deliberate golden re-freeze, the pilot
+  artefacts regenerated and a release note.
 - [ ] **XD member and relationship coherence** — the concrete form the
   "growing the XD family" direction above took when a third-party corpus was
   finally read (2026-08-26, docs/foreign-corpus-audit.md). The XD pack already
@@ -9098,3 +9113,15 @@ list and license posture live in § Settled questions.
   - *Priorities unchanged.* Open checkboxes stay at 17, all gated.
 
   *Lab, tooling and docs only: no product code, golden, schema or score moved.*
+
+- **STA002 reachability recorded as a candidate (2026-11-15): one
+  checkbox, nothing built.** Asked by the maintainer, after a
+  cross-repository roadmap review on 2026-11-14 found #49's carve-out
+  still open. The item sits in Arc C beside *Further coverage*, as the
+  STA pack's first deepening, with its trigger and cost.
+  - *Re-litigate on:* a state-machine corpus where an island is a
+    deliberate, documented pattern, which would make the in-degree line
+    the right one after all.
+  - *Priorities unchanged.* Open checkboxes go from 17 to 18, all gated.
+
+  *Docs only: no product code, golden, schema or score moved.*
