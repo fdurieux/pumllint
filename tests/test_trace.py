@@ -45,6 +45,16 @@ def _diagrams(src: str, path: str = "d.puml"):
 
 # --- reference extraction ----------------------------------------------------
 
+def test_four_or_more_digit_pattern_reads_long_ids_whole():
+    pattern = re.compile(r"PROC-\d{4,}")
+    assert [m.group(0) for m in pattern.finditer("PROC-0042 PROC-10000")] == [
+        "PROC-0042",
+        "PROC-10000",
+    ]
+    narrow = re.compile(r"PROC-\d{4}")
+    assert narrow.search("PROC-10000").group(0) == "PROC-1000"  # the defect
+
+
 def test_references_come_from_gen007_carriers_only():
     d = _diagrams(_LINKED)[0]
     refs = diagram_references(d, _PATTERN)
