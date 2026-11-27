@@ -417,6 +417,10 @@ owner-tag        = { pattern = '(?i)owner\s*:' }
 requirement-link = { pattern = 'PROC-\d{4}' }
 ```
 
+*[Amended 2026-11-27: the guide now configures `PROC-\d{4,}` — the ieam-register id
+contract is `<PREFIX>-<4+ digits>`, and `\d{4}` reads `PROC-10000` as `PROC-1000`
+(ieam-register PR #47, seam check 2a). The block above is the record as written.]*
+
 The last two are the governance pair: GEN006 `owner-tag` and GEN007
 `requirement-link` are dormant until a pattern arms them, and the
 converter writes the carrier they read into the footer

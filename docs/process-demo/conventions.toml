@@ -23,4 +23,4 @@ unlabelled-decision-branch = { require_else_label = true }
 
 # Governance: the process owner and the ARIS process ID, as comment lines.
 owner-tag        = { pattern = '(?i)owner\s*:' }
-requirement-link = { pattern = 'PROC-\d{4}' }
+requirement-link = { pattern = 'PROC-\d{4,}' }

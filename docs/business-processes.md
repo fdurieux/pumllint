@@ -98,7 +98,7 @@ verb-first-activity = { severity = "major", verbs = [
 ] }
 unlabelled-decision-branch = { require_else_label = true }
 owner-tag        = { pattern = '(?i)owner\s*:' }
-requirement-link = { pattern = 'PROC-\d{4}' }
+requirement-link = { pattern = 'PROC-\d{4,}' }
 ```
 
 Option by option:
@@ -157,7 +157,7 @@ PlantUML renders it without complaint. The gate does not:
 ```
 $ pumllint docs/process-demo/order_to_cash_draft.puml -c docs/process-demo/conventions.toml
 docs/process-demo/order_to_cash_draft.puml:1: [GEN006/minor] No ownership tag matching '(?i)owner\\s*:' in title/header/footer/caption/notes
-docs/process-demo/order_to_cash_draft.puml:1: [GEN007/minor] No requirement/ADR reference matching 'PROC-\\d{4}' in name/title/header/footer/caption/notes
+docs/process-demo/order_to_cash_draft.puml:1: [GEN007/minor] No requirement/ADR reference matching 'PROC-\\d{4,}' in name/title/header/footer/caption/notes
 docs/process-demo/order_to_cash_draft.puml:10: [ACT006/major] Activity 'Order intake' is not verb-first — name it "verb + object" (e.g. "Validate order")
 docs/process-demo/order_to_cash_draft.puml:11: [ACT006/major] Activity 'Order validation' is not verb-first — name it "verb + object" (e.g. "Validate order")
 docs/process-demo/order_to_cash_draft.puml:13: [ACT005/minor] Swimlane 'credit control' does not match pattern '^[A-Z][a-z]+( [A-Z&][a-z]*)*$'
